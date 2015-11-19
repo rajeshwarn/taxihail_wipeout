@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Common.Configuration;
@@ -11,7 +12,8 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
-using System.Threading;
+using apcurium.MK.Booking.Api.Client.Extensions;
+using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
@@ -53,30 +55,27 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             get { return "gme-taxihailinc"; }
 	    }
 
-	    public Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public Task<GeoPlace> GetPlaceDetailAsync(string id)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
+        private HttpClient GetClient(string url)
         {
+            var client = new HttpClient(new NativeMessageHandler());
+
+            if (url.HasValueTrimmed())
+            {
+                client.BaseAddress = new Uri(url);
+            }
+
+            return client;
+        }
+
+        public Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
+	    {
             if (maximumNumberOfPlaces == 0)
             {
                 maximumNumberOfPlaces = MaximumPageLength;
             }
 
             pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.GeoLoc.PlacesTypes).GetPipedTypeList();
-            var client = new JsonServiceClient(PlacesServiceUrl);
+            var client = GetClient(PlacesServiceUrl);
 
             var @params = new Dictionary<string, string>
             {
@@ -97,12 +96,12 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
             Console.WriteLine(resource);
 
-            return HandleGoogleResult(() => client.Get<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
+            return HandleGoogleResultAsync(() => client.GetAsync<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
         }
 
-		public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
-        {
-            var client = new JsonServiceClient(PlacesAutoCompleteServiceUrl);
+	    public Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+	    {
+            var client = GetClient(PlacesAutoCompleteServiceUrl);
 
             var @params = new Dictionary<string, string>
             {
@@ -129,15 +128,15 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
             Console.WriteLine(resource);
 
-            return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
+            return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]);
         }
 
-		public GeoPlace GetPlaceDetail(string id)
-        {
-            var client = new JsonServiceClient(PlaceDetailsServiceUrl);
+	    public Task<GeoPlace> GetPlaceDetailAsync(string id)
+	    {
+            var client = GetClient(PlaceDetailsServiceUrl);
             var @params = new Dictionary<string, string>
             {
-				{"placeid", id},
+                {"placeid", id},
                 {"sensor", true.ToString().ToLower()},
                 {"key", PlacesApiKey},
             };
@@ -145,19 +144,34 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
             Console.WriteLine(resource);
 
-            Func<PlaceDetailResponse, GeoPlace> selector = response => new GeoPlace 
+            Func<PlaceDetailResponse, GeoPlace> selector = response => new GeoPlace
             {
                 Id = id,
                 Name = response.Result.Formatted_address,
-                Address = ResourcesExtensions.ConvertGeoObjectToAddress (response.Result)
+                Address = ResourcesExtensions.ConvertGeoObjectToAddress(response.Result)
             };
 
-            return HandleGoogleResult(() => client.Get<PlaceDetailResponse>(resource), selector, new GeoPlace());
+            return HandleGoogleResultAsync(() => client.GetAsync<PlaceDetailResponse>(resource), selector, new GeoPlace());
         }
+
+	    public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
+	    {
+	        return GetNearbyPlacesAsync(latitude, longitude, languageCode, sensor, radius, maximumNumberOfPlaces, pipedTypeList).Result;
+	    }
+
+		public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+		{
+		    return SearchPlacesAsync(latitude, longitude, name, languageCode, sensor, radius, countryCode).Result;
+		}
+
+		public GeoPlace GetPlaceDetail(string id)
+		{
+		    return GetPlaceDetailAsync(id).Result;
+		}
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
-            var client = new JsonServiceClient();
+            var client = GetClient(string.Empty);
             var @params = new Dictionary<string, string>
             {
                 {"origin", string.Format(CultureInfo.InvariantCulture, "{0},{1}", originLat, originLng)},
@@ -264,17 +278,12 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         private GeoAddress[] Geocode(string requestParameters, Func<GeoAddress[]> fallBackAction)
         {
-            var client = new JsonServiceClient();
-
-            var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
-            Console.WriteLine(signedUrl);
-
-            return HandleGoogleResult(() => client.Get<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
+            return GeocodeAsync(requestParameters, () => Task.Run(fallBackAction)).Result;
         }
 
 	    private Task<GeoAddress[]> GeocodeAsync(string requestParameters, Func<Task<GeoAddress[]>> fallBackAction)
 	    {
-            var client = new JsonServiceClient();
+            var client = GetClient(string.Empty);
 
             var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
             Console.WriteLine(signedUrl);
@@ -306,52 +315,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             // Add the signature to the existing URI.
             return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;
         }
- 
-        private TResponse HandleGoogleResult<TResponse, TGoogleResponse>(Func<TGoogleResponse> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<TResponse> fallBackAction = null)
-            where TGoogleResponse : GoogleResult
-        {
-            try
-            {
-                var result = apiCall.Invoke();
-
-                if (result.Status == ResultStatus.OVER_QUERY_LIMIT)
-                {
-                    // retry 2 more times
-
-                    var attempts = 1;
-                    var success = false;
-
-                    while (!success && attempts < MaxNumberOfAttemps)
-                    {
-                        Thread.Sleep(RetryDelay);
-                        result = apiCall.Invoke();
-                        attempts++;
-                        success = result.Status == ResultStatus.OK;
-                    }
-                }
-
-                // if we still have OVER_QUERY_LIMIT or REQUEST_DENIED and a fallback geocoder, we invoke it
-                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT 
-                    || result.Status == ResultStatus.REQUEST_DENIED) 
-                        && _fallbackGeocoder != null 
-                        && fallBackAction != null) 
-                {
-                    return fallBackAction.Invoke();
-                }
-
-                if (result.Status == ResultStatus.OK) 
-                {
-                    return selector.Invoke(result);
-                } 
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex);
-            }
-
-            return defaultResult;
-        }
-
 
 	    private async Task<TResponse> HandleGoogleResultAsync<TResponse, TGoogleResponse>(Func<Task<TGoogleResponse>> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<Task<TResponse>> fallBackAction = null)
 	        where TGoogleResponse : GoogleResult
