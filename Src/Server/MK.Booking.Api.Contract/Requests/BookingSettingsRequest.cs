@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Common;
+using ServiceStack.ServiceHost;
 
 #endregion
 

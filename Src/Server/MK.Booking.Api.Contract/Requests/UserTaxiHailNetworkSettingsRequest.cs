@@ -1,5 +1,6 @@
 ﻿using System;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {

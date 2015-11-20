@@ -1,4 +1,6 @@
-﻿namespace CMTPayment.Tokenize
+﻿using ServiceStack.ServiceHost;
+
+namespace CMTPayment.Tokenize
 {
     [Route("tokenize")]
     public class TokenizeRequest : IReturn<TokenizeResponse>

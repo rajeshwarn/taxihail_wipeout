@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.ServiceHost;
 
 #endregion
 

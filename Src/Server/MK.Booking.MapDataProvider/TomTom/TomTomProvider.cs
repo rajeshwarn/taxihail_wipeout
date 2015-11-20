@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
+using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -33,9 +37,20 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			get { return _settings.Data.TomTomMapToolkitKey; }
 		}
 
+        private HttpClient GetClient()
+        {
+            var client = new HttpClient(new NativeMessageHandler())
+            {
+                BaseAddress = new Uri(ApiUrl),
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
+            };
+
+            return client;
+        }
+
         public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
-			var client = new JsonServiceClient (ApiUrl);
+			var client = GetClient();
 			var queryString = string.Format (CultureInfo.InvariantCulture, RoutingServiceUrl, 
 				MapToolkitKey, 
                 GetFormattedPoints (originLat, originLng, destLat, destLng),
@@ -75,21 +90,16 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			}
 
 			// for which day? today, tomorrow, monday, tuesday, wednesday, thursday, friday, saturday, sunday
-			string day = string.Empty;
+			string day;
 			if (date.Value.Date == DateTime.Today)
 			{
 				day = "today";
 			}
 			else
 			{
-				if (date.Value.Date == DateTime.Today.AddDays (1))
-				{
-					day = "tomorrow";
-				}
-				else
-				{
-					day = date.Value.DayOfWeek.ToString ().ToLowerInvariant ();
-				}
+				day = date.Value.Date == DateTime.Today.AddDays (1) 
+                    ? "tomorrow" 
+                    : date.Value.DayOfWeek.ToString().ToLowerInvariant ();
 			}
 
 			// when? either now or number of minutes since local midnight (between 0 and 1439)

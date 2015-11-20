@@ -2,6 +2,9 @@
 
 using System;
 using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.ServiceModel;
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
