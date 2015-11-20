@@ -30,6 +30,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -201,7 +202,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude)
                         : null,
-                market);
+				market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
 
             if (rule != null)
             {

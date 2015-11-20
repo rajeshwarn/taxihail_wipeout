@@ -15,6 +15,7 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.ServiceClient.Web;
 using System.Net;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -26,11 +27,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
-		
+
+		private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
-
 	    private bool _isStarted;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,

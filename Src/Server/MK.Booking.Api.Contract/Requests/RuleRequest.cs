@@ -34,6 +34,14 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public bool ZoneRequired { get; set; }
 
+		public bool ExcludeCircularZone { get; set; }
+
+		public double ExcludedCircularZoneLatitude { get; set; }
+
+		public double ExcludedCircularZoneLongitude { get; set; }
+
+		public int ExcludedCircularZoneRadius { get; set; }
+
         public string ZoneList { get; set; }
 
         public DayOfTheWeek DaysOfTheWeek { get; set; }
