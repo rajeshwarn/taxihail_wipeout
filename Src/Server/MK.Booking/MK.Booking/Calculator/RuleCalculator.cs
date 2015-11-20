@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Maps.Geo;
 
 #endregion
 
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Calculator
             _serverSettings = serverSettings;
         }
 
-        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
+		public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint)
         {
             var rules = new RuleDetail[0];
 
@@ -46,13 +47,13 @@ namespace apcurium.MK.Booking.Calculator
 
             if (rules.Any())
             {
-                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc());
+                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc(), pickupPoint);
             }
 
             return GetMatching(rules, pickupDate);
         }
 
-        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
+        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint)
         {
             var rules = new RuleDetail[0];
 
@@ -73,7 +74,7 @@ namespace apcurium.MK.Booking.Calculator
 
             if (rules.Any())
             {
-                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc());
+                rules = FilterRulesByZone(rules, pickupZoneGetterFunc(), dropOffZoneGetterFunc(), pickupPoint);
             }
 
             return GetMatching(rules, pickupDate);
@@ -91,16 +92,16 @@ namespace apcurium.MK.Booking.Calculator
             return null;
         }
 
-        private RuleDetail[] FilterRulesByZone(RuleDetail[] rules, string pickupZone, string dropOffZone)
+        private RuleDetail[] FilterRulesByZone(RuleDetail[] rules, string pickupZone, string dropOffZone, Position pickupPoint)
         {
             var rulesWithoutZone = from rule in rules
                                     where IsTrimmedNullOrEmpty(rule.ZoneList) 
-                                          && !rule.ZoneRequired
+                                          && !rule.ZoneRequired && !rule.ExcludeCircularZone
                                     select rule;
 
             var rulesZoneRequired = from rule in rules
-                                    where IsTrimmedNullOrEmpty(rule.ZoneList) 
-                                          && rule.ZoneRequired
+                                    where IsTrimmedNullOrEmpty(rule.ZoneList)
+										  && rule.ZoneRequired && !rule.ExcludeCircularZone
                                           && ((IsTrimmedNullOrEmpty(pickupZone) && rule.AppliesToPickup)
                                           || (IsTrimmedNullOrEmpty(dropOffZone) && rule.AppliesToDropoff))
                                    select rule;
@@ -112,6 +113,13 @@ namespace apcurium.MK.Booking.Calculator
                                                 && rule.ZoneList.ToLower().Split(',').Contains(pickupZone.ToLower().Trim()))
                                     select rule;
 
+			// it has to be applied to pickup address only,
+			// for more details see https://apcurium.atlassian.net/browse/MKTAXI-3542
+			var rulesForPickupInCircularZone = from rule in rules
+											   where rule.AppliesToPickup && !rule.ZoneRequired && rule.ExcludeCircularZone
+											   && Position.CalculateDistance(pickupPoint.Latitude, pickupPoint.Longitude, rule.ExcludedCircularZoneLatitude, rule.ExcludedCircularZoneLongitude) <= (double)rule.ExcludedCircularZoneRadius
+											   select rule;
+
             var rulesForDropOff = from rule in rules
                                  where !IsTrimmedNullOrEmpty(rule.ZoneList)
                                          && rule.AppliesToDropoff
@@ -119,7 +127,7 @@ namespace apcurium.MK.Booking.Calculator
                                              && rule.ZoneList.ToLower().Split(',').Contains(dropOffZone.ToLower().Trim()))
                                  select rule;
 
-            return rulesWithoutZone.Concat(rulesForPickup).Concat(rulesForDropOff).Concat(rulesZoneRequired).ToArray();
+			return rulesWithoutZone.Concat(rulesForPickup).Concat(rulesForPickupInCircularZone).Concat(rulesForDropOff).Concat(rulesZoneRequired).ToArray();
         }
 
         private bool IsTrimmedNullOrEmpty(string value)

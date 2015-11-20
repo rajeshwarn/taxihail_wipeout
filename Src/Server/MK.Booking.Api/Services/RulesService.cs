@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(RuleRequest request)
         {
+			if (request.ZoneRequired && request.ExcludeCircularZone)
+			{
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
+			}
+
             //Check if rate with same name already exists
             if ((request.Type != RuleType.Default) && (_dao.GetAll().Any(x => x.Name == request.Name)))
             {
@@ -50,7 +55,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-
             return new
             {
                 Id = command.RuleId
@@ -59,6 +63,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Put(RuleRequest request)
         {
+			if (request.ZoneRequired && request.ExcludeCircularZone)
+			{
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
+			}
+
             //Check if rate with same name already exists
             if ((request.Type != RuleType.Default) &&
                 (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name)))
