@@ -508,7 +508,7 @@ namespace MK.DeploymentService.Mobile
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
-                Arguments = "output/LocalizationTool.exe -t=callbox -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+                Arguments = "output/LocalizationTool.exe -t=callbox -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/Strings.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
             };
 
             using (var exeProcess = Process.Start(localizationToolRun))
@@ -645,7 +645,20 @@ namespace MK.DeploymentService.Mobile
                 return;
             }
 
-			UpdateJob ("Callbox project");
+            if (!_job.Android)
+            {
+                projectLists = new List<string> {
+                    "MK.Common.Android",
+                    "MK.Booking.MapDataProvider.Android",
+                    "MK.Booking.Api.Contract.Android",
+                    "MK.Booking.Api.Client.Android",
+                    "MK.Booking.Mobile.Android",
+                };
+            }
+
+            _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
+
+            UpdateJob ("Callbox project");
 			var args = string.Format ("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
 				"MK.Callbox.Mobile.Client.Android",
 				configAndroid,

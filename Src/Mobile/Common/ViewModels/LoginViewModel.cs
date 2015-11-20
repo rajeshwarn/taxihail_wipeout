@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleService _vehicleService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
 
@@ -30,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IRegisterWorkflowService registrationService)
+			IRegisterWorkflowService registrationService,
+			IVehicleService vehicleService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -39,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_vehicleService = vehicleService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -140,6 +143,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_signInCommand = (AsyncCommand)this.GetCommand(async () =>
 					{
 						_accountService.ClearCache();
+						_vehicleService.ClearVehicleTypesCache();
+
 						await SignIn();
 					}, CanSignIn);
 				}
