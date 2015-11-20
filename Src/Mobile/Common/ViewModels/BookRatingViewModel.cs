@@ -52,15 +52,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        private bool _needToSelectGratuity;
-        public bool NeedToSelectGratuity
-        {
-            get { return _needToSelectGratuity; }
-            set {
-                _needToSelectGratuity = value;
-				RaisePropertyChanged(); 
+		private bool _needToSelectGratuity;
+		public bool NeedToSelectGratuity {
+			get
+			{
+				return _needToSelectGratuity;
 			}
-        }
+			set
+			{
+				_needToSelectGratuity = value;
+				RaisePropertyChanged ();
+			}
+		}
 
         private Guid _orderId;
         public Guid OrderId
@@ -153,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand<int>(commandParameter =>
+				return this.GetCommand<long>(async commandParameter =>
                 {
                     var selectedIndex = (int)commandParameter;
                     SelectedGratuity = Gratuity.GratuityOptions[selectedIndex];
@@ -162,12 +165,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
         public ICommand PayGratuity
         {
             get
             {
-                return this.GetCommand<int>(commandParameter =>
+				return this.GetCommand(async () =>
                 {
                     _bookingService.PayGratuity(new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
                     NeedToSelectGratuity = false;

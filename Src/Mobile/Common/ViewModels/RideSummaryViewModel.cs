@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_bookingService = bookingService;
+			GratuitySelected = new bool[4] { false, false, false, false };
 		}
 
         public async void Init(Guid orderId, bool needToSelectGratuity)
@@ -41,7 +42,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-	    public bool NeedToSelectGratuity { get; set; }
+		private bool _needToSelectGratuity;
+		public bool NeedToSelectGratuity {
+			get
+			{
+				return _needToSelectGratuity;
+			}
+			set
+			{
+				_needToSelectGratuity = value;
+				RaisePropertyChanged ();
+			}
+		}
 
 	    private List<RatingModel> _ratingList;
 		public List<RatingModel> RatingList
@@ -178,7 +190,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand<int>(commandParameter =>
+				return this.GetCommand<long>(commandParameter =>
 					{
 						var selectedIndex = (int)commandParameter;
 						SelectedGratuity = Gratuity.GratuityOptions[selectedIndex];
@@ -187,7 +199,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-
+		public ICommand PayGratuity {
+			get {
+				return this.GetCommand (async () => {
+					//await _bookingService.PayGratuity (new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
+					NeedToSelectGratuity = false;
+				});
+			}
+		}
 
 	    public ICommand RateOrderAndNavigateToHome
 	    {

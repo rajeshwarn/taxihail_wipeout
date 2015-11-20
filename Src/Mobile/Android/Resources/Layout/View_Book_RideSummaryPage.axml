@@ -26,6 +26,16 @@
         android:layout_height="1px"
         android:background="@color/top_bar_separator_color"
         android:orientation="horizontal" />
+    <TextView
+        style="@style/BlackTextLabelMultiline"
+        android:id="@+id/lblSubTitle"
+        android:text="@string/RideSummarySubTitleText"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10dip" />
     <LinearLayout
         android:orientation="horizontal"
         android:paddingLeft="15dp"
@@ -36,13 +46,15 @@
         local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
         <Button
             style="@style/ButtonActionGreenStyle"
+            android:id="@+id/TestButton"
             android:layout_marginTop="6dip"
             android:layout_marginLeft="6dip"
             android:layout_marginRight="6dip"
             android:layout_height="@dimen/HeightButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected[0]" />
+            android:text="0%"
+            local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=0" />
         <Button
             style="@style/ButtonActionGreenStyle"
             android:layout_marginTop="6dip"
@@ -51,7 +63,8 @@
             android:layout_height="@dimen/HeightButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected[1]" />
+            android:text="10%"
+            local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=1" />
         <Button
             style="@style/ButtonActionGreenStyle"
             android:layout_marginTop="6dip"
@@ -60,7 +73,8 @@
             android:layout_height="@dimen/HeightButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected[2]" />
+            android:text="15%"
+            local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=2" />
         <Button
             style="@style/ButtonActionGreenStyle"
             android:layout_marginTop="6dip"
@@ -69,10 +83,13 @@
             android:layout_height="@dimen/HeightButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected[3]" />
+            android:text="20%"
+            local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=3" />
     </LinearLayout>
     <Button
         style="@style/ButtonActionGreenStyle"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:layout_marginTop="6dip"
         android:text="@string/Gratuity_Pay"
         android:layout_height="@dimen/HeightButton"
@@ -92,16 +109,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
-            <TextView
-                style="@style/BlackTextLabelMultiline"
-                android:id="@+id/lblSubTitle"
-                android:text="@string/RideSummarySubTitleText"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:layout_width="250dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="10dip" />
             <cirrious.mvvmcross.binding.droid.views.MvxListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
