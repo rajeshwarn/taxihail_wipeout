@@ -104,7 +104,7 @@
     <BuildIpa>True</BuildIpa>
     <CrashReportingApiKey>
     </CrashReportingApiKey>
-    <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>

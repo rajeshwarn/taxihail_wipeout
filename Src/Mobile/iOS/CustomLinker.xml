@@ -1,26 +1,26 @@
 ﻿<linker>
-        <assembly fullname="MK.Common.iOS">
-                <namespace fullname="MK.Common.Configuration" />
-                <namespace fullname="apcurium.MK.Common.Configuration" />
-                <namespace fullname="apcurium.MK.Booking.Mobile.Infrastructure" />
-        </assembly>
-
-        <assembly fullname="MK.Booking.Maps.iOS">
-                <namespace fullname="apcurium.MK.Booking.Maps.Impl" />
-                <namespace fullname="apcurium.MK.Booking.Maps" />
-                <namespace fullname="apcurium.MK.Booking.Maps.Geo" />
-        </assembly>
-
-        <assembly fullname="MK.Booking.Google.iOS">
-            <namespace fullname="MK.Booking.MapDataProvider.Foursquare" />
-            <type fullname="MK.Booking.MapDataProvider*" />
-        </assembly>
-
-        <assembly fullname="MK.Booking.Mobile.iOS">
+        <assembly fullname="MK.Booking.Api.Client.iOS" >
             <type fullname="*" />
         </assembly>
 
-         <assembly fullname="MK.Booking.Api.Client.iOS" >
+        <assembly fullname="MK.Booking.Api.Contract.iOS" >
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="MK.Booking.Maps.iOS">
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="MK.Booking.Google.iOS">
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="MK.Booking.Mobile.iOS">
+            <namespace fullname="apcurium.MK.Booking.Mobile.ViewModels" />
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="MK.Common.iOS">
             <type fullname="*" />
         </assembly>
 
@@ -33,27 +33,43 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="ServiceStack.Interfaces.MonoTouch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.DownloadCache" > 
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="ServiceStack.Common.MonoTouch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.DownloadCache.Touch" > 
             <type fullname="*" />
         </assembly>
 
-         <assembly fullname="Cirrious.MvvmCross.Plugins.DownloadCache.Touch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser" > 
             <type fullname="*" />
         </assembly>
 
-         <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
             <type fullname="*" />
         </assembly>
 
-         <assembly fullname="Cirrious.MvvmCross.Plugins.File.Touch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.Json" > 
             <type fullname="*" />
         </assembly>
 
-         <assembly fullname="Cirrious.MvvmCross.Plugins.PhoneCall.Touch" > 
+         <assembly fullname="Cirrious.MvvmCross.Plugins.File" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.File.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.PhoneCall" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.PhoneCall.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.Visibility" > 
             <type fullname="*" />
         </assembly>
 
@@ -61,7 +77,27 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="System.Linq" > 
+        <assembly fullname="Cirrious.CrossCore" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.CrossCore.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Binding" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="GoogleAnalytics.iOS" > 
             <type fullname="*" />
         </assembly>
 </linker>
