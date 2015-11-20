@@ -106,6 +106,9 @@
     <Compile Include="CoordinateSystemOrientation.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
+    <Compile Include="DummyServiceStack\IReturn.cs" />
+    <Compile Include="DummyServiceStack\RouteAttribute.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />

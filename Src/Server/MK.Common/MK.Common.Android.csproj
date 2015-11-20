@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationVersion.cs" />
+    <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
+    <Compile Include="DummyServiceStack\IReturn.cs" />
+    <Compile Include="DummyServiceStack\RouteAttribute.cs" />
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
