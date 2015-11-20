@@ -45,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			if (logFile != null)
 			{
                 emailIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                emailIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
                 emailIntent.PutExtra(Intent.ExtraStream, Android.Support.V4.Content.FileProvider.GetUriForFile(Context, "com.apcurium.fileprovider", new Java.IO.File(logFile)));
 			}
 
