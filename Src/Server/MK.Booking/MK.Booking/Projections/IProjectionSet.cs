@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Projections
         void Add(TProjection projection);
         void AddOrReplace(TProjection projection);
         void AddRange(IEnumerable<TProjection> projections);
-        bool Exists(TIdentifier sourceId);
+        bool Exists(TIdentifier identifier);
 
         IProjection<TProjection> GetProjection(TIdentifier identifier);
 

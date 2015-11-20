@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Projections
 
         public IProjection<TProjection> GetProjection(Guid identifier)
         {
-            return new ProjectionWrapper(() =>
+            return new ProjectionWrapper<TProjection>(() =>
             {
                 TProjection p;
                 return _cache.TryGetValue(identifier, out p) ? p : default(TProjection);
@@ -79,28 +79,6 @@ namespace apcurium.MK.Booking.Projections
         {
             return _cache.Values.GetEnumerator();
         }
-
-        private class ProjectionWrapper : IProjection<TProjection>
-        {
-            private Func<TProjection> _load;
-            private Action<TProjection> _save;
-            public ProjectionWrapper(Func<TProjection> load, Action<TProjection> save)
-            {
-                _load = load;
-                _save = save;
-            }
-
-            public TProjection Load()
-            {
-                return _load();
-            }
-
-            public void Save(TProjection projection)
-            {
-                _save(projection);
-            }
-        }
-
 
     }
 }

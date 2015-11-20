@@ -124,12 +124,14 @@ namespace DatabaseInitializer
                 var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
                 var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
                 var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
+                var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
 
                 var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
                 container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
                 container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
                 container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
                 container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+                container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
                 container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
                 container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                     new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));

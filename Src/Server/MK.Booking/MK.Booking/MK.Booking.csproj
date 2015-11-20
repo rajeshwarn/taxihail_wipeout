@@ -259,6 +259,7 @@
     <Compile Include="Projections\IProjection.cs" />
     <Compile Include="Projections\IProjectionSet.cs" />
     <Compile Include="Projections\MemoryProjectionSet.cs" />
+    <Compile Include="Projections\MemoryProjectionWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
     <Compile Include="PushNotifications\IPushNotificationService.cs" />
