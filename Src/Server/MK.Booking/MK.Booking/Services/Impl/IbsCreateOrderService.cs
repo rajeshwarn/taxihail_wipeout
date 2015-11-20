@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
@@ -12,6 +13,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
 {

@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Api.Services
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
+                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Bailed)
                         || canCancelWhenPaired))
                 {
                     // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.

@@ -234,6 +234,7 @@
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Helpers\IbsHelper.cs" />
+    <Compile Include="Helpers\OrderBailedCreationHelper.cs" />
     <Compile Include="Helpers\TaxiHailNetworkHelper.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />

@@ -59,12 +59,17 @@ namespace apcurium.MK.Booking.Services.Impl
         public IBSOrderResult Dispatch(Guid accountId, Guid orderId, IbsOrderParams ibsOrderParams, BestAvailableCompany initialBestAvailableCompany,
             DispatcherSettingsResponse dispatcherSettings, string accountNumberString, int initialIbsAccountId, string name, string phone, int passengers,
             int? vehicleTypeId, string ibsInformationNote, DateTime pickupDate, string[] prompts, int?[] promptsLength, string market, Fare fare,
-            double? tipIncentive, bool isHailRequest = false)
+            double? tipIncentive, bool isHailRequest = false, List<string> driverIdsToExclude = null)
         {
             IbsResponse orderResult = null;
             var vehicleAssigned = false;
 
-            var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
+            var vehicleCandidatesOfferedTheJob = new List<string>();
+
+            if (driverIdsToExclude != null)
+            {
+                vehicleCandidatesOfferedTheJob.AddRange(driverIdsToExclude);
+            }
 
             initialBestAvailableCompany.FleetId = initialBestAvailableCompany.FleetId ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId;
 
@@ -82,7 +87,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var vehicleCandidates = GetVehicleCandidates(
                     orderId,
                     _bestAvailableCompany,
-                    dispatcherSettings,
+                    dispatcherSettings.Market,
                     ibsOrderParams.IbsPickupAddress.Latitude,
                     ibsOrderParams.IbsPickupAddress.Longitude);
 
@@ -229,13 +234,13 @@ namespace apcurium.MK.Booking.Services.Impl
             double pickupLatitude,
             double pickupLongitude,
             int? homeMarketProviderId,
-            List<VehicleCandidate> vehicleCandidatesOfferedTheJob,
+            List<string> vehicleCandidatesOfferedTheJob,
             NetworkFleetResponse[] availableFleetsInMarket)
         {
             var vehicleCandidates = GetVehicleCandidates(
                     orderId,
                     _bestAvailableCompany,
-                    dispatcherSettings,
+                    dispatcherSettings.Market,
                     pickupLatitude,
                     pickupLongitude);
 
@@ -305,7 +310,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Hail request confirmed");
         }
 
-        public IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude)
+        public IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, string market, double pickupLatitude, double pickupLongitude)
         {
             if (bestAvailableCompany.CompanyKey.HasValue() && !bestAvailableCompany.FleetId.HasValue)
             {
@@ -318,11 +323,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 fleetIds = new[] { bestAvailableCompany.FleetId.Value };
             }
 
-            var availableVehicleService = _taxiHailNetworkHelper.GetAvailableVehiclesServiceClient(dispatcherSettings.Market);
+            var availableVehicleService = _taxiHailNetworkHelper.GetAvailableVehiclesServiceClient(market);
 
             // Query only the avaiable vehicles from the selected company for the order
             var availableVehicles = availableVehicleService.GetAvailableVehicles(
-                dispatcherSettings.Market ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket,
+                market ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket,
                 pickupLatitude,
                 pickupLongitude,
                 fleetIds: fleetIds,
@@ -429,18 +434,18 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private IEnumerable<VehicleCandidate> FilterOutVehiclesAlreadyOfferedTheJob(
             IEnumerable<VehicleCandidate> vehicleCandidates,
-            List<VehicleCandidate> vehicleCandidatesOfferedTheJob,
+            List<string> vehicleCandidatesOfferedTheJob,
             DispatcherSettingsResponse dispatcherSettings,
             bool addToFilteredVehicleList)
         {
             var filteredList = vehicleCandidates
-                .Where(vehicleCandidate => !vehicleCandidatesOfferedTheJob.Exists(x => x.VehicleId == vehicleCandidate.VehicleId))
+                .Where(vehicleCandidate => !vehicleCandidatesOfferedTheJob.Exists(excludedVehicleId => vehicleCandidate.VehicleId == excludedVehicleId))
                 .Take(dispatcherSettings.NumberOfOffersPerCycle)
                 .ToList();
 
             if (addToFilteredVehicleList)
             {
-                vehicleCandidatesOfferedTheJob.AddRange(filteredList);
+                vehicleCandidatesOfferedTheJob.AddRange(filteredList.Select(v => v.VehicleId));
             }
 
             return filteredList;

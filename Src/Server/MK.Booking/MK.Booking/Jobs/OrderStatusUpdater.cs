@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
@@ -22,6 +24,7 @@ using CMTPayment;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using Order = PayPal.Api.Order;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -51,6 +54,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IVehicleTypeDao _vehicleTypeDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ILogger _logger;
+        private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
@@ -125,7 +129,7 @@ namespace apcurium.MK.Booking.Jobs
 
             _logger.LogMessage("Running order update" );
 
-            PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
+            var hasBailed = PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
@@ -138,6 +142,25 @@ namespace apcurium.MK.Booking.Jobs
                 Tax = orderFromIbs.VAT,
                 Surcharge = orderFromIbs.Surcharge
             });
+
+            if (hasBailed)
+            {
+                Task.Run(() =>
+                {
+                    var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+                    var ibsOrderResult = DispatchAgainIfDriverBailed(orderStatusDetail.OrderId, orderStatusDetail.Market, orderStatusDetail.DriverInfos.VehicleRegistration);
+
+                    if (ibsOrderResult != null)
+                    {
+                        var orderBailedHelper = new OrderBailedCreationHelper(_orderDao, _commandBus, _serverSettings, _logger);
+                        orderBailedHelper.SendOrderCreationCommands(
+                            ibsOrderResult.OrderKey.TaxiHailOrderId,
+                            ibsOrderResult.OrderKey.IbsOrderId,
+                            ibsOrderResult.DispatcherTimedOut,
+                            orderDetail.ClientLanguageCode);
+                    }
+                });
+            }
         }
 
         void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail)
@@ -279,15 +302,22 @@ namespace apcurium.MK.Booking.Jobs
             _logger.LogMessage("Trip for order {0} is in progress. Nothing to update.", orderstatusDetail.OrderId);
         }
 
-        private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        private bool PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Bailed
+                && ibsOrderInfo.IsCanceled)
+            {
+                // Do nothing, yo
+                return false;
+            }
+
             // Detect if a bail occurred
             var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                 && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
 
-            orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
+            orderStatusDetail.IBSStatusId =                     hasBailed ? VehicleStatuses.Common.Bailed : ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
             orderStatusDetail.DriverInfos.MobilePhone =         ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
@@ -311,16 +341,16 @@ namespace apcurium.MK.Booking.Jobs
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
 
-            DispatchAgainIfDriverBailed(orderStatusDetail.OrderId, orderStatusDetail.Market, hasBailed);
+            return hasBailed;
         }
 
-        private void DispatchAgainIfDriverBailed(Guid orderId, string market, bool hasBailed)
+        private IBSOrderResult DispatchAgainIfDriverBailed(Guid orderId, string market, string driverIdWhoBailed)
         {
             var dispatcherSettings = _dispatcherService.GetSettings(market);
 
-            if (!hasBailed || dispatcherSettings.NumberOfOffersPerCycle <= 0)
+            if (dispatcherSettings.NumberOfOffersPerCycle <= 0)
             {
-                return;
+                return null;
             }
             
             var orderDetail = _orderDao.FindById(orderId);
@@ -347,8 +377,8 @@ namespace apcurium.MK.Booking.Jobs
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-                // Re-dispatch order
-                _dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
+                // Re-dispatch order (don't dispatch again to the driver who bailed)
+                var ibsOrderResult =_dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
                     ibsOrderParams,
                     new BestAvailableCompany
                     {
@@ -375,8 +405,13 @@ namespace apcurium.MK.Booking.Jobs
                     null,
                     orderDetail.Market,
                     FareHelper.GetFareFromEstimate(new RideEstimate { Price = orderDetail.EstimatedFare }),
-                    orderDetail.TipIncentive);
+                    orderDetail.TipIncentive,
+                    driverIdsToExclude: new List<string> { driverIdWhoBailed } );
+
+                return ibsOrderResult;
             }
+
+            return null;
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)

@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Services
         IBSOrderResult Dispatch(Guid accountId, Guid orderId, IbsOrderParams ibsOrderParams, BestAvailableCompany initialBestAvailableCompany,
             DispatcherSettingsResponse dispatcherSettings, string accountNumberString, int initialIbsAccountId, string name, string phone, int passengers,
             int? vehicleTypeId, string ibsInformationNote, DateTime pickupDate, string[] prompts, int?[] promptsLength, string market, Fare fare,
-            double? tipIncentive, bool isHailRequest = false);
+            double? tipIncentive, bool isHailRequest = false, List<string> driverIdsToExclude = null);
 
         void AssignJobToVehicle(string companyKey, IbsOrderKey ibsOrderKey, IbsVehicleCandidate ibsVehicleCandidate);
 
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Services
 
         DispatcherSettingsResponse GetSettings(double latitude, double longitude, bool isHailRequest = false);
 
-        IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude);
+        IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, string market, double pickupLatitude, double pickupLongitude);
 
         void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId);
     }
