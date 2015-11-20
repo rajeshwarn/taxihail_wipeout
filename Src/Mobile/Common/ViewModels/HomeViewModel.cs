@@ -234,7 +234,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						ShowViewModel<BookRatingViewModel> (new
 						{
 							orderId = unratedRideId.ToString (),
-							canRate = true
+							canRate = true,
+                            needToRate = _bookingService.NeedToSelectGratuity
 						});
 					};
 

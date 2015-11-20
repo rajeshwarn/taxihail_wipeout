@@ -174,18 +174,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
                     try
                     {
-				    if (orderDetails.PairingError.HasValue())
-				    {
+                        if (orderDetails.PairingError.HasValue())
+                        {
                             Logger.LogMessage("A pairing error occurred in manual RideLinQ trip. Going back home...");
-
-				        await GoToHomeScreen();
-				    }
-				    else
-				    {
+                            await GoToHomeScreen();
+                        }
+                        else
+                        {
                             GoToRideSummary(orderDetails.OrderId);
-				    }
+                        }
 
-					return orderDetails;
+                        return orderDetails;
                     }
                     catch (Exception ex)
                     {
@@ -1245,7 +1244,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             Logger.LogMessage("GoToSummary");
 
-            ShowViewModel<RideSummaryViewModel>(new { orderId = orderId });
+            var needToSelectGratuity = Order.Settings.ServiceType == ServiceType.Luxury;
+
+            ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
 
 			ReturnToInitialState();
 		}

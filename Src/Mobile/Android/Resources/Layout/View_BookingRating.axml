@@ -42,22 +42,83 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
-            <cirrious.mvvmcross.binding.droid.views.MvxListView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/RatingListView"
-                android:layout_margin="12dip"
-                local:MvxItemTemplate="@layout/ratinglistitem"
-                local:MvxBind="ItemsSource RatingList" />
+                local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected[0]" />
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected[1]" />
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected[2]" />
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected[3]" />
+            </LinearLayout>
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
-                android:id="@+id/RateOrderButton"
-                android:layout_below="@id/RatingListView"
-                android:text="@string/Submit"
+                android:text="@string/Gratuity_Pay"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_width="fill_parent"
-                local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
+                local:MvxBind="Click PayGratuity; Visibility NeedToSelectGratuity, Converter=Visibility" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+                <cirrious.mvvmcross.binding.droid.views.MvxListView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RatingListView"
+                    android:layout_margin="12dip"
+                    local:MvxItemTemplate="@layout/ratinglistitem"
+                    local:MvxBind="ItemsSource RatingList" />
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:id="@+id/RateOrderButton"
+                    android:layout_below="@id/RatingListView"
+                    android:text="@string/Submit"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="fill_parent"
+                    local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

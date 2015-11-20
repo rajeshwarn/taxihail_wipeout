@@ -364,6 +364,8 @@
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="Localization\Taxi.Designer.cs">
       <DependentUpon>Taxi.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
   </ItemGroup>
   <ItemGroup>

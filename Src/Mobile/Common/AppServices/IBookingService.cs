@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+using Gratuity = apcurium.MK.Common.Entity.Gratuity;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -35,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool HasUnratedLastOrder { get; }
 
+        bool NeedToSelectGratuity { get; }
+
         Task<bool> IsPaired(Guid orderId);
 
         Task<OrderStatusDetail> CreateOrder(CreateOrder info);
@@ -51,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Guid GetUnratedLastOrder();
 
-        void SetLastUnratedOrderId(Guid orderId);
+        void SetLastUnratedOrderId(Guid orderId, bool needToSelectGratuity);
 
         void ClearLastOrder();
 
@@ -62,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
         Task SendRatingReview(OrderRatings orderRatings);
+
+        Task PayGratuity(Gratuity gratuity);
 
         Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
 
