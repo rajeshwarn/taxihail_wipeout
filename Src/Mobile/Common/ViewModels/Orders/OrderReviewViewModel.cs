@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-		private readonly IVehicleService _vehicleService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 		private bool _isCmtRideLinq;
         
@@ -27,10 +27,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService
+			IVehicleTypeService vehicleTypeService
 		)
 		{
-			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var chargeTypes = await _accountService.GetPaymentsList();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
-			var vehicle = (await _vehicleService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
+			var vehicle = (await _vehicleTypeService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
 			if (vehicle != null)
 			{
 				VehiculeType = vehicle.Name;

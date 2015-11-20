@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 
 		private bool _pickupInputDisabled;
 		private bool _destinationInputDisabled;
@@ -31,11 +32,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         private string _hashedMarket;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
@@ -138,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private async Task SetLocalMarketVehicleTypes()
 	    {
-			var list = await _vehicleService.GetVehiclesList();
+			var list = await _vehicleTypeService.GetVehiclesList();
 
             if (list.None())
             {

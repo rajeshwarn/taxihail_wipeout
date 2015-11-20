@@ -31,14 +31,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId);
 		void SetAvailableVehicle(bool enable);
-
-		Task<IList<VehicleType>> GetVehiclesList();
-
-		void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes);
-
-		Task ResetLocalVehiclesList();
-
-		void ClearVehicleTypesCache();
 	}
 }
-
