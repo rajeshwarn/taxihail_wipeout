@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IOrderWorkflowService, OrderWorkflowService>();
             _container.Register<IPromotionService, PromotionService>();
 			_container.Register<IVehicleService, VehicleService>();
+			_container.Register<IVehicleTypeService, VehicleTypeService>();
 			_container.Register<ITutorialService, TutorialService>();
 			_container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 			_container.Register<IAccountPaymentService, AccountPaymentService>();
@@ -208,8 +209,8 @@ namespace apcurium.MK.Booking.Mobile
             _container.Resolve<IApplicationInfoService>().ClearAppInfo();
 			var accountService = _container.Resolve<IAccountService>();
             accountService.ClearReferenceData();
-			var vehicleService = _container.Resolve<IVehicleService>();
-			vehicleService.ClearVehicleTypesCache();
+			var vehicleTypeService = _container.Resolve<IVehicleTypeService>();
+			vehicleTypeService.ClearVehicleTypesCache();
         }
 
         private void RefreshAppData()

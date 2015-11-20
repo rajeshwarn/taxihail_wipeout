@@ -28,21 +28,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
 
-		private const string VehicleTypesDataCacheKey = "VehicleTypesData";
-
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
-		private readonly apcurium.MK.Booking.Mobile.Infrastructure.ICacheService _cacheService;
 	    private bool _isStarted;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
-			IAppSettings settings,
-			apcurium.MK.Booking.Mobile.Infrastructure.ICacheService cacheService)
+			IAppSettings settings)
 		{
 			_directions = directions;
 			_settings = settings;
-			_cacheService = cacheService;
 
 			// having publish and connect fixes the problem that caused the code to be executed 2 times
 			// because there was 2 subscriptions
@@ -307,39 +302,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public IObservable<Direction> GetAndObserveEta()
 		{
 			return _etaObservable;
-		}
-
-		public async Task<IList<VehicleType>> GetVehiclesList()
-		{
-			var cached = _cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
-			if (cached != null)
-			{
-				return cached;
-			}
-
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-			_cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-
-			return vehiclesList;
-		}
-
-		public async Task ResetLocalVehiclesList()
-		{
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-			_cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-		}
-
-		public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
-		{
-			if (marketVehicleTypes.Any())
-			{
-				_cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
-			}
-		}
-
-		public void ClearVehicleTypesCache()
-		{
-			_cacheService.Clear(VehicleTypesDataCacheKey);
 		}
     }
 

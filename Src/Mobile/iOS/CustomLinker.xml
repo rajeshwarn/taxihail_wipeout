@@ -5,36 +5,63 @@
                 <namespace fullname="apcurium.MK.Booking.Mobile.Infrastructure" />
         </assembly>
 
-         <assembly fullname="MK.Booking.Mobile.iOS">
-            <namespace fullname="apcurium.MK.Booking.Mobile" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.AppServices.Impl" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.ViewModels" />
-            <type fullname="apcurium.MK.Booking.Mobile.AppServices*" />
+        <assembly fullname="MK.Booking.Maps.iOS">
+                <namespace fullname="apcurium.MK.Booking.Maps.Impl" />
+                <namespace fullname="apcurium.MK.Booking.Maps" />
+                <namespace fullname="apcurium.MK.Booking.Maps.Geo" />
+        </assembly>
+
+        <assembly fullname="MK.Booking.Google.iOS">
+            <namespace fullname="MK.Booking.MapDataProvider.Foursquare" />
+            <type fullname="MK.Booking.MapDataProvider*" />
+        </assembly>
+
+        <assembly fullname="MK.Booking.Mobile.iOS">
+            <type fullname="*" />
+        </assembly>
+
+         <assembly fullname="MK.Booking.Api.Client.iOS" >
+            <type fullname="*" />
         </assembly>
 
         <assembly fullname="TaxiHail" >
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.Localization" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.Converters" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.PlatformIntegration" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.Controls.Widgets" />
-            <namespace fullname="apcurium.MK.Booking.Mobile.Client.Style" />
             <namespace fullname="apcurium.MK.Booking.Mobile.Client" />
+            <type fullname="*" />
         </assembly>
 
-         <assembly fullname="ServiceStack.Text.MonoTouch" > 
-         <type fullname="*" />
+        <assembly fullname="ServiceStack.Text.MonoTouch" > 
+            <type fullname="*" />
         </assembly>
 
         <assembly fullname="ServiceStack.Interfaces.MonoTouch" > 
-         <type fullname="*" />
+            <type fullname="*" />
         </assembly>
 
         <assembly fullname="ServiceStack.Common.MonoTouch" > 
-         <type fullname="*" />
+            <type fullname="*" />
         </assembly>
 
          <assembly fullname="Cirrious.MvvmCross.Plugins.DownloadCache.Touch" > 
-         <type fullname="*" />
+            <type fullname="*" />
+        </assembly>
+
+         <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+         <assembly fullname="Cirrious.MvvmCross.Plugins.File.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+         <assembly fullname="Cirrious.MvvmCross.Plugins.PhoneCall.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.Visibility.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="System.Linq" > 
+            <type fullname="*" />
         </assembly>
 </linker>
