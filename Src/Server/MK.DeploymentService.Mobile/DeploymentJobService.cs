@@ -508,7 +508,7 @@ namespace MK.DeploymentService.Mobile
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
-                Arguments = "output/LocalizationTool.exe -t=callbox -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+                Arguments = "output/LocalizationTool.exe -t=callbox -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/Strings.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
             };
 
             using (var exeProcess = Process.Start(localizationToolRun))
