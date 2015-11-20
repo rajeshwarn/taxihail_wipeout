@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-        private readonly IVehicleTypeService _vehicleTypeService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 		private bool _isCmtRideLinq;
         

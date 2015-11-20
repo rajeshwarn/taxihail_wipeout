@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public VehicleTypeService(ICacheService cacheService)
 		{
 			this._cacheService = cacheService;
-			
 		}
+
 		public async Task<IList<VehicleType>> GetVehiclesList()
 		{
 			var cached = _cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);

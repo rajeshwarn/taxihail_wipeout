@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 
 		private readonly IVehicleTypeService _vehicleTypeService;
 
@@ -39,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
