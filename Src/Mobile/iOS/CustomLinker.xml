@@ -77,14 +77,6 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="Cirrious.CrossCore" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="Cirrious.CrossCore.Touch" > 
-            <type fullname="*" />
-        </assembly>
-
         <assembly fullname="Cirrious.MvvmCross" > 
             <type fullname="*" />
         </assembly>
@@ -94,10 +86,6 @@
         </assembly>
 
         <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="GoogleAnalytics.iOS" > 
             <type fullname="*" />
         </assembly>
 </linker>
