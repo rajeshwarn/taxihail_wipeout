@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using apcurium.MK.Booking.Api.Contract;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Cryptography;
@@ -20,7 +21,22 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(FindMarketRequest request)
         {
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+
+            // Hash market so that client doesn't have direct access to its value
             return CryptographyHelper.GetHashString(market);
+        }
+
+        public object Get(FindMarketSettingsRequest request)
+        {
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.Latitude, request.Longitude);
+
+            return marketSettings != null
+                ? new MarketSettings
+                    {
+                        HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
+                        EnableDriverBonus = marketSettings.EnableDriverBonus
+                    }
+                : new MarketSettings();
         }
 
         public object Get(NetworkFleetsRequest request)
