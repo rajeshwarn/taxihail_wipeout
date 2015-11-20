@@ -88,7 +88,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Include(System.ComponentModel.INotifyPropertyChanged changed)
         {
             changed.PropertyChanged += (sender, e) => { var test = e.PropertyName; };
-        }     
+        }
+       
+        public void IncludePlugins()
+        {
+//            new Cirrious.MvvmCross.Plugins.DownloadCache.Touch.Plugin();
+            new Cirrious.MvvmCross.Plugins.WebBrowser.Touch.Plugin();
+            new Cirrious.MvvmCross.Plugins.File.Touch.Plugin();
+            new Cirrious.MvvmCross.Plugins.PhoneCall.Touch.Plugin();
+            new Cirrious.MvvmCross.Plugins.Visibility.Touch.Plugin();
+        }
     }
 }
 
