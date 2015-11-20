@@ -143,4 +143,7 @@
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

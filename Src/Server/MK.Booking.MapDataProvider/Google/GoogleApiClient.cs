@@ -12,7 +12,6 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google

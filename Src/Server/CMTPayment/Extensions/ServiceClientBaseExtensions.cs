@@ -1,5 +1,10 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.ServiceHost;
+using ServiceStack.Text;
 
 namespace CMTPayment.Extensions
 {

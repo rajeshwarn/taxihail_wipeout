@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

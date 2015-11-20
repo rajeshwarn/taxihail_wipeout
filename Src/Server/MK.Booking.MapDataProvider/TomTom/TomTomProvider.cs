@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;

@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationVersion.cs" />
+    <Compile Include="DummyServiceStack\Auth.cs" />
     <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
     <Compile Include="DummyServiceStack\IReturn.cs" />
     <Compile Include="DummyServiceStack\RouteAttribute.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
+    <Compile Include="Exceptions\WebServiceException.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\ReturnExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

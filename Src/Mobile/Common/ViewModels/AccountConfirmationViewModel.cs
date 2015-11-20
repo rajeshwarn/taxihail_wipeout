@@ -8,6 +8,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 using System.Globalization;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

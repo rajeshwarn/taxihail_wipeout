@@ -73,7 +73,6 @@
     <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
-    <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="OAuthAuthorizer.cs" />
     <Compile Include="PaymentResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

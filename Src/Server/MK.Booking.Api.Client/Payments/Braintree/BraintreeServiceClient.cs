@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
@@ -9,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {

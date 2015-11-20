@@ -5,6 +5,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {

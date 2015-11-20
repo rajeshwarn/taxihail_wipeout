@@ -11,6 +11,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

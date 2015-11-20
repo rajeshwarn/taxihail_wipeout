@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

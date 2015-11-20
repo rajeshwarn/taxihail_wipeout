@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 

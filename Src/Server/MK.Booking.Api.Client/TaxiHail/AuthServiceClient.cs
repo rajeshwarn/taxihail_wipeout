@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Extensions;
+using MK.Common.DummyServiceStack;
+
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #endif

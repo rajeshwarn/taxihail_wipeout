@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using ModernHttpClient;
 
 namespace MK.Booking.MapDataProvider.Foursquare

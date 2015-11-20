@@ -1,5 +1,6 @@
 using System.IO;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Style
 {

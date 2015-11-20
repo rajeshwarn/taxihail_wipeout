@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Net;
 using CMTPayment;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

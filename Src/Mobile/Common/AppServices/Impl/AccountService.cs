@@ -29,6 +29,7 @@ using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

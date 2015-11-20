@@ -1,86 +1,118 @@
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Extensions;
+using ServiceStack.ServiceHost;
 
-namespace apcurium.MK.Booking.Api.Client.Extensions
+namespace apcurium.MK.Common.Extensions
 {
 	public static class HttpClientExtensions
     {
-        public static Task<TResult> GetAsync<TResult>(this HttpClient client, string absoluteOrRelativeUrl, params object[] parameters)
+        public static Task<T> DeleteAsync<T>(this HttpClient client, IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+            return client.DeleteAsync<T>(url);
+        }
+
+        public static Task<T> PostAsync<T>(this HttpClient client, IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+
+            return client.PostAsync<T>(url, request);
+        }
+
+        public static Task<T> GetAsync<T>(this HttpClient client, IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+
+            return client.GetAsync<T>(url);
+        }
+
+        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
+            string url,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
+        {
+            return Task.Run(() => client.GetAsync(url).HandleResult<TResult>(onSuccess, onError));
+        }
+
+        public static Task<T> DeleteAsync<T>(this HttpClient client,
+            string url,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
+        {
+            return Task.Run(() => client.DeleteAsync(url).HandleResult<T>(onSuccess, onError));
+        }
+
+        public static Task<TResult> PostAsync<TResult>(this HttpClient client,
+            string url,
+            object content,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
         {
             return Task.Run(async () =>
             {
-                var url = parameters != null
-                    ? absoluteOrRelativeUrl.InvariantCultureFormat(parameters)
-                    : absoluteOrRelativeUrl;
+                var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
-                var httpResponseMessage = await client.GetAsync(url);
-
-                httpResponseMessage.EnsureSuccessStatusCode();
-
-                var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
-                return result.FromJson<TResult>();
+                return await client.PostAsync(url, body).HandleResult<TResult>(onSuccess, onError);
             });
         }
 
-        public static Task<TResult> PostAsync<TResult>(this HttpClient client, string absoluteOrRelativeUrl, object content, params object[] parameters)
+        public static Task<TResult> PutAsync<TResult>(this HttpClient client,
+            string url,
+            object content,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
         {
             return Task.Run(async () =>
             {
-                var url = parameters != null
-                    ? absoluteOrRelativeUrl.InvariantCultureFormat(parameters)
-                    : absoluteOrRelativeUrl;
+                var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
-                var httpContent = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
-
-                var httpResponseMessage = await client.PostAsync(url, httpContent);
-
-                httpResponseMessage.EnsureSuccessStatusCode();
-
-                var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
-                return result.FromJson<TResult>();
+                return await client.PutAsync(url, body).HandleResult<TResult>(onSuccess, onError);
             });
         }
 
-        public static Task<TResult> PutAsync<TResult>(this HttpClient client, string absoluteOrRelativeUrl, object content, params object[] parameters)
+        public static async Task HandleResult(this Task<HttpResponseMessage> response,
+            Action<HttpResponseMessage> onSuccess,
+            Action<HttpResponseMessage> onError)
         {
-            return Task.Run(async () =>
+            var result = await response;
+
+            if (!result.IsSuccessStatusCode && onError != null)
             {
-                var url = parameters != null
-                    ? absoluteOrRelativeUrl.InvariantCultureFormat(parameters)
-                    : absoluteOrRelativeUrl;
+                onError(result);
 
-                var httpContent = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+                result.EnsureSuccessStatusCode();
+            }
 
-                var httpResponseMessage = await client.PutAsync(url, httpContent);
-
-                httpResponseMessage.EnsureSuccessStatusCode();
-
-                var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
-                return result.FromJson<TResult>();
-            });
+            if (onSuccess != null)
+            {
+                onSuccess(result);
+            }
         }
 
-        public static Task<TResult> DeleteAsync<TResult>(this HttpClient client, string absoluteOrRelativeUrl, params object[] parameters)
+        private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response,
+            Action<HttpResponseMessage> onSuccess,
+            Action<HttpResponseMessage> onError)
         {
-            return Task.Run(async () =>
+            var result = await response;
+
+            if (!result.IsSuccessStatusCode && onError != null)
             {
-                var url = parameters != null
-                    ? absoluteOrRelativeUrl.InvariantCultureFormat(parameters)
-                    : absoluteOrRelativeUrl;
+                onError(result);
 
-                var httpResponseMessage = await client.DeleteAsync(url);
+                result.EnsureSuccessStatusCode();
+            }
 
-                httpResponseMessage.EnsureSuccessStatusCode();
+            if (onSuccess != null)
+            {
+                onSuccess(result);
+            }
 
-                var result = await httpResponseMessage.Content.ReadAsStringAsync();
+            var jsonContent = await result.Content.ReadAsStringAsync();
 
-                return result.FromJson<TResult>();
-            });
+            return jsonContent.FromJson<TResult>();
+
         }
     }
 }

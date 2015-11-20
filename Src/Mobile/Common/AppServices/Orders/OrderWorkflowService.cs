@@ -21,6 +21,8 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Provider;
+using MK.Common.Exceptions;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {

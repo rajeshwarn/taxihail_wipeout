@@ -9,12 +9,13 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -278,7 +279,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationYear = value.ToSafeString();
+				Data.ExpirationYear = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationYearDisplay);
 			}
@@ -294,9 +295,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationMonth = value.ToSafeString();
+				Data.ExpirationMonth = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 
-				RaisePropertyChanged();
+                RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationMonthDisplay);
 			}
 		}

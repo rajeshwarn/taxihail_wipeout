@@ -1,11 +1,15 @@
 using System;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using MK.Common.Exceptions;
+
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class CompanyServiceClient : BaseServiceClient
@@ -18,77 +22,72 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _cacheService = cacheService;
         }
 
-        private void HandleException(Exception error, TaskCompletionSource<TermsAndConditions> task)
+        private TermsAndConditions HandleException(Exception error)
         {
             var webServiceError = error as WebServiceException;
-            if (webServiceError != null
-                && webServiceError.StatusCode == (int)HttpStatusCode.NotModified)
+
+            if (webServiceError == null || webServiceError.StatusCode != (int) HttpStatusCode.NotModified)
             {
-                //get the object from the cache and deserialize
-                var terms = _cacheService.Get<TermsAndConditions>("Terms");
-                terms.Updated = false;
-                task.SetResult(terms);
+                return null;
             }
-            else
-            {
-                task.SetException(error);
-            }
+
+            //get the object from the cache and deserialize
+            var terms = _cacheService.Get<TermsAndConditions>("Terms");
+            terms.Updated = false;
+            return terms;
         }
 
-        private void HandleResponseHeader(HttpWebResponse response)
+        private void HandleResponseHeader(HttpResponseMessage response)
         {
-            var version = response.Headers[HttpHeaders.ETag];
-            if (version != null)
+            var version = response.Headers.ETag;
+            if (version != null && version.Tag.HasValueTrimmed())
             {
                 //put in the cache the etag
-                _cacheService.Set("TermsVersion", version);
+                _cacheService.Set("TermsVersion", version.Tag);
             }
         }
 
-        private void AddVersionInformation(HttpWebRequest request)
+        private void AddVersionInformation()
         {
             //get the etag from the cache and add it to the headers
             var version = _cacheService.Get<string>("TermsVersion");
             if (version != null)
             {
-                request.Headers.Set(HttpHeaders.IfNoneMatch, version);
+                Client.DefaultRequestHeaders.IfNoneMatch.Add(new EntityTagHeaderValue(version));
             }
         }
 
-        public Task<TermsAndConditions> GetTermsAndConditions()
+        public async Task<TermsAndConditions> GetTermsAndConditions()
         {
-            var tcs = new TaskCompletionSource<TermsAndConditions>();
+            try
+            {
+                AddVersionInformation();
 
-            Client.LocalHttpWebRequestFilter += AddVersionInformation;
-            Client.LocalHttpWebResponseFilter += HandleResponseHeader;
+                return await Client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
+            }
+            catch (Exception ex)
+            {
+                var result = HandleException(ex);
 
-            Client.GetAsync<string>("/termsandconditions",
-                result =>
+                if (result == null)
                 {
-                    var terms = result.FromJson<TermsAndConditions>();
-                    _cacheService.Set("Terms", terms);
-                    tcs.SetResult(terms);
-                },
-                (result, error) => HandleException(error, tcs));
+                    throw;
+                }
 
-            return tcs.Task;
+                return result;
+            }
         }
 			
         public Task<AccountCharge> GetAccountCharge(string accountNumber, string customerNumber)
         {
-            var tcs = new TaskCompletionSource<AccountCharge>();
-            bool hideAnswers = false;
+#if CLIENT
+                const bool hideAnswers = true;
+#else
+                const bool hideAnswers = false;
+#endif
 
-            #if CLIENT
-            hideAnswers = true;
-            #endif
-
-            string request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
-            Client.GetAsync<AccountCharge>(request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(HttpClientExtensions.FixWebServiceException(error)));
-
-            return tcs.Task;
+            var request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
+            return Client.GetAsync<AccountCharge>(request);
         }
 
         public Task<NotificationSettings> GetNotificationSettings()

@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 #endregion
 

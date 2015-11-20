@@ -6,6 +6,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {

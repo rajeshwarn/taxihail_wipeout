@@ -6,7 +6,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using MK.Common.Configuration;
 using System.Linq;
 using apcurium.MK.Common.Extensions;

@@ -65,7 +65,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             };
 
             // When packageInfo is not specified, we use a default value as the useragent
-            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(_packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent));
+
+            
+            var userAgent = new ProductInfoHeaderValue(new ProductHeaderValue(_packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent));
+
+            client.DefaultRequestHeaders.UserAgent.Add(userAgent);
             if (_packageInfo != null)
             {
                 client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);

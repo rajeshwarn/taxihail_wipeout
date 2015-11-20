@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments
 {

@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Models;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

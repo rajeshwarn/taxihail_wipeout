@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris

@@ -10,6 +10,7 @@ using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile
 {

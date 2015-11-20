@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServiceStack.ServiceHost
+namespace ServiceStack.ServiceInterface
 {
     public class AuthenticateAttribute : Attribute
     {

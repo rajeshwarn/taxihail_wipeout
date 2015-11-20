@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Contract
         {
             try
             {
-                return JsonSerializer.SerializeToString(this, GetType());
+                return this.ToJson();
             }
             catch (Exception e)
             {
