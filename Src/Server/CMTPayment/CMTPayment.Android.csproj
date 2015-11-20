@@ -54,6 +54,7 @@
     <Compile Include="BaseServiceClient.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />

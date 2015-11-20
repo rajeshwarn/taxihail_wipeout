@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />

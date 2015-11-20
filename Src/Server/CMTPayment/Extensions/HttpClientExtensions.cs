@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
@@ -9,22 +8,6 @@ namespace CMTPayment.Extensions
 {
     public static class HttpClientExtensions
     {
-        public static void SetOAuthHeader(this HttpClient client, string url, string method, string consumerKey, string consumerSecretKey)
-        {
-            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(consumerKey,
-                consumerSecretKey,
-                "",
-                "",
-                method,
-                new Uri(url),
-                null);
-
-
-            var authHeader = new AuthenticationHeaderValue(oauthHeader);
-
-            client.DefaultRequestHeaders.Authorization = authHeader;
-        }
-
         public static Task<TResult> GetAsync<TResult>(this HttpClient client,
             string url,
             Action<HttpResponseMessage> onSuccess = null, 

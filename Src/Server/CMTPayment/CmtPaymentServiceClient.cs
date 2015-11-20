@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
@@ -12,7 +10,7 @@ using CMTPayment.Extensions;
 
 namespace CMTPayment
 {
-    public class CmtPaymentServiceClient : BaseServiceClient
+    public partial class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
         public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger)
@@ -21,14 +19,15 @@ namespace CMTPayment
                 : cmtSettings.BaseUrl, sessionId, packageInfo)
         {
             _logger = logger;
-            Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;
-            Client.LocalHttpWebResponseFilter = LogErrorBody;
+            
+            ClientSetup();
 
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 		}
+
+        partial void ClientSetup();
 
 
         protected string ConsumerKey { get; private set; }
