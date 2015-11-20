@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -21,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 		private bool _isCmtRideLinq;
+	    private bool _isDriverBonusEnabledForMarket;
         
 		public OrderReviewViewModel
 		(
@@ -42,13 +44,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+		    Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 
 			_driverBonus = 5;
 
 			GetIsCmtRideLinq();
 		}
 
-		private async Task GetIsCmtRideLinq()
+	    private void MarketChanged(MarketSettings marketSettings)
+	    {
+	        _isDriverBonusEnabledForMarket = marketSettings.EnableDriverBonus;
+
+            RaisePropertyChanged(() => CanShowDriverBonus);
+        }
+
+	    private async Task GetIsCmtRideLinq()
 		{
 			try
 			{
@@ -245,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get 
 			{ 
-				return _isCmtRideLinq && this.Services().Settings.IsDriverBonusEnabled; 
+				return _isCmtRideLinq && _isDriverBonusEnabledForMarket; 
 			}
 		}
 

@@ -750,3 +750,4 @@
 "TripUnableToPairErrorText"="Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi";
 "CreditCardDeclinedOnPreauthorizationErrorText"="Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi";
 "CreditCardUnanbleToPreathorizeErrorText"="Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi";
+"Callbox.ApplicationName"="TaxiHail Callbox";

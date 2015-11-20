@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(viewUnpairTipChange)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.IsUnpairOrTipChangeButtonsVisible)
-				.WithConversion("BoolInverter");;
+				.WithConversion("BoolInverter");
 
 			set.Bind(buttonUnpair)
 				.For(v => v.Command)
