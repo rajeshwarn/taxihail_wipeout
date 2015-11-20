@@ -181,7 +181,8 @@ namespace Infrastructure.Messaging.InMemory
                     dispatch(@event.Body, @event.MessageId, @event.CorrelationId, string.Empty);
                 }
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 var payload = _serializer.Serialize(@event);
                 string innerException = string.Empty;

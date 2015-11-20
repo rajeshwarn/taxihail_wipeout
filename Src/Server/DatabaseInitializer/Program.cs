@@ -122,12 +122,14 @@ namespace DatabaseInitializer
                 var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
                 var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
                 var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
+                var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
                 var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
 
                 var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
                 container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
                 container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
                 container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+                container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
                 container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
                 container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                     new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
@@ -161,13 +163,9 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(accountDetailProjectionSet);
                     new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderDetailProjectionSet);
                     new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderStatusProjectionSet);
+                    new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderReportProjectionSet);
                     new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(orderRatingProjectionSet);
-                    //container.Resolve<AppSettingsEntityProjection>().Save(appSettingsProjection.Load());
                     Console.WriteLine("End : " + stopwatch.Elapsed);
-
-
-
-                    Debugger.Break();
                 }
                 else
                 {
