@@ -98,7 +98,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				return;
 			}
 
-			var animation = AnimationHelper.GetForYTranslation(this, -Height);
+            var animation = AnimationHelper.GetForYTranslation(this, -Height);
+            animation.AnimationEnd += (sender, e) => 
+                {
+                    ((MarginLayoutParams)LayoutParameters).TopMargin = -((MarginLayoutParams)LayoutParameters).Height;
+                };
 
 			StartAnimation(animation);
 		}
