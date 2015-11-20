@@ -3,7 +3,7 @@ namespace apcurium.MK.Booking.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Booking_MKTAXI_3466 : DbMigration
+    public partial class Booking_MKTAXI_3456 : DbMigration
     {
         public override void Up()
         {
