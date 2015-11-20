@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
     {
 		readonly ILocationService _locationService;
 		readonly IAccountService _accountService;
-		readonly IVehicleService _vehicleService;
+		readonly IVehicleTypeService _vehicleTypeService;
 		readonly IGeolocService _geolocService;
 		readonly IAppSettings _appSettings;
 		readonly ILocalization _localize;
@@ -87,13 +87,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IPaymentService paymentService,
             ILogger logger,
             IPOIProvider poiProvider,
-            IVehicleService vehicleService)
+			IVehicleTypeService vehicleTypeService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
 			_geolocService = geolocService;
 			_accountService = accountService;
-			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 			_locationService = locationService;
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
@@ -198,7 +198,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
 		{
 			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
-			var vehicleTypes = await _vehicleService.GetVehiclesList();
+			var vehicleTypes = await _vehicleTypeService.GetVehiclesList();
 			var data = await _accountService.GetReferenceData();
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
@@ -981,7 +981,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    private async Task SetMarketVehicleTypes(Position currentPosition)
 	    {
             var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
-			_vehicleService.SetMarketVehiclesList(networkVehicles);
+			_vehicleTypeService.SetMarketVehiclesList(networkVehicles);
             _networkVehiclesSubject.OnNext(networkVehicles);
 
 	        int? selectedVehicleId = null;
@@ -996,12 +996,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async Task SetLocalVehicleTypes()
 	    {
-			await _vehicleService.ResetLocalVehiclesList();
+			await _vehicleTypeService.ResetLocalVehiclesList();
             _networkVehiclesSubject.OnNext(new List<VehicleType>());
 
 	        int? selectedVehicleId = null;
 
-			var localVehicles = await _vehicleService.GetVehiclesList();
+			var localVehicles = await _vehicleTypeService.GetVehiclesList();
             if (localVehicles.Any())
             {
                 // Try to match with account vehicle type preference if no match, we use the first vehicle
