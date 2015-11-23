@@ -440,7 +440,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				await _orderWorkflowService.ResetOrderSettings();
 				shouldContinue = shouldContinue && await PreValidateOrder();
-				shouldContinue = shouldContinue && await ValidateCardOnFile();
+				//shouldContinue = shouldContinue && await ValidateCardOnFile();
 				if (shouldContinue)
 				{
 					await ShowFareEstimateAlertDialogIfNecessary();
@@ -508,15 +508,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					return;
 				}
 
-				var cardValidated = await _orderWorkflowService.ValidateCardOnFile();
-				if (!cardValidated)
-				{
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["ErrorCreatingOrderTitle"],
-						this.Services().Localize["NoCardOnFileMessage"]);
-
-					return;
-				}
+//				var cardValidated = await _orderWorkflowService.ValidateCardOnFile();
+//				if (!cardValidated)
+//				{
+//					this.Services().Message.ShowMessage(
+//						this.Services().Localize["ErrorCreatingOrderTitle"],
+//						this.Services().Localize["NoCardOnFileMessage"]);
+//
+//					return;
+//				}
 
 				var cardExpirationValidated = await _orderWorkflowService.ValidateCardExpiration();
 				if (!cardExpirationValidated)
