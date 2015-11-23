@@ -1,9 +1,7 @@
 using System;
-using System.IO;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Java.Util;
@@ -44,7 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			if (logFile != null)
 			{
-				emailIntent.PutExtra(Intent.ExtraStream, Uri.FromFile(new Java.IO.File(logFile)));
+                emailIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                emailIntent.PutExtra(Intent.ExtraStream, Android.Support.V4.Content.FileProvider.GetUriForFile(Context, "com.apcurium.fileprovider", new Java.IO.File(logFile)));
 			}
 
 			try

@@ -272,6 +272,14 @@ IF @numrows > 0
                 exists + "ALTER DATABASE [" + oldName + "] MODIFY NAME = [" + newName + "]");
         }
 
+        public void DeleteDeviceRegisteredEvents(string connectionString, string databaseName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connectionString,
+                "DELETE FROM[" + databaseName + "].[Events].[Events] " +
+                "where EventType = 'apcurium.MK.Booking.Events.DeviceRegisteredForPushNotifications' OR " +
+                "EventType = 'apcurium.MK.Booking.Events.DeviceUnregisteredForPushNotifications'");
+        }
+
         public void CreateDatabase(string connectionString, string databaseName, string sqlDirectory)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + databaseName + "') ";
