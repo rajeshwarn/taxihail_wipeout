@@ -35,6 +35,16 @@ namespace apcurium.MK.Common.Cryptography
 
 		public static string Decrypt(byte[] data)
 		{
+			if (data == null)
+			{
+				return null;
+			}
+
+			if (data.Length == 0)
+			{
+				return String.Empty;
+			}
+
 			return CryptographyHelper.DecryptStringFromBytes_Aes(data, aes128Key, initVector);
 		}
 
@@ -64,7 +74,7 @@ namespace apcurium.MK.Common.Cryptography
 
 		private static byte[] StringToByteArray(string data)
 		{
-			if (data != null && data.Length > 0 && data.Length % 2 == 0)
+			if (data != null && data.Length % 2 == 0)
 			{
 				var byteData = new byte[data.Length / 2];
 
