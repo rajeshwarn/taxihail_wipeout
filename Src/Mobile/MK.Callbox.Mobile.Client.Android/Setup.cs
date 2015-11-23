@@ -40,7 +40,6 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
-			container.Register<ILogger>(new LoggerImpl());
 			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>()));
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();

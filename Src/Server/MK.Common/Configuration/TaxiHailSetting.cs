@@ -4,9 +4,11 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Cryptography;
 
 namespace MK.Common.Configuration
 {
+	[Serializable]
 	public class TaxiHailSetting
     {
 		public TaxiHailSetting()
@@ -123,28 +125,50 @@ namespace MK.Common.Configuration
 		[Hidden]
 		public bool AppleTestAccountUsed { get; set; }
 
+		[PropertyEncrypt]
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
+
+		[PropertyEncrypt]
         public OrderStatusSettingContainer OrderStatus { get; protected set; }
+
+		[PropertyEncrypt]
         public GCMSettingContainer GCM { get; protected set; }
+
+		[PropertyEncrypt]
         public DirectionSettingContainer Direction { get; protected set; }
+
+		[PropertyEncrypt]
         public NearbyPlacesServiceSettingContainer NearbyPlacesService { get; protected set; }
+
+		[PropertyEncrypt]
         public MapSettingContainer Map { get; protected set; }
+
+		[PropertyEncrypt]
         public GeoLocSettingContainer GeoLoc { get; protected set; }
+
+		[PropertyEncrypt]
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
+
+		[PropertyEncrypt]
         public NetworkSettingContainer Network { get; protected set; }
 
+		[PropertyEncrypt]
 		public FlightStatsSettingsContainer FlightStats { get; set; }
+
+		[PropertyEncrypt]
 		public StoreSettingContainer Store { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }
 
+		[PropertyEncrypt]
         [Hidden]
         [RequiredAtStartup]
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - CraftyClicks Api Key", Description = "Enables the UK postcode address lookup using the CraftyClicks Api")]
         public string CraftyClicksApiKey { get; set; }
@@ -153,6 +177,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Twitter - Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Consumer Key", Description="Twitter API Consumer Key")]
 		public string TwitterConsumerKey{ get; protected set; }
@@ -169,6 +194,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Available Vehicle - External Mode", Description = "Available Vehicles provider in external market")]
         public ExternalAvailableVehiclesModes ExternalAvailableVehiclesMode { get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Consumer Secret", Description = "Twitter API Consumer Secret")]
         public string TwitterConsumerSecret { get; protected set; }
@@ -177,14 +203,17 @@ namespace MK.Common.Configuration
         [Display(Name = "Twitter - CallBack", Description="Twitter API Callback URL")]
 		public string TwitterCallback{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Token Url", Description="Twitter API Token URL")]
 		public string TwitterRequestTokenUrl{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Access Token Url", Description="Twitter API Access Token URL")]
 		public string TwitterAccessTokenUrl{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Authorize Url", Description="Twitter API Authorize URL")]
 		public string TwitterAuthorizeUrl { get; protected set; }
@@ -197,6 +226,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Facebook - Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Facebook - App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
@@ -228,9 +258,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and won't replace with a cluster icon).")]
 	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
 
+		[PropertyEncrypt]
         [Display(Name = "SMS -Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }
 
+		[PropertyEncrypt]
         [Display(Name = "SMS -Twilio SMS authentication token", Description = "Authentication token for twilio")]
         public string SMSAuthToken { get; protected set; }
 
@@ -390,10 +422,12 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Distance Format", Description="Format to display distance ('Km' or 'Mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Foursquare Client Id", Description = "Foursquare API credentials Id")]
         public string FoursquareClientId { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Foursquare Client Secret", Description = "Foursquare Client Secret")]
         public string FoursquareClientSecret { get; protected set; }
@@ -402,6 +436,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Search - Foursquare Categories", Description = "Foursquare categories to include in search")]
         public string FoursquarePlacesTypes { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Map - TomTom Map Toolkit API Key", Description = "TomTom Map Toolkit API Key")]
         public string TomTomMapToolkitKey { get; protected set; }
@@ -414,6 +449,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Rebook Order", Description="Hide Rebook button in app history view")]
         public bool HideRebookOrder { get; protected set; }
 
+		[PropertyEncrypt]
         [Hidden]
         [SendToClient]
         [Display(Name = "Card IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
@@ -460,14 +496,17 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
@@ -542,7 +581,8 @@ namespace MK.Common.Configuration
 		[CustomizableByCompany]
 		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
 		public bool ShowExtraInfoInReceipt { get; protected set; }
-		
+
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Map - MapBox Key", Description = "BlackBerry MapBox Key")]
         public string MapBoxKey { get; protected set; }
