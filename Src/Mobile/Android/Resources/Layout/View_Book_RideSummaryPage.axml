@@ -98,7 +98,8 @@
     <ScrollView
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        local:MvxBind="Click PayGratuity; Visibility NeedToSelectGratuity, Converter=InvertedVisibility" />
         <LinearLayout
             android:orientation="vertical"
             android:paddingLeft="15dp"
