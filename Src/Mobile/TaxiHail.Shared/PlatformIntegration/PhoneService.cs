@@ -1,9 +1,7 @@
 using System;
-using System.IO;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Java.Util;
