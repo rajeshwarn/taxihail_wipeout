@@ -9,8 +9,7 @@ using System;
 
 namespace MK.Common.Configuration
 {
-	[Serializable]
-    public class ServerTaxiHailSetting : TaxiHailSetting
+	public class ServerTaxiHailSetting : TaxiHailSetting
     {
         public ServerTaxiHailSetting()
         {
@@ -149,7 +148,7 @@ namespace MK.Common.Configuration
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
 
 		[PropertyEncrypt]
-        public CmtGeoSettingContainer CmtGeo { get; protected set; }
+		public CmtGeoSettingContainer CmtGeo { get; protected set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
         public bool IsWebSignupHidden { get; protected set; }
@@ -233,11 +232,5 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
-
-		public bool IsEncrypted
-		{
-			get;
-			set;
-		}
-    }
+	}
 }

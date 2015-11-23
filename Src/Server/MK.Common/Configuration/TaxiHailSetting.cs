@@ -8,7 +8,6 @@ using System;
 
 namespace MK.Common.Configuration
 {
-	[Serializable]
 	public class TaxiHailSetting
     {
 		public TaxiHailSetting()
