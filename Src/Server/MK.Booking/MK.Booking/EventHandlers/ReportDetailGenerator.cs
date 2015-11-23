@@ -213,12 +213,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             Action handling = () =>
             {
-                if (!_orderReportProjectionSet.Exists(@event.SourceId))
+                if (!_orderReportProjectionSet.Exists(@event.OrderId))
                 {
-                    _orderReportProjectionSet.Add(new OrderReportDetail { Id = @event.SourceId });
+                    _orderReportProjectionSet.Add(new OrderReportDetail { Id = @event.OrderId });
                 }
 
-                _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+                _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
                 {
                     orderReport.Payment.PaymentId = @event.SourceId;
                     orderReport.Payment.PreAuthorizedAmount = @event.Amount;
@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             @event.MigrateFees();
 
-            _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+            _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
             {
                 if (@event.FeeType != FeeTypes.None)
                 {
@@ -273,7 +273,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
                 if (payment != null)
                 {
-                    _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                     {
                         orderReport.Payment.IsCancelled = true;
                         orderReport.Payment.Error = @event.Reason;
@@ -284,9 +284,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalExpressCheckoutPaymentInitiated @event)
         {
-            if(_orderReportProjectionSet.Exists(@event.SourceId))
+            if(_orderReportProjectionSet.Exists(@event.OrderId))
             {
-                _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+                _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
                 {
                     orderReport.Payment.PaymentId = @event.SourceId;
                     orderReport.Payment.PayPalToken = @event.Token;
@@ -301,7 +301,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+            _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
             {
                 orderReport.Payment.TotalAmountCharged = @event.Amount;
                 orderReport.Payment.TipAmount = @event.Tip;
@@ -321,7 +321,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
                 if (payment != null)
                 {
-                    _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                     {
                         orderReport.Payment.IsCancelled = true;
                     });
@@ -336,7 +336,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
                 if (payment != null)
                 {
-                    _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                     {
                         orderReport.Payment.Error = @event.Reason;
                         orderReport.Payment.IsCancelled = true;
@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PromotionApplied @event)
         {
-            if(!_orderReportProjectionSet.Exists(@event.SourceId))
+            if(!_orderReportProjectionSet.Exists(@event.OrderId))
             {
                 return;
             }
@@ -395,7 +395,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PromotionRedeemed @event)
         {
-            _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+            _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
             {
                 orderReport.Promotion.WasRedeemed = true;
                 orderReport.Promotion.SavedAmount = @event.AmountSaved;

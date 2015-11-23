@@ -10,6 +10,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Projections;
 using System.Collections.Generic;
 using System.Collections;
+using System.Data.Entity.Migrations;
 
 #endregion
 
@@ -248,7 +249,7 @@ namespace apcurium.MK.Booking.EventHandlers
         public abstract void Update(Guid identifier, Action<AddressDetailCollection> action);
     }
 
-    public class AddressDetailMemoryProjectionSet : AddressDetailProjectionSet
+    public class AddressDetailMemoryProjectionSet : AddressDetailProjectionSet, IEnumerable<AddressDetailCollection>
     {
         readonly IDictionary<Guid, AddressDetailCollection> _cache = new Dictionary<Guid, AddressDetailCollection>();
 
@@ -284,6 +285,8 @@ namespace apcurium.MK.Booking.EventHandlers
             return _cache.ContainsKey(identifier);
         }
 
+        
+
         public override IProjection<AddressDetailCollection> GetProjection(Guid identifier)
         {
             return new ProjectionWrapper<AddressDetailCollection>(() =>
@@ -314,6 +317,97 @@ namespace apcurium.MK.Booking.EventHandlers
                .Where(predicate))
             {
                 action.Invoke(item);
+            }
+        }
+
+        public IEnumerator<AddressDetailCollection> GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+    }
+
+    public class AddressDetailEntityProjectionSet : AddressDetailProjectionSet
+    {
+        readonly Func<BookingDbContext> _contextFactory;
+        public AddressDetailEntityProjectionSet(Func<BookingDbContext> contextFactory)
+        {
+            _contextFactory = contextFactory;
+        }
+
+        public override void Add(AddressDetailCollection projection)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Set<AddressDetails>().AddRange(projection);
+                context.SaveChanges();
+            }
+        }
+
+        public override void AddOrReplace(AddressDetailCollection projection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void AddRange(IEnumerable<AddressDetailCollection> projections)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Set<AddressDetails>().AddRange(projections.SelectMany(x => x));
+                context.SaveChanges();
+            }
+        }
+
+        public override bool Exists(Guid identifier)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<AddressDetails>().Any(x => x.AccountId == identifier);
+            }
+        }
+
+        public override IProjection<AddressDetailCollection> GetProjection(Guid identifier)
+        {
+            return new ProjectionWrapper<AddressDetailCollection>(() => Load(identifier), p =>
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var addressIds = p.Select(x => x.Id).ToArray();
+                    var addressesToRemove = context.Set<AddressDetails>().Where(x => x.AccountId == identifier && !addressIds.Contains(x.Id));
+                    context.Set<AddressDetails>().RemoveRange(addressesToRemove);
+                    context.Set<AddressDetails>().AddOrUpdate(p.ToArray());
+                }
+            });
+        }
+
+        public override void Update(Guid identifier, Action<AddressDetailCollection> action)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                action.Invoke(Load(identifier, returnNullIfEmpty: false));
+                context.SaveChanges();
+            }
+        }
+
+        public override void Update(Func<AddressDetailCollection, bool> predicate, Action<AddressDetailCollection> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        private AddressDetailCollection Load(Guid identifier, bool returnNullIfEmpty = true)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var addresses = context.Set<AddressDetails>().Where(x => x.AccountId == identifier).ToArray();
+                if (addresses.Length == 0 && returnNullIfEmpty)
+                {
+                    return null;
+                }
+                return new AddressDetailCollection(identifier, addresses);
             }
         }
     }

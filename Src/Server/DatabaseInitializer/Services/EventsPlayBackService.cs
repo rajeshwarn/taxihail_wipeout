@@ -179,7 +179,7 @@ namespace DatabaseInitializer.Services
                         while(result.Count > 10000)
                         {
                             _logger.LogMessage("{0} events in queue, sleeping for a bit...", result.Count);
-                            Thread.Sleep(1000);
+                            Thread.Sleep(10000);
                         }
                         hasMore = false;
                         _logger.LogMessage("Getting next events...");

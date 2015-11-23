@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using apcurium.MK.Booking.Projections;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
 #endregion
 
@@ -120,8 +121,9 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Set<AppSetting>().RemoveRange(context.Set<AppSetting>());
-                context.Set<AppSetting>().AddRange(projection.Select(x => new AppSetting { Key = x.Key, Value = x.Value }));
+                var keys = projection.Keys.ToArray();
+                context.Set<AppSetting>().RemoveRange(context.Set<AppSetting>().Where(x => !keys.Contains(x.Key)));
+                context.Set<AppSetting>().AddOrUpdate(projection.Select(x => new AppSetting { Key = x.Key, Value = x.Value }).ToArray());
                 context.SaveChanges();
             }
         }

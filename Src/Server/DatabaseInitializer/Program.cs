@@ -169,6 +169,7 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderStatusProjectionSet);
                     new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderReportProjectionSet);
                     new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(orderRatingProjectionSet);
+                    new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(addressDetailProjectionSet);
                     Console.WriteLine("End : " + stopwatch.Elapsed);
                 }
                 else
