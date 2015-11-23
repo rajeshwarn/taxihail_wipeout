@@ -109,6 +109,8 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
+                    creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+
                     UpdateSchema(param);
 
                     if (param.ReuseTemporaryDb)
