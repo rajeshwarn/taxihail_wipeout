@@ -1,3 +1,4 @@
+﻿using apcurium.MK.Common.Cryptography;
 using System;
 
 namespace apcurium.MK.Common.Configuration.Impl
@@ -17,7 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsOutOfAppPaymentDisabled = false;
             AskForCVVAtBooking = false;
             CancelOrderOnUnpair = false;
-        }
+    }
 
         public PaymentMethod PaymentMode { get; set; }
         
@@ -40,9 +41,16 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool CancelOrderOnUnpair { get; set; }
 
+		[PropertyEncrypt]
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
+
+		[PropertyEncrypt]
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
+
+		[PropertyEncrypt]
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }
+
+		[PropertyEncrypt]
         public PayPalClientSettings PayPalClientSettings { get; set; }
 
         public SupportedPaymentMethod SupportedPaymentMethod

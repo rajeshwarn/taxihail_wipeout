@@ -1,4 +1,5 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿using apcurium.MK.Common.Cryptography;
+namespace apcurium.MK.Common.Configuration.Impl
 {
     public class CmtPaymentSettings
     {
@@ -23,26 +24,35 @@
 
         public bool IsSandbox { get; set; }
 
+		[PropertyEncrypt]
         public string BaseUrl { get; set; }
 
+		[PropertyEncrypt]
         public string SandboxBaseUrl { get; set; }
 
+		[PropertyEncrypt]
         public string MobileBaseUrl { get; set; }
 
+		[PropertyEncrypt]
         public string SandboxMobileBaseUrl { get; set; }
 
+		[PropertyEncrypt]
         public string ConsumerSecretKey { get; set; }
 
+		[PropertyEncrypt]
         public string ConsumerKey { get; set; }
 
+		[PropertyEncrypt]
         public string FleetToken { get; set; }
 
         public string CurrencyCode { get; set; }
 
+		[PropertyEncrypt]
         public string Market { get; set; }
 
         public bool SubmitAsFleetAuthorization { get; set; }
 
+		[PropertyEncrypt]
         public string MerchantToken { get; set; }
     }
 }

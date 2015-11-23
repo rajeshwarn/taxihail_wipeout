@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Configuration.Helpers;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -44,8 +46,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 			try
 			{
-				var result = Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest()).Result;
-				tcs.TrySetResult(result.ClientPaymentSettings);
+				var result = Client.GetAsync<Dictionary<string, string>>("/settings/encryptedpayments").Result;
+
+				ClientPaymentSettings paymentSettings = new ClientPaymentSettings();
+				
+				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
+
+				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
+
+				tcs.TrySetResult(paymentSettings);
 			}
 			catch (Exception ex)
 			{
