@@ -8,7 +8,6 @@ using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Common.Configuration
 {
-	[Serializable]
     public class TaxiHailSettingContainer
     {
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
@@ -31,7 +30,6 @@ namespace apcurium.MK.Common.Configuration
         public string SiteName { get; protected internal set; }
     }
 
-	[Serializable]
     public class OrderStatusSettingContainer
     {
         [SendToClient, CustomizableByCompany]
@@ -43,7 +41,6 @@ namespace apcurium.MK.Common.Configuration
         public int ServerPollingInterval { get; protected internal set; }
     }
 
-	[Serializable]
     public class GCMSettingContainer
     {
 		[PropertyEncrypt]
@@ -60,7 +57,6 @@ namespace apcurium.MK.Common.Configuration
         public string PackageName { get; protected internal set; }
     }
 
-	[Serializable]
     public class DirectionSettingContainer
     {
         [SendToClient]
@@ -77,7 +73,6 @@ namespace apcurium.MK.Common.Configuration
         public double RatePerKm { get; protected internal set; }
     }
 
-	[Serializable]
     public class NearbyPlacesServiceSettingContainer
     {
         [SendToClient]
@@ -85,7 +80,6 @@ namespace apcurium.MK.Common.Configuration
         public int DefaultRadius { get; protected internal set; }
     }
 
-	[Serializable]
     public class MapSettingContainer
     {
 		[PropertyEncrypt]
@@ -95,7 +89,6 @@ namespace apcurium.MK.Common.Configuration
         public string PlacesApiKey { get; protected internal set; }
     }
 
-	[Serializable]
     public class GeoLocSettingContainer
     {
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
@@ -115,7 +108,6 @@ namespace apcurium.MK.Common.Configuration
         public string SearchFilter { get; protected internal set; }
     }
 
-	[Serializable]
     public class AvailableVehiclesSettingContainer
     {
         [SendToClient, CustomizableByCompany]
@@ -131,7 +123,6 @@ namespace apcurium.MK.Common.Configuration
         public int Radius { get; protected internal set; }
     }
 
-	[Serializable]
     public class SmtpSettingContainer
     {
         public SmtpSettingContainer()
@@ -158,7 +149,6 @@ namespace apcurium.MK.Common.Configuration
         public CredentialsContainer Credentials { get; protected internal set; }
     }
 
-	[Serializable]
     public class CredentialsContainer
     {
 		[PropertyEncrypt]
@@ -170,7 +160,6 @@ namespace apcurium.MK.Common.Configuration
         public string Password { get; protected internal set; }
     }
 
-	[Serializable]
     public class APNSSettingContainer
     {
 		[PropertyEncrypt]
@@ -184,7 +173,6 @@ namespace apcurium.MK.Common.Configuration
         public string ProductionCertificatePath { get; protected internal set; }
     }
 
-	[Serializable]
     public class BlackberrySettingContainer
     {
 		[PropertyEncrypt]
@@ -200,7 +188,6 @@ namespace apcurium.MK.Common.Configuration
         public string Url { get; protected internal set; }
     }
 
-	[Serializable]
     public class DefaultBookingSettingsSettingContainer
     {
         [CustomizableByCompany]
@@ -220,7 +207,6 @@ namespace apcurium.MK.Common.Configuration
         public int? VehicleTypeId { get; protected internal set; }
     }
 
-	[Serializable]
 	public class StoreSettingContainer
     {
 		[SendToClient, CustomizableByCompany]
@@ -232,7 +218,6 @@ namespace apcurium.MK.Common.Configuration
 		public string PlayLink { get; protected internal set; }
     }
 
-	[Serializable]
     public class IBSSettingContainer
     {
         [Display(Name = "IBS - Auto Dispatch", Description = "IBS AutoDispatch")]
@@ -324,7 +309,6 @@ namespace apcurium.MK.Common.Configuration
         public int? PaymentTypeChargeAccountId { get; set; }
     }
 
-	[Serializable]
     public class EmailSettingContainer
     {
         [Display(Name = "Email Setting - No Reply Email", Description = "No Reply Email")]
@@ -335,7 +319,6 @@ namespace apcurium.MK.Common.Configuration
         public string CC { get; protected internal set; }
     }
 
-	[Serializable]
     public class ReceiptSettingContainer
     {
         [CustomizableByCompany]
@@ -343,7 +326,6 @@ namespace apcurium.MK.Common.Configuration
         public string Note { get; protected internal set; }
     }
 
-	[Serializable]
     public class CustomerPortalSettingContainer
     {
 		[PropertyEncrypt]
@@ -359,7 +341,6 @@ namespace apcurium.MK.Common.Configuration
         public string Password { get; protected internal set; }
     }
 
-	[Serializable]
     public class NetworkSettingContainer
     {
         [CustomizableByCompany]
@@ -383,7 +364,6 @@ namespace apcurium.MK.Common.Configuration
         public bool Enabled { get;  set; }
     }
 
-	[Serializable]
     public class HoneyBadgerSettingContainer
     {
 		[PropertyEncrypt]
@@ -397,7 +377,6 @@ namespace apcurium.MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 
-	[Serializable]
     public class CmtGeoSettingContainer
     {
 		[PropertyEncrypt]
@@ -416,7 +395,6 @@ namespace apcurium.MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 
-	[Serializable]
 	public class FlightStatsSettingsContainer
 	{
 		[PropertyEncrypt]
@@ -435,5 +413,4 @@ namespace apcurium.MK.Common.Configuration
 		[Display(Name = "FlightStats - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
 		public bool UseAirportDetails { get; set; }
 	}
-
 }

@@ -9,7 +9,6 @@ using apcurium.MK.Common.Cryptography;
 
 namespace MK.Common.Configuration
 {
-	[Serializable]
 	public class ServerTaxiHailSetting : TaxiHailSetting
     {
         public ServerTaxiHailSetting()
@@ -236,11 +235,5 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
-
-		public bool IsEncrypted
-		{
-			get;
-			set;
-		}
 	}
 }

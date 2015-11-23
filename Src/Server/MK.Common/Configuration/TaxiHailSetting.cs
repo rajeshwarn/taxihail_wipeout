@@ -8,7 +8,6 @@ using apcurium.MK.Common.Cryptography;
 
 namespace MK.Common.Configuration
 {
-	[Serializable]
 	public class TaxiHailSetting
     {
 		public TaxiHailSetting()

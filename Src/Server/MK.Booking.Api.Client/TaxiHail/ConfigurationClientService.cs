@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			{
 				var result = Client.GetAsync<Dictionary<string, string>>("/settings/encryptedpayments").Result;
 
-				ClientPaymentSettings paymentSettings = new ClientPaymentSettings();
+				var paymentSettings = new ClientPaymentSettings();
 				
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
 
