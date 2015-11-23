@@ -16,6 +16,9 @@ using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Resources.Payment;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
+using System.Collections.Generic;
+using System.Reflection;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -50,6 +53,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 ClientPaymentSettings = _configurationDao.GetPaymentSettings()
             };
         }
+
+		public Dictionary<string, string> Get(EncryptedPaymentSettingsRequest request)
+		{
+			var paymentSettings = _configurationDao.GetPaymentSettings();
+
+			var result = new Dictionary<string, string>();
+
+			var settings = paymentSettings.GetType().GetAllProperties();
+			
+			foreach (var setting in settings)
+			{
+				var settingValue = paymentSettings.GetNestedPropertyValue(setting.Key);
+				var settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+				if (settingStringValue.IsBool())
+				{
+					settingStringValue = settingStringValue.ToLower();
+				}
+
+				result.Add(setting.Key, settingStringValue);
+			}
+
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, true);
+
+			return result;
+		}
 
         public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
         {

@@ -89,55 +89,48 @@ namespace apcurium.MK.Common.Cryptography
 			return null;
 		}
 
-		public static void SwitchEncryptionStringsDictionary(object instance, string rootInstanceName, IDictionary<string, string> data, bool encrypt)
+		public static void SwitchEncryptionStringsDictionary(Type instanceType, string rootInstanceName, IDictionary<string, string> data, bool encrypt)
 		{
-			var instanceType = instance.GetType();
-
 			var instanceProperties = instanceType.GetProperties();
 
 			for (int i = 0; i < instanceProperties.Length; i++)
 			{
 				if (instanceProperties[i].CanRead && instanceProperties[i].CanWrite && instanceProperties[i].GetCustomAttribute(typeof(PropertyEncryptAttribute)) != null)
 				{
-					var val = instanceProperties[i].GetValue(instance);
+					var key = (rootInstanceName == null ? "" : rootInstanceName + ".") + instanceProperties[i].Name;
 
-					if (val != null)
+					if (instanceProperties[i].PropertyType == typeof(string))
 					{
-						if (instanceProperties[i].PropertyType == typeof(string))
+						if (data.ContainsKey(key))
 						{
-							var key = (rootInstanceName == null ? "" : rootInstanceName + ".") + instanceProperties[i].Name;
-
-							if (data.ContainsKey(key))
+							if (encrypt)
 							{
-								if (encrypt)
+								data[key] = data[key] != null ? ByteArrayToString(Encrypt(data[key])) : null;
+							}
+							else
+							{
+								try
 								{
-									data[key] = data[key] != null ? ByteArrayToString(Encrypt(data[key])) : null;
+									data[key] = data[key] != null ? Decrypt(StringToByteArray(data[key])) : null;
 								}
-								else
+								catch (FormatException ex)
 								{
-									try
-									{
-										data[key] = data[key] != null ? Decrypt(StringToByteArray(data[key])) : null;
-									}
-									catch (FormatException ex)
-									{
-										_logger.LogError(ex);
-									}
-									catch (ArgumentNullException ex)
-									{
-										_logger.LogError(ex);
-									}
-									catch (CryptographicException ex)
-									{
-										_logger.LogError(ex);
-									}
+									_logger.LogError(ex);
+								}
+								catch (ArgumentNullException ex)
+								{
+									_logger.LogError(ex);
+								}
+								catch (CryptographicException ex)
+								{
+									_logger.LogError(ex);
 								}
 							}
 						}
-						else if (instanceProperties[i].PropertyType.BaseType == typeof(object))
-						{
-							SwitchEncryptionStringsDictionary(val, (rootInstanceName == null ? "" : rootInstanceName + ".") + instanceProperties[i].Name, data, encrypt);
-						}
+					}
+					else if (instanceProperties[i].PropertyType.BaseType == typeof(object))
+					{
+						SwitchEncryptionStringsDictionary(instanceProperties[i].PropertyType, key, data, encrypt);
 					}
 				}
 			}

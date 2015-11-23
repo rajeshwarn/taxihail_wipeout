@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[Route("/encryptedsettings", "GET")]
-    public class ConfigurationRequestEncrypted
+	public class EncryptedConfigurationsRequest
     {
         public Dictionary<string, string> AppSettings { get; set; }
 

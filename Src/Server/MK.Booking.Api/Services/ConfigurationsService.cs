@@ -44,11 +44,11 @@ namespace apcurium.MK.Booking.Api.Services
 			return GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
         }
 
-		public object Get(ConfigurationRequestEncrypted request)
+		public object Get(EncryptedConfigurationsRequest request)
 		{
 			var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
 
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(_serverSettings.ServerData, null, data, true);
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(_serverSettings.ServerData.GetType(), null, data, true);
 
 			return data;
 		}

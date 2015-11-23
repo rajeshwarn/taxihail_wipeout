@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Enumeration.PayPal;
+﻿using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Enumeration.PayPal;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
@@ -10,8 +11,10 @@ namespace apcurium.MK.Common.Configuration.Impl
             Credentials = new PayPalServerCredentials();
         }
 
+		[PropertyEncrypt]
         public PayPalServerCredentials SandboxCredentials { get; set; }
 
+		[PropertyEncrypt]
         public PayPalServerCredentials Credentials { get; set; }
 
         public LandingPageTypes LandingPageType { get; set; }
