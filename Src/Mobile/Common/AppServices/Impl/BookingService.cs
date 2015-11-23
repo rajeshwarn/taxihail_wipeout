@@ -154,17 +154,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void SetLastUnratedOrderId(Guid orderId, bool needToSelectGratuity)
         {
             UserCache.Set("LastUnratedOrderId", orderId.ToString()); // Need to be cached as a string because of a jit error on device
+            UserCache.Set("LastUnratedOrderEndTime", DateTime.UtcNow.ToString()); // Need to be cached as a string because of a jit error on device
             UserCache.Set("NeedToSelectGratuity", needToSelectGratuity.ToString());
         }
 
         public void ClearLastOrder()
         {
             UserCache.Set("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            ClearCacheForGratuity();
         }
 
         public void ClearLastUnratedOrder()
         {
             UserCache.Set("LastUnratedOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            ClearCacheForGratuity();
+        }
+
+        private void ClearCacheForGratuity()
+        {
+            UserCache.Clear("LastUnratedOrderEndTime");
+            UserCache.Set("NeedToSelectGratuity", false.ToString());
         }
 
         public Task RemoveFromHistory(Guid orderId)
@@ -354,7 +363,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Task PayGratuity(Gratuity gratuity)
         {
             var request = new GratuityRequest { Percentage = gratuity.Percentage, OrderId = gratuity.OrderId };
-            return UseServiceClientAsync<OrderServiceClient>(service => service.PayGratuity(request));
+            var response = UseServiceClientAsync<OrderServiceClient>(service => service.PayGratuity(request));
+            ClearCacheForGratuity();
+            return response;
         }
 
         public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)

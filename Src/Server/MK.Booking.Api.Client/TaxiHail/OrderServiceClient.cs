@@ -136,9 +136,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<int>("/account/ordercountforapprating");
 		}
 
-        public Task PayGratuity(GratuityRequest gratuityRequest)
+        public Task PayGratuity(GratuityRequest request)
         {
-            return Client.PostAsync<string>("/gratuity/", gratuityRequest);
+            var req = string.Format("/account/orders/{0}/gratuity", request.OrderId);
+            return Client.PostAsync<string>("/gratuity/", request);
         }
     }
 }

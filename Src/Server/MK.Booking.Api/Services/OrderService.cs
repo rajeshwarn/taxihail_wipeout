@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -67,6 +68,44 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return result;
+        }
+
+
+        public object Post(GratuityRequest request)
+        {
+            var order = Dao.FindById(request.OrderId);
+            if (order == null)
+            {
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            var status = Dao.FindOrderStatusById(request.OrderId);
+            if (status == null)
+            {
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            if (account.Id != order.AccountId)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't initiate a call with driver of another account's order");
+            }
+
+            if (status.ServiceType == ServiceType.Taxi)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't pay a gratuity for taxi service");
+            }
+
+            // Here, pay gratuity using payment provider. Event should be raised if payment is successful.
+
+            _commandBus.Send(new PayGratuity
+            {
+                OrderId = request.OrderId,
+                AccountId = account.Id,
+                Percentage = request.Percentage
+            });
+
+            return new HttpResult(HttpStatusCode.OK);
         }
 
         public object Get(InitiateCallToDriverRequest request)

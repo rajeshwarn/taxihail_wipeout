@@ -463,14 +463,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						return null;
 					}
 
-				    var needToChooseGratuity = false;
-
-				    if ((DateTimeOffset.Now - order.CreatedDate).TotalHours < 2
-				        && order.Settings.ServiceType == ServiceType.Luxury
-				        && !order.Gratuity.HasValue)
-				    {
-				        needToChooseGratuity = true;
-				    }
+				    var needToSelectGratuity = UserCache.Get<string>("LastUnratedOrderEndTime").HasValue()
+				                               && (DateTime.UtcNow - DateTime.Parse(UserCache.Get<string>("LastUnratedOrderEndTime"))).TotalHours < 3
+				                               && order.Settings.ServiceType == ServiceType.Luxury
+				                               && !order.Gratuity.HasValue;
 
 					if (order.IsRated)
 					{
@@ -481,7 +477,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						if (!order.IsManualRideLinq)
 						{
 							// Rating only for "normal" rides
-                            _bookingService.SetLastUnratedOrderId(status.OrderId, needToChooseGratuity);
+						    _bookingService.SetLastUnratedOrderId(status.OrderId, needToSelectGratuity);
 						}
 					}
 				}

@@ -30,7 +30,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<ManualRideLinqTripInfoUpdated>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
-        IEventHandler<OrderNotificationDetailUpdated>
+        IEventHandler<OrderNotificationDetailUpdated>,
+        IEventHandler<OrderGratuityUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -734,6 +735,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 context.Save(orderNotificationDetail);
+            }
+        }
+
+        public void Handle(OrderGratuityUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Gratuity = (double?) @event.Amount;
+                context.Save(order);
             }
         }
 

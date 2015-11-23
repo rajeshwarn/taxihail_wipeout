@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							orderId = unratedRideId.ToString (),
 							canRate = true,
-                            needToRate = _bookingService.NeedToSelectGratuity
+                            needToSelectGratuity = _bookingService.NeedToSelectGratuity
 						});
 					};
 

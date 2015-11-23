@@ -40,7 +40,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					listView.LayoutParameters = new LinearLayout.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
 				}
             };
-        }
+
+		    var t = new System.Timers.Timer() { Interval = 3000 };
+		    t.Elapsed += (s, e) =>
+		    {
+		        Console.WriteLine("Can rate : {0}", ViewModel.CanRate.ToString());
+                Console.WriteLine("Can leave screen: {0}", ViewModel.CanUserLeaveScreen().ToString());
+                Console.WriteLine("Need gratuity: {0}", ViewModel.NeedToSelectGratuity.ToString());
+                Console.WriteLine("Has rated: {0}", ViewModel.HasRated.ToString());
+                Console.WriteLine("Rating required: {0}", ViewModel.Settings.RatingRequired.ToString());
+                Console.WriteLine("Rating enabled: {0}", ViewModel.Settings.RatingEnabled.ToString());
+                Console.WriteLine();
+		    };
+            t.Start();
+
+		}
 
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
 		{

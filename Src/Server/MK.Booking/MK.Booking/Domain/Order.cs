@@ -49,6 +49,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
+            Handles<GratuityPaymentSent>(NoAction);
+            Handles<OrderGratuityUpdated>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -430,6 +432,26 @@ namespace apcurium.MK.Booking.Domain
                 IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
                 InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver,
                 NoShowWarningSent = orderNotificationDetail.NoShowWarningSent
+            });
+        }
+
+        public void PayGratuity(PayGratuity payGratuity)
+        {
+            // Validate that gratuity is not already paid.
+            // TODO: Do this via controller or service and not in domain.
+
+            Update(new GratuitySent
+            {
+                Percentage = payGratuity.Percentage
+            });
+        }
+
+        public void UpdateOrderGratuity(UpdateOrderGratuity payGratuity)
+        {
+            // Update order entity -> Double? Gratuity property
+            Update(new OrderGratuityUpdated
+            {
+                Amount = payGratuity.Amount
             });
         }
 

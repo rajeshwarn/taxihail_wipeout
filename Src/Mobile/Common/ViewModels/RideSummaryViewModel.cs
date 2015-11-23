@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand PayGratuity {
 			get {
 				return this.GetCommand (async () => {
-					//await _bookingService.PayGratuity (new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
+					await _bookingService.PayGratuity (new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
 					NeedToSelectGratuity = false;
 				});
 			}
