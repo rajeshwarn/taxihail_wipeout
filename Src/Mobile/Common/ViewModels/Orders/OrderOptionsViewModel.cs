@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
 		{
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-			_vehicleTypeService = vehicleTypeService;
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
