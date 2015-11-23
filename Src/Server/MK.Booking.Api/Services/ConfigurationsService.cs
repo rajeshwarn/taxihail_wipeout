@@ -19,6 +19,8 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
+using System.Reflection;
+using apcurium.MK.Common.Cryptography;
 
 #endregion
 
@@ -39,66 +41,80 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ConfigurationsRequest request)
         {
-            var result = new Dictionary<string, string>();
-
-            var isFromAdminPortal = request.AppSettingsType == AppSettingsType.Webapp;
-            var settings = _serverSettings.ServerData.GetType().GetAllProperties();
-            var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
-            var isTaxiHailPro = _serverSettings.ServerData.IsTaxiHailPro;
-
-            foreach (var setting in settings)
-            {
-                var sendToClient = false;
-                var customizableByCompany = false;
-                var attributes = setting.Value.GetCustomAttributes(false);
-
-                // Check if we have to return this setting to the mobile client
-                var sendToClientAttribute = attributes.OfType<SendToClientAttribute>().FirstOrDefault();
-                if (sendToClientAttribute != null)
-                {
-                    sendToClient = !isFromAdminPortal;
-                }
-
-                // Check if we have to return this setting to the company settings of admin section
-                var customizableByCompanyAttribute = attributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
-                if (customizableByCompanyAttribute != null)
-                {
-                    if (isTaxiHailPro)
-                    {
-                        // company is taxihail pro, no need to check for taxihail pro attribute on setting, we know we return it
-                        customizableByCompany = isFromAdminPortal;
-                    }
-                    else
-                    {
-                        var requiresTaxiHailProAttribute = attributes.OfType<RequiresTaxiHailPro>().FirstOrDefault();
-                        if (requiresTaxiHailProAttribute == null)
-                        {
-                            customizableByCompany = isFromAdminPortal;
-                        }
-                    }
-                }
-
-                if (returnAllKeys                       // in the case of superadmin
-                    || sendToClient                     // send to mobile client
-                    || customizableByCompany)           // company settings in admin section
-                {
-                    var settingValue = _serverSettings.ServerData.GetNestedPropertyValue(setting.Key);
-
-                    string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
-                    if (settingStringValue.IsBool())
-                    {
-                        // Needed because ToString() returns False instead of false
-                        settingStringValue = settingStringValue.ToLower();
-                    }
-
-                    result.Add(setting.Key, settingStringValue);
-                }
-            }
-
-            // Order results alphabetically
-            return result.OrderBy(s => s.Key)
-                         .ToDictionary(s => s.Key, s => s.Value);
+			return GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
         }
+
+		public object Get(ConfigurationRequestEncrypted request)
+		{
+			var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
+
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(_serverSettings.ServerData, null, data, true);
+
+			return data;
+		}
+
+		public Dictionary<string, string> GetConfigurationsRequestInternal(AppSettingsType appSettingsType, IDictionary<string, PropertyInfo> settings)
+		{
+			var result = new Dictionary<string, string>();
+
+			var isFromAdminPortal = appSettingsType == AppSettingsType.Webapp;
+			var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
+			var isTaxiHailPro = _serverSettings.ServerData.IsTaxiHailPro;
+
+			foreach (var setting in settings)
+			{
+				var sendToClient = false;
+				var customizableByCompany = false;
+				var attributes = setting.Value.GetCustomAttributes(false);
+
+				// Check if we have to return this setting to the mobile client
+				var sendToClientAttribute = attributes.OfType<SendToClientAttribute>().FirstOrDefault();
+				if (sendToClientAttribute != null)
+				{
+					sendToClient = !isFromAdminPortal;
+				}
+
+				// Check if we have to return this setting to the company settings of admin section
+				var customizableByCompanyAttribute = attributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
+				if (customizableByCompanyAttribute != null)
+				{
+					if (isTaxiHailPro)
+					{
+						// company is taxihail pro, no need to check for taxihail pro attribute on setting, we know we return it
+						customizableByCompany = isFromAdminPortal;
+					}
+					else
+					{
+						var requiresTaxiHailProAttribute = attributes.OfType<RequiresTaxiHailPro>().FirstOrDefault();
+						if (requiresTaxiHailProAttribute == null)
+						{
+							customizableByCompany = isFromAdminPortal;
+						}
+					}
+				}
+
+				if (returnAllKeys                       // in the case of superadmin
+					|| sendToClient                     // send to mobile client
+					|| customizableByCompany)           // company settings in admin section
+				{
+					var settingValue = _serverSettings.ServerData.GetNestedPropertyValue(setting.Key);
+
+					string settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
+					if (settingStringValue.IsBool())
+					{
+						// Needed because ToString() returns False instead of false
+						settingStringValue = settingStringValue.ToLower();
+					}
+
+					result.Add(setting.Key, settingStringValue);
+				}
+			}
+
+			// Order results alphabetically
+			return result.OrderBy(s => s.Key)
+						 .ToDictionary(s => s.Key, s => s.Value);
+		}
+
 
         public object Post(ConfigurationsRequest request)
         {

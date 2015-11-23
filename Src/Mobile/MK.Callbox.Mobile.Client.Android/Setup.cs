@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Android.Content;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
@@ -37,7 +37,6 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<IPackageInfo, PackageInfo>();
 			container.Register<IAppSettings, AppSettings>();
 			container.Register<ILocalization, ResourceManager>();
-			container.Register<ILogger, LoggerImpl>();
 			container.Register<IErrorHandler, ErrorHandler>();
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<ICacheService>(new CacheService());
