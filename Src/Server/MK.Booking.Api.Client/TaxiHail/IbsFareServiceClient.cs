@@ -39,13 +39,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<DirectionInfo> GetDirectionInfoFromDistance(double? distance, int? waitTime, 
             int? stopCount, int? passengerCount, 
             int? vehicleType, int defaultVehiculeTypeId, 
-            string accountNumber, int? customerNumber)
+            string accountNumber, int? customerNumber,
+            int? tripTime)
         {
             waitTime = waitTime.HasValue && waitTime > 0 ? waitTime.Value : 0;
             distance = distance.HasValue && distance > 0 ? distance.Value : 0;
             stopCount = stopCount.HasValue && stopCount > 0 ? stopCount.Value : 0;
             passengerCount = passengerCount.HasValue && passengerCount > 0 ? passengerCount.Value : 0;
             vehicleType = vehicleType ?? defaultVehiculeTypeId;
+            tripTime = tripTime.HasValue && tripTime > 0 ? tripTime.Value : 0;
 
             if (accountNumber.HasValue() && customerNumber.HasValue)
             {
@@ -57,10 +59,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             var req = string.Format(CultureInfo.InvariantCulture,
-                "/ibsdistance?Distance={0}&WaitTime={1}&StopCount={2}&PassengerCount={3}&AccountNumber={4}&CustomerNumber={5}&VehicleType={6}",
+                "/ibsdistance?Distance={0}&WaitTime={1}&StopCount={2}&PassengerCount={3}&AccountNumber={4}&CustomerNumber={5}&VehicleType={6}&TripTime={7}",
                 distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, 
                 accountNumber, customerNumber.Value,
-                vehicleType.Value);
+                vehicleType.Value, tripTime.Value);
             var result = Client.GetAsync<DirectionInfo>(req);
             return result;
         }

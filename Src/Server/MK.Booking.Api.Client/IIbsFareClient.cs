@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task<DirectionInfo> GetDirectionInfoFromDistance(double? distance, int? waitTime, 
              int? stopCount, int? passengerCount, 
              int? vehicleType, int defaultVehiculeTypeId, 
-             string accountNumber, int? customerNumber);
+             string accountNumber, int? customerNumber,
+             int? tripTime);
     }
 }
