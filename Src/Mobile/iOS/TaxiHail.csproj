@@ -35,6 +35,7 @@
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
     <MtouchSdkVersion>8.1</MtouchSdkVersion>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -74,7 +75,7 @@
     <CrashReportingApiKey>
     </CrashReportingApiKey>
     <BuildIpa>True</BuildIpa>
-    <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500" </MtouchExtraArgs>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CustomCommands>
       <CustomCommands>
@@ -101,7 +102,7 @@
     <BuildIpa>True</BuildIpa>
     <CrashReportingApiKey>
     </CrashReportingApiKey>
-    <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>
@@ -112,6 +113,7 @@
     </CustomCommands>
     <MtouchUseThumb>true</MtouchUseThumb>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchLink>Full</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -298,6 +300,7 @@
     <InterfaceDefinition Include="Controls\Widgets\ChangeDropOffControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\AppBarDropOffSelection.xib" />
+    <None Include="CustomLinker.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />

@@ -28,8 +28,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
 
-		private const string VehicleTypesDataCacheKey = "VehicleTypesData";
-
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
 	    private bool _isStarted;

@@ -61,8 +61,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 return _userAgent;
             }
         }
-
-
-
     }
 }

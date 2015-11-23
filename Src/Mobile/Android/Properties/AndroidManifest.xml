@@ -32,6 +32,15 @@
 		<activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
 		<activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name="io.card.payment.DataEntryActivity" />
+		<provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.apcurium.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+		        android:name="android.support.FILE_PROVIDER_PATHS"
+		        android:resource="@xml/file_paths" />
+        </provider>
 	</application>
 	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21" />
 	<permission android:name="com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE" android:protectionLevel="signature" />
