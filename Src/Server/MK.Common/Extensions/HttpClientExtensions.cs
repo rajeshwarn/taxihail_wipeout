@@ -33,12 +33,17 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
-            return Task.Run(() => client.GetAsync(client.GetCompleteRelativeUri(url)).HandleResult<TResult>(onSuccess, onError));
+            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
         }
 
 
-	    private static string GetCompleteRelativeUri(this HttpClient client, string url)
+	    private static string GetForEndpointIfNeeded(this HttpClient client, string url)
 	    {
+	        if (url.StartsWith("http") || client.BaseAddress == null)
+	        {
+	            return url;
+	        }
+
             var currentRelativeUrl = client.BaseAddress.LocalPath;
            
 	        return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
@@ -51,7 +56,7 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
-            return Task.Run(() => client.DeleteAsync(client.GetCompleteRelativeUri(url)).HandleResult<T>(onSuccess, onError));
+            return Task.Run(() => client.DeleteAsync(client.GetForEndpointIfNeeded(url)).HandleResult<T>(onSuccess, onError));
         }
 
         public static Task<TResult> PostAsync<TResult>(this HttpClient client,
@@ -67,7 +72,7 @@ namespace apcurium.MK.Common.Extensions
 	    {
 	        var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
-	        var relativeUrl = client.GetCompleteRelativeUri(url);
+	        var relativeUrl = client.GetForEndpointIfNeeded(url);
 
 	        return await client.PostAsync(relativeUrl, body).HandleResult<TResult>(onSuccess, onError);
 	    }
@@ -82,7 +87,7 @@ namespace apcurium.MK.Common.Extensions
             {
                 var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
-                return await client.PutAsync(client.GetCompleteRelativeUri(url), body).HandleResult<TResult>(onSuccess, onError);
+                return await client.PutAsync(client.GetForEndpointIfNeeded(url), body).HandleResult<TResult>(onSuccess, onError);
             });
         }
 
