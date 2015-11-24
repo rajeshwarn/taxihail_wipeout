@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
-		private AddressLocationType _currentActiveFilter;
-
 		private string _previousPostCode = string.Empty;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
@@ -55,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    _postalCodeService = postalCodeService;
 
 			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+			Observe(_orderWorkflowService.GetAndObserveDropOffSelectionMode(), dropOffSelectionMode => IsDropOffSelectionMode = dropOffSelectionMode);
 
 		    FilteredPlaces = new AddressViewModel[0];
 		}
@@ -147,8 +146,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        try
 	        {
-				_currentActiveFilter = filter;
-
 		        if (filter == AddressLocationType.Unspeficied)
 	            {
                     await LoadAddressesUnspecified();
@@ -285,7 +282,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				if (returnToHome)
 				{
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					if(IsDropOffSelectionMode)
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+					}
+					else
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					}
 				}
 
 				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
@@ -311,7 +315,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
-						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						if(IsDropOffSelectionMode)
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+						}
+						else
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						}
 					}
 				}); 
 			}
@@ -429,7 +440,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{
-			Logger.LogMessage("Starting SearchAddresses : " + criteria);
 			var position = _currentAddress;
 
 			Address[] addresses;
@@ -478,6 +488,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_addressSelectionMode = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool _isDropOffSelectionMode; 
+		public bool IsDropOffSelectionMode
+		{ 
+			get { return _isDropOffSelectionMode; }
+			set
+			{
+				_isDropOffSelectionMode = value;
 				RaisePropertyChanged();
 			}
 		}

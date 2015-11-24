@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 AccountId = _accountId
             });
 
-            var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
+            var @event = _sut.ThenHasSingle<CreditCardRemoved>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
         }
@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_all_ccs_deleted()
         {
             var accounts = new[] {_accountId};
-            _sut.When(new DeleteAllCreditCards
+            _sut.When(new DeleteCreditCardsFromAccounts
             {
                 AccountIds = accounts
             });
@@ -177,30 +177,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_granting_admin_rights_successfully()
         {
-            _sut.When(new AddRoleToUserAccount {AccountId = _accountId, RoleName = "Admin"});
+            _sut.When(new UpdateRoleToUserAccount {AccountId = _accountId, RoleName = "Admin"});
 
-            var @event = _sut.ThenHasSingle<RoleAddedToUserAccount>();
+            var @event = _sut.ThenHasSingle<RoleUpdatedToUserAccount>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual("Admin", @event.RoleName);
-        }
-
-        [Test]
-        public void when_registering_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            _sut.When(new RegisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-                Platform = PushNotificationServicePlatform.Android
-            });
-
-            var @event = _sut.ThenHasSingle<DeviceRegisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(deviceToken, @event.DeviceToken);
-            Assert.AreEqual(PushNotificationServicePlatform.Android, @event.Platform);
         }
 
         [Test]
@@ -216,29 +198,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
-        public void when_replacing_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            var oldDeviceToken = Guid.NewGuid().ToString();
-            _sut.When(new RegisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-                OldDeviceToken = oldDeviceToken,
-                Platform = PushNotificationServicePlatform.Android
-            });
-
-            var event1 = _sut.ThenHasOne<DeviceUnregisteredForPushNotifications>();
-            var event2 = _sut.ThenHasOne<DeviceRegisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, event1.SourceId);
-            Assert.AreEqual(oldDeviceToken, event1.DeviceToken);
-            Assert.AreEqual(_accountId, event2.SourceId);
-            Assert.AreEqual(deviceToken, event2.DeviceToken);
-            Assert.AreEqual(PushNotificationServicePlatform.Android, event2.Platform);
-        }
-
-        [Test]
         public void when_reseting_password_successfully()
         {
             _sut.When(new ResetAccountPassword {AccountId = _accountId, Password = "Yop"});
@@ -250,22 +209,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var service = new PasswordService();
 
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
-        }
-
-        [Test]
-        public void when_unregistering_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            _sut.When(new UnregisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-            });
-
-            var @event = _sut.ThenHasSingle<DeviceUnregisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(deviceToken, @event.DeviceToken);
         }
 
         [Test]

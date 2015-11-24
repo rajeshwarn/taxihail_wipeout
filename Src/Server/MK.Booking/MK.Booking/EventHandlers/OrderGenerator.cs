@@ -248,6 +248,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
                         Id = Guid.NewGuid(),
+						AccountId = @event.AccountId,
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
                         RatingTypeId = ratingScore.RatingTypeId,
@@ -597,7 +598,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
+                    // Must set an endtime to end order on client side
+                    rideLinqDetails.EndTime = DateTime.UtcNow;
                     rideLinqDetails.IsCancelled = true;
+                    
                     context.Save(rideLinqDetails);
                 }
             }
@@ -616,6 +620,11 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Status = (int) OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
                     }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        order.Status = (int) OrderStatus.TimedOut;
+                    }
+
                     order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
@@ -629,6 +638,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.EndTime.HasValue)
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
+                    }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        orderStatusDetails.Status = OrderStatus.TimedOut;
                     }
 
                     context.Save(orderStatusDetails);

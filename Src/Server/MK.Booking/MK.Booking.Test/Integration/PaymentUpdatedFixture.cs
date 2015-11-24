@@ -9,6 +9,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Booking.Commands;
 
 #endregion
 
@@ -28,7 +29,7 @@ namespace apcurium.MK.Booking.Test.Integration
 
             Commands = new List<ICommand>();
 
-            Sut = new PaymentSettingsUpdater(new AccountDao(() => new BookingDbContext(DbName)), bus.Object);
+            Sut = new PaymentSettingsUpdater(new AccountDao(() => new BookingDbContext(DbName)), bus.Object, new TestServerSettings());
         }
 
         protected PaymentSettingsUpdater Sut;
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Test.Integration
             Sut.Handle(new PaymentModeChanged());
             Assert.True(Commands.Count == 1);
             var command = Commands.Single();
-            Assert.IsAssignableFrom<DeleteAllCreditCards>(command);
+            Assert.IsAssignableFrom<DeleteCreditCardsFromAccounts>(command);
         }
     }
 }

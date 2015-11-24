@@ -1,8 +1,9 @@
 using System;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Common
 {
-    public struct Fare
+    public class Fare
     {
         public decimal AmountInclTax { get; internal set; }
         public decimal AmountExclTax { get; internal set; }
@@ -12,6 +13,16 @@ namespace apcurium.MK.Common
 
     public static class FareHelper
     {
+        public static Fare GetFareFromEstimate(RideEstimate estimate)
+        {
+            if (estimate == null || !estimate.Price.HasValue)
+            {
+                return new Fare();
+            }
+
+            return GetFareFromAmountInclTax(estimate.Price.Value, 0);
+        }
+
         public static Fare GetFareFromAmountInclTax(double amountIncludingTax, double taxRate)
         {
             return GetFareFromAmountInclTax(Convert.ToDecimal(amountIncludingTax), Convert.ToDecimal(taxRate));

@@ -31,11 +31,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtCode.BecomeFirstResponder ();
 		}
 
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
+            {
+                confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
+            }
+        }
+
         public override void ViewDidLoad ()
         {
 			base.ViewDidLoad ();
 
             View.BackgroundColor = Theme.LoginColor;
+            confirmScrollViewer.BackgroundColor = Theme.LoginColor;
+
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
             lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);

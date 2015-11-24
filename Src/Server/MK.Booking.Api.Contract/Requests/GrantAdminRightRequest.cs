@@ -30,4 +30,12 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class GrantSupportRightRequest : GrantAdminRightRequest
     {
     }
+
+    [Authenticate]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [Route("/account/revokeaccess", "PUT")]
+    public class RevokeAccessRequest : GrantAdminRightRequest
+    {
+    }
+    
 }

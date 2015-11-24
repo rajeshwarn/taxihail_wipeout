@@ -58,6 +58,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.Layer.BorderColor = color.CGColor;
         }
 
+        public override bool Enabled
+        {
+            get
+            {
+                return base.Enabled;
+            }
+            set
+            {
+                base.Enabled = value;
+
+                Alpha = Enabled 
+                    ? 1.0f 
+                    : 0.5f;
+            }
+        }
+
 		private void ApplyDefaultStyle()
         {
             Font = UIFont.FromName(FontName.HelveticaNeueRegular, 40 / 2);
@@ -76,41 +92,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.Layer.MasksToBounds = true;
 		}
 
-        private NSLayoutConstraint[] _hiddenContraints { get; set; }
-
-        public bool HiddenWithConstraints
-        {
-            get
-            {
-                return base.Hidden;
-            }
-            set
-            {
-                if (base.Hidden != value)
-                {
-                    base.Hidden = value;
-                    if (value)
-                    {
-                        _hiddenContraints = this.Superview.Constraints != null 
-                                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-                                            : null;
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.RemoveConstraints(_hiddenContraints);
-                        }
-                    }
-                    else
-                    {
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.AddConstraints(_hiddenContraints);
-                            _hiddenContraints = null;
-                        }
-                    }
-                }
-            }
-        }
-        
         public void SetLeftImage(string image)
         {
             if (image != null)
@@ -141,4 +122,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
     }
 }
-

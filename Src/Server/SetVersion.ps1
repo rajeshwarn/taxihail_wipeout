@@ -164,15 +164,28 @@ function get-scriptdirectory {
 # validate arguments 
 #$r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1,3}$");
   
- # echo "Starting...";
+echo "Starting...";
 #if ($r.Success)
 #{
-  
+  Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
+	git status 
+  echo " ";
+	echo "Inserting new version...";
   Update-AllAssemblyInfoFiles $args[0];
   UpdateAndroidVersion $args[0];
   UpdateCallboxVersion $args[0];
   UpdateIosVersion $args[0];
-  Add-Content ..\..\tagsList ("`n" + $args[0])
+  Add-Content ..\..\tagsList ($args[0])
+  echo " ";
+	echo "Commiting change...";
+	git commit -a -m "Version Bump $args"
+	git tag "$args" 
+  echo " ";
+	echo "Pushing to server...";
+	git push
+	git push origin "$args"
+  echo " ";
+	echo "Done!";
 #}
 #else
 #{

@@ -2,6 +2,7 @@
 	"grantadminSuccess" : "User has been granted with administrator privilege" ,
 	"grantsupportSuccess" : "User has been granted with support privilege" ,
 	"grantsuperadminSuccess" : "User has been granted with super administrator privilege" ,
+	"revokeaccessSuccess" : "User access has been revoked" ,
 	"grantAccessError" : "Check that the email address exists in the system",
 	"search.no-result": "Start typing an address or a place name",
 	"favorites.no-result": "You don't have any favorite address yet",
@@ -49,7 +50,8 @@
     "error.vehicleTypesRemoveTypes": "You have too many vehicle types! Remove some until you reach the allowed limit",
     "error.invalidNetworkPassengerNumber": "The max # of passengers for this vehicle is too small for the selected network vehicle type",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
-	"Rule_DuplicateName" : "Name already used",
+	"Rule_DuplicateName": "Name already used",
+	"Rule_TwoTypeZoneVerificationSelected": "IBS Zone Required and Exclude Circular Zone cannot be selected simultaneously",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
@@ -130,6 +132,7 @@
     "paymentConfirmationPush": "Payment Confirmation",
     "promotionUnlockedPush": "Promotion Unlocked",
     "unpairingReminderPush": "Unpairing Reminder",
+    "driverBailedPush": "Driver Bailed",
 
     "/******* End notification settings Aliases ******/": ""
 }

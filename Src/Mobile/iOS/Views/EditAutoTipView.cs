@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.PaymentMethodsLabel");
             txtCreditCard.Configure(Localize.GetValue("PaymentDetails.PaymentMethodsLabel"), () => ViewModel.CreditCards, () => ViewModel.CreditCardSelected, x => ViewModel.CreditCardSelected = (int)x.Id);
             txtCreditCard.TextAlignment = UITextAlignment.Right;
+            txtCreditCard.Font = UIFont.FromName(FontName.HelveticaNeueLight, 34/2);
+
 
 			btnSave.SetTitle (Localize.GetValue("Save"), UIControlState.Normal);
 			FlatButtonStyle.Green.ApplyTo(btnSave);
@@ -49,6 +51,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(txtCreditCard)
                 .For(v => v.Text)
                 .To(vm => vm.CreditCardSelectedDisplay);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanChangeCreditCard);
 
             set.Bind(txtCreditCard)
                 .For(v => v.ImageLeftSource)

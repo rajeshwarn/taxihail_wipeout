@@ -37,6 +37,11 @@ namespace apcurium.MK.Common.Extensions
             return string.IsNullOrEmpty(instance);
         }
 
+        public static bool HasValueTrimmed(this string instance)
+        {
+            return !string.IsNullOrWhiteSpace(instance);
+        }
+
         public static bool HasValue(this string instance)
         {
             return !string.IsNullOrEmpty(instance);

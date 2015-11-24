@@ -28,6 +28,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -111,6 +112,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
+			container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
+
+			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 
 			InitializeSocialNetwork ();
 		}

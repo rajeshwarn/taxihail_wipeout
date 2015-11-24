@@ -19,6 +19,12 @@
     <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
   </select>
 
+<label class="control-label settingsLabel">{{{localize "Payment Method Mandatory"}}}</label>
+<select name="creditCardIsMandatory" class="settingsBox">
+    <option value="{{creditCardIsMandatory}}" selected="">{{localizeBool creditCardIsMandatory true="Yes" false="No"}}</option>
+    <option value="{{invertedBool creditCardIsMandatory}}">{{localizeBool creditCardIsMandatory true="No" false="Yes"}}</option>
+</select>
+
   <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
   <select name="isOutOfAppPaymentDisabled" class="settingsBox">
     <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
@@ -129,12 +135,19 @@
     <br />
     <h4 class="table-title">{{localize "CMT Settings"}}</h4>
 
+    <!-- CMT RIDELINQ SETTINGS-->
     <div id="cmtRideLinqDiv" class="control-group">
         <label class="control-label settingsLabel">{{{localize "Enable manual Ride Linq check in"}}}</label>
 
         <select name="cmtPaymentSettings.isManualRidelinqCheckInEnabled" class="settingsBox">
             <option value="{{cmtPaymentSettings.isManualRidelinqCheckInEnabled}}" selected="">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="Yes" false="No"}}</option>
             <option value="{{invertedBool cmtPaymentSettings.isManualRidelinqCheckInEnabled}}">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="No" false="Yes"}}</option>
+        </select>
+
+        <label class="control-label settingsLabel">{{{localize "Use Pairing Code"}}}</label>
+        <select name="cmtPaymentSettings.usePairingCode" class="settingsBox">
+            <option value="{{cmtPaymentSettings.usePairingCode}}" selected="">{{localizeBool cmtPaymentSettings.usePairingCode true="Yes" false="No"}}</option>
+            <option value="{{invertedBool cmtPaymentSettings.usePairingCode}}">{{localizeBool cmtPaymentSettings.usePairingCode true="No" false="Yes"}}</option>
         </select>
     </div>
 
@@ -144,8 +157,6 @@
       <option value="{{cmtPaymentSettings.isSandbox}}" selected="" >{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
       <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
-
-
 
     <label class="control-label settingsLabel" >{{{localize "Server Payment Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.baseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
@@ -172,9 +183,8 @@
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.market" value="{{cmtPaymentSettings.market}}" />
 
     <label class="control-label settingsLabel" >{{{localize "Submit As Fleet Authorization"}}}</label>
-   
     <select  name="cmtPaymentSettings.submitAsFleetAuthorization" class="settingsBox">
-      <option value="{{cmtPaymentSettings.submitAsFleetAuthorization}}" selected="" >{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="Yes" false="No"}}</option>
+      <option value="{{cmtPaymentSettings.submitAsFleetAuthorization}}" selected="">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="Yes" false="No"}}</option>
       <option value="{{invertedBool cmtPaymentSettings.submitAsFleetAuthorization}}">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="No" false="Yes"}}</option>
     </select>
 	

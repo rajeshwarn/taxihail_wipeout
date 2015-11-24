@@ -5,20 +5,22 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
         private readonly IAccountService _accountService;
+	    private readonly IBookingService _bookingService;
 
-        public CallboxLoginViewModel(IAccountService accountService)
+        public CallboxLoginViewModel(IAccountService accountService, IBookingService bookingService)
         {
-            _accountService = accountService;
+	        _accountService = accountService;
+	        _bookingService = bookingService;
         }
 
-        public override void Start()
+	    public override void Start()
         {
 #if DEBUG
             Email = "john@taxihail.com";
@@ -54,10 +56,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 return this.GetCommand(() =>
                 {
-                    _accountService.ClearCache();
-                    SignIn();
+					_accountService.ClearCache();
+
+					return SignIn();
                 });
             }
+        }
+
+        public async void SetServerUrl(string serverUrl)
+        {
+            using (this.Services().Message.ShowProgress())
+            {
+                await InnerSetServerUrl(serverUrl);
+            }
+        }
+
+        private async Task InnerSetServerUrl(string serverUrl)
+        {
+            await Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+            this.Services().ApplicationInfo.ClearAppInfo();
+            _accountService.ClearReferenceData();
         }
 
         private async Task SignIn()
@@ -66,34 +84,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
 				this.Services().Message.ShowProgress(true);
-                var account = default(Account);
 
-                try
-                {
-                    account = await _accountService.SignIn(Email, Password);
-                }
-                catch (Exception e)
-                {
-                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                    var message = this.Services().Localize["InvalidLoginMessage"];
-
-                    Logger.LogError( e );
-
-					this.Services().Message.ShowMessage(title, message);
-                }
+                var account = await _accountService.SignIn(Email, Password);
 
                 if (account != null)
                 {
                     Password = string.Empty;
-                    if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+
+                    var activeOrders = await _accountService.GetActiveOrdersStatus();
+
+                    if (activeOrders.Any(c => _bookingService.IsCallboxStatusActive(c.IBSStatusId)))
                     {
-						ShowViewModel<CallboxOrderListViewModel>();
+						ShowViewModelAndRemoveFromHistory<CallboxOrderListViewModel>();
                     }
                     else
                     {
-						ShowViewModel<CallboxCallTaxiViewModel>();
+                        ShowViewModelAndRemoveFromHistory<CallboxCallTaxiViewModel>();
                     }
-                    Close(this);
+                }
+            }
+            catch (AuthException e)
+            {
+                var localize = this.Services().Localize;
+                switch (e.Failure)
+                {
+                    case AuthFailure.InvalidServiceUrl:
+                    case AuthFailure.NetworkError:
+                    {
+                        var title = localize["NoConnectionTitle"];
+                        var msg = localize["NoConnectionMessage"];
+                        this.Services().Message.ShowMessage(title, msg);
+                    }
+                    break;
+                    case AuthFailure.InvalidUsernameOrPassword:
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["InvalidLoginMessage"];
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
+                    case AuthFailure.AccountDisabled:
+                    {
+                        var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                        var message = localize["AccountDisabled_NoCall"];
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
+                    case AuthFailure.AccountNotActivated:
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["AccountNotActivated"];
+
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
                 }
             }
             finally

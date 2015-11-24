@@ -6,7 +6,8 @@
         className: 'form-horizontal',
         
         events: {
-            'click [data-action^=grant]': 'grantadmin'
+            'click [data-action^=grant]': 'grantadmin',
+            'click [data-action^=revoke]': 'grantadmin'
         },
         
         render: function () {

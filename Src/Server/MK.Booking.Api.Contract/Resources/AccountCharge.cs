@@ -13,6 +13,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public bool UseCardOnFileForPayment { get; set; }
 
-        public virtual AccountChargeQuestion[] Questions { get; set; } 
+        public virtual AccountChargeQuestion[] Questions { get; set; }
     }
 }

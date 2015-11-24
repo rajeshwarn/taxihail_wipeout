@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -8,6 +9,8 @@ using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
@@ -32,11 +35,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<UpdateDefaultCreditCard>,
         ICommandHandler<UpdateCreditCardLabel>,
-        ICommandHandler<DeleteAllCreditCards>,
+        ICommandHandler<DeleteCreditCardsFromAccounts>,
         ICommandHandler<DeleteAccountCreditCard>,
-        ICommandHandler<DeleteAccountCreditCards>,
-        ICommandHandler<RegisterDeviceForPushNotifications>,
-        ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
         ICommandHandler<RemoveFavoriteAddress>,
         ICommandHandler<UpdateFavoriteAddress>,
@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
+
 
         public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
         {
@@ -136,19 +137,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(RegisterDeviceForPushNotifications command)
-        {
-            var account = _repository.Find(command.AccountId);
-
-            if (!string.IsNullOrEmpty(command.OldDeviceToken))
-            {
-                account.UnregisterDeviceForPushNotifications(command.OldDeviceToken);
-            }
-
-            account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
-            _repository.Save(account, command.Id.ToString());
-        }
-
         public void Handle(RegisterFacebookAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
@@ -169,19 +157,12 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.RemoveCreditCard(command.CreditCardId, command.NextDefaultCreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
-        public void Handle(DeleteAccountCreditCards command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.RemoveAllCreditCards();
-            _repository.Save(account, command.Id.ToString());
-        }
 
-        public void Handle(DeleteAllCreditCards command)
+        public void Handle(DeleteCreditCardsFromAccounts command)
         {
-            foreach (var accountId in command.AccountIds)
+            foreach (var account in command.AccountIds.Select(_repository.Find))
             {
-                var account = _repository.Find(accountId);
-                account.RemoveAllCreditCards();
+                account.RemoveAllCreditCards(command.ForceUserDisconnect);
                 _repository.Save(account, command.Id.ToString());
             }
         }
@@ -191,13 +172,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.ResetPassword(newPassword);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UnregisterDeviceForPushNotifications command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
 

@@ -55,7 +55,6 @@ namespace CMTServices
                 Medallion = entity.Medallion,
                 FleetId = entity.FleetId,
 				VehicleType = entity.VehicleType,
-                CompassCourse = entity.CompassCourse,
             };
         }
     }

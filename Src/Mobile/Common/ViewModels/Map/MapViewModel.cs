@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq || state == HomeViewModelState.DropOffAddressSelection)
 			{
 				IsMapDisabled = false;
 			}
@@ -175,23 +175,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool CanExecuteUserMovedMap()
 		{
-			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
+			var currentViewState = ((HomeViewModel)Parent).CurrentViewState;
+			return currentViewState == HomeViewModelState.Initial || currentViewState == HomeViewModelState.DropOffAddressSelection;
 		}
 
-		private bool _bookCannotExecute;
-		public bool BookCannotExecute
+		public void DisableBooking()
 		{
-			get 
-			{ 
-				return _bookCannotExecute; 
-			}
-			set
-			{
-				_bookCannotExecute = value;
-				RaisePropertyChanged();
-			}
+			_orderWorkflowService.DisableBooking();
 		}
-			
+
 		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
 		{
 			if (AddressSelectionMode == AddressSelectionMode.None)
@@ -206,7 +198,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 			
 			await _orderWorkflowService.SetAddressToCoordinate(position, token);
-			BookCannotExecute = false;
 		}
+
+		
     }
 }

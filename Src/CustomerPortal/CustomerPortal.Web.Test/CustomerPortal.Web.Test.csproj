@@ -127,6 +127,7 @@
     <Compile Include="Helpers\FakeCompanyService.cs" />
     <Compile Include="Helpers\FakeFileManager.cs" />
     <Compile Include="Helpers\Membership\InMemoryMembershipService.cs" />
+    <Compile Include="Helpers\MongoMock.cs" />
     <Compile Include="Helpers\PostedFileStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\Repository\InMemoryRepository.cs" />

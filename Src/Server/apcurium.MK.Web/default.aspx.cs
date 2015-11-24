@@ -86,6 +86,8 @@ namespace apcurium.MK.Web
 
         protected string DefaultCountryCode { get; private set; }
         
+        protected bool ShowOrderNumber { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IServerSettings>();
@@ -104,7 +106,7 @@ namespace apcurium.MK.Web
             DisableImmediateBooking = config.ServerData.DisableImmediateBooking;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
-            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
+            ShowOrderNumber = config.ServerData.ShowOrderNumber;
 
             IsWebSocialMediaVisible = config.ServerData.IsWebSocialMediaVisible;
             SocialMediaFacebookURL = config.ServerData.SocialMediaFacebookURL;
@@ -135,6 +137,8 @@ namespace apcurium.MK.Web
             WebSiteRootPath = HttpContext.Current.Request.ApplicationPath;
 
             var paymentSettings = config.GetPaymentSettings();
+
+            IsCreditCardMandatory = paymentSettings.CreditCardIsMandatory;
 
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
             AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;

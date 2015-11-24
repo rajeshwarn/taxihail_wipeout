@@ -4,10 +4,12 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
 using System.Net;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -27,11 +29,25 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(CurrentAccount request)
         {
             var session = this.GetSession();
+            
+            // Just in case someone was able to authenticate with a null session. 
+            if (!session.Id.HasValueTrimmed())
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, "NoSession");
+            }
+
             var account = _accountDao.FindById(new Guid(session.UserAuthId));
 
             var creditCard = account.DefaultCreditCard.HasValue
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
                 : null;
+
+            var creditCardLabel = CreditCardLabelConstants.Personal;
+            if (creditCard != null)
+            {
+                Enum.TryParse(creditCard.Label, out creditCardLabel);
+            }
+
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
@@ -43,7 +59,9 @@ namespace apcurium.MK.Booking.Api.Services
                         CreditCardCompany = creditCard.CreditCardCompany,
                         ExpirationMonth = creditCard.ExpirationMonth,
                         ExpirationYear = creditCard.ExpirationYear,
-                        IsDeactivated = creditCard.IsDeactivated
+                        IsDeactivated = creditCard.IsDeactivated,
+                        Label = creditCardLabel,
+                        ZipCode = creditCard.ZipCode
                     }
                 : null;
 

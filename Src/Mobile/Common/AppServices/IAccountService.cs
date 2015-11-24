@@ -29,16 +29,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<ReferenceData> GetReferenceData();
 
         void ClearReferenceData();
-
-	    void ClearVehicleTypesCache();
         
         Account CurrentAccount { get; }
-
-        Task<IList<VehicleType>> GetVehiclesList();
-
-	    void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes);
-
-        Task ResetLocalVehiclesList();
 
         Task<IList<ListItem>> GetPaymentsList();
         
@@ -62,9 +54,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<IList<Order>> GetHistoryOrders();
 
-		OrderStatusDetail[] GetActiveOrdersStatus();
+		Task<OrderStatusDetail[]> GetActiveOrdersStatus();
         
 		Task<Order> GetHistoryOrderAsync(Guid id);
+
+		Task<int> GetOrderCountForAppRating();
         
         void RefreshCache(bool reload);
         

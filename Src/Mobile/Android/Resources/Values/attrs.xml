@@ -4,4 +4,8 @@
         <attr name="allowEmptySelection" format="boolean"/>
         <attr name="allowOtherSelection" format="boolean"/>
     </declare-styleable>
+	<declare-styleable name="AppBarButton">
+		    <attr name="ImgSrc" format="integer"/>
+		    <attr name="LabelText" format="string"/>
+	</declare-styleable>
 </resources>

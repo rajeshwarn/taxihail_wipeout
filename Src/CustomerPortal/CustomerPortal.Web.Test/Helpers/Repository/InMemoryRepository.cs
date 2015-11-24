@@ -16,6 +16,8 @@ namespace CustomerPortal.Web.Test.Helpers.Repository
     {
         private readonly List<T> _db = new List<T>();
 
+        public MongoCollection<T> Collection { get; private set; }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -119,9 +121,7 @@ namespace CustomerPortal.Web.Test.Helpers.Repository
         public void RequestDone()
         {
         }
-
-        public MongoCollection<T> Collection { get; private set; }
-
+        
         private class NullDisposable : IDisposable
         {
             public void Dispose()

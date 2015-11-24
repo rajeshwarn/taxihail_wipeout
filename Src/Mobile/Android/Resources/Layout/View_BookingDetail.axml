@@ -261,7 +261,6 @@
                     android:maxLines="4"
                     android:gravity="top|left"
                     android:singleLine="false"
-                    android:hint="@string/NotesToDriverHint"
                     android:inputType="textMultiLine"
                     android:scrollHorizontally="false"
                     android:paddingLeft="15dp" />

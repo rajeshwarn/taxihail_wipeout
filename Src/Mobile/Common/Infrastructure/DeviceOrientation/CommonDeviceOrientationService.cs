@@ -1,21 +1,22 @@
 using System;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 {
-	public abstract class CommonDeviceOrientationService
+	public abstract class CommonDeviceOrientationService: IDeviceOrientationService
 	{
 		private const double RadiansToDegrees = 360 / (2 * Math.PI);
 		private const double ThetaTrustedAngle = 40; // maximum angle in PI space between z axis of device and horizontal x-z plane when orientation events will be generated
 		private const int TimeIntervalToGatherEventsSet = 250;
 
 		private bool _isStarted;
-        private readonly DeviceOrientationFilter _filter = new DeviceOrientationFilter();
-	    private readonly CoordinateSystemOrientation _coordinateSystemOrientation;
+		private readonly DeviceOrientationFilter _filter = new DeviceOrientationFilter();
+		private readonly CoordinateSystemOrientation _coordinateSystemOrientation;
 
-		public event Action<int> NotifyAngleChanged;
+		public event Action<int, bool, bool> NotifyAngleChanged;
 
-	    public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
+		public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
 		{
 			_coordinateSystemOrientation = coordinateSystemOrientation;
 		}
@@ -44,10 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		{
 			int orientation = 1;
 
-		    if (_coordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
-		    {
-                orientation = -1;
-		    }
+			if (_coordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
+			{
+				orientation = -1;
+			}
 
 			int angle = 90 - (int)Math.Round(Math.Atan2(-deviceOrientation.y * orientation, deviceOrientation.x * orientation) * RadiansToDegrees);
 
@@ -78,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			{
 				return true;
 			}
-		    return false;
+			return false;
 		}
 
 		public abstract bool IsAvailable();
@@ -99,18 +100,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			var v = new Vector3(x, y, z);
 			v.Normalize();
 
-			if (TrustZRotation(v))
+			bool trustZRotation = TrustZRotation(v);
+			int rotation = GetZRotationAngle(v);
+
+			_filter.AddValue(rotation, DateTime.Now.Ticks / 10000);
+			int filteredAngle = _filter.StatisticalFilter(TimeIntervalToGatherEventsSet);
+
+			if (NotifyAngleChanged != null)
 			{
-				int rotation = GetZRotationAngle(v);
-
-				_filter.AddValue(rotation, DateTime.Now.Ticks / 10000);
-
-				int filteredAngle = _filter.StatisticalFilter(TimeIntervalToGatherEventsSet);
-
-				if (NotifyAngleChanged != null && filteredAngle != -1)
-				{
-					NotifyAngleChanged(filteredAngle);
-				}
+				NotifyAngleChanged(filteredAngle, filteredAngle != -1, trustZRotation);
 			}
 		}
 	}

@@ -101,6 +101,9 @@
     <Compile Include="IBSAutoMapperProfile.cs" />
     <Compile Include="IBSDistanceEstimate.cs" />
     <Compile Include="IBSFareEstimate.cs" />
+    <Compile Include="IBSHailResponse.cs" />
+    <Compile Include="IBSOrderKey.cs" />
+    <Compile Include="IBSVehicleCandidate.cs" />
     <Compile Include="IBSVehiclePosition.cs" />
     <Compile Include="IBSDriverInfos.cs" />
     <Compile Include="IBSOrderDetails.cs" />

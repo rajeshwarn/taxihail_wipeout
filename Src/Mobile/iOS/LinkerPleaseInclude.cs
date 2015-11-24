@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Include(System.ComponentModel.INotifyPropertyChanged changed)
         {
             changed.PropertyChanged += (sender, e) => { var test = e.PropertyName; };
-        }     
+        }
     }
 }
 

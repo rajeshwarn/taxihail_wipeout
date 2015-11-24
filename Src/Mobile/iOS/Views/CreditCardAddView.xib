@@ -113,7 +113,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard">
-                            <rect key="frame" x="0.0" y="219" width="320" height="470"/>
+                            <rect key="frame" x="0.0" y="219.5" width="320" height="470"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
                                     <rect key="frame" x="8" y="10" width="184.5" height="17"/>
@@ -286,7 +286,7 @@
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="leading" id="U52-av-La4"/>
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="trailing" constant="12" id="VMN-vP-nWz"/>
                                 <constraint firstItem="Tz3-UC-Wg8" firstAttribute="centerY" secondItem="DfD-Yo-WvS" secondAttribute="centerY" id="WV7-CP-2es"/>
-                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="500" constant="20" id="WWg-KG-JKU"/>
+                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
                                 <constraint firstAttribute="centerX" secondItem="QOQ-sL-Vm6" secondAttribute="centerX" id="a5z-pL-AjY"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
@@ -308,12 +308,12 @@
                                 <constraint firstAttribute="trailing" secondItem="3fV-2N-0Oy" secondAttribute="trailing" constant="8" id="wnz-dA-pcL"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="x5S-F6-EbY"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="5" id="x9S-5X-F7o"/>
-                                <constraint firstAttribute="bottom" secondItem="sNz-rV-N8y" secondAttribute="bottom" priority="500" constant="15" id="yYy-hF-plZ"/>
+                                <constraint firstAttribute="bottom" secondItem="sNz-rV-N8y" secondAttribute="bottom" priority="750" constant="15" id="yYy-hF-plZ"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="centerY" secondItem="AHt-1S-sWk" secondAttribute="centerY" id="ziR-t5-qse"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="689" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="689.5" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>
@@ -343,7 +343,7 @@
                                     <rect key="frame" x="23" y="15" width="275" height="41"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Linked" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-2u-3uC">
-                                            <rect key="frame" x="125" y="10" width="126" height="20.5"/>
+                                            <rect key="frame" x="125" y="10.5" width="126" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -390,17 +390,17 @@
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" constant="12" id="PlW-ps-Zce"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="4" secondAttribute="top" priority="200" constant="15" id="Q19-iw-kj2"/>
                         <constraint firstItem="jyp-DI-ki8" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="R6y-Ug-6Vm"/>
-                        <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="12" id="Rzt-ii-9mo"/>
+                        <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="950" constant="12" id="Rzt-ii-9mo"/>
                         <constraint firstAttribute="bottom" secondItem="hLR-a7-OyV" secondAttribute="bottom" priority="500" id="TVt-No-aeZ"/>
                         <constraint firstItem="jyp-DI-ki8" firstAttribute="top" secondItem="4" secondAttribute="top" constant="14" id="UAY-yj-sDZ"/>
-                        <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="300" constant="15" id="Wrb-T3-Ila"/>
+                        <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="950" constant="15" id="Wrb-T3-Ila"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="bottom" id="ai8-o9-D45"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="15" id="cqP-sV-7Zx"/>
                         <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="ejy-cD-B95"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="200" constant="15" id="hXH-xw-tA2"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="hXH-xw-tA2"/>
                         <constraint firstAttribute="trailing" secondItem="jyp-DI-ki8" secondAttribute="trailing" id="iRH-Ta-pNC"/>
-                        <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="400" constant="14" id="jAc-JL-gWL"/>
+                        <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="900" constant="14" id="jAc-JL-gWL"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="400" constant="15" id="k9b-2N-pCq"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="m3e-x7-oUg"/>
                         <constraint firstAttribute="bottom" secondItem="pfD-TX-kyS" secondAttribute="bottom" id="rmA-89-eqM"/>

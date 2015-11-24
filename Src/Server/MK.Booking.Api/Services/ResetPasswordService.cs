@@ -10,6 +10,8 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using System;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -29,10 +31,22 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(ResetPassword request)
         {
             var user = _dao.FindByEmail(request.EmailAddress);
-            if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+            if (user == null)
+            {
+                throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+            }
 
-            // In case user is signed in, sign out user to force him to authenticate again
-            base.RequestContext.Get<IHttpRequest>().RemoveSession();
+            var currentSession = this.GetSession();
+
+            var currentUserId = currentSession.UserAuthId.HasValueTrimmed()
+                ? new Guid(currentSession.UserAuthId) 
+                : Guid.Empty;
+
+			if (user.Id == currentUserId)
+			{
+				// In case user is signed in, sign out user to force him to authenticate again
+				base.RequestContext.Get<IHttpRequest>().RemoveSession();
+			}
 
             var newPassword = new PasswordService().GeneratePassword();
             var resetCommand = new ResetAccountPassword
@@ -51,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(resetCommand);
             _commandBus.Send(emailCommand);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return new HttpResult(newPassword, HttpStatusCode.OK);
         }
     }
 }

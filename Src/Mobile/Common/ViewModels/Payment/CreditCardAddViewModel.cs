@@ -182,8 +182,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.Label = creditCard.Label;
 					Data.ZipCode = creditCard.ZipCode;
 
-					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-					ExpirationYear = creditCard.ExpirationYear.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationYear);
+					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
+					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
@@ -359,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && (!Settings.CreditCardIsMandatory  || Settings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+			get { return IsEditing && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public bool CanLinkPayPalAccount
@@ -374,12 +374,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanUnlinkPayPalAccount
 		{
-			get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
+			get { return IsPayPalAccountLinked && !PaymentSettings.CreditCardIsMandatory; }
 		}
 
 		public bool ShowLinkedPayPalInfo
 		{
-			get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
+			get { return IsPayPalAccountLinked && PaymentSettings.CreditCardIsMandatory; }
 		}
 
 		public bool IsPayPalOnly

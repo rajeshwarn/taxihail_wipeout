@@ -21,6 +21,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private List<CreditCardInfos> _creditCardsData;
 		private bool _isCmtRideLinq;
         private const int TIP_MAX_PERCENT = 100;
+		private const string Visa = "Visa";
+		private const string MasterCard = "MasterCard";
+		private const string Amex = "Amex";
+		private const string CreditCardGeneric = "Credit Card Generic";
+		private const string VisaElectron = "Visa Electron";
+		private List<ListItem> _creditCardCompanies;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
             IPaymentService paymentService,
@@ -72,6 +78,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (firstTime)
             {
+				_creditCardCompanies = new List<ListItem>
+					{
+						new ListItem {Display = Visa, Image = "visa"},
+						new ListItem {Display = MasterCard, Image = "mastercard"},
+						new ListItem {Display = Amex, Image = "amex"},
+						new ListItem {Display = VisaElectron, Image = "visa_electron"},
+						new ListItem {Display = CreditCardGeneric, Image =  "credit_card_generic"}
+					};
+
                 using (this.Services().Message.ShowProgress())
                 {
                     await GetCreditCards();
@@ -122,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return CreditCards[CreditCardSelected].Image;
+				return CreditCards[CreditCardSelected].Image;
             }
 		}
 
@@ -139,6 +154,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return _isCmtRideLinq;
+			}
+		}
+
+		public bool CanChangeCreditCard
+		{
+			get
+			{
+				return this.Settings.ChangeCreditCardMidtrip;
 			}
 		}
 
@@ -191,7 +214,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             Id = _creditCardsData.FindIndex(c => c == cc),
                             Display = cc.CardNumber,
 							IsDefault = cc.IsDefault,
-                            Image = cc.CreditCardCompany
+							Image = _creditCardCompanies.FirstOrDefault(c => c.Display == cc.CreditCardCompany).Image
                         };
                     }).ToArray();
             }
