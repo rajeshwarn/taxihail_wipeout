@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get
             {
-                return Mvx.Resolve<ICacheService>("UserAppCache");
+                return TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache");
             }
         }
 
