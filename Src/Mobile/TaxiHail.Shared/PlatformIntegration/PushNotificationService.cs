@@ -139,12 +139,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     CreateNotification(alert, "Tap to view...", orderId, isParingNotification);
 
                     // For the case of a ride book in the future, LastOrderId is not assigned with the ride that has now became active
-                    SetLastOrderId(orderId).FireAndForget();
+                    SetLastOrderIdIfNecessary(orderId).FireAndForget();
                 }
             }
         }
 
-        private async Task SetLastOrderId(Guid orderId)
+        private async Task SetLastOrderIdIfNecessary(Guid orderId)
         {
             var lastOrderId = UserCache.Get<string>("LastOrderId");
 
