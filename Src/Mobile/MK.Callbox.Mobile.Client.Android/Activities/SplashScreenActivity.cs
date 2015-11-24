@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.OS;
 using Cirrious.MvvmCross.Droid.Views;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
@@ -14,6 +16,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
             // Create your application here
         }
+
+		protected override void TriggerFirstNavigate()
+		{
+			Mvx.RegisterSingleton<ILogger>(new LoggerImpl());
+		}
 
         protected override void OnDestroy()
         {
