@@ -8,9 +8,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using ModernHttpClient;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 
 namespace MK.Booking.MapDataProvider.Foursquare
 {
@@ -20,7 +19,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	/// https://developer.foursquare.com/docs/venues/search
 	/// https://developer.foursquare.com/docs/venues/explore
 	/// </summary>
-	public class FoursquareProvider : IPlaceDataProvider
+	public class FoursquareProvider : BaseServiceClient, IPlaceDataProvider
 	{
 		enum FoursquareQueryType
 		{
@@ -47,18 +46,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		    _logger = logger;
 		}
 
-        private HttpClient GetClient()
-        {
-            var client = new HttpClient(new NativeMessageHandler())
-            {
-                BaseAddress = new Uri(ApiUrl),
-                Timeout = new TimeSpan(0, 0, 2, 0, 0)
-            };
-
-            return client;
-        }
-
-
 	    public async Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
 	    {
             if (maximumNumberOfPlaces == 0)
@@ -74,7 +61,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 searchQueryString = string.Format("{0}&categoryId={1}", searchQueryString, pipedTypeList.Replace('|', ','));
             }
 
-            var client = GetClient();
+            var client = GetClient(ApiUrl);
             var searchAnswer = await client.GetAsync<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
             var venuesSearch = new List<Venue>();
@@ -133,7 +120,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
             searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
 
-            var client = GetClient();
+            var client = GetClient(ApiUrl);
             var venues = await client.GetAsync<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
             if (!venues.IsValid())
@@ -150,7 +137,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 	    public async Task<GeoPlace> GetPlaceDetailAsync(string id)
 	    {
-            var client = GetClient();
+            var client = GetClient(ApiUrl);
             var venue = await client.GetAsync<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, id, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
 
             if (!venue.IsValid())

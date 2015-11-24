@@ -8,6 +8,9 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 using System.Linq;
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

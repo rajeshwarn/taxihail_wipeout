@@ -1,14 +1,21 @@
 using System;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+
+#if CLIENT
 using MK.Common.Exceptions;
+using System.Net.Http;
+using System.Net.Http.Headers;
+#else
+using apcurium.MK.Booking.Api.Client.Extensions;
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.Common.Web;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -36,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             terms.Updated = false;
             return terms;
         }
-
+#if CLIENT
         private void HandleResponseHeader(HttpResponseMessage response)
         {
             var version = response.Headers.ETag;
@@ -56,14 +63,39 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 Client.DefaultRequestHeaders.IfNoneMatch.Add(new EntityTagHeaderValue(version));
             }
         }
-
+#else
+        private void HandleResponseHeader(HttpWebResponse response)
+        {
+            var version = response.Headers[HttpHeaders.ETag];
+            if (version != null)
+            {
+                //put in the cache the etag
+                _cacheService.Set("TermsVersion", version);
+            }
+        }
+        private void AddVersionInformation(HttpWebRequest request)
+        {
+            //get the etag from the cache and add it to the headers
+            var version = _cacheService.Get<string>("TermsVersion");
+            if (version != null)
+            {
+                request.Headers.Set(HttpHeaders.IfNoneMatch, version);
+            }
+        }
+#endif
         public async Task<TermsAndConditions> GetTermsAndConditions()
         {
             try
             {
+#if CLIENT
                 AddVersionInformation();
-
                 return await Client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
+#else
+                Client.LocalHttpWebRequestFilter += AddVersionInformation;
+                Client.LocalHttpWebResponseFilter += HandleResponseHeader;
+                return await Client.GetAsync<TermsAndConditions>("/termsandconditions");
+#endif
+
             }
             catch (Exception ex)
             {

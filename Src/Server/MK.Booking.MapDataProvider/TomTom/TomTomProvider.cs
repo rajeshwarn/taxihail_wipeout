@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Globalization;
-using System.Net.Http;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -15,7 +14,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 	/// TomTom provider.
 	/// documentation : http://developer.tomtom.com/docs/read/map_toolkit/web_services/routing/Request
 	/// </summary>
-	public class TomTomProvider : IDirectionDataProvider
+	public class TomTomProvider : BaseServiceClient, IDirectionDataProvider
 	{
         private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
@@ -36,20 +35,9 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			get { return _settings.Data.TomTomMapToolkitKey; }
 		}
 
-        private HttpClient GetClient()
-        {
-            var client = new HttpClient(new NativeMessageHandler())
-            {
-                BaseAddress = new Uri(ApiUrl),
-                Timeout = new TimeSpan(0, 0, 2, 0, 0)
-            };
-
-            return client;
-        }
-
         public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
-			var client = GetClient();
+			var client = GetClient(ApiUrl);
 			var queryString = string.Format (CultureInfo.InvariantCulture, RoutingServiceUrl, 
 				MapToolkitKey, 
                 GetFormattedPoints (originLat, originLng, destLat, destLng),

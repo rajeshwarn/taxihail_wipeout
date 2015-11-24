@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Common.Configuration;
@@ -12,11 +11,10 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
-using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
-	public class GoogleApiClient : IPlaceDataProvider, IDirectionDataProvider, IGeocoder
+	public class GoogleApiClient : BaseServiceClient, IPlaceDataProvider, IDirectionDataProvider, IGeocoder
 	{
 		private const string PlaceDetailsServiceUrl = "https://maps.googleapis.com/maps/api/place/details/";
 		private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
@@ -53,21 +51,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	    {
             get { return "gme-taxihailinc"; }
 	    }
-
-        private HttpClient GetClient(string url)
-        {
-            var client = new HttpClient(new NativeMessageHandler())
-            {
-                Timeout = new TimeSpan(0, 0, 2, 0, 0)
-            };
-
-            if (url.HasValueTrimmed())
-            {
-                client.BaseAddress = new Uri(url);
-            }
-
-            return client;
-        }
 
         public Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
 	    {
