@@ -20,6 +20,7 @@ using PushSharp.Client;
 using ServiceStack.Text;
 using Android.Support.V4.App;
 using System.Threading.Tasks;
+using Cirrious.CrossCore;
 
 [assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 //, ProtectionLevel = Android.Content.PM.Protection.Signature)]
@@ -88,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         IUseServiceClient
     {
         public PushHandlerService()
-            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.GCM.SenderId)
+            : base(Mvx.Resolve<IAppSettings>().Data.GCM.SenderId)
         {
         }
 
@@ -149,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (orderId != Guid.Empty && lastOrderId != orderId.ToString())
             {
-                var order = await TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
+                var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
 
                 if(order != null && order.Status == apcurium.MK.Common.Entity.OrderStatus.Created)
                 {
@@ -162,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get
             {
-                return TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache");
+                return Mvx.Resolve<ICacheService>("UserAppCache");
             }
         }
 
