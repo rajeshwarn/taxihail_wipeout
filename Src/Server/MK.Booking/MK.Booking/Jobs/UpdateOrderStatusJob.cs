@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -135,11 +136,12 @@ namespace apcurium.MK.Booking.Jobs
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
 
-            foreach (var orderStatusDetail in manualRideLinqOrders)
+            Parallel.ForEach(manualRideLinqOrders, new ParallelOptions { MaxDegreeOfParallelism = 16 }, (orderStatusDetail) =>
             {
-                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
+                    orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
-            }
+            });
 
             var ibsOrdersIds = orderStatusDetails
                 .Where(order => !order.IsManualRideLinq)
@@ -155,7 +157,7 @@ namespace apcurium.MK.Booking.Jobs
                 // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
                 var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
 
-                foreach (var ibsStatus in orderStatuses)
+                Parallel.ForEach(orderStatuses, new ParallelOptions {MaxDegreeOfParallelism = 10}, ibsStatus =>
                 {
                     if (honeyBadgerVehicleStatuses.Any())
                     {
@@ -171,13 +173,13 @@ namespace apcurium.MK.Booking.Jobs
                     var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
-                        continue;
+                        return;
                     }
 
                     Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
 
                     _orderStatusUpdater.Update(ibsStatus, order);
-                }
+                });
             }
         }
 
