@@ -98,7 +98,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
+                return _bookingSettings == null
+                    ? default(CountryCode)
+                    : CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
             }
 
             set
@@ -276,9 +278,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 
 				var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
-				if (vehicle == null)
-					return null;
-				return vehicle.Display;
+			    return vehicle == null 
+                    ? null 
+                    : vehicle.Display;
 			}
 		}
 
@@ -286,7 +288,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return _bookingSettings.ChargeTypeId;
+				return _bookingSettings == null
+                    ? null
+                    : _bookingSettings.ChargeTypeId;
 			}
 			set
 			{
@@ -314,9 +318,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 
 				var chargeType = ChargeTypes.FirstOrDefault(x => x.Id == ChargeTypeId);
-				if (chargeType == null)
-					return null;
-				return this.Services().Localize[chargeType.Display]; 
+				return chargeType == null 
+                    ? null 
+                    : this.Services().Localize[chargeType.Display];
 			}
 		}
 	}
