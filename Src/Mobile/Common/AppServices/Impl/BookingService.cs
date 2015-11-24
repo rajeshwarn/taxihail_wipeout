@@ -232,8 +232,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo =
 						await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
 						service =>
-							service.GetDirectionInfoFromDistance(directionInfo.Distance, directionInfo.TripDurationInSeconds,
-								0, 0, order.Settings.VehicleTypeId, 0, order.Settings.AccountNumber, 0, directionInfo.EtaDuration));
+							service.GetDirectionInfoFromDistance(directionInfo.Distance, directionInfo.EtaDuration,
+                                0, 0, order.Settings.VehicleTypeId, 0, order.Settings.AccountNumber, 0, directionInfo.TripDurationInSeconds));
 				}
 			    else if (tarifMode != TarifMode.AppTarif)
                 {
