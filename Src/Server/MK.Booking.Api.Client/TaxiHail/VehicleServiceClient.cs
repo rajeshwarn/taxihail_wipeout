@@ -6,7 +6,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using System;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

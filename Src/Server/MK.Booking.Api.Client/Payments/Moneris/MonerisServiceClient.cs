@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;

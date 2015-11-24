@@ -5,9 +5,6 @@ using System.Net;
 using System.Net.Http;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
-
 #if CLIENT
 using ModernHttpClient;
 using System.Net;
@@ -15,6 +12,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 #else
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 using HttpClient = ServiceStack.ServiceClient.Web.ServiceClientBase;
 #endif
 

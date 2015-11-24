@@ -4,11 +4,11 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common.Diagnostic;
-#if !CLIENT
-using apcurium.MK.Common.Extensions;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

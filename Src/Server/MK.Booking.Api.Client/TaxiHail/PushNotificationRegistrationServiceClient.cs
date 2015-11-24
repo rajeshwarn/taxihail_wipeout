@@ -2,7 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Enumeration;

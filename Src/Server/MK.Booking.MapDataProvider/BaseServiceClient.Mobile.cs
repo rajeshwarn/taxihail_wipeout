@@ -1,6 +1,7 @@
 
 using System;
 using System.Net.Http;
+using apcurium.MK.Common.Extensions;
 using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider
@@ -11,13 +12,13 @@ namespace apcurium.MK.Booking.MapDataProvider
         {
             var client = new HttpClient(new NativeMessageHandler())
             {
-                Timeout = new TimeSpan(0, 0, 2, 0, 0),
-#if DEBUG
-                BaseAddress = new Uri(url)
-#else
-                BaseAddress = new Uri("");
-#endif
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
+
+            if (url.HasValueTrimmed())
+            {
+                client.BaseAddress = new Uri(url);
+            }
 
             return client;
         }
