@@ -36,6 +36,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 
 			var container = TinyIoCContainer.Current;
 
+            container.Register<ILogger>(new LoggerImpl());
 			container.Register<ICacheService>(new CacheService());
 			container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 			container.Register<IMessageService, MessageService>();
