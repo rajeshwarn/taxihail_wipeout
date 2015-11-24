@@ -138,7 +138,9 @@ namespace apcurium.MK.Booking.Jobs
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
 
-            Parallel.ForEach(manualRideLinqOrders, new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, orderStatusDetail =>
+            Parallel.ForEach(manualRideLinqOrders, 
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
+                orderStatusDetail =>
             {
                 Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
                     orderStatusDetail.OrderId);
@@ -150,7 +152,8 @@ namespace apcurium.MK.Booking.Jobs
                 .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
                 .ToList();
 
-            Parallel.ForEach(GetConsumerOrderStatus(ibsOrdersIds, companyKey, market).GetConsumingEnumerable(), new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
+            Parallel.ForEach(GetOrderStatuses(ibsOrdersIds, companyKey, market).GetConsumingEnumerable(), 
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
                 ibsStatus =>
                 {
                     var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
@@ -165,7 +168,7 @@ namespace apcurium.MK.Booking.Jobs
                 });
         }
 
-        public BlockingCollection<IBSOrderInformation> GetConsumerOrderStatus(List<int> ibsOrdersIds, string companyKey, string market)
+        public BlockingCollection<IBSOrderInformation> GetOrderStatuses(List<int> ibsOrdersIds, string companyKey, string market)
         {
             var result = new BlockingCollection<IBSOrderInformation>();
 
@@ -182,18 +185,15 @@ namespace apcurium.MK.Booking.Jobs
 
                     foreach (var orderStatus in orderStatuses)
                     {
-                        if (honeyBadgerVehicleStatuses.Any())
+                        // Update vehicle position with matching data available data from HoneyBadger
+                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+
+                        if (honeyBadgerVehicleStatus != null)
                         {
-                            // Update vehicle position with matching data available data from HoneyBadger
-                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
-
-
-                            if (honeyBadgerVehicleStatus != null)
-                            {
-                                orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
-                                orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
-                            }
+                            orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                            orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
                         }
+
                         result.Add(orderStatus);
                     }
                 }
