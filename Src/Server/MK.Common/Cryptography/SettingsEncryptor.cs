@@ -129,7 +129,7 @@ namespace apcurium.MK.Common.Cryptography
 				}
 				else if (property.PropertyType.BaseType == typeof(object))
 				{
-					SwitchEncryptionStringsDictionary(instanceProperties[i].PropertyType, key, data, encrypt);
+					SwitchEncryptionStringsDictionary(property.PropertyType, key, data, encrypt);
 				}
 			}
 		}
