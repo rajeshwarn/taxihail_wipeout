@@ -33,6 +33,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 
 			var container = TinyIoCContainer.Current;
 
+            container.Register<ILogger>(new LoggerImpl());
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
 			container.Register<IAppSettings, AppSettings>();
@@ -47,8 +48,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
         {
 			return new CallBoxApp();
         }
-                
-		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+
+        protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
 		{
 			return new TinyIoCProvider(TinyIoCContainer.Current);
 		}

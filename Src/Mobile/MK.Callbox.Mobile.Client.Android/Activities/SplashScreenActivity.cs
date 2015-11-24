@@ -17,12 +17,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             // Create your application here
         }
 
-		protected override void TriggerFirstNavigate()
-		{
-			Mvx.RegisterSingleton<ILogger>(new LoggerImpl());
-			base.TriggerFirstNavigate();
-		}
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
