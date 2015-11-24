@@ -14,6 +14,7 @@ using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -141,6 +142,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_logger.LogMessage("load settings from server");
 
 			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
+
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 
 			SaveSettings();			

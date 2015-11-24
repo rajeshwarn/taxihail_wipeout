@@ -1,4 +1,5 @@
 
+using apcurium.MK.Common.Cryptography;
 namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalClientSettings
@@ -14,10 +15,13 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool IsSandbox { get; set; }
 
+		[PropertyEncrypt]
         public PayPalClientCredentials SandboxCredentials { get; set; }
 
+		[PropertyEncrypt]
         public PayPalClientCredentials Credentials { get; set; }
 
+		[PropertyEncrypt]
         public string CurrentEnvironmentClientId
         {
             get

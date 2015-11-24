@@ -1,4 +1,5 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿using apcurium.MK.Common.Cryptography;
+namespace apcurium.MK.Common.Configuration.Impl
 {
     public class BraintreeServerSettings
     {
@@ -16,10 +17,13 @@
 
         public bool IsSandbox { get; set; }
 
+		[PropertyEncrypt]
         public string MerchantId { get; set; }
 
+		[PropertyEncrypt]
         public string PublicKey { get; set; }
 
+		[PropertyEncrypt]
         public string PrivateKey { get; set; }
     }
 }

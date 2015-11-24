@@ -4,6 +4,8 @@ using Android.OS;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
