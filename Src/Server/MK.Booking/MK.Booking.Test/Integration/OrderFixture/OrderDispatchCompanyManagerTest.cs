@@ -9,6 +9,8 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Booking.Projections;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -47,7 +49,12 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 new Logger(),
                 new TestServerSettings());
 
-            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
+            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName),
+                new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName)),
+                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)), 
+                new Logger(), 
+                new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated
             {
                 SourceId = _orderId,

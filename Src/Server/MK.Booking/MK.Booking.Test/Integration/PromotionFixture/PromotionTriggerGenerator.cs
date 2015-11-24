@@ -9,6 +9,8 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Impl;
+using apcurium.MK.Booking.Projections;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
@@ -40,14 +42,12 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            var smsSenderMock = new Mock<ISmsService>();
-            var orderDaoMock = new Mock<IOrderDao>();
-            var accountDaoMock = new Mock<IAccountDao>();
-            var serverSettings = new TestServerSettings();
+            var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName));
+            var orderStatusDetailProjectionSet = new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName));
 
-            PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName));
-            OrderGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
-            CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
+            PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName), new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
+            OrderGenerator = new OrderGenerator(() => new BookingDbContext(DbName), orderDetailProjectionSet, orderStatusDetailProjectionSet, new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)), new Logger(), new TestServerSettings());
+            CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), orderDetailProjectionSet, orderStatusDetailProjectionSet, new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
                 new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings(), null), new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName)));

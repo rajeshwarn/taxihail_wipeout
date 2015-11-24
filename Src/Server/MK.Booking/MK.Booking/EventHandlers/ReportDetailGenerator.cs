@@ -386,7 +386,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 return;
             }
 
-            _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
+            _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
             {
                 orderReport.Promotion.WasApplied = true;
                 orderReport.Promotion.Code = @event.Code;

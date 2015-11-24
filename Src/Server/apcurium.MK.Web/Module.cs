@@ -1,11 +1,17 @@
 ﻿#region
 
+using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Projections;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using Infrastructure;
@@ -18,6 +24,8 @@ using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -30,6 +38,8 @@ namespace apcurium.MK.Web
         {
             RegisterInfrastructure(container);
 
+            RegisterEntityProjectionSets(container);
+
             new Common.Module().Init(container);
             new Booking.Module().Init(container);
             new Booking.MapDataProvider.Module().Init(container);
@@ -40,6 +50,28 @@ namespace apcurium.MK.Web
             RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
+        }
+
+        private void RegisterEntityProjectionSets(IUnityContainer container)
+        {
+            var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderStatusProjectionSet = new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
+
+            container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+            container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
+            container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
+            container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+            container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+            container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterInfrastructure(IUnityContainer container)

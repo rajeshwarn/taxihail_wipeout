@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -50,7 +51,10 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             _accountId = Guid.NewGuid();
             _promoId = Guid.NewGuid();
 
-            var accountDetailGenerator = new AccountDetailsGenerator(() => new BookingDbContext(DbName));
+            var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName));
+            var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(() => new BookingDbContext(DbName));
+
+            var accountDetailGenerator = new AccountDetailsGenerator(accountDetailProjectionSet);
 
             accountDetailGenerator.Handle(new AccountRegistered
             {
@@ -59,9 +63,12 @@ namespace apcurium.MK.Booking.Test.ExportFixture
                 NbPassengers = 1
             });
 
-            accountDetailGenerator.Handle(new AccountConfirmed() { SourceId = _accountId });
+            accountDetailGenerator.Handle(new AccountConfirmed { SourceId = _accountId });
 
-            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName), new Logger());
+            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName),
+                accountDetailProjectionSet,
+                orderReportProjectionSet, 
+                new Logger());
         }
 
         [Test]

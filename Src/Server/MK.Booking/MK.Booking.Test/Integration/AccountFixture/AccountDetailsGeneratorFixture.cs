@@ -6,6 +6,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Enumeration;
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new AccountDetailsGenerator(new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
         }
     }
 

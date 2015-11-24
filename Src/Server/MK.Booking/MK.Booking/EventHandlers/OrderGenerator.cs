@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
-        private readonly OrderRatingMemoryProjectionSet _orderRatingProjectionSet;
+        private readonly OrderRatingProjectionSet _orderRatingProjectionSet;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers
         public OrderGenerator(Func<BookingDbContext> contextFactory,
             IProjectionSet<OrderDetail> orderDetailProjectionSet,
             IProjectionSet<OrderStatusDetail> orderStatusProjectionSet,
-            OrderRatingMemoryProjectionSet orderRatingProjectionSet,
+            OrderRatingProjectionSet orderRatingProjectionSet,
             ILogger logger,
             IServerSettings serverSettings)
         {

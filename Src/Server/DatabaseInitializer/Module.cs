@@ -109,19 +109,19 @@ namespace DatabaseInitializer
 
             // Filter out Integration Event Handlers
             // They should never replay events
-            //var eventHandlerRegistrations = unityContainer.Registrations
-            //    .Where(x => x.RegisteredType == typeof(IEventHandler) 
-            //            && !x.MappedToType.GetInterfaces().Contains(typeof(IIntegrationEventHandler)))
-            //    .ToArray();
+            var eventHandlerRegistrations = unityContainer.Registrations
+                .Where(x => x.RegisteredType == typeof(IEventHandler)
+                        && !x.MappedToType.GetInterfaces().Contains(typeof(IIntegrationEventHandler)))
+                .ToArray();
 
-            //foreach (var eventHandlerRegistration in eventHandlerRegistrations)
-            //{
-            //    var eventHandler = (IEventHandler) unityContainer.Resolve(eventHandlerRegistration.MappedToType);
-            //    eventHandlerRegistry.Register(eventHandler);
-            //}
+            foreach (var eventHandlerRegistration in eventHandlerRegistrations)
+            {
+                var eventHandler = (IEventHandler)unityContainer.Resolve(eventHandlerRegistration.MappedToType);
+                eventHandlerRegistry.Register(eventHandler);
+            }
 
-            var eventHandler = (IEventHandler)unityContainer.Resolve(typeof(AccountDetailsGenerator));
-            eventHandlerRegistry.Register(eventHandler);
+            //var eventHandler = (IEventHandler)unityContainer.Resolve(typeof(AccountDetailsGenerator));
+            //eventHandlerRegistry.Register(eventHandler);
         }
     }
 }

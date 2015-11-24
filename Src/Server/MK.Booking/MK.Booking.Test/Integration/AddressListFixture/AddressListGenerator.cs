@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressListFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new AddressListGenerator(() => new BookingDbContext(DbName));
+            Sut = new AddressListGenerator(() => new BookingDbContext(DbName), new AddressDetailEntityProjectionSet(() => new BookingDbContext(DbName)));
         }
     }
 

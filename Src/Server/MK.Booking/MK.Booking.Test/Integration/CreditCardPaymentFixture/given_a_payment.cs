@@ -4,6 +4,7 @@ using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -29,7 +30,12 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Amount = 12.34m,
                 TransactionId = "the transaction",
             });
-            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
+            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), 
+                new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName)),
+                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)),   
+                new Logger(), 
+                new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated
             {
                 SourceId = orderId,

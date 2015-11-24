@@ -42,6 +42,7 @@ using apcurium.MK.Booking.EventHandlers;
 using System.Diagnostics;
 using apcurium.MK.Booking.Projections;
 using Infrastructure.Messaging.Handling;
+using ServiceStack.Common.Reflection;
 
 #endregion
 
@@ -112,34 +113,35 @@ namespace DatabaseInitializer
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
-
-                creatorDb.DropReadModelTables(param.MkWebConnectionString);
-                creatorDb.CreateReadModelTables(param.MkWebConnectionString);
-
                 container = new UnityContainer();
                 module = new Module();
 
-                var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
-                var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
-                var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
-                var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
-                var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
-                var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
-
-                var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
-                container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
-                container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
-                container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
-                container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
-                container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
-                container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
-                container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
-                    new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
-                container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
-                module.Init(container, connectionString, param.MkWebConnectionString);
-
                 if (IsUpdate)
                 {
+                    creatorDb.DropReadModelTables(param.MkWebConnectionString);
+                    creatorDb.CreateReadModelTables(param.MkWebConnectionString);
+
+                    var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
+                    var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
+                    var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
+                    var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
+                    var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
+                    var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
+
+                    var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
+                    container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+                    container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
+                    container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
+                    container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+                    container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                        new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+                    container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
+
+                    module.Init(container, connectionString, param.MkWebConnectionString);
+
                     creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
                     //UpdateSchema(param);
 
@@ -174,6 +176,26 @@ namespace DatabaseInitializer
                 }
                 else
                 {
+                    var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var orderStatusProjectionSet = new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+                    var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+                    var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
+
+                    container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+                    container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+                    container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
+                    container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
+                    container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+                    container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                        new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+                    container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
+                    module.Init(container, connectionString, param.MkWebConnectionString);
+
                     // if DBs are re-used then it should already be created
                     if (!param.ReuseTemporaryDb)
                     {

@@ -6,6 +6,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
@@ -32,7 +33,12 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
+            Sut = new OrderGenerator(() => new BookingDbContext(DbName),
+                new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName)),
+                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)),
+                new Logger(), 
+                new TestServerSettings());
         }
     }
 
