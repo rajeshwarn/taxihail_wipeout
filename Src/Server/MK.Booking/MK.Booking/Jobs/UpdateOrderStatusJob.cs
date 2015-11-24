@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Jobs
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
+        private const int MaxParallelism = 16;
 
         public UpdateOrderStatusJob(IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
@@ -136,7 +138,7 @@ namespace apcurium.MK.Booking.Jobs
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
 
-            Parallel.ForEach(manualRideLinqOrders, new ParallelOptions { MaxDegreeOfParallelism = 16 }, (orderStatusDetail) =>
+            Parallel.ForEach(manualRideLinqOrders, new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, orderStatusDetail =>
             {
                 Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
                     orderStatusDetail.OrderId);
@@ -148,39 +150,58 @@ namespace apcurium.MK.Booking.Jobs
                 .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
                 .ToList();
 
-            const int take = 10;
-            for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
-            {
-                var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
-
-                // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
-
-                Parallel.ForEach(orderStatuses, new ParallelOptions {MaxDegreeOfParallelism = 10}, ibsStatus =>
+            Parallel.ForEach(GetConsumerOrderStatus(ibsOrdersIds, companyKey, market).GetConsumingEnumerable(), new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
+                ibsStatus =>
                 {
-                    if (honeyBadgerVehicleStatuses.Any())
-                    {
-                        // Update vehicle position with matching data available data from HoneyBadger
-                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
-                        if (honeyBadgerVehicleStatus != null)
-                        {
-                            ibsStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
-                            ibsStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
-                        }
-                    }
-
                     var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
                         return;
                     }
 
-                    Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
-
+                    Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId,
+                        order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);
                 });
-            }
+        }
+
+        public BlockingCollection<IBSOrderInformation> GetConsumerOrderStatus(List<int> ibsOrdersIds, string companyKey, string market)
+        {
+            var result = new BlockingCollection<IBSOrderInformation>();
+
+            Task.Factory.StartNew(() =>
+            {
+                const int take = 10;
+                for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
+                {
+                    var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
+                    var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
+
+                    // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                    var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+
+                    foreach (var orderStatus in orderStatuses)
+                    {
+                        if (honeyBadgerVehicleStatuses.Any())
+                        {
+                            // Update vehicle position with matching data available data from HoneyBadger
+                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+
+
+                            if (honeyBadgerVehicleStatus != null)
+                            {
+                                orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                                orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                            }
+                        }
+                        result.Add(orderStatus);
+                    }
+                }
+
+                result.CompleteAdding();
+            });
+          
+            return result;
         }
 
         private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
