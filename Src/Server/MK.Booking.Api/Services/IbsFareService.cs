@@ -80,7 +80,8 @@ namespace apcurium.MK.Booking.Api.Services
                 request.VehicleType,
                 defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
                 request.AccountNumber,
-                request.CustomerNumber
+                request.CustomerNumber,
+                request.TripTime
                 );
 
             if (fare.TotalFare != null)

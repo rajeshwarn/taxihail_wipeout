@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber)
+        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber, int? tripTime)
         {
             var result = new IBSDistanceEstimate();
             UseService(service =>
@@ -201,6 +201,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 distance = distance.HasValue && distance > 0 ? distance.Value : 0;
                 stopCount = stopCount.HasValue && stopCount > 0 ? stopCount.Value : 0;
                 passengerCount = passengerCount.HasValue && passengerCount > 0 ? passengerCount.Value : 0;
+                tripTime = tripTime.HasValue && tripTime > 0 ? tripTime.Value : 0;
                 vehicleType = vehicleType ?? defaultVehiculeTypeId;
 
                 if (accountNumber.HasValue() && customerNumber.HasValue)
@@ -211,13 +212,24 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     customerNumber = -1;
                 }
-
-                int tripTime;
+                
                 int completionState;
 
-                result.TotalFare = service.EstimateDistance(UserNameApp, PasswordApp, distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, frDate, accountNumber, customerNumber.Value, vehicleType.Value, out tripTime, out completionState);
+                var res = service.EstimateDistance_2(UserNameApp, PasswordApp, new TEstimateDistance_2_ParamI()
+                {
+                    Distance = distance.Value,
+                    WaitTime = waitTime.Value,
+                    StopCount = stopCount.Value,
+                    PassangerCount = passengerCount.Value,
+                    FrDate = frDate,
+                    AccountNum = accountNumber,
+                    CustomerNum = customerNumber.Value,
+                    CabType = vehicleType.Value,
+                    TripTime = tripTime.Value
+                }, out completionState);
 
-                result.TripTime = distance;
+                result.TotalFare = res.TotalFare;
+                result.TripTime = res.TripTime;
             });
 
             return result;
