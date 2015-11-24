@@ -37,85 +37,93 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="10dip" />
     <LinearLayout
-        android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="8dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+        <TextView
+            style="@style/BlackTextLabelMultiline"
+            android:text="@string/BookingGratuityText"
+            android:gravity="center"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dip" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:id="@+id/TestButton"
+                android:layout_marginTop="6dip"
+                android:layout_marginRight="6dip"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="0%"
+                local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=0" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
+                android:layout_marginLeft="6dip"
+                android:layout_marginRight="6dip"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="10%"
+                local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=1" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
+                android:layout_marginLeft="6dip"
+                android:layout_marginRight="6dip"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="15%"
+                local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=2" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
+                android:layout_marginLeft="6dip"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="20%"
+                local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=3" />
+        </LinearLayout>
         <Button
             style="@style/ButtonActionGreenStyle"
-            android:id="@+id/TestButton"
             android:layout_marginTop="6dip"
-            android:layout_marginLeft="6dip"
-            android:layout_marginRight="6dip"
+            android:text="@string/Gratuity_Pay"
             android:layout_height="@dimen/HeightButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="0%"
-            local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=0" />
-        <Button
-            style="@style/ButtonActionGreenStyle"
-            android:layout_marginTop="6dip"
-            android:layout_marginLeft="6dip"
-            android:layout_marginRight="6dip"
-            android:layout_height="@dimen/HeightButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="10%"
-            local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=1" />
-        <Button
-            style="@style/ButtonActionGreenStyle"
-            android:layout_marginTop="6dip"
-            android:layout_marginLeft="6dip"
-            android:layout_marginRight="6dip"
-            android:layout_height="@dimen/HeightButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="15%"
-            local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=2" />
-        <Button
-            style="@style/ButtonActionGreenStyle"
-            android:layout_marginTop="6dip"
-            android:layout_marginLeft="6dip"
-            android:layout_marginRight="6dip"
-            android:layout_height="@dimen/HeightButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="20%"
-            local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=3" />
+            android:layout_width="fill_parent"
+            local:MvxBind="Click PayGratuity" />
     </LinearLayout>
-    <Button
-        style="@style/ButtonActionGreenStyle"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_marginTop="6dip"
-        android:text="@string/Gratuity_Pay"
-        android:layout_height="@dimen/HeightButton"
-        android:layout_width="fill_parent"
-        local:MvxBind="Click PayGratuity; Visibility NeedToSelectGratuity, Converter=Visibility" />
     <ScrollView
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        local:MvxBind="Click PayGratuity; Visibility NeedToSelectGratuity, Converter=InvertedVisibility">
+        local:MvxBind="Visibility NeedToSelectGratuity, Converter=InvertedVisibility">
         <LinearLayout
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal">
             <cirrious.mvvmcross.binding.droid.views.MvxListView
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:id="@+id/RatingListView"
                 android:layout_margin="12dip"
-                android:layout_weight="1"
                 local:MvxItemTemplate="@layout/ratinglistitem"
                 local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
             <Button

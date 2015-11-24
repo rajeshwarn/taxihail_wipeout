@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:gravity="center_horizontal"
@@ -33,28 +33,30 @@
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
         <LinearLayout
-            android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:gravity="center_horizontal">
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+            <TextView
+                style="@style/BlackTextLabelMultiline"
+                android:text="@string/BookingGratuityText"
+                android:gravity="center"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip" />
             <LinearLayout
                 android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:paddingTop="8dp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+                android:layout_height="wrap_content">
                 <Button
                     style="@style/ButtonActionGreenStyle"
-                    android:background="@drawable/button_highlight_selector"
+                    android:id="@+id/TestButton"
                     android:layout_marginTop="6dip"
-                    android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:layout_height="@dimen/HeightButton"
                     android:layout_width="0dp"
@@ -63,7 +65,6 @@
                     local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=0" />
                 <Button
                     style="@style/ButtonActionGreenStyle"
-                    android:background="@drawable/button_highlight_selector"
                     android:layout_marginTop="6dip"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
@@ -74,7 +75,6 @@
                     local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=1" />
                 <Button
                     style="@style/ButtonActionGreenStyle"
-                    android:background="@drawable/button_highlight_selector"
                     android:layout_marginTop="6dip"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
@@ -85,10 +85,8 @@
                     local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=2" />
                 <Button
                     style="@style/ButtonActionGreenStyle"
-                    android:background="@drawable/button_highlight_selector"
                     android:layout_marginTop="6dip"
                     android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
                     android:layout_height="@dimen/HeightButton"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -101,22 +99,30 @@
                 android:text="@string/Gratuity_Pay"
                 android:layout_height="@dimen/HeightButton"
                 android:layout_width="fill_parent"
-                local:MvxBind="Click PayGratuity; Visibility NeedToSelectGratuity, Converter=Visibility" />
+                local:MvxBind="Click PayGratuity" />
+        </LinearLayout>
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            local:MvxBind="Visibility NeedToSelectGratuity, Converter=InvertedVisibility">
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="8dp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                local:MvxBind="Visibility NeedToSelectGratuity, Converter=Visibility">
+                android:layout_height="fill_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal">
                 <cirrious.mvvmcross.binding.droid.views.MvxListView
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/RatingListView"
                     android:layout_margin="12dip"
                     local:MvxItemTemplate="@layout/ratinglistitem"
-                    local:MvxBind="ItemsSource RatingList" />
+                    local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
                 <Button
                     style="@style/ButtonActionGreenStyle"
                     android:layout_marginTop="6dip"
@@ -127,6 +133,6 @@
                     android:layout_width="fill_parent"
                     local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

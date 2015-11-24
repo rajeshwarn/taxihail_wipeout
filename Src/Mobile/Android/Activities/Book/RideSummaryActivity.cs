@@ -29,31 +29,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			listView.Divider = null;
 			listView.DividerHeight = 0;
 
-			ViewModel.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == "RatingList" && ViewModel.RatingList != null)
-				{
-                    // Dynamically change height of list
-					var item = LayoutInflater.Inflate(listView.Adapter.ItemTemplateId, null);
-					item.Measure(Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified),
-						Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
-					listView.LayoutParameters = new LinearLayout.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
+			ViewModel.PropertyChanged += (sender, e) => {
+				if (e.PropertyName == "RatingList" && ViewModel.RatingList != null) {
+					// Dynamically change height of list
+					var item = LayoutInflater.Inflate (listView.Adapter.ItemTemplateId, null);
+					item.Measure (Android.Views.View.MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified),
+						Android.Views.View.MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
+					listView.LayoutParameters = new LinearLayout.LayoutParams (Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
 				}
-            };
-
-		    var t = new System.Timers.Timer() { Interval = 3000 };
-		    t.Elapsed += (s, e) =>
-		    {
-		        Console.WriteLine("Can rate : {0}", ViewModel.CanRate.ToString());
-                Console.WriteLine("Can leave screen: {0}", ViewModel.CanUserLeaveScreen().ToString());
-                Console.WriteLine("Need gratuity: {0}", ViewModel.NeedToSelectGratuity.ToString());
-                Console.WriteLine("Has rated: {0}", ViewModel.HasRated.ToString());
-                Console.WriteLine("Rating required: {0}", ViewModel.Settings.RatingRequired.ToString());
-                Console.WriteLine("Rating enabled: {0}", ViewModel.Settings.RatingEnabled.ToString());
-                Console.WriteLine();
-		    };
-            t.Start();
-
+			};
 		}
 
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)

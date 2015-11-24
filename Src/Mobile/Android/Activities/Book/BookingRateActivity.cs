@@ -4,6 +4,8 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Droid.Views;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -11,14 +13,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookingRateActivity : BaseBindingActivity<BookRatingViewModel>
     {
-        private ListView _listView;
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _listView = FindViewById<ListView>(Resource.Id.RatingListView);
-            _listView.Divider = null;
-            _listView.DividerHeight = 0;
+			var listView = FindViewById<MvxListView> (Resource.Id.RatingListView);
+            listView.Divider = null;
+            listView.DividerHeight = 0;
+
+			ViewModel.PropertyChanged += (sender, e) =>
+			{
+				if (e.PropertyName == "RatingList" && ViewModel.RatingList != null)
+				{
+					// Dynamically change height of list
+					var item = LayoutInflater.Inflate(listView.Adapter.ItemTemplateId, null);
+					item.Measure(Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified),
+						Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
+					listView.LayoutParameters = new LinearLayout.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
+				}
+			};
         }
 
 		protected override void OnViewModelSet()

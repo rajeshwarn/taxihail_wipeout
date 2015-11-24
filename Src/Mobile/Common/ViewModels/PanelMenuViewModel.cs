@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private async Task SignOutAccepted()
 		{
 			CloseMenu();
-			await _orderWorkflowService.PrepareForNewOrder();
+			await _orderWorkflowService.PrepareForNewOrder().HandleErrors();
 			_accountService.SignOut();         
 			ShowViewModelAndClearHistory<LoginViewModel> ();
 		}
