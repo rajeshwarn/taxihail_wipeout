@@ -1,5 +1,4 @@
 using apcurium.MK.Common.Serializer;
-using MK.Common.Android.Serializer;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Common.Extensions

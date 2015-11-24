@@ -144,6 +144,7 @@
     <Compile Include="Entity\VehicleCandidate.cs" />
     <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
+    <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />
@@ -245,6 +246,8 @@
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
+    <Compile Include="Serializer\GuidJSonConverter.cs" />
+    <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>

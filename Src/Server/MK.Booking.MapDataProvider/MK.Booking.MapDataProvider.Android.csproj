@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CraftyClicks\CraftyClicksRequest.cs" />
     <Compile Include="CraftyClicks\CraftyClicksService.cs" />
     <Compile Include="CraftyClicks\Resources\CraftyClicksAddress.cs" />

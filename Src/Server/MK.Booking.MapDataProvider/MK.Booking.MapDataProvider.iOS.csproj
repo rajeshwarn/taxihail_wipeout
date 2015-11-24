@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -29,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Google.iOS</AssemblyName>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>full</DebugType>
@@ -50,6 +51,15 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU'">
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|AnyCPU'">
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ModernHttpClient">
       <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\ios-unified\ModernHttpClient.dll</HintPath>
@@ -68,6 +78,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CraftyClicks\CraftyClicksRequest.cs" />
     <Compile Include="CraftyClicks\CraftyClicksService.cs" />
     <Compile Include="CraftyClicks\Resources\CraftyClicksAddress.cs" />
