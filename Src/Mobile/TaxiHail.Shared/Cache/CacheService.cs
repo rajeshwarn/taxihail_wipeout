@@ -18,10 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public T Get<T>(string key) where T : class
         {
+            var serialized = string.Empty;        
 	        try
 	        {
 				var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
-				var serialized = pref.GetString(key, null);
+				serialized = pref.GetString(key, null);
 
 				if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
 				//We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this

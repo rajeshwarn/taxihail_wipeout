@@ -33,15 +33,25 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
-            return Task.Run(() => client.GetAsync(url).HandleResult<TResult>(onSuccess, onError));
+            return Task.Run(() => client.GetAsync(client.GetCompleteRelativeUri(url)).HandleResult<TResult>(onSuccess, onError));
         }
+
+
+	    private static string GetCompleteRelativeUri(this HttpClient client, string url)
+	    {
+            var currentRelativeUrl = client.BaseAddress.LocalPath;
+           
+	        return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+                ? currentRelativeUrl + url
+                : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
+	    }
 
         public static Task<T> DeleteAsync<T>(this HttpClient client,
             string url,
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
-            return Task.Run(() => client.DeleteAsync(url).HandleResult<T>(onSuccess, onError));
+            return Task.Run(() => client.DeleteAsync(client.GetCompleteRelativeUri(url)).HandleResult<T>(onSuccess, onError));
         }
 
         public static Task<TResult> PostAsync<TResult>(this HttpClient client,
@@ -50,15 +60,19 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
-            return Task.Run(async () =>
-            {
-                var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
-
-                return await client.PostAsync(url, body).HandleResult<TResult>(onSuccess, onError);
-            });
+            return Task.Run(() => InnerPostAsync<TResult>(client, url, content, onSuccess, onError));
         }
 
-        public static Task<TResult> PutAsync<TResult>(this HttpClient client,
+	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
+	    {
+	        var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+
+	        var relativeUrl = client.GetCompleteRelativeUri(url);
+
+	        return await client.PostAsync(relativeUrl, body).HandleResult<TResult>(onSuccess, onError);
+	    }
+
+	    public static Task<TResult> PutAsync<TResult>(this HttpClient client,
             string url,
             object content,
             Action<HttpResponseMessage> onSuccess = null,
@@ -68,7 +82,7 @@ namespace apcurium.MK.Common.Extensions
             {
                 var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
-                return await client.PutAsync(url, body).HandleResult<TResult>(onSuccess, onError);
+                return await client.PutAsync(client.GetCompleteRelativeUri(url), body).HandleResult<TResult>(onSuccess, onError);
             });
         }
 
@@ -97,9 +111,12 @@ namespace apcurium.MK.Common.Extensions
         {
             var result = await response;
 
-            if (!result.IsSuccessStatusCode && onError != null)
+            if (!result.IsSuccessStatusCode)
             {
-                onError(result);
+                if (onError != null)
+                {
+                    onError(result);
+                }
 
                 result.EnsureSuccessStatusCode();
             }
@@ -112,7 +129,6 @@ namespace apcurium.MK.Common.Extensions
             var jsonContent = await result.Content.ReadAsStringAsync();
 
             return jsonContent.FromJson<TResult>();
-
         }
     }
 }

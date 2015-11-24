@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         : 0
                 };
 
-                // No need to await since we do not want to slowdown the app
-                UseServiceClientAsync<MetricsServiceClient>(client => client.LogApplicationStartUp(request));
+                //This needs to be awaited to catch exceptions.
+                await UseServiceClientAsync<MetricsServiceClient>(client => client.LogApplicationStartUp(request));
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void LogOriginalRideEta(Guid orderId, long? originalEta)
+        public async void LogOriginalRideEta(Guid orderId, long? originalEta)
         {
             try
             {
@@ -57,8 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     OriginalEta = originalEta
                 };
 
-                // No need to await since we do not want to slowdown the app
-                UseServiceClientAsync<MetricsServiceClient>(client => client.LogOriginalRideEta(request));
+                await UseServiceClientAsync<MetricsServiceClient>(client => client.LogOriginalRideEta(request));
             }
             catch (Exception ex)
             {

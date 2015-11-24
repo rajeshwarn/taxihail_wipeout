@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Common.Serializer
@@ -15,10 +16,17 @@ namespace apcurium.MK.Common.Serializer
 
         public T DeserializeObject<T>(string inputText)
         {
+            return typeof(string) == typeof(T) && !inputText.Contains("\"")
+                ? InnerDeserializeObject<T>("\""+inputText+"\"")
+                : InnerDeserializeObject<T>(inputText);
+        }
+
+        private TResult InnerDeserializeObject<TResult>(string inputText)
+        {
             using (var stringReader = new System.IO.StringReader(inputText))
             {
                 var reader = new JsonTextReader(stringReader);
-                return _serializer.Deserialize<T>(reader);
+                return _serializer.Deserialize<TResult>(reader);
             }
         }
 

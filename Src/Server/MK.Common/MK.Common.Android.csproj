@@ -138,6 +138,7 @@
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
+    <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
     <Compile Include="Params.cs">
       <SubType>Code</SubType>

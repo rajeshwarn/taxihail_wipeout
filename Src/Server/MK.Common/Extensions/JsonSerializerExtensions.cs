@@ -1,4 +1,5 @@
 using apcurium.MK.Common.Serializer;
+using MK.Common.Android.Serializer;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Common.Extensions
@@ -10,7 +11,7 @@ namespace apcurium.MK.Common.Extensions
             var serializer = new JsonSerializer
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                NullValueHandling = NullValueHandling.Include,
+                NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
             return new NewtonsoftJsonSerializer(serializer);

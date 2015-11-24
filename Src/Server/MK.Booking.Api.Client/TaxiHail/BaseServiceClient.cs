@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Extensions;
 using ModernHttpClient;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -42,22 +44,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private HttpClient CreateClient()
         {
-            var uri = new Uri(_url);
+            var uri = new Uri(_url, UriKind.Absolute);
             
             var cookieHandler = new NativeCookieHandler();
 
-            if (!string.IsNullOrEmpty(_sessionId))
-            {
-                cookieHandler.SetCookies(new[]
-                {
-                    new Cookie("ss-opt", "perm"),
-                    new Cookie("ss-pid", _sessionId)
-                });
-            }
-
             // CustomSSLVerification must be set to true to enable certificate pinning.
             var nativeHandler = new NativeMessageHandler(throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
-
+            
             var client = new HttpClient(nativeHandler)
             {
                 BaseAddress = uri,
@@ -65,15 +58,21 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             };
 
             // When packageInfo is not specified, we use a default value as the useragent
-
-            
-            var userAgent = new ProductInfoHeaderValue(new ProductHeaderValue(_packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent));
-
-            client.DefaultRequestHeaders.UserAgent.Add(userAgent);
+            client.DefaultRequestHeaders.Add("User-Agent", _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent);
             if (_packageInfo != null)
             {
                 client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);
             }
+
+            if (_sessionId.HasValueTrimmed())
+            {
+
+                client.DefaultRequestHeaders.Add("Cookie", "ss-opt=perm; ss-pid=" + _sessionId);
+            }
+            client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
+            client.DefaultRequestHeaders.AcceptCharset.ParseAdd("utf-8");
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip");
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("deflate");
 
             return client;
         }
