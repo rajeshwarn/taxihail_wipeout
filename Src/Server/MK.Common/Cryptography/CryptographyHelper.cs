@@ -60,13 +60,13 @@ namespace apcurium.MK.Common.Cryptography
 				aesAlg.IV = initVector;
 				aesAlg.Key = key;
 
-				ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+				var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
-				using (MemoryStream msEncrypt = new MemoryStream())
+				using (var msEncrypt = new MemoryStream())
 				{
-					using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+					using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
 					{
-						using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+						using (var swEncrypt = new StreamWriter(csEncrypt))
 						{
 							swEncrypt.Write(plainText);
 						}
@@ -82,19 +82,19 @@ namespace apcurium.MK.Common.Cryptography
 		{
 			string plaintext = null;
 
-			using (Aes aesAlg = Aes.Create())
+			using (var aesAlg = Aes.Create())
 			{
 				aesAlg.KeySize = 128;
 				aesAlg.IV = initVector;
 				aesAlg.Key = key;
 
-				ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+				var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-				using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+				using (var msDecrypt = new MemoryStream(cipherText))
 				{
-					using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+					using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
 					{
-						using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+						using (var srDecrypt = new StreamReader(csDecrypt))
 						{
 							plaintext = srDecrypt.ReadToEnd();
 						}
