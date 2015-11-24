@@ -2,7 +2,7 @@
 
 using System;
 using apcurium.MK.Common.Entity;
-using MK.Common.Android.Serializer;
+using MK.Common.Serializer;
 using Newtonsoft.Json;
 
 #endregion

@@ -1,7 +1,7 @@
 ﻿using System;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-using MK.Common.Android.Serializer;
+using MK.Common.Serializer;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources

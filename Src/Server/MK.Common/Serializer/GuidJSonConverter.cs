@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace MK.Common.Android.Serializer
+namespace MK.Common.Serializer
 {
     public class GuidJsonConverter: JsonConverter
     {
