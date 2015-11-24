@@ -3,11 +3,9 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
-using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Events.Migration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;

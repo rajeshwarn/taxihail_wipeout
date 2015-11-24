@@ -30,10 +30,13 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Amount = 12.34m,
                 TransactionId = "the transaction",
             });
-            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), 
+            var ordetailsGenerator = new OrderGenerator(
                 new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName)),
                 new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName)),
-                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)),   
+                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderPairingDetail>(() => new BookingDbContext(DbName)), 
+                new EntityProjectionSet<OrderManualRideLinqDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderNotificationDetail>(() => new BookingDbContext(DbName)),  
                 new Logger(), 
                 new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated

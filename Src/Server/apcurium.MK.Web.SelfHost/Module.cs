@@ -53,6 +53,9 @@ namespace apcurium.MK.Web.SelfHost
             var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderStatusProjectionSet = new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderPairingProjectionSet = new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>());
+            var manualRideLinqProjectionSet = new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
             var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
             var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
@@ -61,6 +64,9 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderPairingDetail>>(orderPairingProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
             container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
             container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
             container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);

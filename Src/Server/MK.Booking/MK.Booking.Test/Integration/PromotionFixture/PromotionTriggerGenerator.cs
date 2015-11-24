@@ -46,7 +46,12 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var orderStatusDetailProjectionSet = new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName));
 
             PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName), new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
-            OrderGenerator = new OrderGenerator(() => new BookingDbContext(DbName), orderDetailProjectionSet, orderStatusDetailProjectionSet, new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)), new Logger(), new TestServerSettings());
+            OrderGenerator = new OrderGenerator(orderDetailProjectionSet, orderStatusDetailProjectionSet, 
+                new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)), 
+                new EntityProjectionSet<OrderPairingDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderManualRideLinqDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<OrderNotificationDetail>(() => new BookingDbContext(DbName)), 
+                new Logger(), new TestServerSettings());
             CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), orderDetailProjectionSet, orderStatusDetailProjectionSet, new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,

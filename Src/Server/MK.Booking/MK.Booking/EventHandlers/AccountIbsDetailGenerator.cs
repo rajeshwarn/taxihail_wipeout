@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountLinkedToIbs>,
         IEventHandler<AccountUnlinkedFromIbs>
     {
-
         private readonly Func<BookingDbContext> _contextFactory;
 
         public AccountIbsDetailGenerator(Func<BookingDbContext> contextFactory)

@@ -37,27 +37,33 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
+        private readonly IProjectionSet<OrderPairingDetail> _orderPairingProjectionSet; 
+        private readonly IProjectionSet<OrderManualRideLinqDetail> _orderManualRideLinqProjectionSet; 
+        private readonly IProjectionSet<OrderNotificationDetail> _orderNotificationProjectionSet; 
         private readonly OrderRatingProjectionSet _orderRatingProjectionSet;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory,
-            IProjectionSet<OrderDetail> orderDetailProjectionSet,
+        public OrderGenerator(IProjectionSet<OrderDetail> orderDetailProjectionSet,
             IProjectionSet<OrderStatusDetail> orderStatusProjectionSet,
             OrderRatingProjectionSet orderRatingProjectionSet,
+            IProjectionSet<OrderPairingDetail> orderPairingProjectionSet,
+            IProjectionSet<OrderManualRideLinqDetail> orderManualRideLinqProjectionSet,
+            IProjectionSet<OrderNotificationDetail> orderNotificationProjectionSet,
             ILogger logger,
             IServerSettings serverSettings)
         {
-            _contextFactory = contextFactory;
             _orderDetailProjectionSet = orderDetailProjectionSet;
             _orderStatusProjectionSet = orderStatusProjectionSet;
             _orderRatingProjectionSet = orderRatingProjectionSet;
             _logger = logger;
             _serverSettings = serverSettings;
+            _orderPairingProjectionSet = orderPairingProjectionSet;
+            _orderManualRideLinqProjectionSet = orderManualRideLinqProjectionSet;
+            _orderNotificationProjectionSet = orderNotificationProjectionSet;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -108,7 +114,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCreated @event)
         {
-
             var orderDetail = new OrderDetail
             {
                 IBSOrderId = @event.IBSOrderId,
@@ -176,7 +181,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 _orderDetailProjectionSet.Add(orderDetail);
             }
 
-                // Create an empty OrderStatusDetail row
+            // Create an empty OrderStatusDetail row
             var detailsExists = _orderStatusProjectionSet.Exists(@event.SourceId);
             if (detailsExists)
             {
@@ -204,39 +209,35 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPairedForPayment @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (_orderPairingProjectionSet.Exists(@event.SourceId))
             {
-                var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
-                if (existingPairing != null)
+                _logger.LogMessage("Order Pairing already exists for Order : " + @event.SourceId);
+            }
+            else
+            {
+                _orderPairingProjectionSet.Add(new OrderPairingDetail
                 {
-                    _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
-                }
-                else
-                {
-                    context.Save(new OrderPairingDetail
-                    {
-                        OrderId = @event.SourceId,
-                        Medallion = @event.Medallion,
-                        DriverId = @event.DriverId,
-                        PairingToken = @event.PairingToken,
-                        PairingCode = @event.PairingCode,
-                        TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
-                        AutoTipAmount = @event.AutoTipAmount,
-                        AutoTipPercentage = @event.AutoTipPercentage
-                    });
+                    OrderId = @event.SourceId,
+                    Medallion = @event.Medallion,
+                    DriverId = @event.DriverId,
+                    PairingToken = @event.PairingToken,
+                    PairingCode = @event.PairingCode,
+                    TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                    AutoTipAmount = @event.AutoTipAmount,
+                    AutoTipPercentage = @event.AutoTipPercentage
+                });
 
-                    // Unpair only available if automatic pairing is disabled
-                    _orderStatusProjectionSet.Update(@event.SourceId, orderStatus =>
+                // Unpair only available if automatic pairing is disabled
+                _orderStatusProjectionSet.Update(@event.SourceId, orderStatus =>
+                {
+                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
+                    if (!paymentSettings.IsUnpairingDisabled)
                     {
-                        var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
-                        if (!paymentSettings.IsUnpairingDisabled)
-                        {
-                            orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
-                                    ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
-                                    : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
-                        }
-                    });
-                }
+                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                                ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                                : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+                    }
+                });
             }
         }
 
@@ -302,7 +303,6 @@ namespace apcurium.MK.Booking.EventHandlers
             if (!detailsExists)
             {
                 @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
-
                 @event.Status.FareAvailable = fareAvailable;
                 _orderStatusProjectionSet.Add(@event.Status);
             }
@@ -367,7 +367,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Toll = @event.Toll;
                     order.Tax = @event.Tax;
                     order.Surcharge = @event.Surcharge;
-
                 });
             }
             else
@@ -378,15 +377,12 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderUnpairedForPayment @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (_orderPairingProjectionSet.Exists(@event.SourceId))
             {
-                var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
-                if (orderPairingDetail != null)
+                _orderPairingProjectionSet.Update(@event.SourceId, pairing =>
                 {
-                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
-                    orderPairingDetail.WasUnpaired = true;
-                    context.Save(orderPairingDetail);
-                }
+                    pairing.WasUnpaired = true;
+                });
             }
 
             _orderDetailProjectionSet.Update(@event.SourceId, order =>
@@ -394,7 +390,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 order.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
             });
-
         }
 
         public void Handle(PaymentInformationSet @event)
@@ -416,7 +411,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.NextDispatchCompanyName = @event.DispatchCompanyName;
                 details.NextDispatchCompanyKey = @event.DispatchCompanyKey;
             });
-
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
@@ -462,8 +456,8 @@ namespace apcurium.MK.Booking.EventHandlers
         private DateTime? GetNetworkPairingTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
         {
             if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
-                            && !details.NetworkPairingTimeout.HasValue
-                            && _serverSettings.ServerData.Network.Enabled)
+                && !details.NetworkPairingTimeout.HasValue
+                && _serverSettings.ServerData.Network.Enabled)
             {
                 if (!details.CompanyKey.HasValue()
                     || (details.Market.HasValue() && !details.NextDispatchCompanyKey.HasValue()))
@@ -509,8 +503,7 @@ namespace apcurium.MK.Booking.EventHandlers
             });
             
             // Create an empty OrderStatusDetail row
-            var detailsExists = _orderStatusProjectionSet.Exists(@event.SourceId);
-            if (detailsExists)
+            if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
                 _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
             }
@@ -532,42 +525,38 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if (_orderManualRideLinqProjectionSet.Exists(@event.SourceId))
             {
-                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
-                if (rideLinqDetails != null)
+                _logger.LogMessage("RideLinqDetails already exists for Order : " + @event.SourceId);
+            }
+            else
+            {
+                _orderManualRideLinqProjectionSet.Add(new OrderManualRideLinqDetail
                 {
-                    _logger.LogMessage("RideLinqDetails already existing for Order : " + @event.SourceId);
-                }
-                else
-                {
-                    context.Save(new OrderManualRideLinqDetail
-                    {
-                        OrderId = @event.SourceId,
-                        AccountId = @event.AccountId,
-                        PairingCode = @event.PairingCode,
-                        PairingToken = @event.PairingToken,
-                        PairingDate = @event.PairingDate,
-                        Distance = @event.Distance,
-                        Extra = @event.Extra,
-                        Fare = @event.Fare,
-                        FareAtAlternateRate = @event.FareAtAlternateRate,
-                        Total = @event.Total,
-                        Toll = @event.Toll,
-                        Tax = @event.Tax,
-                        Tip = @event.Tip,
-                        Surcharge = @event.Surcharge,
-                        RateAtTripStart = @event.RateAtTripStart,
-                        RateAtTripEnd = @event.RateAtTripEnd,
-                        RateChangeTime = @event.RateChangeTime,
-                        Medallion = @event.Medallion,
-						DeviceName = @event.DeviceName,
-                        TripId = @event.TripId,
-                        DriverId = @event.DriverId,
-                        LastFour = @event.LastFour,
-                        AccessFee = @event.AccessFee
-                    });
-                }
+                    OrderId = @event.SourceId,
+                    AccountId = @event.AccountId,
+                    PairingCode = @event.PairingCode,
+                    PairingToken = @event.PairingToken,
+                    PairingDate = @event.PairingDate,
+                    Distance = @event.Distance,
+                    Extra = @event.Extra,
+                    Fare = @event.Fare,
+                    FareAtAlternateRate = @event.FareAtAlternateRate,
+                    Total = @event.Total,
+                    Toll = @event.Toll,
+                    Tax = @event.Tax,
+                    Tip = @event.Tip,
+                    Surcharge = @event.Surcharge,
+                    RateAtTripStart = @event.RateAtTripStart,
+                    RateAtTripEnd = @event.RateAtTripEnd,
+                    RateChangeTime = @event.RateChangeTime,
+                    Medallion = @event.Medallion,
+                    DeviceName = @event.DeviceName,
+                    TripId = @event.TripId,
+                    DriverId = @event.DriverId,
+                    LastFour = @event.LastFour,
+                    AccessFee = @event.AccessFee
+                });
             }
         }
 
@@ -589,17 +578,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if (_orderManualRideLinqProjectionSet.Exists(@event.SourceId))
             {
-                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
-                if (rideLinqDetails != null)
+                _orderManualRideLinqProjectionSet.Update(@event.SourceId, rideLinqDetails =>
                 {
                     // Must set an endtime to end order on client side
                     rideLinqDetails.EndTime = DateTime.UtcNow;
                     rideLinqDetails.IsCancelled = true;
-                    
-                    context.Save(rideLinqDetails);
-                }
+                });
             }
         }
 
@@ -643,54 +629,50 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if (!_orderManualRideLinqProjectionSet.Exists(@event.SourceId))
             {
-                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
-                if (rideLinqDetails == null)
+                _logger.LogMessage("There is no manual RideLinQ details for order {0}", @event.SourceId);
+            }
+            else
+            {
+                _orderManualRideLinqProjectionSet.Update(@event.SourceId, rideLinqDetails =>
                 {
-                    _logger.LogMessage("There is no manual RideLinQ details for order {0}", @event.SourceId);
-                    return;
-                }
-
-                rideLinqDetails.DriverId = @event.DriverId;
-                rideLinqDetails.StartTime = @event.StartTime;
-                rideLinqDetails.EndTime = @event.EndTime;
-                rideLinqDetails.TripId = @event.TripId;
-                rideLinqDetails.Distance = @event.Distance;
-                rideLinqDetails.PairingToken = @event.PairingToken;
-                rideLinqDetails.Extra = @event.Extra;
-                rideLinqDetails.Fare = @event.Fare;
-                rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
-                rideLinqDetails.Total = @event.Total;
-                rideLinqDetails.Toll = @event.Toll;
-                rideLinqDetails.Tip = @event.Tip;
-                rideLinqDetails.Tax = @event.Tax;
-                rideLinqDetails.Surcharge = @event.Surcharge;
-                rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
-                rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
-                rideLinqDetails.RateChangeTime = @event.RateChangeTime;
-                rideLinqDetails.AccessFee = @event.AccessFee;
-                rideLinqDetails.LastFour = @event.LastFour;
-                rideLinqDetails.PairingError = @event.PairingError;
-
-                context.Save(rideLinqDetails);
+                    rideLinqDetails.DriverId = @event.DriverId;
+                    rideLinqDetails.StartTime = @event.StartTime;
+                    rideLinqDetails.EndTime = @event.EndTime;
+                    rideLinqDetails.TripId = @event.TripId;
+                    rideLinqDetails.Distance = @event.Distance;
+                    rideLinqDetails.PairingToken = @event.PairingToken;
+                    rideLinqDetails.Extra = @event.Extra;
+                    rideLinqDetails.Fare = @event.Fare;
+                    rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
+                    rideLinqDetails.Total = @event.Total;
+                    rideLinqDetails.Toll = @event.Toll;
+                    rideLinqDetails.Tip = @event.Tip;
+                    rideLinqDetails.Tax = @event.Tax;
+                    rideLinqDetails.Surcharge = @event.Surcharge;
+                    rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
+                    rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
+                    rideLinqDetails.RateChangeTime = @event.RateChangeTime;
+                    rideLinqDetails.AccessFee = @event.AccessFee;
+                    rideLinqDetails.LastFour = @event.LastFour;
+                    rideLinqDetails.PairingError = @event.PairingError;
+                });
             }
         }
 
         public void Handle(AutoTipUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_orderPairingProjectionSet.Exists(@event.SourceId))
             {
-                var orderPairing = context.Find<OrderPairingDetail>(@event.SourceId);
-                if (orderPairing == null)
-                {
-                    _logger.LogMessage("No Pairing found for Order : " + @event.SourceId);
-                    return;
-                }
-
-                orderPairing.AutoTipPercentage = @event.AutoTipPercentage;
-                context.Save(orderPairing);
+                _logger.LogMessage("No Pairing found for Order : " + @event.SourceId);
+                return;
             }
+
+            _orderPairingProjectionSet.Update(@event.SourceId, pairing =>
+            {
+                pairing.AutoTipPercentage = @event.AutoTipPercentage;
+            });
         }
 
         public void Handle(OriginalEtaLogged @event)
@@ -711,28 +693,28 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderNotificationDetailUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_orderNotificationProjectionSet.Exists(@event.SourceId))
             {
-                var orderNotificationDetail = context.Find<OrderNotificationDetail>(@event.SourceId)
-                    ?? new OrderNotificationDetail { Id = @event.OrderId };
+                _orderNotificationProjectionSet.Add(new OrderNotificationDetail { Id = @event.SourceId });
+            }
 
+            _orderNotificationProjectionSet.Update(@event.SourceId, notification =>
+            {
                 if (@event.IsTaxiNearbyNotificationSent.HasValue)
                 {
-                    orderNotificationDetail.IsTaxiNearbyNotificationSent = @event.IsTaxiNearbyNotificationSent.Value;
+                    notification.IsTaxiNearbyNotificationSent = @event.IsTaxiNearbyNotificationSent.Value;
                 }
 
                 if (@event.IsUnpairingReminderNotificationSent.HasValue)
                 {
-                    orderNotificationDetail.IsUnpairingReminderNotificationSent = @event.IsUnpairingReminderNotificationSent.Value;
+                    notification.IsUnpairingReminderNotificationSent = @event.IsUnpairingReminderNotificationSent.Value;
                 }
 
                 if (@event.InfoAboutPaymentWasSentToDriver.HasValue)
                 {
-                    orderNotificationDetail.InfoAboutPaymentWasSentToDriver = @event.InfoAboutPaymentWasSentToDriver.Value;
+                    notification.InfoAboutPaymentWasSentToDriver = @event.InfoAboutPaymentWasSentToDriver.Value;
                 }
-
-                context.Save(orderNotificationDetail);
-            }
+            });
         }
     }
 
