@@ -517,11 +517,12 @@ namespace apcurium.MK.Booking.Test.Integration.AddressListFixture
         [Test]
         public void when_remove_address_not_more_in_db()
         {
+            var accountId = Guid.NewGuid();
             //Arrrange
             var orderCreated = new OrderCreated
             {
                 SourceId = Guid.NewGuid(),
-                AccountId = Guid.NewGuid(),
+                AccountId = accountId,
                 PickupAddress = new Address {FullAddress = "1234 rue Saint-Hubert"},
                 CreatedDate = DateTime.Now.AddDays(-1)
             };
@@ -537,7 +538,11 @@ namespace apcurium.MK.Booking.Test.Integration.AddressListFixture
             }
 
             //Act
-            Sut.Handle(new AddressRemovedFromHistory {AddressId = addressId});
+            Sut.Handle(new AddressRemovedFromHistory
+            {
+                SourceId = accountId,
+                AddressId = addressId
+            });
 
             //Assert
             using (var context = new BookingDbContext(DbName))

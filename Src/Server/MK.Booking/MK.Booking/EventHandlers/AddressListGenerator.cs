@@ -388,7 +388,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                action.Invoke(Load(identifier, returnNullIfEmpty: false));
+                var list = Load(identifier, returnNullIfEmpty: false);
+                action.Invoke(list);
+
+                var addressIds = list.Select(x => x.Id).ToArray();
+                var addressesToRemove = context.Set<AddressDetails>().Where(x => x.AccountId == identifier && !addressIds.Contains(x.Id));
+                context.Set<AddressDetails>().RemoveRange(addressesToRemove);
+                context.Set<AddressDetails>().AddOrUpdate(list.ToArray());
+
                 context.SaveChanges();
             }
         }

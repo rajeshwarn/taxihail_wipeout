@@ -48,7 +48,7 @@ namespace apcurium.MK.Events.Migration.Projections
         {
             if (@event.IsOutOfAppPaymentDisabled == null)
             {
-                @event.IsOutOfAppPaymentDisabled = false; // _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+                @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
                 return @event;
             }
             else
@@ -94,7 +94,7 @@ namespace apcurium.MK.Events.Migration.Projections
         {
             if (@event.IsPayInTaxiEnabled == null)
             {
-                @event.IsPayInTaxiEnabled = false;// _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+                @event.IsPayInTaxiEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
                 return @event;
             }
             else
