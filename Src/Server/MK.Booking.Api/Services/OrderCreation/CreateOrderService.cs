@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
-            var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
+            var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchAndSaveNetworkPaymentSettings(request.NextDispatchCompanyKey);
 
             var chargeTypeId = order.Settings.ChargeTypeId;
             var chargeTypeDisplay = order.Settings.ChargeType;

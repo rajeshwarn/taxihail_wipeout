@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Helpers
             _logger = logger;
         }
 
-        public bool FetchCompanyPaymentSettings(string companyKey)
+        public bool FetchAndSaveNetworkPaymentSettings(string companyKey)
         {
             try
             {
@@ -88,8 +88,8 @@ namespace apcurium.MK.Booking.Helpers
                     SandboxMobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
                 };
 
-                // Save/update company settings
-                _commandBus.Send(new UpdatePaymentSettings
+                // Save/update network company settings
+                _commandBus.Send(new SaveTemporaryCompanyPaymentSettings
                 {
                     ServerPaymentSettings = paymentSettings
                 });

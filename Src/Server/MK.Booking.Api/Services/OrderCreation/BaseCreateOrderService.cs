@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             if (market.HasValue())
             {
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchAndSaveNetworkPaymentSettings(bestAvailableCompany.CompanyKey);
 
                 if (!isConfiguredForCmtPayment)
                 {

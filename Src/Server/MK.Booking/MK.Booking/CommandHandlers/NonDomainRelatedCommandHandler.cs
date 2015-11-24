@@ -3,6 +3,9 @@ using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.CommandHandlers
@@ -11,18 +14,21 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
-        ICommandHandler<AddOrUpdateVehicleIdMapping>
+        ICommandHandler<AddOrUpdateVehicleIdMapping>,
+        ICommandHandler<SaveTemporaryCompanyPaymentSettings>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly Func<BookingDbContext> _bookingContextFactory;
+        private readonly Func<ConfigurationDbContext> _configurationContextFactory; 
 
-        public NonDomainRelatedCommandHandler(Func<BookingDbContext> contextFactory)
+        public NonDomainRelatedCommandHandler(Func<BookingDbContext> bookingContextFactory, Func<ConfigurationDbContext> configurationContextFactory)
         {
-            _contextFactory = contextFactory;
+            _bookingContextFactory = bookingContextFactory;
+            _configurationContextFactory = configurationContextFactory;
         }
 
         public void Handle(LogApplicationStartUp command)
         {
-            using (var context = _contextFactory.Invoke())
+            using (var context = _bookingContextFactory.Invoke())
             {
                 // Check if a log from this user already exists. If not, create it.
                 var log = context.Find<AppStartUpLogDetail>(command.UserId) ?? new AppStartUpLogDetail
@@ -45,7 +51,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SaveTemporaryOrderCreationInfo command)
         {
-            using (var context = _contextFactory.Invoke())
+            using (var context = _bookingContextFactory.Invoke())
             {
                 context.Save(new TemporaryOrderCreationInfoDetail
                 {
@@ -57,7 +63,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SaveTemporaryOrderPaymentInfo command)
         {
-            using (var context = _contextFactory.Invoke())
+            using (var context = _bookingContextFactory.Invoke())
             {
                 context.Save(new TemporaryOrderPaymentInfoDetail
                 {
@@ -69,7 +75,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddOrUpdateVehicleIdMapping command)
         {
-            using (var context = _contextFactory.Invoke())
+            using (var context = _bookingContextFactory.Invoke())
             {
                 var existingMappingForOrder = context.Find<VehicleIdMappingDetail>(command.OrderId);
                 if (existingMappingForOrder != null)
@@ -89,6 +95,26 @@ namespace apcurium.MK.Booking.CommandHandlers
                         CreationDate = DateTime.UtcNow
                     });
                 }
+            }
+        }
+
+        public void Handle(SaveTemporaryCompanyPaymentSettings command)
+        {
+            if (!command.ServerPaymentSettings.CompanyKey.HasValue())
+            {
+                // Only cache those payment settings for non-local/network companies
+                return;
+            }
+
+            using (var context = _configurationContextFactory.Invoke())
+            {
+                // Remove old settings
+                context.RemoveWhere<ServerPaymentSettings>(x => x.CompanyKey == command.ServerPaymentSettings.CompanyKey);
+
+                // Add new settings
+                context.ServerPaymentSettings.Add(command.ServerPaymentSettings);
+
+                context.SaveChanges();
             }
         }
     }
