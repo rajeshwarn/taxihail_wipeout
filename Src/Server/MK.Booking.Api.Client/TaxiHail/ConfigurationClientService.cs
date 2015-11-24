@@ -38,22 +38,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			return tcs.Task;
 		}
 
-		public Task<ClientPaymentSettings> GetPaymentSettings()
+		public async Task<ClientPaymentSettings> GetPaymentSettings()
 		{
-			var tcs = new TaskCompletionSource<ClientPaymentSettings>();
-
 			try
 			{
-				var result = Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest()).Result;
-				tcs.TrySetResult(result.ClientPaymentSettings);
+				var result = await Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest());
+			    return result.ClientPaymentSettings;
 			}
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
-				tcs.TrySetResult(new ClientPaymentSettings());
-			}
 
-			return tcs.Task;
+			    return new ClientPaymentSettings();
+			}
 		}
 	}
 }
