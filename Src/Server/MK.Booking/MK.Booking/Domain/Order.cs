@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
-            Handles<GratuityPaymentSent>(NoAction);
+            Handles<GratuitySent>(NoAction);
             Handles<OrderGratuityUpdated>(NoAction);
         }
 

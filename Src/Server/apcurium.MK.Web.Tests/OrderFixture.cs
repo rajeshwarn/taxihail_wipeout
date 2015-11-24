@@ -439,6 +439,25 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public async void when_paying_gratuity_order_gratuity_should_not_be_null()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            var orderRatingsRequest = new GratuityRequest
+            {
+                OrderId = _orderId,
+                Percentage =  10
+            };
+
+            await sut.PayGratuity(orderRatingsRequest);
+
+            var order = await sut.GetOrder(_orderId);
+            var gratuity = order.Gratuity;
+            Assert.NotNull(gratuity);
+            Assert.That(gratuity.Value, Is.EqualTo(10));
+        }
+
+        [Test]
         public async void when_order_rated_ratings_should_not_be_null()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());

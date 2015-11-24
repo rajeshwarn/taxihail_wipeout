@@ -101,7 +101,6 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(new PayGratuity
             {
                 OrderId = request.OrderId,
-                AccountId = account.Id,
                 Percentage = request.Percentage
             });
 

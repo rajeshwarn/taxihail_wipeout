@@ -298,14 +298,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(PayGratuity command)
         {
             var order = _repository.Find(command.OrderId);
-            order.PayGratuity(command.AccountId, command.OrderId, command.Percentage);
+            order.PayGratuity(command);
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(UpdateOrderGratuity command)
         {
             var order = _repository.Find(command.OrderId);
-            order.UpdateOrderGratuity(command.AccountId, command.OrderId, command.Amount);
+            order.UpdateOrderGratuity(command);
             _repository.Save(order, command.Id.ToString());
         }
     }

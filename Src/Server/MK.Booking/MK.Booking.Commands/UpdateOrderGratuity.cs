@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-		public Guid AccountId { get; set; }
-
         public Guid OrderId { get; set; }
 
         public decimal Amount { get; set; }

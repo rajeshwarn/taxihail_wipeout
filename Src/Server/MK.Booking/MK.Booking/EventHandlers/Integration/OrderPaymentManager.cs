@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -282,10 +283,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(GratuitySent @event)
         {
             // TODO: Here, send the payment.
-            // TODO: Need information about ponctual payment process
+            // TODO: Need information about how to process "other" payments
 
-            var order = _paymentDao.FindByOrderId(@event.SourceId);
-            var amount = order.Amount;
+            var order = _orderDao.FindById(@event.SourceId);
+            var amount = (decimal) order.Fare.ValueOrZero();
             var gratuity = decimal.Round(amount * @event.Percentage / 100, 2);
 
             // TODO: If successful...
