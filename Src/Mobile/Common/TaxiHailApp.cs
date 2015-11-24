@@ -138,12 +138,8 @@ namespace apcurium.MK.Booking.Mobile
 
             RefreshAppData();
 
-#if DEBUG
-			// In debug, we should allow all certs to allow us to debug issues that might arise.
-			ServicePointManager.ServerCertificateValidationCallback += (p1, p2, p3, p4) => true;
-#else
-	        ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
-#endif
+            
+            ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
         }
 
 		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com", "test.taxihail.biz" };
@@ -163,7 +159,11 @@ namespace apcurium.MK.Booking.Mobile
 
 	    private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 	    {
-		    var request = sender as HttpWebRequest;
+            // In debug, we should allow all certs to allow us to debug issues that might arise.
+#if DEBUG
+	        return true;
+#else
+            var request = sender as HttpWebRequest;
 			
 			if (request == null || Hosts.None(request.Host.EndsWith))
 		    {
@@ -174,10 +174,11 @@ namespace apcurium.MK.Booking.Mobile
 		    var publicKeyString = certificate.GetPublicKeyString();
 
 			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
-	    }
+#endif
+        }
 
 
-	    void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
+        void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             switch (e.LifetimeEvent)
             {
