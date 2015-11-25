@@ -19,6 +19,8 @@ using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.ViewModels;
 using PushSharp.Client;
 using Android.Support.V4.App;
+using System.Threading.Tasks;
+using Cirrious.CrossCore;
 
 [assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 //, ProtectionLevel = Android.Content.PM.Protection.Signature)]
@@ -87,9 +89,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         IUseServiceClient
     {
         public PushHandlerService()
-            : base(TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.GCM.SenderId)
+            : base(Mvx.Resolve<IAppSettings>().Data.GCM.SenderId)
         {
-
         }
 
         protected override void OnUnRegistered(Context context, string registrationId)
@@ -138,7 +139,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                             .FirstOrDefault();
 
                     CreateNotification(alert, "Tap to view...", orderId, isParingNotification);
+
+                    // For the case of a ride book in the future, LastOrderId is not assigned with the ride that has now became active
+                    SetLastOrderIdIfNecessary(orderId).FireAndForget();
                 }
+            }
+        }
+
+        private async Task SetLastOrderIdIfNecessary(Guid orderId)
+        {
+            var lastOrderId = UserCache.Get<string>("LastOrderId");
+
+            if (orderId != Guid.Empty && lastOrderId != orderId.ToString())
+            {
+                var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
+
+                if(order != null && order.Status == apcurium.MK.Common.Entity.OrderStatus.Created)
+                {
+                    UserCache.Set("LastOrderId", orderId.ToString()); // Need to be cached as a string because of a jit error on device
+                }
+            }
+        }
+
+        protected ICacheService UserCache
+        {
+            get
+            {
+                return TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache");
             }
         }
 

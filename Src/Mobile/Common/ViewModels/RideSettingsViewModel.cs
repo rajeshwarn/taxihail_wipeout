@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class RideSettingsViewModel: PageViewModel
     {
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
 	    private readonly IOrderWorkflowService _orderWorkflowService;
@@ -28,10 +29,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string _email;
 
 		public RideSettingsViewModel(IAccountService accountService, 
+			IVehicleTypeService vehicleTypeService,
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
 			IOrderWorkflowService orderWorkflowService)
 		{
+			this._vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
@@ -67,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
-                    var v = await _accountService.GetVehiclesList();
+					var v = await _vehicleTypeService.GetVehiclesList();
                     _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);

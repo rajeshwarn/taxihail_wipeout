@@ -227,23 +227,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
             catch
             {
-                try
-                {
-                    await Task.Delay(500);
-                    await _bookingService.CancelOrder(orderId);
-                    RemoveOrderFromList(orderId);
-                }
-                catch(Exception ex)
-                {
-                    Logger.LogError(ex);
-                    this.Services().Message
-                        .ShowMessage(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Localize["ErrorCancellingOrderTitle"])
-                        .FireAndForget();
-                }
+                // We need to retry the cancelling order, it might fail on first try.
+                RetryCancelOrder(orderId).FireAndForget();
             }
         }
 
-		private void RemoveOrderFromList(Guid orderId)
+	    private async Task RetryCancelOrder(Guid orderId)
+	    {
+	        try
+	        {
+	            await Task.Delay(500);
+	            await _bookingService.CancelOrder(orderId);
+	            RemoveOrderFromList(orderId);
+	        }
+	        catch (Exception ex)
+	        {
+	            Logger.LogError(ex);
+	            this.Services().Message
+	                .ShowMessage(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"],
+	                    this.Services().Localize["ErrorCancellingOrderTitle"])
+	                .FireAndForget();
+	        }
+	    }
+
+	    private void RemoveOrderFromList(Guid orderId)
 		{
 			var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
 

@@ -1,4 +1,5 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿using apcurium.MK.Common.Cryptography;
+namespace apcurium.MK.Common.Configuration.Impl
 {
 	public class MonerisPaymentSettings
 	{
@@ -15,9 +16,13 @@
 
 		public bool IsSandbox { get; set; }
 
+		[PropertyEncrypt]
         public string BaseHost { get; set; }
+
+		[PropertyEncrypt]
         public string SandboxHost { get; set; }
 
+		[PropertyEncrypt]
 		public string Host
 		{
 			get { return IsSandbox 
@@ -25,7 +30,10 @@
 					: BaseHost; }
 		}
 
+		[PropertyEncrypt]
 		public string StoreId { get; set; }
+
+		[PropertyEncrypt]
 		public string ApiToken { get; set; }
 	}
 }

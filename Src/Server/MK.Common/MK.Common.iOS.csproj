@@ -133,6 +133,7 @@
     <Compile Include="Extensions\EventExtension.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
+    <Compile Include="Extensions\LoggerExtensions.cs" />
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -193,6 +194,8 @@
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Enumeration\RateApplicationState.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
+    <Compile Include="Cryptography\SettingsEncryptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

@@ -84,6 +84,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\EncryptedConfigurationsRequest.cs" />
     <Compile Include="Requests\OrderCountForAppRatingRequest.cs" />
     <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\EncryptedPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
     <Compile Include="Requests\Payment\OverduePaymentRequest.cs" />
