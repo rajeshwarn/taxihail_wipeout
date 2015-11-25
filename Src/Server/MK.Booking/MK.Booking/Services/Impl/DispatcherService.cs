@@ -373,7 +373,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ETADistance = vehicle.ETADistance,
                 ETATime = vehicle.ETATime,
                 Rating = vehicle.Rating,
-                VehicleId = vehicle.VehicleId
+                VehicleId = vehicle.VehicleId.Trim() // Need to trim because IBS can return us junk trailling or leading spaces in that field...
             });
         }
 

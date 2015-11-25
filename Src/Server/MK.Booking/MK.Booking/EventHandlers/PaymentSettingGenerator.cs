@@ -32,16 +32,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
             using (var context = _contextFactory.Invoke())
             {
-                if (@event.ServerPaymentSettings.CompanyKey.HasValue())
-                {
-                    context.RemoveWhere<ServerPaymentSettings>(x => x.CompanyKey == @event.ServerPaymentSettings.CompanyKey);
-                }
-                else
-                {
-                    context.RemoveWhere<ServerPaymentSettings>(x => x.Id == AppConstants.CompanyId);
-                }
-
+                context.RemoveWhere<ServerPaymentSettings>(x => x.Id == AppConstants.CompanyId);
                 context.ServerPaymentSettings.Add(@event.ServerPaymentSettings);
+
                 context.SaveChanges();
             }
         }

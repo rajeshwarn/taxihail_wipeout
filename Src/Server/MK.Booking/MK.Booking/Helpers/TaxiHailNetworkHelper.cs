@@ -43,7 +43,16 @@ namespace apcurium.MK.Booking.Helpers
             _logger = logger;
         }
 
-        public bool FetchAndSaveNetworkPaymentSettings(string companyKey)
+        public bool IsConfiguredForCmtPayment(string companyKey)
+        {
+            var paymentSettings = FetchAndSaveNetworkPaymentSettings(companyKey);
+
+            return paymentSettings != null
+                && (paymentSettings.PaymentMode == PaymentMethod.Cmt
+                    || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt);
+        }
+
+        public ServerPaymentSettings FetchAndSaveNetworkPaymentSettings(string companyKey)
         {
             try
             {
@@ -94,15 +103,14 @@ namespace apcurium.MK.Booking.Helpers
                     ServerPaymentSettings = paymentSettings
                 });
 
-                return companyPaymentSettings.PaymentMode == PaymentMethod.Cmt
-                    || companyPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+                return paymentSettings;
             }
             catch (Exception ex)
             {
                 _logger.LogMessage(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
                 _logger.LogError(ex);
 
-                return false;
+                return null;
             }
         }
 
