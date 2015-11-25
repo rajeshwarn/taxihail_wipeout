@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using Foundation;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -19,6 +20,7 @@ using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
+	[Preserve]
     public class CompanyServiceClient : BaseServiceClient
     {
         private readonly ICacheService _cacheService;

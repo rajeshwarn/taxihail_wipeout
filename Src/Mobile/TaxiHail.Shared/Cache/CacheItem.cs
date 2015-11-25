@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         {
             Value = value;
         }
+
         [JsonConstructor]
         public CacheItem(T value, DateTime expireAt)
         {
