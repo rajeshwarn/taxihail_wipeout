@@ -29,8 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		{
 			try
 			{
-				var settings = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings");
-				return settings;
+				return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings");
 			}
 			catch (Exception ex)
 			{
