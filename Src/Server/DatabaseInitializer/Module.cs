@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
@@ -26,8 +24,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
-
-#endregion
+using MK.Common.Configuration;
 
 namespace DatabaseInitializer
 {
@@ -70,7 +67,11 @@ namespace DatabaseInitializer
             var orderNotificationProjectionSet = new MemoryProjectionSet<OrderNotificationDetail>(a => a.Id);
             var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
             var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
-            
+            var orderUserGpsProjectionSet = new MemoryProjectionSet<OrderUserGpsDetail>(a => a.OrderId);
+            var vehicleTypeProjectionSet = new MemoryProjectionSet<VehicleTypeDetail>(a => a.Id);
+            var orderPaymentProjectionSet = new MemoryProjectionSet<OrderPaymentDetail>(a => a.PaymentId);
+            var notificationSettingsProjectionSet = new MemoryProjectionSet<NotificationSettings>(a => a.Id);
+
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
@@ -81,12 +82,17 @@ namespace DatabaseInitializer
             container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
             container.RegisterInstance<AppSettingsProjection>(container.Resolve<AppSettingsEntityProjection>());
             container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderUserGpsDetail>>(orderUserGpsProjectionSet);
+            container.RegisterInstance<IProjectionSet<VehicleTypeDetail>>(vehicleTypeProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderPaymentDetail>>(orderPaymentProjectionSet);
+            container.RegisterInstance<IProjectionSet<NotificationSettings>>(notificationSettingsProjectionSet);
+
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
             container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
         }
 
-        public void RegisterEntityProjectionSets(UnityContainer container)
+        public void RegisterEntityProjectionSets(IUnityContainer container)
         {
             var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
@@ -97,6 +103,10 @@ namespace DatabaseInitializer
             var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
             var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var orderUserGpsProjectionSet = new EntityProjectionSet<OrderUserGpsDetail>(container.Resolve<Func<BookingDbContext>>());
+            var vehicleTypeProjectionSet = new EntityProjectionSet<VehicleTypeDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderPaymentProjectionSet = new EntityProjectionSet<OrderPaymentDetail>(container.Resolve<Func<BookingDbContext>>());
+            var notificationSettingsProjectionSet = new EntityProjectionSet<NotificationSettings>(container.Resolve<Func<ConfigurationDbContext>>());
 
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
@@ -108,6 +118,11 @@ namespace DatabaseInitializer
             container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
             container.RegisterInstance<AppSettingsProjection>(container.Resolve<AppSettingsEntityProjection>());
             container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderUserGpsDetail>>(orderUserGpsProjectionSet);
+            container.RegisterInstance<IProjectionSet<VehicleTypeDetail>>(vehicleTypeProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderPaymentDetail>>(orderPaymentProjectionSet);
+            container.RegisterInstance<IProjectionSet<NotificationSettings>>(notificationSettingsProjectionSet);
+
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
             container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());

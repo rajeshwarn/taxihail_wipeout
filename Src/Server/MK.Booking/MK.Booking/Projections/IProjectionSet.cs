@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Projections
         bool Exists(TIdentifier identifier);
         bool Exists(Func<TProjection, bool> predicate);
 
+        void Remove(TIdentifier identifier);
+
         IProjection<TProjection> GetProjection(TIdentifier identifier);
     }
 

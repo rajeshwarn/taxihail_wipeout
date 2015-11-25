@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.RemoveWhere<CreditCardDetails>(cc => @event.SourceId == cc.AccountId);
+                context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId);
                 context.SaveChanges();
             }
         }

@@ -244,6 +244,8 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public abstract bool Exists(Func<AddressDetailCollection, bool> predicate);
 
+        public abstract void Remove(Guid identifier);
+
         public abstract IProjection<AddressDetailCollection> GetProjection(Guid identifier);
 
         public abstract void Update(Func<AddressDetailCollection, bool> predicate, Action<AddressDetailCollection> action);
@@ -289,7 +291,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             throw new NotImplementedException();
         }
-        
+
+        public override void Remove(Guid identifier)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IProjection<AddressDetailCollection> GetProjection(Guid identifier)
         {
             return new ProjectionWrapper<AddressDetailCollection>(() =>
@@ -374,6 +381,11 @@ namespace apcurium.MK.Booking.EventHandlers
         }
 
         public override bool Exists(Func<AddressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Remove(Guid identifier)
         {
             throw new NotImplementedException();
         }

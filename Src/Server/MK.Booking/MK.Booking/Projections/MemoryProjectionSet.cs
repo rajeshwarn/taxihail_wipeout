@@ -44,6 +44,11 @@ namespace apcurium.MK.Booking.Projections
             return _cache.Select(x => x.Value).Where(predicate).Any();
         }
 
+        public void Remove(Guid identifier)
+        {
+            _cache.Remove(identifier);
+        }
+
         public IProjection<TProjection> GetProjection(Guid identifier)
         {
             return new ProjectionWrapper<TProjection>(() =>

@@ -60,6 +60,19 @@ namespace apcurium.MK.Booking.Projections
             }
         }
 
+        public void Remove(Guid identifier)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var toRemove = context.Set<TProjection>().Find(identifier);
+                if (toRemove != null)
+                {
+                    context.Set<TProjection>().Remove(toRemove);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             using (var context = _contextFactory.Invoke())

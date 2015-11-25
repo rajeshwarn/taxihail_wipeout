@@ -1,6 +1,5 @@
-using System;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
 
@@ -10,46 +9,38 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<VehicleTypeAddedUpdated>,
         IEventHandler<VehicleTypeDeleted>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<VehicleTypeDetail> _vehicleProjectionSet;
 
-        public VehicleTypeDetailGenerator(Func<BookingDbContext> contextFactory)
+        public VehicleTypeDetailGenerator(IProjectionSet<VehicleTypeDetail> vehicleProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _vehicleProjectionSet = vehicleProjectionSet;
         }
 
         public void Handle(VehicleTypeAddedUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_vehicleProjectionSet.Exists(@event.VehicleTypeId))
             {
-                var vehicleTypeDetail = context.Find<VehicleTypeDetail>(@event.VehicleTypeId);
-                if (vehicleTypeDetail == null)
+                _vehicleProjectionSet.Add(new VehicleTypeDetail
                 {
-                    vehicleTypeDetail = new VehicleTypeDetail { Id = @event.VehicleTypeId };
-                    vehicleTypeDetail.CreatedDate = @event.EventDate;
-                }
-                
-                vehicleTypeDetail.Name = @event.Name;
-                vehicleTypeDetail.LogoName = @event.LogoName;
-                vehicleTypeDetail.ReferenceDataVehicleId = @event.ReferenceDataVehicleId;
-                vehicleTypeDetail.MaxNumberPassengers = @event.MaxNumberPassengers;
-                vehicleTypeDetail.ReferenceNetworkVehicleTypeId = @event.ReferenceNetworkVehicleTypeId;
-                vehicleTypeDetail.IsWheelchairAccessible = @event.IsWheelchairAccessible;
-
-                context.Save(vehicleTypeDetail);
+                    Id = @event.VehicleTypeId,
+                    CreatedDate = @event.EventDate
+                });
             }
+
+            _vehicleProjectionSet.Update(@event.VehicleTypeId, vehicle =>
+            {
+                vehicle.Name = @event.Name;
+                vehicle.LogoName = @event.LogoName;
+                vehicle.ReferenceDataVehicleId = @event.ReferenceDataVehicleId;
+                vehicle.MaxNumberPassengers = @event.MaxNumberPassengers;
+                vehicle.ReferenceNetworkVehicleTypeId = @event.ReferenceNetworkVehicleTypeId;
+                vehicle.IsWheelchairAccessible = @event.IsWheelchairAccessible;
+            });
         }
 
         public void Handle(VehicleTypeDeleted @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var existing = context.Find<VehicleTypeDetail>(@event.VehicleTypeId);
-                if (existing != null)
-                {
-                    context.Set<VehicleTypeDetail>().Remove(existing);
-                    context.SaveChanges();
-                }
-            }
+            _vehicleProjectionSet.Remove(@event.VehicleTypeId);
         }
     }
 }

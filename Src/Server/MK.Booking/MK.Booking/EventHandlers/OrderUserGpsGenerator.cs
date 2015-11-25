@@ -1,35 +1,27 @@
-﻿using System;
-using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Events;
+﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class OrderUserGpsGenerator : IEventHandler<OrderCreated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
-        private readonly ILogger _logger;
+        private readonly IProjectionSet<OrderUserGpsDetail> _orderUserPositionProjectionSet;
 
-        public OrderUserGpsGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
+        public OrderUserGpsGenerator(IProjectionSet<OrderUserGpsDetail> orderUserPositionProjectionSet)
         {
-            _contextFactory = contextFactory;
-            _logger = logger;
+            _orderUserPositionProjectionSet = orderUserPositionProjectionSet;
         }
 
         public void Handle(OrderCreated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _orderUserPositionProjectionSet.Add(new OrderUserGpsDetail
             {
-                var info = new OrderUserGpsDetail
-                {
-                    OrderId = @event.SourceId,
-                    UserLatitude = @event.UserLatitude,
-                    UserLongitude = @event.UserLongitude
-                };
-                context.Save(info);
-            }
+                OrderId = @event.SourceId,
+                UserLatitude = @event.UserLatitude,
+                UserLongitude = @event.UserLongitude
+            });
         }
     }
 }

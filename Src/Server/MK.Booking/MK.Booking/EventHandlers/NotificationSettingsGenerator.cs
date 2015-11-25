@@ -1,32 +1,22 @@
-﻿using System;
-using apcurium.MK.Booking.Events;
-using apcurium.MK.Common.Configuration.Impl;
+﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using Infrastructure.Messaging.Handling;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class NotificationSettingsGenerator : IEventHandler<NotificationSettingsAddedOrUpdated>
     {
-        private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly IProjectionSet<NotificationSettings> _notificationSettingsProjectionSet;
 
-        public NotificationSettingsGenerator(Func<ConfigurationDbContext> contextFactory)
+        public NotificationSettingsGenerator(IProjectionSet<NotificationSettings> notificationSettingsProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _notificationSettingsProjectionSet = notificationSettingsProjectionSet;
         }
 
         public void Handle(NotificationSettingsAddedOrUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var notificationSettings = context.NotificationSettings.Find(@event.SourceId);
-                if (notificationSettings != null)
-                {
-                    context.NotificationSettings.Remove(notificationSettings);
-                }
-
-                context.NotificationSettings.Add(@event.NotificationSettings);
-                context.SaveChanges();
-            }
+            _notificationSettingsProjectionSet.AddOrReplace(@event.NotificationSettings);
         }
     }
 }
