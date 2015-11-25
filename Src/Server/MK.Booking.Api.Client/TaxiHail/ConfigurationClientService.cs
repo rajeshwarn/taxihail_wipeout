@@ -43,8 +43,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			var paymentSettings = new ClientPaymentSettings();
 			try
 			{
-				var result = await Client.GetAsync(new PaymentSettingsRequest());
-			    return result.ClientPaymentSettings;
+				var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments");
+
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
 
 				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
@@ -52,9 +52,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
-}
+			}	
 			return paymentSettings;
-			}
 		}
 	}
 }
