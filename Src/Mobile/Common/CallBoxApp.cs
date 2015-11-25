@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile
 			// In debug, we should allow all certs to allow us to debug issues that might arise.
 			ServicePointManager.ServerCertificateValidationCallback += (p1, p2, p3, p4) => true;
 #else
-			ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback
+			ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
 #endif
 
         }
