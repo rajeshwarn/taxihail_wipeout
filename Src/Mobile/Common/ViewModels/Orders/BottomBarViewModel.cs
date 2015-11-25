@@ -729,7 +729,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		private async Task PrevalidatePickupAndDestinationRequired(Action onValidated)
+		private async Task<bool> PrevalidatePickupAndDestinationRequired(Action onValidated)
 		{
 			try
 			{
@@ -742,22 +742,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					case OrderValidationError.OpenDestinationSelection:
 						// not really an error, but we stop the command from proceeding at this point
-						return;
+						return false;
 					case OrderValidationError.PickupAddressRequired:
 						ResetToInitialState.ExecuteIfPossible();
 						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
-						return;
+						return false;
 					case OrderValidationError.DestinationAddressRequired:
 						ResetToInitialState.ExecuteIfPossible();
 						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
-						return;
+						return false;
 				}
 			}
 			catch(Exception e)
 			{
 				Logger.LogError(e);
 				ResetToInitialState.ExecuteIfPossible();
+				return false;
 			}
+			return true;
 		}
 
         public ICommand Edit
@@ -908,12 +910,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
-						await PrevalidatePickupAndDestinationRequired(onValidated);
+						var success = await PrevalidatePickupAndDestinationRequired(onValidated);
 
-                        this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
+						if (success)
+						{
+                        	this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
                             this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
                             this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
                             this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
+						}
 
 	                    return;
                     }
