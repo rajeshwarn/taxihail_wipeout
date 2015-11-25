@@ -41,9 +41,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    {
                 response = await GetTerms();
 		    }
-		    catch (Exception)
+		    catch (Exception ex)
 		    {
-		        // Do nothing
+		        Logger.LogError(ex);
 		    }
 
 			if (response == null) 
@@ -63,10 +63,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			if (response.Updated || termsAcknowledged != "yes")
 			{				
 				_cacheService.Clear(ackKey);
-				actionToDoIfTrue.Invoke(new 
-					{
-						content = response.Content
-					}.ToJson(),
+				actionToDoIfTrue.Invoke(new
+				    {
+				        content = response.Content.ToJson()
+				    },
                     acknowledged =>
 					{
 						actionToDoOnReturn.Invoke(initialLocateUserValue, initialHintValue);

@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					(content, actionOnResult) => 
 					{
 						_isShowingTermsAndConditions = true;
-						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult);
+						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(content, actionOnResult);
 					},
 					(locateUser, defaultHintZoomLevel) => 
 					{

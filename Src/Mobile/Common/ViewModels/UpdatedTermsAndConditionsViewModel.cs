@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		public void Init(string content)
 		{
-			TermsAndConditions = content;
+			TermsAndConditions = content.Replace("\\n", "\n");
 		}
 
 		private string _termsAndConditions;
