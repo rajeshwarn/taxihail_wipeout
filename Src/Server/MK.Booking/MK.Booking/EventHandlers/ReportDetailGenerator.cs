@@ -42,21 +42,22 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<ManualRideLinqTripInfoUpdated>,
         IEventHandler<OriginalEtaLogged>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
         private readonly IProjectionSet<AccountDetail> _accountDetailProjectionSet;
         private readonly IProjectionSet<OrderReportDetail> _orderReportProjectionSet;
+        private readonly IProjectionSet<OrderPaymentDetail> _orderPaymentProjectionSet;
         private const int SQLPrimaryKeyViolationErrorNumber = 2627;
 
-        public ReportDetailGenerator(Func<BookingDbContext> contextFactory,
+        public ReportDetailGenerator(
             IProjectionSet<AccountDetail> accountDetailProjectionSet,
             IProjectionSet<OrderReportDetail> orderReportProjectionSet,
+            IProjectionSet<OrderPaymentDetail> orderPaymentProjectionSet,
             ILogger logger)
         {
-            _contextFactory = contextFactory;
             _logger = logger;
             _accountDetailProjectionSet = accountDetailProjectionSet;
             _orderReportProjectionSet = orderReportProjectionSet;
+            _orderPaymentProjectionSet = orderPaymentProjectionSet;
         }
 
         public void Handle(OrderCreated @event)
@@ -102,7 +103,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         UserAgent = @event.UserAgent,
                         Version = @event.ClientVersion
                     };
-
                 });
             };
 
@@ -268,17 +268,14 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardErrorThrown @event)
         {
-            using (var context = _contextFactory.Invoke())
+            var payment = _orderPaymentProjectionSet.GetProjection(@event.SourceId).Load();
+            if (payment != null)
             {
-                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
-                if (payment != null)
+                _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                 {
-                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
-                    {
-                        orderReport.Payment.IsCancelled = true;
-                        orderReport.Payment.Error = @event.Reason;
-                    });
-                }
+                    orderReport.Payment.IsCancelled = true;
+                    orderReport.Payment.Error = @event.Reason;
+                });
             }
         }
 
@@ -315,33 +312,26 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalExpressCheckoutPaymentCancelled @event)
         {
-            
-            using (var context = _contextFactory.Invoke())
+            var payment = _orderPaymentProjectionSet.GetProjection(@event.SourceId).Load();
+            if (payment != null)
             {
-                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
-                if (payment != null)
+                _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                 {
-                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
-                    {
-                        orderReport.Payment.IsCancelled = true;
-                    });
-                }
+                    orderReport.Payment.IsCancelled = true;
+                });
             }
         }
 
         public void Handle(PayPalPaymentCancellationFailed @event)
         {
-            using (var context = _contextFactory.Invoke())
+            var payment = _orderPaymentProjectionSet.GetProjection(@event.SourceId).Load();
+            if (payment != null)
             {
-                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
-                if (payment != null)
+                _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
                 {
-                    _orderReportProjectionSet.Update(payment.OrderId, orderReport =>
-                    {
-                        orderReport.Payment.Error = @event.Reason;
-                        orderReport.Payment.IsCancelled = true;
-                    });
-                }
+                    orderReport.Payment.Error = @event.Reason;
+                    orderReport.Payment.IsCancelled = true;
+                });
             }
         }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
@@ -54,7 +53,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                existingCreditCard.Label = @event.Label.ToString();
+                existingCreditCard.Label = @event.Label;
 
                 context.Save(existingCreditCard);
             }

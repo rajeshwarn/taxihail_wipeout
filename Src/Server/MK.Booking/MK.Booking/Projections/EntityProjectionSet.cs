@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -54,6 +52,14 @@ namespace apcurium.MK.Booking.Projections
             }
         }
 
+        public bool Exists(Func<TProjection, bool> predicate)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<TProjection>().Where(predicate).Any();
+            }
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             using (var context = _contextFactory.Invoke())
@@ -85,6 +91,5 @@ namespace apcurium.MK.Booking.Projections
         {
             return new EntityProjection<TProjection>(_contextFactory, identifier);
         }
-
     }
 }

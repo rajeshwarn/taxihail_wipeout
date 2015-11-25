@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
             var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName));
             var orderStatusDetailProjectionSet = new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName));
+            var orderPaymentDetailProjectionSet = new EntityProjectionSet<OrderPaymentDetail>(() => new BookingDbContext(DbName));
 
             PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName), new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
             OrderGenerator = new OrderGenerator(orderDetailProjectionSet, orderStatusDetailProjectionSet, 
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 new EntityProjectionSet<OrderManualRideLinqDetail>(() => new BookingDbContext(DbName)),
                 new EntityProjectionSet<OrderNotificationDetail>(() => new BookingDbContext(DbName)), 
                 new Logger(), new TestServerSettings());
-            CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), orderDetailProjectionSet, orderStatusDetailProjectionSet, new TestServerSettings());
+            CreditCardGenerator = new CreditCardPaymentDetailsGenerator(orderDetailProjectionSet, orderStatusDetailProjectionSet, orderPaymentDetailProjectionSet, new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
                 new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings(), null), new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName)));

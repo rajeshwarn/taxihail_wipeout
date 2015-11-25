@@ -120,38 +120,13 @@ namespace DatabaseInitializer
                 {
                     creatorDb.DropReadModelTables(param.MkWebConnectionString);
                     creatorDb.CreateReadModelTables(param.MkWebConnectionString);
-
-                    var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
-                    var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
-                    var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
-                    var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
-                    var orderPairingProjectionSet = new MemoryProjectionSet<OrderPairingDetail>(a => a.OrderId);
-                    var manualRideLinqProjectionSet = new MemoryProjectionSet<OrderManualRideLinqDetail>(a => a.OrderId);
-                    var orderNotificationProjectionSet = new MemoryProjectionSet<OrderNotificationDetail>(a => a.Id);
-                    var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
-                    var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
-
-                    var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
-                    container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderPairingDetail>>(orderPairingProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
-                    container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
-                    container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
-                    container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
-                    container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
-                        new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
-                    container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
-
+                    
+                    module.RegisterMemoryProjectionSets(container);
                     module.Init(container, connectionString, param.MkWebConnectionString);
 
                     creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
                     //UpdateSchema(param);
-
-
+                    
                     //if (param.ReuseTemporaryDb)
                     //{
                     //    // the idea behind reuse of temp db is that account doesn't have permission to rename db 
@@ -172,43 +147,20 @@ namespace DatabaseInitializer
                     stopwatch.Start();
                     Console.WriteLine("Dump projection to SQL database");
 
-                    new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(accountDetailProjectionSet);
-                    new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderDetailProjectionSet);
-                    new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderStatusProjectionSet);
-                    new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderReportProjectionSet);
-                    new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderPairingProjectionSet);
-                    new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(manualRideLinqProjectionSet);
-                    new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderNotificationProjectionSet);
-                    new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(orderRatingProjectionSet);
-                    new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(addressDetailProjectionSet);
+                    new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<AccountDetail>)container.Resolve<IProjectionSet<AccountDetail>>());
+                    new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderDetail>)container.Resolve<IProjectionSet<OrderDetail>>());
+                    new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderStatusDetail>)container.Resolve<IProjectionSet<OrderStatusDetail>>());
+                    new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderReportDetail>)container.Resolve<IProjectionSet<OrderReportDetail>>());
+                    new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderPairingDetail>)container.Resolve<IProjectionSet<OrderPairingDetail>>());
+                    new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderManualRideLinqDetail>)container.Resolve<IProjectionSet<OrderManualRideLinqDetail>>());
+                    new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderNotificationDetail>)container.Resolve<IProjectionSet<OrderNotificationDetail>>());
+                    new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((OrderRatingMemoryProjectionSet)container.Resolve<OrderRatingProjectionSet>());
+                    new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((AddressDetailMemoryProjectionSet)container.Resolve<AddressDetailProjectionSet>());
                     Console.WriteLine("End : " + stopwatch.Elapsed);
                 }
                 else
                 {
-                    var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderStatusProjectionSet = new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderPairingProjectionSet = new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var manualRideLinqProjectionSet = new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>());
-                    var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
-                    var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
-                    var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
-
-                    container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderPairingDetail>>(orderPairingProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
-                    container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
-                    container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
-                    container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
-                    container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
-                    container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
-                        new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
-                    container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
+                    module.RegisterEntityProjectionSets(container);
                     module.Init(container, connectionString, param.MkWebConnectionString);
 
                     // if DBs are re-used then it should already be created

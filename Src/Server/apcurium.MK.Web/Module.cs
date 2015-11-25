@@ -60,10 +60,9 @@ namespace apcurium.MK.Web
             var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderPairingProjectionSet = new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>());
             var manualRideLinqProjectionSet = new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>());
-            var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>()); 
+            var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
             var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
-            var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
 
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
@@ -73,7 +72,7 @@ namespace apcurium.MK.Web
             container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
             container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
-            container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
+            container.RegisterInstance<AppSettingsProjection>(container.Resolve<AppSettingsEntityProjection>());
             container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));

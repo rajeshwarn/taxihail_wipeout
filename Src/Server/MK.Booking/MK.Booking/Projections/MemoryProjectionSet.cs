@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -39,6 +37,11 @@ namespace apcurium.MK.Booking.Projections
         public bool Exists(Guid sourceId)
         {
             return _cache.ContainsKey(sourceId);
+        }
+
+        public bool Exists(Func<TProjection, bool> predicate)
+        {
+            return _cache.Select(x => x.Value).Where(predicate).Any();
         }
 
         public IProjection<TProjection> GetProjection(Guid identifier)

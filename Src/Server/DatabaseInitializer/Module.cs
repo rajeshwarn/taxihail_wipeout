@@ -1,11 +1,18 @@
 ﻿#region
 
+using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.Projections;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Events.Migration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
@@ -50,6 +57,60 @@ namespace DatabaseInitializer
             container.RegisterInstance<IEventsMigrator>(
                 new EventsMigrator(() => container.Resolve<EventStoreDbContext>(),
                                    new ServerSettings(() => new ConfigurationDbContext(oldConnectionString), container.Resolve<ILogger>())));
+        }
+
+        public void RegisterMemoryProjectionSets(IUnityContainer container)
+        {
+            var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
+            var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
+            var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
+            var orderReportProjectionSet = new MemoryProjectionSet<OrderReportDetail>(a => a.Id);
+            var orderPairingProjectionSet = new MemoryProjectionSet<OrderPairingDetail>(a => a.OrderId);
+            var manualRideLinqProjectionSet = new MemoryProjectionSet<OrderManualRideLinqDetail>(a => a.OrderId);
+            var orderNotificationProjectionSet = new MemoryProjectionSet<OrderNotificationDetail>(a => a.Id);
+            var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
+            var addressDetailProjectionSet = new AddressDetailMemoryProjectionSet();
+            
+            container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderPairingDetail>>(orderPairingProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
+            container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
+            container.RegisterInstance<AppSettingsProjection>(container.Resolve<AppSettingsEntityProjection>());
+            container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+            container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+            container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
+        }
+
+        public void RegisterEntityProjectionSets(UnityContainer container)
+        {
+            var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderDetailProjectionSet = new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderStatusProjectionSet = new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderPairingProjectionSet = new EntityProjectionSet<OrderPairingDetail>(container.Resolve<Func<BookingDbContext>>());
+            var manualRideLinqProjectionSet = new EntityProjectionSet<OrderManualRideLinqDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderNotificationProjectionSet = new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>());
+            var orderRatingProjectionSet = new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var addressDetailProjectionSet = new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+
+            container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderReportDetail>>(orderReportProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderPairingDetail>>(orderPairingProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderManualRideLinqDetail>>(manualRideLinqProjectionSet);
+            container.RegisterInstance<IProjectionSet<OrderNotificationDetail>>(orderNotificationProjectionSet);
+            container.RegisterInstance<AddressDetailProjectionSet>(addressDetailProjectionSet);
+            container.RegisterInstance<AppSettingsProjection>(container.Resolve<AppSettingsEntityProjection>());
+            container.RegisterInstance<OrderRatingProjectionSet>(orderRatingProjectionSet);
+            container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+            container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)

@@ -17,9 +17,10 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
 
         public given_a_view_model_generator()
         {
-            Sut = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName),
+            Sut = new CreditCardPaymentDetailsGenerator(
                 new EntityProjectionSet<OrderDetail>(() => new BookingDbContext(DbName)), 
                 new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName)), 
+                new EntityProjectionSet<OrderPaymentDetail>(() => new BookingDbContext(DbName)), 
                 new TestServerSettings());
         }
     }

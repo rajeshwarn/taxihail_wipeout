@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
 
             var accountDetailProjectionSet = new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName));
             var orderReportProjectionSet = new EntityProjectionSet<OrderReportDetail>(() => new BookingDbContext(DbName));
+            var orderPaymentProjectionSet = new EntityProjectionSet<OrderPaymentDetail>(() => new BookingDbContext(DbName));
 
             var accountDetailGenerator = new AccountDetailsGenerator(accountDetailProjectionSet);
 
@@ -65,9 +66,10 @@ namespace apcurium.MK.Booking.Test.ExportFixture
 
             accountDetailGenerator.Handle(new AccountConfirmed { SourceId = _accountId });
 
-            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName),
+            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(
                 accountDetailProjectionSet,
                 orderReportProjectionSet, 
+                orderPaymentProjectionSet,
                 new Logger());
         }
 

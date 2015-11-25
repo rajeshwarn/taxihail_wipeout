@@ -242,6 +242,8 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public abstract bool Exists(Guid identifier);
 
+        public abstract bool Exists(Func<AddressDetailCollection, bool> predicate);
+
         public abstract IProjection<AddressDetailCollection> GetProjection(Guid identifier);
 
         public abstract void Update(Func<AddressDetailCollection, bool> predicate, Action<AddressDetailCollection> action);
@@ -262,9 +264,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
             _cache.Add(projection.Identifier, projection);
         }
-
         
-
         public override void AddOrReplace(AddressDetailCollection projection)
         {
             if (projection == null)
@@ -285,8 +285,11 @@ namespace apcurium.MK.Booking.EventHandlers
             return _cache.ContainsKey(identifier);
         }
 
+        public override bool Exists(Func<AddressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
         
-
         public override IProjection<AddressDetailCollection> GetProjection(Guid identifier)
         {
             return new ProjectionWrapper<AddressDetailCollection>(() =>
@@ -368,6 +371,11 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 return context.Set<AddressDetails>().Any(x => x.AccountId == identifier);
             }
+        }
+
+        public override bool Exists(Func<AddressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override IProjection<AddressDetailCollection> GetProjection(Guid identifier)

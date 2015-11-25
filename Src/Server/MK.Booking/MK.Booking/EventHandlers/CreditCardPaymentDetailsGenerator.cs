@@ -20,75 +20,73 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PrepaidOrderPaymentInfoUpdated>,
         IEventHandler<RefundedOrderUpdated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
+        private readonly IProjectionSet<OrderPaymentDetail> _orderPaymentProjectionSet;
         private readonly Resources.Resources _resources;
 
-        public CreditCardPaymentDetailsGenerator(Func<BookingDbContext> contextFactory,
+        public CreditCardPaymentDetailsGenerator(
             IProjectionSet<OrderDetail> orderDetailProjectionSet,
             IProjectionSet<OrderStatusDetail> orderStatusProjectionSet,
+            IProjectionSet<OrderPaymentDetail> orderPaymentProjectionSet,
             IServerSettings serverSettings)
         {
-            _contextFactory = contextFactory;
             _orderDetailProjectionSet = orderDetailProjectionSet;
             _orderStatusProjectionSet = orderStatusProjectionSet;
+            _orderPaymentProjectionSet = orderPaymentProjectionSet;
+
             _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             @event.MigrateFees();
-            Guid orderId;
 
-            using (var context = _contextFactory.Invoke())
+            var payment = _orderPaymentProjectionSet.GetProjection(@event.SourceId).Load();
+            if (payment == null)
             {
-                var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null)
-                {
-                    throw new InvalidOperationException("Payment not found");
-                }
+                throw new InvalidOperationException("Payment not found");
+            }
 
-                orderId = payment.OrderId;
-
-                payment.TransactionId = @event.TransactionId;
-                payment.AuthorizationCode = @event.AuthorizationCode;
-                payment.IsCompleted = true;
-                payment.Amount = @event.Amount;
-                payment.Meter = @event.Meter;
-                payment.Tax = @event.Tax;
-                payment.Tip = @event.Tip;
-                payment.Toll = @event.Toll;
-                payment.Surcharge = @event.Surcharge;
-                payment.BookingFees = @event.BookingFees;
-                payment.IsCancelled = false;
-                payment.FeeType = @event.FeeType;
-                payment.Error = null;
+            _orderPaymentProjectionSet.Update(@event.SourceId, orderPaymentDetail =>
+            {
+                orderPaymentDetail.TransactionId = @event.TransactionId;
+                orderPaymentDetail.AuthorizationCode = @event.AuthorizationCode;
+                orderPaymentDetail.IsCompleted = true;
+                orderPaymentDetail.Amount = @event.Amount;
+                orderPaymentDetail.Meter = @event.Meter;
+                orderPaymentDetail.Tax = @event.Tax;
+                orderPaymentDetail.Tip = @event.Tip;
+                orderPaymentDetail.Toll = @event.Toll;
+                orderPaymentDetail.Surcharge = @event.Surcharge;
+                orderPaymentDetail.BookingFees = @event.BookingFees;
+                orderPaymentDetail.IsCancelled = false;
+                orderPaymentDetail.FeeType = @event.FeeType;
+                orderPaymentDetail.Error = null;
 
                 // Update payment details after settling an overdue payment
                 if (@event.NewCardToken.HasValue())
                 {
-                    payment.CardToken = @event.NewCardToken;
+                    orderPaymentDetail.CardToken = @event.NewCardToken;
                 }
+            });
 
-                var orderExists = _orderDetailProjectionSet.Exists(payment.OrderId);
+            var orderExists = _orderDetailProjectionSet.Exists(payment.OrderId);
 
-                // Prevents NullReferenceException caused with web prepayed while running database initializer.
-                if (!orderExists && @event.IsForPrepaidOrder)
+            // Prevents NullReferenceException caused with web prepayed while running database initializer.
+            if (!orderExists && @event.IsForPrepaidOrder)
+            {
+                _orderDetailProjectionSet.Add(new OrderDetail
                 {
-                    _orderDetailProjectionSet.Add(new OrderDetail
-                    {
-                        Id = payment.OrderId,
-                        //Following values will be set to the correct date and time when that event is played.
-                        PickupDate = @event.EventDate,
-                        CreatedDate = @event.EventDate
-                    });
-                }
-                context.SaveChanges();
+                    Id = payment.OrderId,
+                    //Following values will be set to the correct date and time when that event is played.
+                    PickupDate = @event.EventDate,
+                    CreatedDate = @event.EventDate
+                });
             }
 
-            string clientLanguageCode = "en";
-            _orderDetailProjectionSet.Update(orderId, order =>
+            var clientLanguageCode = "en";
+            _orderDetailProjectionSet.Update(payment.OrderId, order =>
             {
                 clientLanguageCode = order.ClientLanguageCode;
 
@@ -116,86 +114,73 @@ namespace apcurium.MK.Booking.EventHandlers
 
             if (!@event.IsForPrepaidOrder)
             {
-                _orderStatusProjectionSet.Update(orderId, orderStatus =>
+                _orderStatusProjectionSet.Update(payment.OrderId, orderStatus =>
                 {
                     orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
                     orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", clientLanguageCode);
                 });   
             }
-
         }
 
         public void Handle(CreditCardPaymentInitiated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _orderPaymentProjectionSet.Add(new OrderPaymentDetail
             {
-                context.Save(new OrderPaymentDetail
-                {
-                    PaymentId = @event.SourceId,
-                    PreAuthorizedAmount = @event.Amount,
-                    FirstPreAuthTransactionId = @event.TransactionId,
-                    TransactionId = @event.TransactionId,
-                    OrderId = @event.OrderId,
-                    CardToken = @event.CardToken,
-                    IsCompleted = false,
-                    Provider = @event.Provider,
-                    Type = @event.Provider == PaymentProvider.PayPal
-                        ? PaymentType.PayPal
-                        : PaymentType.CreditCard,
-                    CompanyKey = @event.CompanyKey
-                });
-            }
+                PaymentId = @event.SourceId,
+                PreAuthorizedAmount = @event.Amount,
+                FirstPreAuthTransactionId = @event.TransactionId,
+                TransactionId = @event.TransactionId,
+                OrderId = @event.OrderId,
+                CardToken = @event.CardToken,
+                IsCompleted = false,
+                Provider = @event.Provider,
+                Type = @event.Provider == PaymentProvider.PayPal
+                    ? PaymentType.PayPal
+                    : PaymentType.CreditCard,
+                CompanyKey = @event.CompanyKey
+            });
         }
 
         public void Handle(CreditCardErrorThrown @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_orderPaymentProjectionSet.Exists(@event.SourceId))
             {
-                var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
-                if (payment == null)
-                {
-                    throw new InvalidOperationException("Payment not found"); 
-                }
+                throw new InvalidOperationException("Payment not found");
+            }
 
+            _orderPaymentProjectionSet.Update(@event.SourceId, payment =>
+            {
                 payment.IsCancelled = true;
                 payment.Error = @event.Reason;
-
-                context.Save(payment);
-            }
+            });
         }
 
         public void Handle(PrepaidOrderPaymentInfoUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _orderPaymentProjectionSet.Add(new OrderPaymentDetail
             {
-                context.Save(new OrderPaymentDetail
-                {
-                    PaymentId = @event.SourceId,
-                    Amount = @event.Amount,
-                    Meter = @event.Meter,
-                    Tax = @event.Tax,
-                    Tip = @event.Tip,
-                    OrderId = @event.OrderId,
-                    TransactionId = @event.TransactionId,
-                    Provider = PaymentProvider.PayPal,
-                    Type = PaymentType.PayPal,
-                    IsCompleted = true
-                });
-            }
+                PaymentId = @event.SourceId,
+                Amount = @event.Amount,
+                Meter = @event.Meter,
+                Tax = @event.Tax,
+                Tip = @event.Tip,
+                OrderId = @event.OrderId,
+                TransactionId = @event.TransactionId,
+                Provider = PaymentProvider.PayPal,
+                Type = PaymentType.PayPal,
+                IsCompleted = true
+            });
         }
 
         public void Handle(RefundedOrderUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (_orderPaymentProjectionSet.Exists(x => x.OrderId == @event.SourceId))
             {
-                var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
-                if (payment != null)
+                _orderPaymentProjectionSet.Update(x => x.OrderId == @event.SourceId, payment =>
                 {
                     payment.IsRefunded = @event.IsSuccessful;
                     payment.Error = @event.Message;
-
-                    context.Save(payment);
-                }
+                });
             }
         }
     }
