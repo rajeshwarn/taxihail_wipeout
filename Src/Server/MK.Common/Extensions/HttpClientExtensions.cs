@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MK.Common.Exceptions;
 using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Common.Extensions
@@ -101,7 +102,14 @@ namespace apcurium.MK.Common.Extensions
             {
                 onError(result);
 
-                result.EnsureSuccessStatusCode();
+                var body = await result.Content.ReadAsStringAsync();
+
+                throw new WebServiceException(result.ReasonPhrase)
+                {
+                    StatusCode = (int)result.StatusCode,
+                    StatusDescription = result.ReasonPhrase,
+                    ResponseBody = body
+                };
             }
 
             if (onSuccess != null)
@@ -123,7 +131,15 @@ namespace apcurium.MK.Common.Extensions
                     onError(result);
                 }
 
-                result.EnsureSuccessStatusCode();
+                var body = await result.Content.ReadAsStringAsync();
+
+                throw new WebServiceException(result.ReasonPhrase)
+                {
+                    StatusCode = (int)result.StatusCode,
+                    StatusDescription = result.ReasonPhrase,
+                    ResponseBody = body
+                };
+                
             }
 
             if (onSuccess != null)
