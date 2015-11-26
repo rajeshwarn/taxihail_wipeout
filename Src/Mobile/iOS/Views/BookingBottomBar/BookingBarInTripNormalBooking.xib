@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -15,24 +15,45 @@
                     <rect key="frame" x="8" y="5" width="223" height="46"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpC-k7-T0P" userLabel="Cancel" customClass="FlatButton">
-                            <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                            <rect key="frame" x="0.0" y="0.0" width="53" height="46"/>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azG-FP-mRK" userLabel="Edit tip" customClass="FlatButton">
-                            <rect key="frame" x="116" y="0.0" width="107" height="46"/>
-                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DmF-14-hbA" userLabel="Unpair Edit Tip View" customClass="HideableView">
+                            <rect key="frame" x="61" y="0.0" width="162" height="46"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16w-8K-rPD" userLabel="Unpair" customClass="FlatButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="77" height="46"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPf-D8-8A6" userLabel="Edit Tip" customClass="FlatButton">
+                                    <rect key="frame" x="85" y="0.0" width="77" height="46"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="mPf-D8-8A6" firstAttribute="leading" secondItem="16w-8K-rPD" secondAttribute="trailing" constant="8" id="3tI-al-6Lb"/>
+                                <constraint firstItem="mPf-D8-8A6" firstAttribute="width" secondItem="16w-8K-rPD" secondAttribute="width" id="4Ls-O1-y87"/>
+                                <constraint firstItem="16w-8K-rPD" firstAttribute="leading" secondItem="DmF-14-hbA" secondAttribute="leading" id="SrA-HW-LzE"/>
+                                <constraint firstAttribute="trailing" secondItem="mPf-D8-8A6" secondAttribute="trailing" id="ZtT-eD-gnX"/>
+                                <constraint firstAttribute="trailing" secondItem="16w-8K-rPD" secondAttribute="trailing" priority="500" id="fsv-dE-w6O"/>
+                                <constraint firstItem="mPf-D8-8A6" firstAttribute="leading" secondItem="DmF-14-hbA" secondAttribute="leading" priority="500" id="j6P-eb-bgK"/>
+                                <constraint firstItem="mPf-D8-8A6" firstAttribute="top" secondItem="DmF-14-hbA" secondAttribute="top" id="kpT-6e-okb"/>
+                                <constraint firstAttribute="bottom" secondItem="16w-8K-rPD" secondAttribute="bottom" id="quK-CJ-DVu"/>
+                                <constraint firstAttribute="bottom" secondItem="mPf-D8-8A6" secondAttribute="bottom" id="r1i-hS-Lbu"/>
+                                <constraint firstItem="16w-8K-rPD" firstAttribute="top" secondItem="DmF-14-hbA" secondAttribute="top" id="uut-FD-vo2"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="azG-FP-mRK" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="JZ2-en-r13"/>
-                        <constraint firstAttribute="bottom" secondItem="azG-FP-mRK" secondAttribute="bottom" id="JbM-DS-pzE"/>
-                        <constraint firstItem="azG-FP-mRK" firstAttribute="leading" secondItem="lpC-k7-T0P" secondAttribute="trailing" constant="8" id="Tu5-mK-V3r"/>
-                        <constraint firstAttribute="trailing" secondItem="lpC-k7-T0P" secondAttribute="trailing" priority="500" id="X63-H6-Wco"/>
-                        <constraint firstItem="lpC-k7-T0P" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" id="ZMc-Jt-lP8"/>
-                        <constraint firstItem="lpC-k7-T0P" firstAttribute="width" secondItem="azG-FP-mRK" secondAttribute="width" id="elt-GH-oRG"/>
-                        <constraint firstItem="lpC-k7-T0P" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="ipV-bb-YJl"/>
-                        <constraint firstAttribute="bottom" secondItem="lpC-k7-T0P" secondAttribute="bottom" id="j5h-H9-C6Y"/>
-                        <constraint firstItem="azG-FP-mRK" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" priority="500" id="jYW-Ol-su9"/>
-                        <constraint firstAttribute="trailing" secondItem="azG-FP-mRK" secondAttribute="trailing" id="tyi-Zz-gwU"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" id="AXs-TU-86o"/>
+                        <constraint firstAttribute="bottom" secondItem="lpC-k7-T0P" secondAttribute="bottom" id="GtZ-qZ-OuS"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="width" secondItem="DmF-14-hbA" secondAttribute="width" multiplier="0.33" id="JGs-Pw-un1"/>
+                        <constraint firstAttribute="trailing" secondItem="lpC-k7-T0P" secondAttribute="trailing" priority="500" id="XhT-Ko-MJc"/>
+                        <constraint firstItem="DmF-14-hbA" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="YLs-mC-VVs"/>
+                        <constraint firstAttribute="bottom" secondItem="DmF-14-hbA" secondAttribute="bottom" id="YPQ-z7-Toq"/>
+                        <constraint firstItem="DmF-14-hbA" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" priority="750" id="Ybj-eU-qNn"/>
+                        <constraint firstAttribute="trailing" secondItem="DmF-14-hbA" secondAttribute="trailing" id="jrd-ro-aqd"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="l2H-Wf-eWt"/>
+                        <constraint firstItem="DmF-14-hbA" firstAttribute="leading" secondItem="lpC-k7-T0P" secondAttribute="trailing" constant="8" id="zE6-pV-QPf"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFS-Kl-7O8" userLabel="Call" customClass="FlatButton">
@@ -57,8 +78,10 @@
             <connections>
                 <outlet property="buttonCall" destination="pFS-Kl-7O8" id="M8Q-9L-4TK"/>
                 <outlet property="buttonCancel" destination="lpC-k7-T0P" id="WkN-Rl-gDW"/>
-                <outlet property="buttonEditTip" destination="azG-FP-mRK" id="VwW-GC-Wpi"/>
+                <outlet property="buttonEditTip" destination="mPf-D8-8A6" id="2e8-m6-A68"/>
+                <outlet property="buttonUnpair" destination="16w-8K-rPD" id="wuz-sQ-PR0"/>
                 <outlet property="viewCancelEditTip" destination="FlO-7I-ISD" id="pyF-Sq-vYT"/>
+                <outlet property="viewUnpairEditTip" destination="DmF-14-hbA" id="s2f-tf-qzk"/>
             </connections>
         </view>
     </objects>
