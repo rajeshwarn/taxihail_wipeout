@@ -129,7 +129,9 @@ namespace apcurium.MK.Booking.Jobs
 
             _logger.LogMessage("Running order update" );
 
-            var hasBailed = PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
+            var hasDriverBailed = HasDriverBailed(orderStatusDetail, orderFromIbs);
+
+            PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, hasDriverBailed);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
@@ -143,7 +145,7 @@ namespace apcurium.MK.Booking.Jobs
                 Surcharge = orderFromIbs.Surcharge
             });
 
-            if (hasBailed)
+            if (hasDriverBailed)
             {
                 Task.Run(() =>
                 {
@@ -302,22 +304,25 @@ namespace apcurium.MK.Booking.Jobs
             _logger.LogMessage("Trip for order {0} is in progress. Nothing to update.", orderstatusDetail.OrderId);
         }
 
-        private bool PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        private bool HasDriverBailed(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        {
+            // Detect if a bail occurred
+            return orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
+        }
+
+        private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, bool hasDriverBailed)
         {
             if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Bailed
                 && ibsOrderInfo.IsCanceled)
             {
                 // Do nothing, yo
-                return false;
+                return;
             }
-
-            // Detect if a bail occurred
-            var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-                && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
 
-            orderStatusDetail.IBSStatusId =                     hasBailed ? VehicleStatuses.Common.Bailed : ibsOrderInfo.Status;
+            orderStatusDetail.IBSStatusId =                     hasDriverBailed ? VehicleStatuses.Common.Bailed : ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
             orderStatusDetail.DriverInfos.MobilePhone =         ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
@@ -339,9 +344,7 @@ namespace apcurium.MK.Booking.Jobs
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
 
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
-
-            return hasBailed;
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasDriverBailed);
         }
 
         private IBSOrderResult DispatchAgainIfDriverBailed(Guid orderId, string market, string driverIdWhoBailed)

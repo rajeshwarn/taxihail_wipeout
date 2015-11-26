@@ -193,6 +193,11 @@
         },
         
         onStatusChanged: function (model, status) {
+            if (model.driverHasBailed()) {
+                // Clear assigned vehicle pin if driver has bailed
+                model.set('vehicleLongitude', null);
+            }
+
             if(model.isCompleted()){
 
                 // Prevent further updated

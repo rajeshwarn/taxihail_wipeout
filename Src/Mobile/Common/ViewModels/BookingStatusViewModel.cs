@@ -513,7 +513,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public TaxiLocation TaxiLocation
-		{
+        {
 			get { return _taxiLocation; }
 			set
 			{
@@ -934,7 +934,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				cancellationToken.ThrowIfCancellationRequested();
 
-				if (status.VehicleNumber != null)
+                if (status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
 				}
@@ -989,7 +989,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				cancellationToken.ThrowIfCancellationRequested();
 				if (Settings.ShowEta
 				    && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
-				    && (hasVehicleInfo || isUsingGeoServices))
+                    && (hasVehicleInfo || isUsingGeoServices))
 				{
 					long? eta = null;
 
@@ -1096,8 +1096,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return;
 				}
 
-				//This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
-				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
+				// This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Bailed)
+                    || VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
 				}
