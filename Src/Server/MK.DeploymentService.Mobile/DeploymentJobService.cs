@@ -633,11 +633,15 @@ namespace MK.DeploymentService.Mobile
                     if (File.Exists (targetDir))
                         File.Delete (targetDir);
                     File.Copy (apkBlackBerryFile, targetDir);
+
+                    var barFile = fileInfo.Name.Replace(".apk",".bar");
+                    _builder.SignAndGenerateBlackBerryProject(bbToolsPath, barFile);
+
                 } else {
                     throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
-                var barFile = apkBlackBerryFile.Replace(".apk",".bar");
-                _builder.SignAndGenerateBlackBerryProject(bbToolsPath, barFile);
+
+
             }
 
 		    if (!_job.CallBox)
