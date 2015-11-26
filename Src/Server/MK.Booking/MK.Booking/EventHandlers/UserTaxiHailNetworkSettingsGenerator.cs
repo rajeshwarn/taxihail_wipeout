@@ -5,7 +5,8 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class UserTaxiHailNetworkSettingsGenerator : IEventHandler<UserTaxiHailNetworkSettingsAddedOrUpdated>
+    public class UserTaxiHailNetworkSettingsGenerator : 
+        IEventHandler<UserTaxiHailNetworkSettingsAddedOrUpdated>
     {
         private readonly IProjectionSet<UserTaxiHailNetworkSettings> _userTaxiHailNetworkSettingsProjectionSet;
 

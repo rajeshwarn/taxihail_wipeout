@@ -1,11 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,16 +32,11 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
-using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
-using apcurium.MK.Booking.EventHandlers;
 using System.Diagnostics;
 using apcurium.MK.Booking.Projections;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Common.Reflection;
-
-#endregion
 
 namespace DatabaseInitializer
 {
@@ -165,6 +157,13 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<CompanyDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<CompanyDetail>)container.Resolve<IProjectionSet<CompanyDetail>>());
                     new EntityProjectionSet<FeesDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<FeesDetail>)container.Resolve<IProjectionSet<FeesDetail>>());
                     new AccountIbsDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((AccountIbsDetailMemoryProjectionSet)container.Resolve<AccountIbsDetailProjectionSet>());
+                    new EntityProjectionSet<PromotionDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<PromotionDetail>)container.Resolve<IProjectionSet<PromotionDetail>>());
+                    new EntityProjectionSet<PromotionUsageDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<PromotionUsageDetail>)container.Resolve<IProjectionSet<PromotionUsageDetail>>());
+                    new PromotionProgressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((PromotionProgressDetailMemoryProjectionSet)container.Resolve<PromotionProgressDetailProjectionSet>());
+                    new EntityProjectionSet<RuleDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<RuleDetail>)container.Resolve<IProjectionSet<RuleDetail>>());
+                    new EntityProjectionSet<PayPalAccountDetails>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<PayPalAccountDetails>)container.Resolve<IProjectionSet<PayPalAccountDetails>>());
+                    new EntityProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>)container.Resolve<IProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>>());
+                    new EntityProjectionSet<OverduePaymentDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OverduePaymentDetail>)container.Resolve<IProjectionSet<OverduePaymentDetail>>());
 
                     Console.WriteLine("End : " + stopwatch.Elapsed);
                 }

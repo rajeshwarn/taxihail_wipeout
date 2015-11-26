@@ -1,8 +1,6 @@
-﻿using System;
-using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Events;
+﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
@@ -11,42 +9,35 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<PayPalAccountDetails> _paypalAccountProjectionSet;
 
-        public PaypalAccountDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public PaypalAccountDetailsGenerator(IProjectionSet<PayPalAccountDetails> paypalAccountProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _paypalAccountProjectionSet = paypalAccountProjectionSet;
         }
 
         public void Handle(PayPalAccountLinked @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_paypalAccountProjectionSet.Exists(@event.SourceId))
             {
-                var payPalAccountDetails = context.Find<PayPalAccountDetails>(@event.SourceId);
-                if (payPalAccountDetails == null)
+                _paypalAccountProjectionSet.Add(new PayPalAccountDetails
                 {
-                    context.Save(new PayPalAccountDetails
-                    {
-                        AccountId = @event.SourceId,
-                        EncryptedRefreshToken = @event.EncryptedRefreshToken
-                    });
-                }
-                else
+                    AccountId = @event.SourceId,
+                    EncryptedRefreshToken = @event.EncryptedRefreshToken
+                });
+            }
+            else
+            {
+                _paypalAccountProjectionSet.Update(@event.SourceId, payPalAccountDetails =>
                 {
                     payPalAccountDetails.EncryptedRefreshToken = @event.EncryptedRefreshToken;
-                }
-
-                context.SaveChanges();
+                });
             }
         }
 
         public void Handle(PayPalAccountUnlinked @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
-                context.SaveChanges();
-            }
+            _paypalAccountProjectionSet.Remove(x => x.AccountId == @event.SourceId);
         }
     }
 }

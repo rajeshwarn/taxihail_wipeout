@@ -8,13 +8,9 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services.Impl;
-using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -32,8 +28,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
         protected readonly CreditCardPaymentDetailsGenerator CreditCardGenerator;
         protected readonly OrderGenerator OrderGenerator;
         protected readonly PromotionTriggerGenerator TriggerSut;
-
-
+        
         public given_a_promotion_view_model_generator()
         {
             var bus = new Mock<ICommandBus>();
@@ -46,7 +41,10 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var orderStatusDetailProjectionSet = new EntityProjectionSet<OrderStatusDetail>(() => new BookingDbContext(DbName));
             var orderPaymentDetailProjectionSet = new EntityProjectionSet<OrderPaymentDetail>(() => new BookingDbContext(DbName));
 
-            PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName), new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
+            PromoGenerator = new PromotionDetailGenerator(new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<PromotionDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<PromotionUsageDetail>(() => new BookingDbContext(DbName)),
+                new PromotionProgressDetailEntityProjectionSet(() => new BookingDbContext(DbName)));
             OrderGenerator = new OrderGenerator(orderDetailProjectionSet, orderStatusDetailProjectionSet, 
                 new OrderRatingEntityProjectionSet(() => new BookingDbContext(DbName)), 
                 new EntityProjectionSet<OrderPairingDetail>(() => new BookingDbContext(DbName)),

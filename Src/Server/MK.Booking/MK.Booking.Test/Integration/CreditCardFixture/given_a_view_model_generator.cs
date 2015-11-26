@@ -1,13 +1,11 @@
-﻿#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.Projections;
+using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging;
 using Moq;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
 {
@@ -25,7 +23,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new CreditCardDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new CreditCardDetailsGenerator(new EntityProjectionSet<CreditCardDetails>(() => new BookingDbContext(DbName)));
         }
     }
 }

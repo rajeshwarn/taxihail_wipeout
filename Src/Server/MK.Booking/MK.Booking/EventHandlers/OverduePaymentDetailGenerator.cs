@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlTypes;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
@@ -12,43 +12,42 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OverduePaymentLogged>,
         IEventHandler<OverduePaymentSettled>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<OverduePaymentDetail> _overduePaymentProjectionSet;
 
-        public OverduePaymentDetailGenerator(Func<BookingDbContext> contextFactory)
+        public OverduePaymentDetailGenerator(IProjectionSet<OverduePaymentDetail> overduePaymentProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _overduePaymentProjectionSet = overduePaymentProjectionSet;
         }
 
         public void Handle(OverduePaymentLogged @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_overduePaymentProjectionSet.Exists(@event.OrderId))
             {
-                var overduePayment = context.Find<OverduePaymentDetail>(@event.OrderId);
-                if (overduePayment == null)
+                DateTime? transactionDate = null;
+
+                // Make sure transaction date is a valid SQL date time
+                if (@event.TransactionDate.HasValue
+                    && @event.TransactionDate.Value > SqlDateTime.MinValue
+                    && @event.TransactionDate.Value < SqlDateTime.MaxValue)
                 {
-                    DateTime? transactionDate = null;
-
-                    // Make sure transaction date is a valid SQL date time
-                    if (@event.TransactionDate.HasValue
-                        && @event.TransactionDate.Value > SqlDateTime.MinValue
-                        && @event.TransactionDate.Value < SqlDateTime.MaxValue)
-                    {
-                        transactionDate = @event.TransactionDate.Value;
-                    }
-
-                    context.Save(new OverduePaymentDetail
-                    {
-                        OrderId = @event.OrderId,
-                        IBSOrderId = @event.IBSOrderId,
-                        AccountId = @event.SourceId,
-                        OverdueAmount = @event.Amount,
-                        TransactionId = @event.TransactionId,
-                        TransactionDate = transactionDate,
-                        ContainBookingFees = @event.FeeType == FeeTypes.Booking,
-                        ContainStandaloneFees = @event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow
-                    });
+                    transactionDate = @event.TransactionDate.Value;
                 }
-                else
+
+                _overduePaymentProjectionSet.Add(new OverduePaymentDetail
+                {
+                    OrderId = @event.OrderId,
+                    IBSOrderId = @event.IBSOrderId,
+                    AccountId = @event.SourceId,
+                    OverdueAmount = @event.Amount,
+                    TransactionId = @event.TransactionId,
+                    TransactionDate = transactionDate,
+                    ContainBookingFees = @event.FeeType == FeeTypes.Booking,
+                    ContainStandaloneFees = @event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow
+                });
+            }
+            else
+            {
+                _overduePaymentProjectionSet.Update(@event.OrderId, overduePayment =>
                 {
                     if (@event.FeeType != FeeTypes.Booking)
                     {
@@ -67,22 +66,16 @@ namespace apcurium.MK.Booking.EventHandlers
                         || @event.FeeType == FeeTypes.NoShow; // is such a thing even possible? I don't think so
 
                     overduePayment.OverdueAmount += @event.Amount;
-                    context.Save(overduePayment);
-                }
+                });
             }
         }
 
         public void Handle(OverduePaymentSettled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _overduePaymentProjectionSet.Update(@event.OrderId, overduePayment =>
             {
-                var overduePayment = context.Find<OverduePaymentDetail>(@event.OrderId);
-                if (overduePayment != null)
-                {
-                    overduePayment.IsPaid = true;
-                    context.Save(overduePayment);
-                }
-            }
+                overduePayment.IsPaid = true;
+            });
         }
     }
 }

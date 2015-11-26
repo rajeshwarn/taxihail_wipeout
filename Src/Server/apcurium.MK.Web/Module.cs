@@ -73,6 +73,13 @@ namespace apcurium.MK.Web
             var companyProjectionSet = new EntityProjectionSet<CompanyDetail>(container.Resolve<Func<BookingDbContext>>());
             var feesProjectionSet = new EntityProjectionSet<FeesDetail>(container.Resolve<Func<BookingDbContext>>());
             var accountIbsDetailProjectionSet = new AccountIbsDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var promoProjectionSet = new EntityProjectionSet<PromotionDetail>(container.Resolve<Func<BookingDbContext>>());
+            var promoUsageProjectionSet = new EntityProjectionSet<PromotionUsageDetail>(container.Resolve<Func<BookingDbContext>>());
+            var promoProgressProjectionSet = new PromotionProgressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
+            var ruleProjectionSet = new EntityProjectionSet<RuleDetail>(container.Resolve<Func<BookingDbContext>>());
+            var paypalAccountProjectionSet = new EntityProjectionSet<PayPalAccountDetails>(container.Resolve<Func<BookingDbContext>>());
+            var creditCardProjectionSet = new EntityProjectionSet<CreditCardDetails>(container.Resolve<Func<BookingDbContext>>());
+            var overduePaymentProjectionSet = new EntityProjectionSet<OverduePaymentDetail>(container.Resolve<Func<BookingDbContext>>());
 
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
@@ -93,6 +100,13 @@ namespace apcurium.MK.Web
             container.RegisterInstance<IProjectionSet<CompanyDetail>>(companyProjectionSet);
             container.RegisterInstance<IProjectionSet<FeesDetail>>(feesProjectionSet);
             container.RegisterInstance<AccountIbsDetailProjectionSet>(accountIbsDetailProjectionSet);
+            container.RegisterInstance<IProjectionSet<PromotionDetail>>(promoProjectionSet);
+            container.RegisterInstance<IProjectionSet<PromotionUsageDetail>>(promoUsageProjectionSet);
+            container.RegisterInstance<PromotionProgressDetailProjectionSet>(promoProgressProjectionSet);
+            container.RegisterInstance<IProjectionSet<RuleDetail>>(ruleProjectionSet);
+            container.RegisterInstance<IProjectionSet<PayPalAccountDetails>>(paypalAccountProjectionSet);
+            container.RegisterInstance<IProjectionSet<CreditCardDetails>>(creditCardProjectionSet);
+            container.RegisterInstance<IProjectionSet<OverduePaymentDetail>>(overduePaymentProjectionSet);
 
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));

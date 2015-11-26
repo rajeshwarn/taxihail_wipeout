@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Database;
+﻿using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
@@ -20,172 +18,149 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<UserAddedToPromotionWhiteList_V2>,
         IEventHandler<PromotionDeleted>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<AccountDetail> _accountDetailProjectionSet;
+        private readonly IProjectionSet<PromotionDetail> _promotionProjectionSet;
+        private readonly IProjectionSet<PromotionUsageDetail> _promotionUsageProjectionSet;
+        private readonly PromotionProgressDetailProjectionSet _promotionProgressProjectionSet;
 
-        public PromotionDetailGenerator(Func<BookingDbContext> contextFactory, IProjectionSet<AccountDetail> accountDetailProjectionSet )
+        public PromotionDetailGenerator(IProjectionSet<AccountDetail> accountDetailProjectionSet,
+            IProjectionSet<PromotionDetail> promotionProjectionSet,
+            IProjectionSet<PromotionUsageDetail> promotionUsageProjectionSet,
+            PromotionProgressDetailProjectionSet promotionProgressProjectionSet)
         {
-            _contextFactory = contextFactory;
             _accountDetailProjectionSet = accountDetailProjectionSet;
+            _promotionProjectionSet = promotionProjectionSet;
+            _promotionUsageProjectionSet = promotionUsageProjectionSet;
+            _promotionProgressProjectionSet = promotionProgressProjectionSet;
         }
 
         public void Handle(PromotionCreated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionProjectionSet.Add(new PromotionDetail
             {
-                var promotionDetail = new PromotionDetail
-                {
-                    Id = @event.SourceId,
-                    Name = @event.Name,
-                    Description = @event.Description,
-                    StartDate = @event.StartDate,
-                    EndDate = @event.EndDate,
-                    StartTime = @event.StartTime,
-                    EndTime = @event.EndTime,
-                    DaysOfWeek = @event.DaysOfWeek.ToJson(),
-                    AppliesToCurrentBooking = @event.AppliesToCurrentBooking,
-                    AppliesToFutureBooking = @event.AppliesToFutureBooking,
-                    DiscountValue = @event.DiscountValue,
-                    DiscountType = @event.DiscountType,
-                    MaxUsagePerUser = @event.MaxUsagePerUser,
-                    MaxUsage = @event.MaxUsage,
-                    Code = @event.Code,
-                    PublishedStartDate = @event.PublishedStartDate,
-                    PublishedEndDate = @event.PublishedEndDate,
-                    TriggerSettings = @event.TriggerSettings,
-                    Active = true,
-                    Deleted = false
-                };
-
-                context.Save(promotionDetail);
-            }
+                Id = @event.SourceId,
+                Name = @event.Name,
+                Description = @event.Description,
+                StartDate = @event.StartDate,
+                EndDate = @event.EndDate,
+                StartTime = @event.StartTime,
+                EndTime = @event.EndTime,
+                DaysOfWeek = @event.DaysOfWeek.ToJson(),
+                AppliesToCurrentBooking = @event.AppliesToCurrentBooking,
+                AppliesToFutureBooking = @event.AppliesToFutureBooking,
+                DiscountValue = @event.DiscountValue,
+                DiscountType = @event.DiscountType,
+                MaxUsagePerUser = @event.MaxUsagePerUser,
+                MaxUsage = @event.MaxUsage,
+                Code = @event.Code,
+                PublishedStartDate = @event.PublishedStartDate,
+                PublishedEndDate = @event.PublishedEndDate,
+                TriggerSettings = @event.TriggerSettings,
+                Active = true,
+                Deleted = false
+            });
         }
 
         public void Handle(PromotionUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionProjectionSet.Update(@event.SourceId, promotion =>
             {
-                var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
-
-                promotionDetail.Name = @event.Name;
-                promotionDetail.Description = @event.Description;
-                promotionDetail.StartDate = @event.StartDate;
-                promotionDetail.EndDate = @event.EndDate;
-                promotionDetail.StartTime = @event.StartTime;
-                promotionDetail.EndTime = @event.EndTime;
-                promotionDetail.DaysOfWeek = @event.DaysOfWeek.ToJson();
-                promotionDetail.AppliesToCurrentBooking = @event.AppliesToCurrentBooking;
-                promotionDetail.AppliesToFutureBooking = @event.AppliesToFutureBooking;
-                promotionDetail.DiscountValue = @event.DiscountValue;
-                promotionDetail.DiscountType = @event.DiscountType;
-                promotionDetail.MaxUsagePerUser = @event.MaxUsagePerUser;
-                promotionDetail.MaxUsage = @event.MaxUsage;
-                promotionDetail.Code = @event.Code;
-                promotionDetail.PublishedStartDate = @event.PublishedStartDate;
-                promotionDetail.PublishedEndDate = @event.PublishedEndDate;
-                promotionDetail.TriggerSettings = @event.TriggerSettings;
-
-                context.Save(promotionDetail);
-            }
+                promotion.Name = @event.Name;
+                promotion.Description = @event.Description;
+                promotion.StartDate = @event.StartDate;
+                promotion.EndDate = @event.EndDate;
+                promotion.StartTime = @event.StartTime;
+                promotion.EndTime = @event.EndTime;
+                promotion.DaysOfWeek = @event.DaysOfWeek.ToJson();
+                promotion.AppliesToCurrentBooking = @event.AppliesToCurrentBooking;
+                promotion.AppliesToFutureBooking = @event.AppliesToFutureBooking;
+                promotion.DiscountValue = @event.DiscountValue;
+                promotion.DiscountType = @event.DiscountType;
+                promotion.MaxUsagePerUser = @event.MaxUsagePerUser;
+                promotion.MaxUsage = @event.MaxUsage;
+                promotion.Code = @event.Code;
+                promotion.PublishedStartDate = @event.PublishedStartDate;
+                promotion.PublishedEndDate = @event.PublishedEndDate;
+                promotion.TriggerSettings = @event.TriggerSettings;
+            });
         }
 
         public void Handle(PromotionActivated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionProjectionSet.Update(@event.SourceId, promotion =>
             {
-                var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
-
-                promotionDetail.Active = true;
-
-                context.Save(promotionDetail);
-            }
+                promotion.Active = true;
+            });
         }
 
         public void Handle(PromotionDeactivated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionProjectionSet.Update(@event.SourceId, promotion =>
             {
-                var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
-
-                promotionDetail.Active = false;
-
-                context.Save(promotionDetail);
-            }
+                promotion.Active = false;
+            });
         }
 
         public void Handle(PromotionDeleted @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionProjectionSet.Update(@event.SourceId, promotion =>
             {
-                var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
-
-                promotionDetail.Deleted = true;
-
-                context.SaveChanges();
-            }
+                promotion.Deleted = true;
+            });
         }
 
         public void Handle(PromotionApplied @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
+            var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
 
-                context.Save(new PromotionUsageDetail
-                {
-                    OrderId = @event.OrderId,
-                    PromoId = @event.SourceId,
-                    AccountId = @event.AccountId,
-                    UserEmail = account.Email,
-                    Code = @event.Code,
-                    DiscountType = @event.DiscountType,
-                    DiscountValue = @event.DiscountValue
-                });
-            }
+            _promotionUsageProjectionSet.Add(new PromotionUsageDetail
+            {
+                OrderId = @event.OrderId,
+                PromoId = @event.SourceId,
+                AccountId = @event.AccountId,
+                UserEmail = account.Email,
+                Code = @event.Code,
+                DiscountType = @event.DiscountType,
+                DiscountValue = @event.DiscountValue
+            });
         }
 
         public void Handle(PromotionUnapplied @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
-                if (promotionUsageDetail != null)
-                {
-                    context.Set<PromotionUsageDetail>().Remove(promotionUsageDetail);
-                    context.Save(promotionUsageDetail);
-                }
-            }
+            _promotionUsageProjectionSet.Remove(@event.OrderId);
         }
 
         public void Handle(PromotionRedeemed @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _promotionUsageProjectionSet.Update(@event.OrderId, promoUsage =>
             {
-                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);                
-                
-                promotionUsageDetail.AmountSaved = @event.AmountSaved;
-                promotionUsageDetail.DateRedeemed = @event.EventDate;
-
-                context.SaveChanges();
-            }
+                promoUsage.AmountSaved = @event.AmountSaved;
+                promoUsage.DateRedeemed = @event.EventDate;
+            });
         }
 
         public void Handle(UserAddedToPromotionWhiteList_V2 @event)
         {
-            using (var context = _contextFactory.Invoke())
+            foreach (var accountId in @event.AccountIds)
             {
-                foreach (var accountId in @event.AccountIds)
+                _promotionProgressProjectionSet.Update(accountId, list =>
                 {
-                    var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, @event.SourceId);
-                    if (promotionProgressDetail == null)
-                    {
-                        promotionProgressDetail = new PromotionProgressDetail { AccountId = accountId, PromoId = @event.SourceId };
-                        context.Save(promotionProgressDetail);
-                    }
+                    var existing = list.FirstOrDefault(x => x.AccountId == accountId && x.PromoId == @event.SourceId);
 
-                    promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
-                }
-                context.SaveChanges();
+                    if (existing == null)
+                    {
+                        list.Add(new PromotionProgressDetail
+                        {
+                            AccountId = accountId,
+                            PromoId = @event.SourceId,
+                            LastTriggeredAmount = @event.LastTriggeredAmount
+                        });
+                    }
+                    else
+                    {
+                        existing.LastTriggeredAmount = @event.LastTriggeredAmount;
+                    }
+                });
             }
         }
     }

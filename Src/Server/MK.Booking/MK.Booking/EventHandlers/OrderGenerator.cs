@@ -587,8 +587,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
         {
-            _logger.LogMessage("Trip info updated event received for order {0} (TripId {1}; Pairing token {2}", @event.SourceId, @event.TripId, @event.PairingToken);
- 
             if (_orderDetailProjectionSet.Exists(@event.SourceId))
             {
                 _orderDetailProjectionSet.Update(@event.SourceId, order =>

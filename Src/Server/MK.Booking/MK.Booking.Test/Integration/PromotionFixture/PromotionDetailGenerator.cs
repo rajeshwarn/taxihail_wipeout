@@ -28,7 +28,10 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new PromotionDetailGenerator(() => new BookingDbContext(DbName), new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)));
+            Sut = new PromotionDetailGenerator(new EntityProjectionSet<AccountDetail>(() => new BookingDbContext(DbName)),
+                new EntityProjectionSet<PromotionDetail>(() => new BookingDbContext(DbName)), 
+                new EntityProjectionSet<PromotionUsageDetail>(() => new BookingDbContext(DbName)), 
+                new PromotionProgressDetailEntityProjectionSet(() => new BookingDbContext(DbName)));
         }
     }
 
@@ -284,6 +287,68 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
                 Assert.AreEqual(10, dto.DiscountValue);
                 Assert.AreEqual(10, dto.AmountSaved);
+            }
+        }
+
+        [Test]
+        public void when_user_added_to_whitelist_and_promo_progress_doesnt_exist_then_its_created()
+        {
+            var accountId = Guid.NewGuid();
+            
+            Sut.Handle(new UserAddedToPromotionWhiteList_V2
+            {
+                SourceId = _promoId,
+                AccountIds = new [] { accountId },
+                LastTriggeredAmount = 15
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Set<PromotionProgressDetail>().Find(accountId, _promoId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual(15, dto.LastTriggeredAmount);
+                Assert.AreEqual(null, dto.AmountSpent);
+                Assert.AreEqual(null, dto.RideCount);
+            }
+        }
+
+        [Test]
+        public void when_user_added_to_whitelist_and_promo_progress_exists_then_its_updated()
+        {
+            var accountId = Guid.NewGuid();
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                context.Save(new PromotionProgressDetail
+                {
+                    AccountId = accountId,
+                    PromoId = _promoId,
+                    LastTriggeredAmount = 10,
+                    AmountSpent = 5,
+                    RideCount = 1
+                });
+            }
+
+            Sut.Handle(new UserAddedToPromotionWhiteList_V2
+            {
+                SourceId = _promoId,
+                AccountIds = new[] { accountId },
+                LastTriggeredAmount = 15
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Set<PromotionProgressDetail>().Find(accountId, _promoId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual(15, dto.LastTriggeredAmount);
+                Assert.AreEqual(5, dto.AmountSpent);
+                Assert.AreEqual(1, dto.RideCount);
             }
         }
     }

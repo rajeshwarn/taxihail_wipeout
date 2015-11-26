@@ -242,7 +242,6 @@
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
-    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
@@ -254,6 +253,8 @@
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="Projections\NetworkCompanyPaymentSettingsProjectionSet.cs" />
+    <Compile Include="Projections\PromotionProgressDetailProjectionSet.cs" />
     <Compile Include="Projections\AccountIbsDetailProjectionSet.cs" />
     <Compile Include="Projections\AddressDetailProjectionSet.cs" />
     <Compile Include="Projections\AppSettingsProjection.cs" />

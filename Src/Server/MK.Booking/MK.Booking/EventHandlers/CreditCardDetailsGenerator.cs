@@ -1,15 +1,8 @@
-﻿#region
-
-using System;
-using System.Linq;
-using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Events;
+﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -21,83 +14,62 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardDeactivated>,
         IEventHandler<OverduePaymentSettled>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<CreditCardDetails> _creditCardProjectionSet;
 
-        public CreditCardDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public CreditCardDetailsGenerator(IProjectionSet<CreditCardDetails> creditCardProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _creditCardProjectionSet = creditCardProjectionSet;
         }
 
         public void Handle(AllCreditCardsRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId);
-                context.SaveChanges();
-            }
+            _creditCardProjectionSet.Remove(x => x.AccountId == @event.SourceId);
         }
 
         public void Handle(CreditCardAddedOrUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!_creditCardProjectionSet.Exists(@event.CreditCardId))
             {
-                var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                var creditCard = existingCreditCard ?? new CreditCardDetails();
-                Mapper.Map(@event, creditCard);
-                context.Save(creditCard);
+                _creditCardProjectionSet.Add(Mapper.Map(@event, new CreditCardDetails()));
+            }
+            else
+            {
+                _creditCardProjectionSet.Update(@event.CreditCardId, card =>
+                {
+                    Mapper.Map(@event, card);
+                });
             }
         }
 
         public void Handle(CreditCardLabelUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _creditCardProjectionSet.Update(@event.CreditCardId, card =>
             {
-                var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                existingCreditCard.Label = @event.Label;
-
-                context.Save(existingCreditCard);
-            }
+                card.Label = @event.Label;
+            });
         }
 
         public void Handle(CreditCardRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (creditCard != null)
-                {
-                    context.Set<CreditCardDetails>().Remove(creditCard);
-                    context.SaveChanges();
-                }
-            }
+            _creditCardProjectionSet.Remove(@event.CreditCardId);
         }
 
         public void Handle(CreditCardDeactivated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            // Deactivate every cards of the account
+            _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card =>
             {
-                // Deactivate credit card was declined
-                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
-                if (creditCardDetails != null)
-                {
-                    creditCardDetails.IsDeactivated = true;
-                    context.Save(creditCardDetails);
-                }
-            }
+                card.IsDeactivated = true;
+            });
         }
 
         public void Handle(OverduePaymentSettled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            // Reactivate every cards of the account
+            _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card =>
             {
-                // Re-activate credit card
-                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
-                if (creditCardDetails != null)
-                {
-                    creditCardDetails.IsDeactivated = false;
-                    context.Save(creditCardDetails);
-                }
-            }
+                card.IsDeactivated = false;
+            });
         }
     }
 }

@@ -1,5 +1,3 @@
-#region
-
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
@@ -8,8 +6,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
