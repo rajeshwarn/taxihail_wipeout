@@ -28,6 +28,7 @@
             public const string Assigned = "wosASSIGNED";
             public const string Arrived = "wosARRIVED";
             public const string Loaded = "wosLOADED";
+            public const string UnLoaded = "wosUNLOADED";
             public const string NoShow = "wosNOSHOW";
             public const string Scheduled = "wosSCHED";
 

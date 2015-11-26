@@ -589,5 +589,9 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Change credit card while in trip", Description = "Allow the user to change his credit card while in trip")]
         public bool ChangeCreditCardMidtrip { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Unload Time Out", Description = "Time out to wait for Charge Amounts from Driver")]
+        public double ChargeAmountsTimeOut { get; set; }
     }
 }

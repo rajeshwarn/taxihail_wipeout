@@ -98,6 +98,15 @@ namespace apcurium.MK.Booking.Jobs
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
+            if (orderFromIbs.IsUnLoaded)
+            {
+                if (orderStatusDetail.ChargeAmountsTimeOut.HasValue
+                && orderStatusDetail.ChargeAmountsTimeOut.Value >= DateTime.UtcNow)
+                {
+                    return;
+                }
+            }
+
             if (orderFromIbs.IsLoaded)
             {
                 SendChargeTypeMessageToDriver(orderStatusDetail);
