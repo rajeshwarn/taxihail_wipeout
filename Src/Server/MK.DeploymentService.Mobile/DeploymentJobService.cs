@@ -636,8 +636,8 @@ namespace MK.DeploymentService.Mobile
                 } else {
                     throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
-
-                _builder.SignAndGenerateBlackBerryProject(bbToolsPath);
+                var barFile = apkBlackBerryFile.Replace(".apk",".bar");
+                _builder.SignAndGenerateBlackBerryProject(bbToolsPath, barFile);
             }
 
 		    if (!_job.CallBox)
