@@ -5,6 +5,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
+using EntityFramework.Utilities;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -92,7 +93,7 @@ namespace apcurium.MK.Booking.Projections
 
         public IEnumerator<AccountIbsDetailCollection> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _cache.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -156,7 +157,10 @@ namespace apcurium.MK.Booking.Projections
 
         public override void AddRange(IEnumerable<AccountIbsDetailCollection> projections)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.Invoke())
+            {
+                EFBatchOperation.For(context, context.Set<AccountIbsDetail>()).InsertAll(projections.SelectMany(x => x));
+            }
         }
 
         public override bool Exists(Guid identifier)

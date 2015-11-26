@@ -1,5 +1,4 @@
 ﻿using System;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
@@ -10,10 +9,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Projections;
-using System.Collections.Generic;
-using EntityFramework.BulkInsert.Extensions;
 using System.Linq;
-using System.Collections;
 
 namespace apcurium.MK.Booking.EventHandlers
 {

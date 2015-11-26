@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
-using EntityFramework.BulkInsert.Extensions;
+using EntityFramework.Utilities;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -61,14 +61,8 @@ namespace apcurium.MK.Booking.Projections
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.BulkInsert(projections.Select(x => x.Item1), new BulkInsertOptions
-                {
-                    EnableStreaming = true,
-                });
-                context.BulkInsert(projections.SelectMany(x => x.Item2), new BulkInsertOptions
-                {
-                    EnableStreaming = true,
-                });
+                EFBatchOperation.For(context, context.Set<OrderRatingDetails>()).InsertAll(projections.Select(x => x.Item1));
+                EFBatchOperation.For(context, context.Set<RatingScoreDetails>()).InsertAll(projections.SelectMany(x => x.Item2));
             }
         }
     }

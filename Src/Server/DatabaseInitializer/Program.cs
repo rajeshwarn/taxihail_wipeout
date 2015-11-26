@@ -156,6 +156,16 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<OrderNotificationDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderNotificationDetail>)container.Resolve<IProjectionSet<OrderNotificationDetail>>());
                     new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((OrderRatingMemoryProjectionSet)container.Resolve<OrderRatingProjectionSet>());
                     new AddressDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((AddressDetailMemoryProjectionSet)container.Resolve<AddressDetailProjectionSet>());
+                    new EntityProjectionSet<OrderUserGpsDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderUserGpsDetail>)container.Resolve<IProjectionSet<OrderUserGpsDetail>>());
+                    new EntityProjectionSet<VehicleTypeDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<VehicleTypeDetail>)container.Resolve<IProjectionSet<VehicleTypeDetail>>());
+                    new EntityProjectionSet<OrderPaymentDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OrderPaymentDetail>)container.Resolve<IProjectionSet<OrderPaymentDetail>>());
+                    new EntityProjectionSet<NotificationSettings>(container.Resolve<Func<ConfigurationDbContext>>()).AddRange((MemoryProjectionSet<NotificationSettings>)container.Resolve<IProjectionSet<NotificationSettings>>());
+                    new EntityProjectionSet<UserTaxiHailNetworkSettings>(container.Resolve<Func<ConfigurationDbContext>>()).AddRange((MemoryProjectionSet<UserTaxiHailNetworkSettings>)container.Resolve<IProjectionSet<UserTaxiHailNetworkSettings>>());
+                    new EntityProjectionSet<TariffDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<TariffDetail>)container.Resolve<IProjectionSet<TariffDetail>>());
+                    new EntityProjectionSet<CompanyDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<CompanyDetail>)container.Resolve<IProjectionSet<CompanyDetail>>());
+                    new EntityProjectionSet<FeesDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<FeesDetail>)container.Resolve<IProjectionSet<FeesDetail>>());
+                    new AccountIbsDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((AccountIbsDetailMemoryProjectionSet)container.Resolve<AccountIbsDetailProjectionSet>());
+
                     Console.WriteLine("End : " + stopwatch.Elapsed);
                 }
                 else

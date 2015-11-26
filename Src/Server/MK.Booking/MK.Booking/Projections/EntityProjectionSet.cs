@@ -1,10 +1,10 @@
-﻿using EntityFramework.BulkInsert.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
+using EntityFramework.Utilities;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -38,10 +38,7 @@ namespace apcurium.MK.Booking.Projections
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.BulkInsert(projections, new BulkInsertOptions
-                {
-                    EnableStreaming = true,
-                });
+                EFBatchOperation.For(context, context.Set<TProjection>()).InsertAll(projections);
             }
         }
 

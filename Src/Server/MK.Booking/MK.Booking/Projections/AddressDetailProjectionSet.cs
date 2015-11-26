@@ -5,6 +5,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
+using EntityFramework.Utilities;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -149,8 +150,7 @@ namespace apcurium.MK.Booking.Projections
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Set<AddressDetails>().AddRange(projections.SelectMany(x => x));
-                context.SaveChanges();
+                EFBatchOperation.For(context, context.Set<AddressDetails>()).InsertAll(projections.SelectMany(x => x));
             }
         }
 

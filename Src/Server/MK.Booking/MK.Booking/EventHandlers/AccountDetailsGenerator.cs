@@ -1,8 +1,4 @@
-﻿#region
-
-using System;
-using System.Linq;
-using apcurium.MK.Booking.Database;
+﻿using System;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
@@ -11,8 +7,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Projections;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -140,7 +134,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-                account.Email = @event.Email;
+
+                if (!string.IsNullOrWhiteSpace(@event.Email))
+                {
+                    account.Email = @event.Email;
+                }
+                    
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
