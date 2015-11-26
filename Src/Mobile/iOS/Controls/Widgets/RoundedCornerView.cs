@@ -61,7 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public override void Draw(CGRect rect)
+		// do not remove this commented code since design is there
+		// see ticket MKTAXI-3611 why commented
+		/*public override void Draw(CGRect rect)
 		{
 			base.Draw(rect);
 
@@ -77,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				DrawBackground (rect, context, _backgroundColor.CGColor, null);
 				DrawStrokePartial(context, rect);
 			}
-		}
+		}*/
 
 
 		void DrawBackground (CGRect rect, CGContext context, CGColor color, UIBezierPath roundedRectanglePath)
