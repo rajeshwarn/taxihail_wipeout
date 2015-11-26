@@ -630,8 +630,10 @@ namespace MK.DeploymentService.Mobile
                 if (apkBlackBerryFile != null) {
                     var fileInfo = new FileInfo (apkBlackBerryFile); 
                     var targetDir = Path.Combine (bbToolsPath, "Outputs", fileInfo.Name);
-                    if (File.Exists (targetDir))
+                    if (File.Exists(targetDir))
+                    {
                         File.Delete (targetDir);
+                    }
                     File.Copy (apkBlackBerryFile, targetDir);
 
                     var barFile = fileInfo.Name.Replace(".apk",".bar");
