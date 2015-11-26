@@ -179,6 +179,8 @@
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Enumeration\RateApplicationState.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
+    <Compile Include="Cryptography\SettingsEncryptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

@@ -161,6 +161,8 @@
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Enumeration\RateApplicationState.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
+    <Compile Include="Cryptography\SettingsEncryptor.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

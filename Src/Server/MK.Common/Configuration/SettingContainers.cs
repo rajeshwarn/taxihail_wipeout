@@ -4,6 +4,8 @@ using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using MK.Common.Configuration;
+using System;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Common.Configuration
 {
@@ -42,13 +44,16 @@ namespace apcurium.MK.Common.Configuration
 
     public class GCMSettingContainer
     {
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Notification - GCM Sender Id", Description = "Google Cloud Messaging (Push notification) Sender Id")]
         public string SenderId { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Notification - GCM API Key", Description = "Google Cloud Messaging (Push notification) API Id")]
         public string APIKey { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Notification - GCM Package Name", Description = "Google Cloud Messaging (Push notification) Package Name")]
         public string PackageName { get; protected internal set; }
     }
@@ -78,6 +83,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class MapSettingContainer
     {
+		[PropertyEncrypt]
         [Hidden]
         [SendToClient]
         [Display(Name = "Search - Places Api Key", Description = "Google Places Api Key")]
@@ -125,6 +131,7 @@ namespace apcurium.MK.Common.Configuration
             Credentials = new CredentialsContainer();
         }
 
+		[PropertyEncrypt]
         [Display(Name = "Email Setting - SMTP Host", Description = "SMTP Host")]
         public string Host { get; protected internal set; }
 
@@ -145,15 +152,18 @@ namespace apcurium.MK.Common.Configuration
 
     public class CredentialsContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Email Setting - SMTP Username", Description = "SMTP Username")]
         public string Username { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Email Setting - SMTP Password", Description = "SMTP Password")]
         public string Password { get; protected internal set; }
     }
 
     public class APNSSettingContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Notification - Certificate Password", Description = "Apple Push Notification Service Certificate Password")]
         public string CertificatePassword { get; protected internal set; }
 
@@ -166,12 +176,15 @@ namespace apcurium.MK.Common.Configuration
 
     public class BlackberrySettingContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Notification - Blackberry App Id", Description = "Balckberry Notification Application Id")]
         public string AppId { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Notification - Blackberry App Password", Description = "Balckberry Notification Password")]
         public string Password { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Notification - Blackberry Url", Description = "Blackerry Send Url")]
         public string Url { get; protected internal set; }
     }
@@ -211,6 +224,7 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "IBS - Auto Dispatch", Description = "IBS AutoDispatch")]
         public bool AutoDispatch { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "IBS - Default Account Password", Description = "IBS DefaultAccountPassword")]
         public string DefaultAccountPassword { get; protected internal set; }
 
@@ -252,27 +266,33 @@ namespace apcurium.MK.Common.Configuration
 
         [Display(Name = "IBS - Pickup Zone To Exclude", Description = "IBS PickupZoneToExclude")]
         public string PickupZoneToExclude { get; protected internal set; }
-        
+
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Rest Api Url", Description = "IBS RestApiUrl")]
         public string RestApiUrl { get; set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Rest Api User", Description = "IBS RestApiUser")]
         public string RestApiUser { get; set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Rest Api Secret", Description = "IBS RestApiSecret")]
-        public string RestApiSecret { get; set; }        
-        
+        public string RestApiSecret { get; set; }
+
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Web Services Url", Description = "IBS WebServicesUrl")]
         public string WebServicesUrl { get; set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Web Services Username", Description = "IBS WebServicesUserName")]
         public string WebServicesUserName { get; set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup]
         [Display(Name = "IBS - Web Services Password", Description = "IBS WebServicesPassword")]
         public string WebServicesPassword { get;  set; }
@@ -313,12 +333,15 @@ namespace apcurium.MK.Common.Configuration
 
     public class CustomerPortalSettingContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Network Setting - Customer Portal Url", Description = "Customer Portal Url")]
         public string Url { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Network Setting - Customer Portal Username", Description = "Customer UserName")]
         public string UserName { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Network Setting - Customer Portal Password", Description = "Customer Portal Password")]
         public string Password { get; protected internal set; }
     }
@@ -348,6 +371,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class HoneyBadgerSettingContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Available Vehicle - Honey Badger service URL", Description = "Honey Badger Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
         public string ServiceUrl { get; protected internal set; }
 
@@ -360,9 +384,11 @@ namespace apcurium.MK.Common.Configuration
 
     public class CmtGeoSettingContainer
     {
+		[PropertyEncrypt]
         [Display(Name = "Available Vehicle - CMT Geo Service URL", Description = "Cmt geo Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
         public string ServiceUrl { get; protected internal set; }
 
+		[PropertyEncrypt]
         [Hidden]
         [Display(Name = "Available Vehicle - CMT Geo API Key", Description = "The API key for geo services")]
         public string AppKey { get; protected internal set; }
@@ -374,15 +400,17 @@ namespace apcurium.MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 
-
 	public class FlightStatsSettingsContainer
 	{
+		[PropertyEncrypt]
 		[Display(Name = "FlightStats - Application Id", Description = "Application id for flight stats API")]
 		public string AppId { get; set; }
 
+		[PropertyEncrypt]
 		[Display(Name = "FlightStats - Application key", Description = "Application keys for flight stats API.")]
 		public string ApplicationKeys { get; set; }
 
+		[PropertyEncrypt]
 		[Display(Name = "FlightStats - Api Url", Description = "Url to access the FlightStats api.")]
 		public string ApiUrl { get; set; }
 
@@ -390,5 +418,4 @@ namespace apcurium.MK.Common.Configuration
 		[Display(Name = "FlightStats - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
 		public bool UseAirportDetails { get; set; }
 	}
-
 }

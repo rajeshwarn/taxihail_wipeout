@@ -1,4 +1,5 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿using apcurium.MK.Common.Cryptography;
+namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalServerCredentials
     {
@@ -10,8 +11,10 @@
 #endif
         }
 
+		[PropertyEncrypt]
         public string Secret { get; set; }
 
+		[PropertyEncrypt]
         public string MerchantId { get; set; }
     }
 }
