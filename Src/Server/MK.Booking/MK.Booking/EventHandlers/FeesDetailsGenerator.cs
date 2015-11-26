@@ -1,7 +1,6 @@
 using System;
-using System.Linq;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
 using RestSharp.Extensions;
@@ -11,33 +10,41 @@ namespace apcurium.MK.Booking.EventHandlers
     public class FeesDetailsGenerator :
         IEventHandler<FeesUpdated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<FeesDetail> _feesProjectionSet;
 
-        public FeesDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public FeesDetailsGenerator(IProjectionSet<FeesDetail> feesProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _feesProjectionSet = feesProjectionSet;
         }
 
         public void Handle(FeesUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            foreach (var newFees in @event.Fees)
             {
-                var existingFeesByMarket = context.Query<FeesDetail>().ToList();
-                foreach (var newFees in @event.Fees)
+                if (!newFees.Market.HasValue())
                 {
-                    if (!newFees.Market.HasValue())
+                    newFees.Market = null;
+                }
+
+                if (!_feesProjectionSet.Exists(x => x.Market == newFees.Market))
+                {
+                    _feesProjectionSet.Add(new FeesDetail
                     {
-                        newFees.Market = null;
-                    }
-
-                    var feesToUpdate = existingFeesByMarket.SingleOrDefault(x => x.Market == newFees.Market) 
-                                       ?? new FeesDetail { Id = Guid.NewGuid(), Market = newFees.Market };
-
-                    feesToUpdate.Booking = newFees.Booking;
-                    feesToUpdate.Cancellation = newFees.Cancellation;
-                    feesToUpdate.NoShow = newFees.NoShow;
-
-                    context.Save(feesToUpdate);
+                        Id = Guid.NewGuid(),
+                        Market = newFees.Market,
+                        Booking = newFees.Booking,
+                        Cancellation = newFees.Cancellation,
+                        NoShow = newFees.NoShow
+                    });
+                }
+                else
+                {
+                    _feesProjectionSet.Update(x => x.Market == newFees.Market, feesToUpdate =>
+                    {
+                        feesToUpdate.Booking = newFees.Booking;
+                        feesToUpdate.Cancellation = newFees.Cancellation;
+                        feesToUpdate.NoShow = newFees.NoShow;
+                    });
                 }
             }
         }

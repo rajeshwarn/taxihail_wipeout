@@ -1,8 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
@@ -13,51 +12,41 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<TermsAndConditionsRetriggered>,
         IEventHandler<PrivacyPolicyUpdated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<CompanyDetail> _companyProjectionSet;
 
-        public CompanyDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public CompanyDetailsGenerator(IProjectionSet<CompanyDetail> companyProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _companyProjectionSet = companyProjectionSet;
         }
 
         public void Handle(CompanyCreated @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.Save(new CompanyDetail { Id = @event.SourceId });
-            }
+            _companyProjectionSet.Add(new CompanyDetail { Id = @event.SourceId });
         }
 
         public void Handle(TermsAndConditionsUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _companyProjectionSet.Update(@event.SourceId, company =>
             {
-                var company = context.Find<CompanyDetail>(@event.SourceId);
                 company.TermsAndConditions = @event.TermsAndConditions;
-                context.Save(company);
-            }
+            });
         }
 
         public void Handle(TermsAndConditionsRetriggered @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _companyProjectionSet.Update(@event.SourceId, company =>
             {
-                var company = context.Find<CompanyDetail>(@event.SourceId);
                 var tAndC = company.TermsAndConditions ?? "";
                 company.Version = tAndC.GetHashCode().ToString(CultureInfo.InvariantCulture);
-                
-                context.Save(company);
-            }
+            });
         }
 
         public void Handle(PrivacyPolicyUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _companyProjectionSet.Update(@event.SourceId, company =>
             {
-                var company = context.Find<CompanyDetail>(@event.SourceId);
                 company.PrivacyPolicy = @event.Policy;
-                context.Save(company);
-            }
+            });
         }
     }
 }

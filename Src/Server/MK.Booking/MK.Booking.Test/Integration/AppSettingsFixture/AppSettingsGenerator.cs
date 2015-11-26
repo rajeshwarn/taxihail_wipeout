@@ -1,17 +1,14 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
 {

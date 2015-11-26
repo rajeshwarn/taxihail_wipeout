@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ServiceStack.Common.Utils;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -47,6 +48,15 @@ namespace apcurium.MK.Booking.Projections
         public void Remove(Guid identifier)
         {
             _cache.Remove(identifier);
+        }
+
+        public void Remove(Func<TProjection, bool> predicate)
+        {
+            var keysToRemove = _cache.Select(x => x.Value).Where(predicate).Select(x => _getId(x)).ToList();
+            foreach (var identifier in keysToRemove)
+            {
+                _cache.Remove(identifier);
+            }
         }
 
         public IProjection<TProjection> GetProjection(Guid identifier)

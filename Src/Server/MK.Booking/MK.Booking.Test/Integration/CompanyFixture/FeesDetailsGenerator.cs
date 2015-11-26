@@ -4,6 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new FeesDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new FeesDetailsGenerator(new EntityProjectionSet<FeesDetail>(() => new BookingDbContext(DbName)));
         }
     }
 

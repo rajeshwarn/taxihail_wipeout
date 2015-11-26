@@ -1,18 +1,15 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
 {
@@ -30,7 +27,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new TariffDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new TariffDetailsGenerator(new EntityProjectionSet<TariffDetail>(() => new BookingDbContext(DbName)));
         }
     }
 

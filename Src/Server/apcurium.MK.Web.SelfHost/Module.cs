@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data.Entity;
 using apcurium.MK.Booking.Database;
@@ -23,8 +21,6 @@ using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Web.SelfHost
 {
@@ -63,6 +59,11 @@ namespace apcurium.MK.Web.SelfHost
             var vehicleTypeProjectionSet = new EntityProjectionSet<VehicleTypeDetail>(container.Resolve<Func<BookingDbContext>>());
             var orderPaymentProjectionSet = new EntityProjectionSet<OrderPaymentDetail>(container.Resolve<Func<BookingDbContext>>());
             var notificationSettingsProjectionSet = new EntityProjectionSet<NotificationSettings>(container.Resolve<Func<ConfigurationDbContext>>());
+            var userTaxiHailNetworkSettingsProjectionSet = new EntityProjectionSet<UserTaxiHailNetworkSettings>(container.Resolve<Func<ConfigurationDbContext>>());
+            var tariffProjectionSet = new EntityProjectionSet<TariffDetail>(container.Resolve<Func<BookingDbContext>>());
+            var companyProjectionSet = new EntityProjectionSet<CompanyDetail>(container.Resolve<Func<BookingDbContext>>());
+            var feesProjectionSet = new EntityProjectionSet<FeesDetail>(container.Resolve<Func<BookingDbContext>>());
+            var accountIbsDetailProjectionSet = new AccountIbsDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
 
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
@@ -78,6 +79,11 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IProjectionSet<VehicleTypeDetail>>(vehicleTypeProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderPaymentDetail>>(orderPaymentProjectionSet);
             container.RegisterInstance<IProjectionSet<NotificationSettings>>(notificationSettingsProjectionSet);
+            container.RegisterInstance<IProjectionSet<UserTaxiHailNetworkSettings>>(userTaxiHailNetworkSettingsProjectionSet);
+            container.RegisterInstance<IProjectionSet<TariffDetail>>(tariffProjectionSet);
+            container.RegisterInstance<IProjectionSet<CompanyDetail>>(companyProjectionSet);
+            container.RegisterInstance<IProjectionSet<FeesDetail>>(feesProjectionSet);
+            container.RegisterInstance<AccountIbsDetailProjectionSet>(accountIbsDetailProjectionSet);
 
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));

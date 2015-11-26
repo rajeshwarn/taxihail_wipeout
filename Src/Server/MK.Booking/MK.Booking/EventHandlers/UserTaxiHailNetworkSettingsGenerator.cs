@@ -1,39 +1,27 @@
-﻿using System;
-using apcurium.MK.Booking.Events;
+﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class UserTaxiHailNetworkSettingsGenerator : IEventHandler<UserTaxiHailNetworkSettingsAddedOrUpdated>
     {
-        private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly IProjectionSet<UserTaxiHailNetworkSettings> _userTaxiHailNetworkSettingsProjectionSet;
 
-        public UserTaxiHailNetworkSettingsGenerator(Func<ConfigurationDbContext> contextFactory)
+        public UserTaxiHailNetworkSettingsGenerator(IProjectionSet<UserTaxiHailNetworkSettings> userTaxiHailNetworkSettingsProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _userTaxiHailNetworkSettingsProjectionSet = userTaxiHailNetworkSettingsProjectionSet;
         }
 
         public void Handle(UserTaxiHailNetworkSettingsAddedOrUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _userTaxiHailNetworkSettingsProjectionSet.AddOrReplace(new UserTaxiHailNetworkSettings
             {
-                var userTaxiHailNetworkSettings = context.UserTaxiHailNetworkSettings.Find(@event.SourceId);
-                if (userTaxiHailNetworkSettings != null)
-                {
-                    context.UserTaxiHailNetworkSettings.Remove(userTaxiHailNetworkSettings);
-                }
-
-                context.UserTaxiHailNetworkSettings.Add(new UserTaxiHailNetworkSettings
-                {
-                    Id = @event.SourceId,
-                    IsEnabled = @event.IsEnabled,
-                    DisabledFleets = @event.DisabledFleets
-                });
-
-                context.SaveChanges();
-            }
+                Id = @event.SourceId,
+                IsEnabled = @event.IsEnabled,
+                DisabledFleets = @event.DisabledFleets
+            });
         }
     }
 }

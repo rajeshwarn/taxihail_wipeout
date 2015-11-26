@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
-using apcurium.MK.Booking.Database;
+﻿using System.Linq;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
@@ -12,44 +11,44 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountLinkedToIbs>,
         IEventHandler<AccountUnlinkedFromIbs>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly AccountIbsDetailProjectionSet _accountIbsProjectionSet;
 
-        public AccountIbsDetailGenerator(Func<BookingDbContext> contextFactory)
+        public AccountIbsDetailGenerator(AccountIbsDetailProjectionSet accountIbsProjectionSet)
         {
-            _contextFactory = contextFactory;
+            _accountIbsProjectionSet = accountIbsProjectionSet;
         }
 
         public void Handle(AccountLinkedToIbs @event)
         {
             if (@event.CompanyKey.HasValue())
             {
-                using (var context = _contextFactory.Invoke())
+                _accountIbsProjectionSet.Update(@event.SourceId, list =>
                 {
-                    var ibsAccountLink =
-                        context.Query<AccountIbsDetail>()
-                            .FirstOrDefault(x => x.AccountId == @event.SourceId
-                                                 && x.CompanyKey == @event.CompanyKey)
-                        ?? new AccountIbsDetail
+                    var existing = list.FirstOrDefault(x => x.AccountId == @event.SourceId && x.CompanyKey == @event.CompanyKey);
+
+                    if (existing == null)
+                    {
+                        list.Add(new AccountIbsDetail
                         {
                             AccountId = @event.SourceId,
-                            CompanyKey = @event.CompanyKey
-                        };
-
-                    ibsAccountLink.IBSAccountId = @event.IbsAccountId;
-
-                    context.Save(ibsAccountLink);
-
-                }
+                            CompanyKey = @event.CompanyKey,
+                            IBSAccountId = @event.IbsAccountId
+                        });
+                    }
+                    else
+                    {
+                        existing.IBSAccountId = @event.IbsAccountId;
+                    }
+                });
             }
         }
 
         public void Handle(AccountUnlinkedFromIbs @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _accountIbsProjectionSet.Update(@event.SourceId, list =>
             {
-                context.RemoveWhere<AccountIbsDetail>(x => x.AccountId == @event.SourceId);
-                context.SaveChanges();
-            }
+                list.RemoveAll(x => x.AccountId == @event.SourceId);
+            });
         }
     }
 }

@@ -254,12 +254,16 @@
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="Projections\AccountIbsDetailProjectionSet.cs" />
+    <Compile Include="Projections\AddressDetailProjectionSet.cs" />
+    <Compile Include="Projections\AppSettingsProjection.cs" />
     <Compile Include="Projections\EntityProjection.cs" />
     <Compile Include="Projections\EntityProjectionSet.cs" />
     <Compile Include="Projections\IProjection.cs" />
     <Compile Include="Projections\IProjectionSet.cs" />
     <Compile Include="Projections\MemoryProjectionSet.cs" />
     <Compile Include="Projections\MemoryProjectionWrapper.cs" />
+    <Compile Include="Projections\OrderRatingProjectionSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
     <Compile Include="PushNotifications\IPushNotificationService.cs" />

@@ -7,6 +7,7 @@ using NUnit.Framework;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new CompanyDetailsGenerator(() => new BookingDbContext(DbName));
+            Sut = new CompanyDetailsGenerator(new EntityProjectionSet<CompanyDetail>(() => new BookingDbContext(DbName)));
         }
     }
 

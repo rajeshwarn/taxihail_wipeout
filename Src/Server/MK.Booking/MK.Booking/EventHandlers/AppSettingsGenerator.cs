@@ -1,20 +1,9 @@
-﻿#region
-
-using System;
-using System.Linq;
-using apcurium.MK.Booking.Events;
+﻿using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using MK.Common.Configuration;
-using System.Collections.Generic;
-using System.Reactive;
 using apcurium.MK.Booking.Projections;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -40,8 +29,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 if (!defaultSettings.ContainsKey(appSetting.Key))
                 {
-                        // Setting doesn't exist
-                        continue;
+                    // Setting doesn't exist
+                    continue;
                 }
 
                 var defaultSettingValue = taxiHailSettings.GetNestedPropertyValue(appSetting.Key);
@@ -49,10 +38,10 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 if (defaultSettings[appSetting.Key].PropertyType == typeof(bool?))
                 {
-                        // Support for nullabool
-                        defaultSettingStringValue = defaultSettingValue == null
-                            ? "null"
-                            : defaultSettingValue.ToString().ToLower();
+                    // Support for nullabool
+                    defaultSettingStringValue = defaultSettingValue == null
+                        ? "null"
+                        : defaultSettingValue.ToString().ToLower();
                 }
                 else
                 {
@@ -61,86 +50,33 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 if (defaultSettingStringValue.IsBool())
                 {
-                        // Needed because ToString() returns False instead of false
-                        defaultSettingStringValue = defaultSettingStringValue.ToLower();
+                    // Needed because ToString() returns False instead of false
+                    defaultSettingStringValue = defaultSettingStringValue.ToLower();
                 }
-
-                var settingToUpdate = settings.FirstOrDefault(x => x.Key == appSetting.Key);
 
                 if (settings.ContainsKey(appSetting.Key))
                 {
                     if (appSetting.Value != defaultSettingStringValue)
                     {
-                            // Value is different than default
-                            settings[appSetting.Key] = appSetting.Value;
+                        // Value is different than default
+                        settings[appSetting.Key] = appSetting.Value;
                     }
                     else
                     {
-                            // Value is the same as default, remove the setting
-                            settings.Remove(appSetting.Key);
+                        // Value is the same as default, remove the setting
+                        settings.Remove(appSetting.Key);
                     }
                 }
                 else if (appSetting.Value != defaultSettingStringValue)
                 {
-                        // New setting with value different than default
-                        settings[appSetting.Key] = appSetting.Value;
+                    // New setting with value different than default
+                    settings[appSetting.Key] = appSetting.Value;
                 }
             }
             _projection.Save(settings);
 
             // Refresh the ServerData object
             _serverSettings.Reload();
-        }
-    }
-    
-
-    public abstract class AppSettingsProjection : IProjection<IDictionary<string, string>>
-    {
-        public abstract IDictionary<string, string> Load();
-
-        public abstract void Save(IDictionary<string, string> projection);
-    }
-
-    public class AppSettingsEntityProjection : AppSettingsProjection
-    {
-        private readonly Func<DbContext> _contextFactory;
-        public AppSettingsEntityProjection(Func<ConfigurationDbContext> contextFactory)
-        {
-            _contextFactory = contextFactory;
-        }
-
-        public override IDictionary<string, string> Load()
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                return context.Set<AppSetting>().ToDictionary(x => x.Key, x => x.Value);
-            }
-        }
-
-        public override void Save(IDictionary<string, string> projection)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var keys = projection.Keys.ToArray();
-                context.Set<AppSetting>().RemoveRange(context.Set<AppSetting>().Where(x => !keys.Contains(x.Key)));
-                context.Set<AppSetting>().AddOrUpdate(projection.Select(x => new AppSetting { Key = x.Key, Value = x.Value }).ToArray());
-                context.SaveChanges();
-            }
-        }
-    }
-
-    public class AppSettingsMemoryProjection : AppSettingsProjection
-    {
-        IDictionary<string, string> _dictionnary = new Dictionary<string, string>();
-
-        public override IDictionary<string, string> Load()
-        {
-            return new Dictionary<string, string>(_dictionnary);
-        }
-
-        public override void Save(IDictionary<string, string> projection)
-        {
-            _dictionnary = projection;
         }
     }
 }

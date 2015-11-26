@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Projections;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => _commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new UserTaxiHailNetworkSettingsGenerator(() => new ConfigurationDbContext(DbName));
+            Sut = new UserTaxiHailNetworkSettingsGenerator(new EntityProjectionSet<UserTaxiHailNetworkSettings>(() => new ConfigurationDbContext(DbName)));
         }
     }
 

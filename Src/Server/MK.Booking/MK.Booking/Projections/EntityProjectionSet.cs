@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Projections
 {
@@ -70,6 +71,15 @@ namespace apcurium.MK.Booking.Projections
                     context.Set<TProjection>().Remove(toRemove);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void Remove(Func<TProjection, bool> predicate)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveWhere(predicate);
+                context.SaveChanges();
             }
         }
 
