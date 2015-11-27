@@ -32,12 +32,12 @@ namespace Infrastructure.Sql.MessageLog
 
         public void Handle(IEvent @event)
         {
-            this.log.Save(@event);
+            //this.log.Save(@event);
         }
 
         public void Handle(ICommand command)
         {
-            this.log.Save(command);
+            //this.log.Save(command);
         }
     }
 }
