@@ -109,6 +109,8 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
+                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+
                     creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
 
                     UpdateSchema(param);

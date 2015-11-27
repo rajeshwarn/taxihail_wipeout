@@ -180,6 +180,12 @@ namespace DatabaseInitializer.Sql
                 exists + "ALTER DATABASE [" + oldName + "] MODIFY NAME = [" + newName + "]");
         }
 
+        public void DropMessageLogTable(string connectionString, string databaseName)
+        {
+            DatabaseHelper.ExecuteNonQuery(connectionString,
+                "IF OBJECT_ID('[" + databaseName + "].[MessageLog].[Messages]', 'U') IS NOT NULL DROP TABLE [" + databaseName + "].[MessageLog].[Messages]");
+        }
+
         public void DeleteDeviceRegisteredEvents(string connectionString, string databaseName)
         {
             DatabaseHelper.ExecuteNonQuery(connectionString,
@@ -413,7 +419,6 @@ namespace DatabaseInitializer.Sql
         public void CreateSchemas(ConnectionStringSettings connectionString)
         {
             Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
             Database.SetInitializer<ConfigurationDbContext>(null);
             Database.SetInitializer<CachingDbContext>(null);
@@ -422,7 +427,6 @@ namespace DatabaseInitializer.Sql
             {
                 new CachingDbContext(connectionString.ConnectionString),
                 new EventStoreDbContext(connectionString.ConnectionString),
-                new MessageLogDbContext(connectionString.ConnectionString)
             };
 
             try
