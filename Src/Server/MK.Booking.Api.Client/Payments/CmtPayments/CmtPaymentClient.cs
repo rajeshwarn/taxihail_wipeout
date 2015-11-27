@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using MK.Common.Exceptions;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -97,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.LastFour,
                 };
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 var message = e.Message;
                 var exception = e as AggregateException;

@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             if (_sessionId.HasValueTrimmed())
             {
-
                 client.DefaultRequestHeaders.Add("Cookie", "ss-opt=perm; ss-pid=" + _sessionId);
             }
             client.DefaultRequestHeaders.Accept.ParseAdd("application/json");

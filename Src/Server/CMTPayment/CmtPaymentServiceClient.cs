@@ -89,7 +89,10 @@ namespace CMTPayment
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex);
+				if (_logger != null)
+				{
+					_logger.LogError(ex);
+				}
             }
             
         }
@@ -104,7 +107,10 @@ namespace CMTPayment
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex);
+				if (_logger != null)
+				{
+					_logger.LogError(ex);
+				}
             }
         }
 #else   
