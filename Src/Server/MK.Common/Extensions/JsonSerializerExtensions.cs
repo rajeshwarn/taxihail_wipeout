@@ -1,5 +1,6 @@
 using apcurium.MK.Common.Serializer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -11,8 +12,10 @@ namespace apcurium.MK.Common.Extensions
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+
             return new NewtonsoftJsonSerializer(serializer);
         }
 
