@@ -162,11 +162,15 @@ namespace apcurium.MK.Booking.Mobile
 	    {
             // In debug, we should allow all certs to allow us to debug issues that might arise.
 #if DEBUG
-	        return true;
-#else
+	        //return true;
+
             var request = sender as HttpWebRequest;
-			
-			if (request == null || Hosts.None(request.Host.EndsWith))
+
+	        var host = request != null
+	            ? request.Host
+	            : sender as string;
+
+            if (host == null || Hosts.None(host.EndsWith))
 		    {
 				// We are using the default certificate validation.
 				return new X509Certificate2(certificate).Verify();
