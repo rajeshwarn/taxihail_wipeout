@@ -693,4 +693,7 @@
   <data name="PushNotification_NoShowWarning" xml:space="preserve">
     <value>Your vehicle has been waiting for ten minutes.  Please contact the driver if you would like your vehicle to wait longer.</value>
   </data>
+  <data name="PushNotification_InfoAboutGratuity" xml:space="preserve">
+    <value>Thank you for using Mears. If you were happy with your service and would like to apply an additional gratuity for your driver, please do so in the app.</value>
+  </data>
 </root>

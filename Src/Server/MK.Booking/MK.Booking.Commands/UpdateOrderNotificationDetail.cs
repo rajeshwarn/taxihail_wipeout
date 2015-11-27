@@ -21,5 +21,7 @@ namespace apcurium.MK.Booking.Commands
         public bool? InfoAboutPaymentWasSentToDriver { get; set; }
 
         public bool? NoShowWarningSent { get; set; }
+
+        public bool? InfoAboutGratuitySent { get; set; }
     }
 }
