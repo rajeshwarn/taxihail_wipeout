@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-                    message = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
+                    message = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
 
                     throw new OrderCreationException(message, error.ResponseStatus.Message);
 			    }
