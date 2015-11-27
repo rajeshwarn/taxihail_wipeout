@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookRatingView">
             <connections>
+                <outlet property="btnGratuity0" destination="0bS-9q-Tu9" id="VhQ-He-EGe"/>
+                <outlet property="btnGratuity1" destination="vTq-Hr-MME" id="A1d-cp-Z1A"/>
+                <outlet property="btnGratuity2" destination="B1Z-5j-dI5" id="3fC-Cl-os0"/>
+                <outlet property="btnGratuity3" destination="mqI-Hf-LHZ" id="nNr-CT-sFa"/>
+                <outlet property="gratuityLabel" destination="o9K-ds-JTq" id="MW6-3w-HCL"/>
+                <outlet property="gratuityView" destination="dkd-k4-JGb" id="ciQ-Gg-RWg"/>
                 <outlet property="ratingTableView" destination="17" id="18"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -15,27 +22,97 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="top" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="17">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dkd-k4-JGb" userLabel="Gratuity View">
+                    <rect key="frame" x="0.0" y="30" width="320" height="163"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9K-ds-JTq" userLabel="GratuityText">
+                            <rect key="frame" x="8" y="0.0" width="312" height="115"/>
+                            <animations/>
+                            <accessibility key="accessibilityConfiguration" label="kyiuk"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="115" id="BgO-rv-C42"/>
+                            </constraints>
+                            <string key="text">If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bS-9q-Tu9" userLabel="Gratuity0" customClass="FlatButton">
+                            <rect key="frame" x="8" y="115" width="64" height="48"/>
+                            <animations/>
+                            <accessibility key="accessibilityConfiguration" label=""/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="dw3-9h-wCb"/>
+                            </constraints>
+                            <state key="normal" title="0%"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vTq-Hr-MME" userLabel="Gratuity1" customClass="FlatButton">
+                            <rect key="frame" x="88" y="115" width="64" height="48"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="O28-9M-LjK"/>
+                            </constraints>
+                            <state key="normal" title="10%"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1Z-5j-dI5" userLabel="Gratuity2" customClass="FlatButton">
+                            <rect key="frame" x="168" y="115" width="64" height="48"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="hSl-q6-OHd"/>
+                            </constraints>
+                            <state key="normal" title="15%"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqI-Hf-LHZ" userLabel="Gratuity3" customClass="FlatButton">
+                            <rect key="frame" x="248" y="115" width="64" height="48"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="H5I-me-6h3"/>
+                            </constraints>
+                            <state key="normal" title="20%"/>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="baseline" secondItem="mqI-Hf-LHZ" secondAttribute="baseline" id="2y0-3t-DY3"/>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="baseline" secondItem="vTq-Hr-MME" secondAttribute="baseline" id="3dG-a8-e10"/>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="width" secondItem="dkd-k4-JGb" secondAttribute="width" multiplier="0.2" id="AZu-py-nmA"/>
+                        <constraint firstItem="vTq-Hr-MME" firstAttribute="centerX" secondItem="dkd-k4-JGb" secondAttribute="centerX" multiplier="0.75" id="CEP-Y1-Lz5"/>
+                        <constraint firstItem="mqI-Hf-LHZ" firstAttribute="width" secondItem="dkd-k4-JGb" secondAttribute="width" multiplier="0.2" id="DkV-Sa-tJn"/>
+                        <constraint firstItem="o9K-ds-JTq" firstAttribute="leading" secondItem="0bS-9q-Tu9" secondAttribute="leading" id="FIk-Ba-L7m"/>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="centerX" secondItem="dkd-k4-JGb" secondAttribute="centerX" multiplier="0.25" id="REA-Kg-854"/>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="top" secondItem="o9K-ds-JTq" secondAttribute="bottom" id="RMC-Cf-cgy"/>
+                        <constraint firstItem="mqI-Hf-LHZ" firstAttribute="centerX" secondItem="dkd-k4-JGb" secondAttribute="centerX" multiplier="1.75" id="YiA-wV-5Gt"/>
+                        <constraint firstItem="B1Z-5j-dI5" firstAttribute="centerX" secondItem="dkd-k4-JGb" secondAttribute="centerX" multiplier="1.25" id="dld-Jv-O5K"/>
+                        <constraint firstItem="0bS-9q-Tu9" firstAttribute="baseline" secondItem="B1Z-5j-dI5" secondAttribute="baseline" id="heH-L1-PT0"/>
+                        <constraint firstItem="o9K-ds-JTq" firstAttribute="top" secondItem="dkd-k4-JGb" secondAttribute="top" id="mlY-HG-GBG"/>
+                        <constraint firstItem="vTq-Hr-MME" firstAttribute="width" secondItem="dkd-k4-JGb" secondAttribute="width" multiplier="0.2" id="nIS-hr-nTt"/>
+                        <constraint firstAttribute="bottom" secondItem="0bS-9q-Tu9" secondAttribute="bottom" id="oZn-V7-xDO"/>
+                        <constraint firstAttribute="trailing" secondItem="o9K-ds-JTq" secondAttribute="trailing" id="oem-6K-IpH"/>
+                        <constraint firstItem="B1Z-5j-dI5" firstAttribute="width" secondItem="dkd-k4-JGb" secondAttribute="width" multiplier="0.2" id="tC5-0Z-xJv"/>
+                    </constraints>
+                </view>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="top" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="17">
                     <rect key="frame" x="0.0" y="30" width="320" height="474"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
+            <animations/>
             <constraints>
                 <constraint firstItem="17" firstAttribute="top" secondItem="1" secondAttribute="top" constant="30" id="BFp-fa-zIJ"/>
+                <constraint firstItem="dkd-k4-JGb" firstAttribute="trailing" secondItem="17" secondAttribute="trailing" id="GmC-3b-tHI"/>
                 <constraint firstItem="17" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="MDj-bN-bST"/>
+                <constraint firstItem="dkd-k4-JGb" firstAttribute="top" secondItem="1" secondAttribute="top" constant="30" id="hDW-O1-cSw"/>
                 <constraint firstAttribute="bottom" secondItem="17" secondAttribute="bottom" id="lmq-hI-AyM"/>
                 <constraint firstAttribute="trailing" secondItem="17" secondAttribute="trailing" id="vRX-wx-269"/>
+                <constraint firstItem="dkd-k4-JGb" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="xef-G8-DEP"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

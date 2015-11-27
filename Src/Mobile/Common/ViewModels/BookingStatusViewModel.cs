@@ -488,8 +488,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
-		    	var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
-				StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]);
+				StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError" + (GetServiceTypeForCurrentOrder() == ServiceType.Luxury ? "_Luxury" : "")]);
 		    }
 
 		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
@@ -1244,7 +1243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             Logger.LogMessage("GoToSummary");
 
-            var needToSelectGratuity = Order.Settings.ServiceType == ServiceType.Luxury;
+            var needToSelectGratuity = GetServiceTypeForCurrentOrder() == ServiceType.Luxury;
 
             ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
 
@@ -1323,10 +1322,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
                     this.Services().Localize["StatusNewRideButton"],
-                    this.Services().Localize["StatusConfirmNewBooking" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")],
+                    this.Services().Localize["StatusConfirmNewBooking" + (GetServiceTypeForCurrentOrder() == ServiceType.Luxury ? "_Luxury" : "")],
                     this.Services().Localize["YesButton"], 
                     () =>
                     {
@@ -1376,6 +1374,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	            });
 	        }
 	    }
+
+	    private ServiceType GetServiceTypeForCurrentOrder ()
+		{
+			return _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+		}
 
 	    #endregion
 

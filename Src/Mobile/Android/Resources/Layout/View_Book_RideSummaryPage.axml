@@ -65,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="0%"
-                local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=0" />
+                local:MvxBind="Click SelectGratuity, CommandParameter=0; Selected GratuitySelectionStates, Converter=IndexedItem, ConverterParameter=0" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="10%"
-                local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=1" />
+                local:MvxBind="Click SelectGratuity, CommandParameter=1; Selected GratuitySelectionStates, Converter=IndexedItem, ConverterParameter=1" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="15%"
-                local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=2" />
+                local:MvxBind="Click SelectGratuity, CommandParameter=2; Selected GratuitySelectionStates, Converter=IndexedItem, ConverterParameter=2" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="6dip"
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="20%"
-                local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelected, Converter=IndexedItem, ConverterParameter=3" />
+                local:MvxBind="Click SelectGratuity, CommandParameter=3; Selected GratuitySelectionStates, Converter=IndexedItem, ConverterParameter=3" />
         </LinearLayout>
         <Button
             style="@style/ButtonActionGreenStyle"

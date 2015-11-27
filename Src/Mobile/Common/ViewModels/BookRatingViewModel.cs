@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public BookRatingViewModel(IBookingService bookingService)
 		{
 			_bookingService = bookingService;
-			GratuitySelected = new bool[4] { false, false, false, false };
+			GratuitySelectionStates = new bool[4] { false, false, false, false };
 		}
 
         private List<RatingModel> _ratingList;
@@ -136,17 +136,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-	    private bool[] _gratuitySelected;
-	    public bool[] GratuitySelected
+	    private bool[] _gratuitySelectionStates;
+	    public bool[] GratuitySelectionStates
 	    {
 	        get
 	        {
-	            return _gratuitySelected;
+	            return _gratuitySelectionStates;
 	        }
 
 	        set
 	        {
-	            _gratuitySelected = value;
+	            _gratuitySelectionStates = value;
 	            RaisePropertyChanged();
 	        }
 
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var selectedIndex = (int)commandParameter;
                     SelectedGratuity = Gratuity.GratuityOptions[selectedIndex];
-                    GratuitySelected = new bool[4].Select((x, index) => index == selectedIndex).ToArray();
+                    GratuitySelectionStates = new bool[4].Select((x, index) => index == selectedIndex).ToArray();
                 });
             }
         }

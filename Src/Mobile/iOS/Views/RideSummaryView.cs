@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -24,8 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
-
+			gratuityLabel.Text = Localize.GetValue("BookingGratuityText");
             ChangeThemeOfBarStyle();
+			FlatButtonStyle.Green.ApplyTo (btnGratuity0);
+			FlatButtonStyle.Green.ApplyTo (btnGratuity1);
+			FlatButtonStyle.Green.ApplyTo (btnGratuity2);
+			FlatButtonStyle.Green.ApplyTo (btnGratuity3);
 		}
 
 		public override void ViewDidLoad ()
@@ -37,6 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.TaxiHail.ApplicationName);
 
             PrepareTableView();
+
+			_hasSelectedGratuity = !ViewModel.NeedToSelectGratuity;
 
             InitializeBindings();
 		}
@@ -69,6 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
 
             tableRatingList.Source = _source;
+
+			SetGratuityButtons();
         }
 
         private void InitializeBindings()
@@ -79,21 +89,90 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     ResizeTableView();
                 }
+				ShowDoneButton();
             };
 
             var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
-
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
-            {  
-					ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible();
-            });
 
             set.Bind(_source)
                 .For(v => v.ItemsSource)
                 .To(vm => vm.RatingList);
 
+			set.Bind (tableRatingList)
+                .For (v => v.Hidden)
+                .To (vm => vm.NeedToSelectGratuity);
+
+			set.Bind (gratuityView)
+                .For (v => v.Hidden)
+                .To (vm => vm.NeedToSelectGratuity)
+                .WithConversion ("BoolInverter");
+
             set.Apply ();
         }
+
+		private void SetGratuityButtons ()
+		{
+			if (_gratuityButtons == null)
+			{
+				_gratuityButtons = new FlatButton[] { btnGratuity0, btnGratuity1, btnGratuity2, btnGratuity3 };
+			}
+
+			for (var i = 0; i < 4; i++)
+			{
+				_gratuityButtons[i].Tag = i;
+				_gratuityButtons[i].TouchUpInside += GratuityClicked;
+			}
+		}
+
+		private void GratuityClicked(object sender, EventArgs e)
+		{
+			UnselectButtons();
+			var button = ((FlatButton)sender);
+			button.Selected = true;
+			ViewModel.SelectGratuity.Execute((long)button.Tag);
+			ShowDoneButton();
+		}
+
+		private FlatButton[] _gratuityButtons = null;
+
+		private void UnselectButtons()
+		{
+			for (var i = 0; i < 4; i++)
+			{
+				_gratuityButtons[i].Selected = false;
+			}
+		}
+
+		private bool _hasSelectedGratuity = true;
+		private void ShowDoneButton ()
+		{
+			_hasSelectedGratuity = ViewModel.GratuitySelectionStates.Any(x => x);
+
+			var buttonTextResource = _hasSelectedGratuity && ViewModel.NeedToSelectGratuity
+				? "Next" 
+				: "Done";
+
+			var buttonHidden = !ViewModel.CanRate || !_hasSelectedGratuity;
+
+			NavigationItem.RightBarButtonItem = buttonHidden ? null : new UIBarButtonItem (Localize.GetValue (buttonTextResource), UIBarButtonItemStyle.Bordered, async (o, e) => {
+				if (ViewModel.CanRate)
+				{
+					NavigationRightBarButtonClicked ();
+				}
+			});
+		}
+
+		private void NavigationRightBarButtonClicked ()
+		{
+			if (ViewModel.NeedToSelectGratuity)
+			{
+				ViewModel.PayGratuity.Execute(null);
+			}
+			else
+			{
+				ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible(null);
+			}
+		}
 
         private void ResizeTableView()
         {
