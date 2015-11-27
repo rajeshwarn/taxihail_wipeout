@@ -17,12 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton buttonTipChange { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton buttonUnpair { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewUnpairTipChange { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -34,16 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (buttonTipChange != null) {
 				buttonTipChange.Dispose ();
 				buttonTipChange = null;
-			}
-
-			if (buttonUnpair != null) {
-				buttonUnpair.Dispose ();
-				buttonUnpair = null;
-			}
-
-			if (viewUnpairTipChange != null) {
-				viewUnpairTipChange.Dispose ();
-				viewUnpairTipChange = null;
 			}
 		}
 	}

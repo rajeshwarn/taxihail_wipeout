@@ -41,7 +41,7 @@ namespace DeploymentServiceTools
             }
         }
 
-        public void SignAndGenerateBlackBerryProject(string bbToolsPath)
+        public void SignAndGenerateBlackBerryProject(string bbToolsPath, string barFile)
         {
             _logger(" Running Packaging BlackBerry ");
             var signArgs = "-Djava.awt.headless=true -Xmx512M -cp \"lib/AndroidTools.jar\" net.rim.tools.apk2bar.Apk2Bar \"Outputs/\" -r";
@@ -60,7 +60,7 @@ namespace DeploymentServiceTools
             }
 
             _logger(" Running Signing BlackBerry ");
-            var pkgArgs = "-Djava.awt.headless=true -Xmx512M -cp \"lib/BarSigner.jar:lib/AndroidTools.jar\" net.rim.tools.signing.SigningMain -bbidtoken \"Outputs/bbidtoken.csk\" -storepass apcurium72 -keystore \"Outputs/author.p12\" \"Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar\"";
+            var pkgArgs = "-Djava.awt.headless=true -Xmx512M -cp \"lib/BarSigner.jar:lib/AndroidTools.jar\" net.rim.tools.signing.SigningMain -bbidtoken \"Outputs/bbidtoken.csk\" -storepass apcurium72 -keystore \"Outputs/author.p12\" \"Outputs/"+barFile+"\"";
 
             var pkgdBBProject = ProcessEx.GetProcess("java",
                 pkgArgs, bbToolsPath);

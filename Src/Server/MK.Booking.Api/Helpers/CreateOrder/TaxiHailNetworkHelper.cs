@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 
         internal void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
         {
-            if (!bookingSettings.VehicleTypeId.HasValue)
+            if (!bookingSettings.VehicleTypeId.HasValue || !marketCompanyId.HasValue())
             {
                 // Nothing to do
                 return;
