@@ -1,7 +1,10 @@
 ﻿(function () {
 
     TaxiHail.UnassignedReferenceDataVehicles = Backbone.Collection.extend({
-        url: TaxiHail.parameters.apiRoot + '/admin/vehicletypes/unassignedreference'
-    });
+        initialize: function (models, options) {
+            this.serviceType = options.serviceType;
+        },
+        url: TaxiHail.parameters.apiRoot + '/admin/vehicletypes/unassignedreference/?serviceType=' + serviceType
+});
 
 }());

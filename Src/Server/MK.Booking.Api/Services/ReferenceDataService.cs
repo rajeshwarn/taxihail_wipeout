@@ -48,12 +48,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceDataRequest request)
         {
-            var cacheKey = string.Format("{0}{1}", CacheKey, request.CompanyKey);
+            var cacheKey = string.Format("{0}{1}{2}", CacheKey, request.CompanyKey, request.ServiceType);
             var result = _cacheClient.Get<ReferenceData>(cacheKey);
 
             if (result == null)
             {
-                result = GetReferenceData(request.CompanyKey);
+                result = GetReferenceData(request.CompanyKey, request.ServiceType);
                 _cacheClient.Add(cacheKey, result);
             }
 
@@ -108,16 +108,16 @@ namespace apcurium.MK.Booking.Api.Services
 	        throw new InvalidOperationException("Unknown list " + request.ListName);
         }
 
-        private ReferenceData GetReferenceData(string companyKey)
+        private ReferenceData GetReferenceData(string companyKey, ServiceType serviceType)
         {
-            var companies = _ibsServiceProvider.StaticData(companyKey).GetCompaniesList();
+            var companies = _ibsServiceProvider.StaticData(companyKey, serviceType).GetCompaniesList();
             var payments = new List<ListItem>();
             var vehicles = new List<ListItem>();
 
             foreach (var company in companies)
             {
                 payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
-                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey).GetVehiclesList(company));
+                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey, serviceType).GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();

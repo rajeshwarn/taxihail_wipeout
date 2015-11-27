@@ -318,11 +318,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (market.HasValue())
             {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey, ServiceType = request.Settings.ServiceType });
             }
             else
             {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest() { ServiceType = request.Settings.ServiceType });
             }
 
             request.PickupDate = pickupDate;

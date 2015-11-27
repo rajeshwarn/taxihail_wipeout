@@ -1,5 +1,6 @@
 ﻿#region
 
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceHost;
 
 #endregion
@@ -12,6 +13,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public bool WithoutFiltering { get; set; }
 
         public string CompanyKey { get; set; }
+
+        public ServiceType ServiceType { get; set; }
     }
 
     [Route("/references/{ListName}", "GET")]
