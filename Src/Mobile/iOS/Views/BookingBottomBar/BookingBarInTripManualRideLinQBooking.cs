@@ -19,13 +19,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bookingView.BackgroundColor = UIColor.Clear;
 
-			FlatButtonStyle.Red.ApplyTo(bookingView.buttonUnpair);
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonCall);
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonTipChange);
 
 			bookingView.Hidden = true;
 
-			bookingView.buttonUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
 			bookingView.buttonCall.SetTitle(Localize.GetValue("CallButton"), UIControlState.Normal);
 
 			return bookingView;
@@ -45,22 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("EnumToInvertedBool", new[] { HomeViewModelState.ManualRidelinq });
 
-			set.Bind(viewUnpairTipChange)
-				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.BookingStatus.BottomBar.IsUnpairOrTipChangeButtonsVisible)
-				.WithConversion("BoolInverter");
-
-			set.Bind(buttonUnpair)
-				.For(v => v.Command)
-				.To(vm => vm.BookingStatus.BottomBar.Unpair);
-			set.Bind(buttonUnpair)
-				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible)
-				.WithConversion("BoolInverter");
-
 			set.Bind(buttonCall)
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CallCompany);
+            
 			set.Bind(buttonCall)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
@@ -69,9 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip)
 				.WithConversion("BoolInverter");
+            
 			set.Bind(buttonTipChange)
 				.For("Title")
 				.To(vm => vm.BookingStatus.BottomBar.ButtonEditTipLabel);
+            
 			set.Bind(buttonTipChange)
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.EditAutoTipCommand);
