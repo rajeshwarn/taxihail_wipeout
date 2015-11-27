@@ -117,8 +117,11 @@ namespace DatabaseInitializer
                     module.Init(container, connectionString, param.MkWebConnectionString);
 
                     creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+
+                    creatorDb.FixUnorderedEvents(param.MkWebConnectionString);
+
                     //UpdateSchema(param);
-                    
+
                     //if (param.ReuseTemporaryDb)
                     //{
                     //    // the idea behind reuse of temp db is that account doesn't have permission to rename db 

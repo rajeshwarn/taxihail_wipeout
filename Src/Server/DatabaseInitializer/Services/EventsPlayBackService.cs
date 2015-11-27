@@ -51,6 +51,8 @@ namespace DatabaseInitializer.Services
             }
         }
 
+        private Dictionary<string, Tuple<long, TimeSpan, TimeSpan>> AverageDispatchTimeOfEvents = new Dictionary<string, Tuple<long, TimeSpan, TimeSpan>>();
+
         public void ReplayAllEvents(DateTime? after = null)
         {
             var skip = 0;
@@ -63,6 +65,8 @@ namespace DatabaseInitializer.Services
             int migratedEventCount = 0;
             int actuallyReplayedEventCount = 0;
             var stopWatchPLayingEvents = new Stopwatch();
+
+            var timer = new Stopwatch();
 
             stopWatchPLayingEvents.Start();
             using (var context = _contextFactory.Invoke())
@@ -97,11 +101,16 @@ namespace DatabaseInitializer.Services
                                 //context.SaveChanges();
                             }
                         }
-
+                        
                         actuallyReplayedEventCount++;
+                        
+                        timer.Restart();
                         _eventDispatcher.DispatchMessage(ev);
+                        timer.Stop();
 
-                        if((eCount % 10000) == 0)
+                        CalculateMetrics(ev, timer);
+
+                        if ((eCount % 10000) == 0)
                         {
                             _logger.LogMessage("{0} events played", eCount);
                             _logger.LogMessage("{0} events actually replayed", actuallyReplayedEventCount);
@@ -118,13 +127,38 @@ namespace DatabaseInitializer.Services
                     }
                 }
                 context.SaveChanges();
-               
             }
 
             _logger.LogMessage("{0} events played", eCount);
             _logger.LogMessage("{0} events actually replayed", actuallyReplayedEventCount);
             stopWatchPLayingEvents.Stop();
             _logger.LogMessage("Replayed events in " + stopWatchPLayingEvents.Elapsed.TotalMinutes + " minutes");
+
+            _logger.LogMessage("Events playback metrics");
+            foreach (var averageDispatchTimeOfEvent in AverageDispatchTimeOfEvents.OrderBy(x => x.Key))
+            {
+                _logger.LogMessage("EventType: {0} [Count: {1}, Average time to replay event: {2}, Total time for event type: {3}]", 
+                    averageDispatchTimeOfEvent.Key, averageDispatchTimeOfEvent.Value.Item1, averageDispatchTimeOfEvent.Value.Item2, averageDispatchTimeOfEvent.Value.Item3);
+            }
+        }
+
+        private void CalculateMetrics(IVersionedEvent ev, Stopwatch timer)
+        {
+            var specificEventCount = 0l;
+            var specificEventDuration = TimeSpan.Zero;
+            var specificEventTotalDuration = TimeSpan.Zero;
+            if (AverageDispatchTimeOfEvents.ContainsKey(ev.GetType().Name))
+            {
+                var existing = AverageDispatchTimeOfEvents[ev.GetType().Name];
+                specificEventCount = existing.Item1;
+                specificEventDuration = existing.Item2;
+                specificEventTotalDuration = existing.Item3;
+            }
+            specificEventCount++;
+            specificEventDuration = TimeSpan.FromMilliseconds((specificEventDuration.TotalMilliseconds + timer.Elapsed.TotalMilliseconds) / specificEventCount);
+            specificEventTotalDuration += timer.Elapsed;
+
+            AverageDispatchTimeOfEvents[ev.GetType().Name] = Tuple.Create(specificEventCount, specificEventDuration, specificEventTotalDuration);
         }
 
         private IVersionedEvent Deserialize(Event @event)
