@@ -71,8 +71,9 @@
     "AccountCharge_AccountAlreadyExisting" :  "Error: an existing account has already the same account ride number",		
 	"Default": "Default",
     "sendTestEmailSuccess" : "Message has correctly been sent." ,
-  "sendTestEmailErrorNoMatchingTemplate": "No template matches the given name",
-  "error.serviceTypeIbsWebServicesUrlRequired" : "IBS Web Services Url is required",
+    "sendTestEmailErrorNoMatchingTemplate": "No template matches the given name",
+    "error.serviceTypeIbsWebServicesUrlRequired" : "IBS Web Services Url is required",
+    "error.serviceTypeProviderIdRequired" : "Provider ID is required",
     "error.serviceTypeWaitTimeRatePerMinuteRequired": "Wait Time Rate Per minute is required",
     "error.serviceTypeAirportMeetAndGreetRateRequired" : "Airport Meet & Greet Rate is required",
 

@@ -198,6 +198,9 @@ namespace DatabaseInitializer
                     UpdateRatings(commandBus, ratingTypes);
                 }
 
+                Console.WriteLine("Generate Service Types Settings...");
+                EnsureServiceTypesExists(connectionString, commandBus, serverSettings);
+
                 Console.WriteLine("Checking Vehicles Types ...");
                 var vehicleTypeDao = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
                 var vehicleTypeDetails = vehicleTypeDao.GetAll();
@@ -243,7 +246,6 @@ namespace DatabaseInitializer
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
-                EnsureServiceTypesExists(connectionString, commandBus, serverSettings);
 #if DEBUG
                 if (IsUpdate)
                 {
@@ -1118,7 +1120,8 @@ namespace DatabaseInitializer
                             ServiceType = ServiceType.Taxi,
                             WaitTimeRatePerMinute = 0,
                             AirportMeetAndGreetRate = 0,
-                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl
+                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl,
+                            ProviderId = 0
                         } 
                     },
                     new UpdateServiceTypeSettings
@@ -1129,7 +1132,8 @@ namespace DatabaseInitializer
                             ServiceType = ServiceType.Luxury,
                             WaitTimeRatePerMinute = 0,
                             AirportMeetAndGreetRate = 0,
-                            IBSWebServicesUrl = ""
+                            IBSWebServicesUrl = "",
+                            ProviderId = 0,
                         }
                     }
                 };

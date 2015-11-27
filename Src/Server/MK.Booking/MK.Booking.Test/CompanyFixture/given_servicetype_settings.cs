@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 {
                     ServiceType = ServiceType.Luxury,
                     IBSWebServicesUrl = "test",
+                    ProviderId =  0,
                     WaitTimeRatePerMinute = 2,
                     AirportMeetAndGreetRate = 10
                 }
@@ -43,6 +44,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(ServiceType.Luxury, evt.ServiceTypeSettings.ServiceType);
             Assert.AreEqual("test", evt.ServiceTypeSettings.IBSWebServicesUrl);
+            Assert.AreEqual(0, evt.ServiceTypeSettings.ProviderId);
             Assert.AreEqual(2, evt.ServiceTypeSettings.WaitTimeRatePerMinute);
             Assert.AreEqual(10, evt.ServiceTypeSettings.AirportMeetAndGreetRate);
         }

@@ -251,6 +251,10 @@
     <Compile Include="Migrations\201511041430295_Configuration_Revert_MTA_5.Designer.cs">
       <DependentUpon>201511041430295_Configuration_Revert_MTA_5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511272203412_Configuration_MTA_73.cs" />
+    <Compile Include="Migrations\201511272203412_Configuration_MTA_73.Designer.cs">
+      <DependentUpon>201511272203412_Configuration_MTA_73.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
@@ -420,6 +424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511041430295_Configuration_Revert_MTA_5.resx">
       <DependentUpon>201511041430295_Configuration_Revert_MTA_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511272203412_Configuration_MTA_73.resx">
+      <DependentUpon>201511272203412_Configuration_MTA_73.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

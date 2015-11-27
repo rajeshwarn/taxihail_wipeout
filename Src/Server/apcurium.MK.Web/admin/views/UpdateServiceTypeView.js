@@ -24,12 +24,16 @@
                 rules: {
                     serviceType: "required",
                     ibsWebServicesUrl: "required",
+                    providerId: "required",
                     waitTimeRatePerMinute: "required",
                     airportMeetAndGreetRate: "required"
                 },
                 messages: {
                     ibsWebServicesUrl: {
                         required: TaxiHail.localize('error.serviceTypeIbsWebServicesUrlRequired')
+                    },
+                    providerId: {
+                        required: TaxiHail.localize('error.serviceTypeProviderIdRequired')
                     },
                     waitTimeRatePerMinute: {
                         required: TaxiHail.localize('error.serviceTypeWaitTimeRatePerMinuteRequired')

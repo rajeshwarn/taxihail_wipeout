@@ -3,7 +3,7 @@
 
     <div class="errors" style="margin-top: 10px;"></div>
 
-    <form class="form-horizontal clearfix" >
+    <form class="form-horizontal clearfix">
         <div class="control-group">
             <label class="control-label">{{localize 'Service Type'}}</label>
             <div class="controls">
@@ -19,22 +19,29 @@
         </div>
 
         <div class="control-group">
-            <label class="control-label">{{localize 'Wait Time Rate (Per minute)'}}</label>
+            <label class="control-label">{{localize 'Provider ID'}}</label>
             <div class="controls">
-                <input type="number" id="inputWaitTimeRatePerMinute" name="waitTimeRatePerMinute" value="{{waitTimeRatePerMinute}}" class='input-block-level' maxlength="50">
+                <input type="text" id="inputProviderId" name="providerId" value="{{providerId}}" class='input-block-level'>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label">{{localize 'Airport Meet & Greet Rate'}}</label>
-            <div class="controls">
-                <input type="number" id="inputAirportMeetAndGreetRate" name="airportMeetAndGreetRate" value="{{airportMeetAndGreetRate}}" class='input-block-level' maxlength="50">
+            <label class="control-label">{{localize 'Wait Time Rate (Per minute)'}}></label>
+                <div class="controls">
+                    <input type="number" id="inputWaitTimeRatePerMinute" name="waitTimeRatePerMinute" value="{{waitTimeRatePerMinute}}" class='input-block-level' maxlength="50">
+                </div>
             </div>
-        </div>
 
-        <div class="control-group btn-right-alignment" >
-          <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
-          <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
-        </div>
+            <div class="control-group">
+                <label class="control-label">{{localize 'Airport Meet & Greet Rate'}}</label>
+                <div class="controls">
+                    <input type="number" id="inputAirportMeetAndGreetRate" name="airportMeetAndGreetRate" value="{{airportMeetAndGreetRate}}" class='input-block-level' maxlength="50">
+                </div>
+            </div>
+
+            <div class="control-group btn-right-alignment">
+                <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
+                <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+            </div>
     </form>
 </div>
