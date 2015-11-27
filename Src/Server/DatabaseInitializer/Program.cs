@@ -113,6 +113,8 @@ namespace DatabaseInitializer
                     creatorDb.DropReadModelTables(param.MkWebConnectionString);
                     creatorDb.CreateReadModelTables(param.MkWebConnectionString);
                     
+                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+
                     module.RegisterMemoryProjectionSets(container);
                     module.Init(container, connectionString, param.MkWebConnectionString);
 

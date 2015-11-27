@@ -180,16 +180,9 @@ namespace DatabaseInitializer
         {
             container.RegisterInstance(apcurium.MK.Common.Module.MkConnectionString, connectionString);
             Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
 
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
-
-            // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString,
-                container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
-            container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-            container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
             // Repository
             container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(),
