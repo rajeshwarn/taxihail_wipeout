@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
     public class BaseServiceClient
     {
-        public HttpClient GetClient(string url)
+        public HttpClient GetClient(string url = "")
         {
             var client = new HttpClient(new NativeMessageHandler())
             {

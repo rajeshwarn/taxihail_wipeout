@@ -94,32 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<IAppSettings>().Data.ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
-
-            try
-            {
-                //Register Enums
-                //JsConfig.RegisterTypeForAot<OrderStatus>();
-                //JsConfig.RegisterTypeForAot<CoordinatePrecision>();
-                //JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
-                
-                //JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
-                //JsConfig.RegisterTypeForAot<PaymentMethod> ();
-                
-                //JsConfig.RegisterTypeForAot<ResultStatus>();
-                //JsConfig.RegisterTypeForAot<AddressComponentType>();
-            } catch(NullReferenceException){
-                // In the Simulator, a NullReferenceException is mysteriously thrown
-            }
-			//JsConfig.RegisterTypeForAot<Coordinate>();            
-   //         JsConfig.RegisterTypeForAot<AddressComponent>();
-   //         JsConfig.RegisterTypeForAot<Bounds>();
-   //         JsConfig.RegisterTypeForAot<DirectionResult>();
-   //         JsConfig.RegisterTypeForAot<Distance>();
-   //         JsConfig.RegisterTypeForAot<Duration>();
-   //         JsConfig.RegisterTypeForAot<Event>();
-   //         JsConfig.RegisterTypeForAot<Geometry>();
-   //         JsConfig.RegisterTypeForAot<GeoObj>();
-   //         JsConfig.RegisterTypeForAot<GeoResult>();
         }
 
         public override void DidEnterBackground (UIApplication application)

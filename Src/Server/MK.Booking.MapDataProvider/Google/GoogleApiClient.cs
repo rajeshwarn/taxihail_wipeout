@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
-            var client = GetClient(string.Empty);
+            var client = GetClient();
             var @params = new Dictionary<string, string>
             {
                 {"origin", string.Format(CultureInfo.InvariantCulture, "{0},{1}", originLat, originLng)},
@@ -268,7 +268,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 	    private Task<GeoAddress[]> GeocodeAsync(string requestParameters, Func<Task<GeoAddress[]>> fallBackAction)
 	    {
-            var client = GetClient(string.Empty);
+            var client = GetClient();
 
             var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
             Console.WriteLine(signedUrl);
