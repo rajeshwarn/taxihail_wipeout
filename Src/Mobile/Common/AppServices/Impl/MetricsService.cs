@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         : 0
                 };
 
-                //This needs to be awaited to catch exceptions.
+                //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
                 await UseServiceClientAsync<MetricsServiceClient>(client => client.LogApplicationStartUp(request));
             }
             catch (Exception ex)
@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     OriginalEta = originalEta
                 };
 
+                //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
                 await UseServiceClientAsync<MetricsServiceClient>(client => client.LogOriginalRideEta(request));
             }
             catch (Exception ex)
