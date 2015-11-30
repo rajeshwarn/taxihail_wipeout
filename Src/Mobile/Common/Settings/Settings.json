@@ -7,6 +7,6 @@
 	"TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
 	"TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
 	"TwitterEnabled" : "true",
-	"ServiceUrl" : "http://api.goarro.com/ArroDemo/api",
+	"ServiceUrl" : "http://test.taxihail.biz:8181/Apcurium/api",
 	"CanChangeServiceUrl": "true"
 }
