@@ -137,8 +137,8 @@ namespace DatabaseInitializer.Services
             _logger.LogMessage("Events playback metrics");
             foreach (var averageDispatchTimeOfEvent in AverageDispatchTimeOfEvents.OrderBy(x => x.Key))
             {
-                _logger.LogMessage("EventType: {0} [Count: {1}, Average time to replay event: {2}, Total time for event type: {3}]", 
-                    averageDispatchTimeOfEvent.Key, averageDispatchTimeOfEvent.Value.Item1, averageDispatchTimeOfEvent.Value.Item2, averageDispatchTimeOfEvent.Value.Item3);
+                _logger.LogMessage("EventType: {0} [Count: {1}, Average time to replay event: {2}ms, Total time for event type: {3}ms]", 
+                    averageDispatchTimeOfEvent.Key, averageDispatchTimeOfEvent.Value.Item1, averageDispatchTimeOfEvent.Value.Item2.TotalMilliseconds, averageDispatchTimeOfEvent.Value.Item3.TotalMilliseconds);
             }
         }
 
