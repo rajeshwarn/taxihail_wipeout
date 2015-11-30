@@ -62,7 +62,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
 
-		public override void Draw (CGRect rect)
+		// do not remove this commented code since design is there
+		// see ticket MKTAXI-3611 why commented
+		/*public override void Draw (CGRect rect)
 		{   
             var fillColor = BackgroundColor;
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
@@ -73,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
 			SetNeedsDisplay();
-		}
+		}*/
 
         bool _forceWhiteBackground;
         public bool ForceWhiteBackground

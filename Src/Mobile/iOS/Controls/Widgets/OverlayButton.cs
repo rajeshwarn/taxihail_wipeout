@@ -38,15 +38,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.SetNeedsDisplay();
 		}
 
-        public override void Draw (CGRect rect)
-        {   
+		// do not remove this commented code since design is there
+		// see ticket MKTAXI-3611 why commented
+        /*public override void Draw (CGRect rect)
+        {  
 			if (!Hidden)
 			{
-                DrawStroke();
+				DrawStroke();
 			}
 
-            SetNeedsDisplay();
-        }
+			SetNeedsDisplay();
+        }*/
 
         private CAShapeLayer GetMaskForRoundedCorners()
         {
