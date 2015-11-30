@@ -119,7 +119,10 @@ namespace apcurium.MK.Booking.Maps.Impl
 				FullAddress = place.Address.FullAddress,
 				Latitude = place.Address.Latitude,
 				Longitude = place.Address.Longitude ,
-                AddressType = "place"
+                AddressType = "place",
+                City = place.Address.City,
+                State = place.Address.State,
+                ZipCode = place.Address.ZipCode
             };
 
             if (address.FullAddress.HasValue() &&

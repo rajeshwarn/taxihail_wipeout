@@ -1,4 +1,4 @@
-using apcurium.MK.Common.Cryptography;
+﻿using apcurium.MK.Common.Cryptography;
 using System;
 
 namespace apcurium.MK.Common.Configuration.Impl

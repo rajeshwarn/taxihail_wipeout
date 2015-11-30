@@ -67,13 +67,7 @@ namespace apcurium.MK.Booking.Mobile
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
 
-#if DEBUG
-			// In debug, we should allow all certs to allow us to debug issues that might arise.
-			ServicePointManager.ServerCertificateValidationCallback += (p1, p2, p3, p4) => true;
-#else
-			ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
-#endif
-
+            ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
         }
 
 		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com", "test.taxihail.biz" };
@@ -89,20 +83,30 @@ namespace apcurium.MK.Booking.Mobile
 			//test.taxihail.biz
 			"3082010a028201010098e11cdf768f2ba64857d9852a106d70e60a449fc2314305241a37198554017fc18e19e0c70bd5d61a2eb5cc0956cad4e4ff4cc403f7dea36797e6349e2b9fc9ab76914c2edad0042e2632013b466f095c1bc97309c63fac0a60068ca2e428ffcc7b8e76443f5bb18fd6c5b0b7b2641037e1a891b1e0e92d3b6bc9492684e61091becaa0e86b606fd9412ae0b5bd1fb6246c7a96182f97aa20df656224eaa7ca80d1faa22114ac8d265106b4340c0e809c0a081685cacf37c8bba57401405dc0cd65f1343dc83bd15aff28e26875fdc0d0f00d75e65e429906829398e69b9914e46969427ba1d767aaa46d5915d4bb0b20d76e61f247280cedf431198506c5890203010001"
 		};
-        
-		private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-		{
-			var request = sender as HttpWebRequest;
 
-			if (request == null || Hosts.None(request.Host.EndsWith))
-			{
-				// We are using the default certificate validation.
-				return new X509Certificate2(certificate).Verify();
-			}
+        private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            var request = sender as HttpWebRequest;
 
-			var publicKeyString = certificate.GetPublicKeyString();
+            if (sslPolicyErrors != SslPolicyErrors.None)
+            {
+                Mvx.Resolve<ILogger>().LogMessage("WARNING: Following certificate was not found as valid. \n website: {0} \n certificate: {1} \n cause: {2}",
+                    request != null ? request.Host : "unknown",
+                    certificate.ToString(true),
+                    sslPolicyErrors.ToString());
 
-			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
+                return false;
+            }
+
+            // If the certificate is valid but not part of our pinned certs.
+            if (request == null || Hosts.None(request.Host.EndsWith))
+            {
+                return true;
+            }
+
+            var publicKeyString = certificate.GetPublicKeyString();
+
+            return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
 		}
 
         private string GetSessionId()
