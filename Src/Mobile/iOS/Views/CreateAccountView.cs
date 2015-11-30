@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad ();
 
             View.BackgroundColor = Theme.LoginColor;
-            lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
+            lblTitle.TextColor = Theme.GetContrastBasedColor(Theme.LoginColor);
 
 			if (ViewModel.Settings.ShowTermsAndConditions)
             {
@@ -38,8 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .Replace(Localize.GetValue("TermsAndConditionsLabel"), string.Empty)
                     .Replace(".", string.Empty);
                 var textSecondPart = string.Format("{0}.", Localize.GetValue("TermsAndConditionsLabel"));
-                var attributedText = new NSMutableAttributedString(textFirstPart, foregroundColor: Theme.GetTextColor(Theme.LoginColor), font: UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2));
-                attributedText.Append(new NSMutableAttributedString(textSecondPart, foregroundColor: Theme.GetTextColor(Theme.LoginColor), font: UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2)));
+                var attributedText = new NSMutableAttributedString(textFirstPart, foregroundColor: Theme.GetContrastBasedColor(Theme.LoginColor), font: UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2));
+                attributedText.Append(new NSMutableAttributedString(textSecondPart, foregroundColor: Theme.GetContrastBasedColor(Theme.LoginColor), font: UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2)));
                 btnViewTerms.SetAttributedTitle(attributedText, UIControlState.Normal);
             }
             else
@@ -49,8 +49,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
 			FlatButtonStyle.Main.ApplyTo (btnCreate);
-            btnCreate.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-            btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnCreate.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnCancel.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnCreate.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+            btnCancel.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
 			lblTitle.Text = Localize.GetValue ("View_CreateAccount");
 			btnCreate.SetTitle (Localize.GetValue ("Create"), UIControlState.Normal);

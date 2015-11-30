@@ -116,6 +116,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 
+			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
+
 			InitializeSocialNetwork ();
 		}
 

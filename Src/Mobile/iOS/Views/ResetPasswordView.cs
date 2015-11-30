@@ -30,12 +30,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = Theme.LoginColor;
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
-            lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
-            lblSubTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
+            lblTitle.TextColor = Theme.GetContrastBasedColor(Theme.LoginColor);
+            lblSubTitle.TextColor = Theme.GetContrastBasedColor(Theme.LoginColor);
 
 			FlatButtonStyle.Main.ApplyTo(btnReset); 
-            btnReset.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-            btnCancel.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnReset.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnReset.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+            btnCancel.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnCancel.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
 			DismissKeyboardOnReturn(txtEmail);
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.Mobile;
