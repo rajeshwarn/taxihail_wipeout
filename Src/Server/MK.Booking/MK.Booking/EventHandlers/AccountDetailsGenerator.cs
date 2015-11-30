@@ -209,7 +209,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-				account.Email = @event.Email;
+
+                if (!string.IsNullOrWhiteSpace(@event.Email))
+                {
+                    account.Email = @event.Email;
+                }
+                    
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
