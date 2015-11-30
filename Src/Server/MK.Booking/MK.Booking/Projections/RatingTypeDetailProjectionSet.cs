@@ -175,7 +175,15 @@ namespace apcurium.MK.Booking.Projections
 
         public override void Remove(Guid identifier)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.Invoke())
+            {
+                var ratingTypes = context.Query<RatingTypeDetail>().Where(x => x.Id == identifier);
+                foreach (var ratingType in ratingTypes)
+                {
+                    context.Set<RatingTypeDetail>().Remove(ratingType);
+                }
+                context.SaveChanges();
+            }
         }
 
         public override void Remove(Func<RatingTypeDetailCollection, bool> predicate)
@@ -271,13 +279,13 @@ namespace apcurium.MK.Booking.Projections
         public int RemoveAll(Predicate<RatingTypeDetail> match)
         {
             return _innerList.RemoveAll(match);
-
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _innerList.GetEnumerator();
         }
+
         public IEnumerator<RatingTypeDetail> GetEnumerator()
         {
             return _innerList.GetEnumerator();
