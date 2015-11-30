@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Google.iOS</AssemblyName>
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>full</DebugType>
@@ -40,6 +40,7 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <DebugSymbols>True</DebugSymbols>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugSymbols>True</DebugSymbols>
@@ -50,15 +51,19 @@
     <AssemblyName>MKBookingGoogleiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU'">
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|AnyCPU'">
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;CLIENT</DefineConstants>
+    <DefineConstants>CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
+    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ModernHttpClient">
