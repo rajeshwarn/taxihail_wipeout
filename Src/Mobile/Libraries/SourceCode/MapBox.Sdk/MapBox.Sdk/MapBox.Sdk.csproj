@@ -155,7 +155,10 @@
   <ItemGroup>
     <EmbeddedJar Include="Jars\lost-1.0.1.jar" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Additions\" />
+    <Folder Include="JavaDocs\" />
+  </ItemGroup>
   <ItemGroup>
     <LibraryProjectZip Include="Jars\MapboxGLAndroidSDK-release.aar" />
   </ItemGroup>
