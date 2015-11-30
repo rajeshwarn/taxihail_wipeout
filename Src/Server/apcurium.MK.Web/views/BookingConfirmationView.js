@@ -221,6 +221,8 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
+            this.model.set('OrderCompanyKey', TaxiHail.parameters.applicationKey);
+
             this.$('.errors').html('');        
 
             var numberOfPassengers = this.model.get('settings')['passengers'];
