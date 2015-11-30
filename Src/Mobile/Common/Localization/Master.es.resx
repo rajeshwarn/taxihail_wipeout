@@ -614,7 +614,8 @@
     <comment>Type of Card</comment>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip/Postal</value>
+    <value>Codigo Postal</value>
+    <comment>Zip code</comment>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0:C}</value>
@@ -2977,7 +2978,7 @@
     <value>TaxiHail Callbox</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>Cuenta no encontrada</value>
-    <comment>Account not found</comment>
+    <value>No se ha encontrado cuenta con este email</value>
+    <comment>No account with this email has been found.</comment>
   </data>
 </root>

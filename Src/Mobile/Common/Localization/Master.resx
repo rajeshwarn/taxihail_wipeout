@@ -1147,7 +1147,7 @@
     <value>Invalid payment information</value>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip code</value>
+    <value>Zip/Postal</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
     <value>Payment</value>
@@ -2380,6 +2380,6 @@
     <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>Account not found</value>
+    <value>No account with this email has been found.</value>
   </data>
 </root>

@@ -2379,6 +2379,6 @@
     <value>TaxiHail Callbox</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>Compte introuvable</value>
+    <value>Aucun compte n'a été trouvé pour cet email</value>
   </data>
 </root>

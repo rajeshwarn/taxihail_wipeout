@@ -461,7 +461,7 @@
     <value>نوع البطاقة</value>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip/Postal</value>
+    <value>الرمز البريدي</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>التاريخ</value>
@@ -2327,6 +2327,6 @@
     <value>TaxiHail Callbox</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>الحساب غير موجود</value>
+    <value>لا يوجد حساب خاص بهذا العنوان الإلكتروني.</value>
   </data>
 </root>
