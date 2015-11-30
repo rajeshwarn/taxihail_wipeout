@@ -169,6 +169,7 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<PayPalAccountDetails>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<PayPalAccountDetails>)container.Resolve<IProjectionSet<PayPalAccountDetails>>());
                     new EntityProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>)container.Resolve<IProjectionSet<apcurium.MK.Booking.ReadModel.CreditCardDetails>>());
                     new EntityProjectionSet<OverduePaymentDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange((MemoryProjectionSet<OverduePaymentDetail>)container.Resolve<IProjectionSet<OverduePaymentDetail>>());
+                    new RatingTypeDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange((RatingTypeDetailMemoryProjectionSet)container.Resolve<RatingTypeDetailProjectionSet>());
 
                     Console.WriteLine("End : " + stopwatch.Elapsed);
                 }

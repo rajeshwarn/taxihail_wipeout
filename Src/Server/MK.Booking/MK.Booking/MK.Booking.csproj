@@ -253,6 +253,7 @@
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="Projections\RatingTypeDetailProjectionSet.cs" />
     <Compile Include="Projections\NetworkCompanyPaymentSettingsProjectionSet.cs" />
     <Compile Include="Projections\PromotionProgressDetailProjectionSet.cs" />
     <Compile Include="Projections\AccountIbsDetailProjectionSet.cs" />

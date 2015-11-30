@@ -80,6 +80,7 @@ namespace apcurium.MK.Web
             var paypalAccountProjectionSet = new EntityProjectionSet<PayPalAccountDetails>(container.Resolve<Func<BookingDbContext>>());
             var creditCardProjectionSet = new EntityProjectionSet<CreditCardDetails>(container.Resolve<Func<BookingDbContext>>());
             var overduePaymentProjectionSet = new EntityProjectionSet<OverduePaymentDetail>(container.Resolve<Func<BookingDbContext>>());
+            var ratingTypeProjectionSet = new RatingTypeDetailEntityProjectionSet(container.Resolve<Func<BookingDbContext>>());
 
             container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
             container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
@@ -107,6 +108,7 @@ namespace apcurium.MK.Web
             container.RegisterInstance<IProjectionSet<PayPalAccountDetails>>(paypalAccountProjectionSet);
             container.RegisterInstance<IProjectionSet<CreditCardDetails>>(creditCardProjectionSet);
             container.RegisterInstance<IProjectionSet<OverduePaymentDetail>>(overduePaymentProjectionSet);
+            container.RegisterInstance<RatingTypeDetailProjectionSet>(ratingTypeProjectionSet);
 
             container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));

@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.Jobs
 
             if (tripInfo.EndTime.HasValue || pairingError.HasValueTrimmed())
             {
-                _logger.LogMessage("Trip ended for order {0} (TripId {1}; Pairing token {2})", orderstatusDetail.OrderId, tripInfo.TripId, tripInfo.PairingToken);
+                _logger.LogMessage("Trip ended for order {0} (TripId {1}; Pairing token {2})", orderStatusDetail.OrderId, tripInfo.TripId, tripInfo.PairingToken);
 
                 _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
                 {
