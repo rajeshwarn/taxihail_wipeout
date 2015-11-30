@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                 DriverId = "99123",
                 TerminalId = "98695",
                 ReferenceNumber = "1209",
-				DriverPhotoUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/assets/img/e16a8c1e8dc0c34886a1d14faa38be28.jpg"
+				DriverPhotoUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/assets/img/tony.jpg"
             };
 
             var order = _orderDao.FindById(orderId);
