@@ -73,12 +73,19 @@ namespace apcurium.MK.Common.Configuration.Helpers
         private static void SetValue(string compoundProperty, object target, object value)
         {
             var propertyPath = compoundProperty.Split('.');
-            for (int i = 0; i < propertyPath.Length - 1; i++)
+            for (var i = 0; i < propertyPath.Length - 1; i++)
             {
                 var propertyToGet = target.GetType().GetProperty(propertyPath[i]);
                 target = propertyToGet.GetValue(target, null);
             }
             var propertyToSet = target.GetType().GetProperty(propertyPath.Last());
+
+            //Property does not have a setter.
+            if (!propertyToSet.CanWrite)
+            {
+                return;
+            }
+
             propertyToSet.SetValue(target, value, null);
         }
 
