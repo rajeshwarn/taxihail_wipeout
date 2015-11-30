@@ -265,6 +265,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_isUnpairButtonVisible = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsUnpairOrTipChangeButtonsVisible);
+				RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
 			}
 		}
 
@@ -282,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool IsCancelOrTipChangeButtonsVisible
 		{
-			get { return IsCancelButtonVisible || CanEditAutoTip; }
+			get { return IsCancelButtonVisible || CanEditAutoTip || IsUnpairButtonVisible; }
 		}
 
 		public bool IsUnpairOrTipChangeButtonsVisible
