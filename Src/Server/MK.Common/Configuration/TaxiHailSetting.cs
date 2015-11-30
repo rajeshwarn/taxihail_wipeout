@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Cryptography;
+using System;
 
 namespace MK.Common.Configuration
 {
