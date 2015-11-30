@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Projections
 
         public override void Remove(Guid identifier)
         {
-            throw new NotImplementedException();
+            _cache.Remove(identifier);
         }
 
         public override void Remove(Func<RatingTypeDetailCollection, bool> predicate)
