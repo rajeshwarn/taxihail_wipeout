@@ -164,16 +164,81 @@ function get-scriptdirectory {
 # validate arguments 
 #$r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1,3}$");
   
- # echo "Starting...";
+echo "Starting...";
 #if ($r.Success)
-#{
-  
-  Update-AllAssemblyInfoFiles $args[0];
-  UpdateAndroidVersion $args[0];
-  UpdateCallboxVersion $args[0];
-  UpdateIosVersion $args[0];
-  Add-Content ..\..\tagsList ($args[0])
-#}
+{
+	# Enable the GitHub shell command
+  Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
+	# get current git status
+	$gitStatus= $(git status 2>&1);
+
+
+	# Verify if in a valid GitHub repo
+	$notRepo = Select-String -Pattern "fatal" -InputObject $gitStatus -Quiet;
+  if ($notRepo)
+  {
+	  echo " ";
+	  echo "ERROR: Not a valid repository";
+	  echo " ";
+	  Exit;
+  }
+
+	# Verify if there is uncommited change
+	$uncommitedChange = Select-String -Pattern "Changes not staged for commit" -InputObject $gitStatus -Quiet;
+  if ($uncommitedChange)
+  {
+	  echo " ";
+	  echo "Current Branch: ";
+	  $gitStatus | select -First 1;
+	  echo " ";
+	  echo "ERROR: You have uncommited change, please commit before doing a version release";
+ 	  echo " ";
+	  Exit;
+  }
+
+	# Verify if there is no uncommited change
+	$nothingToCommit = Select-String -Pattern "nothing to commit" -InputObject $gitStatus -Quiet;
+  if ($nothingToCommit)
+  {
+	  echo " ";
+	  echo "Current Branch: ";
+	  $gitStatus | select -First 1;
+	  echo "All change commited";
+	  echo " ";
+
+		echo "Inserting new version...";
+	  Update-AllAssemblyInfoFiles $args[0];
+	  UpdateAndroidVersion $args[0];
+	  UpdateCallboxVersion $args[0];
+	  UpdateIosVersion $args[0];
+	  Add-Content ..\..\tagsList ($args[0])
+	  echo " ";
+
+		echo "Commiting change...";
+		git commit -a -m "Version Bump $args"
+		git tag "$args" 
+	  echo " ";
+
+		echo "Pushing to server...";
+		git push
+		git push origin "$args"
+	  echo " ";
+
+		echo "Done!";
+	  echo " ";
+  }
+
+	# Something is wrong with the GitHub status
+	else
+	{
+	  echo " ";
+	  echo "Unexpected error!"
+	  echo " ";
+	  git status;
+	  echo " ";
+	  Exit ;
+	}
+}
 #else
 #{
 #  echo " ";
