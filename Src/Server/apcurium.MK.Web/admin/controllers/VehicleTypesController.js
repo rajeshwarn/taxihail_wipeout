@@ -23,9 +23,8 @@
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }
 
-            var hardCodedServiceType = 'Taxi';
-            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles([], { serviceType:  hardCodedServiceType });
-
+            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles([], {});
+            
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
             var view = new TaxiHail.AddVehicleTypeView({
@@ -50,8 +49,7 @@
         edit: function(id) {
             var model = this.vehicleTypes.find(function (m) { return m.get('id') == id; });
 
-            var hardCodedServiceType = 'Taxi';
-            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles([], { serviceType: hardCodedServiceType });
+            var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles([], {});
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
@@ -67,7 +65,7 @@
             }, this);
 
             availableVehicles.on('reset', view.render, view);
-            availableVehicles.fetch({ data: { serviceType: serviceType, vehicleBeingEdited: model.get('referenceDataVehicleId') } });
+            availableVehicles.fetch({ data: { vehicleBeingEditedServiceType: model.get('serviceType'), vehicleBeingEdited: model.get('referenceDataVehicleId') } });
 
             networkVehicleTypes.on('reset', view.render, view);
             networkVehicleTypes.fetch({ data: { networkVehicleId: model.get('referenceNetworkVehicleTypeId') } });

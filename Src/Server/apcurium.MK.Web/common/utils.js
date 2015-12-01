@@ -410,6 +410,33 @@
         return $el.html();
     });
 
+    Handlebars.registerHelper({
+        eq: function (v1, v2) {
+            return v1 === v2;
+        },
+        ne: function (v1, v2) {
+            return v1 !== v2;
+        },
+        lt: function (v1, v2) {
+            return v1 < v2;
+        },
+        gt: function (v1, v2) {
+            return v1 > v2;
+        },
+        lte: function (v1, v2) {
+            return v1 <= v2;
+        },
+        gte: function (v1, v2) {
+            return v1 >= v2;
+        },
+        and: function (v1, v2) {
+            return v1 && v2;
+        },
+        or: function (v1, v2) {
+            return v1 || v2;
+        }
+    });
+
     $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {
         if ($(elem).closest("div").find(":checked").length == param.options.length) {
             return false;

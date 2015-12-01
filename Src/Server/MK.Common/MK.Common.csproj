@@ -136,6 +136,7 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Entity\EditableVehicle.cs" />
     <Compile Include="Entity\OrderHailResult.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Entity\OrderKey.cs" />

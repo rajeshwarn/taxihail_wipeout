@@ -10,6 +10,5 @@
         public string Display { get; set; }
         public bool? IsDefault { get; set; }
         public ListItem<TId> Parent { get; set; }
-        public string Image { get; set; }
     }
 }

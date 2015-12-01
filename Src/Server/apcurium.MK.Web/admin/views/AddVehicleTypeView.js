@@ -50,7 +50,9 @@
         
         save: function (form) {
             var vehicleType = this.serializeForm(form);
-            var vehicleType = _.extend(this.model.toJSON(), vehicleType);
+            vehicleType = _.extend(this.model.toJSON(), vehicleType);
+            vehicleType.serviceType = vehicleType.referenceDataVehicleIdAndServiceType.split('.')[0];
+            vehicleType.referenceDataVehicleId = Number(vehicleType.referenceDataVehicleIdAndServiceType.split('.')[1]);
 
             vehicleType.isWheelchairAccessible = $("[name=isWheelchairAccessible]")[0].checked;
 

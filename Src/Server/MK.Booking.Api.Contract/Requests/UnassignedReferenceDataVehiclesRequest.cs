@@ -6,11 +6,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [NoCache]
     [Route("/admin/vehicletypes/unassignedreference", "GET")]
-    [Route("/admin/vehicletypes/unassignedreference/{VehicleBeingEdited}", "GET")]
+    [Route("/admin/vehicletypes/unassignedreference/{VehicleBeingEditedServiceType}/{VehicleBeingEdited}", "GET")]
     public class UnassignedReferenceDataVehiclesRequest
     {
         public int? VehicleBeingEdited { get; set; }
-        
-        public ServiceType ServiceType { get; set;  }
+        public ServiceType VehicleBeingEditedServiceType { get; set; }
     }
 }

@@ -386,14 +386,22 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(UnassignedReferenceDataVehiclesRequest request)
         {
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest() { ServiceType = request.ServiceType });
-            var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId).ToList();
-            if (request.VehicleBeingEdited.HasValue)
-            {
-                allAssigned = allAssigned.Where(x => x != request.VehicleBeingEdited.Value).ToList();
-            }
+            var editableVehicles = new List<EditableVehicle>();
 
-            return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
+            var index = 0;
+            foreach (ServiceType serviceType in Enum.GetValues(typeof (ServiceType)))
+            {
+                var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = serviceType});
+                var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId).ToList();
+                if (request.VehicleBeingEdited.HasValue)
+                {
+                    allAssigned = allAssigned.Where(x => !(request.VehicleBeingEditedServiceType == serviceType && x == request.VehicleBeingEdited.Value)).ToList();
+                }
+                editableVehicles.AddRange(
+                    referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value))
+                        .Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Id = index++, Display = x.Display, ServiceType = serviceType }));
+            }
+            return editableVehicles;
         }
 
 	    public object Get(TaxiLocationRequest request)

@@ -35,28 +35,20 @@
         
         <div class="control-group">
             <label class="control-label">{{localize 'Associated Reference Data Type'}}</label>
-            <select name="referenceDataVehicleId">
+            <select name="referenceDataVehicleIdAndServiceType">
                 {{#each availableVehicles}}
-                {{#ifCond this.id ../referenceDataVehicleId}}
-                  <option value="{{id}}" selected>{{display}}</option>
+                {{#if (and (eq this.ibsVehicleId ../referenceDataVehicleId) (eq this.serviceType ../serviceType) )}}
+                <option value="{{serviceType}}.{{ibsVehicleId}}" selected>{{display}} ({{serviceType}})</option>
                 {{else}}
-                  <option value="{{id}}">{{display}}</option>
-                {{/ifCond}}
+                <option value="{{serviceType}}.{{ibsVehicleId}}">{{display}} ({{serviceType}})</option>
+                {{/if}}
                 {{/each}}
             </select>
         </div>
 
         <div class="control-group">
             <label class="control-label">{{localize 'Service Type'}}</label>
-            <select name="serviceType">
-            {{#each serviceTypes }}
-                {{#ifCond this ../serviceType}}
-                <option value="{{ this }}" selected>{{this}}</option>
-                {{else}}
-                <option value="{{ this }}">{{this}}</option>
-                {{/ifCond}}
-            {{/each}}
-            </select>
+            <label class="control-label">{{ serviceType }}</label>
         </div>
 
         {{#ifCond isNetworkEnabled 'true'}}
