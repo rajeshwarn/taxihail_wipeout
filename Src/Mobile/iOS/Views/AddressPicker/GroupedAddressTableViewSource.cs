@@ -187,6 +187,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                         AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin
                     };
                     container.AddSubview(googleLogo);
+                    if(_expandedSection != section)
+                    {
+                        tableView.ContentSize = new CGSize(tableView.ContentSize.Width, tableView.ContentSize.Height + PoweredBy.Size.Height + 10);
+                    }
                 }
             }
 
