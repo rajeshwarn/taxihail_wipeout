@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
             return true;
         }
 
-        public static UIColor GetTextColor(UIColor loginColor)
+        public static UIColor GetContrastBasedColor(UIColor loginColor)
         {
             return ShouldHaveLightContent(loginColor) ? UIColor.White : UIColor.Black;
         }

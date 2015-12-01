@@ -135,11 +135,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
 
-                if (!string.IsNullOrWhiteSpace(@event.Email))
+                if (@event.Email.HasValueTrimmed())
                 {
                     account.Email = @event.Email;
                 }
                     
+
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;

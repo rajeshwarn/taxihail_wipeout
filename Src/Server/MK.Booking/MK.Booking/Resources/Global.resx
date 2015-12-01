@@ -570,9 +570,6 @@
   <data name="ServiceErrorDefaultMessage" xml:space="preserve">
     <value>An error occurred. Please try again.</value>
   </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>No account with this email has been found.</value>
-  </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>Your session has expired, please login to continue.</value>
   </data>
@@ -672,28 +669,28 @@
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>The phone number is invalid. It must have format {0}</value>
   </data>
-	<data name="EmailUsedMessage" xml:space="preserve">
+  <data name="EmailUsedMessage" xml:space="preserve">
     <value>This email is already used by another account</value>
   </data>
-	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+  <data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
     <value>Cannot change the email of an account linked with Facebook</value>
   </data>
   <data name="CancelOrdeError" xml:space="preserve">
     <value>It is too late to cancel this order</value>
   </data>
-	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+  <data name="Email_Body_DriverPhoto" xml:space="preserve">
     <value>Driver Photo</value>
   </data>
-	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+  <data name="Email_Body_VehicleRegistration" xml:space="preserve">
     <value>Vehicle Licence Plate</value>
   </data>
-	<data name="TripUnableToPairErrorText" xml:space="preserve">
-		<value>Sorry, there was a problem, please pay in the taxi</value>
-	</data>
-	<data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-		<value>Sorry, your card could not be authorized. Please pay in the taxi</value>
-	</data>
-	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
-		<value>Sorry, there was an error processing your card. Please pay in the taxi</value>
-	</data>
+  <data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Sorry, there was a problem, please pay in the taxi</value>
+  </data>
+  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+  </data>
+  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+  </data>
 </root>

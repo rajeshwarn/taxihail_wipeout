@@ -272,6 +272,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
                     Assert.AreEqual("1234", dto.Settings.AccountNumber);
                     Assert.AreEqual("0", dto.Settings.CustomerNumber);
+                    Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 }
             }
 
@@ -300,7 +301,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                     Assert.NotNull(dto);
                     Assert.AreEqual("Robert", dto.Settings.Name);
-                    Assert.AreEqual("new@email.com", dto.Email);
                     Assert.AreEqual(123, dto.Settings.ChargeTypeId);
                     Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
                     Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code, dto.Settings.Country.Code);
@@ -310,6 +310,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
                     Assert.AreEqual("1234", dto.Settings.AccountNumber);
                     Assert.AreEqual("0", dto.Settings.CustomerNumber);
+                    Assert.AreEqual("new@email.com", dto.Email);
                 }
             }
         }
