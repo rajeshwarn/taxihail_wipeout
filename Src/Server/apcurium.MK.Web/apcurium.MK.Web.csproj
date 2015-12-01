@@ -277,9 +277,6 @@
     <Content Include="admin\localization\EditTariff.json" />
     <Content Include="admin\localization\ManageTariffs.json" />
     <Content Include="admin\localization\TariffItem.json" />
-    <Content Include="admin\templates\AddVehicleType.hbs.js">
-      <DependentUpon>AddVehicleType.handlebars</DependentUpon>
-    </Content>
     <Content Include="admin\templates\EditTariff.handlebars">
       <SubType>Designer</SubType>
     </Content>
