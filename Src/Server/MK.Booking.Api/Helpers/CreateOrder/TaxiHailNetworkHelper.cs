@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using CMTServices;
 using CMTServices.Responses;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
@@ -221,27 +222,36 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
                 searchRadius += (i * 25);
             }
-
-            if (bestFleetId.HasValue)
+            
+            // Nothing found
+            if (!bestFleetId.HasValue)
             {
-                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
-
-                // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
-                // that were setup for the market, we take the first one
-                var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
-                    ?? marketFleets.FirstOrDefault();
-
-                return new BestAvailableCompany
-                {
-                    CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
-                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null,
-                    FleetId = bestFleet != null ? (int?)bestFleet.FleetId : null
-                };
+                return new BestAvailableCompany();
             }
 
+            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market)
+                .SelectOrDefault(markets => markets.ToArray(), new NetworkFleetResponse[0]);
+
+            // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
+            // that were setup for the market, we take the first one
+            var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
+                            ?? marketFleets.FirstOrDefault();
+            
             // Nothing found
-            return new BestAvailableCompany();
+            if (bestFleet == null)
+            {
+                return new BestAvailableCompany();
+            }
+
+            return new BestAvailableCompany
+            {
+                CompanyKey = bestFleet.CompanyKey,
+                CompanyName = bestFleet.CompanyName,
+                FleetId = bestFleet.FleetId
+            };
+
+            
         }
 
         private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
