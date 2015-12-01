@@ -140,7 +140,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Email = @event.Email;
                 }
                     
-
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
