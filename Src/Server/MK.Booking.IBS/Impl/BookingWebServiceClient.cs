@@ -205,13 +205,24 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
 		// This method is used to help find the correct GetOrdersStatus in IBS.
-        private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        private IEnumerable<TOrderStatus_5> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
         {
             var ibsOrders = ibsOrdersIds.ToArray();
 
             try
             {
-                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+                return service.GetOrdersStatus_5(UserNameApp, PasswordApp, ibsOrders);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_5 is not available doing a fallback to GetOrdersStatus_4");
+            }
+
+            try
+            {
+                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders)
+                    // We need to update the returned object to version 5 of TOrderStatus.
+                    .Select(ToOrderStatus5);
             }
             catch (Exception)
             {
@@ -221,8 +232,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             try
             {
                 return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
-                    // We need to update the returned object to version 4 of TOrderStatus.
-                    .Select(ToOrderStatus4);
+                    // We need to update the returned object to version 5 of TOrderStatus.
+                    .Select(ToOrderStatus5);
             }
             catch (Exception)
             {
@@ -230,14 +241,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             }  
              
             return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
-				// We need to update the returned object to version 4 of TOrderStatus.
-				.Select(ToOrderStatus4);
+				// We need to update the returned object to version 5 of TOrderStatus.
+				.Select(ToOrderStatus5);
 
         }
 
-        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_2 orderStatus)
+        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_2 orderStatus)
         {
-            return new TOrderStatus_4
+            return new TOrderStatus_5
             {
                 OrderStatus = orderStatus.OrderStatus,
                 CallNumber = orderStatus.CallNumber,
@@ -262,9 +273,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
         }
 
-        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_3 orderStatus)
+        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_3 orderStatus)
         {
-            return new TOrderStatus_4
+            return new TOrderStatus_5
             {
                 OrderStatus = orderStatus.OrderStatus,
                 CallNumber = orderStatus.CallNumber,
@@ -288,6 +299,39 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VehicleRegistration = orderStatus.VehicleRegistration,
                 PairingCode = orderStatus.PairingCode,
                 Surcharge = orderStatus.Surcharge
+            };
+        }
+
+        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_4 orderStatus)
+        {
+            return new TOrderStatus_5
+            {
+                OrderStatus = orderStatus.OrderStatus,
+                CallNumber = orderStatus.CallNumber,
+                DriverFirstName = orderStatus.DriverFirstName,
+                DriverLastName = orderStatus.DriverLastName,
+                DriverMobilePhone = orderStatus.DriverMobilePhone,
+                ETATime = orderStatus.ETATime,
+                Fare = orderStatus.Fare,
+                OrderID = orderStatus.OrderID,
+                ReferenceNumber = orderStatus.ReferenceNumber,
+                TerminalId = orderStatus.TerminalId,
+                Tips = orderStatus.Tips,
+                Tolls = orderStatus.Tolls,
+                VAT = orderStatus.VAT,
+                VehicleColor = orderStatus.VehicleColor,
+                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                VehicleMake = orderStatus.VehicleMake,
+                VehicleModel = orderStatus.VehicleModel,
+                VehicleNumber = orderStatus.VehicleNumber,
+                VehicleRegistration = orderStatus.VehicleRegistration,
+                PairingCode = orderStatus.PairingCode,
+                Surcharge = orderStatus.Surcharge,
+                DriverNumber = orderStatus.DriverNumber,
+                OriginalImg = orderStatus.OriginalImg,
+                ThumbnailImg = orderStatus.ThumbnailImg,
+                WebImg = orderStatus.WebImg
             };
         }
 
@@ -514,11 +558,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_11
+            var order = new TBookOrder_12
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
