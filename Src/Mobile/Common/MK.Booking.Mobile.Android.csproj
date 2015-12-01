@@ -364,7 +364,10 @@
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="Localization\Taxi.Designer.cs">
       <DependentUpon>Taxi.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="BindingConverter\IndexedItemConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -438,7 +441,6 @@
       <LastGenOutput>Taxi.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
   </Target>
   <ItemGroup>
@@ -457,4 +459,5 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

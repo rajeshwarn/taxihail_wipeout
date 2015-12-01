@@ -755,9 +755,12 @@
 "ManualRideLinqStatus_PairingError_Luxury"="An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.";
 "EtaNoTaxiAvailable_Luxury"="Sorry, no vehicles currently available nearby.";
 "HomeView_BookTaxi_Luxury"="Need a vehicle";
+"BookingGratuityText"="If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below";
 "MarketChangedMessage_Luxury"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.";
 "BaseRate_RateStructure"="RATE STRUCTURE";
+"GratuitActivityName"="Gratuity";
 "EtaLessThanAMinute_Luxury"="Nearest vehicle is less than a minute away";
 "StatusConfirmNewBooking_Luxury"="Booking a new vehicle will keep this order active, do you want to continue ?";
 "ReminderDetails_Luxury"="Reminder: A vehicle will pick you up from {0} at {1} on {2}.";
+"Gratuity_Pay"="Give Gratuity";
 "Eta_Luxury"="Nearest vehicle is {0} {1} away";

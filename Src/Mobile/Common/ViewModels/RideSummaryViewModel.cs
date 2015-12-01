@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Models;
 using System;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 
@@ -15,20 +17,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: PageViewModel, ISubViewModel<OrderRated>
 	{
-		private readonly IOrderWorkflowService _orderWorkflowService;
+	    private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IBookingService _bookingService;
 
 		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_bookingService = bookingService;
+			GratuitySelectionStates = new bool[4] { false, false, false, false };
 		}
 
-		public async void Init(Guid orderId)
+        public async void Init(Guid orderId, bool needToSelectGratuity)
 		{			
 			OrderId = orderId;
-
 			CanRate = false;
+            NeedToSelectGratuity = needToSelectGratuity;
 
 			using (this.Services().Message.ShowProgress())
 			{
@@ -39,7 +42,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private List<RatingModel> _ratingList;
+		private bool _needToSelectGratuity;
+		public bool NeedToSelectGratuity {
+			get
+			{
+				return _needToSelectGratuity;
+			}
+			set
+			{
+				_needToSelectGratuity = value;
+				RaisePropertyChanged ();
+			}
+		}
+
+	    private List<RatingModel> _ratingList;
 		public List<RatingModel> RatingList
 		{
 			get { return _ratingList; }
@@ -99,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				// Set the last unrated order here 
 				// if the user doesn't do anything and kills the app, we want to set the value
-				_bookingService.SetLastUnratedOrderId(OrderId);
+				_bookingService.SetLastUnratedOrderId(OrderId, NeedToSelectGratuity);
 
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				var ratingTypes = await _bookingService.GetRatingTypes();
@@ -138,7 +154,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
-			
+
+
+		private int _selectedGratuity;
+		public int SelectedGratuity
+		{
+			get
+			{
+				return _selectedGratuity;
+			}
+			set
+			{
+				_selectedGratuity = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool[] _gratuitySelectionStates;
+		public bool[] GratuitySelectionStates
+		{
+			get
+			{
+				return _gratuitySelectionStates;
+			}
+
+			set
+			{
+				_gratuitySelectionStates = value;
+				RaisePropertyChanged();
+			}
+
+		}
+
+		public ICommand SelectGratuity
+		{
+			get
+			{
+				return this.GetCommand<long>(commandParameter =>
+					{
+						var selectedIndex = (int)commandParameter;
+						SelectedGratuity = Gratuity.GratuityOptions[selectedIndex];
+						GratuitySelectionStates = new bool[4].Select((x, index) => index == selectedIndex).ToArray();
+					});
+			}
+		}
+
+		public ICommand PayGratuity {
+			get {
+				return this.GetCommand (async () => {
+					await _bookingService.PayGratuity (new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
+					NeedToSelectGratuity = false;
+				});
+			}
+		}
+
 	    public ICommand RateOrderAndNavigateToHome
 	    {
 	        get

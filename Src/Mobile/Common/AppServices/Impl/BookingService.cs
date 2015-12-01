@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+using Gratuity = apcurium.MK.Common.Entity.Gratuity;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceClient.Web;
@@ -105,6 +107,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return UserCache.Get<string>("LastUnratedOrderId").HasValue(); }
         }
 
+        public bool NeedToSelectGratuity
+        {
+            get
+            {
+                return HasUnratedLastOrder && UserCache.Get<string>("NeedToSelectGratuity").HasValue() && bool.Parse(UserCache.Get<string>("NeedToSelectGratuity"));
+            }
+        }
+
         public Task<OrderStatusDetail> GetLastOrderStatus()
         {
             try
@@ -141,19 +151,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void SetLastUnratedOrderId(Guid orderId)
+        public void SetLastUnratedOrderId(Guid orderId, bool needToSelectGratuity)
         {
             UserCache.Set("LastUnratedOrderId", orderId.ToString()); // Need to be cached as a string because of a jit error on device
+            UserCache.Set("LastUnratedOrderEndTime", DateTime.UtcNow.ToString()); // Need to be cached as a string because of a jit error on device
+            UserCache.Set("NeedToSelectGratuity", needToSelectGratuity.ToString());
         }
 
         public void ClearLastOrder()
         {
             UserCache.Set("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            ClearCacheForGratuity();
         }
 
         public void ClearLastUnratedOrder()
         {
             UserCache.Set("LastUnratedOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            ClearCacheForGratuity();
+        }
+
+        private void ClearCacheForGratuity()
+        {
+            UserCache.Clear("LastUnratedOrderEndTime");
+            UserCache.Set("NeedToSelectGratuity", false.ToString());
         }
 
         public Task RemoveFromHistory(Guid orderId)
@@ -338,6 +358,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             ClearLastUnratedOrder();
             var request = new OrderRatingsRequest { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             return UseServiceClientAsync<OrderServiceClient>(service => service.RateOrder(request));
+        }
+
+        public Task PayGratuity(Gratuity gratuity)
+        {
+            var request = new GratuityRequest { Percentage = gratuity.Percentage, OrderId = gratuity.OrderId };
+            var response = UseServiceClientAsync<OrderServiceClient>(service => service.PayGratuity(request));
+            ClearCacheForGratuity();
+            return response;
         }
 
         public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)

@@ -432,7 +432,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
                 var status = await _bookingService.GetLastOrderStatus();
-
+			    
 				if (status != null && !_bookingService.IsStatusCompleted(status))
                 {
                     try
@@ -463,6 +463,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						return null;
 					}
 
+				    var needToSelectGratuity = UserCache.Get<string>("LastUnratedOrderEndTime").HasValue()
+				                               && (DateTime.UtcNow - DateTime.Parse(UserCache.Get<string>("LastUnratedOrderEndTime"))).TotalHours < 3
+				                               && order.Settings.ServiceType == ServiceType.Luxury
+				                               && !order.Gratuity.HasValue;
+
 					if (order.IsRated)
 					{
 						_bookingService.ClearLastOrder();
@@ -472,7 +477,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 						if (!order.IsManualRideLinq)
 						{
 							// Rating only for "normal" rides
-							_bookingService.SetLastUnratedOrderId(status.OrderId);
+						    _bookingService.SetLastUnratedOrderId(status.OrderId, needToSelectGratuity);
 						}
 					}
 				}
@@ -501,13 +506,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_poiRefAirlineListSubject.OnNext(airlines);
         }
 
-        public Guid? GetLastUnratedRide()
+	    public Guid? GetLastUnratedRide()
 	    {
-            if (_bookingService.HasUnratedLastOrder)
-            {
-                return _bookingService.GetUnratedLastOrder();
-            }
-            return null;
+	        if (_bookingService.HasUnratedLastOrder)
+	        {
+	            return _bookingService.GetUnratedLastOrder();
+	        }
+	        return null;
 	    }
 
 		public IObservable<Address> GetAndObservePickupAddress()

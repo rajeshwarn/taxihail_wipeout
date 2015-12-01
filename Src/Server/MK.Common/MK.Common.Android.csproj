@@ -87,6 +87,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
+    <Compile Include="Entity\Gratuity.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />

@@ -82,6 +82,7 @@
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\FlightInformationRequest.cs" />
+    <Compile Include="Requests\GratuityRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <BundleResource Include="Resources\Gratuity.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\Payments\OverduePayment.cs" />

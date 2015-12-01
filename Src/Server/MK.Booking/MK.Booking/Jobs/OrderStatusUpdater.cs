@@ -392,6 +392,12 @@ namespace apcurium.MK.Booking.Jobs
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
+
+                if (orderStatusDetail.ServiceType == ServiceType.Luxury)
+                {
+                    SendInfoAboutGratuity(orderStatusDetail.OrderId);    
+                }
+                
                 _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
@@ -446,6 +452,11 @@ namespace apcurium.MK.Booking.Jobs
             }
             
             return result;
+        }
+
+        private void SendInfoAboutGratuity(Guid orderId)
+        {
+            _notificationService.SendInfoAboutGratuity(orderId);
         }
 
         private bool WaitForPaymentDetail(string companyKey, Guid orderId)

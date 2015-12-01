@@ -44,5 +44,7 @@ namespace apcurium.MK.Booking.Services
         void SendCreditCardDeactivatedPush(AccountDetail account);
 
         void SendNoShowWarning(Guid orderId);
+
+        void SendInfoAboutGratuity(Guid orderId);
     }
 }

@@ -13,5 +13,7 @@ namespace apcurium.MK.Common.Entity
         public bool InfoAboutPaymentWasSentToDriver { get; set; }
 
         public bool NoShowWarningSent { get; set; }
+
+        public bool InfoAboutGratuitySent { get; set; }
     }
 }

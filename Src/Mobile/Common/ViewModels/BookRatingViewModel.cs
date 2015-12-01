@@ -14,11 +14,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookRatingViewModel : PageViewModel, ISubViewModel<OrderRated>
     {
-		private readonly IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
 
 		public BookRatingViewModel(IBookingService bookingService)
 		{
 			_bookingService = bookingService;
+			GratuitySelectionStates = new bool[4] { false, false, false, false };
 		}
 
         private List<RatingModel> _ratingList;
@@ -51,6 +52,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
+		private bool _needToSelectGratuity;
+		public bool NeedToSelectGratuity {
+			get
+			{
+				return _needToSelectGratuity;
+			}
+			set
+			{
+				_needToSelectGratuity = value;
+				RaisePropertyChanged ();
+			}
+		}
+
         private Guid _orderId;
         public Guid OrderId
         {
@@ -62,9 +76,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public async void Init(string orderId, bool canRate = false)
+		public async void Init(string orderId, bool canRate, bool needToSelectGratuity)
 		{
 			var ratingTypes = await _bookingService.GetRatingTypes();
+
+            NeedToSelectGratuity = needToSelectGratuity && canRate;
 
 			RatingList = ratingTypes.Select(c => new RatingModel
 	            {
@@ -106,7 +122,62 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public ICommand RateOrder
+        private int _selectedGratuity;
+        public int SelectedGratuity
+        {
+            get
+            {
+                return _selectedGratuity;
+            }
+            set
+            {
+                _selectedGratuity = value;
+                RaisePropertyChanged();
+            }
+        }
+
+	    private bool[] _gratuitySelectionStates;
+	    public bool[] GratuitySelectionStates
+	    {
+	        get
+	        {
+	            return _gratuitySelectionStates;
+	        }
+
+	        set
+	        {
+	            _gratuitySelectionStates = value;
+	            RaisePropertyChanged();
+	        }
+
+	    }
+
+        public ICommand SelectGratuity
+        {
+            get
+            {
+				return this.GetCommand<long>(async commandParameter =>
+                {
+                    var selectedIndex = (int)commandParameter;
+                    SelectedGratuity = Gratuity.GratuityOptions[selectedIndex];
+                    GratuitySelectionStates = new bool[4].Select((x, index) => index == selectedIndex).ToArray();
+                });
+            }
+        }
+
+        public ICommand PayGratuity
+        {
+            get
+            {
+				return this.GetCommand(async () =>
+                {
+                    _bookingService.PayGratuity(new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
+                    NeedToSelectGratuity = false;
+                });
+            }
+        }
+
+	    public ICommand RateOrder
         {
             get
             {

@@ -29,18 +29,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			listView.Divider = null;
 			listView.DividerHeight = 0;
 
-			ViewModel.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == "RatingList" && ViewModel.RatingList != null)
-				{
-                    // Dynamically change height of list
-					var item = LayoutInflater.Inflate(listView.Adapter.ItemTemplateId, null);
-					item.Measure(Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified),
-						Android.Views.View.MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
-					listView.LayoutParameters = new LinearLayout.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
+			ViewModel.PropertyChanged += (sender, e) => {
+				if (e.PropertyName == "RatingList" && ViewModel.RatingList != null) {
+					// Dynamically change height of list
+					var item = LayoutInflater.Inflate (listView.Adapter.ItemTemplateId, null);
+					item.Measure (Android.Views.View.MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified),
+						Android.Views.View.MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
+					listView.LayoutParameters = new LinearLayout.LayoutParams (Android.Views.ViewGroup.LayoutParams.MatchParent, item.MeasuredHeight * ViewModel.RatingList.Count);
 				}
-            };
-        }
+			};
+		}
 
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
 		{

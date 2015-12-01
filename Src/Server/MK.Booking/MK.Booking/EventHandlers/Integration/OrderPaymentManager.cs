@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -25,7 +26,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelledBecauseOfError>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<GratuitySent>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -276,6 +278,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }
             }
+        }
+
+        public void Handle(GratuitySent @event)
+        {
+            // TODO: Here, send the payment.
+            // TODO: Need information about how to process "other" payments
+
+            var order = _orderDao.FindById(@event.SourceId);
+            var amount = (decimal) order.Fare.ValueOrZero();
+            var gratuity = decimal.Round(amount * @event.Percentage / 100, 2);
+
+            // TODO: If successful...
+            _commandBus.Send(new UpdateOrderGratuity { OrderId = @event.SourceId, Amount = gratuity });
         }
 
         private void InitializeCmtServiceClient()

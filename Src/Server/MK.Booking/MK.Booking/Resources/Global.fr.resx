@@ -684,4 +684,7 @@
   <data name="PushNotification_NoShowWarning" xml:space="preserve">
     <value>Votre véhicule attend depuis 10 minutes.  Veuillez contacter votre chauffeur si vous désirez qu'il patiente plus longtemps.</value>
   </data>
+  <data name="PushNotification_InfoAboutGratuity" xml:space="preserve">
+    <value>Merci d'utiliser Mears. Si le service vous a plu, il vous est possible via l'application d'offrir au conducteur un pourboire additionnel.</value>
+  </data>
 </root> 

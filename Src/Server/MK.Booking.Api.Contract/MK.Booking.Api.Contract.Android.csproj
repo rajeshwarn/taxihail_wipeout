@@ -75,6 +75,7 @@
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
+    <Compile Include="Requests\GratuityRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
+    <Compile Include="Resources\Gratuity.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />

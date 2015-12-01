@@ -753,6 +753,33 @@ namespace apcurium.MK.Booking.Services.Impl
             SendPushOrSms(order.AccountId, alert, data);
         }
 
+        public void SendInfoAboutGratuity(Guid orderId)
+        {
+            var order = _orderDao.FindById(orderId);
+
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                if (orderNotifications != null && orderNotifications.InfoAboutGratuitySent)
+                {
+                    return;
+                }
+
+                _commandBus.Send(new UpdateOrderNotificationDetail
+                {
+                    InfoAboutGratuitySent = true,
+                    OrderId = orderId
+                });
+            }
+
+            var alert = string.Format(_resources.Get("PushNotification_InfoAboutGratuity", order.ClientLanguageCode));
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(order.AccountId, alert, data);
+        }
+
+
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
