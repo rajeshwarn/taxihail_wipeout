@@ -219,7 +219,6 @@
             var lang = TaxiHail.getClientLanguage();
             this.model.set('ClientLanguageCode', lang);
             this.model.set('FromWebApp', true);
-            this.model.set('OrderCompanyKey', TaxiHail.parameters.applicationKey);
             this.model.saveLocal();
 
             this.$('.errors').html('');        
