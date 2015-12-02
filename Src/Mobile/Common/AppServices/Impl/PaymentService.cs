@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Api.Client.Payments.Fake;
 using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -52,34 +53,41 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
+
 			_cachedSettings = _cache.Get<ClientPaymentSettings>(PaymentSettingsCacheKey);
 
 			if (_cachedSettings == null || cleanCache)
 			{
-				await RefreshPaymentSettings();
+			    await RefreshPaymentSettings();
 
-				_client = GetClient (_cachedSettings);
+			    _client = GetClient(_cachedSettings);
 
-				return _cachedSettings;
-			} 
-			else 
-			{
-				// set client with cached settings for now
-				_client = GetClient (_cachedSettings);
-
-				// Update cache...
-				Task.Run(() => RefreshPaymentSettings());
-
-				// ... and return current settings
-				return _cachedSettings;
+			    return _cachedSettings;
 			}
+		    // set client with cached settings for now
+		    _client = GetClient (_cachedSettings);
+
+		    // Update cache...
+		    Task.Run(() => RefreshPaymentSettings()).FireAndForget();
+
+		    // ... and return current settings
+		    return _cachedSettings;
 		}
 
 		private async Task RefreshPaymentSettings()
 		{
-			_cachedSettings = await _serviceClient.GetPaymentSettings ().ConfigureAwait (false);
-			_cache.Set(PaymentSettingsCacheKey, _cachedSettings);
-			_client = GetClient (_cachedSettings);
+		    try
+		    {
+                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
+                _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
+                _client = GetClient(_cachedSettings);
+            }
+		    catch (Exception ex)
+		    {
+		        
+		        throw;
+		    }
+			
 		}
 
 		public void ClearPaymentSettingsFromCache()

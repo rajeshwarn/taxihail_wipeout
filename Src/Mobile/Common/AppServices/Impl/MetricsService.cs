@@ -38,7 +38,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 };
 
                 //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
-                await UseServiceClientAsync<MetricsServiceClient>(client => client.LogApplicationStartUp(request));
+                await UseServiceClientAsync<MetricsServiceClient>(
+                    client => client.LogApplicationStartUp(request),
+                    exception =>
+                    {
+                        // rethrow the exception, we don't need to use the HandleError process.
+                        throw exception;
+                    });
             }
             catch (Exception ex)
             {
@@ -58,7 +64,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 };
 
                 //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
-                await UseServiceClientAsync<MetricsServiceClient>(client => client.LogOriginalRideEta(request));
+                await UseServiceClientAsync<MetricsServiceClient>(
+                    client => client.LogOriginalRideEta(request),
+                    exception =>
+                    {
+                        // rethrow the exception, we don't need to use the HandleError process.
+                        throw exception;
+                    });
             }
             catch (Exception ex)
             {
