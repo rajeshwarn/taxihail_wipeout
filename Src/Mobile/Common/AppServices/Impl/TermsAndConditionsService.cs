@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -7,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,9 +41,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    try
 		    {
-                response = await GetTerms();
+		        response = await GetTerms();
 		    }
-		    catch (Exception ex)
+		    catch (WebServiceException ex)
+		    {
+		        if (ex.StatusCode != (int)HttpStatusCode.NotModified)
+		        {
+		            Logger.LogError(ex);
+		        }
+		    }
+		    catch(Exception ex)
 		    {
 		        Logger.LogError(ex);
 		    }

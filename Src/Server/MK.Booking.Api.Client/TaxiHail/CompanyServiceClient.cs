@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -47,17 +48,26 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             //get the object from the cache and deserialize
             var terms = _cacheService.Get<TermsAndConditions>("Terms");
+
+            if (terms == null)
+            {
+                return null;
+            }
+
             terms.Updated = false;
             return terms;
         }
 #if CLIENT
         private void HandleResponseHeader(HttpResponseMessage response)
         {
-            var version = response.Headers.ETag;
-            if (version != null && version.Tag.HasValueTrimmed())
+            var version = response.Headers.Where(header => header.Key == "ETag")
+                .SelectMany(header => header.Value)
+                .SingleOrDefault();
+
+            if (version.HasValueTrimmed())
             {
                 //put in the cache the etag
-                _cacheService.Set("TermsVersion", version.Tag);
+                _cacheService.Set("TermsVersion", version);
             }
         }
 
@@ -65,10 +75,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             //get the etag from the cache and add it to the headers
             var version = _cacheService.Get<string>("TermsVersion");
-            if (version != null)
+            if (version == null)
             {
-                Client.DefaultRequestHeaders.IfNoneMatch.Add(new EntityTagHeaderValue(version));
+                return;
             }
+
+            if (Client.DefaultRequestHeaders.Any(header => header.Key == "If-None-Match"))
+            {
+                Client.DefaultRequestHeaders.Remove("If-None-Match");
+            }
+
+            //Client.DefaultRequestHeaders.IfNoneMatch.Add(new EntityTagHeaderValue("\"" + version + "\""));
+
+            Client.DefaultRequestHeaders.TryAddWithoutValidation("If-None-Match", version);
         }
 #else
         private void HandleResponseHeader(HttpWebResponse response)
