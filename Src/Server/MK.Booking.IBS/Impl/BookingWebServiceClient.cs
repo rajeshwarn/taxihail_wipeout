@@ -213,23 +213,15 @@ namespace apcurium.MK.Booking.IBS.Impl
                     customerNumber = -1;
                 }
                 
-                int completionState;
+                int outTripTime = 0;
+                double outTotalFare = 0;
 
-                var res = service.EstimateDistance_2(UserNameApp, PasswordApp, new TEstimateDistance_2_ParamI()
-                {
-                    Distance = distance.Value,
-                    WaitTime = waitTime.Value,
-                    StopCount = stopCount.Value,
-                    PassangerCount = passengerCount.Value,
-                    FrDate = frDate,
-                    AccountNum = accountNumber,
-                    CustomerNum = customerNumber.Value,
-                    CabType = vehicleType.Value,
-                    TripTime = tripTime.Value
-                }, out completionState);
+                var res = service.EstimateDistance_3(UserNameApp, PasswordApp, distance.Value, tripTime.Value, waitTime.Value,
+                    stopCount.Value, passengerCount.Value, frDate, accountNumber, customerNumber.Value, vehicleType.Value,
+                    ref outTotalFare, ref outTripTime);
 
-                result.TotalFare = res.TotalFare;
-                result.TripTime = res.TripTime;
+                result.TotalFare = outTotalFare;
+                result.TripTime = outTripTime;
             });
 
             return result;
@@ -475,7 +467,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Hail : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_12)));
                 Logger.LogMessage("WebService Creating IBS Hail pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
@@ -559,11 +551,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_11
+            var order = new TBookOrder_12
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
