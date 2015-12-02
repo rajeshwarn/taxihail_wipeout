@@ -2381,4 +2381,7 @@
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>Aucun compte n'a été trouvé pour cet email</value>
   </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>Le code de confirmation est incorrect.</value>
+  </data>
 </root>

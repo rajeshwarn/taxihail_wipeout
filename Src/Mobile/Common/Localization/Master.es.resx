@@ -2981,4 +2981,8 @@
     <value>No se ha encontrado cuenta con este email</value>
     <comment>No account with this email has been found.</comment>
   </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>Código de confirmación inválido</value>
+    <comment>The confirmation code is incorrect.</comment>
+  </data>
 </root>
