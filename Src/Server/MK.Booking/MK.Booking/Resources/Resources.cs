@@ -100,6 +100,28 @@ namespace apcurium.MK.Booking.Resources
             return string.Empty;
         }
 
+        public double ToDistanceInRightUnit(double? distance)
+        {
+            double result = 0;
+            if (distance.HasValue)
+            {
+                double km = (double)distance.Value / 1000;
+
+                switch (_serverSettings.ServerData.DistanceFormat)
+                {
+                    case DistanceFormat.Mile:
+                        result = Math.Round(km / 1.609344, 1);
+                        break;
+                    case DistanceFormat.Km:
+                    default:
+                        result = Math.Round(km, 1);
+                        break;
+                }
+            }
+
+            return result;
+        }
+
         public string GetCurrencyCode()
         {
             return new RegionInfo(_serverSettings.ServerData.PriceFormat).ISOCurrencySymbol;
