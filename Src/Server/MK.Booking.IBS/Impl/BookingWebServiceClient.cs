@@ -384,8 +384,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
                {
                    int result = 0;
-                   result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
-                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString());
+                   int collect = 0;
+                   int balance = 0;
+                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "taxihailid", transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString(), 0, 0, 0, ref collect, ref balance);
                    success = result == 0;
                    
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
@@ -417,17 +419,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
-        public int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email)
+        public int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountId, string name, string phone, string email)
         {
             int? result = null;
             UseService(service =>
             {
-                result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,null , 0, 0, 0, 0,
-                    0, 0, 0, accountID, name, CleanPhone(phone), email, "", "", orderId.ToString());
+                int collect = 0;
+                int balance = 0;
+                result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "taxihailid", "", "", cardToken, type, null, 0, 0, 0, 0,
+                 0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString(), 0, 0, 0, ref collect, ref balance);
                 
                 if (result < -9000) //Hack unitl we support more code and we get the list of code.
                 {
-                    service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountID );
+                    service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountId);
                     result = -10000;
                 }
                 else
