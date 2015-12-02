@@ -340,12 +340,12 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
 
-            UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
+            UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo, hasDriverBailed);
 
-            var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+            var wasProcessingOrderOrWaitingForDriver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
 
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasDriverBailed, orderDetail);
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDriver && ibsOrderInfo.IsAssigned, hasDriverBailed, orderDetail);
         }
 
         private IBSOrderResult DispatchAgainIfDriverBailed(Guid orderId, string market, string driverIdWhoBailed)
@@ -418,12 +418,13 @@ namespace apcurium.MK.Booking.Jobs
             return null;
         }
 
-        private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, bool driverHasBailed)
         {
-            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+            if (driverHasBailed 
+                || orderStatusDetail.Status == OrderStatus.WaitingForPayment
                 || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
-                _logger.LogMessage("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: Status is: {1} Bail Detected: {2}. Don't update since it's a special case outside of IBS.", orderStatusDetail.OrderId, orderStatusDetail.Status, driverHasBailed);
                 return;
             }
 

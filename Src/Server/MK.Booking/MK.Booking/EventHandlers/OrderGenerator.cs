@@ -126,6 +126,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
+                    CompanyFleetId = @event.CompanyFleetId,
                     Market = @event.Market,
                     BookingFees = @event.BookingFees,
                     TipIncentive = @event.TipIncentive

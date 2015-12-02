@@ -99,7 +99,7 @@ namespace apcurium.MK.Web
                             ? new Uri(appSettings.ServerData.BaseUrl)
                             : new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")));
 
-                appSettings.ServerData.Target = ResolveDeploymentTarget(Request.Url.Host);
+                appSettings.ServerData.Target = DeploymentTargets.Production;//ResolveDeploymentTarget(Request.Url.Host);
 
                 _firstRequest = false;
             }
