@@ -390,6 +390,8 @@ namespace apcurium.MK.Booking.Jobs
                 // Determine best available company now based on available vehicles
                 var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, driverIdsToExclude);
 
+                _logger.LogMessage("Driver {0} bailed, trying to dispatch again to new found best avail company: {1} (fleetid: {2})", driverIdWhoBailed, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
+
                 // Re-dispatch order (don't dispatch again to the driver who bailed)
                 var ibsOrderResult =_dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
                     ibsOrderParams,
