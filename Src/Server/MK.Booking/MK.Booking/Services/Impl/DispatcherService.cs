@@ -18,6 +18,7 @@ using AutoMapper;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
+using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -80,16 +81,21 @@ namespace apcurium.MK.Booking.Services.Impl
             var availableFleetsInMarket = market.HasValue()
                 ? _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market).ToArray()
                 : _taxiHailNetworkServiceClient.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey, ibsOrderParams.IbsPickupAddress.Latitude, ibsOrderParams.IbsPickupAddress.Longitude).ToArray();
-            
+
+            _logger.LogMessage("Dispatch called");
+
             for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
+                _logger.LogMessage("Starting new dispatch cycle (Cycle #{0}, Company {1}, FleetId: {2})", i, _bestAvailableCompany.CompanyKey, _bestAvailableCompany.FleetId);
+
                 // Call geo to get a list of available vehicles
                 var vehicleCandidates = GetVehicleCandidates(
                     orderId,
                     _bestAvailableCompany,
                     dispatcherSettings.Market,
                     ibsOrderParams.IbsPickupAddress.Latitude,
-                    ibsOrderParams.IbsPickupAddress.Longitude);
+                    ibsOrderParams.IbsPickupAddress.Longitude,
+                    availableFleetsInMarket);
 
                 // Filter vehicle list to remove vehicle already sent offer
                 vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings, true);
@@ -169,7 +175,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         });
 
                         break;
-
                     }
                     catch (Exception)
                     {
@@ -239,13 +244,18 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var vehicleCandidates = GetVehicleCandidates(
                     orderId,
-                    _bestAvailableCompany,
+                    null,
                     dispatcherSettings.Market,
                     pickupLatitude,
-                    pickupLongitude);
+                    pickupLongitude,
+                    availableFleetsInMarket);
+
+            _logger.LogMessage("Preparing for next cycle, vehicles of market received by geo: {0}", JsonConvert.SerializeObject(vehicleCandidates));
 
             // Filter vehicle list to remove vehicle already sent offer
             vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings, false);
+
+            _logger.LogMessage("Preparing for next cycle, vehicles of market received by geo filtered: {0}", JsonConvert.SerializeObject(vehicleCandidates));
 
             var newBestAvailableVehicle = vehicleCandidates.FirstOrDefault();
             if (newBestAvailableVehicle == null)
@@ -310,19 +320,26 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Hail request confirmed");
         }
 
-        public IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, string market, double pickupLatitude, double pickupLongitude)
+        private IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, string market, double pickupLatitude, double pickupLongitude, NetworkFleetResponse[] availableFleetsInMarket)
         {
-            if (bestAvailableCompany.CompanyKey.HasValue() && !bestAvailableCompany.FleetId.HasValue)
-            {
-                return new VehicleCandidate[0];
-            }
-
             int[] fleetIds = null;
-            if (bestAvailableCompany.FleetId.HasValue)
+            if (bestAvailableCompany != null)
             {
-                fleetIds = new[] { bestAvailableCompany.FleetId.Value };
-            }
+                if (bestAvailableCompany.CompanyKey.HasValue() && !bestAvailableCompany.FleetId.HasValue)
+                {
+                    return new VehicleCandidate[0];
+                }
 
+                if (bestAvailableCompany.FleetId.HasValue)
+                {
+                    fleetIds = new[] {bestAvailableCompany.FleetId.Value};
+                }
+            }
+            else
+            {
+                fleetIds = availableFleetsInMarket.Select(x => x.FleetId).Distinct().ToArray();
+            }
+            
             var availableVehicleService = _taxiHailNetworkHelper.GetAvailableVehiclesServiceClient(market);
 
             // Query only the avaiable vehicles from the selected company for the order
@@ -356,7 +373,7 @@ namespace apcurium.MK.Booking.Services.Impl
             });
         }
 
-        public IEnumerable<VehicleCandidate> WaitForCandidatesResponse(string companyKey, IbsOrderKey ibsOrderKey, DispatcherSettingsResponse dispatcherSettings)
+        private IEnumerable<VehicleCandidate> WaitForCandidatesResponse(string companyKey, IbsOrderKey ibsOrderKey, DispatcherSettingsResponse dispatcherSettings)
         {
             if (ibsOrderKey.IbsOrderId < 0)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
@@ -191,7 +192,7 @@ namespace apcurium.MK.Booking.Helpers
             return new BestAvailableCompany();
         }
 
-        public BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
+        public BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude, List<string> driverIdsToExclude = null)
         {
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
@@ -203,15 +204,24 @@ namespace apcurium.MK.Booking.Helpers
             const int searchExpendLimit = 10;
             var searchRadius = 2000; // In meters
 
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(null, market).ToArray();
+            var marketFleetIds = marketFleets.Select(x => x.FleetId).Distinct().ToArray();
             for (var i = 1; i < searchExpendLimit; i++)
             {
                 var marketVehicles = GetAvailableVehiclesServiceClient(market)
-                    .GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+                    .GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, marketFleetIds, true)
                     .ToArray();
 
-                if (marketVehicles.Any())
+                var marketVehiclesFilteredIfNecessary = driverIdsToExclude != null
+                    ? marketVehicles
+                        .Where(x => !driverIdsToExclude.Contains(x.DeviceName)
+                                 && !driverIdsToExclude.Contains(x.LegacyDispatchId))
+                        .ToArray()
+                    : marketVehicles;
+
+                if (marketVehiclesFilteredIfNecessary.Any())
                 {
-                    bestFleetId = marketVehicles
+                    bestFleetId = marketVehiclesFilteredIfNecessary
                         .OrderBy(vehicle => vehicle.Eta.HasValue)
                         .ThenBy(vehicle => vehicle.Eta)
                         .First()
@@ -226,9 +236,6 @@ namespace apcurium.MK.Booking.Helpers
 
             if (bestFleetId.HasValue)
             {
-                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
-
                 // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
                 // that were setup for the market, we take the first one
                 var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)

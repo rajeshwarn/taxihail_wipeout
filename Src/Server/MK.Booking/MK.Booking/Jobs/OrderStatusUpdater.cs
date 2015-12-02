@@ -23,9 +23,9 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using Order = PayPal.Api.Order;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -55,12 +55,13 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IVehicleTypeDao _vehicleTypeDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ILogger _logger;
-        private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+        private TaxiHailNetworkHelper _taxiHailNetworkHelper;
 
         private string _languageCode = string.Empty;
+        
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
@@ -80,6 +81,7 @@ namespace apcurium.MK.Booking.Jobs
             IDispatcherService dispatcherService,
             IVehicleTypeDao vehicleTypeDao,
             IIBSServiceProvider ibsServiceProvider,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -101,7 +103,9 @@ namespace apcurium.MK.Booking.Jobs
             _dispatcherService = dispatcherService;
             _vehicleTypeDao = vehicleTypeDao;
             _ibsServiceProvider = ibsServiceProvider;
+
             _resources = new Resources.Resources(serverSettings);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -381,15 +385,15 @@ namespace apcurium.MK.Booking.Jobs
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
+                var driverIdsToExclude = new List<string> {driverIdWhoBailed};
+
+                // Determine best available company now based on available vehicles
+                var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, driverIdsToExclude);
+
                 // Re-dispatch order (don't dispatch again to the driver who bailed)
                 var ibsOrderResult =_dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
                     ibsOrderParams,
-                    new BestAvailableCompany
-                    {
-                        CompanyKey = orderDetail.CompanyKey,
-                        CompanyName = orderDetail.CompanyName,
-                        FleetId = orderDetail.CompanyFleetId
-                    },
+                    bestAvailableCompany,
                     dispatcherSettings,
                     orderDetail.Settings.AccountNumber,
                     ibsAccountId.Value,
@@ -410,7 +414,7 @@ namespace apcurium.MK.Booking.Jobs
                     orderDetail.Market,
                     FareHelper.GetFareFromEstimate(new RideEstimate { Price = orderDetail.EstimatedFare }),
                     orderDetail.TipIncentive,
-                    driverIdsToExclude: new List<string> { driverIdWhoBailed } );
+                    driverIdsToExclude: driverIdsToExclude);
 
                 return ibsOrderResult;
             }
