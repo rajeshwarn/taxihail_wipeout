@@ -112,7 +112,7 @@
 "CreditCardRemoveErrorTitle"="لا يمكن إزالة البطاقة الائتمانية.";
 "CreditCardRequiredFields"="كافة الخانات مطلوبة";
 "CreditCardType"="نوع البطاقة";
-"CreditCardZipCode"="Zip/Postal";
+"CreditCardZipCode"="الرمز البريدي";
 "Date"="التاريخ";
 "DateTimePickerPickDate"="اختر تاريخ الإلتقاء:";
 "DateTimePickerPickInvalidDateMessage"="يجب أن يكون تاريخ الإلتقاء في المستقبل";
@@ -729,4 +729,10 @@
 "LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "ServiceErrorCallTitle"="Server error";
+"PairingProcessingErrorTitle"="Pairing payment problem";
+"TripUnableToPairErrorText"="Sorry, there was a problem, please pay in the taxi";
+"CreditCardDeclinedOnPreauthorizationErrorText"="Sorry, your card could not be authorized. Please pay in the taxi";
+"CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "Callbox.ApplicationName"="TaxiHail Callbox";
+"ServiceErrorResetPassword_AccountNotFound"="لا يوجد حساب خاص بهذا العنوان الإلكتروني.";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";

@@ -650,10 +650,6 @@
     <value>Este email está registrado y en uso en nuestro sistema</value>
     <comment>This email is already in use.</comment>
   </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>Código de confirmación inválido</value>
-    <comment>The confirmation code is incorrect.</comment>
-  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
     <comment>No Credit Card On File.</comment>

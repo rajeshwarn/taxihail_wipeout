@@ -2329,4 +2329,7 @@
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>لا يوجد حساب خاص بهذا العنوان الإلكتروني.</value>
   </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
 </root>
