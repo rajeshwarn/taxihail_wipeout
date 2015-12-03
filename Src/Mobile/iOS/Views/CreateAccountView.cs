@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var root = new RootElement(){ section };
 
-			tableView.BackgroundColor = UIColor.White;
+            tableView.BackgroundColor = UIColor.Clear;
             tableView.AddSubview(new TaxiHailDialogViewController (root, true).TableView);
 		}
 
