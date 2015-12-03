@@ -386,7 +386,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                    int result = 0;
                    int collect = 0;
                    int balance = 0;
-                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "taxihailid", transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
                     ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString(), 0, 0, 0, ref collect, ref balance);
                    success = result == 0;
                    
@@ -426,7 +426,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 int collect = 0;
                 int balance = 0;
-                result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "taxihailid", "", "", cardToken, type, null, 0, 0, 0, 0,
+                result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", "", "", cardToken, type, null, 0, 0, 0, 0,
                  0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString(), 0, 0, 0, ref collect, ref balance);
                 
                 if (result < -9000) //Hack unitl we support more code and we get the list of code.
