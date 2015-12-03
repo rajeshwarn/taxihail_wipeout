@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 
-namespace MK.Common.Android.Helpers
+namespace apcurium.MK.Common.Helpers
 {
 	public class AirlineComparer : IEqualityComparer<Airline>
 	{
