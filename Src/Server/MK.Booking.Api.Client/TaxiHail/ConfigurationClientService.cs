@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Cryptography;
+using System.Runtime.CompilerServices;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -22,25 +23,21 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		    _logger = logger;
 		}
 
-	    public Task<IDictionary<string, string>> GetSettings()
+	    public async Task<IDictionary<string, string>> GetSettings()
 		{
-			var tcs = new TaskCompletionSource<IDictionary<string, string>>();
-
 			try
 			{
-				var result = Client.GetAsync<Dictionary<string, string>>("/encryptedsettings").Result;
-				tcs.TrySetResult(result);
+				return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings");
 			}
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
-				tcs.TrySetResult(new Dictionary<string, string>());
 			}
 
-			return tcs.Task;
+			return new Dictionary<string, string>();
 		}
 
-		public async Task<ClientPaymentSettings> GetPaymentSettings()
+		public async Task<ClientPaymentSettings> GetPaymentSettings([CallerMemberName] string method = "")
 		{
 			var paymentSettings = new ClientPaymentSettings();
 
@@ -49,7 +46,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments");
 
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
-
 				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
 			}
 			catch (Exception ex)
