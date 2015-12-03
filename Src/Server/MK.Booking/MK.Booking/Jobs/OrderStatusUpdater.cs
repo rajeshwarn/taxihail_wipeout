@@ -106,9 +106,9 @@ namespace apcurium.MK.Booking.Jobs
             if (orderFromIbs.IsUnLoaded)
             {
                 if (orderStatusDetail.ChargeAmountsTimeOut.HasValue
-                && orderStatusDetail.ChargeAmountsTimeOut.Value >= DateTime.UtcNow)
+                    && orderStatusDetail.ChargeAmountsTimeOut.Value < DateTime.UtcNow)
                 {
-                    return;
+                    orderFromIbs.Status = VehicleStatuses.Common.Done;
                 }
             }
 
@@ -290,7 +290,7 @@ namespace apcurium.MK.Booking.Jobs
                            ibsOrderInfo.IsWaitingToBeAssigned;
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
-           
+            // In case of UnLoaded the only reason we have reached this point is because the time out period has passed and we did not receive a done status
             orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
@@ -554,6 +554,11 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
+            if (ibsOrderInfo.IsUnLoaded)
+            {
+                return;
+            }
+
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
@@ -621,7 +626,12 @@ namespace apcurium.MK.Booking.Jobs
                         promoUsed != null
                             ? promoUsed.PromoId
                             : (Guid?) null,
-                        amountSaved);
+                        amountSaved,
+                        Convert.ToDecimal(ibsOrderInfo.Fare),
+                        Convert.ToDecimal(ibsOrderInfo.Extras),
+                        Convert.ToDecimal(ibsOrderInfo.VAT),
+                        Convert.ToDecimal(ibsOrderInfo.Discount)
+                        );
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
@@ -670,7 +680,8 @@ namespace apcurium.MK.Booking.Jobs
         }
 
         private CommitPreauthorizedPaymentResponse CommitPayment(OrderDetail orderDetail, decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, 
-            decimal tollAmount, decimal surchargeAmount, decimal bookingFees, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0)
+            decimal tollAmount, decimal surchargeAmount, decimal bookingFees, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0, decimal fareAmount = 0,
+            decimal extrasAmount = 0, decimal vatAmount = 0, decimal discountAmount = 0)
         {
             if (orderDetail == null)
             {
@@ -762,7 +773,13 @@ namespace apcurium.MK.Booking.Jobs
                         account.Email,
                         orderDetail.UserAgent.GetOperatingSystem(),
                         orderDetail.UserAgent,
-                        orderDetail.CompanyKey);
+                        orderDetail.CompanyKey,
+                        fareAmount,
+                        extrasAmount,
+                        vatAmount,
+                        discountAmount,
+                        tollAmount,
+                        surchargeAmount);
                 }
                 catch (Exception e)
                 {

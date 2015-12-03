@@ -493,7 +493,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     // First timeout
                     return eventDate.AddSeconds(_serverSettings.ServerData.ChargeAmountsTimeOut);
             }
-            return null;
+            return details.ChargeAmountsTimeOut;
         }
 
         public void Handle(IbsOrderInfoAddedToOrder @event)

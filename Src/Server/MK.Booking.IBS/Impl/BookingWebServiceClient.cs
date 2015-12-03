@@ -377,7 +377,8 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
         
         public bool ConfirmExternalPayment(Guid orderID, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-           string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
+           string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent, decimal fareAmount = 0, decimal extrasAmount = 0, 
+           decimal vatAmount = 0, decimal discountAmount = 0, decimal tollAmount = 0, decimal surchargeAmount = 0)
         {
             var success = false;
 
@@ -386,8 +387,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                    int result = 0;
                    int collect = 0;
                    int balance = 0;
-                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
-                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString(), 0, 0, 0, ref collect, ref balance);
+                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId, authorizationCode, cardToken, type, provider, ToCents(tipAmount), ToCents(tollAmount),
+                       ToCents(fareAmount), ToCents(extrasAmount),
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString(), ToCents(vatAmount), ToCents(surchargeAmount),
+                    ToCents(discountAmount), ref collect, ref balance);
                    success = result == 0;
                    
                    //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
