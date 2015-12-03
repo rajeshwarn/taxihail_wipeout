@@ -12,10 +12,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -65,20 +63,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             base.OnViewLoaded();
 			_orderNotified = new List<Guid>();
 
-			_serialDisposable.Disposable = ObserveTimerForRefresh()
-				.SelectMany(_ => GetActiveOrderStatus())
-				.ObserveOn(SynchronizationContext.Current)
-				.Where(_ => _refreshGate)
-				.Subscribe(orderStatusDetails =>
-				{
-					_refreshGate = false;
-					RefreshOrderStatus(orderStatusDetails);
-					_refreshGate = true;
-				},
-				ex =>
-				{
-				    Logger.LogError(ex);
-				});                           
+            _serialDisposable.Disposable = ObserveTimerForRefresh()
+                .Where(_ => _orderToCreate == null || !_orderToCreate.IsPendingCreation)
+                .SelectMany(_ => GetActiveOrderStatus())
+                .ObserveOn(SynchronizationContext.Current)
+                .Where(_ => _refreshGate)
+                .Subscribe(orderStatusDetails =>
+                {
+                    _refreshGate = false;
+                    RefreshOrderStatus(orderStatusDetails);
+                    _refreshGate = true;
+                },
+                ex =>
+                {
+                    Logger.LogError(ex);
+                });
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
     			{
