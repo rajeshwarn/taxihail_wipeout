@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
-                    TextColor = Theme.GetTextColor(Theme.LoginColor)
+                    TextColor = Theme.GetContrastBasedColor(Theme.LoginColor)
                 };
 
             if (_hasTitle)
@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
-                TextColor = Theme.GetTextColor(Theme.LoginColor)
+                TextColor = Theme.GetContrastBasedColor(Theme.LoginColor)
             };
 
             _dialogView.Add(_messageView); 
@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
-                    TextColor = Theme.GetTextColor(Theme.LoginColor)
+                    TextColor = Theme.GetContrastBasedColor(Theme.LoginColor)
                 };
             
             _dialogView.Add(lblTitle); 
@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         TextAlignment = UITextAlignment.Center,
                         Lines = 0,
-                        TextColor = Theme.GetTextColor(Theme.LoginColor)
+                        TextColor = Theme.GetContrastBasedColor(Theme.LoginColor)
                     };
 
                 _dialogView.Add(_messageView); 
@@ -347,7 +347,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             button.SetTitle(title, UIControlState.Normal);
             FlatButtonStyle.Default.ApplyTo(button);
-            button.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            button.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            button.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             button.Layer.CornerRadius = 5;
 
             button.TouchUpInside += (sender, e) =>
@@ -379,7 +380,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             button.SetTitle(title, UIControlState.Normal);
             FlatButtonStyle.Default.ApplyTo(button);
-            button.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            button.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            button.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             button.Layer.CornerRadius = 5;
 
             var imageColor = UIColor.White.ColorWithAlpha(0.35f);

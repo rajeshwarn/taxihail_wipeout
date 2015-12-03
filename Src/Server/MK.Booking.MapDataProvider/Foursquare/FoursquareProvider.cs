@@ -135,13 +135,20 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		private GeoPlace ToPlace(Venue venue)
 	    {
-
 			return new GeoPlace
 	        {
                 Name = venue.name,
                 Types = venue.categories.Select(x => x.name).ToList(),
                 Id = venue.id,
-				Address = new GeoAddress{ FullAddress  = venue.location.address, Latitude =  venue.location.lat , Longitude = venue.location.lng },
+				Address = new GeoAddress
+				{
+				    FullAddress  = venue.location.address,
+                    Latitude =  venue.location.lat,
+                    Longitude = venue.location.lng,
+                    City = venue.location.city,
+                    State = venue.location.state,
+                    ZipCode = venue.location.postalCode
+                }
 	        };
 	    }
 

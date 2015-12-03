@@ -56,20 +56,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};  
 
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
-			btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+			btnForgotPassword.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
 
 			FlatButtonStyle.Clear.ApplyTo (btnSupport);
-			btnSupport.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+			btnSupport.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
 
 
-			btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+			btnSignIn.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnSignIn.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
 			btnForgotPassword.SetTitle (Localize.GetValue ("LoginForgotPassword"), UIControlState.Normal);
 			btnSupport.SetTitle (Localize.GetValue ("LoginSupport"), UIControlState.Normal);
 
 			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
-            btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnSignUp.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnSignUp.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
             var settings = this.Services().Settings;
 
@@ -98,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(btnFbLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginFacebook);
-                btnFbLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+                btnFbLogin.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+                btnFbLogin.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -109,14 +112,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(btnTwLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginTwitter);
-                btnTwLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+                btnTwLogin.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+                btnTwLogin.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
             btnServer.Hidden = !settings.CanChangeServiceUrl;
-            btnServer.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnServer.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnServer.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
