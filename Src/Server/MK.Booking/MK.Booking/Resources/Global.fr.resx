@@ -621,4 +621,10 @@
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>La carte de crédit a été refusée</value>
   </data>
+  <data name="CancelOrderError" xml:space="preserve">
+    <value>Une erreur est survenue dans l'annulation de la commande</value>
+  </data>
+  <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>La commande ne peut pas être annulée car il n'y a pas d'IBSOrderID</value>
+  </data>
 </root>
