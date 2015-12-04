@@ -17,7 +17,7 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -595,6 +595,7 @@
     <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

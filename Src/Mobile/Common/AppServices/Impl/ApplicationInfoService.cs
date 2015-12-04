@@ -18,18 +18,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IPackageInfo _packageInfo;
 		private readonly ICacheService _cacheService;
         private readonly ILogger _logger;
+		private readonly IQuitApplicationService _quitApplicationService;
 
 		private DateTime _minimalVersionChecked;
 		private const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
 
 		public ApplicationInfoService(ILocalization localize,
             IMessageService messageService,
+			IQuitApplicationService quitApplicationService,
             IPackageInfo packageInfo,
             ICacheService cacheService,
             ILogger logger)
 		{
 			_packageInfo = packageInfo;
 			_messageService = messageService;
+			_quitApplicationService = quitApplicationService;
 			_localize = localize;
 			_cacheService = cacheService;
 		    _logger = logger;
@@ -87,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 // App is not supported anymore (also means that an update is available so don't display the other pop-up)
                 await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
+				_quitApplicationService.Quit ();
             }
 		}
     }

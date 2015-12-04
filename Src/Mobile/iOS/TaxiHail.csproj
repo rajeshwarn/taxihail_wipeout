@@ -724,6 +724,7 @@
       <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
