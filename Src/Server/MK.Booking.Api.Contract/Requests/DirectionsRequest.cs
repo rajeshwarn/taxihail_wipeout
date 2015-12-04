@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceHost;
 
 #endregion
@@ -17,6 +18,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? DestinationLng { get; set; }
 
         public DateTime? Date { get; set; }
+        
+        public ServiceType ServiceType { get; set; }
 
         public int? VehicleTypeId { get; set; }
     }

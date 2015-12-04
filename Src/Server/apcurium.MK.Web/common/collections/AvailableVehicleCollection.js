@@ -3,9 +3,10 @@
         model: TaxiHail.AvailableVehicle,
         initialize: function (models, options) {
             this.position = options.position;
+            this.serviceType = options.serviceType;
         },
         url: function () {
-            var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json";
+            var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json" + "&serviceType=" + this.serviceType;
 
             return TaxiHail.parameters.apiRoot + queryString;
         },

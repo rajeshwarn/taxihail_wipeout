@@ -22,6 +22,10 @@
         },
 
         validate: function (order, forError) {
+            order.settings = order.settings || {};
+            order.settings.serviceType = TaxiHail.auth.account.serviceType;
+            order.settings.vehicleTypeId = TaxiHail.auth.account.vehicleTypeId;
+
             return $.ajax({
                 type: 'POST',
                 url: TaxiHail.parameters.apiRoot + "/account/orders/validate/" + forError,

@@ -29,6 +29,7 @@
                     pickupZipCode,
                     dropOffZipCode,
                     this.model.get('settings')['vehicleTypeId'],
+                    this.model.get('settings')['serviceType'],
                     this.model.get('pickupDate'),
                     accountNumber
                     ).done(this.renderResults);
@@ -226,9 +227,17 @@
             var numberOfPassengers = this.model.get('settings')['passengers'];
             var vehicleType;
             var vehicleTypeId = this.model.get('settings')['vehicleTypeId'];
+            var serviceType = this.model.get('settings')['serviceType'];
             if (typeof vehicleTypeId !== 'undefined') {
                 // Try to match vehicle type to the prefered type in user profile
+
                 vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+                serviceType = vehicleType.serviceType;
+
+                if (vehicleType) {
+                    this.model.get('settings')['serviceType'] = vehicleType.serviceType;
+                }
+                
                 if (!vehicleType) {
                     // If no match is found, use the first vehicle type
                     vehicleType = TaxiHail.vehicleTypes[0];

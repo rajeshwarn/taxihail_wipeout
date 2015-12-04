@@ -361,7 +361,9 @@
 
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
             var account = TaxiHail.auth.account;
-            var vtype = ( account.id == null ) ? -1 : account.get('settings')['vehicleTypeId'];
+            var serviceType = (account.id == null) ? 'Taxi' : account.get('settings')['serviceType'];
+            var vehicleType = (account.id == null) ? -1 : account.get('settings')['vehicleTypeId'];
+            
 
             var dropOffZipCode = dest != null ?
             (dest.zipCode != null ? dest.zipCode : '') : '';
@@ -369,7 +371,7 @@
             var accountNumber = (account.id == null) ? '' : this.model.get('accountNumber');
 
             if (pickup && dest) {
-                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude, pickupZipCode, dropOffZipCode, vtype, '', accountNumber)
+                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude, pickupZipCode, dropOffZipCode, vehicleType, serviceType, '', accountNumber)
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });

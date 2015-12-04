@@ -1,15 +1,14 @@
 ﻿(function () {
 
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
-        getInfo: function (originLat, originLng, destinationLat, destinationLng, pickupZipCode, dropOffZipCode, vehicleTypeId, date, account) {
+        getInfo: function (originLat, originLng, destinationLat, destinationLng, pickupZipCode, dropOffZipCode, serviceType, vehicleTypeId, date, account) {
             
-            var preferedPrice = null, tempPrice = null;
-
             var coordinates = {
                 originLat: originLat,
                 originLng: originLng,
                 destinationLat: destinationLat,
                 destinationLng: destinationLng,
+                serviceType: serviceType,
                 vehicleTypeId: vehicleTypeId,
                 date: date
             }, tarifMode = TaxiHail.parameters.directionTarifMode, needAValidTarif = TaxiHail.parameters.directionNeedAValidTarif, fmt = 'json';
@@ -30,7 +29,7 @@
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&VehicleType={9}'.format(
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&VehicleType={9}&ServiceType={10}'.format(
                             coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng, pickupZipCode, dropOffZipCode,
                             (account != null)
                                 ? account
@@ -39,7 +38,9 @@
                             (tripDurationInSeconds != null)
                                 ? tripDurationInSeconds
                                 : '',
-                            vehicleTypeId),
+                            vehicleTypeId,
+                            serviceType
+                            ),
                         function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                

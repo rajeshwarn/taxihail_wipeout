@@ -14,7 +14,7 @@
         },
 
         refresh: function () {
-            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position });
+            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position, serviceType: 'Luxury' });
             var self = this;
             this.availableVehicles.fetch({
                 success: function (response) {
