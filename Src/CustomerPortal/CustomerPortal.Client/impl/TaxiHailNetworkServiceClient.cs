@@ -59,6 +59,11 @@ namespace CustomerPortal.Client.Impl
 
         public string GetCompanyMarket(double latitude, double longitude)
         {
+            if (!_serverSettings.ServerData.Network.Enabled)
+            {
+                return null;
+            }
+
             var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var @params = new Dictionary<string, string>
