@@ -91,6 +91,11 @@ namespace apcurium.MK.Booking.Test
             return Task.FromResult(true);
         }
 
+	public string GetServiceUrl()
+	{
+	    throw new NotImplementedException();
+	}
+
         public Task ChangeServerUrl(string serverUrl)
         {
             throw new NotImplementedException();
