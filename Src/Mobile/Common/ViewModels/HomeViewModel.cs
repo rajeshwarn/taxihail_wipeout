@@ -668,7 +668,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(_locationService.LastKnownPosition.Latitude, _locationService.LastKnownPosition.Longitude, initialZoom));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
 
 					// do the uber zoom
 					try 
