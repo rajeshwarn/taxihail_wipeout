@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_cacheService.Clear (AppInfoCacheKey);
         }
 
-
         public async Task CheckVersionAsync()
         {
 			if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
