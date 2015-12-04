@@ -1,7 +1,7 @@
 ﻿(function () {
 
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
-        getInfo: function (originLat, originLng, destinationLat, destinationLng, pickupZipCode, dropOffZipCode, serviceType, vehicleTypeId, date, account) {
+        getInfo: function (originLat, originLng, destinationLat, destinationLng, pickupZipCode, dropOffZipCode, vehicleTypeId, serviceType, date, account) {
             
             var coordinates = {
                 originLat: originLat,
