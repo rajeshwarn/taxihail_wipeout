@@ -300,7 +300,7 @@ namespace apcurium.MK.Web.Tests
                 },
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = 1,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-1212",

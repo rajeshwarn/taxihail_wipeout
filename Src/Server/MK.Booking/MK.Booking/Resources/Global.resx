@@ -615,4 +615,10 @@
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>Credit Card was declined</value>
   </data>
+  <data name="CancelOrderError" xml:space="preserve">
+    <value>Cannot cancel order</value>
+  </data>
+  <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>Cannot cancel order because of no IBSOrderID</value>
+  </data>
 </root>
