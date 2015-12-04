@@ -16,6 +16,8 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using Cirrious.CrossCore;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {

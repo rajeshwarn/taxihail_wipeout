@@ -136,7 +136,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ReceiveMemoryWarning(UIApplication application)
         {
+            #if DEBUG
             Logger.LogMessage("ReceiveMemoryWarning");
+            #endif
         }
         
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)

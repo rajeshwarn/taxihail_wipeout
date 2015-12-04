@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private BookLaterDatePicker _datePicker;
-        private readonly SerialDisposable _viewStateSubscription = new SerialDisposable();
+
         private readonly SerialDisposable _bookingStatusContactDriverSubscription = new SerialDisposable();
         private readonly SerialDisposable _bookingStatusChangeDropOffSubscription = new SerialDisposable();
         private readonly SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
@@ -136,7 +136,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             panelMenu.ViewToAnimate = homeView;
             panelMenu.PanelOffsetConstraint = constraintHomeLeadingSpace;
-
             btnMenu.AccessibilityLabel = Localize.GetValue("MenuButton");
             btnLocateMe.AccessibilityLabel = Localize.GetValue("LocateMeButton");
             btnAirport.AccessibilityLabel = Localize.GetValue("AirportsButton");
@@ -412,6 +411,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ctrlDropOffSelection.SetNeedsLayout();
                 homeView.LayoutIfNeeded();
 
+                ctrlAddressPicker.Close();
+                ctrlAddressPicker.ResignFirstResponderOnSubviews();
+                _datePicker.Hide();
+
                 UIView.Animate(
                     0.6f, 
                     () =>
@@ -419,8 +422,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         bookingStatusTopSpaceConstraint.Constant = BookingStatusHiddenConstraintValue;
 
                         ctrlOrderReview.SetNeedsDisplay();
-                        ctrlAddressPicker.Close();
-
+                        
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = 22;
@@ -428,12 +430,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
                         constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         homeView.LayoutIfNeeded();
-                        _datePicker.Hide();
-                    }, () =>
-                    {
-                        RedrawSubViews();
-                        ctrlAddressPicker.ResignFirstResponderOnSubviews();
-                    });
+                    }, 
+                    RedrawSubViews);
             }
             else if (state == HomeViewModelState.Review)
             {
@@ -442,6 +440,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Order Edit: Hidden
                 // Date Picker: Hidden
                 CloseBookATaxiDialog();
+                _datePicker.Hide();
 
                 UIView.Animate(
                     0.6f, 
@@ -456,7 +455,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
                         constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 
-                        _datePicker.Hide();
                         homeView.LayoutIfNeeded();
                     },
                     RedrawSubViews);
@@ -514,12 +512,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 homeView.LayoutIfNeeded();
 
+                ctrlAddressPicker.Close();
+                _datePicker.Hide();  
+
                 UIView.Animate(
                     0.6f, 
                     () =>
                     {
                         ctrlOrderReview.SetNeedsDisplay();
-                        ctrlAddressPicker.Close();
+                        
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 100f;
                         constraintAppBarDropOffSelection.Constant = DropOffSelectionAppBarHiddenConstraintValue;
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
@@ -529,16 +530,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         bookingStatusTopSpaceConstraint.Constant = 22f;
                         homeView.LayoutIfNeeded();
-                        _datePicker.Hide();  
-                }, RedrawSubViews);
+                    }, 
+                    RedrawSubViews);
 			}
             else if (state == HomeViewModelState.DropOffAddressSelection)
             {
+                ctrlAddressPicker.Close();
+
                 UIView.Animate(
                     0.6f, 
                     () =>
                     {
-                        ctrlAddressPicker.Close();
                         constraintAppBarDropOffSelection.Constant = 0;
                         constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstraintValue;
                         constraintChangeDropOffTopSpace.Constant = ChangeDropOffHiddenConstraintValue;
@@ -547,7 +549,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintDropOffSelectionTopSpace.Constant = 22f;
 
                         ctrlDropOffSelection.SetNeedsLayout();
-                    }, RedrawSubViews);
+                    }, 
+                    RedrawSubViews);
             }
             else if (state == HomeViewModelState.AirportDetails)
             {
@@ -556,13 +559,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Edit: Hidden
 				// Date Picker: Hidden
 				// Order Airport: Visable
+
+                ctrlAddressPicker.Close ();
+                _datePicker.Hide();
 				CloseBookATaxiDialog ();
                                  
 				UIView.Animate(
 					0.6f, 
 					() =>
 					{
-                        ctrlAddressPicker.Close ();
                     	constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
 						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 						constraintOrderOptionsTopSpace.Constant = 22;
@@ -570,7 +575,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderAirportTopSpace.Constant = 10;
 						constraintOrderAirportBottomSpace.Constant = -65;
                         ctrlOrderOptions.SetNeedsLayout();
-                        _datePicker.Hide();
 					},
                     RedrawSubViews);
             }
@@ -588,7 +592,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         homeView.LayoutIfNeeded();
                     }, RedrawSubViews);
-                
+
                 switch (state)
 				{
                     case HomeViewModelState.AddressSearch:
