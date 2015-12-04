@@ -8,8 +8,8 @@
                 originLng: originLng,
                 destinationLat: destinationLat,
                 destinationLng: destinationLng,
-                serviceType: serviceType,
                 vehicleTypeId: vehicleTypeId,
+                serviceType: serviceType,
                 date: date
             }, tarifMode = TaxiHail.parameters.directionTarifMode, needAValidTarif = TaxiHail.parameters.directionNeedAValidTarif, fmt = 'json';
 
