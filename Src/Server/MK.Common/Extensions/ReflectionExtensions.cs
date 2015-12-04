@@ -36,7 +36,7 @@ namespace apcurium.MK.Common.Extensions
             var nonNestedPropertyTypes = type.GetProperties().Where(x => !nestedTypes.Contains(x.PropertyType));
             foreach (var nonNestedPropertyType in nonNestedPropertyTypes)
             {
-                string fullyQualifiedName = fullName.Length > 0 
+                var fullyQualifiedName = fullName.Length > 0 
                     ? string.Format("{0}.{1}", fullName, nonNestedPropertyType.Name)
                     : nonNestedPropertyType.Name;
 
@@ -49,7 +49,7 @@ namespace apcurium.MK.Common.Extensions
                 var nestedPropertyTypes = type.GetProperties().Where(x => nestedTypes.Contains(x.PropertyType));
                 foreach (var nestedProperty in nestedPropertyTypes)
                 {
-                    string fullyQualifiedNestedName = fullName.Length > 0
+                    var fullyQualifiedNestedName = fullName.Length > 0
                         ? string.Format("{0}.{1}", fullName, nestedProperty.Name)
                         : nestedProperty.Name;
 
@@ -66,13 +66,19 @@ namespace apcurium.MK.Common.Extensions
         /// <returns>The property value.</returns>
         public static object GetNestedPropertyValue(this object obj, string fullyQualifiedName)
         {
-            foreach (string part in fullyQualifiedName.Split('.'))
+            if (obj == null)
             {
-                if (obj == null) { return null; }
+                return null;
+            }
 
-                Type type = obj.GetType();
-                PropertyInfo info = type.GetProperty(part);
-                if (info == null) { return null; }
+            foreach (var part in fullyQualifiedName.Split('.'))
+            {
+                var type = obj.GetType();
+                var info = type.GetProperty(part);
+                if (info == null)
+                {
+                    return null;
+                }
 
                 obj = info.GetValue(obj, null);
             }
