@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 .Select(propertyName => ExtractPropertyValue(paymentSettings, propertyName))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, settings, true);
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(type, null, settings, true);
 
 			return settings;
 		}
