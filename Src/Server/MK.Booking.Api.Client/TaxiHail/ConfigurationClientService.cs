@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			return new Dictionary<string, string>();
 		}
 
-		public async Task<ClientPaymentSettings> GetPaymentSettings([CallerMemberName] string method = "")
+		public async Task<ClientPaymentSettings> GetPaymentSettings()
 		{
 			var paymentSettings = new ClientPaymentSettings();
 
