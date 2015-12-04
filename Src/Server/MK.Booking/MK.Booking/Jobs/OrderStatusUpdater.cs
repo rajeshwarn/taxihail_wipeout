@@ -290,7 +290,7 @@ namespace apcurium.MK.Booking.Jobs
                            ibsOrderInfo.IsWaitingToBeAssigned;
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
-            // In case of UnLoaded the only reason we have reached this point is because the time out period has passed and we did not receive a done status
+
             orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
