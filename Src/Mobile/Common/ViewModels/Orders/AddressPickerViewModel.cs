@@ -13,6 +13,8 @@ using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Data;
+using System.Reactive.Disposables;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -37,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private string _previousPostCode = string.Empty;
+
+		private readonly SerialDisposable _addressListTaskDisposable = new SerialDisposable();
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
@@ -77,16 +81,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
 
-	    private async Task LoadAddressesUnspecified()
+	    private async Task LoadAddressesUnspecified(CancellationToken cancellationToken)
 	    {
             ShowDefaultResults = true;
-            _currentAddress = await GetCurrentAddressOrUserPosition();
+			_currentAddress = await GetCurrentAddressOrUserPosition(cancellationToken);
             StartingText = _currentAddress != null
                 ? _currentAddress.GetFirstPortionOfAddress()
                 : string.Empty;
 
-            var favoritePlaces = _accountService.GetFavoriteAddresses();
-            var historyPlaces = _accountService.GetHistoryAddresses();
+			var favoritePlaces = _accountService.GetFavoriteAddresses(cancellationToken);
+			var historyPlaces = _accountService.GetHistoryAddresses(cancellationToken);
             var neabyPlaces = Task.Run(() => _placesService
                 .SearchPlaces(
                     null,
@@ -94,8 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _currentAddress != null ? _currentAddress.Longitude : (double?)null,
                     null,
                     _currentLanguage
-                )
-            );
+				), cancellationToken);
             
             using (this.Services().Message.ShowProgressNonModal())
             {
@@ -112,8 +115,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    
-
 	    public async void RefreshFilteredAddress()
 	    {
 	        try
@@ -128,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	    }
 
-	    private void LoadFilteredAddress(AddressLocationType filter)
+		private void LoadFilteredAddress(AddressLocationType filter)
 	    {
 			using (this.Services().Message.ShowProgressNonModal())
 			{
@@ -148,13 +149,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        {
 		        if (filter == AddressLocationType.Unspeficied)
 	            {
-                    await LoadAddressesUnspecified();
+					var disposable = new CancellationDisposable();
+					var cancellationToken = disposable.Token;
+					_addressListTaskDisposable.Disposable = disposable;
+
+					await LoadAddressesUnspecified(cancellationToken);
 	            }
 	            else
 	            {
-                    LoadFilteredAddress(filter);
+					LoadFilteredAddress(filter);
 	            }
 	        }
+			catch (OperationCanceledException)
+			{
+				// nothing
+			}
 	        catch (Exception e)
 	        {
 	            Logger.LogError(e);
@@ -252,6 +261,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand<AddressViewModel>(vm =>
 				{
+					_addressListTaskDisposable.Disposable = null;
 				    this.Services().Message.ShowProgressNonModal(false);
 				    SelectAddress(vm.Address, true);
 				}); 
@@ -307,7 +317,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() => 
 				{
-                    this.Services().Message.ShowProgressNonModal(false );
+					_addressListTaskDisposable.Disposable = null;
+					this.Services().Message.ShowProgressNonModal(false);
 
 					if(_isInLocationDetail)
 					{
@@ -460,9 +471,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .ToArray();
 		}
 
-		private async Task<Address> GetCurrentAddressOrUserPosition()
+		private async Task<Address> GetCurrentAddressOrUserPosition(CancellationToken cancellationToken)
 		{
 			var currentAddress = await _orderWorkflowService.GetCurrentAddress();
+
+			cancellationToken.ThrowIfCancellationRequested();
+
 			if (currentAddress.HasValidCoordinate())
 			{
 				return currentAddress;

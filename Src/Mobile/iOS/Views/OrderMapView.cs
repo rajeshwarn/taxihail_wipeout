@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private readonly UIImageView _pickupCenterPin;
         private readonly UIImageView _dropoffCenterPin;
         private UIView _mapBlurOverlay;
-//        private UIVisualEffectView _mapBlurOverlayIos8AndMore;
         private readonly List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();

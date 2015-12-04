@@ -32,6 +32,7 @@ using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -125,7 +126,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		public async Task<Address[]> GetHistoryAddresses()
+		public async Task<Address[]> GetFavoriteAddresses (CancellationToken cancellationToken = default(CancellationToken))
+		{
+			var cached = UserCache.Get<Address[]> (FavoriteAddressesCacheKey);
+
+			if (cached != null)
+			{
+				return cached;
+			}
+
+			var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(s => s
+				.GetFavoriteAddresses())
+				.ConfigureAwait(false);
+
+			cancellationToken.ThrowIfCancellationRequested();
+
+			var favoriteAddresses = result as Address[] ?? result.ToArray();
+			UserCache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
+
+			return favoriteAddresses;
+		}
+
+		public async Task<Address[]> GetHistoryAddresses(CancellationToken cancellationToken = default(CancellationToken))
         {
             var cached = UserCache.Get<Address[]> (HistoryAddressesCacheKey);
             if (cached != null) 
@@ -136,6 +158,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var result = await UseServiceClientAsync<IAccountServiceClient, IList<Address>>(s => s
 				.GetHistoryAddresses (CurrentAccount.Id))
 				.ConfigureAwait(false);
+
+			cancellationToken.ThrowIfCancellationRequested();
 
             UserCache.Set(HistoryAddressesCacheKey, result.ToArray());
 			return result.ToArray();
@@ -160,25 +184,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Task<OrderStatusDetail[]> GetActiveOrdersStatus()
         {
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
-        }
-
-		public async Task<Address[]> GetFavoriteAddresses ()
-        {
-            var cached = UserCache.Get<Address[]> (FavoriteAddressesCacheKey);
-
-            if (cached != null)
-			{
-                return cached;
-            }
-
-			var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(s => s
-				.GetFavoriteAddresses())
-				.ConfigureAwait(false);
-
-            var favoriteAddresses = result as Address[] ?? result.ToArray();
-            UserCache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
-
-            return favoriteAddresses;
         }
 
         private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare) where T : class
