@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
 
-            FacebookService.UIApplicationDelegateFinishedLaunching(app, options);
+            //FacebookService.UIApplicationDelegateFinishedLaunching(app, options);
 
 			var setup = new Setup(this, window);
             setup.Initialize();
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {		
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
-            FacebookService.UIApplicationDelegateOnActivated();
+            //FacebookService.UIApplicationDelegateOnActivated();
 
             var locService = TinyIoCContainer.Current.Resolve<ILocationService>();
             if ( locService != null )
@@ -143,10 +143,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Logger.LogMessage(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (url.AbsoluteString.StartsWith("fb" + FacebookService.FacebookApplicationID + settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty)))
-			{
-                return FacebookService.UIApplicationDelegateOpenURL(application, url, sourceApplication, annotation, settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty));
-			}
+//            if (url.AbsoluteString.StartsWith("fb" + FacebookService.FacebookApplicationID + settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty)))
+//			{
+//                return FacebookService.UIApplicationDelegateOpenURL(application, url, sourceApplication, annotation, settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty));
+//			}
 
 			return false;
         }
