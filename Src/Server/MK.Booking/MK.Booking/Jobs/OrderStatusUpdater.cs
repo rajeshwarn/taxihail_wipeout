@@ -313,7 +313,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             // Detect if a bail occurred
             return orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-                && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
+                && ibsOrderInfo.IsWaitingToBeAssigned;
         }
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, OrderDetail orderDetail, bool hasDriverBailed)
@@ -364,10 +364,10 @@ namespace apcurium.MK.Booking.Jobs
             var orderDetail = _orderDao.FindById(orderId);
 
             // Prepare order for re-dispatch
-            var ibsAccountId = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
-            if (ibsAccountId.HasValue)
+            var ibsAccountIdForOrderToCancel = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
+            if (ibsAccountIdForOrderToCancel.HasValue)
             {
-                _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
+                _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountIdForOrderToCancel.Value);
 
                 var referenceDataCompanyList = _ibsServiceProvider.StaticData(orderDetail.CompanyKey).GetCompaniesList();
 
@@ -392,13 +392,16 @@ namespace apcurium.MK.Booking.Jobs
 
                 _logger.LogMessage("Driver {0} bailed, trying to dispatch again to new found best avail company: {1} (fleetid: {2})", driverIdWhoBailed, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
 
+                var accountDetail = _accountDao.FindById(orderDetail.AccountId);
+                var ibsAccountIdForBestAvailableCompany = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(accountDetail, bestAvailableCompany.CompanyKey);
+
                 // Re-dispatch order (don't dispatch again to the driver who bailed)
                 var ibsOrderResult =_dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
                     ibsOrderParams,
                     bestAvailableCompany,
                     dispatcherSettings,
                     orderDetail.Settings.AccountNumber,
-                    ibsAccountId.Value,
+                    ibsAccountIdForBestAvailableCompany,
                     orderDetail.Settings.Name,
                     orderDetail.Settings.Phone,
                     orderDetail.Settings.Passengers,
