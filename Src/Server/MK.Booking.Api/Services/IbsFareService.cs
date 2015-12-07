@@ -11,6 +11,7 @@ using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -72,8 +73,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault();
 
+            var distance = request.Distance.ToDistanceInRightUnit(_serverSettings.ServerData.DistanceFormat);
+
             var fare = _ibsServiceProvider.Booking().GetDistanceEstimate(
-                request.Distance,
+                distance,
                 tripDurationInMinutes,
                 request.StopCount,
                 request.PassengerCount,
@@ -86,8 +89,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (fare.TotalFare != null)
             {
-                double distance = request.Distance;
-
                 return new DirectionInfo
                 {
                     Distance = distance,

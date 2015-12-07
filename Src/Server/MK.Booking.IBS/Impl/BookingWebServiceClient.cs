@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
@@ -190,7 +189,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber, int? tripTime)
+        public IBSDistanceEstimate GetDistanceEstimate(double distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber, int? tripTime)
         {
             var result = new IBSDistanceEstimate();
             UseService(service =>
@@ -198,7 +197,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                 var frDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day, Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute + 5, Second = DateTime.Now.Second };
 
                 waitTime = waitTime.HasValue && waitTime > 0 ? waitTime.Value : 0;
-                distance = distance.HasValue && distance > 0 ? distance.Value : 0;
                 stopCount = stopCount.HasValue && stopCount > 0 ? stopCount.Value : 0;
                 passengerCount = passengerCount.HasValue && passengerCount > 0 ? passengerCount.Value : 0;
                 tripTime = tripTime.HasValue && tripTime > 0 ? tripTime.Value : 0;
@@ -216,7 +214,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 int outTripTime = 0;
                 double outTotalFare = 0;
 
-                var res = service.EstimateDistance_3(UserNameApp, PasswordApp, distance.Value, tripTime.Value, waitTime.Value,
+                var res = service.EstimateDistance_3(UserNameApp, PasswordApp, distance, tripTime.Value, waitTime.Value,
                     stopCount.Value, passengerCount.Value, frDate, accountNumber, customerNumber.Value, vehicleType.Value,
                     ref outTotalFare, ref outTripTime);
 
