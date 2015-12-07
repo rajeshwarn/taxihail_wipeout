@@ -1,9 +1,6 @@
-﻿
-using System;
-
+﻿using System;
 using Foundation;
 using UIKit;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.BindingContext;
@@ -18,10 +15,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var bookingView = NSBundle.MainBundle.LoadNib("BookingBarManualRideLinQ", null, null).GetItem<BookingBarManualRideLinQ>(0);
 
 			bookingView.buttonEstimate.Initialize(Localize.GetValue("Destination"), "destination_small_icon.png", "destination_small_icon_pressed.png");
-
 			bookingView.buttonManualRideLinQBooking.SetTitle(Localize.GetValue("HomeView_ManualPairing"), UIControlState.Normal);
-			FlatButtonStyle.Blue.ApplyTo(bookingView.buttonManualRideLinQBooking);
 
+			FlatButtonStyle.Blue.ApplyTo(bookingView.buttonManualRideLinQBooking);
 			FlatButtonStyle.Green.ApplyTo(bookingView.buttonBooking);
 
 			return bookingView;

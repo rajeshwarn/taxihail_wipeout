@@ -3,13 +3,8 @@ using Foundation;
 using UIKit;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
-using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
@@ -81,8 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			setBooking.Bind(_bookingBarAirportBooking).For(v => v.DataContext).To(vm => vm.BottomBar);
 			setBooking.Bind(_bookingBarConfirmation).For(v => v.DataContext).To(vm => vm.BottomBar);
 			setBooking.Bind(_bookingBarEdit).For(v => v.DataContext).To(vm => vm.BottomBar);
-
-			setBooking.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
+            setBooking.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
 			setBooking.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
 
 			setBooking.Apply();
