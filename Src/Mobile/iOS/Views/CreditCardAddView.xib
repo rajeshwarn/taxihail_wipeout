@@ -427,12 +427,12 @@
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="950" constant="15" id="Wrb-T3-Ila"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="bottom" id="ai8-o9-D45"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="15" id="cqP-sV-7Zx"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="cqP-sV-7Zx"/>
                         <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="ejy-cD-B95"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="hXH-xw-tA2"/>
                         <constraint firstAttribute="trailing" secondItem="jyp-DI-ki8" secondAttribute="trailing" id="iRH-Ta-pNC"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="900" constant="14" id="jAc-JL-gWL"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="400" constant="15" id="k9b-2N-pCq"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="k9b-2N-pCq"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="m3e-x7-oUg"/>
                         <constraint firstAttribute="bottom" secondItem="pfD-TX-kyS" secondAttribute="bottom" id="rmA-89-eqM"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" priority="500" constant="15" id="s3f-ae-rb2"/>
