@@ -16,6 +16,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
             IsOutOfAppPaymentDisabled = false;
+            IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             AskForCVVAtBooking = false;
             CancelOrderOnUnpair = false;
             CreditCardIsMandatory = false;
@@ -33,6 +34,11 @@ namespace apcurium.MK.Common.Configuration.Impl
         /// </summary>
         [Obsolete("This property is deprecated. Now, Out Of App Payment can be enabled for web only", false)]
         public bool IsOutOfAppPaymentDisabled { get; set; }
+
+        /// <summary>
+        /// Manual payment, not through app
+        /// </summary>
+        public OutOfAppPaymentDisabled IsPaymentOutOfAppDisabled { get; set; }
 
         public bool IsChargeAccountPaymentEnabled { get; set; }
 
@@ -87,5 +93,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         CreditCardOnly,
         PayPalOnly,
         Multiple
+    }
+
+    public enum OutOfAppPaymentDisabled
+    {
+        None,
+        AppOnly,
+        All
     }
 }

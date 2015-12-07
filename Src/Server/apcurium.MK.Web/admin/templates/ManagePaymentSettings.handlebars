@@ -31,6 +31,13 @@
     <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
   </select>
 
+<label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
+<select name="isPaymentOutOfAppDisabled" class="settingsBox">
+    <option value="None">{{localize "None"}}</option>
+    <option value="AppOnly">{{localize "App Only"}}</option>
+    <option value="All">{{localize "All"}}</option>
+</select>
+
   <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
   <select name="isChargeAccountPaymentEnabled" class="settingsBox">
     <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
