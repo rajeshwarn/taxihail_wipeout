@@ -30,11 +30,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private Address _currentAddress;	
 		private bool _ignoreTextChange;
 		private string _currentLanguage;
+		private AddressLocationType _pickerFilter;
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
         public AddressViewModel[] FilteredPlaces { get; private set; }
+
+		public AddressLocationType PickerFilter 
+		{
+			get
+			{
+				return _pickerFilter;
+			}
+			private set
+			{
+				if (_pickerFilter != value) 
+				{
+					_pickerFilter = value;
+					RaisePropertyChanged ();
+				}
+			}
+		}
 
 		private string _previousPostCode = string.Empty;
 
@@ -143,6 +160,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public async Task LoadAddresses(AddressLocationType filter)
 		{
             _ignoreTextChange = true;
+
+			// set the value of the filter to a property to notify listener
+			PickerFilter = filter;
 
 	        try
 	        {
