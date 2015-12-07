@@ -246,6 +246,7 @@
         }
             .yourdriver td.driver_name {
                 vertical-align: central;
+                text-align: right;
                 font-weight: bold;
                 text-transform: uppercase;
                 width: 45%;
@@ -458,21 +459,21 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
-
-                                                                    <tr style="color: { {EmailFontColor}}! important">
+                                                                    {{#HasDriverName}}
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title">{{ localize "Email_Body_Driver" }}</td>
                                                                         <td class="driver_name">{{ DriverName }}</td>
                                                                     </tr>
+                                                                    {{/HasDriverName}}
                                                                     {{#HasDriverId}}
-                                                                    <tr>
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
                                                                         <td class="list_value">{{ DriverId }}</td>
                                                                     </tr>
                                                                     {{/HasDriverId}}
-
                                                                     {{#ShowExtraInfoInReceipt}}
                                                                     {{#HasDriverPhoto}}
-                                                                    <tr style="color: { {EmailFontColor}}! important">
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title" style="vertical-align: middle">{{ localize "Email_Body_DriverPhoto" }}</td>
                                                                         <td class="list_value">
                                                                             <div style="width: 100%">
@@ -486,20 +487,18 @@
                                                                     </tr>
                                                                     {{/HasDriverPhoto}}
                                                                     {{/ShowExtraInfoInReceipt}}
-
-
-                                                                    <tr>
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
                                                                         <td class="list_value">{{ VehicleNumber }}</td>
                                                                     </tr>
 
                                                                     {{#ShowExtraInfoInReceipt}}
-                                                                    <tr>
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
                                                                         <td class="list_value">{{ VehicleMake }} {{ VehicleModel }} {{ VehicleColor }}</td>
                                                                     </tr>
                                                                     {{#HasVehicleRegistration}}
-                                                                    <tr>
+                                                                    <tr style="color: {{EmailFontColor}}! important">
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleRegistration" }}</td>
                                                                         <td class="list_value">{{ VehicleRegistration }}</td>
                                                                     </tr>
