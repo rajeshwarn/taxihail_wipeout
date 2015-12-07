@@ -22,10 +22,11 @@ namespace apcurium.MK.Common.Configuration.Impl
     }
 
         public PaymentMethod PaymentMode { get; set; }
-        
+
         /// <summary>
         /// In app payment
         /// </summary>
+        [Obsolete("This property is deprecated. Now, Pay In Taxi can be enabled for web only", false)]
         public bool IsPayInTaxiEnabled { get; set; }
         
         /// <summary>
