@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
-                TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
+                TextAlignment = UITextAlignment.Natural,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
-                TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
+                TextAlignment = UITextAlignment.Natural,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear,
             };

@@ -9,15 +9,12 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using Cirrious.CrossCore;
-using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
@@ -30,9 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                    SecondLine DisplayLine2;
                    Icon Icon;
                    HideBottomBar IsLast";
-
-//        const float Margin = 8;
-//        const float Margin2x = Margin * 2;
 
         public AddressPickerView(IntPtr h) : base(h)
         {
@@ -105,13 +99,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddConstraints(new [] 
             {
                 NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, this, NSLayoutAttribute.Leading, 1f, 8f),
-                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, UIHelper.IsOS7orHigher ? 22f : 5f),
+                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, 22f),
                 NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 44f),
 
                 NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, CancelButton, NSLayoutAttribute.Leading, 1f, -9f),
 
                 NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, this, NSLayoutAttribute.Trailing, 1f, -8f),
-                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, UIHelper.IsOS7orHigher ? 22f : 5f),
+                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, 22f),
                 NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 44f),
                 NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 81f),
             });

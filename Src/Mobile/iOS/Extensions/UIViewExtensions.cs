@@ -171,36 +171,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static CGSize GetSizeThatFits(this UIView view, string text, UIFont font, CGSize? maxSize = null)
         {
-            if (UIHelper.IsOS7orHigher)
+            if (maxSize != null)
             {
-                if (maxSize != null)
-                {
-                    return new NSString(text)
-                        .GetBoundingRect(maxSize.Value,
-                            NSStringDrawingOptions.UsesLineFragmentOrigin,
-                            new UIStringAttributes { Font = font },
-                            new NSStringDrawingContext()).Size;
-                }
-                else
-                {
-                    return new NSString (text)
-                        .GetSizeUsingAttributes (new UIStringAttributes { Font = font });
-                }
+                return new NSString(text).GetBoundingRect(maxSize.Value,
+                    NSStringDrawingOptions.UsesLineFragmentOrigin,
+                    new UIStringAttributes { Font = font },
+                    new NSStringDrawingContext()).Size;
             }
-            else
-            {
-                var result = UIStringDrawing.StringSize(text, font);
 
-                if (maxSize != null
-                    && result.Width > maxSize.Value.Width)
-                {
-                    var height = result.Height;
-                    var lines = Math.Round(result.Width / maxSize.Value.Width, MidpointRounding.AwayFromZero);
-                    result = new CGSize(maxSize.Value.Width, (float)lines * height);
-                }
-
-                return result;
-            }
+            return new NSString(text).GetSizeUsingAttributes(new UIStringAttributes { Font = font });
         }
 
         public static void ShowCloseButtonOnKeyboard(this UITextView text, Action onClosePressed = null)

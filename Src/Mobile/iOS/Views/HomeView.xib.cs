@@ -6,7 +6,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using System.Windows.Input;
 using System;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.ComponentModel;

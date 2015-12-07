@@ -190,12 +190,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
-            if (UIHelper.IsOS7orHigher)
-            {
-                PitchEnabled = false;
-                RotateEnabled = false;
-            }
-
+            PitchEnabled = false;
+            RotateEnabled = false;
             ZoomEnabled = false;
 
             if (_gesture == null)

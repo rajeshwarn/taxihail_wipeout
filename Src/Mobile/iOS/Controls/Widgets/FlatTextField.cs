@@ -2,7 +2,6 @@ using System;
 using Foundation;
 using UIKit;
 using CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common.Extensions;
 
@@ -44,13 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             HasRightArrow = Enabled && HasRightArrow;
 
-            TextAlignment = NaturalLanguageHelper.GetTextAlignment();
-
-			if (UIHelper.IsOS7orHigher) 
-            {
-				TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
-			} 
-
+            TextAlignment = UITextAlignment.Natural;
+            TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
             TextColor = UIColor.FromRGB(44, 44, 44);
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
