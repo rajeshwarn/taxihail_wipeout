@@ -719,15 +719,13 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
-    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Controls\Widgets\BaseRateControl.cs" />
     <AndroidResource Include="Resources\Layout\Control_BaseRate.axml" />
     <AndroidResource Include="Resources\Drawable\down_arrow_light.png" />
     <AndroidResource Include="Resources\Drawable\up_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\up_arrow_light.png" />
+    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -879,7 +877,6 @@
     <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\blackcar_icon.png" />
-    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
