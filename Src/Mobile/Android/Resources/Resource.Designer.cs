@@ -1530,6 +1530,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance;
+			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Booking.Mobile.Client.Resource.String.library_name;
 		}
 		
 		public partial class Animation

@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -17,8 +16,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using ServiceStack.Text;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -92,11 +91,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
         {
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+		    _defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();
 
 			if (manualRidelinqDetail != null)
 			{
-				var deserializedRidelinqDetails = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(manualRidelinqDetail);
+			    var deserializedRidelinqDetails = manualRidelinqDetail.FromJson<OrderManualRideLinqDetail>();
 
 				CurrentViewState = HomeViewModelState.ManualRidelinq;
 
@@ -107,8 +106,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (order != null && orderStatusDetail != null)
 			{
-				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
-				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
+			    var deserializedOrder = order.FromJson<Order>();
+			    var deserializeOrderStatus = orderStatusDetail.FromJson<OrderStatusDetail>();
 
 				CurrentViewState = HomeViewModelState.BookingStatus;
 
@@ -268,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					(content, actionOnResult) => 
 					{
 						_isShowingTermsAndConditions = true;
-						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult);
+						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(content, actionOnResult);
 					},
 					(locateUser, defaultHintZoomLevel) => 
 					{

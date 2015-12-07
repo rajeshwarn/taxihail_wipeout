@@ -1,7 +1,6 @@
 #region
 
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Text;
 using apcurium.MK.Common.Entity;

@@ -1,13 +1,11 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.Text;
 using TinyIoC;
 using apcurium.MK.Common.Extensions;
 
@@ -97,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					using (var reader = new StreamReader(stream))
 					{
 						var serializedData = reader.ReadToEnd();
-						result = JsonSerializer.DeserializeFromString<TutorialContent>(serializedData);
+					    result = serializedData.FromJson<TutorialContent>();
 					}
 				}
             }
