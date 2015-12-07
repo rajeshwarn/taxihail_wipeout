@@ -382,42 +382,63 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var success = false;
 
-            UseService(service =>
-               {
-                   int result = 0;
-                   int collect = 0;
-                   int balance = 0;
-                   result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId, authorizationCode, cardToken, type, provider, ToCents(tipAmount), ToCents(tollAmount),
-                       ToCents(fareAmount), ToCents(extrasAmount),
-                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString(), ToCents(vatAmount), ToCents(surchargeAmount),
-                    ToCents(discountAmount), ref collect, ref balance);
-                   success = result == 0;
+            try
+            {
+                UseService(service =>
+                {
+                    int result = 0;
+                    int collect = 0;
+                    int balance = 0;
+                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId,
+                        authorizationCode, cardToken, type, provider, ToCents(tipAmount), ToCents(tollAmount),
+                        ToCents(fareAmount), ToCents(extrasAmount),
+                        ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name,
+                        CleanPhone(phone),
+                        email, os, userAgent, orderID.ToString(), ToCents(vatAmount), ToCents(surchargeAmount),
+                        ToCents(discountAmount), ref collect, ref balance);
+
+                    success = result == 0;
                    
-                   //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
-                   //var auth = new TPaymentAuthorization3dParty
-                   //{
-                   //    ApprovalText = text,
-                   //    Approved = true,
-                   //    ApprovedAmount = string.Format("{0:C}", amount),
-                   //    AuthorizationNumber = authorizationCode,
-                   //    TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
-                   //    TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
-                   //    CCSequenceNumber = transactionId,
-                   //    CardNumber = cardNumber,
-                   //    CardType = cardType,
-                   //    FareAmount = string.Format("{0:C}", fareAmount),
-                   //    DiscountAmount = string.Format("{0:C}", 0),
-                   //    ExpiryDate = cardExpiry,
-                   //    JobNumber = orderId,
-                   //    PayType = 3,
+                       //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
+                       //var auth = new TPaymentAuthorization3dParty
+                       //{
+                       //    ApprovalText = text,
+                       //    Approved = true,
+                       //    ApprovedAmount = string.Format("{0:C}", amount),
+                       //    AuthorizationNumber = authorizationCode,
+                       //    TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
+                       //    TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
+                       //    CCSequenceNumber = transactionId,
+                       //    CardNumber = cardNumber,
+                       //    CardType = cardType,
+                       //    FareAmount = string.Format("{0:C}", fareAmount),
+                       //    DiscountAmount = string.Format("{0:C}", 0),
+                       //    ExpiryDate = cardExpiry,
+                       //    JobNumber = orderId,
+                       //    PayType = 3,
 
-                   //};
+                       //};
 
-                   //var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
-                   //success = result == 0;
+                       //var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
+                       //success = result == 0;
+                   });
 
+                return success;
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("SaveExtrPayment_3 is not available doing a fallback to SaveExtrPayment_2");
+            }
 
-               });
+            UseService(service =>
+            {
+                int result = 0;
+
+                result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, transactionId, authorizationCode, cardToken, type, provider, 0, 0, 0, 0,
+                    ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString());
+
+                success = result == 0;
+            });
 
             return success;
         }
