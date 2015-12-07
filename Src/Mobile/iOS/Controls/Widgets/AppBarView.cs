@@ -42,13 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             BackgroundColor = UIColor.White;
 
-            Line = new UIView()
-            {
-                BackgroundColor = UIColor.FromRGB(140, 140, 140)
-            };
-
-            AddSubview(Line);
-
 			_bookingBarNormalBooking = BookingBarNormalBooking.LoadViewFromFile();
 			Add(_bookingBarNormalBooking);
 
@@ -69,6 +62,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_bookingBarInTripManualRideLinQBooking = BookingBarInTripManualRideLinQBooking.LoadViewFromFile();
 			Add(_bookingBarInTripManualRideLinQBooking);
+
+            Line = new UIView
+            {
+                BackgroundColor = UIColor.FromRGB(140, 140, 140)
+            };
+            AddSubview(Line);
 
 			this.DelayBind(DataBinding);
         }
