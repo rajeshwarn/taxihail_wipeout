@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
     {
 		public TaxiHailSetting Data { get; private set; }
 
+		private bool _isReady;
+
         readonly ICacheService _cacheService;
 		readonly ILogger _logger;
 		const string SettingsCacheKey = "TaxiHailSetting";
@@ -92,6 +94,20 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
+		public string GetServiceUrl()
+		{
+			var taxiHailSettings = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+
+			if (taxiHailSettings != null)
+			{
+				return taxiHailSettings.ServiceUrl;
+			}
+
+			return _isReady
+				? Data.ServiceUrl
+				: GetSettingFromFile("ServiceUrl");
+		}
+
 		private void LoadSettingsFromFile()
 		{
 			_logger.LogMessage("load settings from file");
@@ -110,6 +126,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					}
 				}
 			}
+
+			_isReady = true;
 		}
 
 		private string GetSettingFromFile(string settingName)

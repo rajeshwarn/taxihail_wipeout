@@ -63,20 +63,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             base.OnViewLoaded();
 			_orderNotified = new List<Guid>();
 
-			_serialDisposable.Disposable = ObserveTimerForRefresh()
-				.SelectMany(_ => GetActiveOrderStatus())
-				.ObserveOn(SynchronizationContext.Current)
-				.Where(_ => _refreshGate)
-				.Subscribe(orderStatusDetails =>
-				{
-					_refreshGate = false;
-					RefreshOrderStatus(orderStatusDetails);
-					_refreshGate = true;
-				},
-				ex =>
-				{
-				    Logger.LogError(ex);
-				});                           
+            _serialDisposable.Disposable = ObserveTimerForRefresh()
+                .Where(_ => _orderToCreate == null || !_orderToCreate.IsPendingCreation)
+                .SelectMany(_ => GetActiveOrderStatus())
+                .ObserveOn(SynchronizationContext.Current)
+                .Where(_ => _refreshGate)
+                .Subscribe(orderStatusDetails =>
+                {
+                    _refreshGate = false;
+                    RefreshOrderStatus(orderStatusDetails);
+                    _refreshGate = true;
+                },
+                ex =>
+                {
+                    Logger.LogError(ex);
+                });
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
     			{

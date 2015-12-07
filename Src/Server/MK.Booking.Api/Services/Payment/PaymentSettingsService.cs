@@ -17,7 +17,7 @@ using CustomerPortal.Contract.Resources.Payment;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
@@ -58,26 +58,33 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 		{
 			var paymentSettings = _configurationDao.GetPaymentSettings();
 
-			var result = new Dictionary<string, string>();
+		    var type = typeof (ClientPaymentSettings);
 
-			var settings = paymentSettings.GetType().GetAllProperties();
-			
-			foreach (var setting in settings)
-			{
-				var settingValue = paymentSettings.GetNestedPropertyValue(setting.Key);
-				var settingStringValue = settingValue == null ? string.Empty : settingValue.ToString();
-				if (settingStringValue.IsBool())
-				{
-					settingStringValue = settingStringValue.ToLower();
-				}
+		    var settings =type 
+                .GetAllProperties()
+                // Only properties with a get and set should be sent
+                .Where(property => property.Value.CanRead && property.Value.CanWrite)
+                .Select(setting => setting.Key)
+                .Select(propertyName => ExtractPropertyValue(paymentSettings, propertyName))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-				result.Add(setting.Key, settingStringValue);
-			}
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(type, null, settings, true);
 
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, true);
-
-			return result;
+			return settings;
 		}
+
+        private static KeyValuePair<string, string> ExtractPropertyValue(ServerPaymentSettings paymentSettings, string propertyName)
+        {
+            var settingValue = paymentSettings.GetNestedPropertyValue(propertyName);
+            var settingStringValue = settingValue.SelectOrDefault(value => value.ToString(), string.Empty);
+
+
+            settingStringValue = settingStringValue.IsBool()
+                ? settingStringValue.ToLowerInvariant()
+                : settingStringValue;
+
+            return new KeyValuePair<string, string>(propertyName, settingStringValue);
+        }
 
         public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
         {

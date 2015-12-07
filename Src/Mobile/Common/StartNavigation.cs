@@ -49,7 +49,8 @@ namespace apcurium.MK.Booking.Mobile
                     accountService.SignOut();
 				}
 
-                // Don't check the app version here since it's done in the LoginViewModel
+                // Don't check the app version here since it's done in the LoginViewModel 
+				// and HomeViewModel and causes problems on iOS 9+
 
 				ShowViewModel<LoginViewModel>();
             }
@@ -63,8 +64,7 @@ namespace apcurium.MK.Booking.Mobile
 	            await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
 						accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
-						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
-						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors()
 		            );
 
                 try
@@ -97,8 +97,7 @@ namespace apcurium.MK.Booking.Mobile
 				// Make sure to refresh notification/payment settings even if the user has killed the app
 				await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
-						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
-						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors()
 					);
 
                 // Log user session start

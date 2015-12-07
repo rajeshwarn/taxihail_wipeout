@@ -8,6 +8,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
+using System.Runtime.CompilerServices;
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -46,7 +47,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments");
 
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
-
 				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
 			}
 			catch (Exception ex)
