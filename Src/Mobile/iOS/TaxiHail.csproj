@@ -322,7 +322,6 @@
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
-    <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
@@ -398,7 +397,6 @@
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
@@ -445,7 +443,6 @@
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />

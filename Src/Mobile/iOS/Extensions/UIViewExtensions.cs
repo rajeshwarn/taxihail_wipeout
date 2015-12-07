@@ -5,7 +5,6 @@ using System.Linq;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using CoreAnimation;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -35,7 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 var firstResponder = subView.FindFirstResponder();
                 if (firstResponder != null)
+                {
                     return firstResponder;
+                }
             }
             return null;
         }
@@ -233,4 +234,3 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 	}
 }
-
