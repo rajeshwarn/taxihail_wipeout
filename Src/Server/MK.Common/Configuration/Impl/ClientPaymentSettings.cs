@@ -26,12 +26,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         /// <summary>
         /// In app payment
         /// </summary>
-        [Obsolete("This property is deprecated. Now, Pay In Taxi can be enabled for web only", false)]
         public bool IsPayInTaxiEnabled { get; set; }
-        
+
         /// <summary>
         /// Manual payment, not through app
         /// </summary>
+        [Obsolete("This property is deprecated. Now, Out Of App Payment can be enabled for web only", false)]
         public bool IsOutOfAppPaymentDisabled { get; set; }
 
         public bool IsChargeAccountPaymentEnabled { get; set; }
