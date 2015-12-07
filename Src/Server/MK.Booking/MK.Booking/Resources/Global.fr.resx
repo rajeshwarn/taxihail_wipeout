@@ -534,9 +534,6 @@
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>
   </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>Le code de confirmation est incorrect.</value>
-  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
   </data>

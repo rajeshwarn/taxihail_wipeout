@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditCardAddView">
@@ -81,7 +81,7 @@
                             <rect key="frame" x="0.0" y="92" width="320" height="60"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfr-Na-E9J">
-                                    <rect key="frame" x="8" y="0.0" width="31.5" height="17"/>
+                                    <rect key="frame" x="8" y="0.0" width="32" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="Ztc-rY-eRL"/>
                                     </constraints>
@@ -108,15 +108,15 @@
                             </constraints>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
-                            <rect key="frame" x="8" y="164" width="304" height="40.5"/>
+                            <rect key="frame" x="8" y="164" width="304" height="41"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard">
-                            <rect key="frame" x="0.0" y="219.5" width="320" height="470"/>
+                            <rect key="frame" x="0.0" y="220" width="320" height="470"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
-                                    <rect key="frame" x="8" y="10" width="184.5" height="17"/>
+                                    <rect key="frame" x="8" y="10" width="185" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="W6I-q4-2OZ"/>
                                     </constraints>
@@ -150,7 +150,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVV" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tz3-UC-Wg8">
-                                    <rect key="frame" x="244" y="86" width="25.5" height="17"/>
+                                    <rect key="frame" x="244" y="86" width="26" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="QSD-rX-z0e"/>
                                     </constraints>
@@ -185,7 +185,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exp. Year" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEq-Dm-0h1">
-                                    <rect key="frame" x="168" y="162" width="54.5" height="17"/>
+                                    <rect key="frame" x="168" y="162" width="55" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="TQP-WF-c3O"/>
                                     </constraints>
@@ -202,7 +202,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zip/Postal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJb-TD-Vwd" userLabel="ZipCode">
-                                    <rect key="frame" x="8" y="238" width="57.5" height="17"/>
+                                    <rect key="frame" x="8" y="238" width="58" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="WvT-ci-cJk"/>
                                     </constraints>
@@ -313,7 +313,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="689.5" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="690" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>
@@ -342,8 +342,8 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-8W-uf4">
                                     <rect key="frame" x="23" y="15" width="275" height="41"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Account Linked" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-2u-3uC">
-                                            <rect key="frame" x="125" y="10.5" width="126" height="20.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Linked" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-2u-3uC">
+                                            <rect key="frame" x="125" y="10" width="126" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -396,12 +396,12 @@
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="950" constant="15" id="Wrb-T3-Ila"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="bottom" id="ai8-o9-D45"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="15" id="cqP-sV-7Zx"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="cqP-sV-7Zx"/>
                         <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="ejy-cD-B95"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="hXH-xw-tA2"/>
                         <constraint firstAttribute="trailing" secondItem="jyp-DI-ki8" secondAttribute="trailing" id="iRH-Ta-pNC"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="900" constant="14" id="jAc-JL-gWL"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="400" constant="15" id="k9b-2N-pCq"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="k9b-2N-pCq"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="m3e-x7-oUg"/>
                         <constraint firstAttribute="bottom" secondItem="pfD-TX-kyS" secondAttribute="bottom" id="rmA-89-eqM"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" priority="500" constant="15" id="s3f-ae-rb2"/>
@@ -424,9 +424,4 @@
     <resources>
         <image name="paypal.png" width="90" height="31"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
