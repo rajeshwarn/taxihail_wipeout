@@ -144,13 +144,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, ShowEstimate ? 3f : 0f);
-        }
-
         public bool IsReadOnly { get; set; }
 
         private bool _showEstimate;

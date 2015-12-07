@@ -24,13 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			view.Frame = new CGRect(view.Frame.X, view.Frame.Y, width ?? view.Frame.Width, height ?? view.Frame.Height);
 		}
 
-        public static void SetRoundedCorners(this UIView view, UIRectCorner corners, float radius)
-        {
-            var roundedRect = UIBezierPath.FromRoundedRect(new CGRect(0, 0, view.Frame.Width, view.Frame.Height), corners, new CGSize(radius, radius));
-            var maskLayer = new CAShapeLayer() { Frame = view.Bounds, Path = roundedRect.CGPath };
-            view.Layer.Mask = maskLayer;
-        }
-
         public static UIView FindFirstResponder (this UIView view)
         {
             if (view.IsFirstResponder)
