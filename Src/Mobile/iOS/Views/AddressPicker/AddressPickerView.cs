@@ -16,21 +16,21 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
     [Register("AddressPickerView")]
     public class AddressPickerView : BaseBindableChildView<AddressPickerViewModel>
     {
-        const string CellId = "AdrsCell";
-        const string CellBindingText = @"
+        private readonly SerialDisposable _collectionChangedSubscription = new SerialDisposable();
+
+        private const string CellId = "AdrsCell";
+        private const string CellBindingText = @"
                    FirstLine DisplayLine1;
                    SecondLine DisplayLine2;
                    Icon Icon;
                    HideBottomBar IsLast";
-
-//        const float Margin = 8;
-//        const float Margin2x = Margin * 2;
 
         public AddressPickerView(IntPtr h) : base(h)
         {
@@ -171,12 +171,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         public void Close()
         {
+            _collectionChangedSubscription.Disposable = null;
+
             this.ResignFirstResponderOnSubviews();
             UIView.Animate(0.3f, () => this.Alpha = 0, () => this.Hidden = true);
         }
 
 		public async void Open(AddressLocationType addressLocationType)
         {
+            _collectionChangedSubscription.Disposable = new SerialDisposable();
+
 			Alpha = 0;
 			Hidden = false;
 			Animate(0.3f, () => Alpha = 1);
@@ -193,13 +197,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 		{
 			Task.Factory.StartNew(() =>
 			{
-				InvokeOnMainThread(() => AddressEditText.BecomeFirstResponder());
+                InvokeOnMainThread(() => 
+                { 
+                    // if _collectionChangedSubscription is null, we left the screen
+                    if(_collectionChangedSubscription.Disposable != null)
+                    {
+                        AddressEditText.BecomeFirstResponder();
+                    }
+                });
 			});
 		}
 
         protected override void DrawStroke()
         {
             //nothing here, no shadow
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _collectionChangedSubscription.Disposable = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
