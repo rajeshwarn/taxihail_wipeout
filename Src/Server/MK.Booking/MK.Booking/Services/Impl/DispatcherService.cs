@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 orderResult = _ibsServiceProvider.Booking(_bestAvailableCompany.CompanyKey).CreateOrder(
                     orderId,
                     _providerId,
-                    initialIbsAccountId,
+                    _ibsAccountId,
                     name,
                     phone,
                     passengers,
