@@ -158,7 +158,6 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Xamarin.Android.Bindings.targets" />
   <ItemGroup>
     <EmbeddedJar Include="Jars\lost-1.0.1.jar" />
   </ItemGroup>
@@ -172,4 +171,5 @@
   <ItemGroup>
     <JavaDocIndex Include="JavaDocs\index.html" />
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>

@@ -52,7 +52,6 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Xamarin.Android.Bindings.targets" />
   <ItemGroup>
     <ReferenceJar Include="..\..\..\extern\android\maps\google-maps-sdk-m4b_lib\libs\guava-jdk5-14.0.1.jar">
       <Link>Jars\guava-jdk5-14.0.1.jar</Link>
@@ -63,4 +62,5 @@
       <Link>Jars\maps_m4b.jar</Link>
     </InputJar>
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>
