@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
 
@@ -30,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IRegisterWorkflowService registrationService)
+			IRegisterWorkflowService registrationService,
+			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -39,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_vehicleTypeService = vehicleTypeService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -140,6 +143,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_signInCommand = (AsyncCommand)this.GetCommand(async () =>
 					{
 						_accountService.ClearCache();
+						_vehicleTypeService.ClearVehicleTypesCache();
+
 						await SignIn();
 					}, CanSignIn);
 				}
@@ -506,7 +511,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var isPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-            if (isPayInTaxiEnabled && Settings.CreditCardIsMandatory)
+			if (isPayInTaxiEnabled && paymentSettings.CreditCardIsMandatory)
 			{
 				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 				{

@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
-                <outlet property="bookingStatusBottomBar" destination="eeH-0k-Y1u" id="4lT-KE-LhQ"/>
                 <outlet property="bookingStatusControl" destination="ZLu-Q7-DYG" id="3qT-jb-sA0"/>
                 <outlet property="bookingStatusTopSpaceConstraint" destination="XTy-SW-oPk" id="MIw-Jb-nIz"/>
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
@@ -15,7 +14,6 @@
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
                 <outlet property="changeDropOffControl" destination="vHZ-QJ-LLg" id="ABL-jo-Tk6"/>
-                <outlet property="constraintAppBarBookingStatus" destination="VYn-pq-Rbv" id="zxh-xY-Neu"/>
                 <outlet property="constraintAppBarDropOffSelection" destination="2o2-CG-5iu" id="1Bf-V7-IrD"/>
                 <outlet property="constraintBookingStatusHeight" destination="Ztr-kp-Q7L" id="vOj-O6-UhM"/>
                 <outlet property="constraintChangeDropOffTopSpace" destination="kRK-IK-UVV" id="V2Y-47-nz0"/>
@@ -51,6 +49,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9qQ-hI-lSq" customClass="PanelMenuView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="73H-fC-yqb" userLabel="HomeView">
@@ -58,9 +57,11 @@
                     <subviews>
                         <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DgF-jB-8zt" customClass="OrderMapView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="512"/>
+                            <animations/>
                         </mapView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MeW-ns-SQv" userLabel="Menu" customClass="OverlayButton">
                             <rect key="frame" x="8" y="460" width="39" height="39"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="8Zv-oA-UDl"/>
@@ -73,6 +74,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jqp-iu-ci1" userLabel="Locate" customClass="OverlayButton">
                             <rect key="frame" x="273" y="460" width="39" height="39"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="vgd-ko-fHL"/>
@@ -85,6 +87,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEE-PN-YXj" userLabel="Airport" customClass="OverlayButton">
                             <rect key="frame" x="8" y="413" width="39" height="39"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="39" id="UWZ-S7-zk0"/>
@@ -97,6 +100,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTf-vs-kUc" userLabel="Train" customClass="OverlayButton">
                             <rect key="frame" x="8" y="366" width="39" height="39"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="2CU-Uc-jej"/>
@@ -108,10 +112,11 @@
                             </state>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qYq-T6-6x7" customClass="ContactTaxiControl">
-                            <rect key="frame" x="8" y="-325" width="304" height="50"/>
+                            <rect key="frame" x="8" y="-325" width="304" height="62"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="bb7-Lk-F2S"/>
+                                <constraint firstAttribute="height" constant="62" id="bb7-Lk-F2S"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHZ-QJ-LLg" userLabel="Change DropOff Control" customClass="ChangeDropOffControl">
@@ -123,6 +128,7 @@
                         </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
                             <rect key="frame" x="8" y="22" width="304" height="44"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="Vpo-Rh-1CB" userLabel="DropOff Selection Control" customClass="DropOffSelectionControl">
@@ -134,6 +140,7 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZLu-Q7-DYG" customClass="BookingStatusControl">
                             <rect key="frame" x="8" y="-200" width="304" height="163"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="163" id="Ztr-kp-Q7L"/>
@@ -141,25 +148,15 @@
                         </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReviewView">
                             <rect key="frame" x="8" y="686" width="304" height="300"/>
+                            <animations/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXg-Q6-nLg" customClass="AppBarView">
                             <rect key="frame" x="0.0" y="512" width="320" height="56"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="qLD-mj-Ncy"/>
                             </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eeH-0k-Y1u" customClass="AppBarBookingStatus">
-                            <rect key="frame" x="0.0" y="592" width="320" height="56"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="56" id="vP0-Ub-Zeh"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
-                                    <integer key="value" value="0"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34x-BF-Imk" customClass="AppBarDropOffSelection">
                             <rect key="frame" x="0.0" y="592" width="320" height="56"/>
@@ -175,21 +172,26 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsx-d8-MLA" customClass="OrderEditView">
                             <rect key="frame" x="500" y="22" width="304" height="483"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPP-SX-9eS" customClass="OrderBookingOptions">
                             <rect key="frame" x="0.0" y="700" width="320" height="568"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dKC-iR-zqB" customClass="OrderAirportView">
                             <rect key="frame" x="8" y="686" width="304" height="300"/>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OH-fP-dh3" customClass="AddressPickerView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Vpo-Rh-1CB" secondAttribute="trailing" constant="8" id="0je-d8-rf8"/>
@@ -208,14 +210,12 @@
                         <constraint firstItem="dKC-iR-zqB" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="AtN-uQ-k8U"/>
                         <constraint firstItem="34x-BF-Imk" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="CSi-5q-0gf"/>
                         <constraint firstAttribute="trailing" secondItem="cPP-SX-9eS" secondAttribute="trailing" id="Cdy-Mv-jlG"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="DDA-uB-eCh"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="ZLu-Q7-DYG" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Jhf-yG-FJ8"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="bottom" secondItem="lYS-4q-3Mj" secondAttribute="bottom" priority="500" constant="418" id="N7f-dP-yRy"/>
                         <constraint firstItem="cPP-SX-9eS" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="PNq-BA-cDW"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Q0C-IM-4L9"/>
@@ -223,9 +223,7 @@
                         <constraint firstAttribute="right" secondItem="lYS-4q-3Mj" secondAttribute="right" constant="8" id="Syf-T8-VwL"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="width" secondItem="dKC-iR-zqB" secondAttribute="width" id="V2j-fs-GMs"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="top" secondItem="DgF-jB-8zt" secondAttribute="bottom" constant="80" id="VYn-pq-Rbv"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" priority="500" constant="7" id="WCu-6T-2pX"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
                         <constraint firstItem="ZLu-Q7-DYG" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="-200" id="XTy-SW-oPk"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Z3E-95-Tkk"/>
@@ -248,7 +246,6 @@
                         <constraint firstAttribute="trailing" secondItem="ZLu-Q7-DYG" secondAttribute="trailing" constant="8" id="sUF-DF-PPi"/>
                         <constraint firstAttribute="trailing" secondItem="dKC-iR-zqB" secondAttribute="trailing" constant="8" id="sal-Ak-hiu"/>
                         <constraint firstItem="dKC-iR-zqB" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="sgf-9n-nvL"/>
-                        <constraint firstAttribute="trailing" secondItem="eeH-0k-Y1u" secondAttribute="trailing" id="wiy-MJ-0Ol"/>
                         <constraint firstItem="aEE-PN-YXj" firstAttribute="top" secondItem="rTf-vs-kUc" secondAttribute="bottom" constant="8" id="wm1-iL-Uco"/>
                         <constraint firstItem="Vpo-Rh-1CB" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="xca-0U-1k6"/>
                         <constraint firstItem="qYq-T6-6x7" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="ytw-Dr-i4y"/>
@@ -256,6 +253,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="9qQ-hI-lSq" secondAttribute="trailing" id="Ehk-6D-Yci"/>

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
+using PushSharp.Blackberry;
 using PushSharp.Core;
 using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
 
@@ -17,37 +18,56 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly PushBroker _push;
-        private bool _started;
+        private bool _androidStarted;
+        private bool _blackberryStarted;
+        private bool _appleStarted;
 
         public PushNotificationService(IServerSettings serverSettings, ILogger logger)
         {
             _serverSettings = serverSettings;
             _logger = logger;
             _push = new PushBroker();
+
+            //Wire up the events
+            _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
+            _push.OnDeviceSubscriptionChanged += OnDeviceSubscriptionChanged;
+            _push.OnChannelException += OnChannelException;
+            _push.OnNotificationFailed += OnNotificationFailed;
+            _push.OnNotificationSent += OnNotificationSent;
+            _push.OnChannelCreated += OnChannelCreated;
+            _push.OnChannelDestroyed += OnChannelDestroyed;
         }
 
         public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
         {
-            EnsureStarted();
 
             switch (platform)
             {
                 case PushNotificationServicePlatform.Apple:
+                    EnsureAppleStarted();
                     SendAppleNotification(alert, data, deviceToken);
                     break;
                 case PushNotificationServicePlatform.Android:
+                    EnsureAndroidStarted();
                     SendAndroidNotification(alert, data, deviceToken);
+                    break;
+                case PushNotificationServicePlatform.BlackBerry:
+                    EnsureBlackberryStarted();
+                    SendBBNotification(alert, data, deviceToken);
                     break;
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        private void EnsureStarted()
+        private void EnsureAppleStarted()
         {
-            if (_started) return;
+            if (_appleStarted)
+            {
+                return;
+            }
 
-            _started = true;
+            _appleStarted = true;
 
 #if DEBUG
             const bool production = false;
@@ -58,21 +78,6 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                 _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
-            // Push notifications
-            var test = _serverSettings.ServerData.GCM.SenderId;
-            var apiKey = _serverSettings.ServerData.GCM.APIKey;
-            var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
-
-            //Wire up the events
-            _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
-            _push.OnDeviceSubscriptionChanged += OnDeviceSubscriptionChanged;
-            _push.OnChannelException += OnChannelException;
-            _push.OnNotificationFailed += OnNotificationFailed;
-            _push.OnNotificationSent += OnNotificationSent;
-            _push.OnChannelCreated += OnChannelCreated;
-            _push.OnChannelDestroyed += OnChannelDestroyed;
-
-            _push.RegisterGcmService(androidSettings);
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
@@ -80,17 +85,47 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.RegisterAppleService(appleSettings);
         }
 
+        private void EnsureAndroidStarted()
+        {
+            if (_androidStarted)
+            {
+                return;
+            }
+
+            _androidStarted = true;
+
+            var test = _serverSettings.ServerData.GCM.SenderId;
+            var apiKey = _serverSettings.ServerData.GCM.APIKey;
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
+
+            _push.RegisterGcmService(androidSettings);
+        }
+
+        private void EnsureBlackberryStarted()
+        {
+            if (_blackberryStarted)
+            {
+                return;
+            }
+
+            _blackberryStarted = true;
+
+            var bbSettings = new BlackberryPushChannelSettings(_serverSettings.ServerData.BBNotificationSettings.AppId, _serverSettings.ServerData.BBNotificationSettings.Password);
+            bbSettings.OverrideSendUrl(_serverSettings.ServerData.BBNotificationSettings.Url);
+
+            _push.RegisterBlackberryService(bbSettings, null);
+        }
+
         private void SendAndroidNotification(string alert, IDictionary<string, object> data, string registrationId)
         {
             var payload = new Dictionary<string, object>(data);
             payload["alert"] = alert;
 
-
             _push.QueueNotification(new GcmNotification() { DelayWhileIdle = false }
-	          .ForDeviceRegistrationId(registrationId)
-        	  .WithCollapseKey(Guid.NewGuid().ToString())
-	          .WithDelayWhileIdle(false)
-	          .WithJson(JsonConvert.SerializeObject(payload)));
+              .ForDeviceRegistrationId(registrationId)
+              .WithCollapseKey(Guid.NewGuid().ToString())
+              .WithDelayWhileIdle(false)
+              .WithJson(JsonConvert.SerializeObject(payload)));
 
         }
 
@@ -103,14 +138,28 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             foreach (var key in data.Keys)
             {
-                notification.WithCustomItem(key, new[] {data[key]});
+                notification.WithCustomItem(key, new[] { data[key] });
             }
 
             _push.QueueNotification(notification);
         }
 
+
+        private void SendBBNotification(string alert, IDictionary<string, object> data, string registrationId)
+        {
+            var payload = new Dictionary<string, object>(data);
+            payload["alert"] = alert;
+
+            var notif = new BlackberryNotification();
+            notif.Recipients.Add(new BlackberryRecipient(registrationId));
+            notif.Content = new BlackberryMessageContent(JsonConvert.SerializeObject(payload));
+            notif.SourceReference = _serverSettings.ServerData.BBNotificationSettings.AppId;
+
+            _push.QueueNotification(notif);
+        }
+
         private void OnDeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
-		{
+        {
             //Currently this event will only ever happen for Android GCM
             _logger.LogMessage("Device Registration Changed:  Old-> " + oldSubscriptionId + "  New-> " + newSubscriptionId);
         }

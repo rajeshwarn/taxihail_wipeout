@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
+using MK.Common.Android.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -51,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_cacheService.Clear (AppInfoCacheKey);
         }
 
-
         public async Task CheckVersionAsync()
         {
 			if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
@@ -79,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured when trying to check the minimum app version.");
-                _logger.LogError(ex);
+                _logger.LogErrorWithCaller(ex);
             }
 
             if (!isSupported)

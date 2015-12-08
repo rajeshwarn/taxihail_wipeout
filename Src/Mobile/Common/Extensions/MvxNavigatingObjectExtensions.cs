@@ -27,8 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 			return new AsyncCommand(execute, canExecute);
 		}
 
-
-
 		public static ICommand GetCommand<T>(this MvxNavigatingObject viewModel, Func<T, Task> execute, Func<T, bool> canExecute = null)
 		{
 			return new AsyncCommand<T>(execute, canExecute);

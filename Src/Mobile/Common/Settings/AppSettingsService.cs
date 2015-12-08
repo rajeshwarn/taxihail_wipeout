@@ -14,12 +14,15 @@ using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
+using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettingsService : IAppSettings
     {
 		public TaxiHailSetting Data { get; private set; }
+
+		private bool _isReady;
 
         readonly ICacheService _cacheService;
 		readonly ILogger _logger;
@@ -92,6 +95,20 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
+		public string GetServiceUrl()
+		{
+			var taxiHailSettings = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+
+			if (taxiHailSettings != null)
+			{
+				return taxiHailSettings.ServiceUrl;
+			}
+
+			return _isReady
+				? Data.ServiceUrl
+				: GetSettingFromFile("ServiceUrl");
+		}
+
 		private void LoadSettingsFromFile()
 		{
 			_logger.LogMessage("load settings from file");
@@ -109,6 +126,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					}
 				}
 			}
+
+			_isReady = true;
 		}
 
 		private string GetSettingFromFile(string settingName)
@@ -141,6 +160,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_logger.LogMessage("load settings from server");
 
 			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
+
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 
 			SaveSettings();			

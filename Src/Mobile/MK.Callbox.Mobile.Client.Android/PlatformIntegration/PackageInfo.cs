@@ -1,24 +1,28 @@
+using System;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Text;
-using System;
+using apcurium.MK.Common.Diagnostic;
 using Android.OS;
 using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
-
     public class PackageInfo : IPackageInfo
     {
-		readonly Context _appContext;
-        private static string _userAgent = null;
-		public PackageInfo(IMvxAndroidGlobals globals)
-        {
-			_appContext = globals.ApplicationContext;
-        }
+		private readonly Context _appContext;
+	    private readonly ILogger _logger;
 
-        public string Platform
+        private static string CachedUserAgent;
+
+		public PackageInfo(IMvxAndroidGlobals globals, ILogger logger)
+		{
+			_logger = logger;
+			_appContext = globals.ApplicationContext;
+		}
+
+	    public string Platform
         {
             get
             {
@@ -26,8 +30,16 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             }
         }
 
+	    public string PlatformDetails
+	    {
+		    get
+		    {
+			    return string.Format("{0} {1} {2}", Build.VERSION.Release, Build.Manufacturer, Build.Model);
+		    }
+	    }
 
-        public string Version
+
+	    public string Version
         {
             get
             {
@@ -38,50 +50,54 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
         public string UserAgent
         {
-            get{
+            get
+			{
+	            if (CachedUserAgent != null)
+	            {
+		            return CachedUserAgent;
+	            }
 
-                
-                if (_userAgent == null)
-                {
-                    try
-                    {
-                        StringBuilder result = new StringBuilder(64);
-                        result.Append("Dalvik/");
+	            try
+	            {
+		            var result = new StringBuilder(64);
+		            result.Append("Dalvik/");
 
 
-                        result.Append(Java.Lang.JavaSystem.GetProperty("java.vm.version")); // such as 1.1.0
-                        result.Append(" (Linux; U; Android ");
+		            result.Append(Java.Lang.JavaSystem.GetProperty("java.vm.version")); // such as 1.1.0
+		            result.Append(" (Linux; U; Android ");
 
-                        String version = Build.VERSION.Release; // "1.0" or "3.4b5"
-                        result.Append(version.Length > 0 ? version : "1.0");
+		            var version = Build.VERSION.Release; // "1.0" or "3.4b5"
+		            result.Append(version.Length > 0 ? version : "1.0");
 
-                        // add the model for the release build
-                        if ("REL".Equals(Build.VERSION.Codename))
-                        {
-                            String model = Build.Model;
-                            if (model.Length > 0)
-                            {
-                                result.Append("; ");
-                                result.Append(model);
-                            }
-                        }
-                        String id = Build.Id; // "MASTER" or "M4-rc20"
-                        if (id.Length > 0)
-                        {
-                            result.Append(" Build/");
-                            result.Append(id);
-                        }
-                        result.Append(")");
-                        _userAgent = result.ToString();
+		            // add the model for the release build
+		            if ("REL".Equals(Build.VERSION.Codename))
+		            {
+			            var model = Build.Model;
+			            if (model.Length > 0)
+			            {
+				            result.Append("; ");
+				            result.Append(model);
+			            }
+		            }
+		            var id = Build.Id; // "MASTER" or "M4-rc20"
+		            if (id.Length > 0)
+		            {
+			            result.Append(" Build/");
+			            result.Append(id);
+		            }
+		            result.Append(")");
+		            CachedUserAgent = result.ToString();
 
-                    }
-                    catch
-                    {
-                        _userAgent = "";
-                    }
-                }
+	            }
+	            catch(Exception ex)
+	            {
+					_logger.LogMessage("An error occurred while obtaining the user agent.");
+		            _logger.LogError(ex);
 
-                return _userAgent;
+		            CachedUserAgent = "";
+	            }
+
+	            return CachedUserAgent;
             }
         }
     }

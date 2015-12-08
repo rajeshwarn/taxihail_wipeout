@@ -386,7 +386,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool appliedToCurrentBooking,
+        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool excludeCircularZone,
+			double excludedCircularZoneLatitude, double excludedCircularZoneLongitude, int excludedCircularZoneRadius, bool appliedToCurrentBooking,
             bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
             DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive, string market, bool disableFutureBookingOnError)
         {
@@ -397,6 +398,10 @@ namespace apcurium.MK.Booking.Domain
                 Message = message,
                 ZoneList = zoneList,
                 ZoneRequired = zoneRequired,
+				ExcludeCircularZone = excludeCircularZone,
+				ExcludedCircularZoneLatitude = excludedCircularZoneLatitude,
+				ExcludedCircularZoneLongitude = excludedCircularZoneLongitude,
+				ExcludedCircularZoneRadius = excludedCircularZoneRadius,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
                 AppliesToPickup = appliesToPickup,

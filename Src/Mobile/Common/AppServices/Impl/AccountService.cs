@@ -30,6 +30,7 @@ using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -43,24 +44,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
         private const string UserTaxiHailNetworkSettingsCacheKey = "Account.UserTaxiHailNetworkSetting";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
-        private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
 		private readonly IAppSettings _appSettings;
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-		private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize,
-			ILocationService locationService,
-            IPaymentService paymentService)
+			ILocalization localize)
 		{
-			_locationService = locationService;
-            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -85,15 +79,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UserCache.Clear(RefDataCacheKey);
         }
 
-        public void ClearVehicleTypesCache()
-        {
-            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
-        }
-
         public void ClearCache()
         {
             UserCache.ClearAll ();
-            ClearVehicleTypesCache();
         }
 
         public void SignOut ()
@@ -164,9 +152,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
 		}
 
-        public OrderStatusDetail[] GetActiveOrdersStatus()
+        public Task<int> GetOrderCountForAppRating()
+		{
+            return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
+		}
+
+        public Task<OrderStatusDetail[]> GetActiveOrdersStatus()
         {
-			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
+			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
         }
 
 		public async Task<Address[]> GetFavoriteAddresses ()
@@ -314,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent);
+			UpdateSettings(settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent).FireAndForget();
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
@@ -343,26 +336,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 switch (e.StatusCode)
                 {
 					case (int)HttpStatusCode.Unauthorized:
-					{
-						if (e.Message == AuthFailure.AccountNotActivated.ToString ())
+                    {
+                        if (e.Message == AuthFailure.AccountNotActivated.ToString ())
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
-						else if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
-						{
-							throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
-						}
-						else
-						{
-							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
-						}
-					}
-					case (int)HttpStatusCode.NotFound:
+
+                        if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
+                        {
+                            throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
+                        }
+
+                        throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                    }
+                    case (int)HttpStatusCode.NotFound:
 					{
 						throw new AuthException ("Invalid service url", AuthFailure.InvalidServiceUrl, e);
 					}
                 }
-                throw;
+
+                if(!Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
             catch (Exception e)
             {
@@ -370,13 +366,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
                 }
-                throw;
+
+                if (Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
+
+		    return null;
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
+			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
@@ -435,11 +437,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			catch (WebException ex)
 			{
 				Mvx.Resolve<IErrorHandler>().HandleError (ex);
-                return null;
 			}
-			catch
+			catch(Exception ex)
 			{
-                return null;
+                Logger.LogError(ex);
             }
 
             return data;
@@ -524,38 +525,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			      return service.UpdateFavoriteAddress (toSave);
                 }
             });
-        }
-
-		public async Task<IList<VehicleType>> GetVehiclesList()
-		{
-		    var cacheService = Mvx.Resolve<ICacheService>();
-
-            var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
-            if (cached != null)
-            {
-                return cached;
-            }
-
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-
-            return vehiclesList;
-        }
-
-        public async Task ResetLocalVehiclesList()
-        {
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            var cacheService = Mvx.Resolve<ICacheService>();
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-        }
-
-        public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
-        {
-            if (marketVehicleTypes.Any())
-            {
-                var cacheService = Mvx.Resolve<ICacheService>();
-                cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
-            }
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList()
@@ -768,6 +737,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
                         ? userSettings.DriverAssignedPush 
                         : companySettings.DriverAssignedPush,
+					DriverBailedPush = companySettings.DriverBailedPush.HasValue && userSettings.DriverBailedPush.HasValue
+						? userSettings.DriverBailedPush 
+						: companySettings.DriverBailedPush,
                     NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
                         ? userSettings.NearbyTaxiPush 
                         : companySettings.NearbyTaxiPush,

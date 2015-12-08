@@ -86,6 +86,8 @@ namespace apcurium.MK.Web
 
         protected string DefaultCountryCode { get; private set; }
         
+        protected bool ShowOrderNumber { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IServerSettings>();
@@ -104,7 +106,7 @@ namespace apcurium.MK.Web
             DisableImmediateBooking = config.ServerData.DisableImmediateBooking;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
-            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
+            ShowOrderNumber = config.ServerData.ShowOrderNumber;
 
             IsWebSocialMediaVisible = config.ServerData.IsWebSocialMediaVisible;
             SocialMediaFacebookURL = config.ServerData.SocialMediaFacebookURL;
@@ -136,6 +138,8 @@ namespace apcurium.MK.Web
 
             var paymentSettings = config.GetPaymentSettings();
 
+            IsCreditCardMandatory = paymentSettings.CreditCardIsMandatory;
+
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
             AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;
 
@@ -154,7 +158,9 @@ namespace apcurium.MK.Web
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
-            var filters = config.ServerData.GeoLoc.SearchFilter.Split('&');
+            var filters = config.ServerData.GeoLoc.SearchFilter
+                .SelectOrDefault(filterString => filterString.Split('&'), new string[0]);
+
             GeolocSearchFilter = filters.Length > 0
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
                 : "{0}";
@@ -173,16 +179,11 @@ namespace apcurium.MK.Web
             VehicleTypes = JsonSerializer.SerializeToString(vehicleTypes, vehicleTypes.GetType());
             CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
 
-            CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
+            var defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
 
-            if (defaultCultureInfo != null)
-            {
-                DefaultCountryCode = (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName;
-            }
-            else
-            {
-                DefaultCountryCode = "CA";
-            }
+            DefaultCountryCode = defaultCultureInfo != null 
+                ? (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName 
+                : "CA";
         }
 
         protected string FindParam(string[] filters, string param)

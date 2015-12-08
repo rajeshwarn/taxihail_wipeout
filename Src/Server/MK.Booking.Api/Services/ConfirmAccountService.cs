@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 					if (countryCodeFromRequest.IsValid()
 						&& request.PhoneNumber.HasValue()
-						&& PhoneHelper.IsNumberPossible(countryCodeFromRequest, request.PhoneNumber)
+                        && PhoneHelper.IsPossibleNumber(countryCodeFromRequest, request.PhoneNumber)
 						&& (account.Settings.Country.Code != countryCodeFromRequest.CountryISOCode.Code || account.Settings.Phone != request.PhoneNumber))
 					{
 						countryCodeForSMS = countryCodeFromRequest.CountryISOCode;

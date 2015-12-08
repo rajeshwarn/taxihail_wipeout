@@ -1,13 +1,14 @@
 ﻿#region
 
 using System;
-using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
+using System.Web;
 
 #endregion
 
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                 DriverId = "99123",
                 TerminalId = "98695",
                 ReferenceNumber = "1209",
-                DriverPhotoUrl = "https://s-media-cache-ak0.pinimg.com/236x/e1/6a/8c/e16a8c1e8dc0c34886a1d14faa38be28.jpg"
+				DriverPhotoUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/assets/img/tony.jpg"
             };
 
             var order = _orderDao.FindById(orderId);

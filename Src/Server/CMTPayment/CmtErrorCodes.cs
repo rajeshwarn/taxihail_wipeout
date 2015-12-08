@@ -8,6 +8,10 @@ namespace CMTPayment
 
         public const int UnableToPair = 103;
 
+		public const int CreditCardDeclinedOnPreauthorization = 104;
+
+		public const int UnablePreauthorizeCreditCard = 110;
+
         public const int TripUnpaired = 111;
 
         public const int TripEndedNoPairing = 112;

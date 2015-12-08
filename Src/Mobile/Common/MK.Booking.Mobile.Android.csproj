@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />
+    <Compile Include="ViewModels\Callbox\CreateOrderInfo.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
@@ -371,8 +372,13 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IVehicleTypeService.cs" />
+    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

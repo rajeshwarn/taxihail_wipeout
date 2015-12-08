@@ -29,7 +29,14 @@ namespace apcurium.MK.Booking.ConfigTool
 				return;
 			}
 
+            if (Path.GetFullPath(sourcePath) == Path.GetFullPath(destPath))
+            {
+                //prevent sharing violation if source and destination have the same path
+                return;
+            }
+
             File.Copy(sourcePath, destPath, true);
+
         }
 
 		public override string ToString ()

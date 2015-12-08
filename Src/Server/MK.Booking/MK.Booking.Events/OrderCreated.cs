@@ -1,6 +1,9 @@
 ﻿#region
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 
@@ -56,5 +59,26 @@ namespace apcurium.MK.Booking.Events
         public decimal BookingFees { get; set; }
 
         public double? TipIncentive { get; set; }
+
+        /// <summary>
+        /// Contains User Note and other informations
+        /// </summary>
+        public string IbsInformationNote { get; set; }
+
+        public Fare Fare { get; set; }
+
+        public int IbsAccountId { get; set; }
+
+        public string[] Prompts { get; set; }
+
+        public int?[] PromptsLength { get; set; }
+
+        public Guid? PromotionId { get; set; }
+
+        public bool IsFutureBooking { get; set; }
+
+        public ListItem[] ReferenceDataCompanyList { get; set; }
+
+        public string ChargeTypeEmail { get; set; }
     }
 }

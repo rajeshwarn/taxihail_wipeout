@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
+using System.Web.Http;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Domain;
@@ -20,7 +21,7 @@ using Version = CustomerPortal.Web.Entities.Version;
 
 namespace CustomerPortal.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = RoleName.Admin)]
+    [System.Web.Mvc.Authorize(Roles = RoleName.Admin)]
     public class VersionController : CompanyControllerBase
     {
         private readonly IClock _clock;
@@ -76,7 +77,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         //
         // POST: /Admin/Version/Create
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Create(string id, Version model)
         {
             var company = Repository.GetById(id);
@@ -122,7 +123,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(version);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult CreateIpa(string id, string number, HttpPostedFileBase file)
         {
             var company = Repository.GetById(id);
@@ -149,7 +150,105 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     name = version.IpaFilename,
                     size = file.ContentLength,
                     type = file.ContentType,
-                    redirect = Url.Action("CreateApk", new {id, number})
+                    redirect = Url.Action("CreateStoreIpa", new {id, number})
+                });
+            }
+            return Json(new Array[0]);
+        }
+
+        public ActionResult CreateStoreIpa(string id, string number)
+        {
+            var company = Repository.GetById(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Title = company.CompanyName;
+            var version = company.FindVersion(number);
+            if (version == null)
+            {
+                return HttpNotFound();
+            }
+            return View(version);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult CreateStoreIpa(string id, string number, HttpPostedFileBase file)
+        {
+            var company = Repository.GetById(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Title = company.CompanyName;
+            var version = company.FindVersion(number);
+            if (version == null)
+            {
+                return HttpNotFound();
+            }
+            if (file != null)
+            {
+                version.IpaAppStoreFilename = Path.GetFileName(file.FileName);
+                var packages = _packageManagerFactory.Invoke(id, version.Number);
+                packages.Save(file);
+
+                Repository.Update(company);
+
+                return Json(new
+                {
+                    name = version.IpaAppStoreFilename,
+                    size = file.ContentLength,
+                    type = file.ContentType,
+                    redirect = Url.Action("CreateApk", new { id, number })
+                });
+            }
+            return Json(new Array[0]);
+        }
+
+        public ActionResult CreateCallboxApk(string id, string number)
+        {
+            var company = Repository.GetById(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Title = company.CompanyName;
+            var version = company.FindVersion(number);
+            if (version == null)
+            {
+                return HttpNotFound();
+            }
+            return View(version);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult CreateCallboxApk(string id, string number, HttpPostedFileBase file)
+        {
+            var company = Repository.GetById(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Title = company.CompanyName;
+            var version = company.FindVersion(number);
+            if (version == null)
+            {
+                return HttpNotFound();
+            }
+            if (file != null)
+            {
+                version.ApkCallboxFileName = Path.GetFileName(file.FileName);
+                var packages = _packageManagerFactory.Invoke(id, version.Number);
+                packages.Save(file);
+
+                Repository.Update(company);
+
+                return Json(new
+                {
+                    name = version.ApkCallboxFileName,
+                    size = file.ContentLength,
+                    type = file.ContentType,
+                    redirect = Url.Action("Index", new { id })
                 });
             }
             return Json(new Array[0]);
@@ -171,7 +270,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(version);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult CreateApk(string id, string number, HttpPostedFileBase file)
         {
             var company = Repository.GetById(id);
@@ -198,7 +297,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     name = version.ApkFilename,
                     size = file.ContentLength,
                     type = file.ContentType,
-                    redirect = Url.Action("Index", new {id})
+                    redirect = Url.Action("CreateCallboxApk", new { id, number })
                 });
             }
             return Json(new Array[0]);
@@ -225,7 +324,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         //
         // POST: /Admin/Version/Delete/5
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Delete(string id, string number, FormCollection collection)
         {
             var company = Repository.GetById(id);
@@ -275,7 +374,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             });
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Email(string number, VersionEmailViewModel model)
         {
             var company = new CompanyService(model.CompanyId).GetCompany();

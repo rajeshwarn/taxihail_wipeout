@@ -42,7 +42,7 @@
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4hS-SI-xiM" userLabel="Name TextField" customClass="FlatTextField">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4hS-SI-xiM" userLabel="Name TextField" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="37" width="289" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="2Nz-Xc-iTg"/>
@@ -68,7 +68,7 @@
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LTY-qd-chV" userLabel="Entry Code TextField" customClass="FlatTextField">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LTY-qd-chV" userLabel="Entry Code TextField" customClass="FlatTextField">
                                     <rect key="frame" x="161" y="189" width="136" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="zeZ-1s-qMy"/>
@@ -85,7 +85,7 @@
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qOU-hC-q4U" userLabel="Charge Type TextField" customClass="ModalFlatTextField">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qOU-hC-q4U" userLabel="Charge Type TextField" customClass="ModalFlatTextField">
                                     <rect key="frame" x="8" y="265" width="289" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="2on-Ym-Zyh"/>
@@ -111,7 +111,7 @@
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ir-BQJ" userLabel="Apartment TextField" customClass="FlatTextField">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ir-BQJ" userLabel="Apartment TextField" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="189" width="136" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="66E-jD-4nl"/>
@@ -130,7 +130,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Ib-CQ-l4c" userLabel="Phone TextField" customClass="FlatTextField">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Ib-CQ-l4c" userLabel="Phone TextField" customClass="FlatTextField">
                                             <rect key="frame" x="49" y="0.0" width="125" height="41"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="41" id="SzK-V1-AR7"/>
@@ -150,7 +150,7 @@
                                         <constraint firstItem="78I-8Z-hfc" firstAttribute="top" secondItem="1Ib-CQ-l4c" secondAttribute="top" id="rxU-V8-7eH"/>
                                     </constraints>
                                 </view>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jhU-mT-P5E" userLabel="Passengers TextField" customClass="FlatTextField">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jhU-mT-P5E" userLabel="Passengers TextField" customClass="FlatTextField">
                                     <rect key="frame" x="197" y="113" width="100" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="xZJ-K3-DlV"/>

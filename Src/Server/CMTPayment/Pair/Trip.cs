@@ -1,5 +1,6 @@
 ﻿using apcurium.MK.Common.Entity;
 using System;
+using System.Net;
 
 namespace CMTPayment.Pair
 {
@@ -39,6 +40,8 @@ namespace CMTPayment.Pair
         public string LastFour { get; set; }
         public int AccessFee { get; set; }
         public int? ErrorCode { get; set; }
+
+		public int HttpStatusCode { get; set; }
 
         public bool Compare(Trip otherTrip)
         {

@@ -403,6 +403,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, your card could not be authorized. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardDeclinedOnPreauthorizationErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardDeclinedOnPreauthorizationErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was an error processing your card. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardUnanbleToPreathorizeErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardUnanbleToPreathorizeErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:c}.
         /// </summary>
         public static string CurrencyPriceFormat {
@@ -561,6 +579,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_DriverId {
             get {
                 return ResourceManager.GetString("Email_Body_DriverId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver Photo.
+        /// </summary>
+        public static string Email_Body_DriverPhoto {
+            get {
+                return ResourceManager.GetString("Email_Body_DriverPhoto", resourceCulture);
             }
         }
         
@@ -997,6 +1024,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vehicle Licence Plate.
+        /// </summary>
+        public static string Email_Body_VehicleRegistration {
+            get {
+                return ResourceManager.GetString("Email_Body_VehicleRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vehicle&amp;nbsp;Type.
         /// </summary>
         public static string Email_Body_VehicleType {
@@ -1141,7 +1177,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        ///   Looks up a localized string similar to Sorry, your driver canceled. Finding you another taxi....
         /// </summary>
         public static string OrderStatus_BAILED {
             get {
@@ -1447,7 +1483,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        ///   Looks up a localized string similar to Sorry, your driver canceled. Finding you another taxi....
         /// </summary>
         public static string PushNotification_BAILED {
             get {
@@ -1717,15 +1753,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No account with this email has been found..
-        /// </summary>
-        public static string ServiceErrorResetPassword_AccountNotFound {
-            get {
-                return ResourceManager.GetString("ServiceErrorResetPassword_AccountNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Your session has expired, please login to continue..
         /// </summary>
         public static string ServiceErrorUnauthorized {
@@ -1740,6 +1767,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string ServiceErrorUpdatePassword_NotSame {
             get {
                 return ResourceManager.GetString("ServiceErrorUpdatePassword_NotSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was a problem, please pay in the taxi.
+        /// </summary>
+        public static string TripUnableToPairErrorText {
+            get {
+                return ResourceManager.GetString("TripUnableToPairErrorText", resourceCulture);
             }
         }
         

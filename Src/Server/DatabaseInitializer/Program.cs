@@ -35,6 +35,7 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
+using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -108,6 +109,10 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
+                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+
+                    creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+
                     UpdateSchema(param);
 
                     if (param.ReuseTemporaryDb)
@@ -229,12 +234,14 @@ namespace DatabaseInitializer
                             ReceiptEmail = true,
                             PromotionUnlockedEmail = true,
                             VehicleAtPickupPush = true,
-                            PromotionUnlockedPush = true
+                            PromotionUnlockedPush = true,
+                            DriverBailedPush = true
                         }
                     });
                 }
 
                 Console.WriteLine("Migration of Payment Settings ...");
+
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
@@ -1004,6 +1011,18 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
+                needsUpdate = true;
+            }
+
+            if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
+            {
+                paymentSettings.CmtPaymentSettings.UsePairingCode = true;
+                needsUpdate = true;
+            }
+
+            if (serverSettings.ServerData.CreditCardIsMandatory)
+            {
+                paymentSettings.CreditCardIsMandatory = true;
                 needsUpdate = true;
             }
 

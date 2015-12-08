@@ -105,6 +105,7 @@
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EventExtension.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
+    <Compile Include="Extensions\LoggerExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
@@ -175,6 +177,9 @@
     <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
+    <Compile Include="Cryptography\SettingsEncryptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

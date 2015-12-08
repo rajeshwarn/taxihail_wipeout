@@ -371,6 +371,11 @@
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IVehicleTypeService.cs" />
+    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

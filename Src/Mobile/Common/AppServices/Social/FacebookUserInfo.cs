@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 			return new FacebookUserInfo
 			{
 				Id = data["id"],
-				Email = data["email"],
+				Email = data.ContainsKey("email") ? data["email"] : string.Empty,
 				Firstname = data["first_name"],
 				Lastname = data["last_name"],
 			};

@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 		private bool _isCmtRideLinq;
         
@@ -25,9 +26,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		(
 			IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
-			IAccountService accountService
+			IAccountService accountService,
+			IVehicleTypeService vehicleTypeService
 		)
 		{
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
@@ -37,12 +40,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
-			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObserveTipIncentive().Throttle(TimeSpan.FromMilliseconds(500)), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 
 			_driverBonus = 5;
 
-			GetIsCmtRideLinq();
+			GetIsCmtRideLinq().FireAndForget();
 		}
 
 		private async Task GetIsCmtRideLinq()
@@ -69,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var chargeTypes = await _accountService.GetPaymentsList();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
-			var vehicle = (await _accountService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
+			var vehicle = (await _vehicleTypeService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
 			if (vehicle != null)
 			{
 				VehiculeType = vehicle.Name;

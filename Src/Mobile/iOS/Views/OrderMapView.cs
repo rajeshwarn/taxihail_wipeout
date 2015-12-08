@@ -473,9 +473,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void HandleTouchEnded(object sender, EventArgs e)
         {
-            ViewModel.BookCannotExecute = true;
             _userMovedMapSubsciption.Disposable = Observable
 				.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
+                .Do(_ => ViewModel.DisableBooking())
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Take(1)
                 .ObserveOn(SynchronizationContext.Current)
@@ -594,7 +594,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleName);
 
             // check for annotations that needs to be removed
-            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title));
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
             foreach (var annotation in annotationsToRemove)
             {
                 DeleteAnnotation(annotation);
@@ -715,9 +715,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    set
 		    {
 			    _taxiLocation = value;
+
 			    UpdateTaxiLocation(value);
 
-                ClearAvailableVehiclesAnnotations();
+                if (value != null && _availableVehicles.Any())
+                {
+                    ClearAvailableVehiclesAnnotations();
+                }
 		    }
 	    }
 

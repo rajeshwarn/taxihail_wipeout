@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<ApplicationInfo> GetAppInfoAsync()
         {
             var tcs = new TaskCompletionSource<ApplicationInfo>();
-            var resource = string.Format("/app/info");
+            var resource = "/app/info";
             Client.GetAsync<ApplicationInfo>(resource, tcs.SetResult, (result, error) => tcs.SetException(error));
             return tcs.Task;
         }

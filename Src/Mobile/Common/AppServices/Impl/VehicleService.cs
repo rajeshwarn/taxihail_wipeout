@@ -13,6 +13,9 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.ServiceClient.Web;
+using System.Net;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -24,11 +27,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
-		
 
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
-
 	    private bool _isStarted;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
@@ -211,16 +212,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
 		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration, Guid orderId)
 	    {
-            var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
+			try
+			{
+				var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
 
-		    return new GeoDataEta
-		    {
-		        Eta = etaFromGeo.Eta / 60,
-                Latitude = etaFromGeo.Latitude,
-                Longitude = etaFromGeo.Longitude,
-                CompassCourse = etaFromGeo.CompassCourse,
+				return new GeoDataEta
+				{
+					Eta = etaFromGeo.Eta / 60,
+					Latitude = etaFromGeo.Latitude,
+					Longitude = etaFromGeo.Longitude,
+					CompassCourse = etaFromGeo.CompassCourse,
                 Market = etaFromGeo.Market
-			};
+				};
+			}
+			catch(WebServiceException ex)
+			{
+				Logger.LogMessage("An error occurred while obtaining vehicle: {0} from Geo in order {1}",vehicleRegistration??"Unknown vehicle", orderId);
+				Logger.LogError(ex);
+
+				return null;
+			}
+            
 	    }
 
 		private async Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)

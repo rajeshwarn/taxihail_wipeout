@@ -73,6 +73,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtDestination.RemoveFromSuperview();
 			}
 
+            if (!ViewModel.CanShowConfirmationTxt)
+            {
+                txtOrder.RemoveFromSuperview();
+                lblOrder.RemoveFromSuperview();
+            }
+
             ViewModel.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "PromoCode")

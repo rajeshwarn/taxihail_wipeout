@@ -80,8 +80,12 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\EncryptedConfigurationsRequest.cs" />
+    <Compile Include="Requests\OrderCountForAppRatingRequest.cs" />
     <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
+    <Compile Include="Requests\Client\ConfirmHailRequest.cs" />
+    <Compile Include="Requests\Client\HailRequest.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
@@ -110,9 +114,11 @@
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\EncryptedPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
     <Compile Include="Requests\Payment\OverduePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\CmtPaymentPairingRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
@@ -136,7 +142,7 @@
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
-    <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\DefaultFavoriteAddress.cs" />
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
@@ -215,6 +221,7 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\Payments\OverduePayment.cs" />
+    <Compile Include="Resources\Payments\CmtPaymentPairingResponse.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />

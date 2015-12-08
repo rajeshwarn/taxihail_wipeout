@@ -42,10 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.ConfirmationNoTxt);
 
-			set.Bind(lblOrderNumber)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsConfirmationNoHidden);
-
             set.Bind(lblOrderStatus)
                 .For(v => v.Text)
                 .To(vm => vm.StatusInfoText);
@@ -72,7 +68,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.IsProgressVisible);
             
             set.Apply();
+
+            if (ViewModel.IsConfirmationNoHidden)
+            {
+                lblOrderNumber.RemoveFromSuperview();
+            }
         }
+
+
+		public override CGRect Frame
+		{
+			get
+			{
+				return base.Frame;
+			}
+			set
+			{
+				base.Frame = value;
+
+				if (_showAnnimation)
+				{
+					_annimationView.Frame = new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height);
+				}
+			}
+		}
+
+		public override CGRect Bounds
+		{
+			get
+			{
+				return base.Bounds;
+			}
+			set
+			{
+				base.Bounds = value;
+
+				if (_showAnnimation)
+				{
+					_annimationView.Frame = new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height);
+				}
+
+			}
+		}
 
         private bool _showAnnimation;
         public bool ShowAnimation
@@ -80,18 +117,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _showAnnimation; }
             set
             {
-                if (_showAnnimation != value)
+                if (_showAnnimation == value)
                 {
-                    _showAnnimation = value;
-                    if (ShowAnimation)
-                    {
-                        _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
-                        viewStatus.InsertSubview(_annimationView, 0);
-                    }
-                    else
-                    {
-                        _annimationView.RemoveFromSuperview();
-                    }
+                    return;
+                }
+                _showAnnimation = value;
+
+                if (_showAnnimation)
+                {
+                    _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
+                    viewStatus.InsertSubview(_annimationView, 0);
+                }
+                else
+                {
+                    _annimationView.RemoveFromSuperview();
+                    _annimationView = null;
                 }
             }
         }
