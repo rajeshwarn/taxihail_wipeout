@@ -139,12 +139,16 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
             {
                 // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
-                bestAvailableCompany = FindSpecificCompany(market, request.OrderCompanyKey, request.OrderFleetId);
+                bestAvailableCompany = FindSpecificCompany(market, request.OrderCompanyKey, request.OrderFleetId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
             else
             {
                 bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
+
+            Log.Info(string.Format("Best available company determined: {0}, in {1}", 
+                bestAvailableCompany.CompanyKey.HasValue() ? bestAvailableCompany.CompanyKey : "local company", 
+                market.HasValue() ? market : "local market"));
 
             if (market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
@@ -962,6 +966,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
                 // Do nothing if in home market or if we don't have position
+                Log.Info("FindBestAvailableCompany - We are in local market, skip honeybadger and call local ibs first");
                 return new BestAvailableCompany();
             }
 
@@ -1011,7 +1016,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new BestAvailableCompany();
         }
 
-        private BestAvailableCompany FindSpecificCompany(string market, string orderCompanyKey = null, int? orderFleetId = null)
+        private BestAvailableCompany FindSpecificCompany(string market, string orderCompanyKey = null, int? orderFleetId = null, double? latitude = null, double? longitude = null)
         {
             if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
             {
@@ -1019,11 +1024,14 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            var fleets = market.HasValue() 
+                ? _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray() 
+                : _taxiHailNetworkServiceClient.GetNetworkFleet(companyKey, latitude, longitude).ToArray();
 
             if (orderCompanyKey.HasValue())
             {
-                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                var match = fleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
                 if (match != null)
                 {
                     return new BestAvailableCompany
@@ -1036,7 +1044,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (orderFleetId.HasValue)
             {
-                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                var match = fleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
                 if (match != null)
                 {
                     return new BestAvailableCompany
