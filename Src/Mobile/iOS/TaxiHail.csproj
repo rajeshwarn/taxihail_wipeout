@@ -20,8 +20,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchI18n>
-    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
     <MtouchArch>i386, x86_64</MtouchArch>
@@ -130,7 +128,7 @@
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
     <MtouchUseLlvm>True</MtouchUseLlvm>
-    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <CodesignProvision>Automatic:AdHoc</CodesignProvision>
     <CustomCommands>
       <CustomCommands>
@@ -139,7 +137,6 @@
     </CustomCommands>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
-    <MtouchLink>Full</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
