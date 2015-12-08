@@ -388,17 +388,22 @@ namespace apcurium.MK.Booking.Api.Services
         {            
             var taxiVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Taxi})).VehiclesList;
             var luxuryVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Luxury})).VehiclesList;
-            var editableVehicles = new List<EditableVehicle>();   
-            editableVehicles.AddRange(taxiVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Taxi }));
-            editableVehicles.AddRange(luxuryVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Luxury }));
+            var availableVehicleTypes = new List<EditableVehicle>();   
+            availableVehicleTypes.AddRange(taxiVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Taxi }));
+            availableVehicleTypes.AddRange(luxuryVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Luxury }));
 
-            editableVehicles = editableVehicles
-                .Where(x => !request.VehicleBeingEdited.HasValue || !(x.ServiceType == request.VehicleBeingEditedServiceType &&
-                                                                      x.IbsVehicleId == request.VehicleBeingEdited.Value))
-                .Select((x, index) => { x.Id = index; return x; } )
+            var assignedVehicles = _dao.GetAll()
+                .Where(
+                    x =>
+                        !request.VehicleBeingEdited.HasValue ||
+                        !(x.ServiceType == request.VehicleBeingEditedServiceType &&
+                          x.ReferenceDataVehicleId == request.VehicleBeingEdited.Value));
+            
+            availableVehicleTypes = availableVehicleTypes
+                .Where(x => assignedVehicles.All(assigned => !(assigned.ReferenceDataVehicleId == x.IbsVehicleId && assigned.ServiceType == x.ServiceType)))
                 .ToList();
 
-            return editableVehicles;
+            return availableVehicleTypes;
         }
 
 	    public object Get(TaxiLocationRequest request)
