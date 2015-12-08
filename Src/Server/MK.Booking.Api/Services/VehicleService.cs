@@ -388,9 +388,10 @@ namespace apcurium.MK.Booking.Api.Services
         {            
             var taxiVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Taxi})).VehiclesList;
             var luxuryVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Luxury})).VehiclesList;
-            var availableVehicleTypes = new List<EditableVehicle>();   
-            availableVehicleTypes.AddRange(taxiVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Taxi }));
-            availableVehicleTypes.AddRange(luxuryVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Luxury }));
+            var availableVehicleTypes = new List<EditableVehicle>();
+            var index = 0;
+            availableVehicleTypes.AddRange(taxiVehicles.Select(x => new EditableVehicle { Id = index++, IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Taxi }));
+            availableVehicleTypes.AddRange(luxuryVehicles.Select(x => new EditableVehicle { Id = index++, IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Luxury }));
 
             var assignedVehicles = _dao.GetAll()
                 .Where(
