@@ -385,25 +385,19 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
         public object Get(UnassignedReferenceDataVehiclesRequest request)
-        {
-            var editableVehicles = new List<EditableVehicle>();
+        {            
+            var taxiVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Taxi})).VehiclesList;
+            var luxuryVehicles = ((ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = ServiceType.Luxury})).VehiclesList;
+            var editableVehicles = new List<EditableVehicle>();   
+            editableVehicles.AddRange(taxiVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Taxi }));
+            editableVehicles.AddRange(luxuryVehicles.Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Display = x.Display, ServiceType = ServiceType.Luxury }));
 
-            var index = 0;
-            foreach (ServiceType serviceType in Enum.GetValues(typeof (ServiceType)))
-            {
-                var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = serviceType});
-                
-                var allAssignedVehicleExceptVehicleBeingEdited =
-                    _dao.GetAll()
-                    .Where(x => x.ServiceType == serviceType)
-                    .Where(x => !request.VehicleBeingEdited.HasValue || (x.ReferenceDataVehicleId != request.VehicleBeingEdited.Value))
-                    .ToList();
+            editableVehicles = editableVehicles
+                .Where(x => !request.VehicleBeingEdited.HasValue || !(x.ServiceType == request.VehicleBeingEditedServiceType &&
+                                                                      x.IbsVehicleId == request.VehicleBeingEdited.Value))
+                .Select((x, index) => { x.Id = index; return x; } )
+                .ToList();
 
-                editableVehicles.AddRange(
-                    referenceData.VehiclesList.Where(vehicleFromThisService => vehicleFromThisService.Id != null 
-                            && allAssignedVehicleExceptVehicleBeingEdited.All(assigned => assigned.ReferenceDataVehicleId != vehicleFromThisService.Id.Value))
-                        .Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Id = index++, Display = x.Display, ServiceType = serviceType }));
-            }
             return editableVehicles;
         }
 
