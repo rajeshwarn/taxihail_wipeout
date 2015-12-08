@@ -131,12 +131,16 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
             {
                 // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
-                bestAvailableCompany = _taxiHailNetworkHelper.FindSpecificCompany(market, createReportOrder, request.OrderCompanyKey, request.OrderFleetId);
+                bestAvailableCompany = _taxiHailNetworkHelper.FindSpecificCompany(market, createReportOrder, request.OrderCompanyKey, request.OrderFleetId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
             else
             {
                 bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
+
+            _logger.LogMessage("Best available company determined: {0}, in {1}",
+                bestAvailableCompany.CompanyKey.HasValue() ? bestAvailableCompany.CompanyKey : "local company",
+                market.HasValue() ? market : "local market");
 
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
