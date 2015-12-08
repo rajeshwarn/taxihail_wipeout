@@ -206,11 +206,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
-            return Mapper.Map<IBSOrderResult>(orderResult
+            var result = Mapper.Map<IBSOrderResult>(orderResult
                 ?? new IbsResponse
                 {
                     OrderKey = new IbsOrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
                 });
+
+            result.CompanyKey = _bestAvailableCompany.CompanyKey;
+
+            return result;
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId)

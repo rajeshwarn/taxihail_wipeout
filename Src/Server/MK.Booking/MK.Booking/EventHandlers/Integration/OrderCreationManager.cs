@@ -64,7 +64,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var ibsOrderId = @event.IBSOrderId;
-            bool dispatcherTimedOut = false;
+            var dispatcherTimedOut = false;
+            var companyKey = @event.CompanyKey;
 
             if (!ibsOrderId.HasValue)
             {
@@ -78,9 +79,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 ibsOrderId = result.OrderKey.IbsOrderId;
                 dispatcherTimedOut = result.DispatcherTimedOut;
+                companyKey = result.CompanyKey;
             }
 
-            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, dispatcherTimedOut, @event.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, dispatcherTimedOut, @event.ClientLanguageCode, false, companyKey);
             if (success)
             {
                 SendConfirmationEmail(ibsOrderId.Value, @event.AccountId, @event.Settings, @event.ChargeTypeEmail,
@@ -122,7 +124,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
 
-            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, orderInfo.Request.ClientLanguageCode, false, result.CompanyKey);
             if (success)
             {
                 SendConfirmationEmail(result.OrderKey.IbsOrderId, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
@@ -132,7 +134,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
 
-        public bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool dispatcherTimedOut, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
+        private bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool dispatcherTimedOut, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
         {
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -160,7 +162,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 return false;
             }
-            else if (switchedCompany)
+
+            if (switchedCompany)
             {
                 var orderDetail = _orderDao.FindById(orderId);
 
@@ -178,19 +181,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 return true;
             }
-            else
+
+            _logger.LogMessage(string.Format("Adding IBSOrderId {0} to order {1}", ibsOrderId, orderId));
+
+            var ibsCommand = new AddIbsOrderInfoToOrder
             {
-                _logger.LogMessage(string.Format("Adding IBSOrderId {0} to order {1}", ibsOrderId, orderId));
+                OrderId = orderId,
+                IBSOrderId = ibsOrderId.Value,
+                CompanyKey = newCompanyKey
+            };
+            _commandBus.Send(ibsCommand);
 
-                var ibsCommand = new AddIbsOrderInfoToOrder
-                {
-                    OrderId = orderId,
-                    IBSOrderId = ibsOrderId.Value
-                };
-                _commandBus.Send(ibsCommand);
-
-                return true;
-            }
+            return true;
         }
 
         public void SendConfirmationEmail(int ibsOrderId, Guid accountId, BookingSettings bookingSettings, string chargeTypeEmail,

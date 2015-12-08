@@ -14,5 +14,7 @@ namespace apcurium.MK.Booking.Data
         public VehicleCandidate[] VehicleCandidates { get; set; }
 
         public bool DispatcherTimedOut { get; set; }
+
+        public string CompanyKey { get; set; }
     }
 }

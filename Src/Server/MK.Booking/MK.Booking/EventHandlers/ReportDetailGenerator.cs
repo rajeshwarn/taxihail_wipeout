@@ -433,6 +433,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.IBSOrderId = @event.IBSOrderId;
+                orderReport.Order.CompanyKey = @event.CompanyKey;
                 context.Save(orderReport);
             }
         }

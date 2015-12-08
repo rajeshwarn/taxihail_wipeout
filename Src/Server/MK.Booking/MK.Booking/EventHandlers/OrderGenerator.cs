@@ -499,10 +499,12 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IBSOrderId = @event.IBSOrderId;
+                order.CompanyKey = @event.CompanyKey;
 
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                 orderStatus.IBSOrderId = @event.IBSOrderId;
-                
+                orderStatus.CompanyKey = @event.CompanyKey;
+
                 context.SaveChanges();
             }
         }

@@ -161,11 +161,12 @@ namespace apcurium.MK.Booking.Jobs
 
                     if (ibsOrderResult != null)
                     {
-                        var orderBailedHelper = new OrderBailedCreationHelper(_orderDao, _commandBus, _serverSettings, _logger);
+                        var orderBailedHelper = new OrderBailedCreationHelper(_commandBus, _serverSettings, _logger);
                         orderBailedHelper.SendOrderCreationCommands(
                             ibsOrderResult.OrderKey.TaxiHailOrderId,
                             ibsOrderResult.OrderKey.IbsOrderId,
                             ibsOrderResult.DispatcherTimedOut,
+                            ibsOrderResult.CompanyKey,
                             orderDetail.ClientLanguageCode);
                     }
                 });

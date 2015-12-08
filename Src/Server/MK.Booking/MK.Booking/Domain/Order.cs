@@ -147,11 +147,12 @@ namespace apcurium.MK.Booking.Domain
 			});
 		}
 
-        public void AddIbsOrderInfo(int ibsOrderId)
+        public void AddIbsOrderInfo(int ibsOrderId, string companyKey)
         {
             Update(new IbsOrderInfoAddedToOrder
             {
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                CompanyKey = companyKey
             });
         }
 

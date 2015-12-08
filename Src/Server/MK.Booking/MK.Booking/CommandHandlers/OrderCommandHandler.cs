@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddIbsOrderInfoToOrder command)
         {
             var order = _repository.Find(command.OrderId);
-            order.AddIbsOrderInfo(command.IBSOrderId);
+            order.AddIbsOrderInfo(command.IBSOrderId, command.CompanyKey);
             _repository.Save(order, command.Id.ToString());
         }
 
