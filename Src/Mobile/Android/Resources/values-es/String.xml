@@ -125,7 +125,7 @@
   <string name="CreditCardRemoveErrorTitle">No puede eliminar la tarjeta de crédito</string>
   <string name="CreditCardRequiredFields">Todos los campos requeridos</string>
   <string name="CreditCardType">Tipo de tarjeta</string>
-  <string name="CreditCardZipCode">Zip/Postal</string>
+  <string name="CreditCardZipCode">Codigo Postal</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="Date">Fecha</string>
   <string name="DateTimePickerPickDate">Seleccione la fecha del servicio:</string>
@@ -747,5 +747,11 @@
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
   <string name="ServiceErrorCallTitle">Server error</string>
+  <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
+  <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
+  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
+  <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
 </resources>
