@@ -395,8 +395,9 @@ namespace apcurium.MK.Booking.Api.Services
                 
                 var allAssignedVehicleExceptVehicleBeingEdited =
                     _dao.GetAll()
+                    .Where(x => x.ServiceType == serviceType)
                     .Where(x => !request.VehicleBeingEdited.HasValue || (x.ReferenceDataVehicleId != request.VehicleBeingEdited.Value))
-                    .Where(x => x.ServiceType == serviceType).ToList();
+                    .ToList();
 
                 editableVehicles.AddRange(
                     referenceData.VehiclesList.Where(vehicleFromThisService => vehicleFromThisService.Id != null 
