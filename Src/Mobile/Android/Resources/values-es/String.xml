@@ -553,6 +553,7 @@
   <string name="LocationHistoryTitle">Historial de lugares</string>
   <string name="ReceiptSent">Comprobante enviado</string>
   <string name="View_RideLinqStatus">Status</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
   <string name="InvalidPayBackErrorMessage">El campo PayBack debe ser solamente dígitos y no debe superar los 10 caracteres de longitud.</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>

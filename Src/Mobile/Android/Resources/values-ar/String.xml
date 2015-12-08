@@ -544,6 +544,7 @@
   <string name="LocationHistoryTitle">مشاوير سابقة</string>
   <string name="ReceiptSent">تم إرسال الإيصال</string>
   <string name="View_RideLinqStatus">Status</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
   <string name="InvalidPayBackErrorMessage">The PayBack field must be all digits and must not exceed 10 characters in length</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>

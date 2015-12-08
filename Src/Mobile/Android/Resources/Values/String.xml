@@ -86,6 +86,7 @@
   <string name="HomeView_BookTaxi">Need a Taxi</string>
   <string name="HistoryViewSendReceiptError">Error sending receipt for this order</string>
   <string name="NoConnectionTitle">Connection error</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="NoMailClient">There are no email clients installed.</string>

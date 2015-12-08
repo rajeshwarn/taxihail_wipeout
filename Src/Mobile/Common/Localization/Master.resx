@@ -2360,7 +2360,7 @@
 	<data name="BaseRate_PerMileRate" xml:space="preserve">
 		<value>Per Mile Rate</value>
 	</data>
-  <data name="BaseRate_PerTenthMile" xml:space="preserve">
+  	<data name="BaseRate_PerTenthMile" xml:space="preserve">
 		<value>{0} ({1} per tenth mile)</value>
 	</data>
 	<data name="BaseRate_BaseRate" xml:space="preserve">
@@ -2369,13 +2369,16 @@
 	<data name="BaseRate_MinimumFare" xml:space="preserve">
 		<value>Minimum Fare</value>
 	</data>
-  <data name="BaseRate_WaitTime" xml:space="preserve">
+  	<data name="BaseRate_WaitTime" xml:space="preserve">
 		<value>Wait Time</value>
 	</data>
-  <data name="BaseRate_PerMinute" xml:space="preserve">
+  	<data name="BaseRate_PerMinute" xml:space="preserve">
 		<value>{0} per minute</value>
 	</data>
 	<data name="BaseRate_AirportMeetAndGreet" xml:space="preserve">
 		<value>Airport Meet And Greet</value>
 	</data>
+ 	<data name="BaseRate_RateStructure" xml:space="preserve">
+    	<value>RATE STRUCTURE</value>
+  	</data>
 </root>

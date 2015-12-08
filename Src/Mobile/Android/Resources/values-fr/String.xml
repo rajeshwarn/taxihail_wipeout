@@ -554,6 +554,7 @@
   <string name="LocationHistoryTitle">Historique des positions</string>
   <string name="ReceiptSent">Facture envoyée</string>
   <string name="View_RideLinqStatus">Status</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
   <string name="InvalidPayBackErrorMessage">Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
   <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
