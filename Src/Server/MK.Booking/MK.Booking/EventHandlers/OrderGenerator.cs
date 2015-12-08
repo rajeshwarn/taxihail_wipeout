@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderPreparedForNextDispatch>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
-        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<IbsOrderInfoAddedToOrder_V2>,
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
@@ -493,7 +493,7 @@ namespace apcurium.MK.Booking.EventHandlers
             return null;
         }
 
-        public void Handle(IbsOrderInfoAddedToOrder @event)
+        public void Handle(IbsOrderInfoAddedToOrder_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {

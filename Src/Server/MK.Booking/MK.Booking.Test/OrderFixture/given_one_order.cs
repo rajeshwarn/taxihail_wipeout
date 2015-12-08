@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             _sut.When(new AddIbsOrderInfoToOrder { OrderId = _orderId, IBSOrderId = 99, CompanyKey = null });
 
-            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder>();
+            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder_V2>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual(null, @event.CompanyKey);
             Assert.AreEqual(99, @event.IBSOrderId);
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             _sut.When(new AddIbsOrderInfoToOrder { OrderId = _orderId, IBSOrderId = 99, CompanyKey = "key" });
 
-            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder>();
+            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder_V2>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual("key", @event.CompanyKey);
             Assert.AreEqual(99, @event.IBSOrderId);

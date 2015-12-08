@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalPaymentCancellationFailed>,
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<IbsOrderInfoAddedToOrder_V2>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderTimedOut>,
         IEventHandler<PrepaidOrderPaymentInfoUpdated>,
@@ -427,7 +427,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(IbsOrderInfoAddedToOrder @event)
+        public void Handle(IbsOrderInfoAddedToOrder_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {

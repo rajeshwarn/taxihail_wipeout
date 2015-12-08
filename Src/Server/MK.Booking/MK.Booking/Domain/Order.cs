@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
-            Handles<IbsOrderInfoAddedToOrder>(NoAction);
+            Handles<IbsOrderInfoAddedToOrder_V2>(NoAction);
             Handles<OrderCancelledBecauseOfError>(NoAction);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void AddIbsOrderInfo(int ibsOrderId, string companyKey)
         {
-            Update(new IbsOrderInfoAddedToOrder
+            Update(new IbsOrderInfoAddedToOrder_V2
             {
                 IBSOrderId = ibsOrderId,
                 CompanyKey = companyKey
