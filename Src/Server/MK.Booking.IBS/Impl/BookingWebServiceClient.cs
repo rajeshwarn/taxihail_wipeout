@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Text.RegularExpressions;
+using apcurium.MK.Common.Entity;
 
 #endregion
 
@@ -19,7 +20,6 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
@@ -504,6 +504,26 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
+                success = result == 0;
+            });
+            return success;
+        }
+
+        public bool UpdateDropOffInTrip(int ibsOrderId, int accountId, Address dropOffAddress)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var order = service.GetBookOrder_7(UserNameApp, PasswordApp, ibsOrderId, null, null, accountId);
+                order.DropoffAddress = new TWEBAddress()
+                {
+                    StreetPlace = dropOffAddress.FullAddress,
+                    AptBaz = dropOffAddress.Apartment,
+                    Longitude = dropOffAddress.Longitude,
+                    Latitude = dropOffAddress.Latitude,
+                    Postal = dropOffAddress.ZipCode
+                };
+                var result = service.UpdateBookOrder_12(UserNameApp, PasswordApp, order);
                 success = result == 0;
             });
             return success;
