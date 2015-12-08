@@ -107,6 +107,11 @@ namespace CustomerPortal.Client.Impl
         /// <returns></returns>
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
+            if (!market.HasValue())
+            {
+                throw new Exception("Market doesn't have a value, use GetNetworkFleetAsync instead");
+            }
+
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
