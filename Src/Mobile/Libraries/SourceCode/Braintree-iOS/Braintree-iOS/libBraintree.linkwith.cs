@@ -5,5 +5,5 @@ using ObjCRuntime;
 	| LinkTarget.Arm64
 	| LinkTarget.ArmV7, 
 	ForceLoad = true,
-
+	Frameworks = "Accelerate SystemConfiguration Security AudioToolbox CoreLocation AVFoundation CoreMedia Foundation MessageUI MobileCoreServices UIKit",
 	IsCxx = true)]

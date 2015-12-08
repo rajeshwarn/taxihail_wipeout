@@ -42,8 +42,6 @@
     <Compile Include="libBraintree.linkwith.cs">
       <DependentUpon>libBraintree.a</DependentUpon>
     </Compile>
-    <Compile Include="ApiDefinitions.cs" />
-    <Compile Include="StructsAndEnums.cs" />
     <Compile Include="libPayPalOneTouchCore.linkwith.cs">
       <DependentUpon>libPayPalOneTouchCore.a</DependentUpon>
     </Compile>
@@ -52,5 +50,11 @@
   <ItemGroup>
     <ObjcBindingNativeLibrary Include="libBraintree.a" />
     <ObjcBindingNativeLibrary Include="libPayPalOneTouchCore.a" />
+  </ItemGroup>
+  <ItemGroup>
+    <ObjcBindingApiDefinition Include="ApiDefinitions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
   </ItemGroup>
 </Project>
