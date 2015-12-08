@@ -392,13 +392,15 @@ namespace apcurium.MK.Booking.Api.Services
             foreach (ServiceType serviceType in Enum.GetValues(typeof (ServiceType)))
             {
                 var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest() {ServiceType = serviceType});
-                var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId).ToList();
-                if (request.VehicleBeingEdited.HasValue)
-                {
-                    allAssigned = allAssigned.Where(x => !(request.VehicleBeingEditedServiceType == serviceType && x == request.VehicleBeingEdited.Value)).ToList();
-                }
+                
+                var allAssignedVehicleExceptVehicleBeingEdited =
+                    _dao.GetAll()
+                    .Where(x => !request.VehicleBeingEdited.HasValue || (x.ReferenceDataVehicleId != request.VehicleBeingEdited.Value))
+                    .Where(x => x.ServiceType == serviceType).ToList();
+
                 editableVehicles.AddRange(
-                    referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value))
+                    referenceData.VehiclesList.Where(vehicleFromThisService => vehicleFromThisService.Id != null 
+                            && allAssignedVehicleExceptVehicleBeingEdited.All(assigned => assigned.ReferenceDataVehicleId != vehicleFromThisService.Id.Value))
                         .Select(x => new EditableVehicle { IbsVehicleId = x.Id.GetValueOrDefault(), Id = index++, Display = x.Display, ServiceType = serviceType }));
             }
             return editableVehicles;
