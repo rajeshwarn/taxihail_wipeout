@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -191,6 +192,12 @@ namespace DatabaseInitializer
                     appSettings = serverSettings.GetSettings();
                 }
 
+				// If we are deploying to staging, regardless if we are updating or creating a new DB, create the apple test account.
+				if (param.IsStaging)
+				{
+					CreateAppleTestAccountIfNeeded(container, commandBus);
+				}
+
                 Console.WriteLine("Checking Rules...");
                 CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
                 Console.WriteLine("Checking Default Account Settings ...");
@@ -271,6 +278,7 @@ namespace DatabaseInitializer
         public static void PerformUpdate(DatabaseInitializerParams param, DatabaseCreator creatorDb, string sourceDatabaseName, string targetDatabaseName)
         {
             Console.WriteLine("Update");
+
 
             var temporaryDatabaseName = targetDatabaseName;
             var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
@@ -534,6 +542,41 @@ namespace DatabaseInitializer
                 });
             }
         }
+
+	    private static void CreateAppleTestAccountIfNeeded(UnityContainer container, ICommandBus commandBus)
+	    {
+		    var accountDao = container.Resolve<IAccountDao>();
+
+		    if (accountDao.FindByEmail("appletest@taxihail.com") != null)
+		    {
+				//Account is already present.
+			    return;
+		    }
+
+			Console.WriteLine(@"Registering test account for Apple");
+			//Register normal account
+			var registerAccountCommand = new RegisterAccount
+			{
+				Id = Guid.NewGuid(),
+				AccountId = Guid.NewGuid(),
+				Email = "appletest@taxihail.com",
+				Name = "John Doe",
+				Country = new CountryISOCode("CA"),
+				Phone = "6132875020",
+				Password = "W$yQv9R"
+			};
+
+			var confirmationToken = Guid.NewGuid();
+			registerAccountCommand.ConfimationToken = confirmationToken.ToString();
+
+			commandBus.Send(registerAccountCommand);
+
+			commandBus.Send(new ConfirmAccount
+			{
+				AccountId = registerAccountCommand.AccountId,
+				ConfimationToken = registerAccountCommand.ConfimationToken
+			});
+	    }
 
         private static void CreateDefaultAccounts(UnityContainer container, ICommandBus commandBus)
         {
