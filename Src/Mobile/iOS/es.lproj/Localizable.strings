@@ -73,6 +73,7 @@
 "DriverInfoLicence"="# de Placa:";
 "ManualRideLinqStatus_Extra"="Extra:";
 "PickupTimeTextPlaceholder"="Hora: Ahora";
+"BaseRate_PerTenthMile"="{0} ({1} per tenth mile)";
 "ChangeBookingSettingsButton"="Cambiar detalles de la reservación";
 "EstimateFareCalculating"="Calculando…";
 "TimeNow"="Cuanto Antes";
@@ -177,6 +178,7 @@
 "BuildingName"="Número de edificio / Notas";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "UpdatePasswordConfirmationLabel"="Confirmación";
+"BaseRate_AirportMeetAndGreet"="Airport Meet And Greet";
 "DontHaveAnAccountLabel"="No tiene cuenta?";
 "EtaDurationUnitPlural"="mins";
 "MessageActivityName"="Message";
@@ -455,6 +457,7 @@
 "StreetNumberTitle"="Detalles de la dirección";
 "NoCreditCardSelected"="Por favor seleccione una tarjeta de crédito";
 "InvalidAddressTextEdit"="No se puede verificar la dirección";
+"BaseRate_PerMileRate"="Per Mile Rate";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
 "ProfileSettingsActivityName"="Profile";
 "MessageToDriverTitle"="Message to Driver";
@@ -585,6 +588,7 @@
 "View_InitializeOrderForAccountPayment"="Por favor conteste estas preguntas";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Seleccione un destino para proveer estimado de costo";
+"BaseRate_PerMinute"="{0} per minute";
 "LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "Notes"="Notas";
 "EstimatingFare"="Estimando costo de su servicio";
@@ -635,9 +639,11 @@
 "PickupViewPickupLabel"="Recoger:";
 "Done"="Terminado";
 "DriverInfoVehicleMedallion"="Medallion:";
+"BaseRate_MinimumFare"="Minimum Fare";
 "InvalidEmailTitle"="Email inválido";
 "CreditCardBookingSettingsError"="Se produjo un error al actualizar la configuración de las reservaciones. Por favor, asegúrese de que el número de cuenta en su perfil es válido y vuelva a intentarlo.";
 "PromoExpiringSoonMessage"="Expira en {0} dias";
+"BaseRate_WaitTime"="Wait Time";
 "ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para enparejarse con RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "RateMobileApplicationLater"="Later";
@@ -668,6 +674,7 @@
 "Overdue_Failed_Title"="El pago falló";
 "SendMessageErrorMessage"="Error de confirmación con el chofer, pago cancelado";
 "LocationDetailsActivityName"="Location Details";
+"BaseRate_BaseRate"="Base Rate (no miles)";
 "PromoCodeLabel"="Código de promoción";
 "Notification_DriverAssignedEmail"="Chofer asignado (email)";
 "May"="May (05)";

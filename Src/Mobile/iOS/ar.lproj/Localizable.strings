@@ -69,6 +69,7 @@
 "DriverInfoLicence"="رقم الرخصة:";
 "ManualRideLinqStatus_Extra"="Extra:";
 "PickupTimeTextPlaceholder"="الوقت: الآن";
+"BaseRate_PerTenthMile"="{0} ({1} per tenth mile)";
 "ChangeBookingSettingsButton"="تغيير إعدادات الحجز";
 "EstimateFareCalculating"="Calculating...";
 "Eta"="Nearest taxi is {0} {1} away";
@@ -171,6 +172,7 @@
 "BuildingName"="إسم المبنى / ملاحظات";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "UpdatePasswordConfirmationLabel"="تأكيد";
+"BaseRate_AirportMeetAndGreet"="Airport Meet And Greet";
 "DontHaveAnAccountLabel"="ليس لديك حساب؟";
 "EtaDurationUnitPlural"="mins";
 "MessageActivityName"="Message";
@@ -446,6 +448,7 @@
 "StreetNumberTitle"="تفاصيل العنوان";
 "NoCreditCardSelected"="الرجاء اختيار بطاقة الائتمان";
 "InvalidAddressTextEdit"="لا يمكن التعرف على العنوان";
+"BaseRate_PerMileRate"="Per Mile Rate";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
 "ProfileSettingsActivityName"="Profile";
 "MessageToDriverTitle"="Message to Driver";
@@ -573,6 +576,7 @@
 "View_InitializeOrderForAccountPayment"="يرجى الإجابة على هذه الأسئلة";
 "CurrencyPriceFormat"="{0}ر.س";
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";
+"BaseRate_PerMinute"="{0} per minute";
 "LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "Notes"="ملاحظات";
 "EstimatingFare"="جاري تقييم قيمة مشوارك...";
@@ -622,9 +626,11 @@
 "PickupViewPickupLabel"="الإلتقاء";
 "Done"="تم";
 "DriverInfoVehicleMedallion"="Medallion:";
+"BaseRate_MinimumFare"="Minimum Fare";
 "InvalidEmailTitle"="عنوان البريد الإلكتروني غير صحيح";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "PromoExpiringSoonMessage"="Expires in {0} days";
+"BaseRate_WaitTime"="Wait Time";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "RateMobileApplicationLater"="Later";
@@ -654,6 +660,7 @@
 "Overdue_Failed_Title"="Payment Failed";
 "SendMessageErrorMessage"="حدث خطأ في التأكيد مع السائق تم إلغاء عملية الدفع";
 "LocationDetailsActivityName"="Location Details";
+"BaseRate_BaseRate"="Base Rate (no miles)";
 "PromoCodeLabel"="Promo code";
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "May"="مايو (05)";
