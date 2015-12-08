@@ -182,7 +182,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
 		{
-		    return SearchPlacesAsync(latitude, latitude, name, languageCode, sensor, radius, countryCode).Result;
+		    return SearchPlacesAsync(latitude, longitude, name, languageCode, sensor, radius, countryCode).Result;
 		}
 
 		private GeoPlace ToPlace(Venue venue)

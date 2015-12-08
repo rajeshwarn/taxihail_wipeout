@@ -119,7 +119,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #else
                 Client.LocalHttpWebRequestFilter += AddVersionInformation;
                 Client.LocalHttpWebResponseFilter += HandleResponseHeader;
-                return await Client.GetAsync<TermsAndConditions>("/termsandconditions");
+                var termsAndConditions =  await Client.GetAsync<TermsAndConditions>("/termsandconditions");
+
+                _cacheService.Set("Terms", termsAndConditions);
+
+                return termsAndConditions;
 #endif
 
             }
