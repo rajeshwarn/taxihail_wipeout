@@ -57,8 +57,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     OrderKey = new OrderKey
                     {
                         IbsOrderId = new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000),
-                        TaxiHailOrderId = orderId
-                    }
+                        TaxiHailOrderId = orderId,
+                    },
+                    CompanyKey = companyKey
                 };
             }
 
@@ -93,7 +94,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     dispatcherSettings.DurationOfOfferInSeconds,
                     fare);
 
-                return Mapper.Map<IBSOrderResult>(orderResult);
+                var result = Mapper.Map<IBSOrderResult>(orderResult);
+
+                result.CompanyKey = companyKey;
+
+                return result;
             }
 
             return _dispatcherService.Dispatch(accountId, orderId, ibsOrderParams, new BestAvailableCompany { CompanyKey = companyKey, FleetId = companyFleetId},
