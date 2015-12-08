@@ -5,7 +5,7 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
     public class BaseServiceClient
     {
-        protected JsonServiceClient GetClient(string url)
+        protected JsonServiceClient GetClient(string url = "")
         {
             return new JsonServiceClient(url)
             {

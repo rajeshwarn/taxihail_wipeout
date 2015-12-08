@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+
+#if CLIENT
 using MK.Common.Exceptions;
-
-
-#if !CLIENT
+#else
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
