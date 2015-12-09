@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		public void Quit()
 		{
 			_logger.LogMessage ("Application exited because of version is obsolete");
-			Selector selector = new Selector ("terminateWithSuccess");
+			var selector = new Selector ("terminateWithSuccess");
 			UIApplication.SharedApplication.PerformSelector(selector, UIApplication.SharedApplication, 0);
 		}
 	}
