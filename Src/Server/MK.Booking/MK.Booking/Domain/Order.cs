@@ -433,6 +433,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdateOrderInTrip(UpdateOrderInTrip orderInTrip)
+        {
+            Update(new OrderInTripUpdated
+            {
+                OrderId = orderInTrip.OrderId,
+                DropOffAddress = orderInTrip.DropOffAddress
+            });
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             // special case for migration
