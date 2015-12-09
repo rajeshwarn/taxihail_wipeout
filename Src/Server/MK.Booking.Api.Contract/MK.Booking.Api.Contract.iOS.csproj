@@ -35,7 +35,7 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
+    <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -46,7 +46,7 @@
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
+    <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
