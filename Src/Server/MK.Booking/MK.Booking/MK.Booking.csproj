@@ -353,6 +353,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.es.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\MearsLuxury.en-luxury.Designer.cs" />
     <Compile Include="Resources\MearsTaxi.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -530,6 +531,7 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\MearsLuxury.en-luxury.resx" />
     <EmbeddedResource Include="Resources\MearsTaxi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
