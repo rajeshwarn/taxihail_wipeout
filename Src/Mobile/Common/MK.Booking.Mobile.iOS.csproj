@@ -370,7 +370,6 @@
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
-    <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
     <Compile Include="AppServices\IRateApplicationService.cs" />
     <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />

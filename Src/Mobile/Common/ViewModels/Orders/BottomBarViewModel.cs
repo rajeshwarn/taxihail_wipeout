@@ -1052,6 +1052,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             return Tuple.Create(order, orderStatus);
         }
+
+		public ICommand CancelChangeDropOff
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.BookingStatus;
+					});
+			}
+		}
+
+		public ICommand SaveDropOff
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						_orderWorkflowService.UpdateDropOff(((HomeViewModel)Parent).BookingStatus.Order.Id);
+					});
+			}
+		}
     }
 }
 
