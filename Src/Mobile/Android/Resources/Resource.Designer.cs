@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void UpdateIdValues()
 		{
+			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Booking.Mobile.Client.Resource.String.library_name;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_disclosure = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_disclosure;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_expander_ic_minimized = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_expander_ic_minimized;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_icon = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_icon;
@@ -1530,7 +1531,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance;
-			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Booking.Mobile.Client.Resource.String.library_name;
 		}
 		
 		public partial class Animation
