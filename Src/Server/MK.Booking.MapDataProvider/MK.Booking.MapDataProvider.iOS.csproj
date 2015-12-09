@@ -9,6 +9,7 @@
     <RootNamespace>MK.Booking.Google.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -19,7 +20,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,7 +28,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
@@ -36,7 +35,6 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingGoogleiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DebugSymbols>True</DebugSymbols>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -48,7 +46,6 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingGoogleiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <DefineConstants>CLIENT</DefineConstants>
@@ -56,28 +53,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\AdHoc</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\AppStore</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\Debug</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\Release</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
