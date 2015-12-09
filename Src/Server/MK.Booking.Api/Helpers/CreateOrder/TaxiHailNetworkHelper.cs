@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
         }
 
-        internal BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null)
+        internal BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null, double? latitude = null, double? longitude = null)
         {
             if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
             {
@@ -139,30 +139,35 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
 
             var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            var fleets = market.HasValue()
+                ? _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray()
+                : _taxiHailNetworkServiceClient.GetNetworkFleet(companyKey, latitude, longitude).ToArray();
 
             if (orderCompanyKey.HasValue())
             {
-                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                var match = fleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
                 if (match != null)
                 {
                     return new BestAvailableCompany
                     {
                         CompanyKey = match.CompanyKey,
-                        CompanyName = match.CompanyName
+                        CompanyName = match.CompanyName,
+                        FleetId = match.FleetId
                     };
                 }
             }
 
             if (orderFleetId.HasValue)
             {
-                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                var match = fleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
                 if (match != null)
                 {
                     return new BestAvailableCompany
                     {
                         CompanyKey = match.CompanyKey,
-                        CompanyName = match.CompanyName
+                        CompanyName = match.CompanyName,
+                        FleetId = match.FleetId
                     };
                 }
             }
@@ -176,6 +181,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
                 // Do nothing if in home market or if we don't have position
+                _logger.LogMessage("FindBestAvailableCompany - We are in local market (or lat/lng is null), skip honeybadger/geo and call local ibs first");
                 return new BestAvailableCompany();
             }
 
@@ -250,8 +256,6 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 CompanyName = bestFleet.CompanyName,
                 FleetId = bestFleet.FleetId
             };
-
-            
         }
 
         private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)

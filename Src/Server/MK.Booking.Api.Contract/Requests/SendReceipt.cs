@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class SendReceiptAdmin
     {
         public Guid OrderId { get; set; }
-        public String RecipientEmail { get; set; }
+        public string RecipientEmail { get; set; }
     }
 
     public class SendReceiptResponse : IHasResponseStatus

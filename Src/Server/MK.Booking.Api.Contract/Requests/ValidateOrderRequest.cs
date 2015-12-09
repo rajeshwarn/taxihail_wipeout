@@ -4,7 +4,6 @@ using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 #endregion
 

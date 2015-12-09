@@ -43,6 +43,19 @@
 								account.currentAccount = true;
 							}
 
+							$.ajax({
+								async: false,
+								type: 'GET',
+								url: "../api/account/creditcardinfo/" + account.defaultCreditCard,
+								data: { format: "json" },
+								dataType: "application/json",
+								complete: function (data) {
+									if (data.status == 200) {
+										account.last4Digits = JSON.parse(data.responseText).last4Digits;
+									}
+								}
+							});
+
 							var creationDate = new Date(account.creationDate);
 							account.creationDateText = creationDate.toLocaleDateString("en-US") + " " + creationDate.toLocaleTimeString("en-US");
 						}

@@ -34,30 +34,29 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="OkHttp">
+      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServiceClient.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseServiceClient.Mobile.cs" />
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
-    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="OAuthAuthorizer.cs" />
     <Compile Include="PaymentResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,5 +81,11 @@
   -->
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="modernhttpclient">
+      <Visible>False</Visible>
+      <Version>2.4.2</Version>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

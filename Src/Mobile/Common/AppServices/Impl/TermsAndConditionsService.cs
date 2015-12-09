@@ -1,12 +1,14 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using System.Net;
+using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,11 +41,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    try
 		    {
-                response = await GetTerms();
+		        response = await GetTerms();
 		    }
-		    catch (Exception)
+		    catch (WebServiceException ex)
 		    {
-		        // Do nothing
+		        if (ex.StatusCode != (int)HttpStatusCode.NotModified)
+		        {
+		            Logger.LogError(ex);
+		        }
+		    }
+		    catch(Exception ex)
+		    {
+		        Logger.LogError(ex);
 		    }
 
 			if (response == null) 
@@ -60,14 +69,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var ackKey = GetTermsAcknowledgmentKey (currentAccount.Email);
 			var termsAcknowledged = _cacheService.Get<string>(ackKey);
 
-			if (response.Updated || !(termsAcknowledged == "yes"))
+			if (response.Updated || termsAcknowledged != "yes")
 			{				
 				_cacheService.Clear(ackKey);
-				actionToDoIfTrue.Invoke(new 
-					{
-						content = response.Content
-					}.ToStringDictionary(),
-					async acknowledged =>
+				actionToDoIfTrue.Invoke(new
+				    {
+				        content = response.Content.ToJson()
+				    },
+                    acknowledged =>
 					{
 						actionToDoOnReturn.Invoke(initialLocateUserValue, initialHintValue);
 						AcknowledgeTerms(acknowledged, _accountService.CurrentAccount.Email);

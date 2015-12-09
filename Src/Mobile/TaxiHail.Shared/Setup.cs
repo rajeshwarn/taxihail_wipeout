@@ -30,6 +30,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using Cirrious.CrossCore.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -93,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
-
+            
 			container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
 			container.Register<IQuitApplicationService, QuitApplicationService>();
 

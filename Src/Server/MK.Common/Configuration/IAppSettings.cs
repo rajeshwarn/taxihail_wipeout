@@ -10,6 +10,8 @@ namespace apcurium.MK.Common.Configuration
 		Task Load();
         Task ChangeServerUrl(string serverUrl);
 
+		string GetServiceUrl();
+
 		void SetAppleTestAccountMode(bool isAppleTestAccountUsed);
 	}
 }

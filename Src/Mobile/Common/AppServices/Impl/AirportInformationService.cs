@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.ServiceClient.Web;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

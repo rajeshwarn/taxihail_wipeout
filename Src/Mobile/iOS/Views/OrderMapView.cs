@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private AddressAnnotation _destinationAnnotation;
         private readonly UIImageView _pickupCenterPin;
         private readonly UIImageView _dropoffCenterPin;
-        private UIImageView _mapBlurOverlay;
+        private UIView _mapBlurOverlay;
         private readonly List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
@@ -190,12 +190,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
-            if (UIHelper.IsOS7orHigher)
-            {
-                PitchEnabled = false;
-                RotateEnabled = false;
-            }
-
+            PitchEnabled = false;
+            RotateEnabled = false;
             ZoomEnabled = false;
 
             if (_gesture == null)
@@ -623,24 +619,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private void SetEnabled(bool enabled)
+        private void ChangeBlurState(bool enabled)
         {
-            ScrollEnabled = enabled;
-            UserInteractionEnabled = enabled;                       
-
             if (_mapBlurOverlay == null)
             {
-                var size = UIScreen.MainScreen.Bounds.Size;
-	            _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(size.Width, size.Height)))
-	            {
-		            ContentMode = UIViewContentMode.ScaleToFill
-	            };
-	            AddSubview(_mapBlurOverlay);
+                if (UIHelper.IsOS8orHigher)
+                {
+                    _mapBlurOverlay = new UIVisualEffectView(UIBlurEffect.FromStyle(UIBlurEffectStyle.Light)) 
+                    {
+                        Frame = new CGRect(new CGPoint(0, 0), new CGSize(UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height))
+                    };
+                    AddSubview(_mapBlurOverlay);
+                }
+                else
+                {
+                    _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height)))
+                    {
+                        ContentMode = UIViewContentMode.ScaleToFill
+                    };
+                    AddSubview(_mapBlurOverlay);
+                }
             }
 
             if (!enabled)
             {
-                _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);    
+                if (_mapBlurOverlay is UIImageView)
+                {
+                    ((UIImageView)_mapBlurOverlay).Image = ImageHelper.CreateBlurImageFromView(this); 
+                }
 
                 _mapBlurOverlay.Alpha = 0;
                 _mapBlurOverlay.Hidden = false;
@@ -650,6 +656,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 Animate(0.3f, () => _mapBlurOverlay.Alpha = 0, () => _mapBlurOverlay.Hidden = true);
             }
+        }
+
+        private void SetEnabled(bool enabled)
+        {
+            ScrollEnabled = enabled;
+            UserInteractionEnabled = enabled;                       
+
+            ChangeBlurState(enabled);
 
 			InitOverlays ();
         }

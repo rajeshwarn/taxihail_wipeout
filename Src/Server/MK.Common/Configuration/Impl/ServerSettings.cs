@@ -14,7 +14,7 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class ServerSettings : IServerSettings, IAppSettings
+	public class ServerSettings : IServerSettings, IAppSettings
     {
         private const int CacheExpiration = 30;  // In seconds
         private const string CacheKey = "MK.Settings";
@@ -83,9 +83,14 @@ namespace apcurium.MK.Common.Configuration.Impl
             return Task.FromResult(true);
         }
 
+		public string GetServiceUrl()
+		{
+			throw new NotSupportedException("This method is only supported on mobile.");
+		}
+
         public Task ChangeServerUrl(string serverUrl)
         {
-            throw new NotImplementedException();
+			throw new NotSupportedException("This method is only supported on mobile.");
         }
 
 	    public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)

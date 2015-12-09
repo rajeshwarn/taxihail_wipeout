@@ -2,7 +2,6 @@ using System;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using CoreGraphics;
-using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -14,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private nfloat _cornerRadius = 3;
 		public bool FirstRowOfTwoRowsTable = false;
 		private UIColor _backgroundColor;
-
 
 		public RoundedCornerView()
 		{
@@ -61,9 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		// do not remove this commented code since design is there
-		// see ticket MKTAXI-3611 why commented
-		/*public override void Draw(CGRect rect)
+		public override void Draw(CGRect rect)
 		{
 			base.Draw(rect);
 
@@ -79,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				DrawBackground (rect, context, _backgroundColor.CGColor, null);
 				DrawStrokePartial(context, rect);
 			}
-		}*/
+		}
 
 
 		void DrawBackground (CGRect rect, CGContext context, CGColor color, UIBezierPath roundedRectanglePath)
@@ -127,7 +123,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				bezierPath.AddLineTo(new CGPoint(0,0));
 			}
 			bezierPath.MoveTo(new CGPoint(0,0));
-
 
 			bezierPath.LineWidth = _strokeLineWidth;
 			var strokeLineColor = _strokeLineColor;

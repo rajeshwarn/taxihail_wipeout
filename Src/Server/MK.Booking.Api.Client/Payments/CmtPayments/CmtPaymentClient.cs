@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+
+#if CLIENT
+using MK.Common.Exceptions;
+#else
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Extensions;
 using CMTPayment.Tokenize;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
@@ -94,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.LastFour,
                 };
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 var message = e.Message;
                 var exception = e as AggregateException;

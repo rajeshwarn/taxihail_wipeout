@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -57,14 +56,14 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
 			_container.Register<IAccountServiceClient>((c, p) => 
-				new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, null, c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
                                                                      "NotAuthenticated");
             
 			_container.Register<IAccountServiceClient>((c, p) =>
-				new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
                                                                      "Authenticate");
             
-			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(),c.Resolve<IPaymentService>()));
+			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(),c.Resolve<IPaymentService>()));
 
 			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
@@ -74,13 +73,14 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
+            _container.Register((c, p) => new MetricsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
             _container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
             _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));	        
 			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
-			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
             _container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
@@ -116,11 +116,13 @@ namespace apcurium.MK.Booking.Mobile
 
 
             // ***** PayPal *****
-			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IPaymentService>((c, p) =>
 			{
-				var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
+				var appSettingsService = c.Resolve<IAppSettings>();
+
+				var baseUrl = appSettingsService.GetServiceUrl();
                 var sessionId = GetSessionId();
 
                 return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
@@ -157,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile
 
 	    private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 	    {
-		    var request = sender as HttpWebRequest;
+            var request = sender as HttpWebRequest;
 
 	        if (sslPolicyErrors != SslPolicyErrors.None)
 	        {
@@ -178,10 +180,10 @@ namespace apcurium.MK.Booking.Mobile
 		    var publicKeyString = certificate.GetPublicKeyString();
 
 			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
-	    }
+        }
 
 
-	    void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
+        void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             switch (e.LifetimeEvent)
             {

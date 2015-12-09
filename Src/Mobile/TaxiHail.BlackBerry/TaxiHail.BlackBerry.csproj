@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -45,6 +45,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <CustomCommands>
       <CustomCommands>
+        <Command type="BeforeBuild" command="xbuild /t:Clean" />
         <Command type="Build" command="xbuild /t:SignAndroidPackage" />
         <Command type="AfterBuild" command="cp bin/Debug/com.apcurium.MK.TaxiHailDemo-Signed.apk ../../BBTools/Outputs/" />
         <Command type="AfterBuild" command="java -Djava.awt.headless=true -Xmx512M -cp &quot;lib/AndroidTools.jar&quot; net.rim.tools.apk2bar.Apk2Bar &quot;Outputs/&quot; -r" workingdir="../../BBTools/" />
@@ -53,6 +54,7 @@
         <Command type="Execute" command="java -Djava.awt.headless=true -Xmx512M -jar &quot;lib/BarDeploy.jar&quot; -installApp -launchApp -device 169.254.0.1 -password 0000 -package Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar" workingdir="../../BBTools/" />
       </CustomCommands>
     </CustomCommands>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -153,15 +155,6 @@
     <Reference Include="PaypalSdkDroid">
       <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="AnalyticsV2">
       <HintPath>..\Libraries\Monodroid\AnalyticsV2.dll</HintPath>
     </Reference>
@@ -170,12 +163,6 @@
     </Reference>
     <Reference Include="PushSharp.Client.MonoForAndroid">
       <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
-    </Reference>
-    <Reference Include="Square.OkIO">
-      <HintPath>..\packages\Square.OkIO.1.6.0.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
-    </Reference>
-    <Reference Include="Square.OkHttp">
-      <HintPath>..\packages\Square.OkHttp.2.5.0.0\lib\MonoAndroid\Square.OkHttp.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
@@ -188,6 +175,15 @@
     </Reference>
     <Reference Include="Xamarin.Facebook">
       <HintPath>..\packages\Xamarin.Facebook.Android.4.7.0.1\lib\MonoAndroid403\Xamarin.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="OkHttp">
+      <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -207,27 +203,7 @@
   </ItemGroup>
   <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="PlatformIntegration\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Layout\" />
-    <Folder Include="Resources\Drawable\" />
-    <Folder Include="Resources\drawable-ar\" />
-    <Folder Include="Resources\drawable-ar-xhdpi\" />
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-ldpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
-    <Folder Include="Resources\drawable-xxhdpi\" />
-    <Folder Include="Resources\Values\" />
-    <Folder Include="Resources\values-ar\" />
-    <Folder Include="Resources\values-es\" />
-    <Folder Include="Resources\values-sw600dp\" />
-    <Folder Include="Resources\values-fr\" />
-    <Folder Include="Resources\values-v11\" />
-    <Folder Include="Activities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>
@@ -235,6 +211,10 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="modernhttpclient">
+      <Version>2.4.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

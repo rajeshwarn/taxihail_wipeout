@@ -1,7 +1,4 @@
-﻿
-using System;
-
-using Foundation;
+﻿using System;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
