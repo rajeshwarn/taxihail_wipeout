@@ -11,7 +11,7 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="MK.Booking.Google.iOS">
+        <assembly fullname="MK.Booking.MapDataProvider.iOS">
             <type fullname="*" />
         </assembly>
 

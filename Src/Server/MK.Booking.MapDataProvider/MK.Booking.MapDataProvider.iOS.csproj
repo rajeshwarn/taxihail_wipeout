@@ -19,7 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Google.iOS</AssemblyName>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,7 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Google.iOS</AssemblyName>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
@@ -55,15 +55,31 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
+    <OutputPath>bin\AdHoc</OutputPath>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
+    <OutputPath>bin\AppStore</OutputPath>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
+    <OutputPath>bin\Release</OutputPath>
+    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ModernHttpClient">
@@ -135,8 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
-      <Visible>False</Visible>
       <Version>2.4.2</Version>
+      <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
