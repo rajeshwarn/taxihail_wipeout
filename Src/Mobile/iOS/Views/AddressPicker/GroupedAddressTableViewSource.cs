@@ -35,17 +35,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			}
 			set
 			{
-				if (_addressLocationTypePicker != value) 
+				if (_addressLocationTypePicker == value) 
 				{
-					_addressLocationTypePicker = value;
-					if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
-					{
-						_collapseItemCount = int.MaxValue;
-					}
-					else
-					{
-						_collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;
-					}
+					return;
+				}
+
+				_addressLocationTypePicker = value;
+				if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
+				{
+					_collapseItemCount = int.MaxValue;
+				}
+				else
+				{
+					_collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;
 				}
 			}
 		}

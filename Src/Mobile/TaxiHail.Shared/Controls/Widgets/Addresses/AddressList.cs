@@ -29,27 +29,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 			_collapseItemCount = 3;
         }
 
-		public AddressLocationType AddressLocationTypePicker {
+		public AddressLocationType AddressLocationTypePicker 
+		{
 			get
 			{
 				return _addressLocationTypePicker;
 			}
 			set
 			{
-				if(_addressLocationTypePicker != value)
+				if (_addressLocationTypePicker == value) 
 				{
-					_addressLocationTypePicker = value;
-					if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
-					{
-						_collapseItemCount = int.MaxValue;
-					}
-					else
-					{
-						_collapseItemCount = 3;
-					}
+					return;
+				}
+
+				_addressLocationTypePicker = value;
+				if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
+				{
+					_collapseItemCount = int.MaxValue;
+				}
+				else
+				{
+					_collapseItemCount = 3;
 				}
 			}
 		}
+
         private bool GetAttributeBool(IAttributeSet attr, int id)
         {
             var att = Context.ObtainStyledAttributes(attr, new int[] { id }, 0, 0);
