@@ -452,6 +452,11 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
         public bool? IsPayBackRegistrationFieldRequired { get; set; }
+
+
+		[CustomizableByCompany]
+		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
+		public bool ShowExtraInfoInReceipt { get; protected set; }
     }
 }
 

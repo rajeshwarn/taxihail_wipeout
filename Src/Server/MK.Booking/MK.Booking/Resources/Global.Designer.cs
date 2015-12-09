@@ -520,6 +520,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver Photo.
+        /// </summary>
+        public static string Email_Body_DriverPhoto {
+            get {
+                return ResourceManager.GetString("Email_Body_DriverPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email confirmation required.
         /// </summary>
         public static string Email_Body_EmailConfirmationRequired {
@@ -876,6 +885,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_VehicleNumber {
             get {
                 return ResourceManager.GetString("Email_Body_VehicleNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Licence Plate.
+        /// </summary>
+        public static string Email_Body_VehicleRegistration {
+            get {
+                return ResourceManager.GetString("Email_Body_VehicleRegistration", resourceCulture);
             }
         }
         

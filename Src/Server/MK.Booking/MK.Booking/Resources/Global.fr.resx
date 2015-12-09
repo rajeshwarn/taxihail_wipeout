@@ -627,4 +627,10 @@
   <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
     <value>La commande ne peut pas être annulée car il n'y a pas d'IBSOrderID</value>
   </data>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Photo du chauffeur</value>
+  </data>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Plaque d'immatriculation</value>
+  </data>
 </root>

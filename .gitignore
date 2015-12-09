@@ -128,3 +128,5 @@ Src\Server\apcurium.MK.Web\themes\LAMP\less\style.less
 Src\Server\apcurium.MK.Web\themes\LAMP\less\variables.less
 syntax: regexp
 Deployment/Database/*
+Src/CustomerPortal/.vs/
+Src/Mobile/.vs/

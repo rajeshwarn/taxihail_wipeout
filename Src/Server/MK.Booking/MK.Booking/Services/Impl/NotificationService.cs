@@ -26,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -489,7 +490,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
             var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
             var dropOffTime = dropOffDateInUtc.HasValue
-                ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
+                ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
@@ -504,7 +505,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsOrderId,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
+				HasDriverPhoto = hasDriverInfo && driverInfos.DriverPhotoUrl.HasValue(),
+                HasDriverName = hasDriverInfo && driverInfos.FullName.HasValue(),
+                DriverName = hasDriverInfo ? driverInfos.FullName : null,
+				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
+				HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
                 VehicleNumber = vehicleNumber,
+				ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
+				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
+				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
                 PickupDate = pickupDate.ToString("D", dateFormat),

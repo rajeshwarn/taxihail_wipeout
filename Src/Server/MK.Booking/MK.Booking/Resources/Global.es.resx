@@ -758,7 +758,7 @@
     <value>Extra</value>
   </data>
   <data name="Email_Body_DriverId" xml:space="preserve">
-    <value>Driver #</value>
+    <value>Conductor #</value>
   </data>
   <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
     <value>Booking Fees</value>
@@ -792,5 +792,11 @@
   </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>The phone number is invalid. It must have format {0}</value>
+  </data>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Conductor de Fotos</value>
+  </data>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Vehículo Matrícula</value>
   </data>
 </root>

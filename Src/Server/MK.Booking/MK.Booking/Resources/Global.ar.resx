@@ -629,4 +629,10 @@
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>Credit Card was declined</value>
   </data>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Driver Photo</value>
+  </data>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Vehicle Licence Plate</value>
+  </data>
 </root>
