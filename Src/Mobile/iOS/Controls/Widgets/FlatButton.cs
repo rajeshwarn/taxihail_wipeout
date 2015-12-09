@@ -2,7 +2,6 @@ using Foundation;
 using UIKit;
 using System;
 using CoreGraphics;
-using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 

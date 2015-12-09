@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
-                TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
+                TextAlignment = UITextAlignment.Natural,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
-                TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
+                TextAlignment = UITextAlignment.Natural,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear,
             };
@@ -142,13 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Height, 0.5f, 0f),
                 NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Bottom, 1f, -2f)
             });
-        }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, ShowEstimate ? 3f : 0f);
         }
 
         public bool IsReadOnly { get; set; }

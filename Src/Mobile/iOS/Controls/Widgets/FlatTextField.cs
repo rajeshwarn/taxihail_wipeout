@@ -2,9 +2,9 @@ using System;
 using Foundation;
 using UIKit;
 using CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common.Extensions;
+using CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -44,13 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             HasRightArrow = Enabled && HasRightArrow;
 
-            TextAlignment = NaturalLanguageHelper.GetTextAlignment();
-
-			if (UIHelper.IsOS7orHigher) 
-            {
-				TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
-			} 
-
+            TextAlignment = UITextAlignment.Natural;
+            TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
             TextColor = UIColor.FromRGB(44, 44, 44);
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
@@ -61,22 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
-
-		// do not remove this commented code since design is there
-		// see ticket MKTAXI-3611 why commented
-		/*public override void Draw (CGRect rect)
-		{   
-            var fillColor = BackgroundColor;
-			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
-            if (!ForceWhiteBackground)
-            {
-                HasRightArrow = Enabled && HasRightArrow;
-            }
-			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
-			DrawStroke(fillColor.CGColor);
-			SetNeedsDisplay();
-		}*/
-
+          
         bool _forceWhiteBackground;
         public bool ForceWhiteBackground
         {
@@ -105,31 +85,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public bool ShowShadow { get; set; }
 
+        public bool DisableRoundCorners { get; set; }
+
         private string _imageLeftSource;
         public string ImageLeftSource
         {
             get { return _imageLeftSource; }
             set
             {
-                if (value.HasValue() && value != _imageLeftSource)
-                {
-                    _imageLeftSource = value;
+                _imageLeftSource = value;
 
+                if (value.HasValue())
+                {
                     var image = UIImage.FromBundle(value);
 
-                    // remove previous image if it exists
+                    if (_leftImageView == null)
+                    {
+                        _leftImageView = new UIImageView { Image = image };
+                        AddSubview(_leftImageView);
+                    }
+                    else
+                    {
+                        _leftImageView.Image = image;
+                    }
+                }
+                else
+                {
                     if (_leftImageView != null)
                     {
+                        _leftImageView.Image = null;
                         _leftImageView.RemoveFromSuperview();
+                        _leftImageView.Dispose();
+                        _leftImageView = null;
                     }
-
-                    _leftImageView = new UIImageView 
-                    {
-                        Image = image
-                    };
-                    AddSubview(_leftImageView);
-
-                    SetNeedsDisplay();
                 }
             }
         }
@@ -147,21 +135,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value)
                     {
-                        _rightArrow = new UIImageView
+                        if (_rightArrow == null)
                         {
-                            Image = UIImage.FromFile ("right_arrow.png")
-                        };
-                        AddSubview (_rightArrow);
-
-                        SetNeedsDisplay ();
+                            _rightArrow = new UIImageView { Image = UIImage.FromFile("right_arrow.png") };
+                            AddSubview(_rightArrow);
+                        }
                     }
                     else
                     {
                         if (_rightArrow != null)
                         {
+                            _rightArrow.Image = null;
                             _rightArrow.RemoveFromSuperview ();
-
-                            SetNeedsDisplay ();
+                            _rightArrow.Dispose();
+                            _rightArrow = null;
                         }
                     }
                 }
@@ -221,45 +208,95 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-		private void DrawBackground(CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
-		{
-			context.SaveState ();
-			context.BeginTransparencyLayer (null);
-			roundedRectanglePath.AddClip ();
-            context.SetFillColor(fillColor);
-			context.FillRect(rect);
-			context.EndTransparencyLayer ();
-			context.RestoreState ();
-		}
+        public override void Draw (CGRect rect)
+        {   
+            if (!ForceWhiteBackground)
+            {
+                HasRightArrow = Enabled && HasRightArrow;
+            }
 
-		private void DrawStroke(CGColor fillColor)
-		{
-			BorderStyle = UITextBorderStyle.None;
-			Layer.BorderWidth = 1.0f;
-			Layer.BorderColor = fillColor;
-			Layer.CornerRadius = RadiusCorner;
+            DrawStroke();
+        }
+
+        private void DrawStroke()
+        {
+            if (!DisableRoundCorners)
+            {
+                this.Layer.Mask = GetMaskForRoundedCorners();
+            }
+
+            DrawShadow();
+        }
+
+        private CAShapeLayer GetMaskForRoundedCorners()
+        {
+            var roundedRectanglePath = UIBezierPath.FromRoundedRect (Bounds, RadiusCorner);
+            var biggerRect = Bounds.Copy().Grow(5);
+
+            var maskPath = new UIBezierPath();
+            maskPath.MoveTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AppendPath(roundedRectanglePath);
+
+            var maskForRoundedCorners = new CAShapeLayer();
+            var newPath = new CGPath();
+            newPath.AddRect(biggerRect);
+            newPath.AddPath(maskPath.CGPath);
+            maskForRoundedCorners.Path = newPath;
+            maskForRoundedCorners.FillRule = CAShapeLayer.FillRuleEvenOdd;
+
+            newPath.Dispose();
+            maskPath.Dispose();
+            roundedRectanglePath.Dispose();
+
+            return maskForRoundedCorners;
+        }
+
+        private CGPath GetShadowPath(CGRect biggerRect)
+        {
+            var shadowPath = new UIBezierPath();
+            shadowPath.MoveTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));;
+            shadowPath.AppendPath(UIBezierPath.FromRoundedRect (Bounds, RadiusCorner));
+            shadowPath.UsesEvenOddFillRule = true;
+
+            return shadowPath.CGPath;
+        }
+
+        private void DrawShadow()
+        {
+            ClearShadowIfNecessary();
 
             if (ShowShadow)
             {
-                if (_shadowView == null)
-                {
-                    _shadowView = new UIView(Frame);
-                    _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
-                    _shadowView.Layer.MasksToBounds = false;
-                    _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
-                    _shadowView.Layer.ShadowOpacity = 1.0f;
-                    _shadowView.Layer.ShadowRadius = RadiusCorner + 1;
-                    _shadowView.Layer.ShadowOffset = new CGSize(0.3f, 0.3f);
-                    _shadowView.Layer.ShouldRasterize = true;             
-                    this.Superview.InsertSubviewBelow(_shadowView, this);
-                }
-                _shadowView.Frame = Frame.Copy().Shrink(1);
-            }
-		}
+                var biggerRect = Bounds.Copy().Grow(2);
 
-        protected virtual void DrawText(CGContext context, CGRect rect, CGColor textColor)
+                _shadowView = new UIView(Frame);
+                _shadowView.Layer.MasksToBounds = false;
+                _shadowView.Layer.ShadowColor = UIColor.Black.CGColor;
+                _shadowView.Layer.ShadowOpacity = 0.5f;
+                _shadowView.Layer.ShadowOffset = new CGSize(0f, 0f);
+                _shadowView.Layer.ShadowPath = GetShadowPath(biggerRect);
+                _shadowView.Layer.ShouldRasterize = true;   
+                _shadowView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+                this.Superview.InsertSubviewBelow(_shadowView, this);   
+            }
+        }
+
+        private void ClearShadowIfNecessary()
         {
-            //Hook?
+            if (_shadowView != null)
+            {
+                _shadowView.RemoveFromSuperview();
+                _shadowView.Dispose();
+                _shadowView = null;
+            }
         }
 
         public nint? MaxLength { get; set; }
@@ -267,9 +304,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			if (MaxLength.HasValue) 
             {
-				nint textLength = Text.HasValue () ? Text.Length : 0;
-                nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
-                nint newLength = textLength + replaceLength - range.Length;
+				var textLength = Text.HasValue () ? Text.Length : 0;
+                var replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+                var newLength = textLength + replaceLength - range.Length;
 				return newLength <= MaxLength;
 			} 
             else 

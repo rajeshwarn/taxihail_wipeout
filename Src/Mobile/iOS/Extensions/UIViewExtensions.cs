@@ -5,7 +5,6 @@ using System.Linq;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using CoreAnimation;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -24,13 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			view.Frame = new CGRect(view.Frame.X, view.Frame.Y, width ?? view.Frame.Width, height ?? view.Frame.Height);
 		}
 
-        public static void SetRoundedCorners(this UIView view, UIRectCorner corners, float radius)
-        {
-            var roundedRect = UIBezierPath.FromRoundedRect(new CGRect(0, 0, view.Frame.Width, view.Frame.Height), corners, new CGSize(radius, radius));
-            var maskLayer = new CAShapeLayer() { Frame = view.Bounds, Path = roundedRect.CGPath };
-            view.Layer.Mask = maskLayer;
-        }
-
         public static UIView FindFirstResponder (this UIView view)
         {
             if (view.IsFirstResponder)
@@ -42,7 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 var firstResponder = subView.FindFirstResponder();
                 if (firstResponder != null)
+                {
                     return firstResponder;
+                }
             }
             return null;
         }
@@ -171,36 +165,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static CGSize GetSizeThatFits(this UIView view, string text, UIFont font, CGSize? maxSize = null)
         {
-            if (UIHelper.IsOS7orHigher)
+            if (maxSize != null)
             {
-                if (maxSize != null)
-                {
-                    return new NSString(text)
-                        .GetBoundingRect(maxSize.Value,
-                            NSStringDrawingOptions.UsesLineFragmentOrigin,
-                            new UIStringAttributes { Font = font },
-                            new NSStringDrawingContext()).Size;
-                }
-                else
-                {
-                    return new NSString (text)
-                        .GetSizeUsingAttributes (new UIStringAttributes { Font = font });
-                }
+                return new NSString(text).GetBoundingRect(maxSize.Value,
+                    NSStringDrawingOptions.UsesLineFragmentOrigin,
+                    new UIStringAttributes { Font = font },
+                    new NSStringDrawingContext()).Size;
             }
-            else
-            {
-                var result = UIStringDrawing.StringSize(text, font);
 
-                if (maxSize != null
-                    && result.Width > maxSize.Value.Width)
-                {
-                    var height = result.Height;
-                    var lines = Math.Round(result.Width / maxSize.Value.Width, MidpointRounding.AwayFromZero);
-                    result = new CGSize(maxSize.Value.Width, (float)lines * height);
-                }
-
-                return result;
-            }
+            return new NSString(text).GetSizeUsingAttributes(new UIStringAttributes { Font = font });
         }
 
         public static void ShowCloseButtonOnKeyboard(this UITextView text, Action onClosePressed = null)
@@ -261,4 +234,3 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 	}
 }
-

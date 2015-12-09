@@ -7,8 +7,6 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Helper;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -104,8 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 
             //remove gesture swipe to go back
-            if (UIHelper.IsOS7orHigher
-                && NavigationController != null)
+            if (NavigationController != null)
             {
                 NavigationController.InteractivePopGestureRecognizer.Enabled = false;
             }
@@ -185,12 +182,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         protected void ChangeThemeOfBarStyle()
         {
             // change color of status bar
-            if (UIHelper.IsOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                    ? UIBarStyle.Black
-                    : UIBarStyle.Default;
-            }
+            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                ? UIBarStyle.Black
+                : UIBarStyle.Default;
         }
 
         protected void ChangeThemeOfNavigationBar()
@@ -202,30 +196,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var navBarColor = Theme.CompanyColor;
 
             // change color of navigation bar
-            if (UIHelper.IsOS7orHigher) 
-            {
-                NavigationController.NavigationBar.Translucent = false;
-                UINavigationBar.Appearance.BarTintColor = navBarColor;
-                NavigationController.NavigationBar.BarTintColor = navBarColor;
+            NavigationController.NavigationBar.Translucent = false;
+            UINavigationBar.Appearance.BarTintColor = navBarColor;
+            NavigationController.NavigationBar.BarTintColor = navBarColor;
 
-                // in ios7, this is for the back arrow, in ios6, it's for the color of the bar.  this is why we have to put it in this if block
-                UIBarButtonItem.Appearance.TintColor = textColor;
-                NavigationController.NavigationBar.TintColor = textColor;
-            } 
-            else 
-            {
-                // change the background color of the nav bar (setting an image gets rid of the gradient look)
-                UIImage clearBackground;
-                clearBackground = ImageHelper.CreateFromColor(navBarColor);
-                clearBackground = clearBackground.CreateResizableImage(UIEdgeInsets.Zero);
-                UINavigationBar.Appearance.SetBackgroundImage(clearBackground, UIBarMetrics.Default); 
-                NavigationController.NavigationBar.SetBackgroundImage(clearBackground, UIBarMetrics.Default);
-
-                //change the default ios6 back button look to the ios7 look
-                var backBackground = UIImage.FromFile (Theme.IsLightContent ? "left_arrow_white.png" : "left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 12, 21, 0));
-                UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
-                UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
-            }
+            // in ios7+, this is for the back arrow
+            UIBarButtonItem.Appearance.TintColor = textColor;
+            NavigationController.NavigationBar.TintColor = textColor;
 
             // change color of status bar
             ChangeThemeOfBarStyle ();
