@@ -85,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public bool ShowShadow { get; set; }
 
+        public bool DisableRoundCorners { get; set; }
+
         private string _imageLeftSource;
         public string ImageLeftSource
         {
@@ -216,6 +218,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             DrawStroke();
         }
 
+        private void DrawStroke()
+        {
+            if (!DisableRoundCorners)
+            {
+                this.Layer.Mask = GetMaskForRoundedCorners();
+            }
+
+            DrawShadow();
+        }
+
         private CAShapeLayer GetMaskForRoundedCorners()
         {
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (Bounds, RadiusCorner);
@@ -255,13 +267,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             shadowPath.UsesEvenOddFillRule = true;
 
             return shadowPath.CGPath;
-        }
-
-        private void DrawStroke()
-        {
-            this.Layer.Mask = GetMaskForRoundedCorners();
-
-            DrawShadow();
         }
 
         private void DrawShadow()

@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public bool FirstRowOfTwoRowsTable = false;
 		private UIColor _backgroundColor;
 
-
 		public RoundedCornerView()
 		{
 			ClipsToBounds = true;
@@ -124,7 +123,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				bezierPath.AddLineTo(new CGPoint(0,0));
 			}
 			bezierPath.MoveTo(new CGPoint(0,0));
-
 
 			bezierPath.LineWidth = _strokeLineWidth;
 			var strokeLineColor = _strokeLineColor;
