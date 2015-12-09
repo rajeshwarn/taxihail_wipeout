@@ -72,7 +72,6 @@ namespace apcurium.MK.Booking.Api.Services
             ReferenceDataService referenceDataService,
             IIBSServiceProvider ibsServiceProvider,
             IRuleCalculator ruleCalculator,
-            IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
             ICreditCardDao creditCardDao,
             IOrderDao orderDao,
@@ -222,16 +221,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
 
-            ReferenceData referenceData;
-
-            if (market.HasValue())
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
-            }
-            else
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
-            }
+            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
 
             request.PickupDate = pickupDate;
 
