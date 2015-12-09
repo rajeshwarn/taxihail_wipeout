@@ -8,6 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CMTPayment</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>CMTPayment.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>CMTPayment.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,14 +28,12 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <DefineConstants>CLIENT;CLIENT</DefineConstants>
-    <AssemblyName>CMTPayment.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>CMTPaymentiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>CLIENT</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -46,7 +44,6 @@
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <DefineConstants>CLIENT</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>CMTPaymentiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>

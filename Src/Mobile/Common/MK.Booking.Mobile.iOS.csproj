@@ -8,6 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,14 +28,12 @@
     <DefineConstants>CLIENT;MONOTOUCH</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -45,7 +43,6 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -58,7 +55,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
