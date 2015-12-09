@@ -72,14 +72,14 @@ namespace apcurium.MK.Common.Configuration.Impl
             return serviceType == ServiceType.Luxury
                 ? new Credentials
                 {
-                    ConsumerKey = ConsumerKey,
-                    ConsumerSecretKey = ConsumerSecretKey,
+                    ConsumerKey = ConsumerKeyLuxury,
+                    ConsumerSecretKey = ConsumerSecretKeyLuxury,
                     FleetToken = FleetToken
                 }
                 : new Credentials
                 {
-                    ConsumerKey = ConsumerKeyLuxury,
-                    ConsumerSecretKey = ConsumerSecretKeyLuxury,
+                    ConsumerKey = ConsumerKey,
+                    ConsumerSecretKey = ConsumerSecretKey,
                     FleetToken = FleetTokenLuxury
                 };
         }
