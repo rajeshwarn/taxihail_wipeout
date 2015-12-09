@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using Gratuity = apcurium.MK.Common.Entity.Gratuity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task PayGratuity(Gratuity gratuity);
 
-        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
+        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType);
 
         Task UnpairFromManualRideLinq(Guid orderId);
 

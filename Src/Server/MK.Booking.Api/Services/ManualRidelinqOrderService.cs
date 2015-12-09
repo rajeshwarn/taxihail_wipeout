@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Pair;
@@ -28,9 +29,10 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
-        private readonly CmtMobileServiceClient _cmtMobileServiceClient;
-        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
         private readonly Resources.Resources _resources;
+
+        private CmtMobileServiceClient _cmtMobileServiceClient;
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public ManualRidelinqOrderService(
             ICommandBus commandBus,
@@ -46,11 +48,6 @@ namespace apcurium.MK.Booking.Api.Services
             _creditCardDao = creditCardDao;
             _serverSettings = serverSettings;
             _logger = logger;
-
-            // Since CMT will handle the payment on their ends. We do not need to know the actual company of the cab from wich we do the manual pairing.
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
-
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -115,6 +112,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
 
+	            InitializeCmtServiceClient(request.ServiceType);
 		        var response = _cmtMobileServiceClient.Post(pairingRequest);
 
 		        _logger.LogMessage("Pairing result: {0}", response.ToJson());
@@ -241,6 +239,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _accountDao.FindById(accountId);
                 var orderDetail = _orderDao.FindById(request.OrderId);
 
+                InitializeCmtServiceClient(orderDetail.Settings.ServiceType);
                 var response =
                     _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", ridelinqOrderDetail.PairingToken),
                         new CMTPayment.Pair.ManualRideLinqPairingRequest
@@ -306,6 +305,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
+                var serviceType = _orderDao.FindById(request.OrderId).Settings.ServiceType;
+                InitializeCmtServiceClient(serviceType);
                 var response =
                     _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("init/pairing/{0}",
                         order.PairingToken));
@@ -339,6 +340,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return new HttpResult(HttpStatusCode.OK);
+        }
+
+        private void InitializeCmtServiceClient(ServiceType serviceType)
+        {
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }
 }

@@ -17,6 +17,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
 using ServiceStack.Common.Utils;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -128,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
-                var tripInfo = GetTripInfo(pairingInfo.PairingToken);
+                var tripInfo = GetTripInfo(pairingInfo.PairingToken, order.Settings.ServiceType);
                 if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                 {
                     // this is for CMT RideLinq only, no VAT
@@ -217,10 +218,10 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        private Trip GetTripInfo(string pairingToken)
+        private Trip GetTripInfo(string pairingToken, ServiceType serviceType)
         {
             // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
             var cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 
             return cmtTripInfoServiceHelper.GetTripInfo(pairingToken);

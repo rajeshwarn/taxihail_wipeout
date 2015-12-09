@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            InitializeCmtServiceClient();
+            InitializeCmtServiceClient(orderStatusDetail.ServiceType);
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
             if (tripInfo != null
@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Jobs
 
             _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
-            InitializeCmtServiceClient();
+            InitializeCmtServiceClient(orderstatusDetail.ServiceType);
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
 
@@ -1051,10 +1051,10 @@ namespace apcurium.MK.Booking.Jobs
             _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, serviceType, companyKey);
         }
 
-        private void InitializeCmtServiceClient()
+        private void InitializeCmtServiceClient(ServiceType serviceType)
         {
             // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

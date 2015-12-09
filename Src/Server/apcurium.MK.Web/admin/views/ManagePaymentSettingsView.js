@@ -20,6 +20,7 @@
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
             'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
             'click #cmtSettingsButton': 'cmtSettingsButtonClick',
+            'click #cmtSettingsLuxuryButton': 'cmtSettingsLuxuryButtonClick',
             'click #monerisSettingsButton': 'monerisSettingsButtonClick'
         },
 
@@ -82,7 +83,13 @@
         cmtSettingsButtonClick: function () {
 
             var data = this.$el.serializeObject();
-            this.testConfig(this.model.testCmt(data), this.$("#cmtSettingsMessageZone"));
+            this.testConfig(this.model.testCmt(data, 'Taxi'), this.$("#cmtSettingsMessageZone"));
+        },
+
+        cmtSettingsLuxuryButtonClick: function () {
+
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testCmt(data, 'Luxury'), this.$("#cmtSettingsMessageZoneLuxury"));
         },
 
         brainTreeSettingsButtonClick: function () {

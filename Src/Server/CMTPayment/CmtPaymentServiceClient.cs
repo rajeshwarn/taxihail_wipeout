@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTPayment.Extensions;
 using ServiceStack.Common.Web;
@@ -16,7 +17,7 @@ namespace CMTPayment
     public class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger)
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo, ILogger logger)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
                 : cmtSettings.BaseUrl, sessionId, packageInfo)
@@ -27,8 +28,8 @@ namespace CMTPayment
             Client.LocalHttpWebResponseFilter = LogErrorBody;
 
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
-            ConsumerKey = cmtSettings.ConsumerKey;
-            ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
+            ConsumerKey = cmtSettings.GetCredentials(serviceType).ConsumerKey;
+            ConsumerSecretKey = cmtSettings.GetCredentials(serviceType).ConsumerSecretKey;
 		}
 
 
