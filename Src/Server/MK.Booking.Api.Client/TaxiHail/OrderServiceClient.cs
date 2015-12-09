@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<bool> UpdateDropOff(Guid orderId, Address dropOffAddress)
         {
             var req = string.Format("/account/orders/{0}/updateintrip", orderId);
-            var result = Client.PostAsync<bool>(req, new OrderUpdateRequest{ dropOffAddress});
+            var result = Client.PostAsync<bool>(req, new OrderUpdateRequest() { DropOffAddress = dropOffAddress});
             return result;
         }
     }

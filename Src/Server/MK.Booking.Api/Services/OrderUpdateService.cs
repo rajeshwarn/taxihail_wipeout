@@ -19,14 +19,14 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        public OrderUpdateService(IOrderDao dao, IAccountDao accountDao, ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient)
+        public OrderUpdateService(IOrderDao dao, IAccountDao accountDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
             Dao = dao;
             _accountDao = accountDao;
             _commandBus = commandBus;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
         }
 
         protected IOrderDao Dao { get; set; }
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
-            var success = _bookingWebServiceClient.UpdateDropOffInTrip(order.IBSOrderId.Value, ibsAccountId.Value, request.DropOffAddress);
+            var success = _ibsServiceProvider.Booking().UpdateDropOffInTrip(order.IBSOrderId.Value, ibsAccountId.Value, request.DropOffAddress);
 
             if (success)
             {

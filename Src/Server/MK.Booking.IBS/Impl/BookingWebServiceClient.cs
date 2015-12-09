@@ -436,7 +436,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, (TBookOrder_12)order, vehicleComps);
                 Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 
@@ -514,17 +514,28 @@ namespace apcurium.MK.Booking.IBS.Impl
             var success = false;
             UseService(service =>
             {
-                var order = service.GetBookOrder_7(UserNameApp, PasswordApp, ibsOrderId, null, null, accountId);
-                order.DropoffAddress = new TWEBAddress()
+                var order = new TBookOrder_12()
                 {
-                    StreetPlace = dropOffAddress.FullAddress,
-                    AptBaz = dropOffAddress.Apartment,
-                    Longitude = dropOffAddress.Longitude,
-                    Latitude = dropOffAddress.Latitude,
-                    Postal = dropOffAddress.ZipCode
+                    AccountID = accountId,
+                    OrderID = ibsOrderId,
+                    DropoffAddress = new TWEBAddress()
+                    {
+                        StreetPlace = dropOffAddress.FullAddress,
+                        AptBaz = dropOffAddress.Apartment,
+                        Longitude = dropOffAddress.Longitude,
+                        Latitude = dropOffAddress.Latitude,
+                        Postal = dropOffAddress.ZipCode
+                    }
                 };
-                var result = service.UpdateBookOrder_12(UserNameApp, PasswordApp, order);
-                success = result == 0;
+                try
+                {
+                    var result = service.UpdateBookOrder_12(UserNameApp, PasswordApp, order);
+                    success = result == 0;
+                }
+                catch (Exception e)
+                {
+                    var x = e.Message;
+                }
             });
             return success;
         }
