@@ -14,6 +14,7 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -26,16 +27,18 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly ILogger _logger;
 		private readonly Resources.Resources _resources;
 
-		public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
-            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings)
+		public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao, IAccountDao accountDao, 
+            IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings, ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
+            _logger = logger;
 			_resources = new Resources.Resources(serverSettings);
 		}
 
@@ -80,7 +83,14 @@ namespace apcurium.MK.Booking.Api.Services
 					return new HttpResult(HttpStatusCode.OK);
 				}
 
-				throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"));
+                var errorReason = !currentIbsAccountId.HasValue
+                    ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
+                    : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}", orderDetail.IBSStatusId);
+                var errorMessage = string.Format("Could not cancel order because {0}", errorReason);
+
+                _logger.LogMessage(errorMessage);
+
+                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
 			}
 
 			return new HttpResult(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError_NoIBSOrderId"));
