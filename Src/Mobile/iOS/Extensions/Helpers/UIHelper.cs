@@ -27,13 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             }
         }
 
-		public static bool IsOS7orHigher
-		{
-			get{
-                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) >= 7;
-			}
-		}
-
         public static bool IsOS8orHigher
         {
             get{

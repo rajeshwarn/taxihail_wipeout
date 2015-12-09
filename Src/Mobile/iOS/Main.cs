@@ -14,7 +14,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
@@ -42,10 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
-            if (!UIHelper.IsOS7orHigher)
-            {
-                UIApplication.SharedApplication.StatusBarHidden = false;
-            }                     
+            UIApplication.SharedApplication.StatusBarHidden = false;                   
 
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
@@ -109,7 +105,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ReceiveMemoryWarning(UIApplication application)
         {
+            #if DEBUG
             Logger.LogMessage("ReceiveMemoryWarning");
+            #endif
         }
         
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)

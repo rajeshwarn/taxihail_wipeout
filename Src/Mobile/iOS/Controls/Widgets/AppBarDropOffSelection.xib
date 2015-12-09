@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppBarDropOffSelection">
@@ -16,43 +16,39 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hqR-yk-oWK" userLabel="Cancel" customClass="FlatButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hqR-yk-oWK" userLabel="Cancel" customClass="FlatButton">
                     <rect key="frame" x="8" y="8" width="148" height="40"/>
+                    <animations/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="hqR-yk-oWK" secondAttribute="height" multiplier="37:10" id="hzG-6v-2Ku"/>
+                        <constraint firstAttribute="height" constant="40" id="qmX-X7-7wd"/>
                     </constraints>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7l4-07-K5R" userLabel="Ok" customClass="FlatButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7l4-07-K5R" userLabel="Ok" customClass="FlatButton">
                     <rect key="frame" x="164" y="8" width="148" height="40"/>
+                    <animations/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="7l4-07-K5R" secondAttribute="height" multiplier="37:10" id="DXK-hu-RCT"/>
+                        <constraint firstAttribute="height" constant="40" id="zGR-7K-mRi"/>
                     </constraints>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="7l4-07-K5R" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="7cq-dV-op8"/>
-                <constraint firstAttribute="centerY" secondItem="hqR-yk-oWK" secondAttribute="centerY" id="DGX-En-Zwv"/>
-                <constraint firstAttribute="trailing" secondItem="7l4-07-K5R" secondAttribute="trailing" constant="8" id="Str-iS-ujj"/>
-                <constraint firstItem="hqR-yk-oWK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ZTA-yp-D54"/>
-                <constraint firstAttribute="bottom" secondItem="hqR-yk-oWK" secondAttribute="bottom" constant="8" id="iPo-Z5-hum"/>
-                <constraint firstItem="7l4-07-K5R" firstAttribute="leading" secondItem="hqR-yk-oWK" secondAttribute="trailing" constant="8" id="kVV-jO-x9c"/>
-                <constraint firstItem="hqR-yk-oWK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="lyo-HO-1xC"/>
-                <constraint firstAttribute="bottom" secondItem="7l4-07-K5R" secondAttribute="bottom" constant="8" id="qPl-1N-K3t"/>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="EGV-VM-Qqt"/>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="width" secondItem="7l4-07-K5R" secondAttribute="width" id="LQq-CE-4Ui"/>
+                <constraint firstItem="7l4-07-K5R" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Q6Q-vD-BeT"/>
+                <constraint firstAttribute="trailing" secondItem="7l4-07-K5R" secondAttribute="trailing" constant="8" id="Ryj-Lr-cW4"/>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lOo-4J-SDS"/>
+                <constraint firstItem="7l4-07-K5R" firstAttribute="leading" secondItem="hqR-yk-oWK" secondAttribute="trailing" constant="8" id="yYX-Za-gDO"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

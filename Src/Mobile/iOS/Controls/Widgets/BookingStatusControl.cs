@@ -74,43 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 lblOrderNumber.RemoveFromSuperview();
             }
         }
-
-
-		public override CGRect Frame
-		{
-			get
-			{
-				return base.Frame;
-			}
-			set
-			{
-				base.Frame = value;
-
-				if (_showAnnimation)
-				{
-					_annimationView.Frame = new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height);
-				}
-			}
-		}
-
-		public override CGRect Bounds
-		{
-			get
-			{
-				return base.Bounds;
-			}
-			set
-			{
-				base.Bounds = value;
-
-				if (_showAnnimation)
-				{
-					_annimationView.Frame = new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height);
-				}
-
-			}
-		}
-
+            
         private bool _showAnnimation;
         public bool ShowAnimation
         {
