@@ -30,9 +30,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>0.2.1</string>
+    <string>0.2.3</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.2.1</string>
+    <string>0.2.3</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
     <key>NSLocationWhenInUseUsageDescription</key>
