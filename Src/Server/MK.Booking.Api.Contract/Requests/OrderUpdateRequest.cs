@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [Route("/account/orders/{OrderId}/updateintrip", "POST")]
-    public class OrderUpdateRequest : BaseDto
+    public class OrderUpdateRequest
     {
         public OrderUpdateRequest()
         {
