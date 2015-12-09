@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
                 var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
-                var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
+                var fleetToken = _serverPaymentSettings.CmtPaymentSettings.GetCredentials(orderDetail.Settings.ServiceType).FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
