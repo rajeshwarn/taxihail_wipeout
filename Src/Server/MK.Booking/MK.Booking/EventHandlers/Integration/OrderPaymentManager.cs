@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // Check if card declined
-                    InitializeCmtServiceClient();
+                    InitializeCmtServiceClient(orderStatus.ServiceType);
 
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (orderStatus != null)
                 {
                     // Check if card declined
-                    InitializeCmtServiceClient();
+                    InitializeCmtServiceClient(orderStatus.ServiceType);
 
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
 
@@ -293,9 +293,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _commandBus.Send(new UpdateOrderGratuity { OrderId = @event.SourceId, Amount = gratuity });
         }
 
-        private void InitializeCmtServiceClient()
+        private void InitializeCmtServiceClient(ServiceType serviceType)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

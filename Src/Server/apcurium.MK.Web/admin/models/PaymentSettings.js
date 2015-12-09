@@ -57,13 +57,14 @@
             });
         },
 
-        testCmt: function (settings) {
+        testCmt: function (settings, serviceType) {
 
             return $.ajax({
                 type: 'POST',
                 url: this.urlRoot + "/test/cmt",
                 data: JSON.stringify({
-                    CmtPaymentSettings: settings.cmtPaymentSettings
+                    CmtPaymentSettings: settings.cmtPaymentSettings,
+                    ServiceType: serviceType
                 }),
                 contentType: 'application/json'
             });

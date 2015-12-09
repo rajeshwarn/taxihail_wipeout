@@ -368,13 +368,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return response;
         }
 
-        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType)
         {
             var request = new ManualRideLinqPairingRequest
             {
                 PairingCode = pairingCode,
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
+				ServiceType = serviceType
             };
             try
             {

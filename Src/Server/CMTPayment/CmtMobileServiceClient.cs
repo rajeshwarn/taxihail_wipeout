@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceHost;
 
@@ -9,7 +10,7 @@ namespace CMTPayment
 {
     public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxMobileBaseUrl
                 : cmtSettings.MobileBaseUrl, sessionId, packageInfo)
@@ -17,8 +18,9 @@ namespace CMTPayment
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
 
-            ConsumerKey = cmtSettings.ConsumerKey;
-            ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
+            var credentialsForService = cmtSettings.GetCredentials(serviceType);
+            ConsumerKey = credentialsForService.ConsumerKey;
+            ConsumerSecretKey = credentialsForService.ConsumerSecretKey;
 
             //todo - Bug accept all certificates
             ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
