@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -74,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
+            _container.Register((c, p) => new MetricsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
             _container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
             _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));	        
 			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile
 
 	    private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 	    {
-		    var request = sender as HttpWebRequest;
+            var request = sender as HttpWebRequest;
 
 	        if (sslPolicyErrors != SslPolicyErrors.None)
 	        {
@@ -180,10 +180,10 @@ namespace apcurium.MK.Booking.Mobile
 		    var publicKeyString = certificate.GetPublicKeyString();
 
 			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
-	    }
+        }
 
 
-	    void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
+        void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             switch (e.LifetimeEvent)
             {

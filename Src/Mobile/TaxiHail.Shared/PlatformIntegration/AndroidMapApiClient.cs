@@ -2,21 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Android.OS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider;
-using System.Text;
 using System.Threading.Tasks;
-using MK.Booking.MapDataProvider.Foursquare;
 using Android.Locations;
 using Cirrious.CrossCore.Droid;
-using MK.Common.Configuration;
 
 #endregion
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration

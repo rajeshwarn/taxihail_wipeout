@@ -9,10 +9,8 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -40,17 +38,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async void Init(string orderId)
 		{
 			Guid id;
-			if(Guid.TryParse(orderId, out id))
-			{
-				OrderId = id;
-				using (this.Services ().Message.ShowProgress ())
-				{
-					await LoadOrder();
-					await LoadStatus();
-					_clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
-					RaisePropertyChanged(() => StatusDescription); 
-				}
-			}
+		    if (!Guid.TryParse(orderId, out id))
+		    {
+		        return;
+		    }
+
+		    OrderId = id;
+		    using (this.Services ().Message.ShowProgress ())
+		    {
+		        await LoadOrder();
+		        await LoadStatus();
+		        _clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
+		        RaisePropertyChanged(() => StatusDescription); 
+		    }
 		}
 
         private Guid _orderId;
@@ -349,7 +349,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{														
 							orderId = OrderId, 
 							canRate
-						}.ToStringDictionary(),
+						}.ToJson(),
 						RefreshOrderStatus);
                	});
             }

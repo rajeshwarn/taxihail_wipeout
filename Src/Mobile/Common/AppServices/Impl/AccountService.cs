@@ -25,13 +25,11 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using MK.Common.Configuration;
-using ServiceStack.Common;
-using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
-using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

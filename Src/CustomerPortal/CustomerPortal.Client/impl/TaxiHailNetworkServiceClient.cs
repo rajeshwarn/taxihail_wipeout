@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
 
 namespace CustomerPortal.Client.Impl
@@ -98,8 +99,19 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
+        /// <summary>
+        /// WARNING: Should not be called if market doesn't have a value, use GetNetworkFleetAsync instead
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="market"></param>
+        /// <returns></returns>
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
+            if (!market.HasValue())
+            {
+                throw new Exception("Market doesn't have a value, use GetNetworkFleetAsync instead");
+            }
+
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
