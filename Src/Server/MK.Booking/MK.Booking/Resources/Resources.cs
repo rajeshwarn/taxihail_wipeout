@@ -56,18 +56,18 @@ namespace apcurium.MK.Booking.Resources
                 return Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
             }
 
-            return GetStringForContext(key, languageCode, context)
+            return GetStringForService(key, languageCode, context)
                     ?? _resources.GetString(key, CultureInfo.GetCultureInfo(languageCode))
                    ?? Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
 
         }
 
-        private string GetStringForContext(string key, string languageCode, string context)
+        private string GetStringForService(string key, string languageCode, string service)
         {
-            if (!string.IsNullOrWhiteSpace(context))
+            if (!string.IsNullOrWhiteSpace(service))
             {
                 var names = GetType().Assembly.GetManifestResourceNames();
-                var contextualResourceSetName = string.Format("{0}.{1}-{2}.resources", _applicationKey ?? "Global", languageCode.Substring(0, 2), context);
+                var contextualResourceSetName = string.Format("{0}.{1}-{2}.resources", _applicationKey ?? "Global", languageCode.Substring(0, 2), service);
 
                 foreach (var name in names)
                 {

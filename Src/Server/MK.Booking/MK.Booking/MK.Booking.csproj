@@ -353,11 +353,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.es.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\MearsTaxi.en-luxury.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MearsTaxi.en-luxury.resx</DependentUpon>
-    </Compile>
     <Compile Include="Resources\MearsTaxi.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -534,10 +529,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MearsTaxi.en-luxury.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MearsTaxi.en-luxury.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\MearsTaxi.resx">
       <SubType>Designer</SubType>
