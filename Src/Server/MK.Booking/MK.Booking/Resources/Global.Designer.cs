@@ -72,9 +72,18 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to It is too late to cancel this order.
         /// </summary>
-        public static string CancelOrdeError {
+        public static string CancelOrderError {
             get {
-                return ResourceManager.GetString("CancelOrdeError", resourceCulture);
+                return ResourceManager.GetString("CancelOrderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot cancel order because of we don&apos;t have the IBSOrderID.
+        /// </summary>
+        public static string CancelOrderError_NoIBSOrderId {
+            get {
+                return ResourceManager.GetString("CancelOrderError_NoIBSOrderId", resourceCulture);
             }
         }
         
@@ -1668,15 +1677,6 @@ namespace apcurium.MK.Booking.Resources {
         public static string ServiceErrorCreateAccount_AccountAlreadyExist {
             get {
                 return ResourceManager.GetString("ServiceErrorCreateAccount_AccountAlreadyExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The confirmation code is incorrect..
-        /// </summary>
-        public static string ServiceErrorCreateAccount_InvalidConfirmationToken {
-            get {
-                return ResourceManager.GetString("ServiceErrorCreateAccount_InvalidConfirmationToken", resourceCulture);
             }
         }
         
