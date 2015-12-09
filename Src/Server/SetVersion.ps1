@@ -162,10 +162,10 @@ function get-scriptdirectory {
 }
 
 # validate arguments 
-#$r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1,3}$");
+$r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1,3}$");
   
 echo "Starting...";
-#if ($r.Success)
+if ($r.Success)
 {
 	# Enable the GitHub shell command
   Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
@@ -239,10 +239,10 @@ echo "Starting...";
 	  Exit ;
 	}
 }
-#else
-#{
-#  echo " ";
-#  echo "Bad Input!"
-#  echo " ";
-#  Usage ;
-#}
+else
+{
+  echo " ";
+  echo "Bad Input!"
+  echo " ";
+  Usage ;
+}
