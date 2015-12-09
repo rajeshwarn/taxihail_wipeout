@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
-		Task SetVehicleType (int? vehicleTypeId);
+		Task SetVehicleType (int? vehicleTypeId, ServiceType serviceType);
 
 		Task SetBookingSettings(BookingSettings bookingSettings);
 
@@ -80,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<int?> GetAndObserveVehicleType();
 		IObservable<ServiceType> GetAndObserveServiceType();
-		Task<ServiceType> GetServiceTypeForVehicleId(int? vehicleTypeId);
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 

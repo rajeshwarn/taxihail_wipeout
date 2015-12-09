@@ -190,6 +190,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private ServiceType _serviceType;
+		public ServiceType ServiceType
+		{
+			get { return _serviceType; }
+			set
+			{
+				_serviceType = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedVehicleType);
+			}
+		}
+
 		private IEnumerable<VehicleType> _vehicleTypes = new List<VehicleType>();
 		public IEnumerable<VehicleType> VehicleTypes
 		{
@@ -243,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				VehicleType type = null;
 				if (VehicleTypeId.HasValue)
                 {
-					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
+					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId && x.ServiceType == ServiceType);
 				}
 
 				if (type == null)
@@ -524,7 +536,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						var vehicle = (GroupVehiclesByServiceType && !model.IsSubMenuSelection)
 							? VehicleTypes.First(x => x.ServiceType == model.VehicleType.ServiceType)
 							: model.VehicleType;
-						_orderWorkflowService.SetVehicleType(vehicle.ReferenceDataVehicleId);
+						ServiceType = vehicle.ServiceType;
+						_orderWorkflowService.SetVehicleType(vehicle.ReferenceDataVehicleId, vehicle.ServiceType);
 					}
 				});
 			}

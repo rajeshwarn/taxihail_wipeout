@@ -112,7 +112,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(_accountService.CurrentAccount.Settings);
 
-            _serviceTypeSubject = new BehaviorSubject<ServiceType>(ServiceType.Taxi);
+			var serviceType =
+                _appSettings.Data.VehicleTypeSelectionEnabled
+                ? _accountService.CurrentAccount.Settings.ServiceType
+                : ServiceType.Taxi;
+
+			_serviceTypeSubject = new BehaviorSubject<ServiceType>(serviceType);
 
             var vehicleTypeId =
                 _appSettings.Data.VehicleTypeSelectionEnabled
@@ -121,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             _vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
 
-            SetVehicleType(vehicleTypeId);
+            SetVehicleType(vehicleTypeId, serviceType);
 		}
 
 		public async Task SetAddress(Address address)
@@ -334,14 +339,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task SetVehicleType(int? vehicleTypeId)
+		public async Task SetVehicleType(int? vehicleTypeId, ServiceType serviceType)
 		{
             // this must be done before changing vehicleTypeSubject because of VehicleService observables
-            var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-            var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
+
+//            var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
             
             if (_appSettings.Data.VehicleTypeSelectionEnabled)
 			{
+				_serviceTypeSubject.OnNext(serviceType); // May be removed
 				_vehicleTypeSubject.OnNext(vehicleTypeId);
 			}
 
@@ -351,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             await SetBookingSettings (bookingSettings);
 
-			if (serviceTypeChanged)
+//			if (serviceTypeChanged)
 			{
 				await CalculateEstimatedFare();
 			}
@@ -368,16 +374,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			return wasChanged;
 		}
-
-		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
-		{ 
-			var vehicleTypes = await _accountService.GetVehiclesList();
-			var vehicleType = vehicleTypes
-				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
-
-			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
-		}
-
+//
+//		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
+//		{ 
+//			var vehicleTypes = await _accountService.GetVehiclesList();
+//			var vehicleType = vehicleTypes
+//				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
+//
+//			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
+//		}
+//
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
 		{
 			// Get the vehicle type selected on the home screen and put them in the 
@@ -1062,13 +1068,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _networkVehiclesSubject.OnNext(networkVehicles);
 
 	        int? selectedVehicleId = null;
+			var serviceType = ServiceType.Taxi;
 
 	        if (networkVehicles.Any())
 	        {
 	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
+				serviceType = networkVehicles.First().ServiceType;
 	        }
 
-            await SetVehicleType(selectedVehicleId);
+			await SetVehicleType(selectedVehicleId, serviceType);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -1077,6 +1085,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _networkVehiclesSubject.OnNext(new List<VehicleType>());
 
 	        int? selectedVehicleId = null;
+	        var serviceType = ServiceType.Taxi;
 
             var localVehicles = await _accountService.GetVehiclesList();
             if (localVehicles.Any())
@@ -1086,9 +1095,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 selectedVehicleId = matchingVehicle != null
                     ? matchingVehicle.ReferenceDataVehicleId
                     : localVehicles.First().ReferenceDataVehicleId;
+
+				serviceType = matchingVehicle != null
+                    ? matchingVehicle.ServiceType
+                    : localVehicles.First().ServiceType;
+
             }
 
-	        await SetVehicleType(selectedVehicleId);
+	        await SetVehicleType(selectedVehicleId, serviceType);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)

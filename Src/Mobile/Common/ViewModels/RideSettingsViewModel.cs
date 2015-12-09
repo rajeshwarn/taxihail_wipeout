@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings.VehicleTypeId = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(() => VehicleTypeName);
-					_orderWorkflowService.SetVehicleType (value);
+					_orderWorkflowService.SetVehicleType (value, ServiceType.Taxi); // TODO: ServiceType not implemented in RideSettings Yet
                 }
             }
         }
