@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
                         // Send receipt for CMTRideLinq
-                        InitializeCmtServiceClient(order.CompanyKey);
+                        InitializeCmtServiceClient(order.CompanyKey, order.Settings.ServiceType);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
@@ -353,9 +353,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void InitializeCmtServiceClient(string companyKey)
+        private void InitializeCmtServiceClient(string companyKey, ServiceType serviceType)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, serviceType, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

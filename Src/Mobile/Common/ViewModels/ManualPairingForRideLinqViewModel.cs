@@ -5,6 +5,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceClient.Web;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -77,7 +79,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
-                            var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress);
+							var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, serviceType);
 
 							this.ReturnResult(orderManualRideLinqDetail);
                         }

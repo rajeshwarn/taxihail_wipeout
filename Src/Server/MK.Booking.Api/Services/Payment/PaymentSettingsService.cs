@@ -93,8 +93,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             BaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.BaseUrl,
                             ConsumerKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKey,
                             ConsumerSecretKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
                             FleetToken = request.ServerPaymentSettings.CmtPaymentSettings.FleetToken,
+                            ConsumerKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKeyLuxury,
+                            ConsumerSecretKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKeyLuxury,
+                            FleetTokenLuxury = request.ServerPaymentSettings.CmtPaymentSettings.FleetTokenLuxury,
+                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
                             IsManualRidelinqCheckInEnabled = request.ServerPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
                             IsSandbox = request.ServerPaymentSettings.CmtPaymentSettings.IsSandbox,
                             Market = request.ServerPaymentSettings.CmtPaymentSettings.Market,
@@ -198,7 +201,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
-                var result = CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate, _logger);
+                var result = CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate, _logger, request.ServiceType);
                 if (result)
                 {
                     return new TestServerPaymentSettingsResponse
