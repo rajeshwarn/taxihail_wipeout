@@ -132,6 +132,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 .For("TouchUpInside")
                 .To(vm => vm.Cancel);
 
+			set.Bind(source)
+				.For(v=>v.AddressLocationTypePicker)
+				.To(vm=> vm.PickerFilter);
+
             set.Apply ();
 
             SetNeedsLayout();
