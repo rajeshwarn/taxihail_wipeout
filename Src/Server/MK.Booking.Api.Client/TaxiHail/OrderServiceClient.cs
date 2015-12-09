@@ -3,13 +3,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 
 #endregion
 
@@ -24,8 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<OrderStatusDetail> CreateOrder(CreateOrderRequest orderRequest)
         {
-            var req = string.Format("/account/orders");
-            return Client.PostAsync<OrderStatusDetail>(req, orderRequest);
+            return Client.PostAsync<OrderStatusDetail>("/account/orders", orderRequest);
         }
 
         public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)

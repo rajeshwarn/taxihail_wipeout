@@ -534,9 +534,6 @@
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>
   </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>Le code de confirmation est incorrect.</value>
-  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
   </data>
@@ -563,9 +560,6 @@
   </data>
   <data name="ServiceErrorDefaultMessage" xml:space="preserve">
     <value>Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement</value>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>Aucun compte n'a été trouvé pour cet email</value>
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>Désolé, votre session a expirée. Merci de réessayer ultérieurement</value>
@@ -672,28 +666,31 @@
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
-<data name="EmailUsedMessage" xml:space="preserve">
+  <data name="EmailUsedMessage" xml:space="preserve">
     <value>Ce courriel est déjà utilisé par un autre compte</value>
   </data>
-	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+  <data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
     <value>Il est impossible de changer le courriel du compte lié avec Facebook</value>
   </data>
-  <data name="CancelOrdeError" xml:space="preserve">
+  <data name="CancelOrderError" xml:space="preserve">
     <value>Il est trop tard pour annuler cette commande</value>
   </data>
-	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+  <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>La commande ne peut pas être annulée car il n'y a pas d'IBSOrderID</value>
+  </data>
+  <data name="Email_Body_DriverPhoto" xml:space="preserve">
     <value>Photo du chauffeur</value>
   </data>
-	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+  <data name="Email_Body_VehicleRegistration" xml:space="preserve">
     <value>Plaque d'immatriculation</value>
   </data>
-	<data name="TripUnableToPairErrorText" xml:space="preserve">
-		<value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
-	</data>
-	<data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-		<value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
-	</data>
-	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
-		<value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
-	</data>
-</root> 
+  <data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+    <value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
+  </data>
+</root>

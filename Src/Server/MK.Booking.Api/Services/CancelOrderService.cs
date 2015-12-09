@@ -1,12 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -16,8 +12,7 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-
-#endregion
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -30,9 +25,10 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
         private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
-        public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
-            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings)
+        public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao, IAccountDao accountDao,
+            IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings, ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
@@ -40,6 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
             _serverSettings = serverSettings;
+            _logger = logger;
+
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -90,10 +88,17 @@ namespace apcurium.MK.Booking.Api.Services
                     return new HttpResult(HttpStatusCode.OK);
                 }
 
-                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrdeError"));
+                var errorReason = !currentIbsAccountId.HasValue
+                    ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
+                    : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}", orderDetail.IBSStatusId);
+                var errorMessage = string.Format("Could not cancel order because {0}", errorReason);
+
+                _logger.LogMessage(errorMessage);
+
+                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
             }
 
-            return new HttpResult(HttpStatusCode.BadRequest);
+            return new HttpResult(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError_NoIBSOrderId"));
         }
 
         private void UpdateStatusAsync(Guid id)

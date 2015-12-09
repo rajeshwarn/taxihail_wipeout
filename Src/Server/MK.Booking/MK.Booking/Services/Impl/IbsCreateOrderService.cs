@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
             var ibsOrderParams = IbsHelper.PrepareForIbsOrder(_serverSettings.ServerData.IBS, defaultVehicleType, chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
-                customerNumberString, referenceDataCompanyList, market, requestProviderId);
+                customerNumberString, referenceDataCompanyList, market, requestProviderId, companyKey);
 
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
 

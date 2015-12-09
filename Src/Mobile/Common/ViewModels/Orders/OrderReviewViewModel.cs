@@ -42,13 +42,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
-			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObserveTipIncentive().Throttle(TimeSpan.FromMilliseconds(500)), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 		    Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 
 			_driverBonus = 5;
 
-			GetIsCmtRideLinq();
+			GetIsCmtRideLinq().FireAndForget();
 		}
 
 	    private void MarketChanged(MarketSettings marketSettings)

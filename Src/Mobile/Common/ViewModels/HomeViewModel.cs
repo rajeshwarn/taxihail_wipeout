@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -17,8 +16,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using ServiceStack.Text;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -92,11 +91,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
         {
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+		    _defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();
 
 			if (manualRidelinqDetail != null)
 			{
-				var deserializedRidelinqDetails = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(manualRidelinqDetail);
+			    var deserializedRidelinqDetails = manualRidelinqDetail.FromJson<OrderManualRideLinqDetail>();
 
 				CurrentViewState = HomeViewModelState.ManualRidelinq;
 
@@ -107,8 +106,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (order != null && orderStatusDetail != null)
 			{
-				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
-				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
+			    var deserializedOrder = order.FromJson<Order>();
+			    var deserializeOrderStatus = orderStatusDetail.FromJson<OrderStatusDetail>();
 
 				CurrentViewState = HomeViewModelState.BookingStatus;
 
@@ -268,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					(content, actionOnResult) => 
 					{
 						_isShowingTermsAndConditions = true;
-						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult);
+						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(content, actionOnResult);
 					},
 					(locateUser, defaultHintZoomLevel) => 
 					{
@@ -668,7 +667,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(_locationService.LastKnownPosition.Latitude, _locationService.LastKnownPosition.Longitude, initialZoom));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
 
 					// do the uber zoom
 					try 

@@ -79,8 +79,8 @@ namespace MK.Booking.IBS.Test.OrderFixture
             };
             order.DropoffAddress = new TWEBAddress {StreetPlace = " ", Longitude = 0.00, Latitude = 0.00};
             order.Note = "This is a test";
-            order.Phone = "5146543024";
-            order.ContactPhone = "5146543024";
+            order.Phone = "5145551234";
+            order.ContactPhone = "5145551234";
             order.OrderDate = order.PickupDate;
             order.VehicleTypeID = 1;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;

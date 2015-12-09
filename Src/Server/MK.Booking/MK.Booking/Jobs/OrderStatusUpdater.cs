@@ -379,7 +379,7 @@ namespace apcurium.MK.Booking.Jobs
                     orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
                     orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
                     orderDetail.Settings.CustomerNumber, referenceDataCompanyList,
-                    orderDetail.Market, orderDetail.Settings.ProviderId);
+                    orderDetail.Market, orderDetail.Settings.ProviderId, orderDetail.CompanyKey);
 
                 var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)

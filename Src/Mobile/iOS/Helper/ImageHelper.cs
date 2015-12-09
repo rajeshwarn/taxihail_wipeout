@@ -138,15 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             var _size = view.Bounds.Size;
 
             UIGraphics.BeginImageContext(_size);
-            if (UIHelper.IsOS7orHigher)
-            {
-                // use faster approach available on iOS7
-                view.DrawViewHierarchy(view.Bounds, false);
-            }
-            else
-            {
-                view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
-            }
+            view.DrawViewHierarchy(view.Bounds, false);
             var viewImage = UIGraphics.GetImageFromCurrentImageContext();
 
             // Blur Image
@@ -187,6 +179,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
         public static UIImage ApplyThemeTextColorToImage(string imagePath)
         {
             return ApplyColorToImage(imagePath, Theme.LabelTextColor);
+        }
+
+        public static UIImage ApplyContrastBasedThemeTextColorToImage(string imagePath)
+        {
+            return ApplyColorToImage(imagePath, Theme.GetContrastBasedColor(Theme.LabelTextColor));
         }
 
 		public static UIImage GetImage ( string imagePath )

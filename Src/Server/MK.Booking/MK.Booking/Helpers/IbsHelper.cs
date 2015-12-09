@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Helpers
     {
         public static IbsOrderParams PrepareForIbsOrder(IBSSettingContainer ibsSettingsContainer, VehicleTypeDetail defaultVehicleType,
             int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
-            IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId)
+            IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId, string companyKey)
         {
             int? ibsChargeTypeId;
 
@@ -47,9 +47,11 @@ namespace apcurium.MK.Booking.Helpers
             var defaultCompany = referenceDataCompanyList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                                  ?? referenceDataCompanyList.FirstOrDefault();
 
-            var providerId = market.HasValue() && referenceDataCompanyList.Any() && defaultCompany != null
-                ? defaultCompany.Id
-                : requestProviderId;
+            //if we are in external market or local market but in a different company
+            var providerId = (market.HasValue() || companyKey.HasValue())
+                && referenceDataCompanyList.Any() && defaultCompany != null
+                    ? defaultCompany.Id
+                    : requestProviderId;
 
             return new IbsOrderParams
             {

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -30,11 +29,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_accountService = accountService;
 		}
 
-		public virtual async void BaseOnViewStarted(bool firstTime)
+		public virtual void BaseOnViewStarted(bool firstTime)
 		{
 		}
 
-		public override async void OnViewStarted(bool firstTime)
+		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
@@ -47,11 +46,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public ClientPaymentSettings PaymentSettings{ get; set;}
 
 
-		public virtual async void BaseStart()
+		public virtual void BaseStart()
 		{
 		}
 
-		public async override void Start()
+		public override async void Start()
 		{
 			base.Start();
 			try

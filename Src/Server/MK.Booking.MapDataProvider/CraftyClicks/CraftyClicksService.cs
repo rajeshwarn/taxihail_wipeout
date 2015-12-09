@@ -6,11 +6,10 @@ using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
-    public class CraftyClicksService : IPostalCodeService
+    public class CraftyClicksService : BaseServiceClient, IPostalCodeService
     {
         private const string UkPostcodeRegexPattern = "^[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z;]$";
         private readonly IAppSettings _settingsService;
@@ -23,15 +22,15 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 
         public async Task<Address[]> GetAddressFromPostalCodeAsync(string postalCode)
         {
-            var client = GetClient();
+            var client = GetClient("https://pcls1.craftyclicks.co.uk/json/");
 
-            var addressInformation = await client.PostAsync(new CraftyClicksRequest
+            var addressInformation = await client.PostAsync<CraftyClicksAddress>("/rapidaddress", new CraftyClicksRequest
             {
                 Postcode = postalCode,
                 Key = _settingsService.Data.CraftyClicksApiKey
             });
 
-			return ProcessAddressInformation(postalCode, addressInformation);
+            return ProcessAddressInformation(postalCode, addressInformation);
         }
 
         private Address[] ProcessAddressInformation(string postalCode, CraftyClicksAddress addressInformation)
@@ -47,8 +46,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
                     City = addressInformation.Town,
                     ZipCode = postalCode,
                     AddressLocationType = AddressLocationType.Unspeficied,
-                    FullAddress =
-                        GenerateFullAddress(point.Line_1, point.Line_2, addressInformation.Town, addressInformation.Postcode),
+                    FullAddress = GenerateFullAddress(point.Line_1, point.Line_2, addressInformation.Town, addressInformation.Postcode),
                     Latitude = addressInformation.GeoCode.Lat,
                     Longitude = addressInformation.GeoCode.Lng,
                     FriendlyName = point.Line_1,
@@ -57,32 +55,15 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
                 .ToArray();
         }
 
+        //This should only be used on the server.
         public Address[] GetAddressFromPostalCode(string postalCode)
         {
-            var client = GetClient();
-
-            var addressInformation = client.Post(new CraftyClicksRequest
-            {
-                Postcode = postalCode,
-                Key = _settingsService.Data.CraftyClicksApiKey
-            });
-
-            return ProcessAddressInformation(postalCode, addressInformation);
+            return GetAddressFromPostalCodeAsync(postalCode).Result;
         }
 
         public bool IsValidPostCode(string postalCode)
         {
             return postalCode.HasValue() && Regex.IsMatch(postalCode, UkPostcodeRegexPattern);
-        }
-
-
-        private JsonServiceClient GetClient()
-        {
-#if DEBUG
-            return new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
-#else
-            return new JsonServiceClient("https://pcls1.craftyclicks.co.uk/json/");
-#endif
         }
 
         private string GenerateFullAddress(string line1, string line2, string town, string postcode)

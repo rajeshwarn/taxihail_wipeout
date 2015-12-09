@@ -114,6 +114,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
 			container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
 
+			container.Register<IQuitApplicationService, QuitApplicationService>();
+
+
+			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
+
 			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 
 			InitializeSocialNetwork ();

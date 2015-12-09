@@ -95,47 +95,93 @@
 	Bug fix - 'Need a taxi' not responsive
 	Fixed DeviceOrientationLogic
 3.1.13
-	Added vehiclename value to clusters
-	Bug fix - account update - error handling change
-	Orientation change response time decreased
-	Bug fix - Issue where nearby taxi would flash on the screen
+    Bug fix - iOS available vehicle flashing
+    Bug fix - Register account background color to use company theme
+    Bug fix - Tap on taxi icon issue - Ensured that VehicleName was used instead of Vehicle number
+    Orientation change response time decreased
+    Added more errors handling TH account update from admin panel
 3.1.14
-	Android - Regression issues
-	Fixed color coded medallion
-	Moved pairing code setting to Payment settings
-	Added more logging information for notifications
-	Bug fix - SaveExtrPayment now uses the correct company when on the TH Network
-	Make Credit card add/update backward compatible
-	Bug fix - issue with IBS methods not working in external markets
-	Bug fix - contact driver for older app version
+    Bug fix - contact driver for older app version
+    Bug fix - IBS methods not working in external market
+    Bug fix - add or edit a CC - Check if label is null before saving into db
+    Bug fix - Color coded medallion not working
+    Bug fix - Android - Driver info UI issues
 3.1.15
-	Updated Yellow Color for assigned NYC vehicles medallions
-	Increased the wait for vehciles candidates by 5 seconds
-	Bug fix - Null Reference issue with certain filters
-	Bug fix - when removing vehicles on map
+	Version number increase only
 3.1.16
-	Added bailed in menu notification settings and localization
-	Added logging in booking status observable
-	Bug fix - promotion unlocked push enabled setting
-	Bug fix - Issue where NeedATaxi would not work after selecting an address in the Picker
-	Bug fix - issue where CreditCard label was overlapping over business
-	Bug fix - where the ui would stop refreshing on an active manual ridelinq order when application returns from background
-	Added condition if a driver bailed notification push should be sent
-	Bug fix - where  manual ridelinq order getting stuck
-	 date/time and vehicle number information fixed for receipt
+    Bug fix - Date/time and vehicle number information fixed for receipt
+    Bug fix - Fixed issue where NeedATaxi would not work after selecting an address in the Picker
+    Bug fix - Fixed App crash when validating the order
+    Bug fix - App stays in trip after manual pair trip complete
+	Bug fix - Fixed issue where CreditCard label was overlapping over business
+	Bug fix - Fixed a bug with promotion unlocked push enabled setting
+    Bug fix - CC logo would overlap the CC number
+    Bug fix - Text overlap in EditTip view on iOS.
+	Added check if should send driver bailed push or not
+    Added logs to IBSOrderService + bug fixing
+    Added logging in booking status observable
+    Added bailed in menu notification settings and localization
+    Added default value
+    Added Migration Script
+    Added bail push in Notification Settings
+    Updated Yellow colour for assigned NYC vehicle medallion
 3.1.17
-	History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application
-	Bug fix - Fixed crash in the address view model
-	Device Orientation improvements
+    Bug fix - App crash
+    Comparison level changed for Address;
+    History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application;
 3.1.18
-	Bug fix - Regression taxi not moving while assigned on iOS
-	Bug fix - Medallion not always correct when taping on car marker (iOS only)
+	Fixed issue where medallion would not correctly be displayed when reusing PinAnnotationView
+3.1.19
+    Improved memory usage
+    Bug fix - Fixed iOS crash at login
+    Bug fix - Fixed duplicate destination button
+    Bug fix - Fixed issue where AuthenticationToken was saved in the application cache instead of the user cache.
+    Bug fix - Fixed concurrency issue where PrepareForNewOrder was not awaited therefore we would delete the Current account and then retrieve it again.
+3.1.20
+    Bug fix - Crash with orientation service iOS
+    Bug fix - Fix issue where map blur would show the company color on the map
+    Bug fix - Fix Android appbar visibility problems when showing "book a taxi" popup and date selection
+    Bug fix - Fix case where search was slow and user selected an address before the 400ms to open the keyboard would trigger causing the keyboard to appear on the map
+    Bug fix - Fix regression on AddressPickerView with wrong background color
+    Bug fix - Fix binding crash with available vehicles
+    Bug fix - Fix height of ContactTaxiControl
+    Bug fix - Fixed issue where loading bar animation (BookingStatus) would not be correctly disposed.
+3.1.21
+	Cleaned up log information
+3.1.22
+    Bug fix - Fix for horizontal bounce in AccountConfirmationView
+3.1.23
+    Bug fix - fixed colour of a bar in the AccountConfirmationView
+3.1.24
+    Aeroport Taxi - String change
+    added view again
+    removed view
+    Prod_3_1 issues with tutorial view
+    Production_3_1 Added missing tutorial view
+3.1.25
+    Bug fix - Fixed issue where resetting a password while not logged in would result in a null reference exception.
+    Aeroport Taxi - string changes
+    Limits the trip info updated event to only when a pairing error or a trip ended event
+3.1.26
+    String corrections
+    Support contrast colour for buttons border and image
+    Fixed build failure
+3.1.27
+    Added encryption for payment settings
+    Identity info about company vehicles removed for non-authenticated users;
+    Added client certificate validation
+3.1.28
+    Deployment build fix
+3.1.29
+    Merge branch 'MKTAXI-3493-DestinationPopupPromptAfterBookPopup' into Production_3_1
+3.1.30
+    Metadata disabled for service
+    Updateversion bump script (add verification)
+    Deployment build fix
+3.1.31
+    Add ArroUAT resource files
 	
 	
-	
-
-
-
 
 
 

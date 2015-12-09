@@ -1,6 +1,4 @@
-﻿
-using System;
-
+﻿using System;
 using Foundation;
 using UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -18,13 +16,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var bookingView = NSBundle.MainBundle.LoadNib("BookingBarInTripManualRideLinQBooking", null, null).GetItem<BookingBarInTripManualRideLinQBooking>(0);
 
 			bookingView.BackgroundColor = UIColor.Clear;
+            bookingView.Hidden = true;
+
+            bookingView.buttonCall.SetTitle(Localize.GetValue("CallButton"), UIControlState.Normal);
 
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonCall);
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonTipChange);
-
-			bookingView.Hidden = true;
-
-			bookingView.buttonCall.SetTitle(Localize.GetValue("CallButton"), UIControlState.Normal);
 
 			return bookingView;
 		}
@@ -46,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(buttonCall)
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CallCompany);
-            
 			set.Bind(buttonCall)
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
@@ -55,11 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip)
 				.WithConversion("BoolInverter");
-            
 			set.Bind(buttonTipChange)
 				.For("Title")
 				.To(vm => vm.BookingStatus.BottomBar.ButtonEditTipLabel);
-            
 			set.Bind(buttonTipChange)
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.EditAutoTipCommand);

@@ -4,13 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using MK.Common.Configuration;
-using ServiceStack.Text;
 using TinyIoC;
-using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
@@ -21,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
     public class AppSettingsService : IAppSettings
     {
 		public TaxiHailSetting Data { get; private set; }
+
+		private bool _isReady;
 
         readonly ICacheService _cacheService;
 		readonly ILogger _logger;
@@ -93,6 +94,20 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
+		public string GetServiceUrl()
+		{
+			var taxiHailSettings = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+
+			if (taxiHailSettings != null)
+			{
+				return taxiHailSettings.ServiceUrl;
+			}
+
+			return _isReady
+				? Data.ServiceUrl
+				: GetSettingFromFile("ServiceUrl");
+		}
+
 		private void LoadSettingsFromFile()
 		{
 			_logger.LogMessage("load settings from file");
@@ -105,11 +120,14 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					using (var reader = new StreamReader(stream))
 					{
 						var serializedData = reader.ReadToEnd();
-						Dictionary<string,string> values = JsonObject.Parse(serializedData);
-						SettingsLoader.InitializeDataObjects (Data, values, _logger);
+					    
+						var values = serializedData.FromJson<Dictionary<string, string>>();
+                        SettingsLoader.InitializeDataObjects (Data, values, _logger);
 					}
 				}
 			}
+
+			_isReady = true;
 		}
 
 		private string GetSettingFromFile(string settingName)
@@ -125,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					using (var reader = new StreamReader(stream))
 					{
 						var serializedData = reader.ReadToEnd();
-						Dictionary<string,string> values = JsonObject.Parse(serializedData);
+						var values = serializedData.FromJson<Dictionary<string, string>>();
 
 						string settingValue = null;
 						values.TryGetValue(settingName, out settingValue);

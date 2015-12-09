@@ -7,10 +7,10 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -20,9 +20,7 @@ namespace apcurium.MK.Booking.Mobile
         {
 			var @params = (Dictionary<string, string>)hint;
 
-			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
-
-		    var appSettings = Mvx.Resolve<IAppSettings>();
+			var appSettings = Mvx.Resolve<IAppSettings>();
 		    var accountService = Mvx.Resolve<IAccountService>();
 		    var facebookService = Mvx.Resolve<IFacebookService>();
 		    var metricsService = Mvx.Resolve<IMetricsService>();
@@ -51,7 +49,8 @@ namespace apcurium.MK.Booking.Mobile
                     accountService.SignOut();
 				}
 
-                // Don't check the app version here since it's done in the LoginViewModel
+                // Don't check the app version here since it's done in the LoginViewModel 
+				// and HomeViewModel and causes problems on iOS 9+
 
 				ShowViewModel<LoginViewModel>();
             }
@@ -65,8 +64,7 @@ namespace apcurium.MK.Booking.Mobile
 	            await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
 						accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
-						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
-						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors()
 		            );
 
                 try
@@ -99,8 +97,7 @@ namespace apcurium.MK.Booking.Mobile
 				// Make sure to refresh notification/payment settings even if the user has killed the app
 				await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
-						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
-						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors()
 					);
 
                 // Log user session start

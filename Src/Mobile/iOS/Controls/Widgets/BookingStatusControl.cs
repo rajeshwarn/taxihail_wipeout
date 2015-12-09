@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 lblOrderNumber.RemoveFromSuperview();
             }
         }
-
+            
         private bool _showAnnimation;
         public bool ShowAnimation
         {

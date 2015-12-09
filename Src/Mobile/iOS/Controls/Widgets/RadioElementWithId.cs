@@ -1,7 +1,6 @@
 using UIKit;
 using CrossUI.Touch.Dialog.Elements;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -32,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, fontSize);
             cell.TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 
-            this.Alignment = NaturalLanguageHelper.GetTextAlignment();
+            this.Alignment = UITextAlignment.Natural;
 
 			cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
             {

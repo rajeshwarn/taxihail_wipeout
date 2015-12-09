@@ -81,6 +81,13 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         public object Post(CreateOrderRequest request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            // Needed when we get a webapp request.
+            if (request.FromWebApp && request.Id == Guid.Empty)
+            {
+                request.Id = Guid.NewGuid();
+            }
+
             var createReportOrder = CreateReportOrder(request, account);
 
             var createOrderCommand = BuildCreateOrderCommand(request, account, createReportOrder);

@@ -9,7 +9,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Text;
 using System.Threading.Tasks;
-using MK.Common.Android.Helpers;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
