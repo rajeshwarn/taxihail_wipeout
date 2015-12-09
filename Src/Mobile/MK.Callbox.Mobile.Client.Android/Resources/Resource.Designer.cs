@@ -1051,6 +1051,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f07017e
 			public const int CreditCardCCV = 2131165566;
 			
+			// aapt resource value: 0x7f070309
+			public const int CreditCardDeclinedOnPreauthorizationErrorText = 2131165961;
+			
 			// aapt resource value: 0x7f070183
 			public const int CreditCardErrorInvalid = 2131165571;
 			
@@ -1104,6 +1107,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f07017b
 			public const int CreditCardType = 2131165563;
+			
+			// aapt resource value: 0x7f07030a
+			public const int CreditCardUnanbleToPreathorizeErrorText = 2131165962;
 			
 			// aapt resource value: 0x7f070172
 			public const int CreditCardZipCode = 2131165554;
@@ -1963,6 +1969,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070256
 			public const int Overdue_TransactionId = 2131165782;
 			
+			// aapt resource value: 0x7f070307
+			public const int PairingProcessingErrorTitle = 2131165959;
+			
 			// aapt resource value: 0x7f070130
 			public const int PanelMenuViewAboutUsText = 2131165488;
 			
@@ -2392,8 +2401,14 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070023
 			public const int ServiceErrorCallTitle = 2131165219;
 			
+			// aapt resource value: 0x7f07030c
+			public const int ServiceErrorCreateAccount_InvalidConfirmationToken = 2131165964;
+			
 			// aapt resource value: 0x7f070025
 			public const int ServiceErrorDefaultMessage = 2131165221;
+			
+			// aapt resource value: 0x7f07030b
+			public const int ServiceErrorResetPassword_AccountNotFound = 2131165963;
 			
 			// aapt resource value: 0x7f070024
 			public const int ServiceErrorUnauthorized = 2131165220;
@@ -2592,6 +2607,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f07029c
 			public const int TrainStationsButton = 2131165852;
+			
+			// aapt resource value: 0x7f070308
+			public const int TripUnableToPairErrorText = 2131165960;
 			
 			// aapt resource value: 0x7f070150
 			public const int Tuto01Bottom = 2131165520;

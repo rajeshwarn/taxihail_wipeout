@@ -7231,8 +7231,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080177
 			public const int AccountDisabled_NoCall = 2131231095;
 			
-			// aapt resource value: 0x7f080366
-			public const int AccountLinkedWithFAcebook = 2131231590;
+			// aapt resource value: 0x7f08036c
+			public const int AccountLinkedWithFAcebook = 2131231596;
 			
 			// aapt resource value: 0x7f080357
 			public const int AccountLinkedWithFacebook = 2131231575;
@@ -7645,6 +7645,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0801db
 			public const int CreditCardCCV = 2131231195;
 			
+			// aapt resource value: 0x7f080368
+			public const int CreditCardDeclinedOnPreauthorizationErrorText = 2131231592;
+			
 			// aapt resource value: 0x7f0801e0
 			public const int CreditCardErrorInvalid = 2131231200;
 			
@@ -7698,6 +7701,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0801d8
 			public const int CreditCardType = 2131231192;
+			
+			// aapt resource value: 0x7f080369
+			public const int CreditCardUnanbleToPreathorizeErrorText = 2131231593;
 			
 			// aapt resource value: 0x7f0801cf
 			public const int CreditCardZipCode = 2131231183;
@@ -8533,6 +8539,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0802b3
 			public const int Overdue_TransactionId = 2131231411;
 			
+			// aapt resource value: 0x7f080366
+			public const int PairingProcessingErrorTitle = 2131231590;
+			
 			// aapt resource value: 0x7f08018d
 			public const int PanelMenuViewAboutUsText = 2131231117;
 			
@@ -8956,6 +8965,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080365
 			public const int ServiceErrorCallTitle = 2131231589;
 			
+			// aapt resource value: 0x7f08036b
+			public const int ServiceErrorCreateAccount_InvalidConfirmationToken = 2131231595;
+			
+			// aapt resource value: 0x7f08036a
+			public const int ServiceErrorResetPassword_AccountNotFound = 2131231594;
+			
 			// aapt resource value: 0x7f080364
 			public const int ServiceErrorUnauthorized = 2131231588;
 			
@@ -9141,6 +9156,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0802f9
 			public const int TrainStationsButton = 2131231481;
+			
+			// aapt resource value: 0x7f080367
+			public const int TripUnableToPairErrorText = 2131231591;
 			
 			// aapt resource value: 0x7f0801ad
 			public const int Tuto01Bottom = 2131231149;
