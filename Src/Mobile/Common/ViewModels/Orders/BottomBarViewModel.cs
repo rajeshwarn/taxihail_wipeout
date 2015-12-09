@@ -1057,9 +1057,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 					{
 						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.BookingStatus;
+						await _orderWorkflowService.SetAddress(new Address());
+						_orderWorkflowService.SetDropOffSelectionMode(false);
+						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
 					});
 			}
 		}

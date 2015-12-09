@@ -636,11 +636,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{ 
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 					{
 						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
 						{
-							//Need endpoint to remove destination address
+							await _orderWorkflowService.SetAddress(new Address());
+							_orderWorkflowService.UpdateDropOff(((HomeViewModel)Parent).BookingStatus.Order.Id);
 							return;
 						}
                         ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
@@ -1308,9 +1309,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				TaxiLocation.Longitude.HasValue;
 
 			var isVehicleAssigned = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned));
+			var isVehicleArrived = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived));
 
 			if (Order != null
-				&& isVehicleAssigned
+				&& (isVehicleAssigned || isVehicleArrived)
 				&& hasValidVehiclePosition
 				&& !MapCenter.HasValue()
 				)
@@ -1330,7 +1332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			if (!isVehicleAssigned)
+			if (!isVehicleAssigned && !isVehicleArrived)
 	        {
 		        MapCenter = new CoordinateViewModel[0];
 	        }

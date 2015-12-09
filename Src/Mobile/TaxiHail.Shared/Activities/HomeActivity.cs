@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
             set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
             set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
-            set.Bind(_appBarDropOffSelection).For("DataContext").To(vm => vm.DropOffSelection.BottomBar);
+            set.Bind(_appBarDropOffSelection).For("DataContext").To(vm => vm.BottomBar);
             set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
             set.Bind(_dropOffSelection).For("DataContext").To(vm => vm.DropOffSelection);
 
