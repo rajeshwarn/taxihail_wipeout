@@ -151,6 +151,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		bool ValidateAndSetCvv(string cvv);
 
 		void DisableBooking();
+
+		Task<bool> UpdateDropOff(Guid orderId);
 	}
 }
 

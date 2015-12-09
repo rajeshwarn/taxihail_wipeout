@@ -133,6 +133,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<int> GetOrderCountForAppRating()
 		{
             return Client.GetAsync<int>("/account/ordercountforapprating");
-		}
+        }
+        
+        public Task<bool> UpdateDropOff(Guid orderId, Address dropOffAddress)
+        {
+            var req = string.Format("/account/orders/{0}/updateintrip", orderId);
+            var result = Client.PostAsync<bool>(req, new OrderUpdateRequest{ dropOffAddress});
+            return result;
+        }
     }
 }
