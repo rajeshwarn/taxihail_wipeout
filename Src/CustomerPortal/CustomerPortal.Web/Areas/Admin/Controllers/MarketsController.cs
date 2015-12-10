@@ -225,6 +225,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("MarketIndex", new MarketModel { Market = market });
         }
 
+        [ValidateInput(false)]
         public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter)
         {
             try
