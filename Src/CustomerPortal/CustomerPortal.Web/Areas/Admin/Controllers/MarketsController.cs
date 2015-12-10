@@ -48,7 +48,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Market = market,
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
-                EnableDriverBonus = marketModel.EnableDriverBonus
+                EnableDriverBonus = marketModel.EnableDriverBonus,
+                ReceiptFooter = marketModel.ReceiptFooter
             });
         }
 
@@ -224,7 +225,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("MarketIndex", new MarketModel { Market = market });
         }
 
-        public ActionResult SaveSettings(string market, bool enableDriverBonus)
+        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter)
         {
             try
             {
@@ -237,6 +238,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
+                marketToEdit.ReceiptFooter = receiptFooter;
+
                 Repository.Update(marketToEdit);
             }
             catch (Exception)

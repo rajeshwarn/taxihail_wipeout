@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Web.Routing;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -13,6 +12,8 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Moq;
 using NUnit.Framework;
 
@@ -28,6 +29,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             base.Setup();
 
             _geocodingMock = new Mock<IGeocoding>();
+            var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
+            
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
                 TemplateServiceMock.Object,
@@ -39,6 +42,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
+                taxihailNetworkServiceClientMock.Object,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
@@ -47,6 +51,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock
                 .Setup(x => x.Search(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
                 .Returns(new [] {new Address { FullAddress = "full dropoff" }});
+
+            taxihailNetworkServiceClientMock
+                .Setup(x => x.GetCompanyMarketSettings(It.IsAny<double>(), It.IsAny<double>()))
+                .Returns(new CompanyMarketSettingsResponse());
 
             TemplateServiceMock
                 .Setup(x => x.InlineCss(It.IsAny<string>()))
