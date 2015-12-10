@@ -452,6 +452,7 @@
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
     <Content Include="admin\templates\AccountsManagement.handlebars" />
+    <Content Include="localization\BramCityTaxi-en.json" />
     <Content Include="admin\templates\ExportPromotions.handlebars" />
     <Content Include="admin\templates\AccountManagement.handlebars" />
     <Content Include="localization\PaymentItem.json" />
