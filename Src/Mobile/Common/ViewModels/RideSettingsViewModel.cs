@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_vehicles = (await _accountService.GetVehiclesList()).ToArray();
                     //_vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
+					RaisePropertyChanged(() => VehiclesAsListItems);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
 			    }
@@ -135,6 +136,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return _vehicles;
+            }
+        }
+
+		public ListItem<Guid>[] VehiclesAsListItems
+        {
+            get
+            {
+                return _vehicles.Select(x => new ListItem<Guid> { Id = x.Id, Display = x.Name }).ToArray();
             }
         }
 
