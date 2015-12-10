@@ -60,29 +60,16 @@ namespace CustomerPortal.Client.Impl
 
         public string GetCompanyMarket(double latitude, double longitude)
         {
+            return GetCompanyMarketSettings(latitude, longitude).Market;
+        }
+
+        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        {
             if (!_serverSettings.ServerData.Network.Enabled)
             {
                 return null;
             }
 
-            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-
-            var @params = new Dictionary<string, string>
-            {
-                { "companyId", homeCompanyKey },
-                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
-                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
-            };
-
-            var queryString = BuildQueryString(@params);
-
-            return Client.Get("customer/roaming/market" + queryString)
-                         .Deserialize<string>()
-                         .Result;
-        }
-
-        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
-        {
             var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var @params = new Dictionary<string, string>
