@@ -1,0 +1,29 @@
+﻿@using System.Reflection
+@using apcurium.MK.Common.Extensions
+@model apcurium.MK.Web.Areas.AdminTH.Models.AccountsManagement
+
+<h4 class="table-title">Accounts Management</h4>
+@if (@TempData["SearchCriteriaEmpty"] != null)
+{
+	<div class="alert alert-info" style="margin-top: 10px;">
+		@TempData["SearchCriteriaEmpty"]
+	</div>
+}
+
+@using (Html.BeginForm("Search", "AccountsManagement", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.SearchCriteria, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.TextBoxFor(x => x.SearchCriteria, new { @placeholder = "Name / Email / Phone Number" , @class = "input-block-level", @style = "margin-right:15px" })
+		</div>
+	</div>
+
+	<div class="control-group">
+		<button type="submit" class="btn btn-primary span" style="margin-left:560px">Search</button>
+	</div>
+}

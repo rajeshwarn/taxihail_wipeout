@@ -462,6 +462,7 @@
     <Content Include="localization\Payment-fr.json" />
     <Content Include="localization\Payment-es.json" />
     <Content Include="localization\Aeroport Taxi.json" />
+    <Content Include="Areas\AdminTH\Views\AccountsManagement\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -677,12 +678,14 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\AccountsManagementController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\OrderController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
+    <Compile Include="Areas\AdminTH\Models\AccountsManagement.cs" />
     <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
     <Compile Include="Areas\AdminTH\Models\MarketFees.cs" />
     <Compile Include="Areas\AdminTH\Models\OrderDebug.cs" />
