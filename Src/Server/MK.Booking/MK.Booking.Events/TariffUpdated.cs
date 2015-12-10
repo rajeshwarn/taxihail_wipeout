@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -22,5 +23,6 @@ namespace apcurium.MK.Booking.Events
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int? VehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 }

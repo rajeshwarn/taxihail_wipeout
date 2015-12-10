@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             {
                 company.CreateDefaultVehiculeTariff(command.TariffId, command.Name, command.FlatRate,
                     command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
-                    command.KilometerIncluded, command.VehicleTypeId, command.MinimumRate);
+                    command.KilometerIncluded, command.VehicleTypeId, command.ServiceType, command.MinimumRate);
             }
             else if (command.Type == TariffType.Recurring)
             {
@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     startTime: command.StartTime,
                     endTime: command.EndTime,
                     vehicleTypeId: command.VehicleTypeId,
+                    serviceType: command.ServiceType,
                     minimumRate: command.MinimumRate);
             }
             else if (command.Type == TariffType.Day)
@@ -134,7 +135,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 company.CreateDayTariff(command.TariffId, command.Name, command.FlatRate, 
                     command.KilometricRate, command.PerMinuteRate, command.MarginOfError,
                     command.KilometerIncluded, command.StartTime, command.EndTime,
-                    command.VehicleTypeId, command.MinimumRate);
+                    command.VehicleTypeId, command.ServiceType, command.MinimumRate);
             }
 
             _repository.Save(company, command.Id.ToString());
@@ -228,7 +229,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             company.UpdateTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                 command.PerMinuteRate, command.MarginOfError, command.KilometerIncluded, command.DaysOfTheWeek,
-                command.StartTime, command.EndTime, command.VehicleTypeId, command.MinimumRate);
+                command.StartTime, command.EndTime, command.VehicleTypeId, command.ServiceType, command.MinimumRate);
 
             _repository.Save(company, command.Id.ToString());
         }

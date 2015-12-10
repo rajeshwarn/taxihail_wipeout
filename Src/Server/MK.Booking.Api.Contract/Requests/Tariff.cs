@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 #if !CLIENT
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int? VehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 
     public class TariffResponse : IHasResponseStatus

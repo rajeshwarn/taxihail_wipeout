@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -31,5 +32,6 @@ namespace apcurium.MK.Booking.Commands
         public TariffType Type { get; set; }
         public Guid Id { get; set; }
         public int? VehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 }

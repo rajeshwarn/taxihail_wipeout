@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -25,5 +26,6 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime EndTime { get; set; }
         public int Type { get; set; }
         public int? VehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 }
