@@ -147,13 +147,11 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
                 // Check if we have changed market
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
-                if (homeCompany != null)
+                if (homeCompany == null                             // company not found in network
+                    || !homeCompany.IsInNetwork                     // company is not network enabled
+                    || localCompany.Market == homeCompany.Market)   // company is in local market
                 {
-                    if (!homeCompany.IsInNetwork 
-                        || localCompany.Market == homeCompany.Market)
-                    {
-                        response.Market = null;
-                    }
+                    response.Market = null;
                 }
             }
 
