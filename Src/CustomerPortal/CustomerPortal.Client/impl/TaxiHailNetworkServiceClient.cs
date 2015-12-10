@@ -67,7 +67,7 @@ namespace CustomerPortal.Client.Impl
         {
             if (!_serverSettings.ServerData.Network.Enabled)
             {
-                return null;
+                return new CompanyMarketSettingsResponse();
             }
 
             var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
