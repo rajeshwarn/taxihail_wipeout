@@ -42,6 +42,6 @@ namespace apcurium.MK.Booking.IBS
 
         bool InitiateCallToDriver(int ibsOrderId, string vehicleNumber);
 
-        bool UpdateDropOffInTrip(int ibsOrderId, int accountId, Address dropOffAddress);
+        bool UpdateDropOffInTrip(int ibsOrderId, Guid orderId, Address dropOffAddress);
     }
 }

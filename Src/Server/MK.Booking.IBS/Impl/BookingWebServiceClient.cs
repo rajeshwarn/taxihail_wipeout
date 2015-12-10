@@ -509,33 +509,23 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
-        public bool UpdateDropOffInTrip(int ibsOrderId, int accountId, Address dropOffAddress)
+        public bool UpdateDropOffInTrip(int ibsOrderId, Guid orderId, Address dropOffAddress)
         {
             var success = false;
             UseService(service =>
             {
-                var order = new TBookOrder_12()
+                var providerId = _serverSettings.ServerData.DefaultBookingSettings.ProviderId.HasValue
+                        ? _serverSettings.ServerData.DefaultBookingSettings.ProviderId.Value
+                        : 0;
+                var result = service.UpdateDestinationAddress(UserNameApp, PasswordApp, providerId, ibsOrderId, orderId.ToString(), new TWEBAddress()
                 {
-                    AccountID = accountId,
-                    OrderID = ibsOrderId,
-                    DropoffAddress = new TWEBAddress()
-                    {
-                        StreetPlace = dropOffAddress.FullAddress,
-                        AptBaz = dropOffAddress.Apartment,
-                        Longitude = dropOffAddress.Longitude,
-                        Latitude = dropOffAddress.Latitude,
-                        Postal = dropOffAddress.ZipCode
-                    }
-                };
-                try
-                {
-                    var result = service.UpdateBookOrder_12(UserNameApp, PasswordApp, order);
-                    success = result == 0;
-                }
-                catch (Exception e)
-                {
-                    var x = e.Message;
-                }
+                    StreetPlace = dropOffAddress.FullAddress,
+                    AptBaz = dropOffAddress.Apartment,
+                    Longitude = dropOffAddress.Longitude,
+                    Latitude = dropOffAddress.Latitude,
+                    Postal = dropOffAddress.ZipCode
+                });
+                success = result == 0;
             });
             return success;
         }

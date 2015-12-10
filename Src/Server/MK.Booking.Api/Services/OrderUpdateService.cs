@@ -39,29 +39,14 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-            if (account.Id != order.AccountId)
-            {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
-            }
-
-            // If the order was created in another company, need to fetch the correct IBS account
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
-
-            if (!ibsAccountId.HasValue)
-            {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
-            }
-
-            var success = _ibsServiceProvider.Booking().UpdateDropOffInTrip(order.IBSOrderId.Value, ibsAccountId.Value, request.DropOffAddress);
-
+            var success = _ibsServiceProvider.Booking().UpdateDropOffInTrip(order.IBSOrderId.Value, order.Id, request.DropOffAddress);
+            
             if (success)
             {
                 _commandBus.Send(new UpdateOrderInTrip { OrderId = request.OrderId, DropOffAddress = request.DropOffAddress });
             }
 
-            return new HttpResult(HttpStatusCode.OK);
+            return success;
         }
     }
 }
