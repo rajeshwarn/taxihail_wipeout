@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Additions\BraintreePaymentActivity.Fixup.cs" />
     <Compile Include="Additions\PaymentButton.Fixups.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
