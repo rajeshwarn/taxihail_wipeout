@@ -9,6 +9,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
@@ -19,11 +20,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private bool HideViewAllButton;
         private LinearLayout _listLinearLayout;
         private Button _viewAllButton;
+		private int _collapseItemCount;
+		private AddressLocationType _addressLocationTypePicker;
 
         public AddressListView(Context c, IAttributeSet attr) : base(c, attr)
         {
             HideViewAllButton = GetAttributeBool(attr, Resource.Attribute.HideViewAllButton);
+			_collapseItemCount = 3;
         }
+
+		public AddressLocationType AddressLocationTypePicker 
+		{
+			get
+			{
+				return _addressLocationTypePicker;
+			}
+			set
+			{
+				if (_addressLocationTypePicker == value) 
+				{
+					return;
+				}
+
+				_addressLocationTypePicker = value;
+				if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
+				{
+					_collapseItemCount = int.MaxValue;
+				}
+				else
+				{
+					_collapseItemCount = 3;
+				}
+			}
+		}
 
         private bool GetAttributeBool(IAttributeSet attr, int id)
         {
@@ -111,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
             Collapse();
 
-            _viewAllButton.Visibility = (AddressLines.Count() <= 3) || HideViewAllButton ? ViewStates.Gone : ViewStates.Visible;
+            _viewAllButton.Visibility = (AddressLines.Count() <= _collapseItemCount) || HideViewAllButton ? ViewStates.Gone : ViewStates.Visible;
         }
 
         public void Expand()
@@ -151,10 +180,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 			_viewAllButton.Text = this.Services().Localize["ViewAll"];
 
             var i = 0;
-            foreach (var line in AddressLines.Take(3))
+            foreach (var line in AddressLines.Take(_collapseItemCount))
             {
                 _listLinearLayout.AddView(line);
-                if(++i != 3  || _viewAllButton.Visibility== ViewStates.Visible)
+                if(++i != _collapseItemCount  || _viewAllButton.Visibility== ViewStates.Visible)
                 {
                     _listLinearLayout.AddView(GetDivider());
                 }
