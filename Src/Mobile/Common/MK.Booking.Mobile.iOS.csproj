@@ -429,6 +429,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Localization\ArroUAT.resx" />
+    <None Include="Localization\Bram City Taxi.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
