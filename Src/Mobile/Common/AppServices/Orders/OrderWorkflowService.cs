@@ -231,10 +231,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		}
 
 
-		private async Task UpdateAccountSettingsWithVehicleTypeAndServiceType(int? vehicleTypeId)
+		private async Task UpdateAccountSettingsWithVehicleTypeAndServiceType(int? vehicleTypeId, ServiceType serviceType)
 		{
 			var settings = _accountService.CurrentAccount.Settings;
 			settings.VehicleTypeId = vehicleTypeId;
+			settings.ServiceType = serviceType;
 			_accountService.UpdateSettings (settings, _accountService.CurrentAccount.Email, _accountService.CurrentAccount.DefaultTipPercent);
 		}
 
@@ -309,10 +310,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
-				if (_accountService.CurrentAccount.Settings.VehicleTypeId != order.Settings.VehicleTypeId)
-				{
-					UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId);	
-				}
+				UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId, order.Settings.ServiceType);	
 
 				// TODO: Refactor so we don't have to return two distinct objects
 				return Tuple.Create(orderCreated, orderStatus);

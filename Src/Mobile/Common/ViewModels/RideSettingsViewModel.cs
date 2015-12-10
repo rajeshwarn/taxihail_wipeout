@@ -70,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
 					_vehicles = (await _accountService.GetVehiclesList()).ToArray();
-                    //_vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
 					RaisePropertyChanged(() => VehiclesAsListItems);
                     RaisePropertyChanged(() => VehicleTypeId);
@@ -132,9 +131,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private VehicleType[] _vehicles;
 		public VehicleType[] Vehicles
-        {
-            get
-            {
+		{
+			get
+			{
+				if (IsVehicleTypeSelectionEnabled)
+				{
+					var vehicle = _vehicles.FirstOrDefault (x => x.ServiceType == _bookingSettings.ServiceType && x.ReferenceDataVehicleId == _bookingSettings.VehicleTypeId);
+
+					if (vehicle == null)
+					{
+						vehicle = _vehicles.First();
+					}
+
+					VehicleId = vehicle.Id;
+				}
+
                 return _vehicles;
             }
         }
@@ -164,13 +175,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set
             {
-                if (value != _bookingSettings.VehicleTypeId)
-                {
-                    _bookingSettings.VehicleTypeId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => VehicleTypeName);
-					_orderWorkflowService.SetVehicle (value, ServiceType);
-                }
+                _bookingSettings.VehicleTypeId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => VehicleTypeName);
+				_orderWorkflowService.SetVehicle (value, ServiceType);
             }
         }
 
@@ -182,13 +190,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set
 			{
-				if (value != _bookingSettings.ServiceType)
-				{
-					_bookingSettings.ServiceType = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => VehicleTypeName);
-					_orderWorkflowService.SetVehicle (VehicleTypeId, value);
-				}
+				_bookingSettings.ServiceType = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => VehicleTypeName);
+				_orderWorkflowService.SetVehicle (VehicleTypeId, value);
 			}
 		}
 
