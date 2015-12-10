@@ -5,9 +5,14 @@ using System.Net;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using Braintree;
 using BraintreeEncryption.Library;
 using ServiceStack.ServiceInterface;
@@ -17,16 +22,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class BraintreeClientPaymentService : Service
     {
+        private readonly IAccountDao _accountDao;
         private BraintreeGateway BraintreeGateway { get; set; }
 
-        public BraintreeClientPaymentService(IServerSettings serverSettings)
+        public BraintreeClientPaymentService(IServerSettings serverSettings, IAccountDao accountDao)
         {
+            _accountDao = accountDao;
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
 
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
+            var userId = Guid.Parse(this.GetSession().UserAuthId);
+            var account = _accountDao.FindById(userId);
+
+
             return TokenizedCreditCard(BraintreeGateway,
+                account,
                 tokenizeRequest.EncryptedCreditCardNumber,
                 tokenizeRequest.EncryptedExpirationDate,
                 tokenizeRequest.EncryptedCvv,
@@ -53,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
 
-            return TokenizedCreditCard(client, braintreeEncrypter.Encrypt(dummyCreditCard.Number),
+            return TokenizedCreditCard(client,null, braintreeEncrypter.Encrypt(dummyCreditCard.Number),
                     braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy", CultureInfo.InvariantCulture)),
                     braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + "")
                 ).IsSuccessful;
@@ -61,6 +73,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private static TokenizedCreditCardResponse TokenizedCreditCard(
             BraintreeGateway client,
+            AccountDetail account,
             string encryptedCreditCardNumber,
             string encryptedExpirationDate,
             string encryptedCvv,
@@ -83,11 +96,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     }
                 };
 
-                var result = client.Customer.Create(request);
+                var hasBraintreeAccountId = account.SelectOrDefault(acc => acc.BraintreeAccountId.HasValueTrimmed(), false);
+                
+                var result = hasBraintreeAccountId
+                    ? client.Customer.Update(account.BraintreeAccountId, request)
+                    : client.Customer.Create(request);
+
                 var customer = result.Target;
 
                 var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(customer);
-                
 
                 if (!result.IsSuccess() || !creditCardCvvSuccess)
                 {
@@ -98,13 +115,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     };
                 }
 
-                var creditCard = customer.CreditCards.First();
+                var creditCard = customer.CreditCards.OrderByDescending(card => card.CreatedAt).First();
 
                 return new TokenizedCreditCardResponse
                 {
                     CardOnFileToken = creditCard.Token,
                     CardType = creditCard.CardType.ToString(),
                     LastFour = creditCard.LastFour,
+                    BraintreeAccountId = customer.Id,
                     IsSuccessful = result.IsSuccess(),
                     Message = result.Message
                 };
@@ -124,7 +142,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 // "M" = matches, "N" = does not match, "U" = not verified, "S" = bank doesn't participate, "I" = not provided
-                return customer.CreditCards[0].Verification.CvvResponseCode != "N";
+                return customer.CreditCards.OrderByDescending(card => card.CreatedAt)
+                    .Select(card => card.Verification.CvvResponseCode != "N")
+                    .FirstOrDefault();
             }
             catch (Exception)
             {

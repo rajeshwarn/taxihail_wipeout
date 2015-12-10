@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Commands
         public string CreditCardCompany { get; set; }
         public string ExpirationMonth { get; set; }
         public string ExpirationYear { get; set; } 
+        public string BraintreeAccountId { get; set; }
         public Guid Id { get; set; }
         public string Label { get; set; }
         public string ZipCode { get; set; }

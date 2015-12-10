@@ -31,6 +31,16 @@
 		<activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
 		<activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name="io.card.payment.DataEntryActivity" />
+    <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+              android:launchMode="singleTask"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="${applicationId}.braintree" />
+      </intent-filter>
+    </activity>
 	</application>
 	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23" />
 	<permission android:name="com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE" android:protectionLevel="signature" />

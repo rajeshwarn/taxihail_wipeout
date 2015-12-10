@@ -65,10 +65,6 @@
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="OkHttp">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
@@ -238,6 +234,9 @@
     </Reference>
     <Reference Include="GooglePlayServicesLib">
       <HintPath>..\packages\Xamarin.GooglePlayServices.25.0.0.0\lib\MonoAndroid41\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -785,6 +784,14 @@
       <Project>{8CB25019-45B3-4E49-90C8-5C9B03A2A75C}</Project>
       <Name>GoogleMaps.M4B</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\SourceCode\Braintree-Droid\Braintree.DropIn.Droid\Braintree.DropIn.Droid.csproj">
+      <Project>{496C62D6-D8A2-4A36-82D0-0CF7130C5012}</Project>
+      <Name>Braintree.DropIn.Droid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\SourceCode\Braintree-Droid\Braintree.Api.Droid\Braintree.Api.Droid.csproj">
+      <Project>{CEA4D534-ECC4-4DB2-A3BE-2897E91B8C20}</Project>
+      <Name>Braintree.Api.Droid</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
@@ -804,8 +811,8 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="modernhttpclient">
-      <Visible>False</Visible>
       <Version>2.4.2</Version>
+      <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>

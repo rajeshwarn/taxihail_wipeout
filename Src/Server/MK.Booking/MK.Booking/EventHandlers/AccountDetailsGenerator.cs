@@ -258,6 +258,12 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
+
+                if (!@event.BraintreeAccountId.HasValueTrimmed() && account.BraintreeAccountId != @event.BraintreeAccountId)
+                {
+                    account.BraintreeAccountId = @event.BraintreeAccountId;
+                }
+
                 if (!account.DefaultCreditCard.HasValue)
                 {
                     account.DefaultCreditCard = @event.CreditCardId;

@@ -75,6 +75,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.ExpirationMonth,
                 command.ExpirationYear,
                 command.Token,
+                command.BraintreeAccountId,
                 command.Label,
                 command.ZipCode);
             _repository.Save(account, command.Id.ToString());

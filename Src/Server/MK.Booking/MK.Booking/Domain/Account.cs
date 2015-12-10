@@ -222,7 +222,8 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
-            string last4Digits, string expirationMonth, string expirationYear, string token, string label, string zipCode)
+            string last4Digits, string expirationMonth, string expirationYear, string token, string braintreeAccountId,
+            string label, string zipCode)
         {
             Update(new CreditCardAddedOrUpdated
             {

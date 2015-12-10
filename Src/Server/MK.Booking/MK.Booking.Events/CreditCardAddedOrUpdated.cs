@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Events
         public string ExpirationMonth { get; set; }
         public string ExpirationYear { get; set; }
         public string CreditCardCompany { get; set; }
+        public string BraintreeAccountId { get; set; }
         public string Label { get; set; }
         public string ZipCode { get; set; }
     }

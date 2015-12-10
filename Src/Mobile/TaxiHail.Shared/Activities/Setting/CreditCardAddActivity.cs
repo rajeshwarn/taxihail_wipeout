@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private ClientPaymentSettings _paymentSettings;
 
-        protected override async void OnViewModelSet()
+	    protected override async void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
 
