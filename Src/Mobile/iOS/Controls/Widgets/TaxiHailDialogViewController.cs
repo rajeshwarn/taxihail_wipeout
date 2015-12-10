@@ -46,12 +46,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             base.ViewWillAppear(animated);
 
             // change color of status bar
-            if (UIHelper.IsOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                    ? UIBarStyle.Black
-                    : UIBarStyle.Default;
-            }
+            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                ? UIBarStyle.Black
+                : UIBarStyle.Default;
         }
     }
 
@@ -125,18 +122,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 view.BackColor = UIColor.White;
                 view.FirstRowOfTwoRowsTable = indexPath.Row == 0 && tableView.NumberOfRowsInSection(indexPath.Section) == 2;
 
-                if (UIHelper.IsOS7orHigher)
-                {
-                    view.Frame = new CGRect(0, 0, cellWidth, tableView.RowHeight);
-                    var container = new UIView { BackgroundColor = UIColor.Clear };
-                    container.AddSubview(view);
-                    cell.BackgroundView = container;  
-                    cell.SeparatorInset = new UIEdgeInsets(9, 9, 9, 9);
-                }
-                else
-                {
-                    cell.BackgroundView = view;
-                }
+                view.Frame = new CGRect(0, 0, cellWidth, tableView.RowHeight);
+                var container = new UIView { BackgroundColor = UIColor.Clear };
+                container.AddSubview(view);
+                cell.BackgroundView = container;  
+                cell.SeparatorInset = new UIEdgeInsets(9, 9, 9, 9);
             }
             else
             {

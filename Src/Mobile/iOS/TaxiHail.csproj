@@ -20,8 +20,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchI18n>
-    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
     <MtouchArch>i386, x86_64</MtouchArch>
@@ -94,8 +92,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchI18n>
-    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName>
     </IpaPackageName>
@@ -122,8 +118,6 @@
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchI18n>
-    </MtouchI18n>
     <CrashReportingApiKey>
     </CrashReportingApiKey>
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -134,7 +128,7 @@
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
     <MtouchUseLlvm>True</MtouchUseLlvm>
-    <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <CodesignProvision>Automatic:AdHoc</CodesignProvision>
     <CustomCommands>
       <CustomCommands>
@@ -143,6 +137,9 @@
     </CustomCommands>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
+    <MtouchLink>Full</MtouchLink>
+    <MtouchI18n>
+    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -155,8 +152,6 @@
     </CrashReportingApiKey>
     <IpaPackageName>
     </IpaPackageName>
-    <MtouchI18n>
-    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
@@ -164,7 +159,7 @@
     <ConsolePause>False</ConsolePause>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <BuildIpa>True</BuildIpa>
-    <MtouchExtraArgs>-aot "nrgctx-trampolines=1800" -aot "nimt-trampolines=512" -aot "ntrampolines=1800"</MtouchExtraArgs>
+    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=1800" -aot "nimt-trampolines=512" -aot "ntrampolines=1800"</MtouchExtraArgs>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
@@ -172,6 +167,7 @@
     </CustomCommands>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
+    <MtouchLink>Full</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.CrossCore">
@@ -189,7 +185,12 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\Components\modernhttpclient-2.4.2\lib\ios-unified\ModernHttpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
@@ -209,9 +210,6 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
@@ -322,7 +320,6 @@
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
-    <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
@@ -398,7 +395,6 @@
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
@@ -445,7 +441,6 @@
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
@@ -540,7 +535,6 @@
     <Compile Include="Controls\Widgets\ToggleCell.cs" />
     <Compile Include="Style\FlatButtonStyle.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
-    <Compile Include="Extensions\Helpers\NaturalLanguageHelper.cs" />
     <BundleResource Include="Resources\tutorial_screen08.png" />
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
     <BundleResource Include="Resources\tutorial_screen09.png" />
@@ -724,6 +718,7 @@
       <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1003,6 +998,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <XamarinComponentReference Include="modernhttpclient">
+      <Version>2.4.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
       <Visible>False</Visible>
@@ -1015,7 +1014,5 @@
   <Target Name="_CompileITunesMetadata" DependsOnTargets="_DetectSdkLocations;_DetectAppManifest;_GenerateBundleName;_CompileAppManifest">
     <Message Text="Skipping CompileITunesMetadata task to prevent inclusion of iTunesMetadata.plist in the IPA" />
   </Target>
-  <ItemGroup>
-    <Folder Include="Views\BookingBottomBar\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -1,5 +1,6 @@
 using System.IO;
-using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Style
 {
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Style
             StyleManager result = null;
             var resourceName = "";
             
-            foreach ( string name in typeof(StyleManager).Assembly.GetManifestResourceNames() ) 
+            foreach ( var name in typeof(StyleManager).Assembly.GetManifestResourceNames() ) 
             { 
                 if ( name.ToLower().EndsWith( ".style.json") )
                 {
@@ -41,8 +42,9 @@ namespace apcurium.MK.Booking.Mobile.Style
                     using (var reader = new StreamReader(stream))
                     {
                     
-                        string serializedData = reader.ReadToEnd();
-                        result = JsonSerializer.DeserializeFromString<StyleManager>(serializedData);
+                        var serializedData = reader.ReadToEnd();
+
+                        result = serializedData.FromJson<StyleManager>();
                     }
             }
 
@@ -60,49 +62,21 @@ namespace apcurium.MK.Booking.Mobile.Style
 			
 
 
-        public ButtonStyle[] Buttons {
-            get;
-            set;
-        }
+        public ButtonStyle[] Buttons { get; set; }
 
-        public float? ButtonCornerRadius {
-            get;
-            set;
-        }
+        public float? ButtonCornerRadius { get; set; }
 
-        public float? TextboxCornerRadius {
-            get;
-            set;
-        }
+        public float? TextboxCornerRadius { get; set; }
 
-        public float? ButtonFontSize {
-            get;
-            set;
-        }
+        public float? ButtonFontSize { get; set; }
      
-        public bool? CenterLogo {
-            get;
-            set;
-        }
+        public bool? CenterLogo { get; set; }
 
-        public ColorDefinition LightCorporateTextColor {
-            get;
-            set;
-        }        
+        public ColorDefinition LightCorporateTextColor { get; set; }        
 
-        public ColorDefinition NavigationTitleColor
-        {
-            get;
-            set;
-        }
+        public ColorDefinition NavigationTitleColor { get; set; }
           
-        public ColorDefinition NavigationBarColor
-        {
-            get;
-            set;
-        }
-
-       
+        public ColorDefinition NavigationBarColor { get; set; }
     }
 }
 

@@ -11,7 +11,7 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="MK.Booking.Google.iOS">
+        <assembly fullname="MK.Booking.MapDataProvider.iOS">
             <type fullname="*" />
         </assembly>
 
@@ -26,10 +26,6 @@
 
         <assembly fullname="TaxiHail" >
             <namespace fullname="apcurium.MK.Booking.Mobile.Client" />
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="ServiceStack.Text.MonoTouch" > 
             <type fullname="*" />
         </assembly>
 
@@ -86,6 +82,10 @@
         </assembly>
 
         <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Newtonsoft.Json" > 
             <type fullname="*" />
         </assembly>
 </linker>

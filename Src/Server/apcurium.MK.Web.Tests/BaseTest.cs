@@ -98,7 +98,7 @@ namespace apcurium.MK.Web.Tests
         
         protected async Task<Account> GetNewFacebookAccount()
         {
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Country = new CountryISOCode("CA"), Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5145551234", Country = new CountryISOCode("CA"), Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             await AccountService.RegisterAccount(newAccount);
 
             var client = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo());
@@ -110,7 +110,7 @@ namespace apcurium.MK.Web.Tests
 
         protected async Task<Account> GetNewTwitterAccount()
         {
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Country = new CountryISOCode("CA"), Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5145551234", Country = new CountryISOCode("CA"), Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             await AccountService.RegisterAccount(newAccount);
 
             var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo()).AuthenticateTwitter(newAccount.TwitterId);

@@ -12,7 +12,8 @@
 	"NotConfirmed": "Not confirmed",
 	"Enabled": "Enabled",
 	"Disabled": "Disabled",
-
+	"Charge Type": "Charge Type",
+	"Credit card last 4 digits": "Credit card last 4 digits",
 	"Enable account" : "Enable account",
 	"Disable account" : "Disable account",
 	"Unlink IBS account(s)" : "Unlink IBS account(s)",

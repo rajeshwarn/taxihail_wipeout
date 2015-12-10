@@ -15,7 +15,6 @@ using Cirrious.MvvmCross.Plugins.PhoneCall;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {

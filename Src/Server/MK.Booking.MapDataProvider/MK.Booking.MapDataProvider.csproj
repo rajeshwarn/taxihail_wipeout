@@ -68,13 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseServiceClient.Server.cs" />
     <Compile Include="CraftyClicks\CraftyClicksRequest.cs" />
     <Compile Include="CraftyClicks\CraftyClicksService.cs" />
     <Compile Include="CraftyClicks\Resources\CraftyClicksAddress.cs" />
     <Compile Include="CraftyClicks\Resources\DeliveryPoint.cs" />
     <Compile Include="CraftyClicks\Resources\OSGeoCode.cs" />
     <Compile Include="Extensions\ResourcesExtensions.cs" />
-    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
     <Compile Include="Foursquare\FoursquareProviderData.cs" />
     <Compile Include="Google\GoogleApiClient.cs" />

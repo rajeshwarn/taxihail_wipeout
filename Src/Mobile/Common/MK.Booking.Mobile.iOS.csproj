@@ -8,6 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,14 +28,12 @@
     <DefineConstants>CLIENT;MONOTOUCH</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -45,7 +43,6 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -58,7 +55,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
@@ -68,15 +64,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="System.Json" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -376,6 +363,7 @@
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
+    <Compile Include="Infrastructure\IQuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -433,6 +421,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Localization\ArroUAT.resx" />
+    <None Include="Localization\Bram City Taxi.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

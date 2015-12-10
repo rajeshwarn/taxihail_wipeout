@@ -19,10 +19,9 @@ using System.Reactive;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Booking.Mobile.Models;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
