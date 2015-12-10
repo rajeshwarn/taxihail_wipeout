@@ -406,6 +406,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdateAccountDetailsWithBraintreeAccountId(string braintreeAccountId)
+        {
+            Update(new BraintreeAccountIdAdded()
+            {
+                AccountId = Id,
+                BraintreeAccountId = braintreeAccountId
+            });
+        }
+
         public void SaveQuestionAnswers(IEnumerable<AccountChargeQuestionAnswer> answers)
         {
             Update(new AccountAnswersAddedUpdated

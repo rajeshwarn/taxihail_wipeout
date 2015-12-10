@@ -62,6 +62,7 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="AutoTipUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
+    <Compile Include="BraintreeAccountIdAdded.cs" />
     <Compile Include="ChargeAccountPaymentDisabled.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="AllCreditCardsRemoved.cs" />

@@ -42,7 +42,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
         IEventHandler<ChargeAccountPaymentDisabled>,
-        IEventHandler<AccountAnswersAddedUpdated>
+        IEventHandler<AccountAnswersAddedUpdated>,
+        IEventHandler<BraintreeAccountIdAdded>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -444,10 +445,11 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                @event.Answers.ForEach(x => {
-                    var answer = context.Query<AccountChargeQuestionAnswer>()
-                        .Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId)
-                        .FirstOrDefault();
+                @event.Answers.ForEach(x => 
+                {
+                    var answer = context
+                        .Query<AccountChargeQuestionAnswer>()
+                        .FirstOrDefault(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId);
                     if (answer == null) {
                         context.Save(x);
                     } else {
@@ -455,6 +457,18 @@ namespace apcurium.MK.Booking.EventHandlers
                         context.Save(answer);
                     }
                 });
+            }
+        }
+
+        public void Handle(BraintreeAccountIdAdded @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
+                account.BraintreeAccountId = @event.BraintreeAccountId;
+
+                context.SaveChanges();
             }
         }
     }

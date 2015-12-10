@@ -50,7 +50,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnlinkAllPayPalAccounts>,
         ICommandHandler<ReactToPaymentFailure>,
         ICommandHandler<SettleOverduePayment>,
-        ICommandHandler<AddUpdateAccountQuestionAnswer>
+        ICommandHandler<AddUpdateAccountQuestionAnswer>,
+        ICommandHandler<AddBraintreeAccountId>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -332,6 +333,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.SaveQuestionAnswers(command.Answers);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(AddBraintreeAccountId command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateAccountDetailsWithBraintreeAccountId(command.BraintreeAccountId);
             _repository.Save(account, command.Id.ToString());
         }
     }

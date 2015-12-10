@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -15,6 +16,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using Braintree;
 using BraintreeEncryption.Library;
+using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using Environment = Braintree.Environment;
 
@@ -24,10 +26,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly IAccountDao _accountDao;
         private BraintreeGateway BraintreeGateway { get; set; }
+        private readonly ICommandBus _commandBus;
+        private readonly ICreditCardDao _creditCardDao;
 
-        public BraintreeClientPaymentService(IServerSettings serverSettings, IAccountDao accountDao)
+        public BraintreeClientPaymentService(IServerSettings serverSettings, IAccountDao accountDao, ICommandBus commandBus, ICreditCardDao creditCardDao)
         {
             _accountDao = accountDao;
+            _commandBus = commandBus;
+            _creditCardDao = creditCardDao;
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
 
@@ -35,7 +41,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var userId = Guid.Parse(this.GetSession().UserAuthId);
             var account = _accountDao.FindById(userId);
-
 
             return TokenizedCreditCard(BraintreeGateway,
                 account,
@@ -49,12 +54,71 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                return BraintreeGateway.ClientToken.generate();
+                var userId = Guid.Parse(this.GetSession().UserAuthId);
+                var account = _accountDao.FindById(userId);
+
+                if (account.BraintreeAccountId.HasValueTrimmed())
+                {
+                    var tokenRequest = new ClientTokenRequest()
+                    {
+                        CustomerId = account.BraintreeAccountId,
+                        MerchantAccountId = BraintreeGateway.MerchantId,
+                    };
+
+                    return BraintreeGateway.ClientToken.generate(tokenRequest);
+                }
+
+                var customerId = GetOrGenerateBraintreeCustomerId(account);
+
+                _commandBus.Send(new AddBraintreeAccountId()
+                {
+                    AccountId = account.Id,
+                    BraintreeAccountId = customerId
+                });
+
+                return BraintreeGateway.ClientToken.generate(new ClientTokenRequest()
+                {
+                    CustomerId = customerId
+                });
+
             }
             catch (Exception ex)
             {
                 throw new HttpException((int) HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        private string GetOrGenerateBraintreeCustomerId(AccountDetail account)
+        {
+            var name = account.SelectOrDefault(acc => acc.Name.Split(' '), new string[0]);
+
+            if (account.DefaultCreditCard.HasValue)
+            {
+                var creditcard = _creditCardDao.FindById(account.DefaultCreditCard.Value);
+
+                var braintreeCreditCard = BraintreeGateway.CreditCard.Find(creditcard.Token);
+
+                var braintreeCustomerUpdate = new CustomerRequest()
+                {
+                    FirstName = name.FirstOrDefault(),
+                    LastName = name.FirstOrDefault()
+                };
+
+                BraintreeGateway.Customer.Update(braintreeCreditCard.CustomerId, braintreeCustomerUpdate);
+
+                return braintreeCreditCard.CustomerId;
+            }
+
+            var braintreeCustomerCreation = new CustomerRequest()
+            {
+                FirstName = name.FirstOrDefault(),
+                LastName = name.FirstOrDefault()
+            };
+
+            var result = BraintreeGateway.Customer.Create(braintreeCustomerCreation);
+
+            var customer = result.Target;
+            return customer.Id;
         }
 
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
@@ -70,7 +134,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + "")
                 ).IsSuccessful;
         }
-
+        
+        //TODO MKTAXI-3005: Validate if we still need this after vZero is implemented.
         private static TokenizedCreditCardResponse TokenizedCreditCard(
             BraintreeGateway client,
             AccountDetail account,
@@ -81,8 +146,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
+                var name = account.SelectOrDefault(acc => acc.Name.Split(' '), new string[0]);
+
                 var request = new CustomerRequest
                 {
+                    FirstName = name.FirstOrDefault(),
+                    LastName = name.LastOrDefault(),
                     CreditCard = new CreditCardRequest
                     {
                         Number = encryptedCreditCardNumber,
