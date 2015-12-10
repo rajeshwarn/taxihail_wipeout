@@ -1,17 +1,32 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
-using ServiceStack.Common.Web;
+
+#if __IOS__
+using Foundation;
+#endif
+
+#if CLIENT
+using MK.Common.Exceptions;
+using System.Net.Http;
+using System.Net.Http.Headers;
+#else
+using apcurium.MK.Booking.Api.Client.Extensions;
 using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
+using ServiceStack.Common.Web;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
+#if __IOS__
+    [Preserve]
+#endif
     public class CompanyServiceClient : BaseServiceClient
     {
         private readonly ICacheService _cacheService;
@@ -22,23 +37,59 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _cacheService = cacheService;
         }
 
-        private void HandleException(Exception error, TaskCompletionSource<TermsAndConditions> task)
+        private TermsAndConditions HandleException(Exception error)
         {
             var webServiceError = error as WebServiceException;
-            if (webServiceError != null
-                && webServiceError.StatusCode == (int)HttpStatusCode.NotModified)
+
+            if (webServiceError == null || webServiceError.StatusCode != (int) HttpStatusCode.NotModified)
             {
-                //get the object from the cache and deserialize
-                var terms = _cacheService.Get<TermsAndConditions>("Terms");
-                terms.Updated = false;
-                task.SetResult(terms);
+                return null;
             }
-            else
+
+            //get the object from the cache and deserialize
+            var terms = _cacheService.Get<TermsAndConditions>("Terms");
+
+            if (terms == null)
             {
-                task.SetException(error);
+                return null;
+            }
+
+            terms.Updated = false;
+            return terms;
+        }
+#if CLIENT
+        private void HandleResponseHeader(HttpResponseMessage response)
+        {
+            var version = response.Headers.Where(header => header.Key == "ETag")
+                .SelectMany(header => header.Value)
+                .SingleOrDefault();
+
+            if (version.HasValueTrimmed())
+            {
+                //put in the cache the etag
+                _cacheService.Set("TermsVersion", version);
             }
         }
 
+        private void AddVersionInformation()
+        {
+            //get the etag from the cache and add it to the headers
+            var version = _cacheService.Get<string>("TermsVersion");
+            if (version == null)
+            {
+                return;
+            }
+
+            if (Client.DefaultRequestHeaders.Any(header => header.Key == "If-None-Match"))
+            {
+                Client.DefaultRequestHeaders.Remove("If-None-Match");
+            }
+
+            //Client.DefaultRequestHeaders.IfNoneMatch.Add(new EntityTagHeaderValue("\"" + version + "\""));
+
+            Client.DefaultRequestHeaders.TryAddWithoutValidation("If-None-Match", version);
+        }
+#else
         private void HandleResponseHeader(HttpWebResponse response)
         {
             var version = response.Headers[HttpHeaders.ETag];
@@ -48,7 +99,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 _cacheService.Set("TermsVersion", version);
             }
         }
-
         private void AddVersionInformation(HttpWebRequest request)
         {
             //get the etag from the cache and add it to the headers
@@ -58,41 +108,48 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 request.Headers.Set(HttpHeaders.IfNoneMatch, version);
             }
         }
-
-        public Task<TermsAndConditions> GetTermsAndConditions()
+#endif
+        public async Task<TermsAndConditions> GetTermsAndConditions()
         {
-            var tcs = new TaskCompletionSource<TermsAndConditions>();
+            try
+            {
+#if CLIENT
+                AddVersionInformation();
+                return await Client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
+#else
+                Client.LocalHttpWebRequestFilter += AddVersionInformation;
+                Client.LocalHttpWebResponseFilter += HandleResponseHeader;
+                var termsAndConditions =  await Client.GetAsync<TermsAndConditions>("/termsandconditions");
 
-            Client.LocalHttpWebRequestFilter += AddVersionInformation;
-            Client.LocalHttpWebResponseFilter += HandleResponseHeader;
+                _cacheService.Set("Terms", termsAndConditions);
 
-            Client.GetAsync<string>("/termsandconditions",
-                result =>
+                return termsAndConditions;
+#endif
+
+            }
+            catch (Exception ex)
+            {
+                var result = HandleException(ex);
+
+                if (result == null)
                 {
-                    var terms = result.FromJson<TermsAndConditions>();
-                    _cacheService.Set("Terms", terms);
-                    tcs.SetResult(terms);
-                },
-                (result, error) => HandleException(error, tcs));
+                    throw;
+                }
 
-            return tcs.Task;
+                return result;
+            }
         }
 			
         public Task<AccountCharge> GetAccountCharge(string accountNumber, string customerNumber)
         {
-            var tcs = new TaskCompletionSource<AccountCharge>();
-            bool hideAnswers = false;
+#if CLIENT
+                const bool hideAnswers = true;
+#else
+                const bool hideAnswers = false;
+#endif
 
-            #if CLIENT
-            hideAnswers = true;
-            #endif
-
-            string request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
-            Client.GetAsync<AccountCharge>(request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));
-
-            return tcs.Task;
+            var request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
+            return Client.GetAsync<AccountCharge>(request);
         }
 
         public Task<NotificationSettings> GetNotificationSettings()

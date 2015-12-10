@@ -103,6 +103,15 @@
 
 				<div class="div-account-block">
 					<div class="left-column">
+						<label class="control-label-wide">{{localize "Credit card last 4 digits"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.last4Digits}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
 						<label class="control-label-wide">{{localize "Default Tip Percent"}}</label>
 					</div>
 					<div class="right-column">
@@ -186,13 +195,7 @@
 							<td style="width:110px;"><div>{{this.pickupDateText}}</div><div>{{this.pickupTimeText}}</div></td>
 							<td style="width:210px;"><div>{{this.pickupAddress.streetNumber}} {{this.pickupAddress.street}}</div><div>{{this.pickupAddress.city}} {{this.pickupAddress.zipCode}} {{this.pickupAddress.state}}</div></td>
 							<td style="width:210px;"><div>{{this.dropOffAddress.streetNumber}} {{this.dropOffAddress.street}}</div><div>{{this.dropOffAddress.city}} {{this.dropOffAddress.zipCode}} {{this.dropOffAddress.state}}</div></td>
-							<td style="width:140px;">
-								<div class="divPayment"><div class="divText">Fare:</div><div class="divAmount">{{this.fare}}</div></div>
-								<div class="divPayment"><div class="divText">Tax:</div><div class="divAmount">{{this.tax}}</div></div>
-								<div class="divPayment"><div class="divText">Toll:</div><div class="divAmount">{{this.toll}}</div></div>
-								<div class="divPayment"><div class="divText">Tip:</div><div class="divAmount">{{this.tip}}</div></div>
-								<div class="divPayment"><div class="divText">Surcharge:</div><div class="divAmount">{{this.surcharge}}</div></div>
-							</td>
+							<td style="width:210px;"><div class="divPayment" title="Fare: {{this.fare}}&#013;&#010;Tax: {{this.tax}}&#013;&#010;Toll: {{this.toll}}&#013;&#010;Tip: {{this.tip}}&#013;&#010;Surcharge: {{this.surcharge}}"><div class="divText">Total:</div><div class="divAmount">{{this.totalAmount}}</div></div></td>
 							<td style="width:90px;">{{this.statusText}}</td>
 							<td style="width:130px;">{{this.note}}</td>
 							<td style="width:80px;">{{this.promoCode}}</td>

@@ -6,8 +6,7 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -15,7 +14,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 	/// TomTom provider.
 	/// documentation : http://developer.tomtom.com/docs/read/map_toolkit/web_services/routing/Request
 	/// </summary>
-	public class TomTomProvider : IDirectionDataProvider
+	public class TomTomProvider : BaseServiceClient, IDirectionDataProvider
 	{
         private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
@@ -38,7 +37,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 
         public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
-			var client = new JsonServiceClient (ApiUrl);
+			var client = GetClient(ApiUrl);
 			var queryString = string.Format (CultureInfo.InvariantCulture, RoutingServiceUrl, 
 				MapToolkitKey, 
                 GetFormattedPoints (originLat, originLng, destLat, destLng),
@@ -78,21 +77,16 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			}
 
 			// for which day? today, tomorrow, monday, tuesday, wednesday, thursday, friday, saturday, sunday
-			string day = string.Empty;
+			string day;
 			if (date.Value.Date == DateTime.Today)
 			{
 				day = "today";
 			}
 			else
 			{
-				if (date.Value.Date == DateTime.Today.AddDays (1))
-				{
-					day = "tomorrow";
-				}
-				else
-				{
-					day = date.Value.DayOfWeek.ToString ().ToLowerInvariant ();
-				}
+				day = date.Value.Date == DateTime.Today.AddDays (1) 
+                    ? "tomorrow" 
+                    : date.Value.DayOfWeek.ToString().ToLowerInvariant ();
 			}
 
 			// when? either now or number of minutes since local midnight (between 0 and 1439)

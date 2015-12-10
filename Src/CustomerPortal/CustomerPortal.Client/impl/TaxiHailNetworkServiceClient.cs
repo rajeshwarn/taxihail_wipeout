@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
 
 namespace CustomerPortal.Client.Impl
@@ -59,6 +60,11 @@ namespace CustomerPortal.Client.Impl
 
         public string GetCompanyMarket(double latitude, double longitude)
         {
+            return GetCompanyMarketSettings(latitude, longitude).Market;
+        }
+
+        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        {
             if (!_serverSettings.ServerData.Network.Enabled)
             {
                 return null;
@@ -75,31 +81,24 @@ namespace CustomerPortal.Client.Impl
 
             var queryString = BuildQueryString(@params);
 
-            return Client.Get("customer/roaming/market" + queryString)
-                         .Deserialize<string>()
-                         .Result;
-        }
-
-        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
-        {
-            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-
-            var @params = new Dictionary<string, string>
-            {
-                { "companyId", homeCompanyKey },
-                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
-                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
-            };
-
-            var queryString = BuildQueryString(@params);
-
             return Client.Get("customer/roaming/marketsettings" + queryString)
                          .Deserialize<CompanyMarketSettingsResponse>()
                          .Result;
         }
 
+        /// <summary>
+        /// WARNING: Should not be called if market doesn't have a value, use GetNetworkFleetAsync instead
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="market"></param>
+        /// <returns></returns>
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
+            if (!market.HasValue())
+            {
+                throw new Exception("Market doesn't have a value, use GetNetworkFleetAsync instead");
+            }
+
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))

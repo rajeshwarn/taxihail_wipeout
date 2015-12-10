@@ -15,9 +15,9 @@ using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.ViewModels;
 using PushSharp.Client;
-using ServiceStack.Text;
 using Android.Support.V4.App;
 using System.Threading.Tasks;
 using Cirrious.CrossCore;
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var registrationId = PushClient.GetRegistrationId(_context);
 
 
-            bool registered = !string.IsNullOrEmpty(registrationId);
+            var registered = !string.IsNullOrEmpty(registrationId);
             const string tag = "PushSharp-GCM";
 
 			if (!registered || force)
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void SaveDeviceToken(string deviceToken)
         {
-            throw new NotImplementedException("iOS only");
+            throw new NotSupportedException("iOS only");
         }
     }
 
@@ -106,7 +106,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             if (intent != null && intent.Extras != null)
             {
                 foreach (var key in intent.Extras.KeySet())
+                {
                     msg.AppendLine(key + "=" + intent.Extras.Get(key));
+                }
             }
 
             //Store the message
@@ -172,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Log.Error(PushHandlerBroadcastReceiver.Tag, "GCM Error: " + errorId);
         }
 
-		static int notificationIntentcounter = 26; //to prevent exiting app to resend 0, we start at an arbitrary number
+		private static int NotificationIntentcounter = 26; //to prevent exiting app to resend 0, we start at an arbitrary number
 
 		private void CreateNotification(string title, string desc, Guid orderId, bool isPairingNotification)
 		{
@@ -192,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			uiIntent.PutExtra("orderId", orderId.ToString());
 		    uiIntent.PutExtra("isPairingNotification", isPairingNotification.ToString());
 
-			var contentIntent = PendingIntent.GetActivity(this, notificationIntentcounter++,
+			var contentIntent = PendingIntent.GetActivity(this, NotificationIntentcounter++,
 				uiIntent, 0);
 
 			var builder =

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using ServiceStack.Text;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using apcurium.MK.Common.Entity;
 
@@ -30,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
 		}
 
-		public async override void OnViewStarted (bool firstTime)
+		public override void OnViewStarted (bool firstTime)
 		{
 			base.OnViewStarted (firstTime);
 			// TODO: This call makes the app crash on Android Nexus 7 - 4.4.2. When is it necessary? (Working on a test device without it.)

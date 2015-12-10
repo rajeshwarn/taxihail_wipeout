@@ -1,9 +1,9 @@
 using System;
+using apcurium.MK.Booking.Mobile.Extensions;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 			if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
 				//We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
 			{
-				var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+				var cacheItem = serialized.FromJson<CacheItem<T>>();
 				if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
 				{
 					return cacheItem.Value;
@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 			}
 			else if (serialized.HasValue()) //Support for older cached item
 			{
-				var item = JsonSerializer.DeserializeFromString<T>(serialized);
+			    var item = serialized.FromJson<T>();
 				if (item != null)
 				{
 					Set(key, item);
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 		public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
 		{
 			var item = new CacheItem<T>(obj, expiresAt);
-			var serialized = JsonSerializer.SerializeToString(item);
+		    var serialized = item.ToJson();
 			var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
 			pref.Edit().PutString(key, serialized).Commit();
 		}
