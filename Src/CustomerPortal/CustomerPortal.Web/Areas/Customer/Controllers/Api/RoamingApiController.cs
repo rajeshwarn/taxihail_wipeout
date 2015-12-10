@@ -149,7 +149,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
                 if (homeCompany != null)
                 {
-                    if (localCompany.Market == homeCompany.Market)
+                    if (!homeCompany.IsInNetwork 
+                        || localCompany.Market == homeCompany.Market)
                     {
                         response.Market = null;
                     }
