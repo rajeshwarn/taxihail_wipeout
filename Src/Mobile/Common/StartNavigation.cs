@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile
 
 		    var appSettings = Mvx.Resolve<IAppSettings>();
 		    var accountService = Mvx.Resolve<IAccountService>();
-		    var facebookService = Mvx.Resolve<IFacebookService>();
+//		    var facebookService = Mvx.Resolve<IFacebookService>();
 		    var metricsService = Mvx.Resolve<IMetricsService>();
 			var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
@@ -32,12 +32,12 @@ namespace apcurium.MK.Booking.Mobile
 
 			if (appSettings.Data.FacebookEnabled)
             {
-                facebookService.Init();
+//                facebookService.Init();
             }
 
             if (appSettings.Data.FacebookPublishEnabled)
             {
-                facebookService.PublishInstall();
+//                facebookService.PublishInstall();
             }
 
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();

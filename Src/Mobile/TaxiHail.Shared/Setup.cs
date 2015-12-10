@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private void InitializeSocialNetwork()
 		{
             var container = TinyIoCContainer.Current;
-			container.Register<IFacebookService,FacebookService> ();
+//			container.Register<IFacebookService,FacebookService> ();
 
             container.Register<ITwitterService>((c,p) => 
             {

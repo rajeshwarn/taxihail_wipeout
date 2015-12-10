@@ -46,18 +46,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string AuthenticationDataCacheKey = "AuthenticationData";
 
 		private readonly IAppSettings _appSettings;
-		private readonly IFacebookService _facebookService;
+//		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
 
         public AccountService(IAppSettings appSettings,
-			IFacebookService facebookService,
+//			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize)
 		{
             _localize = localize;
 		    _twitterService = twitterService;
-			_facebookService = facebookService;
+//			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
 
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				if(_appSettings.Data.FacebookEnabled)
 				{
-					_facebookService.Disconnect ();
+//					_facebookService.Disconnect ();
 				}
             } 
 			catch( Exception ex )

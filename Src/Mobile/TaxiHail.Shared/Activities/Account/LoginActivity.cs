@@ -26,10 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable })]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-		private readonly FacebookService _facebookService;
+//		private readonly FacebookService _facebookService;
 		public LoginActivity ()
 		{
-			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
+//			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
 		protected override void OnCreate(Bundle bundle)
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
-			_facebookService.ActivityOnActivityResult(requestCode, resultCode, data);
+//			_facebookService.ActivityOnActivityResult(requestCode, resultCode, data);
 		}
 
 		protected override void OnViewModelSet()
