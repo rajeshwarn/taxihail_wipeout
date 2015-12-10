@@ -286,6 +286,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Country = settings.Country,
                 Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
+				ServiceType = settings.ServiceType,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
 				DefaultTipPercent = tipPercent,

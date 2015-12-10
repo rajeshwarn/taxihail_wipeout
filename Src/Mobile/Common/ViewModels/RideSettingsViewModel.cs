@@ -69,8 +69,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
-                    var v = await _accountService.GetVehiclesList();
-                    _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+					_vehicles = (await _accountService.GetVehiclesList()).ToArray();
+                    //_vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
@@ -129,8 +129,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem[] _vehicles;
-        public ListItem[] Vehicles
+        private VehicleType[] _vehicles;
+		public VehicleType[] Vehicles
         {
             get
             {
@@ -160,10 +160,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings.VehicleTypeId = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(() => VehicleTypeName);
-					_orderWorkflowService.SetVehicleType (value, ServiceType.Taxi); // TODO: ServiceType not implemented in RideSettings Yet
+					_orderWorkflowService.SetVehicle (value, ServiceType);
                 }
             }
         }
+
+		public ServiceType ServiceType
+		{
+			get
+			{
+				return _bookingSettings.ServiceType;
+			}
+			set
+			{
+				if (value != _bookingSettings.ServiceType)
+				{
+					_bookingSettings.ServiceType = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => VehicleTypeName);
+					_orderWorkflowService.SetVehicle (VehicleTypeId, value);
+				}
+			}
+		}
 
         public string VehicleTypeName
         {
@@ -179,12 +197,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     return null;
                 }
 
-                var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
+				var vehicle = Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId && x.ServiceType == ServiceType);
 				if (vehicle == null)
 				{
 					vehicle = Vehicles.FirstOrDefault();
 				}
-                return vehicle.Display;
+				return vehicle.Name;
             }
         }
 
@@ -364,16 +382,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public ICommand SetVehiculeType
-        {
-            get
-            {
-                return this.GetCommand<int?>(id =>
-                {
-                    VehicleTypeId = id;
-                });
-            }
-        }
+		public ICommand SetVehiculeType 
+		{
+			get 
+			{
+				return this.GetCommand<Guid> (id => 
+				{
+					VehicleId = id;
+					var vehicle = Vehicles.FirstOrDefault (x => x.Id == id) ?? Vehicles.FirstOrDefault ();
+					if (vehicle != null) 
+					{
+						VehicleTypeId = vehicle.ReferenceDataVehicleId;
+						ServiceType = vehicle.ServiceType;
+					}
+				});
+			}
+		}
+
+		public Guid VehicleId  { get; set; }
 
 		public ICommand NavigateToUpdatePassword
         {

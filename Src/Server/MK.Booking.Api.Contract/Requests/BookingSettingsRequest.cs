@@ -4,6 +4,7 @@ using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -26,6 +27,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Phone { get; set; }
 
         public int? VehicleTypeId { get; set; }
+
+		public ServiceType ServiceType { get; set; }
 
         public int? ChargeTypeId { get; set; }
 

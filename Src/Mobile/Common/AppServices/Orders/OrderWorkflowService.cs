@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             _vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
 
-            SetVehicleType(vehicleTypeId, serviceType);
+            SetVehicle(vehicleTypeId, serviceType);
 		}
 
 		public async Task SetAddress(Address address)
@@ -339,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task SetVehicleType(int? vehicleTypeId, ServiceType serviceType)
+		public async Task SetVehicle(int? vehicleTypeId, ServiceType serviceType)
 		{
             // this must be done before changing vehicleTypeSubject because of VehicleService observables
 
@@ -1076,7 +1076,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				serviceType = networkVehicles.First().ServiceType;
 	        }
 
-			await SetVehicleType(selectedVehicleId, serviceType);
+			await SetVehicle(selectedVehicleId, serviceType);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -1102,7 +1102,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             }
 
-	        await SetVehicleType(selectedVehicleId, serviceType);
+	        await SetVehicle(selectedVehicleId, serviceType);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)

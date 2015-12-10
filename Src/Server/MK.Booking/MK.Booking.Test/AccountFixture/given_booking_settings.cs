@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 
 #endregion
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Passengers = 3,
                 ProviderId = 85,
                 VehicleTypeId = 69,
+                ServiceType = ServiceType.Taxi,
                 DefaultTipPercent = defaultTipPercent,
                 AccountNumber = "1234",
                 CustomerNumber = "0"
@@ -64,6 +66,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(3, @event.Passengers);
             Assert.AreEqual(85, @event.ProviderId);
             Assert.AreEqual(69, @event.VehicleTypeId);
+            Assert.AreEqual(ServiceType.Taxi, @event.ServiceType);
             Assert.AreEqual("1234", @event.AccountNumber);
             Assert.AreEqual("0", @event.CustomerNumber);
             Assert.AreEqual(defaultTipPercent, @event.DefaultTipPercent);

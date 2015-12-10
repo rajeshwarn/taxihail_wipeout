@@ -537,7 +537,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							? VehicleTypes.First(x => x.ServiceType == model.VehicleType.ServiceType)
 							: model.VehicleType;
 						ServiceType = vehicle.ServiceType;
-						_orderWorkflowService.SetVehicleType(vehicle.ReferenceDataVehicleId, vehicle.ServiceType);
+						_orderWorkflowService.SetVehicle(vehicle.ReferenceDataVehicleId, vehicle.ServiceType);
 					}
 				});
 			}

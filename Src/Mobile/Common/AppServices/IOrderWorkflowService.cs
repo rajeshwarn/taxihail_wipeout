@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
-		Task SetVehicleType (int? vehicleTypeId, ServiceType serviceType);
+		Task SetVehicle (int? vehicleTypeId, ServiceType serviceType);
 
 		Task SetBookingSettings(BookingSettings bookingSettings);
 

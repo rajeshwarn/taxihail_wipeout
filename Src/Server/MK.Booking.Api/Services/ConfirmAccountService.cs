@@ -133,6 +133,7 @@ namespace apcurium.MK.Booking.Api.Services
 							Phone = request.PhoneNumber,
 							Passengers = account.Settings.Passengers,
 							VehicleTypeId = account.Settings.VehicleTypeId,
+                            ServiceType = account.Settings.ServiceType,
 							ChargeTypeId = account.Settings.ChargeTypeId,
 							ProviderId = account.Settings.ProviderId,
 							NumberOfTaxi = account.Settings.NumberOfTaxi,

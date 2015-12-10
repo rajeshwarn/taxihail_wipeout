@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     duration =
                         (await
                             _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
-                                order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+								order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.ServiceType, order.Settings.VehicleTypeId,
                                 order.PickupDate)).TripDurationInSeconds;
 
                     directionInfo =
@@ -265,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
                 {
-                    directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);
+					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.ServiceType, order.Settings.VehicleTypeId, order.PickupDate);
                 }
 
                 directionInfo = directionInfo ?? new DirectionInfo();

@@ -117,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtPhone.ShowCloseButtonOnKeyboard();
 			txtPayBack.ShowCloseButtonOnKeyboard();
 
-            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
+			txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
