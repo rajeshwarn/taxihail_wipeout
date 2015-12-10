@@ -16,7 +16,7 @@
             var data = _.extend(this.model.toJSON(), {
                 availableVehicleTypes: this.options.availableVehicleTypes.toJSON()
             });
-
+            
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
             data.isVehicleDefault = +this.model.get('type') === TaxiHail.Tariff.type.vehicleDefault;
@@ -45,6 +45,7 @@
                 rules: {
                     name: 'required',
                     vehicleTypeId: 'required',
+                    serviceType: 'required',
                     flatRate: {
                         required: true,
                         min: 0
@@ -93,8 +94,17 @@
                 startTime,
                 endTime;
 
+            serialized.serviceType = null;
+
+            if (serialized.vehicleId) {
+                var vehicles = this.options.availableVehicleTypes;
+                var vehicle = vehicles.get(serialized.vehicleId);
+                serialized.serviceType = vehicle.get('serviceType');
+                serialized.vehicleTypeId = vehicle.get('referenceDataVehicleId');
+            }
+
             if(+serialized.type) {
-                // Not a default rate
+                // Not a default rate   
 
                 if(+serialized.type === TaxiHail.Tariff.type.recurring ) {
 

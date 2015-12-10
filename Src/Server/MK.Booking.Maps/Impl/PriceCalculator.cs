@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Provider;
 
 #endregion
@@ -22,9 +23,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             _logger = logger;
         }
 
-        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds, int? vehicleTypeId)
+        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds, ServiceType serviceType, int? vehicleTypeId)
         {
-            var tariff = GetTariffFor(pickupDate, vehicleTypeId);
+            var tariff = GetTariffFor(pickupDate, serviceType, vehicleTypeId);
 
             if (tariff == null) return null;
 
@@ -78,14 +79,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             return roundedPrice;
         }
 
-        public Tariff GetTariffFor(DateTime pickupDate, int? vehicleTypeId = null)
+        public Tariff GetTariffFor(DateTime pickupDate, ServiceType serviceType = ServiceType.Taxi, int? vehicleTypeId = null)
         {
             var tariffs = _tariffProvider.GetTariffs().ToArray();
 
             // Case 1: A tariff exists for the specific date
             var tariff = (from r in tariffs
                 where r.Type == (int) TariffType.Day
-                where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
+                where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value && r.ServiceType == serviceType
                 where IsDayMatch(r, pickupDate)
                 select r).FirstOrDefault();
 
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                     where r.Type == (int) TariffType.Recurring
-                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
+                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value && r.ServiceType == serviceType
                     where IsRecurringMatch(r, pickupDate)
                     select r).FirstOrDefault();
             }
@@ -124,7 +125,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 tariff = (from r in tariffs
                     where r.Type == (int) TariffType.VehicleDefault
-                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value
+                    where vehicleTypeId.HasValue && r.VehicleTypeId == vehicleTypeId.Value && r.ServiceType == serviceType
                     select r).FirstOrDefault();
             }
 

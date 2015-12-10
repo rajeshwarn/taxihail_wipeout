@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         var serviceTypeSetting = settings.FirstOrDefault(y => x.ServiceType == y.ServiceType);
                         
-                        var tariff = tariffs.FirstOrDefault(y => y.VehicleTypeId.HasValue && y.VehicleTypeId == x.ReferenceDataVehicleId)
+                        var tariff = tariffs.FirstOrDefault(y => y.VehicleTypeId.HasValue && y.VehicleTypeId == x.ReferenceDataVehicleId && y.ServiceType == x.ServiceType)
                                 ?? tariffs.FirstOrDefault(y => y.VehicleTypeId == null);
 
                         var baseRate = new BaseRateInfo

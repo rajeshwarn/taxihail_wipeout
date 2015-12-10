@@ -21,13 +21,13 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
         public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
-		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
+		    double? destinationLng, ServiceType serviceType, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
         {
-            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta).Result;
+            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, serviceType, vehicleTypeId, date, forEta).Result;
         }
 
         public async Task<Direction> GetDirectionAsync(double? originLat, double? originLng, double? destinationLat,
-            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
+            double? destinationLng, ServiceType serviceType, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
         {
             var result = new Direction();
 
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     result.Price = _priceCalculator.GetPrice(
                         direction.Distance,
                         date ?? DateTime.Now,
-                        direction.Duration, vehicleTypeId);
+                        direction.Duration, serviceType, vehicleTypeId);
 
                     result.FormattedPrice = result.Price == null 
                         ? string.Empty 
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Direction GetEta(double fromLat, double fromLng, double toLat, double toLng)
         {
-            return GetDirection(fromLat, fromLng, toLat, toLng, null, null, true);
+            return GetDirection(fromLat, fromLng, toLat, toLng, ServiceType.Taxi, null, null, true);
         }
 
         private string FormatDistance(int? distance)

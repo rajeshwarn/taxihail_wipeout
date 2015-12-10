@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         public object Get(DirectionsRequest request)
         {
             var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
-                request.DestinationLng, request.VehicleTypeId, request.Date);
+                request.DestinationLng, request.ServiceType, request.VehicleTypeId, request.Date);
 
             var directionInfo = new DirectionInfo
             {
@@ -65,7 +65,8 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                     {
                         Latitude = request.OriginLat.Value,
                         Longitude = request.OriginLng.Value,
-                        VehicleTypeId = null
+                        VehicleTypeId = null,
+                        ServiceType = request.ServiceType
                     }).ToArray();
 
                     // Get nearest available vehicle
