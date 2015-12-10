@@ -52,6 +52,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			}
 		}
 
+		public AddressLocationType AddressLocationTypePicker
+		{
+			get
+			{
+				return _addressLocationTypePicker;
+			}
+			set
+			{
+				if (_addressLocationTypePicker == value) 
+				{
+					return;
+				}
+
+				_addressLocationTypePicker = value;
+				if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
+				{
+					_collapseItemCount = int.MaxValue;
+				}
+				else
+				{
+					_collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;
+				}
+			}
+		}
+
         public override nint NumberOfSections(UITableView tableView)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
