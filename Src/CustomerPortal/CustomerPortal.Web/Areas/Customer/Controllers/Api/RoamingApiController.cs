@@ -149,9 +149,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
                 if (homeCompany != null)
                 {
-                    if (localCompany.Market != homeCompany.Market)
+                    if (localCompany.Market == homeCompany.Market)
                     {
-                        response.Market = localCompany.Market;
+                        response.Market = null;
                     }
                 }
             }
@@ -301,7 +301,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 {
                     Market = marketName,
                     DispatcherSettings = marketSettings.DispatcherSettings,
-                    EnableDriverBonus = marketSettings.EnableDriverBonus
+                    EnableDriverBonus = marketSettings.EnableDriverBonus,
+                    ReceiptFooter = marketSettings.ReceiptFooter
                 }
                 : new CompanyMarketSettingsResponse();
         }

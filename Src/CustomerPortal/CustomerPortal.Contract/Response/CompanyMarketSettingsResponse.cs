@@ -13,6 +13,8 @@ namespace CustomerPortal.Contract.Response
 
         public bool EnableDriverBonus { get; set; }
 
+        public string ReceiptFooter { get; set; }
+
         public DispatcherSettings DispatcherSettings { get; set; }
     }
 }

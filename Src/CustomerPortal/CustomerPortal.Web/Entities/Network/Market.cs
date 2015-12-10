@@ -23,6 +23,8 @@ namespace CustomerPortal.Web.Entities.Network
         public List<Vehicle> Vehicles { get; set; }
 
         public bool EnableDriverBonus { get; set; }
+
+        public string ReceiptFooter { get; set; }
     }
 
     public class Vehicle

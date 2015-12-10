@@ -73,6 +73,9 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableDriverBonus }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+
+            <h5>Receipt Footer</h5>
+            @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
         </div>
     </div>
 
