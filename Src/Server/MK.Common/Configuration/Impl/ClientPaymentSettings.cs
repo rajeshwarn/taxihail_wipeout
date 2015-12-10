@@ -32,7 +32,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         /// <summary>
         /// Manual payment, not through app
         /// </summary>
-        [Obsolete("This property is deprecated. Now, Out Of App Payment can be enabled for web only", false)]
+        [Obsolete("This property is deprecated, use 'IsPaymentOutOfAppDisabled' instead. Now, Out Of App Payment can be enabled for web only", false)]
         public bool IsOutOfAppPaymentDisabled { get; set; }
 
         /// <summary>
