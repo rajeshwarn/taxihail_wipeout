@@ -404,15 +404,6 @@ namespace apcurium.MK.Booking.Api.Services
                 .Where(x => assignedVehicles.All(assigned => !(assigned.ReferenceDataVehicleId == x.IbsVehicleId && assigned.ServiceType == x.ServiceType)))
                 .ToList();
 
-            // Test
-            availableVehicleTypes.Add(new EditableVehicle
-            {
-                Id = 100,
-                ServiceType = ServiceType.Luxury,
-                IbsVehicleId = 1010,
-                Image = availableVehicleTypes[0].Image,
-                Display = availableVehicleTypes[0].Display
-            });
             return availableVehicleTypes;
         }
 
