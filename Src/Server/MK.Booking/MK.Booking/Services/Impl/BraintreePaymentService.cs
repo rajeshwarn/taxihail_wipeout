@@ -188,14 +188,32 @@ namespace apcurium.MK.Booking.Services.Impl
                 bool isSuccessful;
                 var isCardDeclined = false;
                 var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
-                var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
+                var customerId = account.BraintreeAccountId;
+                
+                if (!customerId.HasValueTrimmed())
+                {
+                    var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+                    var braintreeCreditCard = BraintreeGateway.CreditCard.Find(creditCard.Token);
+                    customerId = braintreeCreditCard.CustomerId;
+                    var name = account.Name.Split(' ');
+                    var braintreeCustomerUpdate = new CustomerRequest()
+                    {
+                        FirstName = name.FirstOrDefault(),
+                        LastName = name.LastOrDefault()
+                    };
+
+                    BraintreeGateway.Customer.Update(customerId, braintreeCustomerUpdate);
+                }
+
+                var customer = BraintreeGateway.Customer.Find(customerId);
+                
                 if (amountToPreAuthorize > 0)
                 {
                     var transactionRequest = new TransactionRequest
                     {
                         Amount = amountToPreAuthorize,
-                        PaymentMethodToken = creditCard.Token,
+                        PaymentMethodToken = customer.DefaultPaymentMethod.Token,
                         OrderId = orderIdentifier,
                         Channel = "MobileKnowledgeSystems_SP_MEC",
                         Options = new TransactionOptionsRequest
@@ -232,7 +250,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         Amount = amountToPreAuthorize,
                         TransactionId = transactionId,
                         OrderId = orderId,
-                        CardToken = creditCard.Token,
+                        CardToken = customer.DefaultPaymentMethod.Token,
                         Provider = PaymentProvider.Braintree,
                         IsNoShowFee = false,
                         CompanyKey = companyKey
