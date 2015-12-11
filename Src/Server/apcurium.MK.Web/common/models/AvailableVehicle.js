@@ -3,12 +3,12 @@
         defaults: {
             latitude: "50",
             longitude: "-45",
-            vehicleNumber: 0
+            vehicleName: 0
         },
         initialize: function (attributes, options) {
             this.latitude = options.latitude;
             this.longitude = options.longitude;
-            this.vehicleNumber = options.vehicleNumber;
+            this.vehicleName = options.vehicleName;
         }
     });
 
