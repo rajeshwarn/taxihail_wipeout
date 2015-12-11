@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-                _logger.LogErrorWithCaller(ex);
+                // don't log, this is only to prevent the app to show the version warning
             }
 
             if (!isSupported)
