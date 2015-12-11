@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var braintreeCustomerUpdate = new CustomerRequest()
                 {
                     FirstName = name.FirstOrDefault(),
-                    LastName = name.FirstOrDefault()
+                    LastName = name.LastOrDefault()
                 };
 
                 BraintreeGateway.Customer.Update(braintreeCreditCard.CustomerId, braintreeCustomerUpdate);
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var braintreeCustomerCreation = new CustomerRequest()
             {
                 FirstName = name.FirstOrDefault(),
-                LastName = name.FirstOrDefault()
+                LastName = name.LastOrDefault()
             };
 
             var result = BraintreeGateway.Customer.Create(braintreeCustomerCreation);
