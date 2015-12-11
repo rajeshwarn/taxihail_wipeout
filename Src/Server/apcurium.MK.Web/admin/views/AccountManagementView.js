@@ -81,6 +81,7 @@
 					country: countryCode,
 					phone: phoneNumberText,
 					vehicleTypeId: account.vehicleTypeId,
+					serviceType: account.serviceType,
 					chargeTypeId: account.chargeTypeId,
 					providerId: account.providerId,
 					numberOfTaxi: account.numberOfTaxi,

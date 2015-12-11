@@ -151,6 +151,11 @@
         updateSettings: function() {
             // Update settings
             this.model.get("settings").email = this.model.get("email");
+            var id = this.model.get('settings').id;
+            var selectedVehicle = $.grep(TaxiHail.vehicleTypes, function (vehicle) { return vehicle.id === id; })[0];
+            this.model.get("settings").vehicleTypeId = selectedVehicle.referenceDataVehicleId;
+            this.model.get("settings").serviceType = selectedVehicle.serviceType;
+            
             this.model.updateSettings()
                 .done(_.bind(function() {
                     this.renderConfirmationMessage();

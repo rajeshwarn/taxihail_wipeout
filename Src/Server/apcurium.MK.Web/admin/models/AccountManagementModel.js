@@ -177,8 +177,7 @@
 			model.set("orders", orders);
 		},
 
-		saveAccount: function (accountUpdateRequest, viewObject, completeCallback)
-		{
+		saveAccount: function (accountUpdateRequest, viewObject, completeCallback) {
 			$.ajax({
 				type: 'PUT',
 				url: "../api/account/update/" + accountUpdateRequest.accountId,

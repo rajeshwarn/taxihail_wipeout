@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
 using System.Net;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -76,6 +77,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId;
             currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId;
+            currentAccount.Settings.ServiceType = account.Settings.ServiceType;
             currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? _serverSettings.ServerData.DefaultBookingSettings.ProviderId;
 
             return currentAccount;

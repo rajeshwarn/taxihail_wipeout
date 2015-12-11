@@ -179,6 +179,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ChargeTypeId = @event.ChargeTypeId;
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
+                settings.ServiceType = @event.ServiceType;
 
                 if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
                 {
