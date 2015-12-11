@@ -77,16 +77,12 @@ namespace apcurium.MK.Web
         protected bool AlwaysDisplayCoFOption { get; private set; }
         protected bool AskForCVVAtBooking { get; private set; }
         protected int AvailableVehicleRefreshRate { get; private set; }
-
         protected bool IsCraftyClicksEnabled { get; private set; }
-
         protected string WebSiteRootPath { get; private set; }
-
         protected string CountryCodes { get; private set; }
-
         protected string DefaultCountryCode { get; private set; }
-        
         protected bool ShowOrderNumber { get; private set; }
+        protected string IsPaymentOutOfAppDisabled { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -170,6 +166,12 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
+            if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.AppOnly &&
+                !referenceData.PaymentsList.Any(p => p.Id == ChargeTypes.PaymentInCar.Id))
+            {
+                referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
+            }
+
             referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
 
             ReferenceData = referenceData.ToString();
@@ -184,6 +186,8 @@ namespace apcurium.MK.Web
             DefaultCountryCode = defaultCultureInfo != null 
                 ? (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName 
                 : "CA";
+
+            IsPaymentOutOfAppDisabled = paymentSettings.IsPaymentOutOfAppDisabled.ToString();
         }
 
         protected string FindParam(string[] filters, string param)
