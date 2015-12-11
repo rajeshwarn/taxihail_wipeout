@@ -25,20 +25,33 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         protected string ClientKey { get; set; }
 
+
+        public string[] EncryptCreditCard(string creditCardNumber, DateTime expiryDate, string cvv)
+        {
+            var braintree = new BraintreeEncrypter(ClientKey);
+            var encryptedNumber = braintree.Encrypt(creditCardNumber);
+            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
+            var encryptedCvv = braintree.Encrypt(cvv);
+
+            return new[]
+            {
+                encryptedNumber,
+                encryptedExpirationDate,
+                encryptedCvv
+            };
+        }
+
+
         public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
         {
             try
             {
-                var braintree = new BraintreeEncrypter(ClientKey);
-                var encryptedNumber = braintree.Encrypt(creditCardNumber);
-                var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
-                var encryptedCvv = braintree.Encrypt(cvv);
-
+                var encryptedCreditCard = EncryptCreditCard(creditCardNumber, expiryDate, cvv);
                 var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
                 {
-                    EncryptedCreditCardNumber = encryptedNumber,
-                    EncryptedExpirationDate = encryptedExpirationDate,
-                    EncryptedCvv = encryptedCvv,
+                    EncryptedCreditCardNumber = encryptedCreditCard[0],
+                    EncryptedExpirationDate = encryptedCreditCard[1],
+                    EncryptedCvv = encryptedCreditCard[2],
                 });
                 return result;
             }

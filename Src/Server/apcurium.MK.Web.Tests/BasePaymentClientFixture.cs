@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
@@ -58,13 +59,13 @@ namespace apcurium.MK.Web.Tests
 
         protected Func<DbContext> ContextFactory { get; set; }
 
-        private TestCreditCards TestCreditCards { get; set; }
+        protected TestCreditCards TestCreditCards { get; private set; }
 
         protected abstract IPaymentServiceClient GetPaymentClient();
         protected abstract PaymentProvider GetProvider();
 
         [Test]
-        public async void when_getting_an_overdue_payment()
+        public virtual async void when_getting_an_overdue_payment()
         {
             var orderId = Guid.NewGuid();
 
@@ -99,7 +100,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_settling_an_overdue_payment()
+        public virtual async void when_settling_an_overdue_payment()
         {
             var orderId = Guid.NewGuid();
             var creditCardId = Guid.NewGuid();
@@ -181,7 +182,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_deleting_a_tokenized_credit_card()
+        public virtual async void when_deleting_a_tokenized_credit_card()
         {
             var client = GetPaymentClient();
             
@@ -193,7 +194,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_tokenizing_a_credit_card_amex()
+        public virtual async void when_tokenizing_a_credit_card_amex()
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2 + "");
@@ -201,7 +202,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_tokenizing_a_credit_card_discover()
+        public virtual async void when_tokenizing_a_credit_card_discover()
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
@@ -209,7 +210,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_tokenizing_a_credit_card_mastercard()
+        public virtual async void when_tokenizing_a_credit_card_mastercard()
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
@@ -217,7 +218,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_tokenizing_a_credit_card_visa()
+        public virtual async void when_tokenizing_a_credit_card_visa()
         {
             var client = GetPaymentClient();
             var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");

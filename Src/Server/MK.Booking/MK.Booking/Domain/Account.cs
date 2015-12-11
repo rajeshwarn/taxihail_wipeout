@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
             Handles<AccountAnswersAddedUpdated>(NoAction);
+            Handles<BraintreeAccountIdAdded>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)

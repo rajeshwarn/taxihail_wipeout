@@ -189,22 +189,17 @@ namespace apcurium.MK.Booking.Services.Impl
                 var isCardDeclined = false;
                 var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
 
-                var customerId = account.BraintreeAccountId;
-                
-                if (!customerId.HasValueTrimmed())
-                {
-                    var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
-                    var braintreeCreditCard = BraintreeGateway.CreditCard.Find(creditCard.Token);
-                    customerId = braintreeCreditCard.CustomerId;
-                    var name = account.Name.Split(' ');
-                    var braintreeCustomerUpdate = new CustomerRequest()
-                    {
-                        FirstName = name.FirstOrDefault(),
-                        LastName = name.LastOrDefault()
-                    };
+                var customerId = GetOrGenerateCustomerId(account);
 
-                    BraintreeGateway.Customer.Update(customerId, braintreeCustomerUpdate);
+                if (!account.BraintreeAccountId.HasValueTrimmed())
+                {
+                    _commandBus.Send(new AddBraintreeAccountId
+                    {
+                        AccountId = account.Id,
+                        BraintreeAccountId = customerId
+                    });
                 }
+                
 
                 var customer = BraintreeGateway.Customer.Find(customerId);
                 
@@ -278,6 +273,49 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message
                 };
             }
+        }
+
+        private string GetOrGenerateCustomerId(AccountDetail account)
+        {
+            var customerId = account.BraintreeAccountId;
+
+            if (customerId.HasValueTrimmed())
+            {
+                return customerId;
+            }
+
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+            if (creditCard != null)
+            {
+                var braintreeCreditCard = BraintreeGateway.CreditCard.Find(creditCard.Token);
+                customerId = braintreeCreditCard.CustomerId;
+                var name = account.Name.Split(' ');
+                var braintreeCustomerRequest = new CustomerRequest()
+                {
+                    FirstName = name.FirstOrDefault(),
+                    LastName = name.LastOrDefault()
+                };
+
+                BraintreeGateway.Customer.Update(customerId, braintreeCustomerRequest);
+            }
+            else
+            {
+                var name = account.Name.Split(' ');
+                var braintreeCustomerRequest = new CustomerRequest()
+                {
+                    FirstName = name.FirstOrDefault(),
+                    LastName = name.LastOrDefault()
+                };
+
+                var result = BraintreeGateway.Customer.Create(braintreeCustomerRequest);
+
+                var customer = result.Target;
+
+                customerId = customer.Id;
+            }
+
+            
+            return customerId;
         }
 
         private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(string companyKey, Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
@@ -442,7 +480,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 .Replace("/", string.Empty);
         }
 
-        private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
+        public static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
         {
             var env = Environment.SANDBOX;
             if (!settings.IsSandbox)
