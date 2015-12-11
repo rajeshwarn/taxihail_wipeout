@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile
 			var logger = Mvx.Resolve<ILogger>();
 			try
 			{
-                logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
+                logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().GetServiceUrl());
                 var accountService = Mvx.Resolve<IAccountService>();
 
                 if (accountService.CurrentAccount == null)

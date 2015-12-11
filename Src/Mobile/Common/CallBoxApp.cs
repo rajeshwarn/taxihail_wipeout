@@ -37,24 +37,24 @@ namespace apcurium.MK.Booking.Mobile
 
 			
             _container.Register<IAccountServiceClient>((c, p) => 
-                new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, null, null), 
+                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, null), 
                 "NotAuthenticated");
 			
             _container.Register<IAccountServiceClient>((c, p) =>
-                new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), null),
+                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), null),
                 "Authenticate");
 			
-            _container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(),null));
+            _container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(),null));
 
-            _container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
             
-            _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
 			_container.Register<IAccountService>((c, p) => new AccountService(c.Resolve<IAppSettings>(), null, null, c.Resolve<ILocalization>()));
 

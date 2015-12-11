@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile
 				}
             }
 
-            Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.Data.ServiceUrl);
+			Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.GetServiceUrl());
         }
 
         public bool ApplicationCanOpenBookmarks
