@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 			try
 			{
-				await RefreshSettingsFromServer();
+				await RefreshSettingsFromServer(true);
 			}
 			catch
 			{
@@ -173,11 +173,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
-		private async Task RefreshSettingsFromServer()
+		private async Task RefreshSettingsFromServer(bool getSettingsShouldThrowExceptionIfError = false)
 		{
 			_logger.LogMessage("load settings from server");
 
-			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings(getSettingsShouldThrowExceptionIfError);
 			SettingsEncryptor.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
 
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
