@@ -1,0 +1,43 @@
+﻿@model IEnumerable<apcurium.MK.Booking.ReadModel.BlackListEntry>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <h5>Phone numbers should not contain Country Code, dashes or spaces</h5>
+    
+    @using (Html.BeginForm("Create", "BlackList", FormMethod.Post, new {id = "feesForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+
+        <div class="control-group btn-left-alignment">
+            @Html.TextBox("PhoneNumber", null, new {required = "required"})
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
