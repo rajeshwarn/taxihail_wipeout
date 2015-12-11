@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Booking.ReadModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
 		[Display(Name = "Search Criteria")]
 		public string SearchCriteria { get; set; }
+
+		public AccountDetail[] AccountsDetail { get; set; }
 	}
 }

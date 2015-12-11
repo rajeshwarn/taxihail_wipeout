@@ -1,0 +1,130 @@
+﻿@model apcurium.MK.Web.Areas.AdminTH.Models.AccountDetails
+
+<h4 class="table-title">Account</h4>
+
+@using (Html.BeginForm("Save", "AccountDetails", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.Name, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.Name, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.Email, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.TextBoxFor(x => x.Email, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.CustomerNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.CustomerNumber, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.CreationDate, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.CreationDate, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.FacebookAccount, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.Label(string.IsNullOrEmpty(Model.FacebookAccount) ? "No" : "Yes", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.IBSAccountId, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.IBSAccountId, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.IsConfirmed, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.Label(Model.IsConfirmed ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.IsEnabled, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.Label(Model.IsEnabled ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+			<br />
+			@Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.ChargeType, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.ChargeType, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.DefaultTipPercent, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.DefaultTipPercent, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.CreditCardLast4Digits, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.DisplayFor(x => x.CreditCardLast4Digits, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="control-group left-control-group" style="width: 30%">
+			@Html.LabelFor(x => x.IsPayPalAccountLinked, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		</div>
+		<div class="control-group right-control-group" style="width: 70%">
+			@Html.Label(Model.IsPayPalAccountLinked ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+		</div>
+	</div>
+
+	<div class="control-group">
+		<button type="submit" class="btn btn-primary span">Save Account</button>
+	</div>
+
+	<br />
+	<a href="@Url.Action("Statistics", new {id = Model.Id})">Send Account Confirmation Code via SMS</a>
+	<br />
+	<a href="@Url.Action("Statistics", new {id = Model.Id})">Reset Password</a>
+	<br />
+	<a href="@Url.Action("Statistics", new {id = Model.Id})">Disable Account</a>
+	<br />
+	<a href="@Url.Action("Statistics", new {id = Model.Id})">Unlink IBS Account(s)</a>
+	<br />
+	<a href="@Url.Action("Statistics", new {id = Model.Id})">Delete all credit cards information</a>
+}

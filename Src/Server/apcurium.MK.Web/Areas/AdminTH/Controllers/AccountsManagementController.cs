@@ -1,9 +1,12 @@
-﻿using apcurium.MK.Booking.ReadModel.Query.Contract;
+﻿using apcurium.MK.Booking.Comparer;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using ServiceStack.CacheAccess;
+using ServiceStack.ServiceModel;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,27 +31,34 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 			return View(new AccountsManagement());
 		}
 
-		//private AccountsManagement GetUsersForSearchCriteria()
-		//{
-		//	var settings = _accountDao.FindByNamePattern();
-		//	return new AccountsManagement();
-		//}
-
 		// POST: AdminTH/AccountsManagement/Search
 		[HttpPost]
 		[ValidateInput(false)]
 		public async Task<ActionResult> Search(FormCollection form)
 		{
-			if(!form.HasKeys())
+			var formDictionary = form.ToDictionary();
+			formDictionary.Remove("__RequestVerificationToken");
+
+			string searchCriteriaValue;
+			formDictionary.TryGetValue("SearchCriteria", out searchCriteriaValue);
+			if (string.IsNullOrEmpty(searchCriteriaValue))
 			{
 				TempData["SearchCriteriaEmpty"] = "Search criteria field should not be empty.";
 				return RedirectToAction("Index");
 			}
+			else
+			{
+				var accountsManagement = new AccountsManagement();
+				accountsManagement.SearchCriteria = searchCriteriaValue;
 
-			var accountsManagement = new AccountsManagement();
-			accountsManagement.SearchCriteria = form.GetValue("searchCriteria").AttemptedValue;
+				accountsManagement.AccountsDetail = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)
+					.Concat<AccountDetail>(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
+					.Concat<AccountDetail>(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
+					.Distinct<AccountDetail>(new AccountDetailComparer())
+					.ToArray();
 
-			return RedirectToAction("Index");
+				return View("Index", accountsManagement);
+			}
 		}
 	}
 }
