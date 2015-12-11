@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LoginViewModel : PageViewModel
     {
-//		private readonly IFacebookService _facebookService;
+		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
 
-        public LoginViewModel(//IFacebookService facebookService,
+        public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
-//            _facebookService = facebookService;
+            _facebookService = facebookService;
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 			_locationService = locationService;
@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-//                        await _facebookService.Connect();
+                        await _facebookService.Connect();
 						await CheckFacebookAccount();
                     }
                     catch (TaskCanceledException)
@@ -526,28 +526,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-//				var info = await _facebookService.GetUserInfo();
-//
-//				var data = new RegisterAccount();
-//				data.FacebookId = info.Id;
-//				data.Email = info.Email;
-//				data.Name = Params.Get(info.Firstname, info.Lastname)
-//					.Where(n => n.HasValue()).JoinBy(" ");
-//
-//                try
-//                {
-//					await _accountService.GetFacebookAccount(info.Id);
-//					await OnLoginSuccess();
-//                }
-//                catch(Exception)
-//                {
-//                    DoSignUp(new
-//                    {
-//                        facebookId = info.Id,
-//                        name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
-//                        email = info.Email,
-//                    });
-//                }
+				var info = await _facebookService.GetUserInfo();
+
+				var data = new RegisterAccount();
+				data.FacebookId = info.Id;
+				data.Email = info.Email;
+				data.Name = Params.Get(info.Firstname, info.Lastname)
+					.Where(n => n.HasValue()).JoinBy(" ");
+
+                try
+                {
+					await _accountService.GetFacebookAccount(info.Id);
+					await OnLoginSuccess();
+                }
+                catch(Exception)
+                {
+                    DoSignUp(new
+                    {
+                        facebookId = info.Id,
+                        name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
+                        email = info.Email,
+                    });
+                }
 			}
 		}
 

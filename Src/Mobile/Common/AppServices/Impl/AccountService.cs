@@ -45,18 +45,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string AuthenticationDataCacheKey = "AuthenticationData";
 
 		private readonly IAppSettings _appSettings;
-//		private readonly IFacebookService _facebookService;
+		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
 
         public AccountService(IAppSettings appSettings,
-//			IFacebookService facebookService,
+			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize)
 		{
             _localize = localize;
 		    _twitterService = twitterService;
-//			_facebookService = facebookService;
+			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
 
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				if(_appSettings.Data.FacebookEnabled)
 				{
-//					_facebookService.Disconnect ();
+					_facebookService.Disconnect ();
 				}
             } 
 			catch( Exception ex )
@@ -188,16 +188,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var cached = UserCache.Get<T[]> (key);
 
-            if (cached != null) {
-
+            if (cached != null) 
+            {
                 var found = cached.SingleOrDefault (c => compare (updated, c));
-                if (found == null) {
+                if (found == null) 
+                {
                     var newList = new T[cached.Length + 1];
                     Array.Copy (cached, newList, cached.Length);
                     newList [cached.Length] = updated;
-
                     UserCache.Set (key, newList);
-                } else {
+                } 
+                else 
+                {
                     var foundIndex = cached.IndexOf (updated, compare);
                     cached [foundIndex] = updated;
                     UserCache.Set (key, cached);
@@ -209,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var cached = UserCache.Get<T[]> (key);
 
-            if ((cached != null) && (cached.Length > 0)) 
+            if (cached != null && cached.Length > 0) 
 			{
                 var list = new List<T> (cached);
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
@@ -220,9 +222,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Address> FindInAccountAddresses (double latitude, double longitude)
         {
-			var found = GetAddressInRange(await GetFavoriteAddresses(), new Position(latitude, longitude), 100) 
+			return GetAddressInRange(await GetFavoriteAddresses(), new Position(latitude, longitude), 100) 
 				?? GetAddressInRange(await GetHistoryAddresses(), new Position(latitude, longitude), 75);
-            return found;
         }
 
         private Address GetAddressInRange (IEnumerable<Address> addresses, Position position, float range)

@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IBookingService>((c, p) => new BookingService(
 				c.Resolve<IAccountService>(),
 				c.Resolve<ILocalization>(), 
-				c.Resolve<IAppSettings>(), 
+				c.Resolve<IAppSettings>(),
 				null,
 				c.Resolve<IMessageService>()));
 

@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
-
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -42,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile
 		public TaxiHailApp()
 		{
 			// early loading of libphone library
-			// do not remove, it impoves the time during the binding
+			// do not remove, it improves the time during the binding
 			(new Task(() => { Trace.Write(CountryCode.CountryCodes[0].CountryName.Substring(0, 0)); })).FireAndForget();
 
 			_container = TinyIoCContainer.Current;
@@ -249,16 +248,16 @@ namespace apcurium.MK.Booking.Mobile
 		private void TryFacebookInitAndPublish()
 		{
 		    var appSettings = Mvx.Resolve<IAppSettings>();
-//		    var facebookService = Mvx.Resolve<IFacebookService>();
+		    var facebookService = Mvx.Resolve<IFacebookService>();
 
             if (appSettings.Data.FacebookEnabled)
 			{
-//                facebookService.Init();
+                facebookService.Init();
 			}
 
             if (appSettings.Data.FacebookPublishEnabled) 
 			{
-//                facebookService.PublishInstall();
+                facebookService.PublishInstall();
 			}
 		}
         
