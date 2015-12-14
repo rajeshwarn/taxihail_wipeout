@@ -404,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var settings = Container.Resolve<IAppSettings>();
 			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
 			{
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
 				if (serverUrl.Contains(staging) && settings.Data.AppleTestAccountUsed)
 				{
@@ -414,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				//Change server Url to use the staging server.
 				// We must also change https to http since staging does not support HTTPS
-				serverUrl = serverUrl.Replace("https://", "http://").Replace(services, staging).Replace(api, staging);
+				serverUrl = serverUrl.Replace(services, staging).Replace(api, staging);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -425,9 +425,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (settings.Data.AppleTestAccountUsed)
 			{
 				//Reset back to normal server.
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
-				serverUrl = serverUrl.Replace("http://", "https://").Replace(staging, api);
+				serverUrl = serverUrl.Replace(staging, api);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -480,7 +480,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
-				if (LoginSucceeded != null) {
+				if (LoginSucceeded != null) 
+				{
 					LoginSucceeded (this, EventArgs.Empty);
 				}
 			};

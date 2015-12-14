@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 #if CLIENT
 using ModernHttpClient;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
 #else
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
@@ -53,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private HttpClient CreateClient()
         {
             var uri = new Uri(_url, UriKind.Absolute);
-            
+            Console.WriteLine(_url);
             var cookieHandler = new NativeCookieHandler();
 
             // CustomSSLVerification must be set to true to enable certificate pinning.
