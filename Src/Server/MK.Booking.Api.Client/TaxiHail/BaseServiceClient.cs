@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private HttpClient CreateClient()
         {
             var uri = new Uri(_url, UriKind.Absolute);
-            
+            Console.WriteLine(_url);
             var cookieHandler = new NativeCookieHandler();
 
             // CustomSSLVerification must be set to true to enable certificate pinning.

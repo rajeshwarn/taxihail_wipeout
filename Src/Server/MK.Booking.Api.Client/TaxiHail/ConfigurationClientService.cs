@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		    _logger = logger;
 		}
 
-	    public async Task<IDictionary<string, string>> GetSettings()
+        public async Task<IDictionary<string, string>> GetSettings(bool shouldThrowExceptionIfError = false)
 		{
 			try
 			{
@@ -35,6 +35,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
+                if (shouldThrowExceptionIfError)
+                {
+                    throw ex;
+                }
 			    return new Dictionary<string, string>();
 			}
 		}

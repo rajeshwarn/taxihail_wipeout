@@ -3,7 +3,6 @@ using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
-using System;
 using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Common.Configuration
@@ -14,11 +13,11 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Configuration - Application Name", Description = "Application name as displayed in message")]
         public string ApplicationName { get; protected internal set; }
 
-				[RequiredAtStartup, SendToClient]
-				[Display(Name = "Configuration - ApplicationKey", Description = "(DO NOT MODIFY) Change Application Key ")]
+		[RequiredAtStartup, SendToClient]
+		[Display(Name = "Configuration - ApplicationKey", Description = "(DO NOT MODIFY) Change Application Key ")]
         public string ApplicationKey { get; protected internal set; }
 
-				[RequiredAtStartup]
+		[RequiredAtStartup]
         [Display(Name = "Email Setting - Accent Color", Description = "Email Border Color")]
         public string AccentColor { get; protected internal set; }
 
