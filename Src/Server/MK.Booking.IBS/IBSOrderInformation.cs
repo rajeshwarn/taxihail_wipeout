@@ -136,9 +136,9 @@ namespace apcurium.MK.Booking.IBS
             get { return Status.SoftEqual(VehicleStatuses.Common.Loaded); }
         }
 
-        public bool IsUnLoaded
+        public bool IsUnloaded
         {
-            get { return Status.SoftEqual(VehicleStatuses.Common.UnLoaded); }
+            get { return Status.SoftEqual(VehicleStatuses.Common.Unloaded); }
         }
 
         public bool IsMeterOffNotPaid

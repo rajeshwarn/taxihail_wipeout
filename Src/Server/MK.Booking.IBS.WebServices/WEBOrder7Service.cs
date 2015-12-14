@@ -58,6 +58,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     private System.Threading.SendOrPostCallback SaveExtrPayment_2OperationCompleted;
 
+    private System.Threading.SendOrPostCallback SaveExtrPayment_3OperationCompleted;
+
     private System.Threading.SendOrPostCallback GetBookOrder_2OperationCompleted;
 
     private System.Threading.SendOrPostCallback SaveBookOrder_2OperationCompleted;
@@ -180,13 +182,13 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     private System.Threading.SendOrPostCallback SaveBookOrder_12OperationCompleted;
 
-    private System.Threading.SendOrPostCallback UpdateBookOrder_12OperationCompleted;
-
     private System.Threading.SendOrPostCallback GetVehicleCandidatesOperationCompleted;
 
     private System.Threading.SendOrPostCallback UpdateJobToVehicleOperationCompleted;
 
-    private System.Threading.SendOrPostCallback SaveExtrPayment_3OperationCompleted;
+    private System.Threading.SendOrPostCallback SendMsg_3dPartyPaymentAuth2OperationCompleted;
+
+    private System.Threading.SendOrPostCallback UpdateDestinationAddressOperationCompleted;
 
     /// <remarks/>
     public WebOrder7Service()
@@ -232,6 +234,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     /// <remarks/>
     public event SaveExtrPayment_2CompletedEventHandler SaveExtrPayment_2Completed;
+
+    /// <remarks/>
+    public event SaveExtrPayment_3CompletedEventHandler SaveExtrPayment_3Completed;
 
     /// <remarks/>
     public event GetBookOrder_2CompletedEventHandler GetBookOrder_2Completed;
@@ -417,16 +422,16 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     public event SaveBookOrder_12CompletedEventHandler SaveBookOrder_12Completed;
 
     /// <remarks/>
-    public event UpdateBookOrder_12CompletedEventHandler UpdateBookOrder_12Completed;
-
-    /// <remarks/>
     public event GetVehicleCandidatesCompletedEventHandler GetVehicleCandidatesCompleted;
 
     /// <remarks/>
     public event UpdateJobToVehicleCompletedEventHandler UpdateJobToVehicleCompleted;
 
     /// <remarks/>
-    public event SaveExtrPayment_3CompletedEventHandler SaveExtrPayment_3Completed;
+    public event SendMsg_3dPartyPaymentAuth2CompletedEventHandler SendMsg_3dPartyPaymentAuth2Completed;
+
+    /// <remarks/>
+    public event UpdateDestinationAddressCompletedEventHandler UpdateDestinationAddressCompleted;
 
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
@@ -1734,6 +1739,245 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveExtrPayment_2Completed(this, new SaveExtrPayment_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int SaveExtrPayment_3(
+                string Login,
+                string Password,
+                int OrderID,
+                string TransID,
+                string AuthNum,
+                string CardToken,
+                string PaymentType,
+                string PaymentProvider,
+                int MDTTip,
+                int MDTToll,
+                int MDTExtras,
+                int MDTFare,
+                int PaymentTipAmount,
+                int PaymentMeterAmount,
+                int PaymentTotal,
+                int AccountID,
+                string Name,
+                string Phone,
+                string Email,
+                string OS,
+                string UserAgent,
+                string GUID,
+                int MDTVAT,
+                int MDTFee,
+                int MDTDiscount,
+                int Collect,
+                int Balance)
+    {
+        object[] results = this.Invoke("SaveExtrPayment_3", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    TransID,
+                    AuthNum,
+                    CardToken,
+                    PaymentType,
+                    PaymentProvider,
+                    MDTTip,
+                    MDTToll,
+                    MDTExtras,
+                    MDTFare,
+                    PaymentTipAmount,
+                    PaymentMeterAmount,
+                    PaymentTotal,
+                    AccountID,
+                    Name,
+                    Phone,
+                    Email,
+                    OS,
+                    UserAgent,
+                    GUID,
+                    MDTVAT,
+                    MDTFee,
+                    MDTDiscount,
+                    Collect,
+                    Balance});
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginSaveExtrPayment_3(
+                string Login,
+                string Password,
+                int OrderID,
+                string TransID,
+                string AuthNum,
+                string CardToken,
+                string PaymentType,
+                string PaymentProvider,
+                int MDTTip,
+                int MDTToll,
+                int MDTExtras,
+                int MDTFare,
+                int PaymentTipAmount,
+                int PaymentMeterAmount,
+                int PaymentTotal,
+                int AccountID,
+                string Name,
+                string Phone,
+                string Email,
+                string OS,
+                string UserAgent,
+                string GUID,
+                int MDTVAT,
+                int MDTFee,
+                int MDTDiscount,
+                int Collect,
+                int Balance,
+                System.AsyncCallback callback,
+                object asyncState)
+    {
+        return this.BeginInvoke("SaveExtrPayment_3", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    TransID,
+                    AuthNum,
+                    CardToken,
+                    PaymentType,
+                    PaymentProvider,
+                    MDTTip,
+                    MDTToll,
+                    MDTExtras,
+                    MDTFare,
+                    PaymentTipAmount,
+                    PaymentMeterAmount,
+                    PaymentTotal,
+                    AccountID,
+                    Name,
+                    Phone,
+                    Email,
+                    OS,
+                    UserAgent,
+                    GUID,
+                    MDTVAT,
+                    MDTFee,
+                    MDTDiscount,
+                    Collect,
+                    Balance}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public int EndSaveExtrPayment_3(System.IAsyncResult asyncResult)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public void SaveExtrPayment_3Async(
+                string Login,
+                string Password,
+                int OrderID,
+                string TransID,
+                string AuthNum,
+                string CardToken,
+                string PaymentType,
+                string PaymentProvider,
+                int MDTTip,
+                int MDTToll,
+                int MDTExtras,
+                int MDTFare,
+                int PaymentTipAmount,
+                int PaymentMeterAmount,
+                int PaymentTotal,
+                int AccountID,
+                string Name,
+                string Phone,
+                string Email,
+                string OS,
+                string UserAgent,
+                string GUID,
+                int MDTVAT,
+                int MDTFee,
+                int MDTDiscount,
+                int Collect,
+                int Balance)
+    {
+        this.SaveExtrPayment_3Async(Login, Password, OrderID, TransID, AuthNum, CardToken, PaymentType, PaymentProvider, MDTTip, MDTToll, MDTExtras, MDTFare, PaymentTipAmount, PaymentMeterAmount, PaymentTotal, AccountID, Name, Phone, Email, OS, UserAgent, GUID, MDTVAT, MDTFee, MDTDiscount, Collect, Balance, null);
+    }
+
+    /// <remarks/>
+    public void SaveExtrPayment_3Async(
+                string Login,
+                string Password,
+                int OrderID,
+                string TransID,
+                string AuthNum,
+                string CardToken,
+                string PaymentType,
+                string PaymentProvider,
+                int MDTTip,
+                int MDTToll,
+                int MDTExtras,
+                int MDTFare,
+                int PaymentTipAmount,
+                int PaymentMeterAmount,
+                int PaymentTotal,
+                int AccountID,
+                string Name,
+                string Phone,
+                string Email,
+                string OS,
+                string UserAgent,
+                string GUID,
+                int MDTVAT,
+                int MDTFee,
+                int MDTDiscount,
+                int Collect,
+                int Balance,
+                object userState)
+    {
+        if ((this.SaveExtrPayment_3OperationCompleted == null))
+        {
+            this.SaveExtrPayment_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveExtrPayment_3OperationCompleted);
+        }
+        this.InvokeAsync("SaveExtrPayment_3", new object[] {
+                    Login,
+                    Password,
+                    OrderID,
+                    TransID,
+                    AuthNum,
+                    CardToken,
+                    PaymentType,
+                    PaymentProvider,
+                    MDTTip,
+                    MDTToll,
+                    MDTExtras,
+                    MDTFare,
+                    PaymentTipAmount,
+                    PaymentMeterAmount,
+                    PaymentTotal,
+                    AccountID,
+                    Name,
+                    Phone,
+                    Email,
+                    OS,
+                    UserAgent,
+                    GUID,
+                    MDTVAT,
+                    MDTFee,
+                    MDTDiscount,
+                    Collect,
+                    Balance}, this.SaveExtrPayment_3OperationCompleted, userState);
+    }
+
+    private void OnSaveExtrPayment_3OperationCompleted(object arg)
+    {
+        if ((this.SaveExtrPayment_3Completed != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.SaveExtrPayment_3Completed(this, new SaveExtrPayment_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
 
@@ -5517,62 +5761,6 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
 
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateBookOrder_12", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
-    [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int UpdateBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder)
-    {
-        object[] results = this.Invoke("UpdateBookOrder_12", new object[] {
-                    Login,
-                    Password,
-                    BookOrder});
-        return ((int)(results[0]));
-    }
-
-    /// <remarks/>
-    public System.IAsyncResult BeginUpdateBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
-        return this.BeginInvoke("UpdateBookOrder_12", new object[] {
-                    Login,
-                    Password,
-                    BookOrder}, callback, asyncState);
-    }
-
-    /// <remarks/>
-    public int EndUpdateBookOrder_12(System.IAsyncResult asyncResult)
-    {
-        object[] results = this.EndInvoke(asyncResult);
-        return ((int)(results[0]));
-    }
-
-    /// <remarks/>
-    public void UpdateBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder)
-    {
-        this.UpdateBookOrder_12Async(Login, Password, BookOrder, null);
-    }
-
-    /// <remarks/>
-    public void UpdateBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, object userState)
-    {
-        if ((this.UpdateBookOrder_12OperationCompleted == null))
-        {
-            this.UpdateBookOrder_12OperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateBookOrder_12OperationCompleted);
-        }
-        this.InvokeAsync("UpdateBookOrder_12", new object[] {
-                    Login,
-                    Password,
-                    BookOrder}, this.UpdateBookOrder_12OperationCompleted, userState);
-    }
-
-    private void OnUpdateBookOrder_12OperationCompleted(object arg)
-    {
-        if ((this.UpdateBookOrder_12Completed != null))
-        {
-            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-            this.UpdateBookOrder_12Completed(this, new UpdateBookOrder_12CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-        }
-    }
-
-    /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleCandidates", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public TVehicleComp[] GetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey)
@@ -5688,252 +5876,126 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
 
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveExtrPayment_3(
-                string Login,
-                string Password,
-                int OrderID,
-                string TaxiHailID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTFare,
-                int MDTExtras,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name_,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                ref int Collect,
-                ref int Balance)
+    public int SendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth)
     {
-        object[] results = this.Invoke("SaveExtrPayment_3", new object[] {
+        object[] results = this.Invoke("SendMsg_3dPartyPaymentAuth2", new object[] {
                     Login,
                     Password,
-                    OrderID,
-                    TaxiHailID,
-                    TransID,
-                    AuthNum,
-                    CardToken,
-                    PaymentType,
-                    PaymentProvider,
-                    MDTTip,
-                    MDTToll,
-                    MDTFare,
-                    MDTExtras,
-                    PaymentTipAmount,
-                    PaymentMeterAmount,
-                    PaymentTotal,
-                    AccountID,
-                    Name_,
-                    Phone,
-                    Email,
-                    OS,
-                    UserAgent,
-                    GUID,
-                    MDTVAT,
-                    MDTFee,
-                    MDTDiscount,
-                    Collect,
-                    Balance});
-        Collect = ((int)(results[1]));
-        Balance = ((int)(results[2]));
+                    MDTNum,
+                    PaymentAuth});
         return ((int)(results[0]));
     }
 
     /// <remarks/>
-    public System.IAsyncResult BeginSaveExtrPayment_3(
-                string Login,
-                string Password,
-                int OrderID,
-                string TaxiHailID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTFare,
-                int MDTExtras,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name_,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance,
-                System.AsyncCallback callback,
-                object asyncState)
+    public System.IAsyncResult BeginSendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, System.AsyncCallback callback, object asyncState)
     {
-        return this.BeginInvoke("SaveExtrPayment_3", new object[] {
+        return this.BeginInvoke("SendMsg_3dPartyPaymentAuth2", new object[] {
                     Login,
                     Password,
-                    OrderID,
-                    TaxiHailID,
-                    TransID,
-                    AuthNum,
-                    CardToken,
-                    PaymentType,
-                    PaymentProvider,
-                    MDTTip,
-                    MDTToll,
-                    MDTFare,
-                    MDTExtras,
-                    PaymentTipAmount,
-                    PaymentMeterAmount,
-                    PaymentTotal,
-                    AccountID,
-                    Name_,
-                    Phone,
-                    Email,
-                    OS,
-                    UserAgent,
-                    GUID,
-                    MDTVAT,
-                    MDTFee,
-                    MDTDiscount,
-                    Collect,
-                    Balance}, callback, asyncState);
+                    MDTNum,
+                    PaymentAuth}, callback, asyncState);
     }
 
     /// <remarks/>
-    public int EndSaveExtrPayment_3(System.IAsyncResult asyncResult, out int Collect, out int Balance)
+    public int EndSendMsg_3dPartyPaymentAuth2(System.IAsyncResult asyncResult)
     {
         object[] results = this.EndInvoke(asyncResult);
-        Collect = ((int)(results[1]));
-        Balance = ((int)(results[2]));
         return ((int)(results[0]));
     }
 
     /// <remarks/>
-    public void SaveExtrPayment_3Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TaxiHailID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTFare,
-                int MDTExtras,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name_,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance)
+    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth)
     {
-        this.SaveExtrPayment_3Async(Login, Password, OrderID, TaxiHailID, TransID, AuthNum, CardToken, PaymentType, PaymentProvider, MDTTip, MDTToll, MDTFare, MDTExtras, PaymentTipAmount, PaymentMeterAmount, PaymentTotal, AccountID, Name_, Phone, Email, OS, UserAgent, GUID, MDTVAT, MDTFee, MDTDiscount, Collect, Balance, null);
+        this.SendMsg_3dPartyPaymentAuth2Async(Login, Password, MDTNum, PaymentAuth, null);
     }
 
     /// <remarks/>
-    public void SaveExtrPayment_3Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TaxiHailID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTFare,
-                int MDTExtras,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name_,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance,
-                object userState)
+    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, object userState)
     {
-        if ((this.SaveExtrPayment_3OperationCompleted == null))
+        if ((this.SendMsg_3dPartyPaymentAuth2OperationCompleted == null))
         {
-            this.SaveExtrPayment_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveExtrPayment_3OperationCompleted);
+            this.SendMsg_3dPartyPaymentAuth2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendMsg_3dPartyPaymentAuth2OperationCompleted);
         }
-        this.InvokeAsync("SaveExtrPayment_3", new object[] {
+        this.InvokeAsync("SendMsg_3dPartyPaymentAuth2", new object[] {
                     Login,
                     Password,
-                    OrderID,
-                    TaxiHailID,
-                    TransID,
-                    AuthNum,
-                    CardToken,
-                    PaymentType,
-                    PaymentProvider,
-                    MDTTip,
-                    MDTToll,
-                    MDTFare,
-                    MDTExtras,
-                    PaymentTipAmount,
-                    PaymentMeterAmount,
-                    PaymentTotal,
-                    AccountID,
-                    Name_,
-                    Phone,
-                    Email,
-                    OS,
-                    UserAgent,
-                    GUID,
-                    MDTVAT,
-                    MDTFee,
-                    MDTDiscount,
-                    Collect,
-                    Balance}, this.SaveExtrPayment_3OperationCompleted, userState);
+                    MDTNum,
+                    PaymentAuth}, this.SendMsg_3dPartyPaymentAuth2OperationCompleted, userState);
     }
 
-    private void OnSaveExtrPayment_3OperationCompleted(object arg)
+    private void OnSendMsg_3dPartyPaymentAuth2OperationCompleted(object arg)
     {
-        if ((this.SaveExtrPayment_3Completed != null))
+        if ((this.SendMsg_3dPartyPaymentAuth2Completed != null))
         {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-            this.SaveExtrPayment_3Completed(this, new SaveExtrPayment_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            this.SendMsg_3dPartyPaymentAuth2Completed(this, new SendMsg_3dPartyPaymentAuth2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateDestinationAddress", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int UpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address)
+    {
+        object[] results = this.Invoke("UpdateDestinationAddress", new object[] {
+                    Login,
+                    Password,
+                    ProviderID,
+                    OrderID,
+                    GUID,
+                    address});
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginUpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, System.AsyncCallback callback, object asyncState)
+    {
+        return this.BeginInvoke("UpdateDestinationAddress", new object[] {
+                    Login,
+                    Password,
+                    ProviderID,
+                    OrderID,
+                    GUID,
+                    address}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public int EndUpdateDestinationAddress(System.IAsyncResult asyncResult)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address)
+    {
+        this.UpdateDestinationAddressAsync(Login, Password, ProviderID, OrderID, GUID, address, null);
+    }
+
+    /// <remarks/>
+    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, object userState)
+    {
+        if ((this.UpdateDestinationAddressOperationCompleted == null))
+        {
+            this.UpdateDestinationAddressOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateDestinationAddressOperationCompleted);
+        }
+        this.InvokeAsync("UpdateDestinationAddress", new object[] {
+                    Login,
+                    Password,
+                    ProviderID,
+                    OrderID,
+                    GUID,
+                    address}, this.UpdateDestinationAddressOperationCompleted, userState);
+    }
+
+    private void OnUpdateDestinationAddressOperationCompleted(object arg)
+    {
+        if ((this.UpdateDestinationAddressCompleted != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.UpdateDestinationAddressCompleted(this, new UpdateDestinationAddressCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
 
@@ -7191,6 +7253,7 @@ public partial class TEstimateFare_10Result
 }
 
 /// <remarks/>
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TPaymentAuthorization3dParty2))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7501,6 +7564,31 @@ public partial class TPaymentAuthorization3dParty
 }
 
 /// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
+public partial class TPaymentAuthorization3dParty2 : TPaymentAuthorization3dParty
+{
+
+    private string cardBalanceRemainingField;
+
+    /// <remarks/>
+    public string CardBalanceRemaining
+    {
+        get
+        {
+            return this.cardBalanceRemainingField;
+        }
+        set
+        {
+            this.cardBalanceRemainingField = value;
+        }
+    }
+}
+
+/// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_2))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_3))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_4))]
@@ -7787,9 +7875,20 @@ public partial class TOrderStatus_2 : TOrderStatus
 
     private string terminalIdField;
 
-    private double vatField;
+    private double vATField;
 
-    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
+    /// <remarks/>
+    public double VAT
+    {
+        get
+        {
+            return this.vATField;
+        }
+        set
+        {
+            this.vATField = value;
+        }
+    }
 
     /// <remarks/>
     public string CallNumber
@@ -10305,6 +10404,36 @@ public partial class SaveExtrPayment_2CompletedEventArgs : System.ComponentModel
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void SaveExtrPayment_3CompletedEventHandler(object sender, SaveExtrPayment_3CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class SaveExtrPayment_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal SaveExtrPayment_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+            base(exception, cancelled, userState)
+    {
+        this.results = results;
+    }
+
+    /// <remarks/>
+    public int Result
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 public delegate void GetBookOrder_2CompletedEventHandler(object sender, GetBookOrder_2CompletedEventArgs e);
 
 /// <remarks/>
@@ -12405,36 +12534,6 @@ public partial class SaveBookOrder_12CompletedEventArgs : System.ComponentModel.
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
-public delegate void UpdateBookOrder_12CompletedEventHandler(object sender, UpdateBookOrder_12CompletedEventArgs e);
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class UpdateBookOrder_12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
-    private object[] results;
-
-    internal UpdateBookOrder_12CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
-        this.results = results;
-    }
-
-    /// <remarks/>
-    public int Result
-    {
-        get
-        {
-            this.RaiseExceptionIfNecessary();
-            return ((int)(this.results[0]));
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 public delegate void GetVehicleCandidatesCompletedEventHandler(object sender, GetVehicleCandidatesCompletedEventArgs e);
 
 /// <remarks/>
@@ -12495,18 +12594,18 @@ public partial class UpdateJobToVehicleCompletedEventArgs : System.ComponentMode
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
-public delegate void SaveExtrPayment_3CompletedEventHandler(object sender, SaveExtrPayment_3CompletedEventArgs e);
+public delegate void SendMsg_3dPartyPaymentAuth2CompletedEventHandler(object sender, SendMsg_3dPartyPaymentAuth2CompletedEventArgs e);
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveExtrPayment_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+public partial class SendMsg_3dPartyPaymentAuth2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
 {
 
     private object[] results;
 
-    internal SaveExtrPayment_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+    internal SendMsg_3dPartyPaymentAuth2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
             base(exception, cancelled, userState)
     {
         this.results = results;
@@ -12521,24 +12620,34 @@ public partial class SaveExtrPayment_3CompletedEventArgs : System.ComponentModel
             return ((int)(this.results[0]));
         }
     }
+}
 
-    /// <remarks/>
-    public int Collect
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void UpdateDestinationAddressCompletedEventHandler(object sender, UpdateDestinationAddressCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class UpdateDestinationAddressCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal UpdateDestinationAddressCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+            base(exception, cancelled, userState)
     {
-        get
-        {
-            this.RaiseExceptionIfNecessary();
-            return ((int)(this.results[1]));
-        }
+        this.results = results;
     }
 
     /// <remarks/>
-    public int Balance
+    public int Result
     {
         get
         {
             this.RaiseExceptionIfNecessary();
-            return ((int)(this.results[2]));
+            return ((int)(this.results[0]));
         }
     }
 }

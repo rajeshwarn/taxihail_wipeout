@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Jobs
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail, paymentSettings);
 
-            if (orderFromIbs.IsUnLoaded)
+            if (orderFromIbs.IsUnloaded)
             {
                 if (orderStatusDetail.ChargeAmountsTimeOut.HasValue
                     && orderStatusDetail.ChargeAmountsTimeOut.Value < DateTime.UtcNow)
@@ -554,7 +554,7 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            if (ibsOrderInfo.IsUnLoaded)
+            if (ibsOrderInfo.IsUnloaded)
             {
                 return;
             }

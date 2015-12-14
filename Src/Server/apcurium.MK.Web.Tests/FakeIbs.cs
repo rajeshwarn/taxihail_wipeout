@@ -26,7 +26,8 @@ namespace apcurium.MK.Web.Tests
 
         public void ConfirmExternalPayment( Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type,
             string provider, string transactionId, string authorizationCode, string cardToken, int accountId, string name,
-            string phone, string email, string os, string userAgent, string companyKey = null)
+            string phone, string email, string os, string userAgent, string companyKey, decimal fareAmount = 0,
+            decimal extrasAmount = 0, decimal vatAmount = 0, decimal discountAmount = 0, decimal tollAmount = 0, decimal surchargeAmount = 0)
         {
             if (Fail)
             {
