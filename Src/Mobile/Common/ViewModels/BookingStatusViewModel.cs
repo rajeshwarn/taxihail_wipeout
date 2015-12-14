@@ -660,7 +660,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded
-					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.UnLoaded;
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Unloaded;
 				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue()
 					|| OrderStatusDetail.DriverInfos.FullName.HasValue();
 				

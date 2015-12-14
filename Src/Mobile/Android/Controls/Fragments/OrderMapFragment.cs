@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    {
 			    _orderStatusDetail = value;
 
-                if (value != null && (_orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded) || _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.UnLoaded)))
+                if (value != null && (_orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded) || _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Unloaded)))
 			    {
 				    _pickupPin.Visible = false;
 			    }

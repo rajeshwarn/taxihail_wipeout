@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    return _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived
                    && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded
-                   && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.UnLoaded
+                   && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Unloaded
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.MeterOffNotPayed
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Done;
 	    }

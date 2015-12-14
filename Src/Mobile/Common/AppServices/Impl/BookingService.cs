@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             return statusId.SoftEqual(VehicleStatuses.Common.Done) ||
                 statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed) ||
-				statusId.SoftEqual(VehicleStatuses.Common.UnLoaded);
+				statusId.SoftEqual(VehicleStatuses.Common.Unloaded);
         }
 
         public async Task<DirectionInfo> GetFareEstimate(CreateOrderRequest order)
