@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             if (_settings.Data.GoogleAnalyticsTrackingId.HasValue())
             {
                 // Company's own tracking id
-                Trackers.Add(GAI.SharedInstance.GetTracker (_settings.Data.GoogleAnalyticsTrackingId));
+				var tracker = GAI.SharedInstance.GetTracker (_settings.Data.GoogleAnalyticsTrackingId);
+				tracker.SetAllowIdfaCollection(true);
+				Trackers.Add(tracker);
             }
 
             var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
