@@ -243,6 +243,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\BlackListEntry.cs" />
     <Compile Include="ReadModel\FeesDetail.cs" />
     <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
@@ -256,6 +257,8 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\BlackListEntryService.cs" />
+    <Compile Include="ReadModel\Query\Contract\IBlackListEntryService.cs" />
     <Compile Include="ReadModel\Query\PickupPointDao.cs" />
     <Compile Include="ReadModel\Query\AirlineDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
