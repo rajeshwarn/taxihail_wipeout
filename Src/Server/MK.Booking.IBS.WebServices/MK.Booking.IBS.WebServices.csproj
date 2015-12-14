@@ -57,7 +57,7 @@
     <Compile Include="StaticDataservice.cs" />
     <Compile Include="WebAccount3Service.cs" />
     <Compile Include="WebDriverService.cs" />
-    <Compile Include="WEBOrder7Service.cs" />
+    <Compile Include="WebOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GenerateWSDL.bat" />
