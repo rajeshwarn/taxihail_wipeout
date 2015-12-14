@@ -751,3 +751,5 @@
 "CreditCardDeclinedOnPreauthorizationErrorText"="Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi";
 "CreditCardUnanbleToPreathorizeErrorText"="Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi";
 "Callbox.ApplicationName"="TaxiHail Callbox";
+"ServiceErrorResetPassword_AccountNotFound"="Aucun compte n'a été trouvé pour cet email";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
