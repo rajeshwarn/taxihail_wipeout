@@ -14,21 +14,21 @@ namespace apcurium.MK.Common.Extensions
             return number*Math.PI/180;
         }
 
-        public static double ToDistanceInRightUnit(this double distance, DistanceFormat settingsDistanceFormat)
+        public static double ToDistanceInRightUnit(this double distanceInMeters, DistanceFormat settingsDistanceFormat)
         {
             double result = 0;
-            double km = distance / 1000;
+            double distanceInKm = distanceInMeters / 1000;
 
             switch (settingsDistanceFormat)
             {
                 case DistanceFormat.Mile:
-                    result = Math.Round(km / 1.609344, 1);
+                    result = Math.Round(distanceInKm / 1.609344, 1);
                     break;
                 case DistanceFormat.Km:
-                    result = Math.Round(km, 1);
+                    result = Math.Round(distanceInKm, 1);
                     break;
                 default:
-                    result = Math.Round(km, 1);
+                    result = Math.Round(distanceInKm, 1);
                     break;
             }
 
