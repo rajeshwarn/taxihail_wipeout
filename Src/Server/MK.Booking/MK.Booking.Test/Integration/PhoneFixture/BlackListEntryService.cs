@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Test.Integration.PhoneFixture
             var result = Sut.GetAll();
 
             Assert.NotNull(result);
-            Assert.Greater(result.Count, 0);
+            Assert.Equals(result.Count, 2);
         }
 
         [Test]
