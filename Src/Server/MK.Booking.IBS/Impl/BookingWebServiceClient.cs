@@ -255,8 +255,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             try
             {
+                // We need to update the returned object to version 5 of TOrderStatus.
                 return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders)
-                    // We need to update the returned object to version 5 of TOrderStatus.
                     .Select(OrderStatus4ToOrderStatus5);
             }
             catch (Exception)
@@ -266,19 +266,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             try
             {
+                // We need to update the returned object to version 5 of TOrderStatus.
                 return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
-                    // We need to update the returned object to version 5 of TOrderStatus.
                     .Select(OrderStatus3ToOrderStatus5);
             }
             catch (Exception)
             {
                 Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
-            }  
-             
-            return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
-				// We need to update the returned object to version 5 of TOrderStatus.
-				.Select(OrderStatus2ToOrderStatus5);
+            }
 
+            // We need to update the returned object to version 5 of TOrderStatus.
+            return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
+				.Select(OrderStatus2ToOrderStatus5);
         }
 
         private static TOrderStatus_5 OrderStatus2ToOrderStatus5(TOrderStatus_2 orderStatus)
@@ -304,13 +303,14 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VehicleMake = orderStatus.VehicleMake,
                 VehicleModel = orderStatus.VehicleModel,
                 VehicleNumber = orderStatus.VehicleNumber,
-                VehicleRegistration = orderStatus.VehicleRegistration
+                VehicleRegistration = orderStatus.VehicleRegistration,
             };
         }
 
         private static TOrderStatus_5 OrderStatus3ToOrderStatus5(TOrderStatus_3 orderStatus)
         {
             var orderStatus5 = OrderStatus2ToOrderStatus5(orderStatus);
+
             orderStatus5.PairingCode = orderStatus.PairingCode;
             orderStatus5.Surcharge = orderStatus.Surcharge;
 
@@ -320,6 +320,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         private static TOrderStatus_5 OrderStatus4ToOrderStatus5(TOrderStatus_4 orderStatus)
         {
             var orderStatus5 = OrderStatus3ToOrderStatus5(orderStatus);
+
             orderStatus5.DriverNumber = orderStatus.DriverNumber;
             orderStatus5.OriginalImg = orderStatus.OriginalImg;
             orderStatus5.ThumbnailImg = orderStatus.ThumbnailImg;
@@ -468,6 +469,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                         result = null;
                     }
                 });
+
+                return result;
             }
             catch (Exception)
             {

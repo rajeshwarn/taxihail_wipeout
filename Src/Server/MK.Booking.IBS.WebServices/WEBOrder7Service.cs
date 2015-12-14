@@ -7988,10 +7988,6 @@ public partial class TOrderStatus_2 : TOrderStatus
             this.terminalIdField = value;
         }
     }
-
-    private double vatField;
-
-    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
 }
 
 /// <remarks/>
@@ -8201,7 +8197,6 @@ public partial class TBookOrder_7 : TBookOrder_6
 {
 
     private double tipsField;
-
     private double vATField;
 
     /// <remarks/>
