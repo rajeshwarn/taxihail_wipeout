@@ -1483,6 +1483,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The phone number is black listed.
+        /// </summary>
+        public static string PhoneBlackListed {
+            get {
+                return ResourceManager.GetString("PhoneBlackListed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The phone number is invalid. It must have format {0}.
         /// </summary>
         public static string PhoneNumberFormat {
