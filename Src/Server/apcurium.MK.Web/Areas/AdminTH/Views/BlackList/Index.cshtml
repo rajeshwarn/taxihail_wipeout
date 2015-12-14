@@ -9,7 +9,7 @@
 <p>
     <h5>Phone numbers should not contain Country Code, dashes or spaces</h5>
     
-    @using (Html.BeginForm("Create", "BlackList", FormMethod.Post, new {id = "feesForm"}))
+    @using (Html.BeginForm("Create", "BlackList", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)

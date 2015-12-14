@@ -32,14 +32,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/BlackList/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(string phoneNumber)
         {
-            // TODO: Add insert logic here
-            if (collection.AllKeys.Contains("PhoneNumber"))
-            {
-                 _blackListService.Add(new BlackListEntry {PhoneNumber = collection["PhoneNumber"] });
-            }
-
+            _blackListService.Add(new BlackListEntry { PhoneNumber = phoneNumber });
             return RedirectToAction("Index", _blackListService.GetAll());
         }
 
