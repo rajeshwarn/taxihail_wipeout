@@ -182,6 +182,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     private System.Threading.SendOrPostCallback SaveBookOrder_12OperationCompleted;
 
+    private System.Threading.SendOrPostCallback UpdateBookOrder_12OperationCompleted;
+
     private System.Threading.SendOrPostCallback GetVehicleCandidatesOperationCompleted;
 
     private System.Threading.SendOrPostCallback UpdateJobToVehicleOperationCompleted;
@@ -193,7 +195,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     /// <remarks/>
     public WebOrder7Service()
     {
-        this.Url = "http://64.179.222.39/dev/IBSCab.dll/soap/IWEBOrder_7";
+        this.Url = "http://arcusdemo.drivelinq.com:38928/IBSCAB/IBSCab.dll/soap/IWEBOrder_7";
     }
 
     /// <remarks/>
@@ -420,6 +422,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     /// <remarks/>
     public event SaveBookOrder_12CompletedEventHandler SaveBookOrder_12Completed;
+
+    /// <remarks/>
+    public event UpdateBookOrder_12CompletedEventHandler UpdateBookOrder_12Completed;
 
     /// <remarks/>
     public event GetVehicleCandidatesCompletedEventHandler GetVehicleCandidatesCompleted;
@@ -5761,6 +5766,62 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
 
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateBookOrder_12", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int UpdateBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder)
+    {
+        object[] results = this.Invoke("UpdateBookOrder_12", new object[] {
+                    Login,
+                    Password,
+                    BookOrder});
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginUpdateBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, System.AsyncCallback callback, object asyncState)
+    {
+        return this.BeginInvoke("UpdateBookOrder_12", new object[] {
+                    Login,
+                    Password,
+                    BookOrder}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public int EndUpdateBookOrder_12(System.IAsyncResult asyncResult)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public void UpdateBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder)
+    {
+        this.UpdateBookOrder_12Async(Login, Password, BookOrder, null);
+    }
+
+    /// <remarks/>
+    public void UpdateBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, object userState)
+    {
+        if ((this.UpdateBookOrder_12OperationCompleted == null))
+        {
+            this.UpdateBookOrder_12OperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateBookOrder_12OperationCompleted);
+        }
+        this.InvokeAsync("UpdateBookOrder_12", new object[] {
+                    Login,
+                    Password,
+                    BookOrder}, this.UpdateBookOrder_12OperationCompleted, userState);
+    }
+
+    private void OnUpdateBookOrder_12OperationCompleted(object arg)
+    {
+        if ((this.UpdateBookOrder_12Completed != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.UpdateBookOrder_12Completed(this, new UpdateBookOrder_12CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleCandidates", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public TVehicleComp[] GetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey)
@@ -7876,7 +7937,6 @@ public partial class TOrderStatus_2 : TOrderStatus
     private string terminalIdField;
 
     private double vATField;
-
     /// <remarks/>
     public double VAT
     {
@@ -7928,6 +7988,10 @@ public partial class TOrderStatus_2 : TOrderStatus
             this.terminalIdField = value;
         }
     }
+
+    private double vatField;
+
+    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
 }
 
 /// <remarks/>
@@ -12528,6 +12592,36 @@ public partial class SaveBookOrder_12CompletedEventArgs : System.ComponentModel.
         {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderKey)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void UpdateBookOrder_12CompletedEventHandler(object sender, UpdateBookOrder_12CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class UpdateBookOrder_12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal UpdateBookOrder_12CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+            base(exception, cancelled, userState)
+    {
+        this.results = results;
+    }
+
+    /// <remarks/>
+    public int Result
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
         }
     }
 }

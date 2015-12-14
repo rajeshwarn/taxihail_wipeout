@@ -223,7 +223,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 && order.DropOffAddress.HasValidCoordinate())
             {
                 DirectionInfo directionInfo = null;
-                if (tarifMode != TarifMode.AppTarif)
+				if (tarifMode == TarifMode.Ibs_Distance)
+				{
+					directionInfo =
+						(await
+							_geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+								order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+								order.PickupDate));
+					
+					directionInfo =
+						await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+						service =>
+							service.GetDirectionInfoFromDistance(directionInfo.Distance, directionInfo.EtaDuration,
+                                0, 0, order.Settings.VehicleTypeId, 0, order.Settings.AccountNumber, 0, directionInfo.TripDurationInSeconds));
+				}
+			    else if (tarifMode != TarifMode.AppTarif)
                 {
                     int? duration;
 

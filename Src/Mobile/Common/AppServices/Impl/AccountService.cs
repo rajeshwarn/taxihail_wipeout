@@ -321,7 +321,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Account> SignIn (string email, string password)
         {
-			Logger.LogMessage("SignIn with server {0}", _appSettings.Data.ServiceUrl);
+			Logger.LogMessage("SignIn with server {0}", _appSettings.GetServiceUrl());
             try 
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
