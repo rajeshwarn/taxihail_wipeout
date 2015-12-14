@@ -84,4 +84,8 @@
         <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
             <type fullname="*" />
         </assembly>
+
+        <assembly fullname="Newtonsoft.Json" > 
+            <type fullname="*" />
+        </assembly>
 </linker>
