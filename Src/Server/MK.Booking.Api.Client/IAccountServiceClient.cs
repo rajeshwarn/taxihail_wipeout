@@ -14,7 +14,7 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Client
 {
-    public interface IAccountServiceClient
+    public interface IAccountService
     {
         Task<Account> GetMyAccount();
 

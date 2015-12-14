@@ -7,9 +7,9 @@ using System.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
-	public class AccountsManagement
+	public class AccountsManagementModel
 	{
-		public AccountsManagement()
+		public AccountsManagementModel()
 		{
 
 		}

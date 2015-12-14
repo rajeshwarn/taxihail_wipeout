@@ -1,103 +1,103 @@
-﻿@model apcurium.MK.Web.Areas.AdminTH.Models.MarketFees
+﻿@model apcurium.MK.Web.Areas.AdminTH.Models.MarketFeesModel
 
 @if (@TempData["Info"] != null)
 {
-    <div class="alert alert-info" style="margin-top: 10px;">
-        @TempData["Info"]
-    </div>
+	<div class="alert alert-info" style="margin-top: 10px;">
+		@TempData["Info"]
+	</div>
 }
 
-@*<div id="validationPanel" class="alert-success alert" style="display: none"> </div>*@
+	@*<div id="validationPanel" class="alert-success alert" style="display: none"> </div>*@
 
-@using (Html.BeginForm("Fees", "TaxiHailNetwork", FormMethod.Post, new {id = "feesForm"}))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+	@using (Html.BeginForm("Fees", "TaxiHailNetwork", FormMethod.Post, new { id = "feesForm" }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
 
-    <legend>
-        @Html.DisplayName("Local")
-    </legend>
+		<legend>
+			@Html.DisplayName("Local")
+		</legend>
 
-    <ul class="static-table">
-        @{
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees["Local"].Booking, new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees["Local"].Booking, new { @class = "input-block-level" })
-                    @Html.ValidationMessageFor(x => x.Fees["Local"].Booking)
-                </div>
-            </div>
+		<ul class="static-table">
+			@{
+				<div class="control-group">
+					@Html.LabelFor(x => x.Fees["Local"].Booking, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(x => x.Fees["Local"].Booking, new { @class = "input-block-level" })
+						@Html.ValidationMessageFor(x => x.Fees["Local"].Booking)
+					</div>
+				</div>
 
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees["Local"].Cancellation, new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees["Local"].Cancellation, new { @class = "input-block-level" })
-                    @Html.ValidationMessageFor(x => x.Fees["Local"].Cancellation)
-                </div>
-            </div>
+				<div class="control-group">
+					@Html.LabelFor(x => x.Fees["Local"].Cancellation, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(x => x.Fees["Local"].Cancellation, new { @class = "input-block-level" })
+						@Html.ValidationMessageFor(x => x.Fees["Local"].Cancellation)
+					</div>
+				</div>
 
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees["Local"].NoShow, new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees["Local"].NoShow, new { @class = "input-block-level" })
-                    @Html.ValidationMessageFor(x => x.Fees["Local"].NoShow)
-                </div>
-            </div>
-        }
-    </ul>
-    <br/>
-    
-    var hasRoamingCompanies = Model.Fees.Any(m => m.Key != "Local");
+				<div class="control-group">
+					@Html.LabelFor(x => x.Fees["Local"].NoShow, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(x => x.Fees["Local"].NoShow, new { @class = "input-block-level" })
+						@Html.ValidationMessageFor(x => x.Fees["Local"].NoShow)
+					</div>
+				</div>
+			}
+		</ul>
+		<br />
 
-    <legend>
-        @Html.DisplayName("Roaming")
-    </legend>
+				var hasRoamingCompanies = Model.Fees.Any(m => m.Key != "Local");
 
-    if (!hasRoamingCompanies)
-    {
-        <h4>There is no other company that is part of the Network.</h4>
-    }
-    else
-    {
-        foreach (var market in Model.Fees.Keys)
-        {
-            if (market == "Local")
-            {
-                continue;
-            }
+				<legend>
+					@Html.DisplayName("Roaming")
+				</legend>
 
-            <legend>
-                <h5>@market</h5>
-            </legend>
+				if (!hasRoamingCompanies)
+				{
+					<h4>There is no other company that is part of the Network.</h4>
+				}
+				else
+				{
+					foreach (var market in Model.Fees.Keys)
+					{
+						if (market == "Local")
+						{
+							continue;
+						}
 
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees[market].Booking, new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees[market].Booking, new { @class = "input-block-level" })
-                    @Html.ValidationMessageFor(x => x.Fees[market].Booking)
-                </div>
-            </div>
+						<legend>
+							<h5>@market</h5>
+						</legend>
 
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees[market].Cancellation, new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees[market].Cancellation, new { @class = "input-block-level" })
-                    @Html.ValidationMessageFor(x => x.Fees[market].Cancellation)
-                </div>
-            </div>
+						<div class="control-group">
+							@Html.LabelFor(x => x.Fees[market].Booking, new { @class = "control-label" })
+							<div class="controls">
+								@Html.TextBoxFor(x => x.Fees[market].Booking, new { @class = "input-block-level" })
+								@Html.ValidationMessageFor(x => x.Fees[market].Booking)
+							</div>
+						</div>
 
-            <div class="control-group">
-                @Html.LabelFor(x => x.Fees[market].NoShow, new {@class = "control-label"})
-                <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees[market].NoShow, new {@class = "input-block-level"})
-                    @Html.ValidationMessageFor(x => x.Fees[market].NoShow)
-                </div>
-            </div>
-            <br />
-        }
-    }
+						<div class="control-group">
+							@Html.LabelFor(x => x.Fees[market].Cancellation, new { @class = "control-label" })
+							<div class="controls">
+								@Html.TextBoxFor(x => x.Fees[market].Cancellation, new { @class = "input-block-level" })
+								@Html.ValidationMessageFor(x => x.Fees[market].Cancellation)
+							</div>
+						</div>
 
-    <div class="control-group btn-right-alignment">
-        <button type="submit" class="btn btn-primary span">Save</button>
-    </div>
-}
+						<div class="control-group">
+							@Html.LabelFor(x => x.Fees[market].NoShow, new { @class = "control-label" })
+							<div class="controls">
+								@Html.TextBoxFor(x => x.Fees[market].NoShow, new { @class = "input-block-level" })
+								@Html.ValidationMessageFor(x => x.Fees[market].NoShow)
+							</div>
+						</div>
+						<br />
+					}
+				}
+
+				<div class="control-group btn-right-alignment">
+					<button type="submit" class="btn btn-primary span">Save</button>
+				</div>
+			}

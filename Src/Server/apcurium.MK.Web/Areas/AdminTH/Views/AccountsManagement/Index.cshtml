@@ -1,6 +1,6 @@
 ﻿@using System.Reflection
 @using apcurium.MK.Common.Extensions
-@model apcurium.MK.Web.Areas.AdminTH.Models.AccountsManagement
+@model apcurium.MK.Web.Areas.AdminTH.Models.AccountsManagementModel
 
 <h4 class="table-title">Accounts Management</h4>
 @if (@TempData["SearchCriteriaEmpty"] != null)
@@ -23,9 +23,9 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<button type="submit" class="btn btn-primary span" style="margin-left:560px">Search</button>
-	</div>
+		<div class="control-group">
+			<button type="submit" class="btn btn-primary span" style="margin-left:560px">Search</button>
+		</div>
 
 	if (Model.AccountsDetail != null && Model.AccountsDetail.Length != 0)
 	{
@@ -46,7 +46,7 @@
 					<tbody>
 						@foreach (var accountDetail in Model.AccountsDetail)
 						{
-							<tr onclick="location.href='@Url.Action("Index", "AccountDetails", new { id = accountDetail.Id })'">
+							<tr onclick="location.href='@Url.Action("Index", "AccountManagement", new { id = accountDetail.Id })'">
 								<td style="width:170px;">@accountDetail.Name</td>
 								<td style="width:170px;">@accountDetail.Email</td>
 								<td style="width:130px;">@accountDetail.Settings.Phone</td>

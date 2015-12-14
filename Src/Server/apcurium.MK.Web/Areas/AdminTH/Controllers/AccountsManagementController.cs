@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 		public ActionResult Index()
 		{
 			// first time we open Index without values
-			return View(new AccountsManagement());
+			return View(new AccountsManagementModel());
 		}
 
 		// POST: AdminTH/AccountsManagement/Search
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 			}
 			else
 			{
-				var accountsManagement = new AccountsManagement();
+				var accountsManagement = new AccountsManagementModel();
 				accountsManagement.SearchCriteria = searchCriteriaValue;
 
 				accountsManagement.AccountsDetail = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)

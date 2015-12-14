@@ -1,10 +1,12 @@
-﻿@model apcurium.MK.Web.Areas.AdminTH.Models.AccountDetails
+﻿@using apcurium.MK.Common
+@model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
 <h4 class="table-title">Account</h4>
 
-@using (Html.BeginForm("Save", "AccountDetails", FormMethod.Post))
+@using (Html.BeginForm("Save", "AccountManagement", FormMethod.Post))
 {
 	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
 
 	<div class="control-group">
 		<div class="control-group left-control-group" style="width: 30%">
@@ -12,6 +14,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.Name, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.Name)
 		</div>
 	</div>
 	<div class="control-group">
@@ -28,6 +31,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.CustomerNumber, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.CustomerNumber)
 		</div>
 	</div>
 	<div class="control-group">
@@ -36,6 +40,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.CreationDate, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.CreationDate)
 		</div>
 	</div>
 	<div class="control-group">
@@ -44,6 +49,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.Label(string.IsNullOrEmpty(Model.FacebookAccount) ? "No" : "Yes", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.FacebookAccount)
 		</div>
 	</div>
 	<div class="control-group">
@@ -52,6 +58,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.IBSAccountId, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.IBSAccountId)
 		</div>
 	</div>
 	<div class="control-group">
@@ -60,6 +67,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.Label(Model.IsConfirmed ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.IsConfirmed)
 		</div>
 	</div>
 	<div class="control-group">
@@ -68,6 +76,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.Label(Model.IsEnabled ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.IsEnabled)
 		</div>
 	</div>
 	<div class="control-group">
@@ -75,7 +84,7 @@
 			@Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
-			@Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+			@Html.DropDownListFor(x => x.CountryCode.Code, Model.CountryCodesList)
 			<br />
 			@Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
 		</div>
@@ -86,6 +95,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.ChargeType, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.ChargeType)
 		</div>
 	</div>
 	<div class="control-group">
@@ -94,6 +104,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.DefaultTipPercent, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.DefaultTipPercent)
 		</div>
 	</div>
 	<div class="control-group">
@@ -102,6 +113,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.DisplayFor(x => x.CreditCardLast4Digits, new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.CreditCardLast4Digits)
 		</div>
 	</div>
 	<div class="control-group">
@@ -110,6 +122,7 @@
 		</div>
 		<div class="control-group right-control-group" style="width: 70%">
 			@Html.Label(Model.IsPayPalAccountLinked ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+			@Html.HiddenFor(x => x.IsPayPalAccountLinked)
 		</div>
 	</div>
 
@@ -118,13 +131,20 @@
 	</div>
 
 	<br />
-	<a href="@Url.Action("Statistics", new {id = Model.Id})">Send Account Confirmation Code via SMS</a>
+	@Html.ActionLink("Send Account Confirmation Code via SMS", "SendConfirmationCodeSMS", new { model = Model })
 	<br />
-	<a href="@Url.Action("Statistics", new {id = Model.Id})">Reset Password</a>
+	@Html.ActionLink("Reset Password", "ResetPassword", new { model = Model })
 	<br />
-	<a href="@Url.Action("Statistics", new {id = Model.Id})">Disable Account</a>
+	if (Model.IsEnabled)
+	{
+		<a href="@Url.Action("enableDisableAccount", new { id = Model.Id })">Disable Account</a>
+	}
+	else
+	{
+		<a href="@Url.Action("enableDisableAccount", new { id = Model.Id })">Enable Account</a>
+	}
 	<br />
-	<a href="@Url.Action("Statistics", new {id = Model.Id})">Unlink IBS Account(s)</a>
+	<a href="@Url.Action("unlinkIBSAccount", new {id = Model.Id})">Unlink IBS Account(s)</a>
 	<br />
-	<a href="@Url.Action("Statistics", new {id = Model.Id})">Delete all credit cards information</a>
+	<a href="@Url.Action("deleteCreditCardsInfo", new {id = Model.Id})">Delete all credit cards information</a>
 }

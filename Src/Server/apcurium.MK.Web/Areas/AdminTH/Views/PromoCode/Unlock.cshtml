@@ -1,40 +1,41 @@
-﻿@model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
+﻿@model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCodeModel>
 
 <h4 class="table-title">Customer Support</h4>
 @if (@TempData["Info"] != null)
 {
-    <div class="alert alert-info" style="margin-top: 10px;">
-        @TempData["Info"]
-    </div>
+	<div class="alert alert-info" style="margin-top: 10px;">
+		@TempData["Info"]
+	</div>
 }
 
 @using (Html.BeginForm("Unlock", "PromoCode", FormMethod.Post))
 {
-    <div class="clearfix" id="triggerDiv" data-toggle="popover" data-title="Trigger and goal cannot be modified because a user already started progress on the promotion.">
-        <div class="control-group control-group" style="width: 55%">
-            @Html.Label("Promotion", new {@class = "control-label"})
-            <div class="controls">
-                @Html.DropDownList("promotionIdToUnlock",
-                    new SelectList((from promo in Model select new
-                    {
-                        Id = promo.Id,
-                        Name = string.Format("{0} ({1})", promo.Name, promo.Code)
-                    }), "Id", "Name"),
-                    "-- Select a Promotion --")
-            </div>
-        </div>
-        <div class="control-group control-group" style="width: 55%">
-            @Html.Label("User Emails", new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBox("userEmails", string.Empty, new { placeholder = "Comma delimited emails" })
-            </div>
-        </div>
-    </div>
-if (@ViewBag.Error != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;white-space: pre">@ViewBag.Error</div>
-}
-    <div class="control-group">
-        <button type="submit" class="btn btn-primary span">Send Promotion</button>
-    </div>
+	<div class="clearfix" id="triggerDiv" data-toggle="popover" data-title="Trigger and goal cannot be modified because a user already started progress on the promotion.">
+		<div class="control-group control-group" style="width: 55%">
+			@Html.Label("Promotion", new { @class = "control-label" })
+			<div class="controls">
+				@Html.DropDownList("promotionIdToUnlock",
+					new SelectList((from promo in Model
+									select new
+									{
+										Id = promo.Id,
+										Name = string.Format("{0} ({1})", promo.Name, promo.Code)
+									}), "Id", "Name"),
+					"-- Select a Promotion --")
+			</div>
+		</div>
+		<div class="control-group control-group" style="width: 55%">
+			@Html.Label("User Emails", new { @class = "control-label" })
+			<div class="controls">
+				@Html.TextBox("userEmails", string.Empty, new { placeholder = "Comma delimited emails" })
+			</div>
+		</div>
+	</div>
+	if (@ViewBag.Error != null)
+	{
+		<div class="alert alert-error" style="margin-top: 10px;white-space: pre">@ViewBag.Error</div>
+	}
+	<div class="control-group">
+		<button type="submit" class="btn btn-primary span">Send Promotion</button>
+	</div>
 }

@@ -1,14 +1,16 @@
-﻿using System;
+﻿using apcurium.MK.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
-	public class AccountDetails
+	public class AccountManagementModel
 	{
-		public AccountDetails()
+		public AccountManagementModel()
 		{
 
 		}
@@ -40,6 +42,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 		[Display(Name = "Enabled")]
 		public bool IsEnabled { get; set; }
 
+		[Display(Name = "Country Code")]
+		public CountryISOCode CountryCode { get; set; }
+
 		[Display(Name = "Phone Number")]
 		public string PhoneNumber { get; set; }
 
@@ -54,5 +59,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
 		[Display(Name = "Credit card last 4 digits")]
 		public string CreditCardLast4Digits { get; set; }
+
+		public List<SelectListItem> CountryCodesList { get; set; }
 	}
 }
