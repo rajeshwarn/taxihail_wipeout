@@ -16,7 +16,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-	public class ConfigurationClientService : BaseServiceClient
+    public class ConfigurationClientService : BaseServiceClient
 	{
 	    private readonly ILogger _logger;
 
@@ -35,10 +35,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
+
                 if (shouldThrowExceptionIfError)
                 {
                     throw ex;
                 }
+
 			    return new Dictionary<string, string>();
 			}
 		}
