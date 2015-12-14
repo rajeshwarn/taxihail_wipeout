@@ -99,6 +99,7 @@
     <Compile Include="IBookingWebServiceClient.cs" />
     <Compile Include="IBSAddress.cs" />
     <Compile Include="IBSAutoMapperProfile.cs" />
+    <Compile Include="IBSDistanceEstimate.cs" />
     <Compile Include="IBSFareEstimate.cs" />
     <Compile Include="IbsResponse.cs" />
     <Compile Include="IBSOrderKey.cs" />

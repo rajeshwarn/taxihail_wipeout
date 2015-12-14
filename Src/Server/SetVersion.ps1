@@ -169,6 +169,22 @@ if ($r.Success)
 {
 	# Enable the GitHub shell command
   Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
+
+
+	# validate tag does not already exist
+		$tagExist = $(git tag -l "$args" 2>&1);
+		if($tagExist)
+	  {
+		  echo " ";
+		  echo "ERROR: TAG already exist!";
+		  echo " ";
+		  Exit;
+	  }
+
+	  echo " ";
+	  echo "TAG OK";
+	  echo " ";
+
 	# get current git status
 	$gitStatus= $(git status 2>&1);
 
