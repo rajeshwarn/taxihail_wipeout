@@ -670,7 +670,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
-                ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || (Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt),
+                ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || Math.Abs(toll) >= 0.01,
                 ShowRideLinqLastFour = isCmtRideLinqReceipt,
                 ShowTripId = isCmtRideLinqReceipt,
                 ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
