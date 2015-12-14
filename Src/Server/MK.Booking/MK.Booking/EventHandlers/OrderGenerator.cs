@@ -487,7 +487,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         private DateTime? GetChargeAmountsTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
         {
-            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.UnLoaded)
+            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Unloaded)
                             && !details.ChargeAmountsTimeOut.HasValue)
             {
                     // First timeout

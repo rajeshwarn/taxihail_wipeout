@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders)
                     // We need to update the returned object to version 5 of TOrderStatus.
-                    .Select(ToOrderStatus5);
+                    .Select(OrderStatus4ToOrderStatus5);
             }
             catch (Exception)
             {
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
                     // We need to update the returned object to version 5 of TOrderStatus.
-                    .Select(ToOrderStatus5);
+                    .Select(OrderStatus3ToOrderStatus5);
             }
             catch (Exception)
             {
@@ -242,11 +242,11 @@ namespace apcurium.MK.Booking.IBS.Impl
              
             return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
 				// We need to update the returned object to version 5 of TOrderStatus.
-				.Select(ToOrderStatus5);
+				.Select(OrderStatus2ToOrderStatus5);
 
         }
 
-        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_2 orderStatus)
+        private static TOrderStatus_5 OrderStatus2ToOrderStatus5(TOrderStatus_2 orderStatus)
         {
             return new TOrderStatus_5
             {
@@ -273,66 +273,24 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
         }
 
-        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_3 orderStatus)
+        private static TOrderStatus_5 OrderStatus3ToOrderStatus5(TOrderStatus_3 orderStatus)
         {
-            return new TOrderStatus_5
-            {
-                OrderStatus = orderStatus.OrderStatus,
-                CallNumber = orderStatus.CallNumber,
-                DriverFirstName = orderStatus.DriverFirstName,
-                DriverLastName = orderStatus.DriverLastName,
-                DriverMobilePhone = orderStatus.DriverMobilePhone,
-                ETATime = orderStatus.ETATime,
-                Fare = orderStatus.Fare,
-                OrderID = orderStatus.OrderID,
-                ReferenceNumber = orderStatus.ReferenceNumber,
-                TerminalId = orderStatus.TerminalId,
-                Tips = orderStatus.Tips,
-                Tolls = orderStatus.Tolls,
-                VAT = orderStatus.VAT,
-                VehicleColor = orderStatus.VehicleColor,
-                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
-                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
-                VehicleMake = orderStatus.VehicleMake,
-                VehicleModel = orderStatus.VehicleModel,
-                VehicleNumber = orderStatus.VehicleNumber,
-                VehicleRegistration = orderStatus.VehicleRegistration,
-                PairingCode = orderStatus.PairingCode,
-                Surcharge = orderStatus.Surcharge
-            };
+            var orderStatus5 = OrderStatus2ToOrderStatus5(orderStatus);
+            orderStatus5.PairingCode = orderStatus.PairingCode;
+            orderStatus5.Surcharge = orderStatus.Surcharge;
+
+            return orderStatus5;
         }
 
-        private static TOrderStatus_5 ToOrderStatus5(TOrderStatus_4 orderStatus)
+        private static TOrderStatus_5 OrderStatus4ToOrderStatus5(TOrderStatus_4 orderStatus)
         {
-            return new TOrderStatus_5
-            {
-                OrderStatus = orderStatus.OrderStatus,
-                CallNumber = orderStatus.CallNumber,
-                DriverFirstName = orderStatus.DriverFirstName,
-                DriverLastName = orderStatus.DriverLastName,
-                DriverMobilePhone = orderStatus.DriverMobilePhone,
-                ETATime = orderStatus.ETATime,
-                Fare = orderStatus.Fare,
-                OrderID = orderStatus.OrderID,
-                ReferenceNumber = orderStatus.ReferenceNumber,
-                TerminalId = orderStatus.TerminalId,
-                Tips = orderStatus.Tips,
-                Tolls = orderStatus.Tolls,
-                VAT = orderStatus.VAT,
-                VehicleColor = orderStatus.VehicleColor,
-                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
-                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
-                VehicleMake = orderStatus.VehicleMake,
-                VehicleModel = orderStatus.VehicleModel,
-                VehicleNumber = orderStatus.VehicleNumber,
-                VehicleRegistration = orderStatus.VehicleRegistration,
-                PairingCode = orderStatus.PairingCode,
-                Surcharge = orderStatus.Surcharge,
-                DriverNumber = orderStatus.DriverNumber,
-                OriginalImg = orderStatus.OriginalImg,
-                ThumbnailImg = orderStatus.ThumbnailImg,
-                WebImg = orderStatus.WebImg
-            };
+            var orderStatus5 = OrderStatus3ToOrderStatus5(orderStatus);
+            orderStatus5.DriverNumber = orderStatus.DriverNumber;
+            orderStatus5.OriginalImg = orderStatus.OriginalImg;
+            orderStatus5.ThumbnailImg = orderStatus.ThumbnailImg;
+            orderStatus5.WebImg = orderStatus.WebImg;
+
+            return orderStatus5;
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
@@ -389,39 +347,18 @@ namespace apcurium.MK.Booking.IBS.Impl
                     int result = 0;
                     int collect = 0;
                     int balance = 0;
-                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", transactionId,
+                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, transactionId,
                         authorizationCode, cardToken, type, provider, ToCents(tipAmount), ToCents(tollAmount),
                         ToCents(fareAmount), ToCents(extrasAmount),
                         ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name,
                         CleanPhone(phone),
                         email, os, userAgent, orderID.ToString(), ToCents(vatAmount), ToCents(surchargeAmount),
-                        ToCents(discountAmount), ref collect, ref balance);
+                        ToCents(discountAmount), collect, balance);
 
                     success = result == 0;
-                   
-                       //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
-                       //var auth = new TPaymentAuthorization3dParty
-                       //{
-                       //    ApprovalText = text,
-                       //    Approved = true,
-                       //    ApprovedAmount = string.Format("{0:C}", amount),
-                       //    AuthorizationNumber = authorizationCode,
-                       //    TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
-                       //    TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
-                       //    CCSequenceNumber = transactionId,
-                       //    CardNumber = cardNumber,
-                       //    CardType = cardType,
-                       //    FareAmount = string.Format("{0:C}", fareAmount),
-                       //    DiscountAmount = string.Format("{0:C}", 0),
-                       //    ExpiryDate = cardExpiry,
-                       //    JobNumber = orderId,
-                       //    PayType = 3,
 
-                       //};
-
-                       //var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
-                       //success = result == 0;
-                   });
+                    SendMsg3dPartyPaymentAuth();
+                });
 
                 return success;
             }
@@ -438,24 +375,78 @@ namespace apcurium.MK.Booking.IBS.Impl
                     ToCents(tipAmount), ToCents(meterAmount), ToCents(totalAmount), accountID, name, CleanPhone(phone), email, os, userAgent, orderID.ToString());
 
                 success = result == 0;
+
+                SendMsg3dPartyPaymentAuth();
             });
 
             return success;
         }
 
+        private bool SendMsg3dPartyPaymentAuth()
+        {
+            //*********************************Keep this code.  MK is testing this method as soon as it's ready, 
+            //var auth = new TPaymentAuthorization3dParty
+            //{
+            //    ApprovalText = text,
+            //    Approved = true,
+            //    ApprovedAmount = string.Format("{0:C}", amount),
+            //    AuthorizationNumber = authorizationCode,
+            //    TransactionTime = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture),
+            //    TransactionDate = DateTime.Now.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
+            //    CCSequenceNumber = transactionId,
+            //    CardNumber = cardNumber,
+            //    CardType = cardType,
+            //    FareAmount = string.Format("{0:C}", fareAmount),
+            //    DiscountAmount = string.Format("{0:C}", 0),
+            //    ExpiryDate = cardExpiry,
+            //    JobNumber = orderId,
+            //    PayType = 3,
+
+            //};
+
+            //var result = service.SendMsg_3dPartyPaymentAuth(UserNameApp, PasswordApp, vehicleId, auth);
+            //success = result == 0;
+            return false;
+        }
+
         public int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountId, string name, string phone, string email)
         {
             int? result = null;
+            try
+            {
+                UseService(service =>
+                {
+                    int collect = 0;
+                    int balance = 0;
+                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,
+                        null, 0, 0, 0, 0,
+                        0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString(), 0, 0, 0,
+                        collect, balance);
+
+                    if (result < -9000) //Hack until we support more code and we get the list of code.
+                    {
+                        service.CancelBookOrder(UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone), null, accountId);
+                        result = -10000;
+                    }
+                    else
+                    {
+                        result = null;
+                    }
+                });
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("SaveExtrPayment_3 is not available doing a fallback to SaveExtrPayment_2");
+            }
+
             UseService(service =>
             {
-                int collect = 0;
-                int balance = 0;
-                result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", "", "", cardToken, type, null, 0, 0, 0, 0,
-                 0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString(), 0, 0, 0, ref collect, ref balance);
-                
-                if (result < -9000) //Hack unitl we support more code and we get the list of code.
+                result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type, null, 0, 0, 0, 0, 
+                    0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString());
+
+                if (result < -9000) //Hack until we support more code and we get the list of code.
                 {
-                    service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountId);
+                    service.CancelBookOrder(UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone), null, accountId);
                     result = -10000;
                 }
                 else
