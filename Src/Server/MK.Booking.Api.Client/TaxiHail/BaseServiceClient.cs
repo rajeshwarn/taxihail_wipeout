@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             };
 
             // When packageInfo is not specified, we use a default value as the useragent
-            client.DefaultRequestHeaders.Add("User-Agent", _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent);
+            client.DefaultRequestHeaders.Add("User-Agent", GetUserAgent());
             if (_packageInfo != null)
             {
                 client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);
@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             // When packageInfo is not specified, we use a default value as the useragent
             client.LocalHttpWebRequestFilter = request =>
             {
-                request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
+                request.UserAgent = GetUserAgent();
 
                 if (_packageInfo != null)
                 {
@@ -114,12 +114,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return client;
         }
 #endif
-
-        
-
+            
         protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
         {
             return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
+        }
+
+        private string GetUserAgent()
+        {
+            return _packageInfo == null || !_packageInfo.UserAgent.HasValueTrimmed() 
+                ? DefaultUserAgent 
+                : _packageInfo.UserAgent;
         }
     }
 }
