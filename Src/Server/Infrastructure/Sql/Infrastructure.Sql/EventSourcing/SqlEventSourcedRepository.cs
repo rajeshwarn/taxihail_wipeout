@@ -47,7 +47,7 @@ namespace Infrastructure.Sql.EventSourcing
             this.serializer = serializer;
             this.contextFactory = contextFactory;
 
-            // TODO: could be replaced with a compiled lambda
+            // TODO_: could be replaced with a compiled lambda
             var constructor = typeof(T).GetConstructor(new[] { typeof(Guid), typeof(IEnumerable<IVersionedEvent>) });
             if (constructor == null)
             {
@@ -89,7 +89,7 @@ namespace Infrastructure.Sql.EventSourcing
 
         public void Save(T eventSourced, string correlationId)
         {
-            // TODO: guarantee that only incremental versions of the event are stored
+            // TODO_: guarantee that only incremental versions of the event are stored
             var events = eventSourced.Events.ToArray();
             try
             {
@@ -115,7 +115,7 @@ namespace Infrastructure.Sql.EventSourcing
                 throw;
             }
 
-            // TODO: guarantee delivery or roll back, or have a way to resume after a system crash
+            // TODO_: guarantee delivery or roll back, or have a way to resume after a system crash
             this.eventBus.Publish(events.Select(e => new Envelope<IEvent>(e) { CorrelationId = correlationId }));
         }
 

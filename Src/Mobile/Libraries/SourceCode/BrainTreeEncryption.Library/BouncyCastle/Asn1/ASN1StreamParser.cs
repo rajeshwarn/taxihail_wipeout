@@ -35,7 +35,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 		{
 			// Note: INDEF => CONSTRUCTED
 
-			// TODO There are other tags that may be constructed (e.g. BIT_STRING)
+			// TODO_ There are other tags that may be constructed (e.g. BIT_STRING)
 			switch (tagValue)
 			{
 				case Asn1Tags.External:
@@ -169,7 +169,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 
 				if (isConstructed)
 				{
-					// TODO There are other tags that may be constructed (e.g. BitString)
+					// TODO_ There are other tags that may be constructed (e.g. BitString)
 					switch (tagNo)
 					{
 						case Asn1Tags.OctetString:
@@ -184,7 +184,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 						case Asn1Tags.External:
 							return new DerExternalParser(new Asn1StreamParser(defIn));
 						default:
-							// TODO Add DerUnknownTagParser class?
+							// TODO_ Add DerUnknownTagParser class?
 							return new DerUnknownTag(true, tagNo, defIn.ToArray());
 					}
 				}
