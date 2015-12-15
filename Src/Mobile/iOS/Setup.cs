@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void AddPluginsLoaders (Cirrious.CrossCore.Plugins.MvxLoaderPluginRegistry loaders)
 		{
-
 			loaders.AddConventionalPlugin<Cirrious.MvvmCross.Plugins.DownloadCache.Touch.Plugin> ();
 			loaders.AddConventionalPlugin<Cirrious.MvvmCross.Plugins.File.Touch.Plugin> ();
 

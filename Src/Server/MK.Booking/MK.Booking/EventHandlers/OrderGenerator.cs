@@ -309,6 +309,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
 
+                    @event.Status.ChargeAmountsTimeOut = GetChargeAmountsTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                     @event.Status.FareAvailable = fareAvailable;
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
@@ -317,6 +319,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.Status != null) 
                     {
                         details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+                        details.ChargeAmountsTimeOut = GetChargeAmountsTimeoutIfNecessary(@event.Status, @event.EventDate);
 
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
@@ -491,6 +494,17 @@ namespace apcurium.MK.Booking.EventHandlers
                 return eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
             }
             return null;
+        }
+
+        private DateTime? GetChargeAmountsTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
+        {
+            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Unloaded)
+                            && !details.ChargeAmountsTimeOut.HasValue)
+            {
+                    // First timeout
+                    return eventDate.AddSeconds(_serverSettings.ServerData.ChargeAmountsTimeOut);
+            }
+            return details.ChargeAmountsTimeOut;
         }
 
         public void Handle(IbsOrderInfoAddedToOrder_V2 @event)

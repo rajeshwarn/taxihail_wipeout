@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    private const float RadiusCorner = 2;
         protected nfloat LeftPadding = 6.5f;
         protected nfloat RightPadding = 6.5f;
-        private UIImageView _leftImageView;
         private UIView _shadowView = null;
 
         public bool MoveClearButtonFromUnderRightImage { get; set; }
@@ -50,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
             //padding
-            LeftView = new UIView(); 
+            LeftView = GetRegularLeftViewForPadding(); 
 			LeftViewMode = UITextFieldViewMode.Always;
             RightView = new UIView();
             RightViewMode = UITextFieldViewMode.UnlessEditing;
@@ -99,24 +98,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     var image = UIImage.FromBundle(value);
 
-                    if (_leftImageView == null)
-                    {
-                        _leftImageView = new UIImageView { Image = image };
-                        AddSubview(_leftImageView);
-                    }
-                    else
-                    {
-                        _leftImageView.Image = image;
-                    }
+                    LeftView = new UIImageView(new CGRect(
+                        0, 
+                        (Frame.Height - image.Size.Height) / 2, 
+                        image.Size.Width + LeftPadding, 
+                        image.Size.Height)) { Image = image };
                 }
                 else
                 {
-                    if (_leftImageView != null)
+                    if (LeftView != null)
                     {
-                        _leftImageView.Image = null;
-                        _leftImageView.RemoveFromSuperview();
-                        _leftImageView.Dispose();
-                        _leftImageView = null;
+                        LeftView.RemoveFromSuperview();
+                        LeftView.Dispose();
+                        LeftView = GetRegularLeftViewForPadding();
                     }
                 }
             }
@@ -165,23 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
-            LeftView.Frame = new CGRect(0f, 0f, LeftPadding, this.Frame.Height);
             RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
-
-            if (ImageLeftSource.HasValue())
-            {
-                if (_leftImageView != null && _leftImageView.Image != null)
-                {
-                    _leftImageView.Frame = new CGRect(
-                        0, 
-                        (Frame.Height - _leftImageView.Image.Size.Height) / 2, 
-                        _leftImageView.Image.Size.Width, 
-                        _leftImageView.Image.Size.Height);
-
-                    // Adjust the left padding of the text for image width
-                    LeftView.Frame = LeftView.Frame.SetWidth(_leftImageView.Image.Size.Width + LeftPadding);
-                }
-            }
 
             if (HasRightArrow)
             {
@@ -325,6 +303,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             return rect;
+        }
+
+        private UIView GetRegularLeftViewForPadding()
+        {
+            return new UIView(new CGRect(0f, 0f, LeftPadding, this.Frame.Height));
         }
 	}
 }

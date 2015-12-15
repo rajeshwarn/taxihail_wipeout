@@ -69,7 +69,8 @@
                             {
                                 <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
                             }
-							<li><a href="@(ViewData["BaseUrl"] + "/admin/#accountsManagement")" class="navbar-brand">Accounts Management</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#accountsManagement")" class="navbar-brand">Accounts Management</a></li>
+							<li>@Html.MenuLink("BlackList", "Index", "BlackList")</li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#signup")" class="navbar-brand">Signup</a></li>
 
 

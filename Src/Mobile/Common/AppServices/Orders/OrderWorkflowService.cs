@@ -296,23 +296,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-			    string localizedMessageKey;
+				// prevents an exception in the deserialization of the response body
+				if (e.StatusCode != (int)HttpStatusCode.BadRequest)
+				{
+					throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());
+				}
+
 			    var error = e.ResponseBody.FromJson<ErrorResponse>();
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-                    localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
+                    var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
 
                     throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }
 
 			    // Unhandled errors
 				// if ibs3000, there's a problem with the account, use a different one
-			    localizedMessageKey = _appSettings.Data.HideCallDispatchButton
-                    ? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
-                    : string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 
-				throw new OrderCreationException(localizedMessageKey);		
+				throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());		
+			}			
+			catch(Exception)
+			{
+				throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());
 			}
 		}
 
@@ -1071,6 +1077,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<bool> GetAndObserveCanExecuteBookingOperation()
 		{
 			return _canExecuteBookingOperation;
+		}
+
+		private string GetUnhandledErrorMessageForOrderCreation()
+		{
+			return _appSettings.Data.HideCallDispatchButton
+				? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
+				: string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 		}
     }
 }

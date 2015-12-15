@@ -116,40 +116,18 @@ namespace MK.Common.Configuration
 				ApplicationKeys = "94705638689d77a3aff2526332969395",
 				ApiUrl = "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/"
 	        };
-
         }
 
-		[PropertyEncrypt]
         public SmtpSettingContainer Smtp { get; protected set; }
-
-		[PropertyEncrypt]
         public APNSSettingContainer APNS { get; protected set; }
-
-		[PropertyEncrypt]
         public BlackberrySettingContainer BBNotificationSettings { get; protected set; }
-
-		[PropertyEncrypt]
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
-
-		[PropertyEncrypt]
 		public IBSSettingContainer IBS { get; protected set; }
-
-		[PropertyEncrypt]
         public EmailSettingContainer Email { get; protected set; }
-
-		[PropertyEncrypt]
         public ReceiptSettingContainer Receipt { get; protected set; }
-
-		[PropertyEncrypt]
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
-
-		[PropertyEncrypt]
         public NetworkSettingContainer Network { get; protected set; }
-
-		[PropertyEncrypt]
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
-
-		[PropertyEncrypt]
 		public CmtGeoSettingContainer CmtGeo { get; protected set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]

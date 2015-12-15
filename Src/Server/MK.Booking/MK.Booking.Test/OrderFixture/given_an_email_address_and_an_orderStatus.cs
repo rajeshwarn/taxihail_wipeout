@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("TotalFare", "$21.00");
             AssertTemplateValueEquals("Tax", "$1.00");
             AssertTemplateValueEquals("ShowTax", "True");
-            AssertTemplateValueEquals("ShowToll", "True");
+            AssertTemplateValueEquals("ShowTollTotal", "True");
             AssertTemplateValueEquals("ShowSurcharge", "True");
             AssertTemplateValueEquals("ShowBookingFees", "True");
             AssertTemplateValueEquals("vatIsEnabled", "False");
