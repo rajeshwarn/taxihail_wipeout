@@ -1,215 +1,216 @@
 ﻿@using apcurium.MK.Common.Enumeration
 @model apcurium.MK.Web.Areas.AdminTH.Models.PromoCodeModel
 
-<h4 class="table-title">Add a Promo Code</h4>
-@if (@ViewBag.Error != null)
-{
-	<div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
-}
+<div class="well clearfix form-horizontal">
+	<h4 class="table-title">Add a Promo Code</h4>
+	@if (@ViewBag.Error != null)
+	{
+		<div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
+	}
 
-@using (Html.BeginForm("Create", "PromoCode", FormMethod.Post))
-{
-	@Html.AntiForgeryToken()
+	@using (Html.BeginForm("Create", "PromoCode", FormMethod.Post))
+	{
+		@Html.AntiForgeryToken()
 
-	<div class="control-group">
-		@Html.LabelFor(x => x.Name, new { @class = "control-label" })
-		<div class="controls">
-			@Html.TextBoxFor(x => x.Name, new { @class = "input-block-level" })
-			@Html.ValidationMessageFor(x => x.Name)
-		</div>
-	</div>
-	<div class="control-group">
-		@Html.LabelFor(x => x.Description, new { @class = "control-label" })
-		<div class="controls">
-			@Html.TextAreaFor(x => x.Description, new { @class = "input-block-level" })
-			@Html.ValidationMessageFor(x => x.Description)
-		</div>
-	</div>
-	<div class="clearfix">
-		<div class="control-group left-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.StartDate, new { @class = "control-label" })
+		<div class="control-group">
+			@Html.LabelFor(x => x.Name, new { @class = "control-label" })
 			<div class="controls">
-				<div class="input-append date" id="StartDate" data-role='datepicker' data-date="">
-					@Html.TextBoxFor(x => x.StartDate, new { @class = "input-small" })
-					<span class="add-on"><i class="icon-calendar"></i></span>
-				</div>
-				<button type="button" class="btn" id="eraseStartDate">x</button>
-				@Html.ValidationMessageFor(x => x.StartDate)
+				@Html.TextBoxFor(x => x.Name, new { @class = "input-block-level" })
+				@Html.ValidationMessageFor(x => x.Name)
 			</div>
 		</div>
-		<div class="control-group right-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.EndDate, new { @class = "control-label" })
+		<div class="control-group">
+			@Html.LabelFor(x => x.Description, new { @class = "control-label" })
 			<div class="controls">
-				<div class="input-append date" id="EndDate" data-role='datepicker' data-date="">
-					@Html.TextBoxFor(x => x.EndDate, new { @class = "input-small" })
-					<span class="add-on"><i class="icon-calendar"></i></span>
-				</div>
-				<button type="button" class="btn" id="eraseEndDate">x</button>
-				@Html.ValidationMessageFor(x => x.EndDate)
+				@Html.TextAreaFor(x => x.Description, new { @class = "input-block-level" })
+				@Html.ValidationMessageFor(x => x.Description)
 			</div>
 		</div>
-	</div>
-	<div class="control-group">
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Sunday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Sunday)) { <text> checked</text> }>
-			Sunday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Monday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Monday)) { <text> checked</text> }>
-			Monday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Tuesday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Tuesday)) { <text> checked</text> }>
-			Tuesday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Wednesday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Wednesday)) { <text> checked</text> }>
-			Wednesday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Thursday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Thursday)) { <text> checked</text> }>
-			Thursday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Friday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Friday)) { <text> checked</text> }>
-			Friday
-		</label>
-		<label class="checkbox inline">
-			<input type="checkbox" name='DaysOfWeek[]' value="Saturday"
-				   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Saturday)) { <text> checked</text> }>
-			Saturday
-		</label>
-	</div>
-	<div class="clearfix">
-		<div class="control-group left-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.StartTimeValue, new { @class = "control-label" })
-			<div class="controls">
-				<div class="input-append bootstrap-timepicker-component">
-					@Html.TextBoxFor(x => x.StartTimeValue, new { @class = "input-small", data_role = "timepicker" })
-					<span class="add-on"><i class="icon-time"></i></span>
+		<div class="clearfix">
+			<div class="control-group left-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.StartDate, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append date" id="StartDate" data-role='datepicker' data-date="">
+						@Html.TextBoxFor(x => x.StartDate, new { @class = "input-small" })
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<button type="button" class="btn" id="eraseStartDate">x</button>
+					@Html.ValidationMessageFor(x => x.StartDate)
 				</div>
-				<button type="button" class="btn" id="eraseStartTime">x</button>
-				@Html.ValidationMessageFor(x => x.StartTimeValue)
+			</div>
+			<div class="control-group right-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.EndDate, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append date" id="EndDate" data-role='datepicker' data-date="">
+						@Html.TextBoxFor(x => x.EndDate, new { @class = "input-small" })
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<button type="button" class="btn" id="eraseEndDate">x</button>
+					@Html.ValidationMessageFor(x => x.EndDate)
+				</div>
 			</div>
 		</div>
-		<div class="control-group right-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.EndTimeValue, new { @class = "control-label" })
-			<div class="controls">
-				<div class="input-append bootstrap-timepicker-component">
-					@Html.TextBoxFor(x => x.EndTimeValue, new { @class = "input-small", data_role = "timepicker" })
-					<span class="add-on"><i class="icon-time"></i></span>
-				</div>
-				<button type="button" class="btn" id="eraseEndTime">x</button>
-				@Html.ValidationMessageFor(x => x.EndTimeValue)
-				<span class="help-inline next-day-warning">The next day</span>
-			</div>
-		</div>
-	</div>
-	<div class="control-group">
-		@Html.Label("Applies To", new { @class = "control-label" })
-		<div class="controls">
-			<label class="checkbox">
-				@Html.CheckBoxFor(x => x.AppliesToCurrentBooking)
-				@Html.DisplayNameFor(x => x.AppliesToCurrentBooking)
+		<div class="control-group">
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Sunday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Sunday)) { <text> checked</text> }>
+				Sunday
 			</label>
-			<label class="checkbox">
-				@Html.CheckBoxFor(x => x.AppliesToFutureBooking)
-				@Html.DisplayNameFor(x => x.AppliesToFutureBooking)
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Monday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Monday)) { <text> checked</text> }>
+				Monday
+			</label>
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Tuesday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Tuesday)) { <text> checked</text> }>
+				Tuesday
+			</label>
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Wednesday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Wednesday)) { <text> checked</text> }>
+				Wednesday
+			</label>
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Thursday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Thursday)) { <text> checked</text> }>
+				Thursday
+			</label>
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Friday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Friday)) { <text> checked</text> }>
+				Friday
+			</label>
+			<label class="checkbox inline">
+				<input type="checkbox" name='DaysOfWeek[]' value="Saturday"
+					   @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Saturday)) { <text> checked</text> }>
+				Saturday
 			</label>
 		</div>
-	</div>
-	<div class="clearfix" id="publishedDatesGroup">
-		<div class="control-group left-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.PublishedStartDate, new { @class = "control-label" })
-			<div class="controls">
-				<div class="input-append date" data-role='datepicker' id="PublishedStartDate" data-date="">
-					@Html.TextBoxFor(x => x.PublishedStartDate, new { @class = "input-small" })
-					<span class="add-on"><i class="icon-calendar"></i></span>
+		<div class="clearfix">
+			<div class="control-group left-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.StartTimeValue, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append bootstrap-timepicker-component">
+						@Html.TextBoxFor(x => x.StartTimeValue, new { @class = "input-small", data_role = "timepicker" })
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div>
+					<button type="button" class="btn" id="eraseStartTime">x</button>
+					@Html.ValidationMessageFor(x => x.StartTimeValue)
 				</div>
-				<button type="button" class="btn" id="erasePublishedStartDate">x</button>
-				@Html.ValidationMessageFor(x => x.PublishedStartDate)
 			</div>
-		</div>
-		<div class="control-group right-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.PublishedEndDate, new { @class = "control-label" })
-			<div class="controls">
-				<div class="input-append date" data-role='datepicker' id="PublishedEndDate" data-date="">
-					@Html.TextBoxFor(x => x.PublishedEndDate, new { @class = "input-small" })
-					<span class="add-on"><i class="icon-calendar"></i></span>
+			<div class="control-group right-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.EndTimeValue, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append bootstrap-timepicker-component">
+						@Html.TextBoxFor(x => x.EndTimeValue, new { @class = "input-small", data_role = "timepicker" })
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div>
+					<button type="button" class="btn" id="eraseEndTime">x</button>
+					@Html.ValidationMessageFor(x => x.EndTimeValue)
+					<span class="help-inline next-day-warning">The next day</span>
 				</div>
-				<button type="button" class="btn" id="erasePublishedEndDate">x</button>
-				@Html.ValidationMessageFor(x => x.PublishedEndDate)
 			</div>
 		</div>
-	</div>
-	<div class="clearfix">
-		<div class="control-group left-control-group">
-			@Html.LabelFor(x => x.DiscountValue, new { @class = "control-label" })
+		<div class="control-group">
+			@Html.Label("Applies To", new { @class = "control-label" })
 			<div class="controls">
-				@Html.TextBoxFor(x => x.DiscountValue, new { @class = "input-small" })
-				@Html.ValidationMessageFor(x => x.DiscountValue)
+				<label class="checkbox">
+					@Html.CheckBoxFor(x => x.AppliesToCurrentBooking)
+					@Html.DisplayNameFor(x => x.AppliesToCurrentBooking)
+				</label>
+				<label class="checkbox">
+					@Html.CheckBoxFor(x => x.AppliesToFutureBooking)
+					@Html.DisplayNameFor(x => x.AppliesToFutureBooking)
+				</label>
 			</div>
 		</div>
-		<div class="control-group right-control-group">
-			<label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Cash) $</label>
-			<label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Percentage) %</label>
+		<div class="clearfix" id="publishedDatesGroup">
+			<div class="control-group left-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.PublishedStartDate, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append date" data-role='datepicker' id="PublishedStartDate" data-date="">
+						@Html.TextBoxFor(x => x.PublishedStartDate, new { @class = "input-small" })
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<button type="button" class="btn" id="erasePublishedStartDate">x</button>
+					@Html.ValidationMessageFor(x => x.PublishedStartDate)
+				</div>
+			</div>
+			<div class="control-group right-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.PublishedEndDate, new { @class = "control-label" })
+				<div class="controls">
+					<div class="input-append date" data-role='datepicker' id="PublishedEndDate" data-date="">
+						@Html.TextBoxFor(x => x.PublishedEndDate, new { @class = "input-small" })
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<button type="button" class="btn" id="erasePublishedEndDate">x</button>
+					@Html.ValidationMessageFor(x => x.PublishedEndDate)
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="clearfix" id="usageGroup">
-		<div class="control-group left-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
+		<div class="clearfix">
+			<div class="control-group left-control-group">
+				@Html.LabelFor(x => x.DiscountValue, new { @class = "control-label" })
+				<div class="controls">
+					@Html.TextBoxFor(x => x.DiscountValue, new { @class = "input-small" })
+					@Html.ValidationMessageFor(x => x.DiscountValue)
+				</div>
+			</div>
+			<div class="control-group right-control-group">
+				<label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Cash) $</label>
+				<label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Percentage) %</label>
+			</div>
+		</div>
+		<div class="clearfix" id="usageGroup">
+			<div class="control-group left-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
+				<div class="controls">
+					@Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small" })
+					@Html.ValidationMessageFor(x => x.MaxUsagePerUser)
+				</div>
+			</div>
+			<div class="control-group right-control-group" style="width: 50%">
+				@Html.LabelFor(x => x.MaxUsage, new { @class = "control-label" })
+				<div class="controls">
+					@Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small" })
+					@Html.ValidationMessageFor(x => x.MaxUsage)
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			@Html.LabelFor(x => x.Code, new { @class = "control-label" })
 			<div class="controls">
-				@Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small" })
-				@Html.ValidationMessageFor(x => x.MaxUsagePerUser)
+				@Html.TextBoxFor(x => x.Code, new { @class = "input-small" })
+				@Html.ValidationMessageFor(x => x.Code)
 			</div>
 		</div>
-		<div class="control-group right-control-group" style="width: 50%">
-			@Html.LabelFor(x => x.MaxUsage, new { @class = "control-label" })
-			<div class="controls">
-				@Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small" })
-				@Html.ValidationMessageFor(x => x.MaxUsage)
+		<div class="clearfix">
+			<div class="control-group left-control-group" style="width: 55%">
+				@Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
+				<div class="controls">
+					@Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
+				</div>
 			</div>
-		</div>
-	</div>
-	<div class="control-group">
-		@Html.LabelFor(x => x.Code, new { @class = "control-label" })
-		<div class="controls">
-			@Html.TextBoxFor(x => x.Code, new { @class = "input-small" })
-			@Html.ValidationMessageFor(x => x.Code)
-		</div>
-	</div>
-	<div class="clearfix">
-		<div class="control-group left-control-group" style="width: 55%">
-			@Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
-			<div class="controls">
-				@Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
+			<div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
+				@Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
+				<div class="controls" style="margin-left: 20px;">
+					@Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides", @class = "input-small" })
+					@Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+				</div>
 			</div>
-		</div>
-		<div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
-			@Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
-			<div class="controls" style="margin-left: 20px;">
-				@Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides", @class = "input-small" })
-				@Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+			<div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
+				@Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
+				<div class="controls" style="margin-left: 20px;">
+					@Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
+					@Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+				</div>
 			</div>
-		</div>
-		<div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
-			@Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
-			<div class="controls" style="margin-left: 20px;">
-				@Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
-				@Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
-			</div>
-		</div>
 
-		<div class="control-group right-control-group" id="applyToExistingTriggerGroup" style="width: 45%">
-			@Html.LabelFor(x => x.TriggerSettings.ApplyToExisting, new { @class = "control-label" })
-			<div class="controls">
-				@Html.DropDownListFor(x => x.TriggerSettings.ApplyToExisting,
+			<div class="control-group right-control-group" id="applyToExistingTriggerGroup" style="width: 45%">
+				@Html.LabelFor(x => x.TriggerSettings.ApplyToExisting, new { @class = "control-label" })
+				<div class="controls">
+					@Html.DropDownListFor(x => x.TriggerSettings.ApplyToExisting,
 				new SelectList(
 					new[]
 					{
@@ -217,212 +218,213 @@
 						new { Value = bool.FalseString, Text = "No" }
 					}, "Value", "Text",
 					Model.TriggerSettings.ApplyToExisting), new { @class = "input-small" })
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="control-group btn-right-alignment">
-		<button type="submit" class="btn btn-primary span">Create and Enable</button>
-		@Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
-	</div>
-}
+		<div class="control-group btn-right-alignment">
+			<button type="submit" class="btn btn-primary span">Create and Enable</button>
+			@Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
+		</div>
+	}
 
-<script type="text/javascript">
-	function _getTime($timepicker, date) {
-		var timepicker = $timepicker.data('timepicker');
+	<script type="text/javascript">
+		function _getTime($timepicker, date) {
+			var timepicker = $timepicker.data('timepicker');
 
-		if (!timepicker || timepicker.meridian === undefined) {
+			if (!timepicker || timepicker.meridian === undefined) {
+				return date;
+			}
+
+			var hour = timepicker.hour;
+
+			date = _.isDate(date) ? new Date(date) : new Date();
+
+			if (timepicker.meridian.toUpperCase() === "PM") {
+				if (hour < 12) {
+					hour += 12;
+				}
+			} else if (timepicker.meridian.toUpperCase() === "AM") {
+				if (hour === 12) {
+					hour = 0;
+				}
+			}
+
+			date.setHours(hour);
+			date.setMinutes(timepicker.minute);
+
 			return date;
 		}
 
-		var hour = timepicker.hour;
+		function ontimepickerchange(e) {
+			var startTime = this._getTime($('#StartTimeValue')),
+				endTime = this._getTime($('#EndTimeValue'));
 
-		date = _.isDate(date) ? new Date(date) : new Date();
-
-		if (timepicker.meridian.toUpperCase() === "PM") {
-			if (hour < 12) {
-				hour += 12;
-			}
-		} else if (timepicker.meridian.toUpperCase() === "AM") {
-			if (hour === 12) {
-				hour = 0;
+			if (endTime <= startTime) {
+				$('.next-day-warning').removeClass('hidden');
+			} else {
+				$('.next-day-warning').addClass('hidden');
 			}
 		}
 
-		date.setHours(hour);
-		date.setMinutes(timepicker.minute);
+		function ondatepickerchange(e) {
+			if (e.viewMode == "days") {
+				$('.datepicker').hide();
+			}
+		}
 
-		return date;
-	}
+		function onTriggerTypeChanged(e) {
+			var dropDownValue = $('#triggerTypeDropDown')[0].value;
 
-	function ontimepickerchange(e) {
-		var startTime = this._getTime($('#StartTimeValue')),
-			endTime = this._getTime($('#EndTimeValue'));
+			if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
+				$('#amountSpentTriggerGroup').addClass('hidden');
+				$('#applyToExistingTriggerGroup').addClass('hidden');
+				$('#publishedDatesGroup').addClass('hidden');
+				$('#rideCountTriggerGroup').removeClass('hidden');
+				$('#usageGroup').removeClass('hidden');
+			} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
+				$('#rideCountTriggerGroup').addClass('hidden');
+				$('#publishedDatesGroup').addClass('hidden');
+				$('#applyToExistingTriggerGroup').addClass('hidden');
+				$('#amountSpentTriggerGroup').removeClass('hidden');
+				$('#usageGroup').removeClass('hidden');
+			} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
+				$('#rideCountTriggerGroup').addClass('hidden');
+				$('#amountSpentTriggerGroup').addClass('hidden');
+				$('#applyToExistingTriggerGroup').addClass('hidden');
+				$('#publishedDatesGroup').addClass('hidden');
+				$('#usageGroup').addClass('hidden');
+			} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
+				$('#applyToExistingTriggerGroup').removeClass('hidden');
+				$('#usageGroup').removeClass('hidden');
+				$('#amountSpentTriggerGroup').addClass('hidden');
+				$('#rideCountTriggerGroup').addClass('hidden');
+				$('#publishedDatesGroup').addClass('hidden');
+			} else {
+				$('#publishedDatesGroup').removeClass('hidden');
+				$('#usageGroup').removeClass('hidden');
+				$('#amountSpentTriggerGroup').addClass('hidden');
+				$('#rideCountTriggerGroup').addClass('hidden');
+				$('#applyToExistingTriggerGroup').addClass('hidden');
+			}
+		}
 
-		if (endTime <= startTime) {
-			$('.next-day-warning').removeClass('hidden');
-		} else {
+		function onClearDateButtonPress(target) {
+			$('#' + target).datepicker("setValue", "");
+			$('[name=' + target + ']').val('');
+		}
+
+		$(document).ready(function () {
 			$('.next-day-warning').addClass('hidden');
-		}
-	}
 
-	function ondatepickerchange(e) {
-		if (e.viewMode == "days") {
-			$('.datepicker').hide();
-		}
-	}
-
-	function onTriggerTypeChanged(e) {
-		var dropDownValue = $('#triggerTypeDropDown')[0].value;
-
-		if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
-			$('#amountSpentTriggerGroup').addClass('hidden');
-			$('#applyToExistingTriggerGroup').addClass('hidden');
-			$('#publishedDatesGroup').addClass('hidden');
-			$('#rideCountTriggerGroup').removeClass('hidden');
-			$('#usageGroup').removeClass('hidden');
-		} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
-			$('#rideCountTriggerGroup').addClass('hidden');
-			$('#publishedDatesGroup').addClass('hidden');
-			$('#applyToExistingTriggerGroup').addClass('hidden');
-			$('#amountSpentTriggerGroup').removeClass('hidden');
-			$('#usageGroup').removeClass('hidden');
-		} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
-			$('#rideCountTriggerGroup').addClass('hidden');
-			$('#amountSpentTriggerGroup').addClass('hidden');
-			$('#applyToExistingTriggerGroup').addClass('hidden');
-			$('#publishedDatesGroup').addClass('hidden');
-			$('#usageGroup').addClass('hidden');
-		} else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
-			$('#applyToExistingTriggerGroup').removeClass('hidden');
-			$('#usageGroup').removeClass('hidden');
-			$('#amountSpentTriggerGroup').addClass('hidden');
-			$('#rideCountTriggerGroup').addClass('hidden');
-			$('#publishedDatesGroup').addClass('hidden');
-		} else {
-			$('#publishedDatesGroup').removeClass('hidden');
-			$('#usageGroup').removeClass('hidden');
-			$('#amountSpentTriggerGroup').addClass('hidden');
-			$('#rideCountTriggerGroup').addClass('hidden');
-			$('#applyToExistingTriggerGroup').addClass('hidden');
-		}
-	}
-
-	function onClearDateButtonPress(target) {
-		$('#' + target).datepicker("setValue", "");
-		$('[name=' + target + ']').val('');
-	}
-
-	$(document).ready(function () {
-		$('.next-day-warning').addClass('hidden');
-
-		@if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+			@if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
     {
         <text>
-		$('#amountSpentTriggerGroup').addClass('hidden');
-		$('#applyToExistingTriggerGroup').addClass('hidden');
-		$('#publishedDatesGroup').addClass('hidden');
-		</text>
+			$('#amountSpentTriggerGroup').addClass('hidden');
+			$('#applyToExistingTriggerGroup').addClass('hidden');
+			$('#publishedDatesGroup').addClass('hidden');
+			</text>
     }
     else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent) {
         <text>
-		$('#rideCountTriggerGroup').addClass('hidden');
-		$('#applyToExistingTriggerGroup').addClass('hidden');
-		$('#publishedDatesGroup').addClass('hidden');
-		</text>
+			$('#rideCountTriggerGroup').addClass('hidden');
+			$('#applyToExistingTriggerGroup').addClass('hidden');
+			$('#publishedDatesGroup').addClass('hidden');
+			</text>
     } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated) {
         <text>
-		$('#rideCountTriggerGroup').addClass('hidden');
-		$('#amountSpentTriggerGroup').addClass('hidden');
-		$('#publishedDatesGroup').addClass('hidden');
-		</text>
+			$('#rideCountTriggerGroup').addClass('hidden');
+			$('#amountSpentTriggerGroup').addClass('hidden');
+			$('#publishedDatesGroup').addClass('hidden');
+			</text>
     } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport) {
         <text>
-		$('#usageGroup').addClass('hidden');
-		$('#applyToExistingTriggerGroup').addClass('hidden');
-		$('#publishedDatesGroup').addClass('hidden');
-		$('#rideCountTriggerGroup').addClass('hidden');
-		$('#amountSpentTriggerGroup').addClass('hidden');
-		</text>
+			$('#usageGroup').addClass('hidden');
+			$('#applyToExistingTriggerGroup').addClass('hidden');
+			$('#publishedDatesGroup').addClass('hidden');
+			$('#rideCountTriggerGroup').addClass('hidden');
+			$('#amountSpentTriggerGroup').addClass('hidden');
+			</text>
     } else {
         <text>
-		$('#rideCountTriggerGroup').addClass('hidden');
-		$('#amountSpentTriggerGroup').addClass('hidden');
-		$('#applyToExistingTriggerGroup').addClass('hidden');
-		</text>
+			$('#rideCountTriggerGroup').addClass('hidden');
+			$('#amountSpentTriggerGroup').addClass('hidden');
+			$('#applyToExistingTriggerGroup').addClass('hidden');
+			</text>
     }
 
-		$('#triggerTypeDropDown').change(function (e) {
-			onTriggerTypeChanged(e);
-		});
-
-		$('[data-role=datepicker]')
-			.datepicker()
-			.on("changeDate", function (e) {
-				ondatepickerchange(e);
+			$('#triggerTypeDropDown').change(function (e) {
+				onTriggerTypeChanged(e);
 			});
 
-		$('[data-role=timepicker]').timepicker({
-			defaultTime: false,
-			disableFocus: true
-		}).on('changeTime.timepicker', function (e) {
-			ontimepickerchange(e);
-		});
+			$('[data-role=datepicker]')
+				.datepicker()
+				.on("changeDate", function (e) {
+					ondatepickerchange(e);
+				});
 
-		// Ensures that click in the date textbox fields also open the datepicker.
-		$('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
-			$('#' + e.target.id).datepicker('show');
-		});
+			$('[data-role=timepicker]').timepicker({
+				defaultTime: false,
+				disableFocus: true
+			}).on('changeTime.timepicker', function (e) {
+				ontimepickerchange(e);
+			});
 
-		$('#eraseStartDate').click(function (e) {
-			onClearDateButtonPress("StartDate");
-		});
-		$('#eraseEndDate').click(function () {
-			onClearDateButtonPress("EndDate");
-		});
-		$('#erasePublishedStartDate').click(function () {
-			onClearDateButtonPress("PublishedStartDate");
-		});
-		$('#erasePublishedEndDate').click(function () {
-			onClearDateButtonPress("PublishedEndDate");
-		});
+			// Ensures that click in the date textbox fields also open the datepicker.
+			$('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
+				$('#' + e.target.id).datepicker('show');
+			});
 
-		$('#eraseStartTime').click(function () {
-			$('#StartTimeValue').val('');
-			$('.next-day-warning').addClass('hidden');
-		});
-		$('#eraseEndTime').click(function () {
-			$('#EndTimeValue').val('');
-			$('.next-day-warning').addClass('hidden');
-		});
+			$('#eraseStartDate').click(function (e) {
+				onClearDateButtonPress("StartDate");
+			});
+			$('#eraseEndDate').click(function () {
+				onClearDateButtonPress("EndDate");
+			});
+			$('#erasePublishedStartDate').click(function () {
+				onClearDateButtonPress("PublishedStartDate");
+			});
+			$('#erasePublishedEndDate').click(function () {
+				onClearDateButtonPress("PublishedEndDate");
+			});
 
-		@if (Model.StartTime.HasValue)
+			$('#eraseStartTime').click(function () {
+				$('#StartTimeValue').val('');
+				$('.next-day-warning').addClass('hidden');
+			});
+			$('#eraseEndTime').click(function () {
+				$('#EndTimeValue').val('');
+				$('.next-day-warning').addClass('hidden');
+			});
+
+			@if (Model.StartTime.HasValue)
     {
         <text>$('[data-role=timepicker][name=StartTimeValue]').data('timepicker').setTime('@Model.StartTimeValue');</text>
     }
-		@if (Model.EndTime.HasValue)
+			@if (Model.EndTime.HasValue)
     {
         <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
     }
 
-		@if (Model.StartDate.HasValue)
+			@if (Model.StartDate.HasValue)
     {
         var startDate = @Html.Raw(Json.Encode(Model.StartDate));
         <text>$('#StartDate').datepicker('setValue', moment(@startDate).format('L'));</text>
     }
-		@if (Model.EndDate.HasValue)
+			@if (Model.EndDate.HasValue)
     {
         var endDate = @Html.Raw(Json.Encode(Model.EndDate));
         <text>$('#EndDate').datepicker('setValue', moment(@endDate).format('L'));</text>
     }
-		@if (Model.PublishedStartDate.HasValue)
+			@if (Model.PublishedStartDate.HasValue)
     {
         var publishedStartDate = @Html.Raw(Json.Encode(Model.PublishedStartDate));
         <text>$('#PublishedStartDate').datepicker('setValue', moment(@publishedStartDate).format('L'));</text>
     }
-		@if (Model.PublishedEndDate.HasValue)
+			@if (Model.PublishedEndDate.HasValue)
     {
         var publishedEndDate = @Html.Raw(Json.Encode(Model.PublishedEndDate));
         <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).format('L'));</text>
     }
-	});
-</script>
+		});
+	</script>
+</div>

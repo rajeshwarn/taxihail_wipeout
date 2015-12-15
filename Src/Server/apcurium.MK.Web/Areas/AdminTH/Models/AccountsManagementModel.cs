@@ -18,5 +18,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 		public string SearchCriteria { get; set; }
 
 		public AccountDetail[] AccountsDetail { get; set; }
+
+		public string[] CountryDialCode { get; set; }
 	}
 }

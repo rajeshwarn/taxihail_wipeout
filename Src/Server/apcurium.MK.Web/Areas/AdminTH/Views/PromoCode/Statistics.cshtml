@@ -1,31 +1,33 @@
 ﻿@using System.Globalization
 @model apcurium.MK.Web.Areas.AdminTH.Models.PromoStatsModel
 
-@if (Model != null)
-{
-	<h4 class="table-title">
-		<b>Statistics for @Html.DisplayName(Model.PromoCode)</b>
-	</h4>
+<div class="well clearfix form-horizontal">
+	@if (Model != null)
+	{
+		<h4 class="table-title">
+			<b>Statistics for @Html.DisplayName(Model.PromoCode)</b>
+		</h4>
 
-	<p>
-		<b>Number of Times Used : </b>
-		@Model.UsageCount.ToString(CultureInfo.InvariantCulture)
-	</p>
-	<p>
-		<b>Total Amount Redeemed : </b>
-		@Model.TotalUsageAmount.ToString(CultureInfo.InvariantCulture)
-	</p>
-	<p>
-		<b>Users that Redeemed this Promotion : </b>
-		@Html.ActionLink(@Model.UsersUsage.Keys.Count + " (Click for details)", "UserStatistics", new { id = @Url.RequestContext.RouteData.Values["id"] })
-	</p>
-}
-else
-{
-	<h4>No statistics are available for this promotion</h4>
-}
+		<p>
+			<b>Number of Times Used : </b>
+			@Model.UsageCount.ToString(CultureInfo.InvariantCulture)
+		</p>
+		<p>
+			<b>Total Amount Redeemed : </b>
+			@Model.TotalUsageAmount.ToString(CultureInfo.InvariantCulture)
+		</p>
+		<p>
+			<b>Users that Redeemed this Promotion : </b>
+			@Html.ActionLink(@Model.UsersUsage.Keys.Count + " (Click for details)", "UserStatistics", new { id = @Url.RequestContext.RouteData.Values["id"] })
+		</p>
+	}
+	else
+	{
+		<h4>No statistics are available for this promotion</h4>
+	}
 
-<div class="control-group">
-	<br />
-	@Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
+	<div class="control-group">
+		<br />
+		@Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
+	</div>
 </div>

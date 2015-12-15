@@ -1,8 +1,11 @@
-﻿using apcurium.MK.Common;
+﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,7 +15,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 	{
 		public AccountManagementModel()
 		{
-
 		}
 
 		[Display(Name = "Id")]
@@ -61,5 +63,60 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 		public string CreditCardLast4Digits { get; set; }
 
 		public List<SelectListItem> CountryCodesList { get; set; }
+
+		public List<Order> OrderDetailList { get; set; }
+	}
+
+	public static class OrderExtensions
+	{
+		public static double? TotalAmount(this Order order)
+		{
+			return order.Fare + order.Tax + order.Toll + order.Tip + order.Surcharge;
+		}
+
+		public static string CreatedDateText(this Order order)
+		{
+			string txt;
+			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			txt = order.CreatedDate.ToShortDateString();
+			Thread.CurrentThread.CurrentCulture = originalCulture;
+			return txt;
+		}
+
+		public static string CreatedTimeText(this Order order)
+		{
+			string txt;
+			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			txt = order.CreatedDate.ToShortTimeString();
+			Thread.CurrentThread.CurrentCulture = originalCulture;
+			return txt;
+		}
+
+		public static string PickupDateText(this Order order)
+		{
+			string txt;
+			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			txt = order.PickupDate.ToShortDateString();
+			Thread.CurrentThread.CurrentCulture = originalCulture;
+			return txt;
+		}
+
+		public static string PickupTimeText(this Order order)
+		{
+			string txt;
+			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			txt = order.PickupDate.ToShortTimeString();
+			Thread.CurrentThread.CurrentCulture = originalCulture;
+			return txt;
+		}
+
+		public static string StatusText(this Order order)
+		{
+			return order.Status.ToString();
+		}
 	}
 }

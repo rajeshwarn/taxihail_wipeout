@@ -2,34 +2,36 @@
 @using apcurium.MK.Common.Extensions
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountsManagementModel
 
-<h4 class="table-title">Accounts Management</h4>
-@if (@TempData["SearchCriteriaEmpty"] != null)
-{
-	<div class="alert alert-info" style="margin-top: 10px;">
-		@TempData["SearchCriteriaEmpty"]
-	</div>
-}
-
 @using (Html.BeginForm("Search", "AccountsManagement", FormMethod.Post))
 {
-	@Html.AntiForgeryToken()
+	<div class="well clearfix form-horizontal">
+		<h4 class="table-title">Accounts Management</h4>
+		@if (@TempData["SearchCriteriaEmpty"] != null)
+		{
+			<div class="alert alert-info" style="margin-top: 10px;">
+				@TempData["SearchCriteriaEmpty"]
+			</div>
+		}
 
-	<div class="control-group">
-		<div class="control-group left-control-group" style="width: 30%">
-			@Html.LabelFor(x => x.SearchCriteria, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+		@Html.AntiForgeryToken()
+
+		<div class="control-group">
+			<div class="control-group left-control-group" style="width: 30%">
+				@Html.LabelFor(x => x.SearchCriteria, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+			</div>
+			<div class="control-group right-control-group" style="width: 70%">
+				@Html.TextBoxFor(x => x.SearchCriteria, new { @placeholder = "Name / Email / Phone Number", @class = "input-block-level", @style = "margin-right:15px" })
+			</div>
 		</div>
-		<div class="control-group right-control-group" style="width: 70%">
-			@Html.TextBoxFor(x => x.SearchCriteria, new { @placeholder = "Name / Email / Phone Number", @class = "input-block-level", @style = "margin-right:15px" })
-		</div>
-	</div>
 
 		<div class="control-group">
 			<button type="submit" class="btn btn-primary span" style="margin-left:560px">Search</button>
 		</div>
+	</div>
 
 	if (Model.AccountsDetail != null && Model.AccountsDetail.Length != 0)
 	{
-		<div class="well clearfix">
+		<div class="well clearfix form-horizontal">
 			<div class="control-group">
 
 				<table class="table-accountslist">
@@ -44,14 +46,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var accountDetail in Model.AccountsDetail)
+
+						@foreach (var item in Model.AccountsDetail.Zip(Model.CountryDialCode, (accountDetail, countryDialCode) => new { AccountDetail = accountDetail, CountryDialCode = countryDialCode }))
 						{
-							<tr onclick="location.href='@Url.Action("Index", "AccountManagement", new { id = accountDetail.Id })'">
-								<td style="width:170px;">@accountDetail.Name</td>
-								<td style="width:170px;">@accountDetail.Email</td>
-								<td style="width:130px;">@accountDetail.Settings.Phone</td>
+							<tr onclick="location.href='@Url.Action("Index", "AccountManagement", new { id = item.AccountDetail.Id })'">
+								<td style="width:170px;">@item.AccountDetail.Name</td>
+								<td style="width:170px;">@item.AccountDetail.Email</td>
+								<td style="width:130px;">@item.CountryDialCode @item.AccountDetail.Settings.Phone</td>
 								<td style="width:50px;">
-									@if (accountDetail.IsConfirmed)
+									@if (item.AccountDetail.IsConfirmed)
 									{
 										<img src="../../assets/img/yes.png" style="height:25px; width:25px;">
 									}
@@ -61,7 +64,7 @@
 									}
 								</td>
 								<td style="width:50px;">
-									@if (!accountDetail.DisabledByAdmin)
+									@if (!item.AccountDetail.DisabledByAdmin)
 									{
 										<img src="../../assets/img/yes.png" style="height:25px; width:25px;">
 									}
@@ -71,7 +74,7 @@
 									}
 								</td>
 								<td style="width:50px;">
-									@if (!string.IsNullOrEmpty(accountDetail.FacebookId))
+									@if (!string.IsNullOrEmpty(item.AccountDetail.FacebookId))
 									{
 										<img src="../../assets/img/yes.png" style="height:25px; width:25px;">
 									}

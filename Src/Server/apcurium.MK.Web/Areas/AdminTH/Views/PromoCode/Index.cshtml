@@ -2,36 +2,38 @@
 @using apcurium.MK.Web.Areas.AdminTH.Models
 @model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCodeModel>
 
-<h4 class="table-title">Promo Codes</h4>
-@if (@TempData["Warning"] != null)
-{
-	<div class="alert alert-warning" style="margin-top: 10px;">
-		@TempData["Warning"]
-	</div>
-}
-@if (@TempData["Info"] != null)
-{
-	<div class="alert alert-info" style="margin-top: 10px;">
-		@TempData["Info"]
-	</div>
-}
-
-<ul class="unstyled locations">
-	@{
-		foreach (var promoCode in Model)
-		{
-			<li>
-				<a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
-					<span class="location-title">@promoCode.Name (@promoCode.Code)</span>
-				</a>
-				<a href="@Url.Action("Statistics", new {id = @promoCode.Id})">
-					<span>[Statistics]</span>
-				</a>
-			</li>
-		}
+<div class="well clearfix form-horizontal">
+	<h4 class="table-title">Promo Codes</h4>
+	@if (@TempData["Warning"] != null)
+	{
+		<div class="alert alert-warning" style="margin-top: 10px;">
+			@TempData["Warning"]
+		</div>
+	}
+	@if (@TempData["Info"] != null)
+	{
+		<div class="alert alert-info" style="margin-top: 10px;">
+			@TempData["Info"]
+		</div>
 	}
 
-	<li>
-		<a class="new" href="@Url.Action("Create")">Add a new promo code</a>
-	</li>
-</ul>
+	<ul class="unstyled locations">
+		@{
+			foreach (var promoCode in Model)
+			{
+				<li>
+					<a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
+						<span class="location-title">@promoCode.Name (@promoCode.Code)</span>
+					</a>
+					<a href="@Url.Action("Statistics", new {id = @promoCode.Id})">
+						<span>[Statistics]</span>
+					</a>
+				</li>
+			}
+		}
+
+		<li>
+			<a class="new" href="@Url.Action("Create")">Add a new promo code</a>
+		</li>
+	</ul>
+</div>

@@ -1,11 +1,12 @@
 ﻿@model apcurium.MK.Web.Areas.AdminTH.Models.MarketFeesModel
 
-@if (@TempData["Info"] != null)
-{
-	<div class="alert alert-info" style="margin-top: 10px;">
-		@TempData["Info"]
-	</div>
-}
+<div class="well clearfix form-horizontal">
+	@if (@TempData["Info"] != null)
+	{
+		<div class="alert alert-info" style="margin-top: 10px;">
+			@TempData["Info"]
+		</div>
+	}
 
 	@*<div id="validationPanel" class="alert-success alert" style="display: none"> </div>*@
 
@@ -101,3 +102,4 @@
 					<button type="submit" class="btn btn-primary span">Save</button>
 				</div>
 			}
+</div>

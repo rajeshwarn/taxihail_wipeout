@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
@@ -56,6 +57,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 					.Concat<AccountDetail>(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
 					.Distinct<AccountDetail>(new AccountDetailComparer())
 					.ToArray();
+
+				accountsManagement.CountryDialCode = new string[accountsManagement.AccountsDetail.Length];
+				int idx = 0;
+				foreach (AccountDetail accoutDetail in accountsManagement.AccountsDetail)
+				{
+					CountryCode countryCode = new CountryCode() { CountryISOCode = accoutDetail.Settings.Country };
+					accountsManagement.CountryDialCode[idx++] = countryCode.СountryDialCodeInternationalFormat;
+				}
 
 				return View("Index", accountsManagement);
 			}
