@@ -144,6 +144,7 @@
     <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\OverduePaymentFixture\OverduePaymentDetailGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
+    <Compile Include="Integration\PhoneFixture\BlackListEntryService.cs" />
     <Compile Include="Integration\PromotionFixture\PromotionDetailGenerator.cs" />
     <Compile Include="Integration\PromotionFixture\PromotionTriggerGenerator.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
