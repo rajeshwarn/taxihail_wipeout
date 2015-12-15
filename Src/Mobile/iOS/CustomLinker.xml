@@ -88,4 +88,8 @@
         <assembly fullname="Newtonsoft.Json" > 
             <type fullname="*" />
         </assembly>
+
+        <assembly fullname="CMTPayment.iOS" > 
+            <type fullname="*" />
+        </assembly>
 </linker>
