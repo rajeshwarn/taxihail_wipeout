@@ -25,7 +25,6 @@
     <service android:name="com.paypal.android.sdk.payments.PayPalService" android:exported="false" />
 
     <!-- Used for Google Play Store Campaign Measurement-->
-    <!-- Test: adb shell am broadcast -a com.android.vending.INSTALL_REFERRER -n com.apcurium.MK.TaxiHailDemo/com.google.android.gms.analytics.CampaignTrackingReceiver --es referrer "utm_source=testSource&utm_medium=testMedium&utm_term=testTerm&utm_content=testContent&utm_campaign=testCampaign" -->
     <service android:name="com.google.android.gms.analytics.AnalyticsService" android:enabled="true" android:exported="false"/>
 	<receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver" android:enabled="true">
 		<intent-filter>
