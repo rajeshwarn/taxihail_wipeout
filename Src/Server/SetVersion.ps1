@@ -167,6 +167,10 @@ $r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1
 echo "Starting...";
 if ($r.Success)
 {
+	# Enable the GitHub shell command
+  Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
+
+
 	# validate tag does not already exist
 		$tagExist = $(git tag -l "$args" 2>&1);
 		if($tagExist)
@@ -181,9 +185,6 @@ if ($r.Success)
 	  echo "TAG OK";
 	  echo " ";
 
-
-	# Enable the GitHub shell command
-  Invoke-Expression "$env:LOCALAPPDATA\GitHub\shell.ps1";
 	# get current git status
 	$gitStatus= $(git status 2>&1);
 
