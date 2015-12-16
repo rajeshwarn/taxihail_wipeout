@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<Tuple<Order, OrderStatusDetail>>
+	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<OrderRepresentation>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;

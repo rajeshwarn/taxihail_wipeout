@@ -22,6 +22,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Provider;
 using MK.Common.Exceptions;
 using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -263,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
+		public async Task<OrderRepresentation> ConfirmOrder()
 		{
 		    _isOrderRebooked = false;
 
@@ -289,10 +290,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
-				Logger.LogMessage("Order created: ID [" + orderCreated.Id.ToString() + "], IBS ID [" + orderStatus.IBSOrderId.ToString() + "]");
+				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
-				// TODO: Refactor so we don't have to return two distinct objects
-				return Tuple.Create(orderCreated, orderStatus);
+				return new OrderRepresentation(orderCreated, orderStatus);
 			}
 			catch(WebServiceException e)
 			{
@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(address);
 		}
 
-        public async Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder()
+		public async Task<OrderRepresentation> GetLastActiveOrder()
 		{
 			if (_bookingService.HasLastOrder) 
 			{
@@ -393,7 +393,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     {
                         var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
 
-                        return Tuple.Create(order, status);
+						return new OrderRepresentation(order, status);
                     }
                     catch (Exception ex)
                     {
