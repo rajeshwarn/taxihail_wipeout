@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private bool _hasSelectedGratuity = true;
 		private void ShowDoneButton ()
 		{
-			_hasSelectedGratuity = ViewModel.GratuitySelectionStates.Any(x => x);
+			_hasSelectedGratuity = !ViewModel.NeedToSelectGratuity || ViewModel.GratuitySelectionStates.Any(x => x);
 
 			var buttonTextResource = _hasSelectedGratuity && ViewModel.NeedToSelectGratuity
 				? "Next" 
