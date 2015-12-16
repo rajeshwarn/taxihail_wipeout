@@ -97,6 +97,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
     public enum OutOfAppPaymentDisabled
     {
+        NotSet,
         None,
         AppOnly,
         All

@@ -1,3 +1,5 @@
+using apcurium.MK.Common.Configuration.Impl;
+
 namespace apcurium.MK.Common.Migrations
 {
     using System;
@@ -7,7 +9,7 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.PaymentSettings", "IsPaymentOutOfAppDisabled", c => c.Int(nullable: false));
+            AddColumn("Config.PaymentSettings", "IsPaymentOutOfAppDisabled", c => c.Int(nullable: false, defaultValue: (int?)OutOfAppPaymentDisabled.NotSet));
         }
         
         public override void Down()

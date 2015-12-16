@@ -1020,9 +1020,9 @@ namespace DatabaseInitializer
                 needsUpdate = true;
             }
 
-            if (paymentSettings.IsOutOfAppPaymentDisabled)
+            if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
             {
-                paymentSettings.IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.All;
+                paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
                 needsUpdate = true;
             }
 
