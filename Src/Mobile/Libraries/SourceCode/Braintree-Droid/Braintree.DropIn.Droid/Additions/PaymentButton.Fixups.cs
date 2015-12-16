@@ -2,7 +2,7 @@
 using Android.Runtime;
 using Object = Java.Lang.Object;
 
-namespace Com.Braintreepayments.Api
+namespace Braintree.Api
 {
     public partial class PaymentButton
     {
