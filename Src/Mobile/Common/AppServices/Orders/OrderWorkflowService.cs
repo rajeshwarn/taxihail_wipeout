@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    private Position _lastMarketPosition = new Position();
 	    private string _lastHashedMarketValue;
 
-        private const int LastMarketDistanceThreshold = 1000; // In meters
+		private const int LastMarketDistanceThresholdInMeters = 1000;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -596,10 +596,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return address[0];
 			}
 
-			// TODO: Refactor. We should probably throw an exception here.
-			// Error should be handled by the caller.
 			_loadingAddressSubject.OnNext(false);
-			return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
+			return new Address { Latitude = p.Latitude, Longitude = p.Longitude };
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
@@ -1035,7 +1033,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 currentPosition.Latitude, currentPosition.Longitude,
                 _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
 
-            return distanceFromLastMarketRequest > LastMarketDistanceThreshold;
+            return distanceFromLastMarketRequest > LastMarketDistanceThresholdInMeters;
 	    }
 
 		public async Task<bool> ShouldPromptForCvv()
