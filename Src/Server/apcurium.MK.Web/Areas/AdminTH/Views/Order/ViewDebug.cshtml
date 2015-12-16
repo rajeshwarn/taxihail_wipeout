@@ -9,99 +9,99 @@
 <html class="no-js">
 <!--<![endif]-->
 <head>
-	<!-- version : <%: ApplicationVersion %> -->
-	<meta charset='utf-8' />
-	<title>@ViewData["ApplicationName"] </title>
-	<meta name="HandheldFriendly" content="True">
-	<meta name="MobileOptimized" content="320">
-	<meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
-	<meta http-equiv="cleartype" content="on">
-	<link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined.less' />
-	<link rel="stylesheet" href='~/admin/assets/less/TaxiHail-admin-grid.less' />
-	<link rel="stylesheet" href='~/admin/assets/css/admin.css' />
-	<link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined-responsive.less' />
-	<link rel="stylesheet" href='~/assets/css/json.human.css' />
-	@Scripts.Render("~/bundles/modernizr")
-	<script src="~/scripts/jquery-1.8.2.min.js"></script>
-	<script src="~/scripts/json.human.js"></script>
+    <!-- version : <%: ApplicationVersion %> -->
+    <meta charset='utf-8' />
+    <title>@ViewData["ApplicationName"] </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined.less' />
+    <link rel="stylesheet" href='~/admin/assets/less/TaxiHail-admin-grid.less' />
+    <link rel="stylesheet" href='~/admin/assets/css/admin.css' />
+    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined-responsive.less' />
+    <link rel="stylesheet" href='~/assets/css/json.human.css' />
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/scripts/json.human.js"></script>
 </head>
 <body>
-	<header>
-		<div class="login-status-zone">
-			<div>
-				<a href='@ViewData["BaseUrl"]' class='brand'></a>
-			</div>
-		</div>
-	</header>
+    <header>
+        <div class="login-status-zone">
+            <div>
+                <a href='@ViewData["BaseUrl"]' class='brand'></a>
+            </div>
+        </div>
+    </header>
 
-	<div class="container">
-		<div class='notification-zone'></div>
-		<div class='row'>
-			<div id='main' class='span12'>
-				<div class="well clearfix form-horizontal">
-					<h4 class="table-title">Order Debug Info</h4>
-					@if (Model.OrderDetail == null)
-					{
-						<div class="alert alert-error" style="margin-top: 10px;">
-							Order cannot be found.
-						</div>
-					}
-					else
-					{
-						<h5>User</h5>
-						<div>@Model.UserEmail</div>
+    <div class="container">
+        <div class='notification-zone'></div>
+        <div class='row'>
+            <div id='main' class='span12'>
+                <div class="well clearfix form-horizontal">
+                    <h4 class="table-title">Order Debug Info</h4>
+                    @if (Model.OrderDetail == null)
+                    {
+                        <div class="alert alert-error" style="margin-top: 10px;">
+                            Order cannot be found.
+                        </div>
+                    }
+                    else
+                    {
+                        <h5>User</h5>
+                        <div>@Model.UserEmail</div>
 
-						<h5>OrderDetail</h5>
-						<div id="orderDetail"></div>
+                        <h5>OrderDetail</h5>
+                        <div id="orderDetail"></div>
 
-						<h5>OrderStatusDetail</h5>
-						<div id="orderStatusDetail">No OrderStatusDetail found</div>
+                        <h5>OrderStatusDetail</h5>
+                        <div id="orderStatusDetail">No OrderStatusDetail found</div>
 
-						<h5>OrderPairingDetail</h5>
-						<div id="orderPairingDetail">No OrderPairingDetail found</div>
+                        <h5>OrderPairingDetail</h5>
+                        <div id="orderPairingDetail">No OrderPairingDetail found</div>
 
-						<h5>OrderPaymentDetail</h5>
-						<div id="orderPaymentDetail">No OrderPaymentDetail found</div>
+                        <h5>OrderPaymentDetail</h5>
+                        <div id="orderPaymentDetail">No OrderPaymentDetail found</div>
 
-						<h5>OverduePaymentDetail</h5>
-						<div id="overduePaymentDetail">No OverduePaymentDetail found</div>
+                        <h5>OverduePaymentDetail</h5>
+                        <div id="overduePaymentDetail">No OverduePaymentDetail found</div>
 
-						<h5>Related events</h5>
-						<div id="relatedEvents"></div>
-					}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class='modal-zone'></div>
+                        <h5>Related events</h5>
+                        <div id="relatedEvents"></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='modal-zone'></div>
 </body>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		$('#orderDetail').append(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderDetail))));
+    $(document).ready(function () {
+        $('#orderDetail').append(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderDetail))));
 
-		@if (Model.OrderStatusDetail != null)
+        @if (Model.OrderStatusDetail != null)
     {
         <text>$('#orderStatusDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderStatusDetail))));</text>
     }
 
-		@if (Model.OrderPairingDetail != null)
+        @if (Model.OrderPairingDetail != null)
     {
         <text>$('#orderPairingDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPairingDetail))));</text>
     }
 
-		@if (Model.OrderPaymentDetail != null)
+        @if (Model.OrderPaymentDetail != null)
     {
         <text>$('#orderPaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPaymentDetail))));</text>
     }
 
-		@if (Model.OverduePaymentDetail != null)
+        @if (Model.OverduePaymentDetail != null)
     {
         <text>$('#overduePaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OverduePaymentDetail))));</text>
     }
 
-		$('#relatedEvents').append(JsonHuman.format(@Html.Raw(Model.RelatedEvents)));
-	});
+        $('#relatedEvents').append(JsonHuman.format(@Html.Raw(Model.RelatedEvents)));
+    });
 </script>
 
 </html>

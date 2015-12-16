@@ -3,29 +3,29 @@
 
 @if (Model != null && Model.UsersUsage.Keys.Count > 0)
 {
-	<div class="well clearfix form-horizontal">
-		<h4 class="table-title">
-			<b>Statistics for @Html.DisplayName(Model.PromoCode)</b>
-		</h4>
+    <div class="well clearfix form-horizontal">
+        <h4 class="table-title">
+            <b>Statistics for @Html.DisplayName(Model.PromoCode)</b>
+        </h4>
 
-		<p>
-			<b>Users that Redeemed this Promotion : </b>
-			@foreach (var userUsage in Model.UsersUsage)
-			{
-				if (@userUsage.Value > 1)
-				{
-				<p>@userUsage.Key (@userUsage.Value times)</p>
-				}
-				else
-				{
-					<p>@userUsage.Key (@userUsage.Value time)</p>
-				}
-			}
-			</p>
-			}
-			else
-			{
-			<h4>No user has redeemed this promotion</h4>
-			}
-		</div>
+        <p>
+            <b>Users that Redeemed this Promotion : </b>
+            @foreach (var userUsage in Model.UsersUsage)
+            {
+                if (@userUsage.Value > 1)
+                {
+                <p>@userUsage.Key (@userUsage.Value times)</p>
+                }
+                else
+                {
+                    <p>@userUsage.Key (@userUsage.Value time)</p>
+                }
+            }
+            </p>
+            }
+            else
+            {
+            <h4>No user has redeemed this promotion</h4>
+            }
+        </div>
 }
