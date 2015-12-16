@@ -128,7 +128,7 @@
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
     <MtouchUseLlvm>True</MtouchUseLlvm>
-    <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchExtraArgs>-xml="CustomLinker.xml" -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <CodesignProvision>Automatic:AdHoc</CodesignProvision>
     <CustomCommands>
       <CustomCommands>
@@ -137,6 +137,9 @@
     </CustomCommands>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
+    <MtouchLink>Full</MtouchLink>
+    <MtouchI18n>
+    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -317,7 +320,6 @@
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
-    <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
@@ -393,7 +395,6 @@
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
@@ -440,7 +441,6 @@
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
@@ -535,7 +535,6 @@
     <Compile Include="Controls\Widgets\ToggleCell.cs" />
     <Compile Include="Style\FlatButtonStyle.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
-    <Compile Include="Extensions\Helpers\NaturalLanguageHelper.cs" />
     <BundleResource Include="Resources\tutorial_screen08.png" />
     <BundleResource Include="Resources\tutorial_screen08%402x.png" />
     <BundleResource Include="Resources\tutorial_screen09.png" />
@@ -719,6 +718,7 @@
       <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -999,8 +999,8 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
-      <Visible>False</Visible>
       <Version>2.4.2</Version>
+      <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>

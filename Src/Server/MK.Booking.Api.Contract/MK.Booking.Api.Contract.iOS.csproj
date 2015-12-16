@@ -8,6 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Api.Contract</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,14 +28,12 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
-    <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -46,7 +44,6 @@
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
@@ -55,7 +52,6 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -65,6 +61,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\Mobile\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticateAttribute.cs" />
@@ -153,10 +152,6 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.MapDataProvider.iOS</Name>
     </ProjectReference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\Mobile\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\FlightInformation.cs" />

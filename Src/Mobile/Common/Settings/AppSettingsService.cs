@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
     {
 		public TaxiHailSetting Data { get; private set; }
 
-		private bool _isReady;
+		private bool _settingsFileLoaded;
 
         readonly ICacheService _cacheService;
 		readonly ILogger _logger;
@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					data.ServiceUrl = bundledServiceUrl;
 				}
 
-
 				Data = data;
                 // Update settings asynchronously. NB: ServiceUrl is never returned from the server settings
 				Task.Run(() => RefreshSettingsFromServer());
@@ -78,7 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 			try
 			{
-				await RefreshSettingsFromServer();
+				await RefreshSettingsFromServer(true);
+
+				await Mvx.Resolve<IMessageService>().ShowMessage("Apps needs to restart", "Server url succesfully updated, press to quit the application");
+				Mvx.Resolve<IQuitApplicationService>().Quit ();
 			}
 			catch
 			{
@@ -96,16 +98,36 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		public string GetServiceUrl()
 		{
-			var taxiHailSettings = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
-
-			if (taxiHailSettings != null)
+			if (_settingsFileLoaded)
 			{
-				return taxiHailSettings.ServiceUrl;
-			}
+				// settings file is loaded, we can rely on CanChangeServiceUrl value
+				if (Data.CanChangeServiceUrl)
+				{
+					// we have loaded the settings file but we allow to change the service url
+					// check cache otherwise return the service url in data
+					var cachedData = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+					if (cachedData != null && cachedData.TaxiHail.ApplicationName.HasValue())
+					{
+						return cachedData.ServiceUrl;
+					}
+				}
 
-			return _isReady
-				? Data.ServiceUrl
-				: GetSettingFromFile("ServiceUrl");
+				// we have loaded the settings file and we cannot change the service url
+				// or we don't have anything in cache therefore the service url in data is the good one
+				return Data.ServiceUrl;
+			}
+			else
+			{
+				// settings file is not yet loaded, check the cache for CanChangeServiceUrl value
+				var cachedData = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+				if (cachedData != null && cachedData.TaxiHail.ApplicationName.HasValue() && cachedData.CanChangeServiceUrl)
+				{
+					// we allow to change the service url, assume that user changed it and he wants the latest one he typed
+					return cachedData.ServiceUrl;
+				}
+
+				return GetSettingFromFile("ServiceUrl");
+			}
 		}
 
 		private void LoadSettingsFromFile()
@@ -127,7 +149,20 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				}
 			}
 
-			_isReady = true;
+			if (Data.CanChangeServiceUrl)
+			{
+				var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
+				if (data != null && data.TaxiHail.ApplicationName.HasValue())
+				{
+					if (Data.ServiceUrl != data.ServiceUrl)
+					{
+						_logger.LogMessage("CanChangeServiceUrl: url different in cache, using cached value {0}", data.ServiceUrl);
+						Data.ServiceUrl = data.ServiceUrl;
+					}
+				}
+			}
+
+			_settingsFileLoaded = true;
 		}
 
 		private string GetSettingFromFile(string settingName)
@@ -155,11 +190,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			}
 		}
 
-		private async Task RefreshSettingsFromServer()
+		private async Task RefreshSettingsFromServer(bool getSettingsShouldThrowExceptionIfError = false)
 		{
 			_logger.LogMessage("load settings from server");
 
-			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings();
+			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings(getSettingsShouldThrowExceptionIfError);
 			SettingsEncryptor.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
 
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });

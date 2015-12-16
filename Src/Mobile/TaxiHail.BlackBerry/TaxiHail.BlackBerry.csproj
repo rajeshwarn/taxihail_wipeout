@@ -14,7 +14,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <DeployExternal>False</DeployExternal>
-    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
@@ -195,6 +195,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

@@ -38,7 +38,15 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double? Surcharge { get; set; }
 
-        public bool IsRated { get; set; }
+		public double? TotalAmount
+		{
+			get
+			{
+				return Fare + Tax + Toll + Tip + Surcharge;
+			}
+		}
+
+		public bool IsRated { get; set; }
 
         public long TransactionId { get; set; }
 

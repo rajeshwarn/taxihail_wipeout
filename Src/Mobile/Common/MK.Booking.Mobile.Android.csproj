@@ -370,6 +370,7 @@
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
+    <Compile Include="Infrastructure\IQuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -437,6 +438,8 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\UTOG.resx" />
+    <None Include="Localization\ArroUAT.resx" />
+    <None Include="Localization\Bram City Taxi.resx" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>

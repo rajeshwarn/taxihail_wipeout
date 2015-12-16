@@ -233,16 +233,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_SettingsRequired);
             }
 
-            ReferenceData referenceData;
-
-            if (market.HasValue())
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
-            }
-            else
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
-            }
+            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
 
             request.PickupDate = pickupDate;
 

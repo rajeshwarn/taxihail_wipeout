@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.IBS
         public string VehicleNumber { get; set; }
 
         public string PairingCode { get; set; }
+        public double Extras { get; set; }
+        public double Discount { get; set; }
 
         /*DriversInfos*/
         public string VehicleType;
@@ -61,7 +63,7 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_4 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_5 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -99,6 +101,9 @@ namespace apcurium.MK.Booking.IBS
             Surcharge = orderInfoFromIBS.Surcharge;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
+
+            Discount = orderInfoFromIBS.Discount;
+            Extras = orderInfoFromIBS.Extras;
         }
 
         public bool IsWaitingToBeAssigned
@@ -129,6 +134,11 @@ namespace apcurium.MK.Booking.IBS
         public bool IsLoaded
         {
             get { return Status.SoftEqual(VehicleStatuses.Common.Loaded); }
+        }
+
+        public bool IsUnloaded
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Unloaded); }
         }
 
         public bool IsMeterOffNotPaid

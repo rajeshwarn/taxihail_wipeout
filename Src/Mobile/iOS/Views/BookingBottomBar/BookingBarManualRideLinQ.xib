@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -18,7 +19,8 @@
                             <rect key="frame" x="8" y="5" width="73" height="46"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-hI-zUm" userLabel="Estimate" customClass="AppBarButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="46"/>
+                                    <rect key="frame" x="7" y="0.0" width="60" height="46"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="46" id="iPQ-ZE-rMI"/>
                                         <constraint firstAttribute="width" constant="60" id="r9Z-Nu-SRd"/>
@@ -28,10 +30,11 @@
                                     </state>
                                 </button>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="1Wg-hI-zUm" secondAttribute="centerY" id="s7Q-FF-ZJI"/>
-                                <constraint firstAttribute="centerX" secondItem="1Wg-hI-zUm" secondAttribute="centerX" constant="7" id="vQZ-zi-BIn"/>
+                                <constraint firstAttribute="centerX" secondItem="1Wg-hI-zUm" secondAttribute="centerX" id="vQZ-zi-BIn"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IEI-dl-oNh" userLabel="Booking view">
@@ -42,18 +45,21 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ot-AI-h3e" userLabel="Manual RideLinQ Booking" customClass="FlatButton">
                                             <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                                            <animations/>
                                             <state key="normal">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="r96-S5-ubt" userLabel="Promotion image">
                                             <rect key="frame" x="92" y="0.0" width="16" height="16"/>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="don-zK-dWB"/>
                                                 <constraint firstAttribute="width" constant="16" id="jA6-Fn-toh"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
+                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="2Ot-AI-h3e" firstAttribute="top" secondItem="FqU-42-4MJ" secondAttribute="top" id="40f-12-NLE"/>
@@ -66,11 +72,13 @@
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTx-hZ-snK" userLabel="Booking" customClass="FlatButton">
                                     <rect key="frame" x="116" y="0.0" width="107" height="46"/>
+                                    <animations/>
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="FqU-42-4MJ" secondAttribute="bottom" id="3D1-aV-hK5"/>
@@ -86,6 +94,7 @@
                             </constraints>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="IEI-dl-oNh" secondAttribute="bottom" constant="5" id="5e1-WM-Ssh"/>
@@ -102,6 +111,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="SJo-EJ-cUL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0bW-TS-mFz"/>
@@ -125,9 +135,4 @@
     <resources>
         <image name="promo.png" width="16" height="16"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

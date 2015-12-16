@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -107,7 +107,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Email = GetTempEmail(),
                 Country = new CountryISOCode("CA"),
                 Name = "First Name Test",
@@ -193,7 +193,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -219,7 +219,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -297,7 +297,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -308,7 +308,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -326,7 +326,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -337,7 +337,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -356,7 +356,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -367,7 +367,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -384,7 +384,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -483,7 +483,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",

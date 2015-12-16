@@ -23,6 +23,18 @@ namespace apcurium.MK.Booking.IBS
                     etaTime.Minute,
                     etaTime.Second);
         }
+        public static TWEBTimeStamp ToTWEBTimeStamp(this DateTime date, int addMinutes = 0)
+        {
+            return new TWEBTimeStamp()
+            {
+                Day = date.Day,
+                Month = date.Month,
+                Year = date.Year,
+                Hour = date.Hour,
+                Minute = date.Minute + addMinutes,
+                Second = date.Second
+            };
+        }
 
         public static string FormatWith(this string format, params object[] parameters)
         {

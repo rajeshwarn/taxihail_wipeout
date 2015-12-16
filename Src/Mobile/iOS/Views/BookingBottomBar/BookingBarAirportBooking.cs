@@ -1,9 +1,6 @@
-﻿
-using System;
-
+﻿using System;
 using Foundation;
 using UIKit;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -18,8 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var bookingView = NSBundle.MainBundle.LoadNib("BookingBarAirportBooking", null, null).GetItem<BookingBarAirportBooking>(0);
 
 			bookingView.buttonCancel.Initialize(Localize.GetValue("Cancel"));
-
 			bookingView.buttonNextAirport.SetTitle(Localize.GetValue("Next"), UIControlState.Normal);
+
 			FlatButtonStyle.Green.ApplyTo(bookingView.buttonNextAirport);
 
 			return bookingView;

@@ -84,6 +84,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\CreditCardInfoRequest.cs" />
     <Compile Include="Requests\EncryptedConfigurationsRequest.cs" />
     <Compile Include="Requests\OrderCountForAppRatingRequest.cs" />
     <Compile Include="Requests\AccountUpdateRequest.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Requests\FindAccountRequest.cs" />
     <Compile Include="Requests\FindAccountsRequest.cs" />
     <Compile Include="Requests\FlightInformationRequest.cs" />
+    <Compile Include="Requests\IbsDistanceRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />

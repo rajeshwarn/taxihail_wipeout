@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth
 		
 		// Invoked after the user has authorized us
 		//
-		// TODO: this should return the stream error for invalid passwords instead of
+		// this should return the stream error for invalid passwords instead of
 		// just true/false.
 		public bool AcquireAccessToken ()
 		{

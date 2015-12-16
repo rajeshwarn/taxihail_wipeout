@@ -244,6 +244,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\BlackListEntry.cs" />
     <Compile Include="ReadModel\FeesDetail.cs" />
     <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
@@ -257,6 +258,8 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\BlackListEntryService.cs" />
+    <Compile Include="ReadModel\Query\Contract\IBlackListEntryService.cs" />
     <Compile Include="ReadModel\Query\PickupPointDao.cs" />
     <Compile Include="ReadModel\Query\AirlineDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
@@ -337,6 +340,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Resources\Capital Taxi Ottawa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Capital Taxi Ottawa.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Central Niagara.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Central Niagara.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Central Taxi Belleville.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Central Taxi Belleville.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\CheckerYellowCabPalmetto.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,6 +395,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\West Way Taxi Ottawa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>West Way Taxi Ottawa.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\CryptoService.cs" />
     <Compile Include="Resources\UTOG.Designer.cs">
@@ -510,6 +533,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Blueline Taxi.resx" />
+    <EmbeddedResource Include="Resources\Capital Taxi Ottawa.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Capital Taxi Ottawa1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Central Niagara.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Central Niagara.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Central Taxi Belleville.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Central Taxi Belleville.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\CheckerYellowCabPalmetto.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CheckerYellowCabPalmetto.Designer.cs</LastGenOutput>
@@ -520,6 +556,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DJs Taxi.resx" />
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
@@ -552,6 +589,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UTOG.resx" />
+    <EmbeddedResource Include="Resources\West Way Taxi Ottawa.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>West Way Taxi Ottawa.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private UIColor _selectedTextColor;
 		private UIColor _regularTextColor;
 
+        private const float PaddingBetweenImageAndLabel = 8f;
+
 		public AppBarButton(IntPtr handle):base(handle)
 		{
 		}
@@ -31,8 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_regularTextColor = UIColor.FromRGB(41, 43, 45);
 			_selectedTextColor = selectedTextColor ?? UIColor.FromRGB(0, 126, 249);
 
-			var image = UIImage.FromFile(imageName);
-			SetImage(image, UIControlState.Normal);
+            var image = UIImage.FromFile(imageName);
+            SetImage(image, UIControlState.Normal);
 			if (selectedImageName.HasValue())
 			{
 				var selectedImage = UIImage.FromFile(selectedImageName);
@@ -44,12 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
 			}
 
-			_label = new UILabel (new CGRect(0, Frame.Height - 14, Frame.Width, 22));
+            ImageEdgeInsets = new UIEdgeInsets(0f, 0f, (PaddingBetweenImageAndLabel / 2) + (image.Size.Height / 2), 0f);
+
+            var yLabel = (Frame.Height / 2) + (PaddingBetweenImageAndLabel / 2);
+
+            _label = new UILabel (new CGRect(0, yLabel, Frame.Width, 22));
 			_label.Text = text;
 			_label.Font = UIFont.FromName(FontName.HelveticaNeueMedium, 20/2);
 			_label.TextColor = _regularTextColor;
 			_label.SizeToFit();
-			_label.SetY(Frame.Height - 14);
+            _label.SetY(yLabel);
 			_label.SetWidth(Frame.Width);
 			_label.BackgroundColor = UIColor.Clear;
 			_label.TextAlignment = UITextAlignment.Center;
