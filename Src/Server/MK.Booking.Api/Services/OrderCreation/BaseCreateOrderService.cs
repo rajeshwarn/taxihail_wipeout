@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     string.Format(_resources.Get("PhoneNumberFormat", request.ClientLanguageCode), countryCode.GetPhoneExample()));
             }
 
-            // TODO: Find a better way to do this...
+            // TODO MKTAXI-3576: Find a better way to do this...
             var isFromWebApp = request.FromWebApp;
 
             if (!isFromWebApp)
@@ -346,7 +346,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected DateTime GetCurrentOffsetedTime(string companyKey)
         {
-            //TODO : need to check ibs setup for shortesst time
+            //TODO MKTAXI-2296: need to check ibs setup for shortesst time
 
             var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);

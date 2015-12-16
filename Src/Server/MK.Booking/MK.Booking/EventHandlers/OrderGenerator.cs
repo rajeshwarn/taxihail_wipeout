@@ -753,7 +753,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        // TODO remove this once CMT has real preauth
         private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
