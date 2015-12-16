@@ -637,7 +637,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (state == HomeViewModelState.AddressSearch)
             {
-                _searchAddress.Open(AddressLocationType.Unspeficied);
+                _searchAddress.Open(AddressLocationType.Unspecified);
             }
             else if (state == HomeViewModelState.AirportSearch)
             {

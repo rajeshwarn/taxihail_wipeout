@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        try
 	        {
-		        if (filter == AddressLocationType.Unspeficied)
+		        if (filter == AddressLocationType.Unspecified)
 	            {
 					var disposable = new CancellationDisposable();
 					var cancellationToken = disposable.Token;
