@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
                 {
                     City = addressInformation.Town,
                     ZipCode = postalCode,
-                    AddressLocationType = AddressLocationType.Unspeficied,
+                    AddressLocationType = AddressLocationType.Unspecified,
                     FullAddress = GenerateFullAddress(point.Line_1, point.Line_2, addressInformation.Town, addressInformation.Postcode),
                     Latitude = addressInformation.GeoCode.Lat,
                     Longitude = addressInformation.GeoCode.Lng,

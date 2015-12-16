@@ -2,7 +2,7 @@
 {
     public enum AddressLocationType
     {
-        Unspeficied = 0, // Default
+        Unspecified = 0, // Default
         Airport = 1,
         Train = 2
     }

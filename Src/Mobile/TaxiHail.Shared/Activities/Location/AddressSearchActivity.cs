@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 			addressPicker.DelayBind(() => 
                 {
                     addressPicker.FocusOnTextField ();
-                    addressPicker.Open(AddressLocationType.Unspeficied);
+                    addressPicker.Open(AddressLocationType.Unspecified);
                 });
 		}
 	}
