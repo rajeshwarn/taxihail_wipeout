@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
+        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -85,7 +86,8 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderPaymentDao orderPaymentDao,
             IFeesDao feesDao, 
             ILogger logger,
-            IIbsCreateOrderService ibsCreateOrderService)
+            IIbsCreateOrderService ibsCreateOrderService,
+            IServiceTypeSettingsProvider serviceTypeSettingsProvider)
         {
             _accountChargeDao = accountChargeDao;
             _creditCardDao = creditCardDao;
@@ -105,6 +107,7 @@ namespace apcurium.MK.Booking.Api.Services
             _feesDao = feesDao;
 	        _logger = logger;
             _ibsCreateOrderService = ibsCreateOrderService;
+            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -159,9 +162,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         private object CreaterOrder(CreateOrder request, bool isHailRequest)
         {
-			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            // Change the request.settings.providerId to the proper providerId:
+            var settingsForService = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType);
+            request.Settings.ProviderId = settingsForService.ProviderId;
 
-			var createReportOrder = CreateReportOrder(request, account);
+            var createReportOrder = CreateReportOrder(request, account);
 
 			Exception createOrderException;
 
