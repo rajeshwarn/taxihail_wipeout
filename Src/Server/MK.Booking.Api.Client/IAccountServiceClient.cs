@@ -14,9 +14,9 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Client
 {
-	public interface IAccountServiceClient
-	{
-		Task<Account> GetMyAccount();
+    public interface IAccountServiceClient
+    {
+        Task<Account> GetMyAccount();
 
 		/// <summary>
 		/// Get phone number without authorization
@@ -24,32 +24,32 @@ namespace apcurium.MK.Booking.Api.Client
 		/// <returns></returns>
 		Task<CurrentAccountPhoneResponse> GetAccountPhoneNumber(CurrentAccountPhoneRequest currentAccountPhoneRequest);
 
-		Task RegisterAccount(RegisterAccount account);
+        Task RegisterAccount(RegisterAccount account);
 
-		Task GetConfirmationCode(ConfirmationCodeRequest request);
+        Task GetConfirmationCode(ConfirmationCodeRequest request);
 
-		Task ConfirmAccount(ConfirmAccountRequest request);
-		Task UpdateBookingSettings(BookingSettingsRequest settings);
-		Task<IEnumerable<Address>> GetFavoriteAddresses();
-		Task<IList<Address>> GetHistoryAddresses(Guid accountId);
-		Task AddFavoriteAddress(SaveAddress address);
-		Task UpdateFavoriteAddress(SaveAddress address);
-		Task RemoveFavoriteAddress(Guid addressId);
-		Task ResetPassword(string emailAddress);
-		Task<string> UpdatePassword(UpdatePassword updatePassword);
-		Task RemoveAddress(Guid addressId);
+        Task ConfirmAccount(ConfirmAccountRequest request);
+        Task UpdateBookingSettings(BookingSettingsRequest settings);
+        Task<IEnumerable<Address>> GetFavoriteAddresses();
+        Task<IList<Address>> GetHistoryAddresses(Guid accountId);
+        Task AddFavoriteAddress(SaveAddress address);
+        Task UpdateFavoriteAddress(SaveAddress address);
+        Task RemoveFavoriteAddress(Guid addressId);
+        Task ResetPassword(string emailAddress);
+        Task<string> UpdatePassword(UpdatePassword updatePassword);
+        Task RemoveAddress(Guid addressId);
 
-		Task<IEnumerable<CreditCardDetails>> GetCreditCards();
-		Task AddCreditCard(CreditCardRequest creditCardRequest);
-		Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId);
-		Task UpdateCreditCard(CreditCardRequest creditCardRequest);
-		Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest);
-		Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest);
+        Task<IEnumerable<CreditCardDetails>> GetCreditCards();
+        Task AddCreditCard(CreditCardRequest creditCardRequest);
+        Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId);
+        Task UpdateCreditCard(CreditCardRequest creditCardRequest);
+        Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest);
+        Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest);
 
-		Task<NotificationSettings> GetNotificationSettings(Guid accountId);
-		Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);
+        Task<NotificationSettings> GetNotificationSettings(Guid accountId);
+        Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);
 
-		Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId);
-		Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest);
-	}
+        Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId);
+        Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest);
+    }
 }
