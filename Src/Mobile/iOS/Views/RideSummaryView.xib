@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mzD-iU-FXh" userLabel="Gratuity View">
-                    <rect key="frame" x="0.0" y="30" width="320" height="163"/>
+                    <rect key="frame" x="0.0" y="90" width="320" height="163"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HGB-BC-D29" userLabel="GratuityText">
                             <rect key="frame" x="8" y="0.0" width="312" height="115"/>
@@ -95,7 +95,7 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="lxr-AS-1xd">
-                    <rect key="frame" x="0.0" y="100" width="320" height="69"/>
+                    <rect key="frame" x="0.0" y="99" width="320" height="69"/>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -121,7 +121,7 @@
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="UOm-Mb-Tcj"/>
                 <constraint firstItem="mzD-iU-FXh" firstAttribute="leading" secondItem="lxr-AS-1xd" secondAttribute="leading" id="V9l-1P-bid"/>
                 <constraint firstItem="mzD-iU-FXh" firstAttribute="trailing" secondItem="lxr-AS-1xd" secondAttribute="trailing" id="YoV-RP-E5g"/>
-                <constraint firstItem="mzD-iU-FXh" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" constant="-140.5" id="ead-rJ-FBo"/>
+                <constraint firstItem="mzD-iU-FXh" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" constant="-80.5" id="ead-rJ-FBo"/>
                 <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="20" id="jlQ-5b-QpO"/>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="oqH-gg-5Pn"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>

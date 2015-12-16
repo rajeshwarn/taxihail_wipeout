@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
 			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.Title = Localize.GetValue("View_BookRating");
-			gratuityLabel.Text = Localize.GetValue("BookingGratuityText");
 			ChangeThemeOfBarStyle();
 		}
 

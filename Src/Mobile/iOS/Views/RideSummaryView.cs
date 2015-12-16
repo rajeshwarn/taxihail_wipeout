@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = Localize.GetValue("RideSummaryTitleText");
-			gratuityLabel.Text = Localize.GetValue("BookingGratuityText");
             ChangeThemeOfBarStyle();
 			FlatButtonStyle.Green.ApplyTo (btnGratuity0);
 			FlatButtonStyle.Green.ApplyTo (btnGratuity1);
