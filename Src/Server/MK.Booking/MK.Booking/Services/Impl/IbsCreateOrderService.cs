@@ -76,7 +76,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var defaultCompany = referenceDataCompanyList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                     ?? referenceDataCompanyList.FirstOrDefault();
 
-            var providerId = market.HasValue() && referenceDataCompanyList.Any() && defaultCompany != null
+            //if we are in external market or local market but in a different company
+            var providerId = (market.HasValue() || companyKey.HasValue())
+                && referenceDataCompanyList.Any() && defaultCompany != null
                     ? defaultCompany.Id
                     : requestProviderId;
 

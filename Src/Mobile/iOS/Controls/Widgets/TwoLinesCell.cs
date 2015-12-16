@@ -4,8 +4,6 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Foundation;
 using CoreGraphics;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -97,12 +95,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueBold, 28/2);
-            TextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment ();
+            TextLabel.TextAlignment = UITextAlignment.Natural;
 
 			DetailTextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
 			DetailTextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 28/2);
-            DetailTextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment ();
+            DetailTextLabel.TextAlignment = UITextAlignment.Natural;
 
 			ContentView.BackgroundColor = UIColor.Clear;
 			BackgroundColor = UIColor.Clear;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reactive.Linq;
@@ -19,11 +18,10 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.ServiceInterface.ServiceModel;
-using ServiceStack.Text;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Provider;
+using MK.Common.Exceptions;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -298,23 +296,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-			    string message;
+				// prevents an exception in the deserialization of the response body
+				if (e.StatusCode != (int)HttpStatusCode.BadRequest)
+				{
+					throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());
+				}
+
 			    var error = e.ResponseBody.FromJson<ErrorResponse>();
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-                    message = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
+                    var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
 
-                    throw new OrderCreationException(message, error.ResponseStatus.Message);
+                    throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }
 
 			    // Unhandled errors
 				// if ibs3000, there's a problem with the account, use a different one
-			    message = _appSettings.Data.HideCallDispatchButton
-                    ? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
-                    : string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 
-				throw new OrderCreationException(message);		
+				throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());		
+			}			
+			catch(Exception)
+			{
+				throw new OrderCreationException(GetUnhandledErrorMessageForOrderCreation());
 			}
 		}
 
@@ -1073,6 +1077,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<bool> GetAndObserveCanExecuteBookingOperation()
 		{
 			return _canExecuteBookingOperation;
+		}
+
+		private string GetUnhandledErrorMessageForOrderCreation()
+		{
+			return _appSettings.Data.HideCallDispatchButton
+				? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
+				: string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 		}
     }
 }

@@ -1,6 +1,5 @@
 using CrossUI.Touch.Dialog.Elements;
 using UIKit;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
@@ -8,8 +7,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class TaxiHailEntryElement : EntryElement
 	{
-        private float Padding = 13.5f;
-		private bool _isPassword;
+        private const float Padding = 13.5f;
+        private const float Margin = 8f;
+
+		private readonly bool _isPassword;
 		private UITextAutocapitalizationType _autocapitalizationType;
 
 		public TaxiHailEntryElement(string caption, string placeholder, string value = "", bool isPassword = false, UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationType.None)
@@ -21,16 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		protected override UITextField CreateTextField(CGRect frame)
 		{
-			UITextField textField;
-			if (UIHelper.IsOS7orHigher)
-			{
-                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(UIScreen.MainScreen.Bounds.Width - 2*8 - 2*Padding)); // screenwidth - margin - padding
-				textField.TintColor = UIColor.Black; // cursor color
-			}
-			else
-			{
-                textField  = base.CreateTextField(frame.SetX(Padding).IncrementY(-11).SetHeight(21));
-			}
+            var textField = base.CreateTextField(frame.SetX(Padding).SetWidth(UIScreen.MainScreen.Bounds.Width - 2*Margin - 2*Padding));
+            textField.TintColor = UIColor.Black; // cursor color
 
 			textField.TextColor = UIColor.FromRGB(44, 44, 44);
 			textField.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);

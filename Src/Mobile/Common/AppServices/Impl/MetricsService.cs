@@ -37,8 +37,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         : 0
                 };
 
-                // No need to await since we do not want to slowdown the app
-                UseServiceClientAsync<MetricsServiceClient>(client => client.LogApplicationStartUp(request));
+                //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
+                await UseServiceClientAsync<MetricsServiceClient>(
+                    client => client.LogApplicationStartUp(request),
+                    exception =>
+                    {
+                        // rethrow the exception, we don't need to use the HandleError process.
+                        throw exception;
+                    });
             }
             catch (Exception ex)
             {
@@ -47,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void LogOriginalRideEta(Guid orderId, long? originalEta)
+        public async void LogOriginalRideEta(Guid orderId, long? originalEta)
         {
             try
             {
@@ -57,8 +63,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     OriginalEta = originalEta
                 };
 
-                // No need to await since we do not want to slowdown the app
-                UseServiceClientAsync<MetricsServiceClient>(client => client.LogOriginalRideEta(request));
+                //This needs to be awaited to catch exceptions and must be the last task to be awaited before the end of this try catch block.
+                await UseServiceClientAsync<MetricsServiceClient>(
+                    client => client.LogOriginalRideEta(request),
+                    exception =>
+                    {
+                        // rethrow the exception, we don't need to use the HandleError process.
+                        throw exception;
+                    });
             }
             catch (Exception ex)
             {

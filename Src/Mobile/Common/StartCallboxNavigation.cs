@@ -6,7 +6,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -14,12 +13,10 @@ namespace apcurium.MK.Booking.Mobile
 	{
 		public async void Start(object hint)
 		{
-			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
-
 			var logger = Mvx.Resolve<ILogger>();
 			try
 			{
-                logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
+                logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().GetServiceUrl());
                 var accountService = Mvx.Resolve<IAccountService>();
 
                 if (accountService.CurrentAccount == null)

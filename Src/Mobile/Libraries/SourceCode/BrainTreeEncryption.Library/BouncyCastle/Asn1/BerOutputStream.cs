@@ -3,7 +3,7 @@ using System.IO;
 
 namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 {
-	// TODO Make Obsolete in favour of Asn1OutputStream?
+	// TODO_ Make Obsolete in favour of Asn1OutputStream?
     public class BerOutputStream
         : DerOutputStream
     {

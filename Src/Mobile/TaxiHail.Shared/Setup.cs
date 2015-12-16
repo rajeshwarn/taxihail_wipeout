@@ -93,8 +93,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
-
+            
 			container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
+			container.Register<IQuitApplicationService, QuitApplicationService>();
 
 			InitializeSocialNetwork();
         }

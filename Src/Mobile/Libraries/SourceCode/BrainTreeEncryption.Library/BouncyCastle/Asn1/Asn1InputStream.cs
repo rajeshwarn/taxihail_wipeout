@@ -86,7 +86,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 
             if (isConstructed)
             {
-                // TODO There are other tags that may be constructed (e.g. BitString)
+                // TODO_ There are other tags that may be constructed (e.g. BitString)
                 switch (tagNo)
                 {
                     case Asn1Tags.OctetString:
@@ -180,7 +180,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
                     return new BerTaggedObjectParser(true, tagNo, sp).ToAsn1Object();
                 }
 
-                // TODO There are other tags that may be constructed (e.g. BitString)
+                // TODO_ There are other tags that may be constructed (e.g. BitString)
                 switch (tagNo)
                 {
                     case Asn1Tags.OctetString:

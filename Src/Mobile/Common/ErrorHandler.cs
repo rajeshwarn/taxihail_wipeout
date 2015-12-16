@@ -10,7 +10,7 @@ using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
-using ServiceStack.ServiceClient.Web;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile
 {

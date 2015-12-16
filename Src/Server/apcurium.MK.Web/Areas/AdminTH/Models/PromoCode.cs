@@ -5,7 +5,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {

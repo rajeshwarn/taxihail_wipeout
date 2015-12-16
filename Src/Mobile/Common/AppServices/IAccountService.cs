@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 using apcurium.MK.Common;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -42,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Address> FindInAccountAddresses(double latitude, double longitude);
 
-		Task<Address[]> GetHistoryAddresses();
+		Task<Address[]> GetHistoryAddresses(CancellationToken cancellationToken = default(CancellationToken));
         
-		Task<Address[]> GetFavoriteAddresses();
+		Task<Address[]> GetFavoriteAddresses(CancellationToken cancellationToken = default(CancellationToken));
         
 		Task UpdateAddress(Address address);
         

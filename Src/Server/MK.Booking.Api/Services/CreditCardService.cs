@@ -40,6 +40,11 @@ namespace apcurium.MK.Booking.Api.Services
             return _dao.FindByAccountId(new Guid(session.UserAuthId));
         }
 
+		public object Get(CreditCardInfoRequest request)
+		{
+			return _dao.FindById(request.CreditCardId);
+		}
+
         public object Post(CreditCardRequest request)
         {
             var session = this.GetSession();

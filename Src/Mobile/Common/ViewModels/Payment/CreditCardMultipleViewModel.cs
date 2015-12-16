@@ -2,17 +2,12 @@
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
 using System.Windows.Input;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {

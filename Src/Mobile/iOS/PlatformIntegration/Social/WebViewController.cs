@@ -77,15 +77,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 				stopButton.Enabled = true;
 				refreshButton.Enabled = false;
 				UpdateNavButtons ();
-				
-				//TODO Util.PushNetworkActive (); 
 			};
 			WebView.LoadFinished += delegate {
 				stopButton.Enabled = false;
 				refreshButton.Enabled = true;
-				//TODO Util.PopNetworkActive (); 
 				UpdateNavButtons ();
-				
 				title.Text = UpdateTitle ();
 			};
 			
