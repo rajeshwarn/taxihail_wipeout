@@ -216,7 +216,6 @@ namespace apcurium.MK.Booking.Services.Impl
             // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
             if (ibsHailResult.OrderKey.IbsOrderId > -1)
             {
-                // TODO: replace hardcoded value by timeout returned by IBS
                 // Need to wait for vehicles to receive hail request
                 Thread.Sleep(30000);
 

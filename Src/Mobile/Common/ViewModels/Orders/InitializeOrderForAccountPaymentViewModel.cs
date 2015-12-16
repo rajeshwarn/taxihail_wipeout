@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<Tuple<Order, OrderStatusDetail>>
+	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<OrderRepresentation>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;
@@ -28,15 +28,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Questions = questions.Select (q => new AccountChargeQuestionViewModel (q)).ToList ();
 		}
 
-		public override void OnViewStarted (bool firstTime)
-		{
-			base.OnViewStarted (firstTime);
-			// TODO: This call makes the app crash on Android Nexus 7 - 4.4.2. When is it necessary? (Working on a test device without it.)
-			RaisePropertyChanged (() => Questions); //needed for Android
-		}
-
 		// the use of list is important here for the binding (doesn't seem to work with an array)
-		private List<AccountChargeQuestionViewModel> _questions;
+		private List<AccountChargeQuestionViewModel> _questions = new List<AccountChargeQuestionViewModel>();
 		public List<AccountChargeQuestionViewModel> Questions
 		{ 
 			get { return _questions; }

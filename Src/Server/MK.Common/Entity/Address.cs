@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
+using Newtonsoft.Json;
+using MK.Common.Serializer;
 
 namespace apcurium.MK.Common.Entity
 {
@@ -14,6 +16,7 @@ namespace apcurium.MK.Common.Entity
 
         public string StreetNumber { get; set; }
 
+        [JsonConverter(typeof(TolerantEnumConverter))]
         public AddressLocationType AddressLocationType { get; set; }
 
         public string Street { get; set; }

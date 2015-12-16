@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceHost;
 
 namespace CMTPayment
@@ -19,9 +18,6 @@ namespace CMTPayment
 
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
-
-            //todo - Bug accept all certificates
-            ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
         }
 
         protected string ConsumerKey { get; private set; }

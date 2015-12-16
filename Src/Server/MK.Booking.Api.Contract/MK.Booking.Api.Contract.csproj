@@ -99,6 +99,7 @@
     <Compile Include="Requests\FindAccountRequest.cs" />
     <Compile Include="Requests\FindAccountsRequest.cs" />
     <Compile Include="Requests\FlightInformationRequest.cs" />
+    <Compile Include="Requests\IbsDistanceRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />

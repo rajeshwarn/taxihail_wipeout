@@ -32,7 +32,7 @@ namespace CMTPayment
 				};
 
 			// When packageInfo is not specified, we use a default value as the useragent
-			client.DefaultRequestHeaders.Add("User-Agent", _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent);
+            client.DefaultRequestHeaders.Add("User-Agent", GetUserAgent());
 			if (_packageInfo != null)
 			{
 				client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);
@@ -74,5 +74,11 @@ namespace CMTPayment
 			Client.DefaultRequestHeaders.Add("Authorization", oauthHeader);
         }
 
+        private string GetUserAgent()
+        {
+            return _packageInfo == null || !_packageInfo.UserAgent.HasValueTrimmed() 
+                ? DefaultUserAgent 
+                : _packageInfo.UserAgent;
+        }
     }
 }

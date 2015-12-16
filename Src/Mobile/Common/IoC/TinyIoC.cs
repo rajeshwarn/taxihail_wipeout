@@ -3223,7 +3223,7 @@ namespace TinyIoC
 
 		private bool IsIgnoredAssembly(Assembly assembly)
 		{
-			// TODO - find a better way to remove "system" assemblies from the auto registration
+			// find a better way to remove "system" assemblies from the auto registration
 			var ignoreChecks = new List<Func<Assembly, bool>>()
 			{
 				asm => asm.FullName.StartsWith("Microsoft.", StringComparison.Ordinal),
@@ -3246,7 +3246,7 @@ namespace TinyIoC
 
 		private bool IsIgnoredType(Type type, Func<Type, bool> registrationPredicate)
 		{
-			// TODO - find a better way to remove "system" types from the auto registration
+			// find a better way to remove "system" types from the auto registration
 			var ignoreChecks = new List<Func<Type, bool>>()
 			{
 				t => t.FullName.StartsWith("System.", StringComparison.Ordinal),

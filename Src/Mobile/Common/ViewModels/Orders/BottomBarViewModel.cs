@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Plugins.PhoneCall;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -608,27 +609,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
 
-							if (questions != null
-								&& questions.Length > 0
-								&& questions[0].Question.HasValue())
+					if (questions != null
+						&& questions.Length > 0
+						&& questions[0].Question.HasValue())
 					{
 						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
-								// Navigate to Q&A page
 
-						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
+						// Navigate to Q&A page
+						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, OrderRepresentation>(
 							null, 
-							result => ParentViewModel.GotoBookingStatus(result.Item1, result.Item2)
+							result => ParentViewModel.GotoBookingStatus(result.Order, result.OrderStatus)
 						);
 					}
 					else
 					{
-								// Skip Q&A page and confirm order
+						// Skip Q&A page and confirm order
 						await ConfirmOrderAndGoToBookingStatus();
 					}
 				}
 				else
 				{
-							// Skip Q&A page and confirm order
+					// Skip Q&A page and confirm order
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
@@ -690,7 +691,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var result = await _orderWorkflowService.ConfirmOrder();
 				this.Services().Analytics.LogEvent("Book");
-				ParentViewModel.GotoBookingStatus(result.Item1, result.Item2);
+				ParentViewModel.GotoBookingStatus(result.Order, result.OrderStatus);
 			}
 		}
 

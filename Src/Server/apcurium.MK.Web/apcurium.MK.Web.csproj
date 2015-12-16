@@ -448,6 +448,7 @@
     <Content Include="localization\Sherbet-en.json" />
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
+    <Content Include="localization\BramCityTaxi-en.json" />
     <Content Include="admin\templates\ExportPromotions.handlebars" />
     <Content Include="localization\PaymentItem.json" />
     <Content Include="localization\PaymentItem-fr.json" />
@@ -457,6 +458,7 @@
     <Content Include="localization\Payment-es.json" />
     <Content Include="localization\Aeroport Taxi.json" />
     <Content Include="Areas\AdminTH\Views\AccountsManagement\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\BlackList\Index.cshtml" />
     <Content Include="Areas\AdminTH\Views\AccountManagement\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -674,6 +676,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
     <Compile Include="Areas\AdminTH\Controllers\AccountManagementController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\BlackListController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\AccountsManagementController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\OrderController.cs" />

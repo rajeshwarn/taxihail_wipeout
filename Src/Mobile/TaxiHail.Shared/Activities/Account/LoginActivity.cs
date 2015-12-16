@@ -3,15 +3,12 @@ using System.Reactive.Linq;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.OS;
-using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using ClipboardManager = Android.Text.ClipboardManager;
@@ -30,26 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		public LoginActivity ()
 		{
 			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
-		}
-
-		protected override void OnCreate(Bundle bundle)
-		{
-			base.OnCreate(bundle);
-		}
-
-		protected override void OnPause()
-		{
-			base.OnPause();
-		}
-
-		protected override void OnResume()
-		{
-			base.OnResume();
-		}
-
-		protected override void OnSaveInstanceState(Bundle outState)
-		{
-			base.OnSaveInstanceState(outState);
 		}
 
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)

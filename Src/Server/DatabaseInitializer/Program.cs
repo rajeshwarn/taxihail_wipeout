@@ -591,7 +591,7 @@ namespace DatabaseInitializer
                 Name = "Administrator",
                 Country = new CountryISOCode("CA"),
                 Phone = "6132875020",
-                Password = "1l1k3B4n4n@", //Todo Make the admin portal customizable
+                Password = "1l1k3B4n4n@", //TODO MKTAXI-3573: Super admin password should be customizable
                 IsAdmin = true
             };
 

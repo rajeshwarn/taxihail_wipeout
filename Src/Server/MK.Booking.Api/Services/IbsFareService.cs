@@ -11,6 +11,7 @@ using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -60,6 +61,40 @@ namespace apcurium.MK.Booking.Api.Services
                     Price = fare.FareEstimate,
                     FormattedDistance = _resources.FormatDistance(distance),
                     FormattedPrice = _resources.FormatPrice(fare.FareEstimate)
+                };
+            }
+
+            return new DirectionInfo();
+        }
+
+        public DirectionInfo Get(IbsDistanceRequest request)
+        {
+            var tripDurationInMinutes = (request.WaitTime.HasValue ? (int?)TimeSpan.FromSeconds(request.WaitTime.Value).TotalMinutes : null);
+
+            var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault();
+
+            var distance = request.Distance.ToDistanceInRightUnit(_serverSettings.ServerData.DistanceFormat);
+
+            var fare = _ibsServiceProvider.Booking().GetDistanceEstimate(
+                distance,
+                tripDurationInMinutes,
+                request.StopCount,
+                request.PassengerCount,
+                request.VehicleType,
+                defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
+                request.AccountNumber,
+                request.CustomerNumber,
+                request.TripTime
+                );
+
+            if (fare.TotalFare != null)
+            {
+                return new DirectionInfo
+                {
+                    Distance = distance,
+                    Price = fare.TotalFare,
+                    FormattedDistance = _resources.FormatDistance(distance),
+                    FormattedPrice = _resources.FormatPrice(fare.TotalFare)
                 };
             }
 

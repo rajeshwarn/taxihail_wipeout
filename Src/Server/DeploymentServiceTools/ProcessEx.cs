@@ -50,7 +50,6 @@ namespace DeploymentServiceTools
                         throw new Exception("Build Timeout, " + output[0]);
                     }
                 }
-                //todo Hack -- Wait for exit seems to lag for project builds
             }
 
             return

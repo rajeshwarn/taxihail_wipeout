@@ -490,11 +490,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(TestAddresses.GetAddress2().Latitude, order.DropOffAddress.Latitude);
             Assert.AreEqual(TestAddresses.GetAddress2().Longitude, order.DropOffAddress.Longitude);
             Assert.AreNotEqual(OrderStatus.Completed, order.Status);
-
-            //TODO: Check with Mathieu M. for those
-            //Assert.That(order.Fare, Is.EqualTo(10));
-            //Assert.That(order.Tip, Is.EqualTo(0));
-            //Assert.That(order.Toll, Is.EqualTo(0));
         }
     }
 }

@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             try
             {
-                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
+                Logger.LogMessage("SignIn with server {0}", Container.Resolve<IAppSettings>().GetServiceUrl());
 				this.Services().Message.ShowProgress(true);
 
                 var account = await _accountService.SignIn(Email, Password);
