@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
@@ -451,8 +452,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Pairing response : " + response.ToJson());
 
-                // wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                // wait for trip to be updated to check if pairing was successful
+                var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+
+                if (trip.HttpStatusCode != (int) HttpStatusCode.OK)
+                {
+                    throw new Exception("Card could not be paired with vehicle.");
+                }
 
                 return response;
             }
