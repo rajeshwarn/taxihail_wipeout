@@ -37,7 +37,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 if (settings.Data.GoogleAnalyticsTrackingId.HasValue())
                 {
                     // Company's own tracking id
-                    Trackers.Add(instance.GetTracker(settings.Data.GoogleAnalyticsTrackingId));
+					var tracker = instance.GetTracker(settings.Data.GoogleAnalyticsTrackingId); 
+
+					// A campaign can be set manually:
+					//var uriPath = "http://www.taxihail.com/?utm_source=email&utm_medium=cool_installations&utm_campaign=installations&utm_content=blih";
+					//tracker.SetCampaign(uriPath);
+                    Trackers.Add(tracker);
                 }
 
                 var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
