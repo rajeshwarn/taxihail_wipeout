@@ -15,7 +15,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-	public class AccountServiceClient : BaseServiceClient, IAccountService
+	public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
 	{
 		private readonly IPaymentServiceClient _paymentService;
 

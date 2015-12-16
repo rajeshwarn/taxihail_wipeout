@@ -69,7 +69,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 			accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
 			accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
 			accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
-			accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
+			if (accountDetail.DefaultCreditCard != null
+				&& accountDetail.DefaultCreditCard.GetValueOrDefault() != null
+				&& _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
+			{
+				accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
+			}
 
 			// get all coutryCode to feed combobox
 			accountManagementModel.CountryCodesList = new List<SelectListItem>();
