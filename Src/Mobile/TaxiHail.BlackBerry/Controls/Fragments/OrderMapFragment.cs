@@ -92,10 +92,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private void MoveMarker(MarkerOptions pin, Sprite icon, double lat, double lng)
+        {
+            pin.InvokeIcon(icon);
+            pin.InvokePosition(new LatLng(lat, lng));
+        }
+
         // Animate Marker on the map between retrieving positions
-        //TODO Not working with MapBox for now
         private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
         {
+            // Animation doesn't work on MapBox for now, so we just move the marker
+            MoveMarker(markerToUpdate, icon, newPosition.Latitude, newPosition.Longitude);
+
             //            markerToUpdate.InvokeIcon(icon);
             //
             //            var evaluator = new LatLngEvaluator ();
@@ -148,15 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
 
-                    //TODO fix to move marker as the animation are not currently working with MapBox
-                    _taxiLocationPin.InvokeIcon(icon);
-                    _taxiLocationPin.InvokePosition( new LatLng(value.Latitude.Value, value.Longitude.Value));
-
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng()
-                        {
-                            Latitude = value.Latitude.Value, 
-                            Longitude = value.Longitude.Value
-                        });
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng(value.Latitude.Value, value.Longitude.Value));
 
                     if (_showVehicleNumber)
                     {
@@ -521,10 +521,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var icon = ViewModel.Settings.ShowOrientedPins
                 ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
-
-            //TODO fix to move marker as the animation are not currently working with MapBox
-            markerToUpdate.InvokeIcon(icon);
-            markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
 
             AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
