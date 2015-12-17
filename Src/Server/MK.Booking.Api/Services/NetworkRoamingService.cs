@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using apcurium.MK.Booking.Api.Contract;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Cryptography;
