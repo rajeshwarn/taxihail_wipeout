@@ -371,6 +371,7 @@
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
+    <Compile Include="Infrastructure\IBraintreeDropinViewService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

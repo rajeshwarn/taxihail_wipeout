@@ -146,6 +146,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\TouchableWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Activities\HomeActivity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\BraintreeDropinViewService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

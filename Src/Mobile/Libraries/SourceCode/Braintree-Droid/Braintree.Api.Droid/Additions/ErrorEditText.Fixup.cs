@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Runtime;
 
-namespace Com.Braintreepayments.Cardform.View
+namespace Braintree.Cardform.View
 {
     public partial class ErrorEditText
     {

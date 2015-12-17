@@ -142,6 +142,8 @@
     <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\AddPaymentMethodRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -156,6 +158,7 @@
   <ItemGroup>
     <Compile Include="Resources\FlightInformation.cs" />
     <BundleResource Include="Resources\OrderRatings.cs" />
+    <BundleResource Include="Resources\Payments\GenerateClientTokenBraintreeResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

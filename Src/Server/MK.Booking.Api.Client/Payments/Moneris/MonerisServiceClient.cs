@@ -163,6 +163,16 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 			return string.Empty;
 		}
+
+		public Task<GenerateClientTokenResponse> GenerateClientTokenResponse()
+		{
+			throw new NotSupportedException("This method is only supported for Braintree Payment");
+		}
+
+		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+		{
+			throw new NotSupportedException("This method is only supported for Braintree Payment");
+		}
 	}
 }
 

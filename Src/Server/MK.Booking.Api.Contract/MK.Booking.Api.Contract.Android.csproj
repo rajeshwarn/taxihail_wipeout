@@ -127,6 +127,9 @@
     <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\AddPaymentMethodRequest.cs" />
+    <Compile Include="Resources\Payments\GenerateClientTokenBraintreeResponse.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

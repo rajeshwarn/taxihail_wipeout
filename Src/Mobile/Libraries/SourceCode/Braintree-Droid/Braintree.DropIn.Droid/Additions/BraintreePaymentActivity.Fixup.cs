@@ -1,6 +1,6 @@
 using Android.Runtime;
 
-namespace Com.Braintreepayments.Api
+namespace Braintree.Api
 {
     public partial class BraintreePaymentActivity
     {
