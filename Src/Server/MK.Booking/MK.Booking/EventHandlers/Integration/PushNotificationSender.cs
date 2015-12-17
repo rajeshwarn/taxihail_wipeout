@@ -122,6 +122,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         
         public void Handle(OrderCancelledBecauseOfError @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                Log.Info("Received OrderCancelledBecauseOfError event but cancel was requested by user before, no need to inform him of order creation failure.");
+                return;
+            }
+
             try
             {
                 _notificationService.SendOrderCreationErrorPush(@event.SourceId, @event.ErrorDescription);
