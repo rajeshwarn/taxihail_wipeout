@@ -341,7 +341,7 @@
 "PaymentDetails.LabelName"="Label";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
-"CreditCardZipCode"="Zip code";
+"CreditCardZipCode"="Zip/Postal";
 "View_CreditCard"="Payment";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "CreditCardRemoveErrorTitle"="Cannot remove credit card";
@@ -752,3 +752,5 @@
 "TripUnableToPairErrorText"="Sorry, there was a problem, please pay in the taxi";
 "CreditCardDeclinedOnPreauthorizationErrorText"="Sorry, your card could not be authorized. Please pay in the taxi";
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
+"ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
+"ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";

@@ -50,12 +50,6 @@
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Braintree.Api.Droid\Braintree.Api.Droid.csproj">
-      <Project>{CEA4D534-ECC4-4DB2-A3BE-2897E91B8C20}</Project>
-      <Name>Braintree.Api.Droid</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

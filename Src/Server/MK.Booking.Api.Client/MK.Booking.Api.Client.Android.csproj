@@ -98,8 +98,8 @@
   -->
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">
-      <Visible>False</Visible>
       <Version>2.4.2</Version>
+      <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>

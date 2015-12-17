@@ -185,6 +185,12 @@
     <Reference Include="OkHttp">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
+    <Reference Include="Braintree.Api.Droid">
+      <HintPath>..\Libraries\Monodroid\Braintree.Api.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Braintree.DropIn.Droid">
+      <HintPath>..\Libraries\Monodroid\Braintree.DropIn.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
