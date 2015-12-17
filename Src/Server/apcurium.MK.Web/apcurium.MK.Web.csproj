@@ -241,7 +241,6 @@
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
-    <Content Include="admin\controllers\AccountsManagementController.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />

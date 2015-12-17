@@ -3,204 +3,220 @@
 
 @using (Html.BeginForm("Save", "AccountManagement", FormMethod.Post))
 {
-	<div class="well clearfix form-horizontal">
-		<h4 class="table-title">Account</h4>
+   <div class="well clearfix form-horizontal">
+      <h4 class="table-title">Account</h4>
 
-		@Html.AntiForgeryToken()
-		@Html.HiddenFor(x => x.Id)
+      @if (@TempData["UserMessage"] != null)
+      {
+         <div class="alert alert-info" style="margin-top: 10px;">
+            @TempData["UserMessage"]
+         </div>
+      }
 
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.Name, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.Name)</label>
-				@Html.HiddenFor(x => x.Name)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.Email, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.TextBoxFor(x => x.Email, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.CustomerNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CustomerNumber)</label>
-				@Html.HiddenFor(x => x.CustomerNumber)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.CreationDate, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CreationDate)</label>
-				@Html.HiddenFor(x => x.CreationDate)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.FacebookAccount, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.Label(string.IsNullOrEmpty(Model.FacebookAccount) ? "No" : "Yes", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
-				@Html.HiddenFor(x => x.FacebookAccount)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.IBSAccountId, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.IBSAccountId)</label>
-				@Html.HiddenFor(x => x.IBSAccountId)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.IsConfirmed, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.Label(Model.IsConfirmed ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
-				@Html.HiddenFor(x => x.IsConfirmed)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.IsEnabled, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.Label(Model.IsEnabled ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
-				@Html.HiddenFor(x => x.IsEnabled)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.DropDownListFor(x => x.CountryCode.Code, Model.CountryCodesList)
-				<br />
-				@Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.ChargeType, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.ChargeType)</label>
-				@Html.HiddenFor(x => x.ChargeType)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.DefaultTipPercent, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.DefaultTipPercent)</label>
-				@Html.HiddenFor(x => x.DefaultTipPercent)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.CreditCardLast4Digits, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				<label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CreditCardLast4Digits)</label>
-				@Html.HiddenFor(x => x.CreditCardLast4Digits)
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="control-group left-control-group" style="width: 30%">
-				@Html.LabelFor(x => x.IsPayPalAccountLinked, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
-			</div>
-			<div class="control-group right-control-group" style="width: 70%">
-				@Html.Label(Model.IsPayPalAccountLinked ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
-				@Html.HiddenFor(x => x.IsPayPalAccountLinked)
-			</div>
-		</div>
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(x => x.Id)
 
-		<div class="control-group">
-			<button type="submit" class="btn btn-primary">Save Account</button>
-		</div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.Name, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.Name)</label>
+            @Html.HiddenFor(x => x.Name)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.Email, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.TextBoxFor(x => x.Email, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.CustomerNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CustomerNumber)</label>
+            @Html.HiddenFor(x => x.CustomerNumber)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.CreationDate, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CreationDate)</label>
+            @Html.HiddenFor(x => x.CreationDate)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.FacebookAccount, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.Label(string.IsNullOrEmpty(Model.FacebookAccount) ? "No" : "Yes", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+            @Html.HiddenFor(x => x.FacebookAccount)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.IBSAccountId, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.IBSAccountId)</label>
+            @Html.HiddenFor(x => x.IBSAccountId)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.IsConfirmed, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.Label(Model.IsConfirmed ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+            @Html.HiddenFor(x => x.IsConfirmed)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.IsEnabled, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.Label(Model.IsEnabled ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+            @Html.HiddenFor(x => x.IsEnabled)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.DropDownListFor(x => x.CountryCode.Code, CountryCodeSelectList.CountryCodeElements())
+            <br />
+            @Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.ChargeType, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.ChargeType)</label>
+            @Html.HiddenFor(x => x.ChargeType)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.DefaultTipPercent, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.DefaultTipPercent)</label>
+            @Html.HiddenFor(x => x.DefaultTipPercent)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.CreditCardLast4Digits, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            <label class="label-account" style="margin-right: 20px; white-space: nowrap;">@Html.DisplayFor(x => x.CreditCardLast4Digits)</label>
+            @Html.HiddenFor(x => x.CreditCardLast4Digits)
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="control-group left-control-group" style="width: 30%">
+            @Html.LabelFor(x => x.IsPayPalAccountLinked, new { @class = "control-label", @style = "margin-right:170px; white-space:nowrap;" })
+         </div>
+         <div class="control-group right-control-group" style="width: 70%">
+            @Html.Label(Model.IsPayPalAccountLinked ? "Yes" : "No", new { @class = "label-account", @style = "margin-right:20px; white-space:nowrap;" })
+            @Html.HiddenFor(x => x.IsPayPalAccountLinked)
+         </div>
+      </div>
 
-		<br />
-		@Html.ActionLink("Send Account Confirmation Code via SMS", "SendConfirmationCodeSMS", new { model = Model })
-		<br />
-		@Html.ActionLink("Reset Password", "ResetPassword", new { model = Model })
-		<br />
-		@if (Model.IsEnabled)
-		{
-			@Html.ActionLink("Disable Account", "EnableDisableAccount", new { model = Model })
-		}
-		else
-		{
-			@Html.ActionLink("Enable Account", "EnableDisableAccount", new { model = Model })
-		}
-		<br />
-		@Html.ActionLink("Unlink IBS Account(s)", "UnlinkIBSAccount", new { model = Model })
-		<br />
-		@Html.ActionLink("Delete all credit cards information", "DeleteCreditCardsInfo", new { model = Model })
+      <div class="control-group">
+         <button type="submit" class="btn btn-primary">Save Account</button>
+      </div>
 
-	</div>
+      <br />
+      @Html.ActionLink("Send Account Confirmation Code via SMS", "SendConfirmationCodeSMS", new { model = Model })
+      <br />
+      @Html.ActionLink("Reset Password", "ResetPassword", new { email = Model.Email })
+      <br />
+      @if (Model.IsEnabled)
+      {
+         @Ajax.ActionLink("Disable Account", "EnableDisableAccount", new { model = Model }, new AjaxOptions { HttpMethod = "Post" })
+      }
+      else
+      {
+         @Html.ActionLink("Enable Account", "EnableDisableAccount", new { model = Model })
+      }
+      <br />
+      @Html.ActionLink("Unlink IBS Account(s)", "UnlinkIBSAccount", new { model = Model })
+      <br />
+      @Html.ActionLink("Delete all credit cards information", "DeleteCreditCardsInfo", new { model = Model })
 
-	<div class="well clearfix form-horizontal" style="width:1250px;">
-		<h4 class="table-title">Orders</h4>
+   </div>
 
-		@if (Model.OrderDetailList != null && Model.OrderDetailList.Count() != 0)
-		{
-			<div class="control-group">
-				<table class="table-accountslist">
-					<thead>
-						<tr>
-							<th>Created Date</th>
-							<th>Pickup Date</th>
-							<th>Pickup Address</th>
-							<th>Drop Off Address</th>
-							<th>Fare</th>
-							<th>Status</th>
-							<th>Note</th>
-							<th>Promo Code</th>
-							<th>Is Manual</th>
-						</tr>
-					</thead>
-					<tbody>
+   <div class="well clearfix form-horizontal" style="width:1250px;">
+      <h4 class="table-title">Orders</h4>
 
-						@foreach (var order in Model.OrderDetailList)
-						{
-							<tr>
-								<td style="width:110px;"><div>@order.CreatedDateText()</div><div>@order.CreatedTimeText()</div></td>
-								<td style="width:110px;"><div>@order.PickupDateText()</div><div>@order.PickupTimeText()</div></td>
-								<td style="width:210px;"><div>@order.PickupAddress.StreetNumber @order.PickupAddress.Street</div><div>@order.PickupAddress.City @order.PickupAddress.ZipCode @order.PickupAddress.State</div></td>
-								<td style="width:210px;"><div>@order.DropOffAddress.StreetNumber @order.DropOffAddress.Street</div><div>@order.DropOffAddress.City @order.DropOffAddress.ZipCode @order.DropOffAddress.State</div></td>
-								<td style="width:210px;">
-									<div class="divPayment" title="Fare: @order.Fare&#013;&#010;Tax: @order.Tax&#013;&#010;Toll: @order.Toll&#013;&#010;Tip: @order.Tip&#013;&#010;Surcharge: @order.Surcharge">
-										<div class="divText">Total:</div><div class="divAmount">@order.TotalAmount()</div>
-									</div>
-								</td>
-								<td style="width:90px;">@order.StatusText()</td>
-								<td style="width:130px;">@order.Note</td>
-								<td style="width:80px;">@order.PromoCode</td>
-								@if (order.IsManualRideLinq)
-								{
-									<td style="width:130px;">Yes</td>
-								}
-								else
-								{
-									<td style="width:130px;">No</td>
-								}
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-		}
-	</div>
+      @if (Model.OrderDetailList != null && Model.OrderDetailList.Count() != 0)
+      {
+         <div class="control-group">
+            <table class="table-accountslist">
+               <thead>
+                  <tr>
+                     <th>Created Date</th>
+                     <th>Pickup Date</th>
+                     <th>Pickup Address</th>
+                     <th>Drop Off Address</th>
+                     <th>Fare</th>
+                     <th>Status</th>
+                     <th>Note</th>
+                     <th>Promo Code</th>
+                     <th>Is Manual</th>
+                     <th>Is removed from History</th>
+                  </tr>
+               </thead>
+               <tbody>
+
+                  @foreach (var order in Model.OrderDetailList)
+                  {
+                     <tr>
+                        <td style="width:110px;"><div>@order.CreatedDateText()</div><div>@order.CreatedTimeText()</div></td>
+                        <td style="width:110px;"><div>@order.PickupDateText()</div><div>@order.PickupTimeText()</div></td>
+                        <td style="width:210px;"><div>@order.PickupAddress.StreetNumber @order.PickupAddress.Street</div><div>@order.PickupAddress.City @order.PickupAddress.ZipCode @order.PickupAddress.State</div></td>
+                        <td style="width:210px;"><div>@order.DropOffAddress.StreetNumber @order.DropOffAddress.Street</div><div>@order.DropOffAddress.City @order.DropOffAddress.ZipCode @order.DropOffAddress.State</div></td>
+                        <td style="width:210px;">
+                           <div class="divPayment" title="Fare: @order.Fare&#013;&#010;Tax: @order.Tax&#013;&#010;Toll: @order.Toll&#013;&#010;Tip: @order.Tip&#013;&#010;Surcharge: @order.Surcharge">
+                              <div class="divText">Total:</div><div class="divAmount">@order.TotalAmount()</div>
+                           </div>
+                        </td>
+                        <td style="width:90px;">@order.StatusText()</td>
+                        <td style="width:130px;">@order.Note</td>
+                        <td style="width:80px;">@order.PromoCode</td>
+                        @if (order.IsManualRideLinq)
+                        {
+                           <td style="width:130px;">Yes</td>
+                        }
+                        else
+                        {
+                           <td style="width:130px;">No</td>
+                        }
+                        @if (order.IsRemovedFromHistory(Model))
+                        {
+                           <td style="width:130px;">Yes</td>
+                        }
+                        else
+                        {
+                           <td style="width:130px;">No</td>
+                        }
+                     </tr>
+                  }
+               </tbody>
+            </table>
+         </div>
+      }
+   </div>
 }

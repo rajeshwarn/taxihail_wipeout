@@ -20,170 +20,204 @@ using System.Web.Mvc;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-	public class AccountManagementController : ServiceStackController
-	{
-		private readonly IAccountDao _accountDao;
-		private readonly ICreditCardDao _creditCardDao;
-		private readonly BookingSettingsService _bookingSettingsService;
-		private readonly ResetPasswordService _resetPasswordService;
-		private readonly ICommandBus _commandBus;
-		private readonly IServerSettings _serverSettings;
-		private readonly IOrderDao _orderDao;
+   public class AccountManagementController : ServiceStackController
+   {
+      private readonly IAccountDao _accountDao;
+      private readonly ICreditCardDao _creditCardDao;
+      private readonly ICommandBus _commandBus;
+      private readonly IServerSettings _serverSettings;
+      private readonly IOrderDao _orderDao;
+      private readonly BookingSettingsService _bookingSettingsService;
+      private readonly ResetPasswordService _resetPasswordService;
+      private readonly ConfirmAccountService _confirmAccountService;
 
-		public AccountManagementController(ICacheClient cache,
-			IServerSettings serverSettings,
-			IAccountDao accountDao,
-			ICreditCardDao creditCardDao,
-			BookingSettingsService bookingSettingsService,
-			ResetPasswordService resetPasswordService,
-			ICommandBus commandBus,
-			IOrderDao orderDao)
-			: base(cache, serverSettings)
-		{
-			_accountDao = accountDao;
-			_creditCardDao = creditCardDao;
-			_bookingSettingsService = bookingSettingsService;
-			_resetPasswordService = resetPasswordService;
-			_commandBus = commandBus;
-			_serverSettings = serverSettings;
-			_orderDao = orderDao;
-		}
+      public AccountManagementController(ICacheClient cache,
+         IServerSettings serverSettings,
+         IAccountDao accountDao,
+         ICreditCardDao creditCardDao,
+         ICommandBus commandBus,
+         IOrderDao orderDao,
+         BookingSettingsService bookingSettingsService,
+         ResetPasswordService resetPasswordService,
+         ConfirmAccountService confirmAccountService)
+         : base(cache, serverSettings)
+      {
+         _accountDao = accountDao;
+         _creditCardDao = creditCardDao;
+         _bookingSettingsService = bookingSettingsService;
+         _resetPasswordService = resetPasswordService;
+         _commandBus = commandBus;
+         _serverSettings = serverSettings;
+         _orderDao = orderDao;
+         _confirmAccountService = confirmAccountService;
+      }
 
-		// GET: AdminTH/AccountDetails
-		public ActionResult Index(Guid id)
-		{
-			var accountDetail = _accountDao.FindById(id);
-			var accountManagementModel = new AccountManagementModel();
+      public ActionResult Index(Guid id)
+      {
+         AccountManagementModel accountManagementModel = InitialiseModel(id);
 
-			accountManagementModel.Id = id;
-			accountManagementModel.Name = accountDetail.Name;
-			accountManagementModel.Email = accountDetail.Email;
-			accountManagementModel.CustomerNumber = accountDetail.Settings.CustomerNumber;
-			accountManagementModel.CreationDate = accountDetail.CreationDate;
-			accountManagementModel.FacebookAccount = accountDetail.FacebookId;
-			accountManagementModel.IBSAccountId = accountDetail.IBSAccountId;
-			accountManagementModel.IsConfirmed = accountDetail.IsConfirmed;
-			accountManagementModel.IsEnabled = !accountDetail.DisabledByAdmin;
-			accountManagementModel.CountryCode = accountDetail.Settings.Country;
-			accountManagementModel.PhoneNumber = accountDetail.Settings.Phone;
-			accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
-			accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
-			accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
-			if (accountDetail.DefaultCreditCard != null
-				&& accountDetail.DefaultCreditCard.GetValueOrDefault() != null
-				&& _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
-			{
-				accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
-			}
+         return View(accountManagementModel);
+      }
 
-			// get all coutryCode to feed combobox
-			accountManagementModel.CountryCodesList = new List<SelectListItem>();
-			foreach (CountryCode countryCode in CountryCode.CountryCodes)
-			{
-				accountManagementModel.CountryCodesList.Add(new SelectListItem() { Value = countryCode.CountryISOCode.Code, Text = HttpUtility.HtmlDecode(countryCode.GetTextCountryDialCodeAndCountryName()) });
-			}
+      private AccountManagementModel InitialiseModel(Guid id)
+      {
+         var accountDetail = _accountDao.FindById(id);
+         var accountManagementModel = new AccountManagementModel();
+         accountManagementModel.OrderDao = _orderDao;
 
-			// get all order for an AccountId
-			var orderMapper = new OrderMapper();
-			accountManagementModel.OrderDetailList = _orderDao.FindByAccountId(accountManagementModel.Id)
-				.Where(x => !x.IsRemovedFromHistory)
-				.OrderByDescending(c => c.CreatedDate)
-				.Select(read => orderMapper.ToResource(read))
-				.ToList();
+         accountManagementModel.Id = id;
+         accountManagementModel.Name = accountDetail.Name;
+         accountManagementModel.Email = accountDetail.Email;
+         accountManagementModel.CustomerNumber = accountDetail.Settings.CustomerNumber;
+         accountManagementModel.CreationDate = accountDetail.CreationDate;
+         accountManagementModel.FacebookAccount = accountDetail.FacebookId;
+         accountManagementModel.IBSAccountId = accountDetail.IBSAccountId;
+         accountManagementModel.IsConfirmed = accountDetail.IsConfirmed;
+         accountManagementModel.IsEnabled = !accountDetail.DisabledByAdmin;
+         accountManagementModel.CountryCode = accountDetail.Settings.Country;
+         accountManagementModel.PhoneNumber = accountDetail.Settings.Phone;
+         accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
+         accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
+         accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
+         if (accountDetail.DefaultCreditCard != null
+            && accountDetail.DefaultCreditCard.GetValueOrDefault() != null
+            && _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
+         {
+            accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
+         }
 
-			return View(accountManagementModel);
-		}
+         // get all order for an AccountId
+         var orderMapper = new OrderMapper();
+         accountManagementModel.OrderDetailList = _orderDao.FindByAccountId(accountManagementModel.Id)
+            .Where(x => !x.IsRemovedFromHistory)
+            .OrderByDescending(c => c.CreatedDate)
+            .Select(read => orderMapper.ToResource(read))
+            .ToList();
+         return accountManagementModel;
+      }
 
-		[HttpPost]
-		[ValidateInput(false)]
-		public async Task<ActionResult> Save(AccountManagementModel accountManagementModel)
-		{
-			var accountDetail = _accountDao.FindById(accountManagementModel.Id);
+      [HttpPost]
+      [ValidateInput(false)]
+      public async Task<ActionResult> Save(AccountManagementModel accountManagementModel)
+      {
+         var accountDetail = _accountDao.FindById(accountManagementModel.Id);
 
-			var bookingSettingsRequest = new BookingSettingsRequest();
-			bookingSettingsRequest.AccountNumber = accountDetail.Settings.AccountNumber;
-			bookingSettingsRequest.ChargeTypeId = accountDetail.Settings.ChargeTypeId;
-			bookingSettingsRequest.Country = accountManagementModel.CountryCode;
-			bookingSettingsRequest.CustomerNumber = accountDetail.Settings.CustomerNumber;
-			bookingSettingsRequest.DefaultTipPercent = accountManagementModel.DefaultTipPercent;
-			bookingSettingsRequest.Email = accountManagementModel.Email;
-			bookingSettingsRequest.FirstName = accountDetail.Name;
-			bookingSettingsRequest.LastName = accountDetail.Name;
-			bookingSettingsRequest.Name = accountManagementModel.Name;
-			bookingSettingsRequest.NumberOfTaxi = accountDetail.Settings.NumberOfTaxi;
-			bookingSettingsRequest.Passengers = accountDetail.Settings.Passengers;
-			bookingSettingsRequest.PayBack = accountDetail.Settings.PayBack;
-			bookingSettingsRequest.Phone = accountManagementModel.PhoneNumber;
-			bookingSettingsRequest.ProviderId = accountDetail.Settings.ProviderId;
-			bookingSettingsRequest.VehicleTypeId = accountDetail.Settings.VehicleTypeId;
+         var bookingSettingsRequest = new BookingSettingsRequest();
+         bookingSettingsRequest.AccountNumber = accountDetail.Settings.AccountNumber;
+         bookingSettingsRequest.ChargeTypeId = accountDetail.Settings.ChargeTypeId;
+         bookingSettingsRequest.Country = accountManagementModel.CountryCode;
+         bookingSettingsRequest.CustomerNumber = accountDetail.Settings.CustomerNumber;
+         bookingSettingsRequest.DefaultTipPercent = accountManagementModel.DefaultTipPercent;
+         bookingSettingsRequest.Email = accountManagementModel.Email;
+         bookingSettingsRequest.FirstName = accountDetail.Name;
+         bookingSettingsRequest.LastName = accountDetail.Name;
+         bookingSettingsRequest.Name = accountManagementModel.Name;
+         bookingSettingsRequest.NumberOfTaxi = accountDetail.Settings.NumberOfTaxi;
+         bookingSettingsRequest.Passengers = accountDetail.Settings.Passengers;
+         bookingSettingsRequest.PayBack = accountDetail.Settings.PayBack;
+         bookingSettingsRequest.Phone = accountManagementModel.PhoneNumber;
+         bookingSettingsRequest.ProviderId = accountDetail.Settings.ProviderId;
+         bookingSettingsRequest.VehicleTypeId = accountDetail.Settings.VehicleTypeId;
 
-			var accountUpdateRequest = new AccountUpdateRequest();
-			accountUpdateRequest.AccountId = accountManagementModel.Id;
-			accountUpdateRequest.BookingSettingsRequest = bookingSettingsRequest;
+         var accountUpdateRequest = new AccountUpdateRequest();
+         accountUpdateRequest.AccountId = accountManagementModel.Id;
+         accountUpdateRequest.BookingSettingsRequest = bookingSettingsRequest;
 
-			// TODO manage return ?!
-			_bookingSettingsService.Put(accountUpdateRequest);
+         try
+         {
+            _bookingSettingsService.Put(accountUpdateRequest);
+            TempData["UserMessage"] = "Operation done successfully";
+         }
+         catch (Exception e)
+         {
+            TempData["UserMessage"] = e.Message;
+         }
 
-			accountManagementModel.CountryCodesList = new List<SelectListItem>();
-			foreach (CountryCode countryCode in CountryCode.CountryCodes)
-			{
-				accountManagementModel.CountryCodesList.Add(new SelectListItem() { Value = countryCode.CountryISOCode.Code, Text = HttpUtility.HtmlDecode(countryCode.GetTextCountryDialCodeAndCountryName()) });
-			}
+         return View("Index", accountManagementModel);
+      }
 
-			return View("Index", accountManagementModel);
-		}
+      public ActionResult ResetPassword(string email)
+      {
+         //try
+         //{
+         //   _resetPasswordService.Post(new ResetPassword() { EmailAddress = email });
+         //   TempData["UserMessage"] = "Operation done successfully";
+         //}
+         //catch (Exception e)
+         //{
+         //   TempData["UserMessage"] = e.Message;
+         //}
 
-		[HttpPost]
-		public async Task<ActionResult> ResetPassword(AccountManagementModel accountManagementModel)
-		{
-			_resetPasswordService.Post(new ResetPassword() { EmailAddress = accountManagementModel.Email });
+         return View("Index");
+      }
 
-			return View("Index", accountManagementModel);
-		}
+      [HttpPost]
+      public async Task<ActionResult> SendConfirmationCodeSMS(AccountManagementModel accountManagementModel)
+      {
+         if (accountManagementModel.Email != null
+            && accountManagementModel.Email.Length > 0
+            && accountManagementModel.CountryCode != null
+            && accountManagementModel.CountryCode.Code != null
+            && accountManagementModel.CountryCode.Code.Length > 0
+            && accountManagementModel.PhoneNumber != null
+            && accountManagementModel.PhoneNumber.Length > 0)
+         {
 
-		[HttpPost]
-		public async Task<ActionResult> SendConfirmationCodeSMS(AccountManagementModel accountManagementModel)
-		{
-			_resetPasswordService.Post(new ResetPassword() { EmailAddress = accountManagementModel.Email });
+            try
+            {
+               _confirmAccountService.Get(new ConfirmationCodeRequest() { CountryCode = accountManagementModel.CountryCode.Code, Email = accountManagementModel.Email, PhoneNumber = accountManagementModel.PhoneNumber });
+               TempData["UserMessage"] = "Operation done successfully";
+            }
+            catch (Exception e)
+            {
+               TempData["UserMessage"] = e.Message;
+            }
+         }
+         else
+         {
+            TempData["UserMessage"] = "Please provide correct country code, email and phone number";
+         }
 
-			return View("Index", accountManagementModel);
-		}
+         return View("Index", accountManagementModel);
+      }
 
-		public async Task<ActionResult> EnableDisableAccount(AccountManagementModel accountManagementModel)
-		{
-			if (accountManagementModel.IsEnabled)
-			{
-				_commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
-			}
-			else
-			{
-				_commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
-			}
+      [HttpPost]
+      public async Task<ActionResult> EnableDisableAccount(AccountManagementModel accountManagementModel)
+      {
+         if (accountManagementModel.IsEnabled)
+         {
+            _commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
+            accountManagementModel.IsEnabled = false;
+         }
+         else
+         {
+            _commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
+            accountManagementModel.IsEnabled = true;
+         }
 
-			return View("Index", accountManagementModel);
-		}
+         return View("Index", accountManagementModel);
+      }
 
-		public async Task<ActionResult> UnlinkIBSAccount(AccountManagementModel accountManagementModel)
-		{
-			_commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
-			return View("Index", accountManagementModel);
-		}
+      public async Task<ActionResult> UnlinkIBSAccount(AccountManagementModel accountManagementModel)
+      {
+         _commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
+         return View("Index", accountManagementModel);
+      }
 
-		public async Task<ActionResult> DeleteCreditCardsInfo(AccountManagementModel accountManagementModel)
-		{
-			var paymentSettings = _serverSettings.GetPaymentSettings();
+      public async Task<ActionResult> DeleteCreditCardsInfo(AccountManagementModel accountManagementModel)
+      {
+         var paymentSettings = _serverSettings.GetPaymentSettings();
 
-			var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
-				&& paymentSettings.IsOutOfAppPaymentDisabled;
+         var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
+            && paymentSettings.IsOutOfAppPaymentDisabled;
 
-			_commandBus.Send(new DeleteCreditCardsFromAccounts
-			{
-				AccountIds = new[] { accountManagementModel.Id },
-				ForceUserDisconnect = forceUserDisconnect
-			});
+         _commandBus.Send(new DeleteCreditCardsFromAccounts
+         {
+            AccountIds = new[] { accountManagementModel.Id },
+            ForceUserDisconnect = forceUserDisconnect
+         });
 
-			return View("Index", accountManagementModel);
-		}
-
-	}
+         return View("Index", accountManagementModel);
+      }
+   }
 }

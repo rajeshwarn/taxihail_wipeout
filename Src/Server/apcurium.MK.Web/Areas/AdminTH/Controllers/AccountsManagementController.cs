@@ -15,59 +15,54 @@ using System.Web.Mvc;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-	[AuthorizationRequired(RoleName.Admin)]
-	public class AccountsManagementController : ServiceStackController
-	{
-		private readonly IAccountDao _accountDao;
+   [AuthorizationRequired(RoleName.Admin)]
+   public class AccountsManagementController : ServiceStackController
+   {
+      private readonly IAccountDao _accountDao;
 
-		public AccountsManagementController(ICacheClient cache, IServerSettings serverSettings, IAccountDao accountDao)
-			: base(cache, serverSettings)
-		{
-			_accountDao = accountDao;
-		}
+      public AccountsManagementController(ICacheClient cache, IServerSettings serverSettings, IAccountDao accountDao)
+         : base(cache, serverSettings)
+      {
+         _accountDao = accountDao;
+      }
 
-		public ActionResult Index()
-		{
-			// first time we open Index without values
-			return View(new AccountsManagementModel());
-		}
+      public ActionResult Index()
+      {
+         // first time we open Index without values
+         return View(new AccountsManagementModel());
+      }
 
-		// POST: AdminTH/AccountsManagement/Search
-		[HttpPost]
-		[ValidateInput(false)]
-		public async Task<ActionResult> Search(FormCollection form)
-		{
-			var formDictionary = form.ToDictionary();
-			formDictionary.Remove("__RequestVerificationToken");
+      // POST: AdminTH/AccountsManagement/Search
+      [HttpPost]
+      [ValidateInput(false)]
+      public async Task<ActionResult> Search(string searchCriteria)
+      {
+         if (string.IsNullOrEmpty(searchCriteria))
+         {
+            TempData["SearchCriteriaEmpty"] = "Search criteria field should not be empty.";
+            return RedirectToAction("Index");
+         }
+         else
+         {
+            var accountsManagement = new AccountsManagementModel();
+            accountsManagement.SearchCriteria = searchCriteria;
 
-			string searchCriteriaValue;
-			formDictionary.TryGetValue("SearchCriteria", out searchCriteriaValue);
-			if (string.IsNullOrEmpty(searchCriteriaValue))
-			{
-				TempData["SearchCriteriaEmpty"] = "Search criteria field should not be empty.";
-				return RedirectToAction("Index");
-			}
-			else
-			{
-				var accountsManagement = new AccountsManagementModel();
-				accountsManagement.SearchCriteria = searchCriteriaValue;
+            accountsManagement.AccountsDetail = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)
+               .Concat<AccountDetail>(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
+               .Concat<AccountDetail>(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
+               .Distinct<AccountDetail>(new AccountDetailComparer())
+               .ToArray();
 
-				accountsManagement.AccountsDetail = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)
-					.Concat<AccountDetail>(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
-					.Concat<AccountDetail>(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
-					.Distinct<AccountDetail>(new AccountDetailComparer())
-					.ToArray();
+            accountsManagement.CountryDialCode = new string[accountsManagement.AccountsDetail.Length];
+            int idx = 0;
+            foreach (AccountDetail accoutDetail in accountsManagement.AccountsDetail)
+            {
+               CountryCode countryCode = new CountryCode() { CountryISOCode = accoutDetail.Settings.Country };
+               accountsManagement.CountryDialCode[idx++] = countryCode.СountryDialCodeInternationalFormat;
+            }
 
-				accountsManagement.CountryDialCode = new string[accountsManagement.AccountsDetail.Length];
-				int idx = 0;
-				foreach (AccountDetail accoutDetail in accountsManagement.AccountsDetail)
-				{
-					CountryCode countryCode = new CountryCode() { CountryISOCode = accoutDetail.Settings.Country };
-					accountsManagement.CountryDialCode[idx++] = countryCode.СountryDialCodeInternationalFormat;
-				}
-
-				return View("Index", accountsManagement);
-			}
-		}
-	}
+            return View("Index", accountsManagement);
+         }
+      }
+   }
 }
