@@ -197,10 +197,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead", false)]
         [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
-        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
+        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; set; }        
         
         [CustomizableByCompany]
         [Display(Name = "Configuration - Company's time zone", Description = "Used to properly show dates in the correct time zone")]

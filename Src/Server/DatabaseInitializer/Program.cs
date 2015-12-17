@@ -247,20 +247,17 @@ namespace DatabaseInitializer
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
 #if DEBUG
-                if (IsUpdate)
-                {
-                    var iisManager = new ServerManager();
-                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+                var iisManager = new ServerManager();
+                var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
 
-                    if (appPool != null
-                        && appPool.State == ObjectState.Stopped)
-                    {
-                        appPool.Start();
-                        Console.WriteLine("App Pool started.");
-                    }
+                if (appPool != null
+                    && appPool.State == ObjectState.Stopped)
+                {
+                    appPool.Start();
+                    Console.WriteLine("App Pool started.");
                 }
 #endif
-                
+
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
@@ -986,13 +983,14 @@ namespace DatabaseInitializer
         private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
         {
             var paymentSettings = serverSettings.GetPaymentSettings();
-            var needsUpdate = false;
+            var paymentSettingsNeedsUpdate = false;
+            var serverSettingsNeedsUpdate = false;
 
             if (paymentSettings.AutomaticPaymentPairing)
             {
                 paymentSettings.IsUnpairingDisabled = true;
                 paymentSettings.AutomaticPaymentPairing = false;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (paymentSettings.NoShowFee.HasValue)
@@ -1011,34 +1009,43 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
             {
                 paymentSettings.CmtPaymentSettings.UsePairingCode = true;
-                needsUpdate = true;
+                serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment = false;
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
             }
 
             if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
             {
                 paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.CreditCardIsMandatory)
             {
                 paymentSettings.CreditCardIsMandatory = true;
-                needsUpdate = true;
+                serverSettings.ServerData.CreditCardIsMandatory = false;
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
             }
 
-            if (needsUpdate)
+            if (paymentSettingsNeedsUpdate)
             {
                 commandBus.Send(new UpdatePaymentSettings
                 {
                     CompanyId = AppConstants.CompanyId,
                     ServerPaymentSettings = paymentSettings
                 });
+            }
+
+            if (serverSettingsNeedsUpdate)
+            {
+                AddOrUpdateAppSettings(commandBus, serverSettings.GetSettings());
             }
         }
 
