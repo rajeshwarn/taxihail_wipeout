@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Api.Helpers
 
             var ibsInfo = new IBSOrderInformation
             {
-                IBSOrderId = 9999,
                 VehicleMake = "Lamborghini",
                 VehicleColor = "Red",
                 VehicleModel = "Diablo",
@@ -54,12 +53,18 @@ namespace apcurium.MK.Booking.Api.Helpers
                 DriverId = "99123",
                 TerminalId = "98695",
                 ReferenceNumber = "1209",
-				DriverPhotoUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/assets/img/tony.jpg"
+				DriverPhotoUrl = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/assets/img/tony.jpg",
+                Status = VehicleStatuses.Common.Waiting
             };
 
             var order = _orderDao.FindById(orderId);
 
-            if (string.IsNullOrEmpty(orderStatus.IBSStatusId) || orderStatus.IBSStatusId == VehicleStatuses.Common.Waiting)
+            if (order.IBSOrderId.HasValue && order.IBSOrderId != 0)
+            {
+                ibsInfo.IBSOrderId = order.IBSOrderId.Value;
+            }
+
+            if (order.IBSOrderId.HasValue && (string.IsNullOrEmpty(orderStatus.IBSStatusId) || orderStatus.IBSStatusId == VehicleStatuses.Common.Waiting))
             {
                 ibsInfo.VehicleLatitude = DefaultTaxiLatitude;
                 ibsInfo.VehicleLongitude = DefaultTaxiLongitude;
