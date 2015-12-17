@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
+            Handles<OrderInTripUpdated>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)

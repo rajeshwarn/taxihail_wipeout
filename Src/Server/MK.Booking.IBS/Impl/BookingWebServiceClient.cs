@@ -525,7 +525,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     Latitude = dropOffAddress.Latitude,
                     Postal = dropOffAddress.ZipCode
                 });
-                success = result == 0;
+                success = result == 1;
             });
             return success;
         }

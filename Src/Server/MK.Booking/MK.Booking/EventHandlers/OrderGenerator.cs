@@ -746,7 +746,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderDetail = context.Find<OrderDetail>(@event.SourceId);
 
-                if (orderDetail == null || @event.DropOffAddress.Id == Guid.Empty)
+                if (orderDetail == null)
                 {
                     return;
                 }
