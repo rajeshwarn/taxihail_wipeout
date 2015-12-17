@@ -58,4 +58,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ReferenceJar Include="Jars\google-play-services.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Braintree.Api.Droid\Braintree.Api.Droid.csproj">
+      <Project>{CEA4D534-ECC4-4DB2-A3BE-2897E91B8C20}</Project>
+      <Name>Braintree.Api.Droid</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

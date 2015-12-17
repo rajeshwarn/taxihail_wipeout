@@ -21,7 +21,7 @@ using ServiceStack.Common.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class PaymentService : BaseService, IPaymentService
+	public class PaymentService : BaseService, IPaymentService
     {
 		private readonly ConfigurationClientService _serviceClient;
         private readonly ICacheService _cache;
@@ -179,5 +179,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					return null;
             }
         }
+
+		public async Task<GenerateClientTokenResponse> GenerateClientTokenResponse()
+		{
+			try
+			{
+				return await GetClient().GenerateClientTokenResponse();
+			}
+			catch(NotSupportedException)
+			{
+				Logger.LogMessage("Generate token only supported for Braintree");
+			}
+
+			return new GenerateClientTokenResponse();
+		}
     }
 }

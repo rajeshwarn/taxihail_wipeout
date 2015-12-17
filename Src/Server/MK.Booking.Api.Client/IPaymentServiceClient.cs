@@ -14,5 +14,9 @@ namespace apcurium.MK.Booking.Api.Client
         Task<OverduePayment> GetOverduePayment();
 
         Task<SettleOverduePaymentResponse> SettleOverduePayment();
+
+		Task<GenerateClientTokenResponse> GenerateClientTokenResponse();
+
+		Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce);
     }
 }

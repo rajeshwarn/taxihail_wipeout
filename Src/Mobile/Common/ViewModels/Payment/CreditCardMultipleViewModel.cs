@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -15,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
+		private readonly IBraintreeDropinViewService _braintreeDropinService;
+		private readonly IPaymentService _paymentService;
 
 		private string _paymentToSettle;
 
@@ -22,11 +25,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public CreditCardMultipleViewModel(
             ILocationService locationService,
-            IPaymentService paymentService, 
+			IPaymentService paymentService, 
 			IAccountService accountService,
+			IBraintreeDropinViewService braintreeDropinService,
 			IAppSettings appSettings)
 			:base(locationService, paymentService, accountService)
         {
+			_paymentService = paymentService;
+			_braintreeDropinService = braintreeDropinService;
 			_appSettings = appSettings;
             _accountService = accountService;
         }
@@ -145,10 +151,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-                return this.GetCommand(() =>
-                    {
+                return this.GetCommand(async () =>
+                {
+					if(PaymentSettings.PaymentMode != PaymentMethod.Braintree)
+					{
 						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
-                    });
+						return;
+					}
+					var clientToken = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+					var paymentNonce = await _braintreeDropinService.ShowDropinView(clientToken);
+					
+					using(this.Services().Message.ShowProgressNonModal())
+					{
+						await _paymentService.AddPaymentMethod(paymentNonce);
+						await GetCreditCards();
+					}
+                });
             }
         }
     }

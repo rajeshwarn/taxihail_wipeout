@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     ///     cardholder data to create the token so there is no way to get the cardholder information
     ///     with just the token alone
     /// </summary>
-    public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
+	public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
             IPackageInfo packageInfo, ILogger logger)
@@ -162,5 +162,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessful;
         }
+
+		public Task<GenerateClientTokenResponse> GenerateClientTokenResponse()
+		{
+			throw new NotSupportedException("This method is only supported for Braintree Payment");
+		}
+
+		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+		{
+			throw new NotSupportedException("This method is only supported for Braintree Payment");
+		}
     }
 }

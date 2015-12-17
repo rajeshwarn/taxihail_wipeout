@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
-    public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
+	public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
         public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo)
             : base(url, sessionId, packageInfo)
@@ -89,5 +89,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         {
             return Client.PostAsync(new SettleOverduePaymentRequest());
         }
+
+		public Task<GenerateClientTokenResponse> GenerateClientTokenResponse()
+		{
+			return Client.GetAsync(new GenerateClientTokenBraintreeRequest());
+		}
+
+		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+		{
+			return Client.PostAsync(new AddPaymentMethodRequest()
+			{
+				Nonce = nonce
+			});
+		}
     }
 }

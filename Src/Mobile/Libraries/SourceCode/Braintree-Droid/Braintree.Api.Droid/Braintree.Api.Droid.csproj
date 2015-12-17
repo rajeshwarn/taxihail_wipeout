@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,5 +61,8 @@
   -->
   <ItemGroup>
     <EmbeddedJar Include="Jars\braintree-2.1.0.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <ReferenceJar Include="Jars\google-play-services.jar" />
   </ItemGroup>
 </Project>

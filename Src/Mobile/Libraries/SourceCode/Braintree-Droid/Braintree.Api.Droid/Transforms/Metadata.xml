@@ -6,7 +6,6 @@
   This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
   <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
   -->
-  <attr path="/api/package[@name='com.braintreepayments']" name="managedName">Braintree</attr>
   <attr path="/api/package[@name='com.braintreepayments.api']" name="managedName">Braintree.Api</attr>
   <attr path="/api/package[@name='com.braintreepayments.api.annotations']" name="managedName">Braintree.Api.Annotations</attr>
   <attr path="/api/package[@name='com.braintreepayments.api.exceptions']" name="managedName">Braintree.Api.Exceptions</attr>
