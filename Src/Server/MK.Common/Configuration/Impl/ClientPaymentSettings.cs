@@ -15,7 +15,6 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
-            IsOutOfAppPaymentDisabled = false;
             IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             AskForCVVAtBooking = false;
             CancelOrderOnUnpair = false;
@@ -97,9 +96,21 @@ namespace apcurium.MK.Common.Configuration.Impl
 
     public enum OutOfAppPaymentDisabled
     {
+        /// <summary>
+        /// Default value for migration. Don't use it.
+        /// </summary>
         NotSet,
+        /// <summary>
+        /// Out of App payment enabled for Web and App
+        /// </summary>
         None,
+        /// <summary>
+        /// Out of App payment enabled for Web only
+        /// </summary>
         AppOnly,
+        /// <summary>
+        /// Out of App payment disabled for Web and App
+        /// </summary>
         All
     }
 }
