@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 || status.IBSStatusId == VehicleStatuses.Common.Waiting
                 || status.IBSStatusId == VehicleStatuses.Common.Arrived
                 || status.IBSStatusId == VehicleStatuses.Common.Scheduled
-                || string.IsNullOrEmpty(status.IBSStatusId) && status.IBSOrderId.HasValue;
+                || string.IsNullOrEmpty(status.IBSStatusId);
         }
 
         public bool IsCallboxStatusActive(string statusId)
