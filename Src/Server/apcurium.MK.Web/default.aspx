@@ -94,6 +94,7 @@
             TaxiHail.parameters.isCraftyClicksEnabled = "<%: IsCraftyClicksEnabled ? "true" : "false" %>";
             TaxiHail.parameters.webSiteRootPath = "<%: WebSiteRootPath %>";
             TaxiHail.parameters.showOrderNumber = <%: ShowOrderNumber ? "true" : "false" %>;
+            TaxiHail.parameters.isPaymentOutOfAppDisabled = "<%: IsPaymentOutOfAppDisabled %>";
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";

@@ -1020,6 +1020,12 @@ namespace DatabaseInitializer
                 needsUpdate = true;
             }
 
+            if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
+            {
+                paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
+                needsUpdate = true;
+            }
+
             if (serverSettings.ServerData.CreditCardIsMandatory)
             {
                 paymentSettings.CreditCardIsMandatory = true;

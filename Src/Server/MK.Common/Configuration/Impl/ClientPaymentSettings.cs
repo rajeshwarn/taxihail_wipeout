@@ -15,23 +15,29 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
-            IsOutOfAppPaymentDisabled = false;
+            IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             AskForCVVAtBooking = false;
             CancelOrderOnUnpair = false;
             CreditCardIsMandatory = false;
     }
 
         public PaymentMethod PaymentMode { get; set; }
-        
+
         /// <summary>
         /// In app payment
         /// </summary>
         public bool IsPayInTaxiEnabled { get; set; }
-        
+
         /// <summary>
         /// Manual payment, not through app
         /// </summary>
+        [Obsolete("This property is deprecated, use 'IsPaymentOutOfAppDisabled' instead. Now, Out Of App Payment can be enabled for web only", false)]
         public bool IsOutOfAppPaymentDisabled { get; set; }
+
+        /// <summary>
+        /// Manual payment, not through app
+        /// </summary>
+        public OutOfAppPaymentDisabled IsPaymentOutOfAppDisabled { get; set; }
 
         public bool IsChargeAccountPaymentEnabled { get; set; }
 
@@ -86,5 +92,25 @@ namespace apcurium.MK.Common.Configuration.Impl
         CreditCardOnly,
         PayPalOnly,
         Multiple
+    }
+
+    public enum OutOfAppPaymentDisabled
+    {
+        /// <summary>
+        /// Default value for migration. Don't use it.
+        /// </summary>
+        NotSet,
+        /// <summary>
+        /// Out of App payment enabled for Web and App
+        /// </summary>
+        None,
+        /// <summary>
+        /// Out of App payment enabled for Web only
+        /// </summary>
+        AppOnly,
+        /// <summary>
+        /// Out of App payment disabled for Web and App
+        /// </summary>
+        All
     }
 }
