@@ -210,10 +210,6 @@ namespace DatabaseInitializer
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
                 }
-                else
-                {
-                    CheckAndAddCapacity(vehicleTypeDetails, container, commandBus);
-                }
 
                 Console.WriteLine("Migration of Notification Settings ...");
                 var configDao = new ConfigurationDao(() => new ConfigurationDbContext(connectionString.ConnectionString));
@@ -1033,61 +1029,28 @@ namespace DatabaseInitializer
         private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)
         {
             var referenceDataService = container.Resolve<ReferenceDataService>();
-            var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
-
-            foreach (var company in referenceData.CompaniesList)
+            
+            new [] { ServiceType.Taxi, ServiceType.Luxury, }.ForEach(serviceType =>
             {
-                var vehicles = container.Resolve<IIBSServiceProvider>().StaticData().GetVehicles(company);
-                foreach (var vehicle in vehicles)
-                {
-                    commandBus.Send(new AddUpdateVehicleType
-                    {
-                        VehicleTypeId = Guid.NewGuid(),
-                        Name = string.Format("{0}", vehicle.Name),
-                        LogoName = "taxi",
-                        ReferenceDataVehicleId = vehicle.ID,
-                        CompanyId = AppConstants.CompanyId,
-                        MaxNumberPassengers = vehicle.Capacity
-                    });
-                }
-
-            }
-        }
-
-        private static void CheckAndAddCapacity(IEnumerable<VehicleTypeDetail> vehicleTypeDetails, UnityContainer container, ICommandBus commandBus)
-        {
-            var currentVersion = Assembly.GetAssembly(typeof(Program)).GetName().Version;
-            var versionIntroduceCapacity = new Version(2, 2, 1);
-
-            //before version 2.2.1 vehicle type have no capacity, we need to set the value from IBS if any
-            if (currentVersion.CompareTo(versionIntroduceCapacity) <= 0)
-            {
-                var referenceDataService = container.Resolve<ReferenceDataService>();
-                var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
-                var ibsVehicleData = new List<TVehicleTypeItem>();
+                var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest() { ServiceType = serviceType });
 
                 foreach (var company in referenceData.CompaniesList)
                 {
-                    ibsVehicleData.AddRange(container.Resolve<IIBSServiceProvider>().StaticData().GetVehicles(company));
-                }
-
-                foreach (var typeDetail in vehicleTypeDetails)
-                {
-                    var ibsData = ibsVehicleData.FirstOrDefault(x => x.ID == typeDetail.ReferenceDataVehicleId);
-                    if (ibsData != null)
+                    var vehicles = container.Resolve<IIBSServiceProvider>().StaticData(null, serviceType).GetVehicles(company);
+                    foreach (var vehicle in vehicles)
                     {
                         commandBus.Send(new AddUpdateVehicleType
                         {
-                            VehicleTypeId = typeDetail.Id,
-                            Name = string.Format("{0}", typeDetail.Name),
-                            LogoName = typeDetail.LogoName,
-                            ReferenceDataVehicleId = typeDetail.ReferenceDataVehicleId,
+                            VehicleTypeId = Guid.NewGuid(),
+                            Name = string.Format("{0}", vehicle.Name),
+                            LogoName = "taxi",
+                            ReferenceDataVehicleId = vehicle.ID,
                             CompanyId = AppConstants.CompanyId,
-                            MaxNumberPassengers = ibsData.Capacity
+                            MaxNumberPassengers = vehicle.Capacity
                         });
                     }
                 }
-            }
+            });
         }
 
         private static void EnsurePrivacyPolicyExists(ConnectionStringSettings connectionString, ICommandBus commandBus, IServerSettings serverSettings)
