@@ -1082,11 +1082,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 						if(success)
 						{
+							((HomeViewModel)Parent).BookingStatus.Order.DropOffAddress = ((HomeViewModel)Parent).DropOffSelection.DestinationAddress;
 							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.BookingStatus;
 							_orderWorkflowService.SetDropOffSelectionMode(false);
 							return;
 						}
 
+						_orderWorkflowService.ClearDestinationAddress();
 						this.Services().Message.ShowMessage("Error", "ErrorChangeDropOff_Message");
 					});
 			}
