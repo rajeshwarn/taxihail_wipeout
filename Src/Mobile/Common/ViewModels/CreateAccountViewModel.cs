@@ -4,12 +4,10 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using System.Globalization;
-using MK.Common.Exceptions;
-using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -173,9 +171,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								catch {}
 							}
 						}
-						catch(WebServiceException ex)
+                        catch(Exception e)
 						{
-							var error = ex.ResponseBody.FromJson<ErrorResponse>().ResponseStatus.Message;
+							var error = e.Message;
 							if (error.Trim().IsNullOrEmpty())
 							{
 								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
@@ -188,11 +186,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + error);
 							}
-
-						}
-                        catch(Exception e)
-						{
-							this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorNotSpecified"]);
 						}						
 					}
 					finally
