@@ -382,7 +382,7 @@ namespace MK.Common.Configuration
         [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
-        public bool CreditCardIsMandatory { get; set; }
+        public bool CreditCardIsMandatory { get; protected set; }
 
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Configuration - Default Percentage Tip", Description="default value for the tip percentage ex: 15")]

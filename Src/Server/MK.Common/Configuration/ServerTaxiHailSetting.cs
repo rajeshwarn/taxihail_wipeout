@@ -200,7 +200,7 @@ namespace MK.Common.Configuration
         [Obsolete("Use PaymentSetting 'UsePairingCode' instead", false)]
         [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
-        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; set; }        
+        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
         
         [CustomizableByCompany]
         [Display(Name = "Configuration - Company's time zone", Description = "Used to properly show dates in the correct time zone")]

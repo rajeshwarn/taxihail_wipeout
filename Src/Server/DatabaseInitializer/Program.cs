@@ -242,7 +242,7 @@ namespace DatabaseInitializer
 
                 Console.WriteLine("Migration of Payment Settings ...");
 
-                MigratePaymentSettings(serverSettings, commandBus);
+                MigratePaymentSettings(serverSettings, commandBus, appSettings);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
@@ -980,7 +980,7 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
+        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             var paymentSettings = serverSettings.GetPaymentSettings();
             var paymentSettingsNeedsUpdate = false;
@@ -1015,7 +1015,7 @@ namespace DatabaseInitializer
             if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
             {
                 paymentSettings.CmtPaymentSettings.UsePairingCode = true;
-                serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment = false;
+                appSettings["UsePairingCodeWhenUsingRideLinqCmtPayment"] = "false";
                 paymentSettingsNeedsUpdate = true;
                 serverSettingsNeedsUpdate = true;
             }
@@ -1029,7 +1029,7 @@ namespace DatabaseInitializer
             if (serverSettings.ServerData.CreditCardIsMandatory)
             {
                 paymentSettings.CreditCardIsMandatory = true;
-                serverSettings.ServerData.CreditCardIsMandatory = false;
+                appSettings["CreditCardIsMandatory"] = "false";
                 paymentSettingsNeedsUpdate = true;
                 serverSettingsNeedsUpdate = true;
             }
@@ -1045,7 +1045,7 @@ namespace DatabaseInitializer
 
             if (serverSettingsNeedsUpdate)
             {
-                AddOrUpdateAppSettings(commandBus, serverSettings.GetSettings());
+                AddOrUpdateAppSettings(commandBus, appSettings);
             }
         }
 
