@@ -1087,7 +1087,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							return;
 						}
 
-						this.Services().Message.ShowMessage("ErrorChangeDropOff_Title", "ErrorChangeDropOff_Message");
+						this.Services().Message.ShowMessage("Error", "ErrorChangeDropOff_Message");
 					});
 			}
 		}
