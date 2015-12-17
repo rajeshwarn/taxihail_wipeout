@@ -204,7 +204,6 @@
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\RatingModel.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppServices\IAccountService.cs" />
@@ -371,6 +370,7 @@
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
+    <Compile Include="Models\OrderRepresentation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

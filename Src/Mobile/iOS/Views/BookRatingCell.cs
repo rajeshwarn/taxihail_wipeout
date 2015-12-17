@@ -83,8 +83,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		{
 			if (disposing)
 			{
-				// TODO - really not sure that Dispose is the right place for this call 
-				// - but couldn't see how else to do this in a TableViewCell
 				ReleaseDesignerOutlets();
 			}
 			

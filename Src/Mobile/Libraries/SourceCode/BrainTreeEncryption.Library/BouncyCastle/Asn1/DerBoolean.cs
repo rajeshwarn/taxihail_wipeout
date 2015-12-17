@@ -64,7 +64,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 			if (val.Length != 1)
 				throw new ArgumentException("byte value should have 1 byte in it", "val");
 
-			// TODO Are there any constraints on the possible byte values?
+			// TODO_ Are there any constraints on the possible byte values?
             this.value = val[0];
         }
 
@@ -82,7 +82,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 		internal override void Encode(
             DerOutputStream derOut)
         {
-			// TODO Should we make sure the byte value is one of '0' or '0xff' here?
+			// TODO_ Should we make sure the byte value is one of '0' or '0xff' here?
 			derOut.WriteEncoded(Asn1Tags.Boolean, new byte[]{ value });
         }
 

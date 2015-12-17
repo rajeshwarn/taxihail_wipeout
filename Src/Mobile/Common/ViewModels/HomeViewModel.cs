@@ -18,6 +18,7 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -308,7 +309,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					var title = this.Services().Localize["CreditCardExpiredTitle"];
 
-					if (paymentSettings.IsOutOfAppPaymentDisabled)
+					if (paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None)
 					{
 						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
 						this.Services().Message.ShowMessage(title, 

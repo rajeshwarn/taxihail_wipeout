@@ -12,11 +12,18 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>,
-        IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>,
-        IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>,
-        IEventHandler<DefaultFavoriteAddressUpdated>
-        , IEventHandler<PopularAddressAdded>, IEventHandler<PopularAddressRemoved>, IEventHandler<PopularAddressUpdated>
+    public class AddressListGenerator : 
+        IEventHandler<FavoriteAddressAdded>, 
+        IEventHandler<FavoriteAddressRemoved>,
+        IEventHandler<FavoriteAddressUpdated>, 
+        IEventHandler<OrderCreated>, 
+        IEventHandler<AddressRemovedFromHistory>,
+        IEventHandler<DefaultFavoriteAddressAdded>, 
+        IEventHandler<DefaultFavoriteAddressRemoved>,
+        IEventHandler<DefaultFavoriteAddressUpdated>, 
+        IEventHandler<PopularAddressAdded>, 
+        IEventHandler<PopularAddressRemoved>, 
+        IEventHandler<PopularAddressUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -81,7 +88,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var existingAddress = context.Find<AddressDetails>(@event.Address.Id);
                 if (existingAddress != null)
                 {
-                    // TODO: Log this problem
                     // Address already exist, we cannot continue or we will get a primary key violation error
                     // Avoid throwing an exception, or it will prevent the DB initializer to replay events synchronously
                     return;

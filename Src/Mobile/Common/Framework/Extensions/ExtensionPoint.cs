@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 
         public Type ExtendedType
         {
-            // TODO: value might not be null
             get { return type ?? (value == null ? typeof (T) : value.GetType()); }
         }
 

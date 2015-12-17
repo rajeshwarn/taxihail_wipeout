@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
 			await ViewModel.LoadAddresses(addressLocationType).HandleErrors();
 
-			if (addressLocationType == AddressLocationType.Unspeficied)
+			if (addressLocationType == AddressLocationType.Unspecified)
 			{
 				FocusOnTextField();
 			}

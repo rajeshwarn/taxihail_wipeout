@@ -64,7 +64,7 @@ namespace MK.Common.Configuration
                 OrderPriority = true,
                 TimeDifference = 0,
                 ValidatePickupZone = true,
-                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/", // TODO: Set proper values
+                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/",
                 RestApiUser = @"EUGENE",
                 RestApiSecret = @"T!?_asF",
                 WebServicesPassword = "test",
