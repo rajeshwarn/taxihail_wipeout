@@ -180,23 +180,19 @@
     Deployment build fix
 3.1.31
     Add ArroUAT resource files
-	
-	
-
-
-
-	Add - App rating
 Version Bump 3.2.0
+	Add - App rating
+Version Bump 3.2.1
 	Fixed duplicate destination button
 	Bug fix - Fixed issue where the app would check at the wrong place for the AuthenticationData. Now correctly obtaining the SessionId.
 	String change
 	Bug fix - Crash on login with SSL on iOS
-Version Bump 3.2.1
+Version Bump 3.2.2
 	Bug fix- Fix problem in ReportDetailGenerator where 2 events could be handled at the same time and one would fail to write to db
 	Bug fix - Fixed account confirmation page
 	Improved Memory usage
 	Added log file presence check added;
-Version Bump 3.2.2
+Version Bump 3.2.3
 	Store/update dispatcher settings for a specific market
 	Bug fix - Fixed issue where the AccountConfirmationView would bounce horizontally on iOS8 and iOS9
 	Bug fix - Fixed odd coloured bar.
@@ -220,7 +216,7 @@ Version Bump 3.2.2
 	Localization update
 	Bug fix - Text issue on Order Review
 	Fix tag list and use saveBookOrder_10
-Version Bump 3.2.3
+Version Bump 3.2.4
 	Merge pull request #224 from apcurium/MKTAXI-3433_Android_Black_screen_after_login
 	Fixed issue where app would use an authenticated call before verifying that it was once logged before.
 	BlakcBerry Set build target framework to 21
@@ -235,30 +231,30 @@ Version Bump 3.2.3
 	Added - Notification of pairing failure to user
 	String changes
 	Added - Casco - Modified receipts to add extra fields (Driver photo, vehicle color, vehicle plate, etc.)
-Version Bump 3.2.4
+Version Bump 3.2.5
 	Added Callbox to Taxihail solution
 	Bug fix - Fixed logger causing application to freeze on startup.
 	Bug fix - Fixed deployment tool Android
-Version Bump 3.2.5
+Version Bump 3.2.6
 	Bug fix - Problem with deployment service for building blackberry
 	Bug fix - When finding you a taxi is not at the top of order status control when order number not shown
 	Fix build
-Version Bump 3.2.6
+Version Bump 3.2.7
 	Bug fix - Fixed deployment service for BlackBerry
 	Bug fix - Order report - Aggregate id issue
 	Bug fix - Driver photo not displayed
 	Bug fix - FourSquare Image Partially Hidden
-Version Bump 3.2.7
-	Fixed build
 Version Bump 3.2.8
+	Fixed build
+Version Bump 3.2.9
 	Add localization for CCI for Tolls field + add Tolls field to receipt email
 	Updated wsdl
-Version Bump 3.2.9
+Version Bump 3.2.10
 	Updated constraints now tip and card name are displayed correctly
 	change description time out settings + removed unused comment
-Version Bump 3.2.10
-	Resize app for Central Niagara only
 Version Bump 3.2.11
+	Resize app for Central Niagara only
+Version Bump 3.2.12
 	Bug fix - Callbox - With only one order in queue, the user is sent back to the home screen/unable to cancel
 	Bug fix - If you enter a wrong sms code during account activation, the translation string is not correct: CreateAccount_InvalidConfirmationToken 
 	Bug fix - Driver bonus - Dragging the slider will cause it to jump back and forth
@@ -272,23 +268,29 @@ Version Bump 3.2.11
 	Bug fix -  tip and card name are displayed correctly need to check that modifying the constraints has not break anything
 	Bug fix - Fixed issue where full linker was not enabled for AdHoc and Appstore.
 	Fetch of network fleets in local market should also return fleetid like roaming fleets
-Version Bump 3.2.12
-	Debug - Change configuration to not build Android projects while building iOS related configs
 Version Bump 3.2.13
-	Debug - Remove full linker on AdHoc for testing
+	Debug - Change configuration to not build Android projects while building iOS related configs
 Version Bump 3.2.14
+	Debug - Remove full linker on AdHoc for testing
+Version Bump 3.2.15
 	UI and performance/memory improvements on iOS 
 	Fix problem with iOS street number picker not working
-Version bump 3.2.15
-	Bug fix - on how we get the service URL
 Version bump 3.2.16
+	Version for Central Niagara only
+Version bump 3.2.18
+	Bug fix - on how we get the service URL
 	Build fix
-Version bump 3.2.17
+Version bump 3.2.19
 	Change "Cancel this Order" unpair button label to "Cancel Order" to fit smaller iOS devices
 	Remove log when VerifyAppVersion throws an exception
 	When changing server url, it's ok for GetSettings to throw an exception to alert the dev that the server doesn't exist and revert server url
-Version bump 3.2.19
-
+Version bump 3.2.20
+	UI fix
+	If the order creation fails because of anything else than a bad request, show the generic error message instead of showing nothing and aborting
+	Bug fix - Fix vehicles available on web (only 1 cab was showing up)
+Version bump 3.2.21
+	Bug fix - Fix issue were on CC decline on eHail trip, the user was not notified
+	Bug fix - Adress picker issue on Android
 
 
 
