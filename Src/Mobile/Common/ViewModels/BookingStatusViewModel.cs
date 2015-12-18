@@ -640,9 +640,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
 						{
-							await _orderWorkflowService.SetAddress(new Address());
-							_orderWorkflowService.UpdateDropOff(((HomeViewModel)Parent).BookingStatus.Order.Id);
-							return;
+							var success = false;
+
+							using (this.Services().Message.ShowProgress())
+							{
+								await _orderWorkflowService.SetAddress(new Address());
+								success = await _orderWorkflowService.UpdateDropOff(((HomeViewModel)Parent).BookingStatus.Order.Id);
+
+								if(success)
+								{
+									var order = Order;
+									order.DropOffAddress = new Address();
+									((HomeViewModel)Parent).BookingStatus.Order = order;
+									_orderWorkflowService.ClearDestinationAddress();
+									return;
+								}
+
+								this.Services().Message.ShowMessage("Error", "ErrorChangeDropOff_Message");
+								return;
+							}
 						}
                         ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
 					}); 
