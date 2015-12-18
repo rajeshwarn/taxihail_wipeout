@@ -886,12 +886,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private bool CanRefreshStatus(OrderStatusDetail status)
-		{
-			return status.IBSOrderId.HasValue		// we can exit this loop only if we are assigned an IBSOrderId 
-				|| status.IBSStatusId.HasValue();	// or if we get an IBSStatusId
-		}
-
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
@@ -925,12 +919,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (status == null)
 				{
 					return;
-				}
-
-				while (!CanRefreshStatus(status))
-				{
-					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				}
 
 				cancellationToken.ThrowIfCancellationRequested();
