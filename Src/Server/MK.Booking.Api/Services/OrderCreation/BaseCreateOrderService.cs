@@ -412,27 +412,20 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private void ValidateAppVersion(string clientLanguage, CreateReportOrder createReportOrder)
         {
-            var appVersion = base.Request.Headers.Get("ClientVersion");
-            var minimumAppVersion = _serverSettings.ServerData.MinimumRequiredAppVersion;
+            var appVersionString = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
 
-            if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
+            if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
             {
                 return;
             }
 
-            var minimumMajorMinorBuild = minimumAppVersion.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-            var appMajorMinorBuild = appVersion.Split('.');
+            var mobileVersion = new ApplicationVersion(appVersionString);
+            var minimumAppVersion = new ApplicationVersion(minimumAppVersionString);
 
-            for (var i = 0; i < appMajorMinorBuild.Length; i++)
+            if (mobileVersion < minimumAppVersion)
             {
-                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
-                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
-
-                if (appVersionItem < minimumVersionItem)
-                {
-                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
-                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
-                }
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
             }
         }
 
