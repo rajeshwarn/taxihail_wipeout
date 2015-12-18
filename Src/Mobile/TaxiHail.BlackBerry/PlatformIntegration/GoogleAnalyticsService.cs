@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     // Company's own tracking id
 					var tracker = instance.GetTracker(settings.Data.GoogleAnalyticsTrackingId); 
 
+                    // TODO MKTAXI-3716 Verify if this solution is viable, since it's by company and it should not be called everytime the app starts
 					// A campaign can be set manually:
 					//var uriPath = "http://www.taxihail.com/?utm_source=email&utm_medium=cool_installations&utm_campaign=installations&utm_content=blih";
 					//tracker.SetCampaign(uriPath);
