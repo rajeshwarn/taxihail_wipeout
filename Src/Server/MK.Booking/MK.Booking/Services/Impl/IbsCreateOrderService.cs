@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
@@ -51,6 +52,9 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
+                // Wait 15 seconds to reproduce what happens in real life with the "Finding you a taxi"
+                Thread.Sleep(TimeSpan.FromSeconds(15));
+
                 // Fake IBS order id
                 return new IBSOrderResult
                 {
@@ -66,7 +70,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
             var ibsOrderParams = IbsHelper.PrepareForIbsOrder(_serverSettings.ServerData.IBS, defaultVehicleType, chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
                 customerNumberString, referenceDataCompanyList, market, requestProviderId, companyKey);
-
+ 
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
 
             if (dispatcherSettings.NumberOfOffersPerCycle == 0)
@@ -108,6 +112,11 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
         {
+            if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+            {
+                return;
+            }
+        
             var ibsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
             if (ibsAccountId.HasValue)
             {

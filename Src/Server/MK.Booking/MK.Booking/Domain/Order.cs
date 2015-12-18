@@ -152,7 +152,8 @@ namespace apcurium.MK.Booking.Domain
             Update(new IbsOrderInfoAddedToOrder_V2
             {
                 IBSOrderId = ibsOrderId,
-                CompanyKey = companyKey
+                CompanyKey = companyKey,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -270,13 +271,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription, bool dispatcherTimedout)
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool dispatcherTimedOut)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
                 ErrorDescription = errorDescription,
-                IsDispatcherTimedOut = dispatcherTimedout
+                IsDispatcherTimedOut = dispatcherTimedOut,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 

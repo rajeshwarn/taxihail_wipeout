@@ -139,13 +139,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
-                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? (int?)null : Math.Abs(ibsOrderId.Value);
-                var errorCode = "CreateOrder_CannotCreateInIbs_" + code;
+                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(ibsOrderId.Value);
+                var errorCode = "CreateOrder_CannotCreateInIbs" + code;
 
                 var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
-                    ErrorCode = errorCode
+                    ErrorCode = errorCode,
+                    ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
                 };
 
                 if (dispatcherTimedOut)

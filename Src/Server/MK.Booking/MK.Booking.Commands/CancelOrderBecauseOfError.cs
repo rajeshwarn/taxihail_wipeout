@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Commands
         public string ErrorDescription { get; set; }
 
         public bool DispatcherTimedOut { get; set; }
-
         public Guid Id { get; private set; }
     }
 }

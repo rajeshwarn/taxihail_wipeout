@@ -444,8 +444,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 var confirmationMessage = Settings.WarnForFeesOnCancel
-                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
-                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
+					&& VehicleStatuses.CanCancelOrderStatusButCouldBeChargedFees.Contains(Status.IBSStatusId)
+						? string.Format(this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"], Settings.TaxiHail.ApplicationName)
                         : this.Services().Localize["StatusConfirmCancelRide"]; 
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(

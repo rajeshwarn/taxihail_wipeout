@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-                    var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
+					var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
 
                     throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }

@@ -242,7 +242,7 @@ namespace DatabaseInitializer
 
                 Console.WriteLine("Migration of Payment Settings ...");
 
-                MigratePaymentSettings(serverSettings, commandBus);
+                MigratePaymentSettings(serverSettings, commandBus, appSettings);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
@@ -981,16 +981,17 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
+        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             var paymentSettings = serverSettings.GetPaymentSettings();
-            var needsUpdate = false;
+            var paymentSettingsNeedsUpdate = false;
+            var serverSettingsNeedsUpdate = false;
 
             if (paymentSettings.AutomaticPaymentPairing)
             {
                 paymentSettings.IsUnpairingDisabled = true;
                 paymentSettings.AutomaticPaymentPairing = false;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (paymentSettings.NoShowFee.HasValue)
@@ -1009,34 +1010,43 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
             {
                 paymentSettings.CmtPaymentSettings.UsePairingCode = true;
-                needsUpdate = true;
+                appSettings["UsePairingCodeWhenUsingRideLinqCmtPayment"] = "false";
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
             }
 
             if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
             {
                 paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.CreditCardIsMandatory)
             {
                 paymentSettings.CreditCardIsMandatory = true;
-                needsUpdate = true;
+                appSettings["CreditCardIsMandatory"] = "false";
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
             }
 
-            if (needsUpdate)
+            if (paymentSettingsNeedsUpdate)
             {
                 commandBus.Send(new UpdatePaymentSettings
                 {
                     CompanyId = AppConstants.CompanyId,
                     ServerPaymentSettings = paymentSettings
                 });
+            }
+
+            if (serverSettingsNeedsUpdate)
+            {
+                AddOrUpdateAppSettings(commandBus, appSettings);
             }
         }
 
