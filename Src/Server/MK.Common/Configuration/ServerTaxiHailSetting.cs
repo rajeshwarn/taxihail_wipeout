@@ -197,7 +197,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead", false)]
         [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
