@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using System;
@@ -167,6 +168,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
          }
 
          return list;
+      }
+   }
+
+   public static class OrderDetailList
+   {
+      public static IList<Order> OrderDetailElements(IOrderDao orderDao, Guid id)
+      {
+         var orderMapper = new OrderMapper();
+         return orderDao.FindByAccountId(id)
+            .OrderByDescending(c => c.CreatedDate)
+            .Select(read => orderMapper.ToResource(read))
+            .ToList();
       }
    }
 }

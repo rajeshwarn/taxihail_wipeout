@@ -84,6 +84,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
          }
 
+         HttpContext.Session.Add("orderDao", _orderDao);
+
          // get all order for an AccountId
          var orderMapper = new OrderMapper();
          accountManagementModel.OrderDetailList = _orderDao.FindByAccountId(accountManagementModel.Id)
@@ -159,6 +161,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          _commandBus.Send(resetCommand);
          _commandBus.Send(emailCommand);
 
+         TempData["UserMessage"] = "Operation done successfully";
          return View("Index", accountManagementModel);
       }
 
@@ -206,6 +209,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             accountManagementModel.IsEnabled = true;
          }
 
+         TempData["UserMessage"] = "Operation done successfully";
          return View("Index", accountManagementModel);
       }
 
@@ -213,6 +217,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
       public async Task<ActionResult> UnlinkIBSAccount(AccountManagementModel accountManagementModel)
       {
          _commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
+         TempData["UserMessage"] = "Operation done successfully";
          return View("Index", accountManagementModel);
       }
 
@@ -230,6 +235,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             ForceUserDisconnect = forceUserDisconnect
          });
 
+         TempData["UserMessage"] = "Operation done successfully";
          return View("Index", accountManagementModel);
       }
    }
