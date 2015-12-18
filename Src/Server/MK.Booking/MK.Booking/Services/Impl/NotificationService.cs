@@ -502,211 +502,221 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            // Email formatting is different for CMTRideLinQ
-            var isCmtRideLinqReceipt = cmtRideLinqFields != null;
-
-            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
-            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
-
-            if (vatIsEnabled && tax == 0)
+            try
             {
-                //aexid hotfix compute tax amount from fare
-                var newFare = FareHelper.GetFareFromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
-                tax = Convert.ToDouble(newFare.TaxAmount);
-                fare = Convert.ToDouble(newFare.AmountExclTax);
-            }
+                // Email formatting is different for CMTRideLinQ
+                var isCmtRideLinqReceipt = cmtRideLinqFields != null;
 
-            var hasPaymentInfo = paymentInfo != null;
+                var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
+                var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
-            var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
-
-            var showMinimalDriverInfo = !hasDriverInfo && cmtRideLinqFields != null;
-            var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
-            var paymentAmount = string.Empty;
-            var paymentMethod = string.Empty;
-            var paymentTransactionId = string.Empty;
-            var paymentAuthorizationCode = string.Empty;
-
-            var hasFare = Math.Abs(fare) > double.Epsilon;
-            var hasCmtTollDetails = cmtRideLinqFields != null
-                && cmtRideLinqFields.Tolls != null
-                && cmtRideLinqFields.Tolls.Length > 0;
-            var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
-
-            int? rateClassStart = null;
-            int? rateClassEnd = null;
-            double? fareAtAlternateRate = null;
-            double tipIncentive = 0;
-
-            // RideLinQ Rate class & fare
-            if (cmtRideLinqFields != null)
-            {
-                rateClassStart = cmtRideLinqFields.RateAtTripStart;
-                tipIncentive = cmtRideLinqFields.TipIncentive;
-
-                if (cmtRideLinqFields.RateAtTripStart != cmtRideLinqFields.RateAtTripEnd)
+                if (vatIsEnabled && tax == 0)
                 {
-                    rateClassEnd = cmtRideLinqFields.RateAtTripEnd;
-                    fareAtAlternateRate = cmtRideLinqFields.FareAtAlternateRate ?? fare;
-                }
-            }
-
-            if (hasPaymentInfo)
-            {
-                paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
-                paymentMethod = paymentInfo.Company;
-                paymentAuthorizationCode = paymentInfo.AuthorizationCode;
-
-                if (!string.IsNullOrWhiteSpace(paymentInfo.Last4Digits))
-                {
-                    paymentMethod += " XXXX " + paymentInfo.Last4Digits;
+                    //aexid hotfix compute tax amount from fare
+                    var newFare = FareHelper.GetFareFromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
+                    tax = Convert.ToDouble(newFare.TaxAmount);
+                    fare = Convert.ToDouble(newFare.AmountExclTax);
                 }
 
-                paymentTransactionId = paymentInfo.TransactionId;
+                var hasPaymentInfo = paymentInfo != null;
+
+                var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
+
+                var showMinimalDriverInfo = !hasDriverInfo && cmtRideLinqFields != null;
+                var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
+                var paymentAmount = string.Empty;
+                var paymentMethod = string.Empty;
+                var paymentTransactionId = string.Empty;
+                var paymentAuthorizationCode = string.Empty;
+
+                var hasFare = Math.Abs(fare) > double.Epsilon;
+                var hasCmtTollDetails = cmtRideLinqFields != null
+                    && cmtRideLinqFields.Tolls != null
+                    && cmtRideLinqFields.Tolls.Length > 0;
+                var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
+
+                int? rateClassStart = null;
+                int? rateClassEnd = null;
+                double? fareAtAlternateRate = null;
+                double tipIncentive = 0;
+
+                // RideLinQ Rate class & fare
+                if (cmtRideLinqFields != null)
+                {
+                    rateClassStart = cmtRideLinqFields.RateAtTripStart;
+                    tipIncentive = cmtRideLinqFields.TipIncentive;
+
+                    if (cmtRideLinqFields.RateAtTripStart != cmtRideLinqFields.RateAtTripEnd)
+                    {
+                        rateClassEnd = cmtRideLinqFields.RateAtTripEnd;
+                        fareAtAlternateRate = cmtRideLinqFields.FareAtAlternateRate ?? fare;
+                    }
+                }
+
+                if (hasPaymentInfo)
+                {
+                    paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
+                    paymentMethod = paymentInfo.Company;
+                    paymentAuthorizationCode = paymentInfo.AuthorizationCode;
+
+                    if (!string.IsNullOrWhiteSpace(paymentInfo.Last4Digits))
+                    {
+                        paymentMethod += " XXXX " + paymentInfo.Last4Digits;
+                    }
+
+                    paymentTransactionId = paymentInfo.TransactionId;
+                }
+
+                var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
+                var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
+
+                var hasDropOffAddress = addressToUseForDropOff != null
+                    && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
+                        || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
+
+                var points = _orderDao.GetVehiclePositions(orderId);
+                var encodedPath = PathUtility.GetEncodedPolylines(points);
+                var staticMapUri = positionForStaticMap.HasValue
+                    ? _staticMap.GetStaticMapUri(
+                        new Position(pickupAddress.Latitude, pickupAddress.Longitude),
+                        positionForStaticMap.Value, encodedPath,
+                        300, 300, 1)
+                    : string.Empty;
+
+                var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
+                var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
+                var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
+                var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
+                    ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
+                    : string.Empty;
+
+                var baseUrls = GetBaseUrls();
+                var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
+
+                var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + tipIncentive + extra - amountSavedByPromotion
+                    + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
+                    + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
+
+                var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
+
+                var templateData = new
+                {
+                    ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                    AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                    EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                    ibsOrderId,
+                    ShowTripSection = showTripSection,
+                    ShowMinimalDriverInfo = showMinimalDriverInfo,
+                    HasDriverInfo = hasDriverInfo,
+                    HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
+                    HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
+                    DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
+                    HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
+                    VehicleNumber = vehicleNumber,
+                    ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
+                    DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
+                    VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
+                    VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
+                    VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
+                    VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
+                    DriverInfos = driverInfos,
+                    DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
+                    PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                        ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
+                        : pickupDate.ToString("D", dateFormat),
+                    PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                        ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
+                        : pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                    DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
+                    DropOffTime = dropOffTime,
+                    ShowDropOffTime = dropOffTime.HasValue(),
+                    ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet && !localDropOffDate.HasValue,
+                    Fare = _resources.FormatPrice(fare),
+                    Toll = _resources.FormatPrice(toll),
+                    Surcharge = _resources.FormatPrice(surcharge),
+                    BookingFees = _resources.FormatPrice(bookingFees),
+                    Extra = _resources.FormatPrice(extra),
+                    Tip = _resources.FormatPrice(tip),
+                    TipIncentive = _resources.FormatPrice(tipIncentive),
+                    TotalFare = _resources.FormatPrice(totalAmount),
+                    Note = _serverSettings.ServerData.Receipt.Note,
+                    Tax = _resources.FormatPrice(tax),
+                    ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
+                    RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
+
+                    Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
+                    TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
+                    RateClassStart = rateClassStart,
+                    RateClassEnd = rateClassEnd,
+                    FareAtAlternateRate = _resources.FormatPrice(fareAtAlternateRate),
+
+                    TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
+                    TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
+                    TollName3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 ? cmtRideLinqFields.Tolls[2].TollName : string.Empty,
+                    TollName4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4 ? cmtRideLinqFields.Tolls[3].TollName : string.Empty,
+
+                    TollAmount1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1
+                        ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[0].TollAmount / 100), 2))
+                        : _resources.FormatPrice(0),
+                    TollAmount2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2
+                        ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[1].TollAmount / 100), 2))
+                        : _resources.FormatPrice(0),
+                    TollAmount3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3
+                        ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[2].TollAmount / 100), 2))
+                        : _resources.FormatPrice(0),
+                    TollAmount4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4
+                        ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
+                        : _resources.FormatPrice(0),
+
+                    ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
+                    ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
+                    ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
+                    ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
+                    ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || Math.Abs(toll) >= 0.01,
+                    ShowRideLinqLastFour = isCmtRideLinqReceipt,
+                    ShowTripId = isCmtRideLinqReceipt,
+                    ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
+                    ShowImprovementSurcharge = isCmtRideLinqReceipt,
+                    ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
+                    ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
+                    ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
+                    ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
+                    ShowRateClassEnd = rateClassEnd.HasValue,
+                    ShowDistance = isCmtRideLinqReceipt,
+                    ShowTipIncentive = tipIncentive > 0,
+
+                    vatIsEnabled,
+                    HasPaymentInfo = hasPaymentInfo,
+                    PaymentAmount = paymentAmount,
+                    PaymentMethod = paymentMethod,
+                    ShowFareAndPaymentDetails = showFareAndPaymentDetails,
+                    PaymentTransactionId = paymentTransactionId,
+                    PaymentAuthorizationCode = paymentAuthorizationCode,
+                    ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
+                    PickupAddress = pickupAddress.DisplayAddress,
+                    DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
+                    StaticMapUri = staticMapUri,
+                    ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
+                    BaseUrlImg = baseUrls.BaseUrlAssetsImg,
+                    RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
+                    GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
+                    LogoImg = imageLogoUrl,
+
+                    PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
+                    promoCode,
+                    AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
+                    ShowOrderNumber = showOrderNumber
+                };
+
+                SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
             }
-
-            var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
-            var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
-            
-            var hasDropOffAddress = addressToUseForDropOff != null
-                && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
-                    || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
-
-            var points = _orderDao.GetVehiclePositions(orderId);
-            var encodedPath = PathUtility.GetEncodedPolylines(points);
-            var staticMapUri = positionForStaticMap.HasValue
-                ? _staticMap.GetStaticMapUri(
-                    new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    positionForStaticMap.Value, encodedPath,
-                    300, 300, 1)
-                : string.Empty;
-
-            var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
-            var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
-            var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
-            var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
-                ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
-                : string.Empty;
-
-            var baseUrls = GetBaseUrls();
-            var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
-
-            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + tipIncentive + extra - amountSavedByPromotion
-                + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
-                + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
-
-            var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber; 
-            
-            var templateData = new
+            catch (Exception e)
             {
-                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
-                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
-                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
-                ibsOrderId,
-                ShowTripSection = showTripSection,
-                ShowMinimalDriverInfo = showMinimalDriverInfo,
-                HasDriverInfo = hasDriverInfo,
-                HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
-				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
-				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
-				HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
-                VehicleNumber = vehicleNumber,
-				ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
-                DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
-				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
-                VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
-                VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
-				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
-                DriverInfos = driverInfos,
-                DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
-                PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
-                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
-                    : pickupDate.ToString("D", dateFormat),
-                PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
-                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
-                    : pickupDate.ToString("t", dateFormat /* Short time pattern */),
-                DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
-                DropOffTime = dropOffTime,
-                ShowDropOffTime = dropOffTime.HasValue(),
-                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet && !localDropOffDate.HasValue,
-                Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),        
-                Surcharge = _resources.FormatPrice(surcharge),
-                BookingFees = _resources.FormatPrice(bookingFees), 
-                Extra = _resources.FormatPrice(extra),
-                Tip = _resources.FormatPrice(tip),
-                TipIncentive = _resources.FormatPrice(tipIncentive),
-                TotalFare = _resources.FormatPrice(totalAmount),
-                Note = _serverSettings.ServerData.Receipt.Note,
-                Tax = _resources.FormatPrice(tax),
-                ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
-                RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
-                
-                Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
-                TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
-                RateClassStart = rateClassStart,
-                RateClassEnd = rateClassEnd,
-                FareAtAlternateRate = _resources.FormatPrice(fareAtAlternateRate),
-
-                TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
-                TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
-                TollName3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 ? cmtRideLinqFields.Tolls[2].TollName : string.Empty,
-                TollName4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4 ? cmtRideLinqFields.Tolls[3].TollName : string.Empty,
-
-                TollAmount1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1
-                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[0].TollAmount / 100), 2))
-                    : _resources.FormatPrice(0),
-                TollAmount2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2
-                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[1].TollAmount / 100), 2))
-                    : _resources.FormatPrice(0),
-                TollAmount3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3
-                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[2].TollAmount / 100), 2))
-                    : _resources.FormatPrice(0),
-                TollAmount4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4
-                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
-                    : _resources.FormatPrice(0),
-                
-                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
-                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
-                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
-                ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
-                ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || Math.Abs(toll) >= 0.01,
-                ShowRideLinqLastFour = isCmtRideLinqReceipt,
-                ShowTripId = isCmtRideLinqReceipt,
-                ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
-                ShowImprovementSurcharge = isCmtRideLinqReceipt,
-                ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
-                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
-                ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
-                ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
-                ShowRateClassEnd = rateClassEnd.HasValue,
-                ShowDistance = isCmtRideLinqReceipt,
-                ShowTipIncentive = tipIncentive > 0,
-
-                vatIsEnabled,
-                HasPaymentInfo = hasPaymentInfo,
-                PaymentAmount = paymentAmount,
-                PaymentMethod = paymentMethod,
-                ShowFareAndPaymentDetails = showFareAndPaymentDetails,
-                PaymentTransactionId = paymentTransactionId,
-                PaymentAuthorizationCode = paymentAuthorizationCode,
-                ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
-                PickupAddress = pickupAddress.DisplayAddress,
-                DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
-                StaticMapUri = staticMapUri,
-                ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
-                BaseUrlImg = baseUrls.BaseUrlAssetsImg,
-                RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
-                GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                LogoImg = imageLogoUrl,
-
-                PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
-                promoCode,
-                AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
-                ShowOrderNumber = showOrderNumber
-            };
-
-            SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
+                {
+                    _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
+                    _logger.LogError(e);
+                }
+            }
         }
 
         public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,
@@ -904,6 +914,8 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             _emailSender.Send(mailMessage);
+
+            _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", ccEmailAddress, templateData));
         }
 
         private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
