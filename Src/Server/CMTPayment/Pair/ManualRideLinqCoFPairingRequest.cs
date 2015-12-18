@@ -22,5 +22,7 @@ namespace CMTPayment.Pair
         public string CardOnFileId { get; set; }
 
         public string LastFour { get; set; }
+
+        public string ZipCode { get; set; }
     }
 }

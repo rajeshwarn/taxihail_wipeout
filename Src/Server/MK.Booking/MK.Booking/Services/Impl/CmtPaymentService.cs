@@ -2,11 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -434,7 +432,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Market = cmtPaymentSettings.Market,
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
                     LastFour = creditCardDetail.Last4Digits,
-                    TipIncentive = orderDetail.TipIncentive
+                    TipIncentive = orderDetail.TipIncentive,
+                    ZipCode = creditCardDetail.ZipCode
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
