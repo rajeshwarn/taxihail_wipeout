@@ -24,12 +24,48 @@
             <type fullname="*" />
         </assembly>
 
+        <assembly fullname="CMTPayment.iOS" > 
+            <type fullname="*" />
+        </assembly>
+
         <assembly fullname="TaxiHail" >
             <namespace fullname="apcurium.MK.Booking.Mobile.Client" />
             <type fullname="*" />
         </assembly>
 
         <assembly fullname="ServiceStack.Text.MonoTouch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.CrossCore" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.CrossCore.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Binding" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Dialog.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Localization" > 
             <type fullname="*" />
         </assembly>
 
@@ -41,23 +77,15 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="Cirrious.MvvmCross.Plugins.Json" > 
-            <type fullname="*" />
-        </assembly>
-
-         <assembly fullname="Cirrious.MvvmCross.Plugins.File" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.File" > 
             <type fullname="*" />
         </assembly>
 
         <assembly fullname="Cirrious.MvvmCross.Plugins.File.Touch" > 
+            <type fullname="*" />
+        </assembly>
+
+        <assembly fullname="Cirrious.MvvmCross.Plugins.Json" > 
             <type fullname="*" />
         </assembly>
 
@@ -77,23 +105,15 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="Cirrious.MvvmCross" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser" > 
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="Cirrious.MvvmCross.Binding" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="Cirrious.MvvmCross.Binding.Touch" > 
+        <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
             <type fullname="*" />
         </assembly>
 
         <assembly fullname="Newtonsoft.Json" > 
-            <type fullname="*" />
-        </assembly>
-
-        <assembly fullname="CMTPayment.iOS" > 
             <type fullname="*" />
         </assembly>
 </linker>
