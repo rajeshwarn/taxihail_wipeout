@@ -141,7 +141,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
-                    WasPrepaid = isPrepaid,
                     ErrorCode = errorCode,
                     ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
                 };

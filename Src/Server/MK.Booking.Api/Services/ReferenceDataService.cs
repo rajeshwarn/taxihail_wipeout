@@ -14,6 +14,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration.Impl;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using Newtonsoft.Json;
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var isChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
             var isPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
-            var isOutOfAppPaymentDisabled = paymentSettings.IsOutOfAppPaymentDisabled;
+            var isPaymentOutOfAppDisabled = paymentSettings.IsPaymentOutOfAppDisabled;
 
             IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
 
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PayPal.Id);
             }
-            if (isOutOfAppPaymentDisabled)
+            if (isPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None)
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PaymentInCar.Id);
             }

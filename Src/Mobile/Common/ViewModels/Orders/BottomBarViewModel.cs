@@ -651,7 +651,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								{
 									var orderInfos = await GetOrderInfos(pendingOrderId);
 
-									ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
+									ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Order, orderInfos.OrderStatus);
 
 									ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
 									ParentViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
@@ -1035,7 +1035,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private async Task<Tuple<Order, OrderStatusDetail>> GetOrderInfos(Guid pendingOrderId)
+		private async Task<OrderRepresentation> GetOrderInfos(Guid pendingOrderId)
         {
             var order = await _accountService.GetHistoryOrderAsync(pendingOrderId);
 
@@ -1050,7 +1050,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 VehicleLongitude = null
             };
 
-            return Tuple.Create(order, orderStatus);
+			return new OrderRepresentation(order, orderStatus);
         }
     }
 }

@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 _commandBus.Send(new CancelOrderBecauseOfError
                 {
                     OrderId = request.OrderId,
-                    WasPrepaid = true,
                     ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
                 });
             }
@@ -92,7 +91,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     _commandBus.Send(new CancelOrderBecauseOfError
                     {
                         OrderId = request.OrderId,
-                        WasPrepaid = true,
                         ErrorDescription = response.Message
                     });
                 }
