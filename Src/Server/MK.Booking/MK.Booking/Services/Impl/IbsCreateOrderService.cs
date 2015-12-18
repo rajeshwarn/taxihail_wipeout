@@ -49,6 +49,9 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
+                // Wait 15 seconds to reproduce what happens in real life with the "Finding you a taxi"
+                Thread.Sleep(TimeSpan.FromSeconds(15));
+
                 // Fake IBS order id
                 return new IBSOrderResult
                 {
@@ -137,6 +140,11 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
         {
+            if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+            {
+                return;
+            }
+
             // Cancel order on current company IBS
             if (ibsOrderId.HasValue)
             {

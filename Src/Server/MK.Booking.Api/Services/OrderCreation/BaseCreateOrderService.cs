@@ -550,7 +550,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
 
-                    var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv, createReportOrder);
+                    var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv);
                     if (!result.IsSuccessful)
                     {
                         ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, result.Message);
@@ -566,8 +566,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
 
                     var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account,
-                        request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees,
-                        false, createReportOrder, request.Cvv);
+                        isFutureBooking, appEstimateWithTip, bookingFees, request.Cvv);
 
                     if (!isSuccessful)
                     {
@@ -619,7 +618,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
             }
 
-            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, clientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, true, createReportOrder);
+            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, isFutureBooking, appEstimateWithTip, bookingFees);
             if (!isSuccessful)
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode));
