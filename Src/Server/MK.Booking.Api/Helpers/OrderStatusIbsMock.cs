@@ -9,6 +9,7 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
 using System.Web;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                 ibsInfo.IBSOrderId = order.IBSOrderId.Value;
             }
 
-            if (order.IBSOrderId.HasValue && (string.IsNullOrEmpty(orderStatus.IBSStatusId) || orderStatus.IBSStatusId == VehicleStatuses.Common.Waiting))
+            if (order.IBSOrderId.HasValue && (!orderStatus.IBSStatusId.HasValue() || orderStatus.IBSStatusId == VehicleStatuses.Common.Waiting))
             {
                 ibsInfo.VehicleLatitude = DefaultTaxiLatitude;
                 ibsInfo.VehicleLongitude = DefaultTaxiLongitude;
