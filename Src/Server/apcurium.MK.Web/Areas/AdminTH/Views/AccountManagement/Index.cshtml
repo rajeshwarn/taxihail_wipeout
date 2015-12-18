@@ -1,7 +1,7 @@
 ﻿@using apcurium.MK.Web.Areas.AdminTH.Models
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
-@using (Html.BeginForm("Save", "AccountManagement", FormMethod.Post))
+@using (Html.BeginForm(FormMethod.Post))
 {
    <div class="well clearfix form-horizontal">
       <h4 class="table-title">Account</h4>
@@ -134,28 +134,27 @@
          </div>
       </div>
 
-      <div class="control-group">
-         <button type="submit" class="btn btn-primary">Save Account</button>
-      </div>
 
+      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary" value="Save" />
       <br />
-      @Html.ActionLink("Send Account Confirmation Code via SMS", "SendConfirmationCodeSMS", new { model = Model })
       <br />
-      @Html.ActionLink("Reset Password", "ResetPassword", new { email = Model.Email })
+      <input type="submit" formaction='@Url.Action("SendConfirmationCodeSMS")' class="btn-link" value="Send Account Confirmation Code via SMS" />
+      <br />
+      <input type="submit" formaction='@Url.Action("ResetPassword")' class="btn-link" value="Reset Password" />
       <br />
       @if (Model.IsEnabled)
       {
-         @Ajax.ActionLink("Disable Account", "EnableDisableAccount", new { model = Model }, new AjaxOptions { HttpMethod = "Post" })
+         <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn-link" value="Disable Account" />
       }
       else
       {
-         @Html.ActionLink("Enable Account", "EnableDisableAccount", new { model = Model })
+         <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn-link" value="Enable Account" />
       }
       <br />
-      @Html.ActionLink("Unlink IBS Account(s)", "UnlinkIBSAccount", new { model = Model })
+      <input type="submit" formaction='@Url.Action("UnlinkIBSAccount")' class="btn-link" value="Unlink IBS Account(s)" />
       <br />
-      @Html.ActionLink("Delete all credit cards information", "DeleteCreditCardsInfo", new { model = Model })
-
+      <input type="submit" formaction='@Url.Action("DeleteCreditCardsInfo")' class="btn-link" value="Delete all credit cards information" />
+      <br />
    </div>
 
    <div class="well clearfix form-horizontal" style="width:1250px;">

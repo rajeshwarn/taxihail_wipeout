@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
@@ -28,7 +29,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
       private readonly IServerSettings _serverSettings;
       private readonly IOrderDao _orderDao;
       private readonly BookingSettingsService _bookingSettingsService;
-      private readonly ResetPasswordService _resetPasswordService;
       private readonly ConfirmAccountService _confirmAccountService;
 
       public AccountManagementController(ICacheClient cache,
@@ -38,14 +38,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          ICommandBus commandBus,
          IOrderDao orderDao,
          BookingSettingsService bookingSettingsService,
-         ResetPasswordService resetPasswordService,
          ConfirmAccountService confirmAccountService)
          : base(cache, serverSettings)
       {
          _accountDao = accountDao;
          _creditCardDao = creditCardDao;
          _bookingSettingsService = bookingSettingsService;
-         _resetPasswordService = resetPasswordService;
          _commandBus = commandBus;
          _serverSettings = serverSettings;
          _orderDao = orderDao;
@@ -100,55 +98,68 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
       [ValidateInput(false)]
       public async Task<ActionResult> Save(AccountManagementModel accountManagementModel)
       {
-         var accountDetail = _accountDao.FindById(accountManagementModel.Id);
-
-         var bookingSettingsRequest = new BookingSettingsRequest();
-         bookingSettingsRequest.AccountNumber = accountDetail.Settings.AccountNumber;
-         bookingSettingsRequest.ChargeTypeId = accountDetail.Settings.ChargeTypeId;
-         bookingSettingsRequest.Country = accountManagementModel.CountryCode;
-         bookingSettingsRequest.CustomerNumber = accountDetail.Settings.CustomerNumber;
-         bookingSettingsRequest.DefaultTipPercent = accountManagementModel.DefaultTipPercent;
-         bookingSettingsRequest.Email = accountManagementModel.Email;
-         bookingSettingsRequest.FirstName = accountDetail.Name;
-         bookingSettingsRequest.LastName = accountDetail.Name;
-         bookingSettingsRequest.Name = accountManagementModel.Name;
-         bookingSettingsRequest.NumberOfTaxi = accountDetail.Settings.NumberOfTaxi;
-         bookingSettingsRequest.Passengers = accountDetail.Settings.Passengers;
-         bookingSettingsRequest.PayBack = accountDetail.Settings.PayBack;
-         bookingSettingsRequest.Phone = accountManagementModel.PhoneNumber;
-         bookingSettingsRequest.ProviderId = accountDetail.Settings.ProviderId;
-         bookingSettingsRequest.VehicleTypeId = accountDetail.Settings.VehicleTypeId;
-
-         var accountUpdateRequest = new AccountUpdateRequest();
-         accountUpdateRequest.AccountId = accountManagementModel.Id;
-         accountUpdateRequest.BookingSettingsRequest = bookingSettingsRequest;
-
-         try
+         if (ModelState.IsValid)
          {
-            _bookingSettingsService.Put(accountUpdateRequest);
-            TempData["UserMessage"] = "Operation done successfully";
-         }
-         catch (Exception e)
-         {
-            TempData["UserMessage"] = e.Message;
+            var accountDetail = _accountDao.FindById(accountManagementModel.Id);
+
+            var bookingSettingsRequest = new BookingSettingsRequest();
+            bookingSettingsRequest.AccountNumber = accountDetail.Settings.AccountNumber;
+            bookingSettingsRequest.ChargeTypeId = accountDetail.Settings.ChargeTypeId;
+            bookingSettingsRequest.Country = accountManagementModel.CountryCode;
+            bookingSettingsRequest.CustomerNumber = accountDetail.Settings.CustomerNumber;
+            bookingSettingsRequest.DefaultTipPercent = accountManagementModel.DefaultTipPercent;
+            bookingSettingsRequest.Email = accountManagementModel.Email;
+            bookingSettingsRequest.FirstName = accountDetail.Name;
+            bookingSettingsRequest.LastName = accountDetail.Name;
+            bookingSettingsRequest.Name = accountManagementModel.Name;
+            bookingSettingsRequest.NumberOfTaxi = accountDetail.Settings.NumberOfTaxi;
+            bookingSettingsRequest.Passengers = accountDetail.Settings.Passengers;
+            bookingSettingsRequest.PayBack = accountDetail.Settings.PayBack;
+            bookingSettingsRequest.Phone = accountManagementModel.PhoneNumber;
+            bookingSettingsRequest.ProviderId = accountDetail.Settings.ProviderId;
+            bookingSettingsRequest.VehicleTypeId = accountDetail.Settings.VehicleTypeId;
+
+            var accountUpdateRequest = new AccountUpdateRequest();
+            accountUpdateRequest.AccountId = accountManagementModel.Id;
+            accountUpdateRequest.BookingSettingsRequest = bookingSettingsRequest;
+
+            try
+            {
+               _bookingSettingsService.Put(accountUpdateRequest);
+               TempData["UserMessage"] = "Operation done successfully";
+            }
+            catch (Exception e)
+            {
+               TempData["UserMessage"] = e.Message;
+            }
          }
 
          return View("Index", accountManagementModel);
       }
 
-      public ActionResult ResetPassword(string email)
+      [HttpPost]
+      public ActionResult ResetPassword(AccountManagementModel accountManagementModel)
       {
-         //try
-         //{
-         //   _resetPasswordService.Post(new ResetPassword() { EmailAddress = email });
-         //   TempData["UserMessage"] = "Operation done successfully";
-         //}
-         //catch (Exception e)
-         //{
-         //   TempData["UserMessage"] = e.Message;
-         //}
+         var accountDetail = _accountDao.FindById(accountManagementModel.Id);
 
-         return View("Index");
+         var newPassword = new PasswordService().GeneratePassword();
+         var resetCommand = new ResetAccountPassword
+         {
+            AccountId = accountManagementModel.Id,
+            Password = newPassword
+         };
+
+         var emailCommand = new SendPasswordResetEmail
+         {
+            ClientLanguageCode = accountDetail.Language,
+            EmailAddress = accountDetail.Email,
+            Password = newPassword,
+         };
+
+         _commandBus.Send(resetCommand);
+         _commandBus.Send(emailCommand);
+
+         return View("Index", accountManagementModel);
       }
 
       [HttpPost]
@@ -198,12 +209,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          return View("Index", accountManagementModel);
       }
 
+      [HttpPost]
       public async Task<ActionResult> UnlinkIBSAccount(AccountManagementModel accountManagementModel)
       {
          _commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
          return View("Index", accountManagementModel);
       }
 
+      [HttpPost]
       public async Task<ActionResult> DeleteCreditCardsInfo(AccountManagementModel accountManagementModel)
       {
          var paymentSettings = _serverSettings.GetPaymentSettings();
