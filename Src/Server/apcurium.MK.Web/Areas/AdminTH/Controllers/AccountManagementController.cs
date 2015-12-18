@@ -61,7 +61,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
       {
          var accountDetail = _accountDao.FindById(id);
          var accountManagementModel = new AccountManagementModel();
-         accountManagementModel.OrderDao = _orderDao;
 
          accountManagementModel.Id = id;
          accountManagementModel.Name = accountDetail.Name;
@@ -84,15 +83,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
          }
 
+         // save IOrderDao object in session
          HttpContext.Session.Add("orderDao", _orderDao);
 
-         // get all order for an AccountId
-         var orderMapper = new OrderMapper();
-         accountManagementModel.OrderDetailList = _orderDao.FindByAccountId(accountManagementModel.Id)
-            .Where(x => !x.IsRemovedFromHistory)
-            .OrderByDescending(c => c.CreatedDate)
-            .Select(read => orderMapper.ToResource(read))
-            .ToList();
          return accountManagementModel;
       }
 

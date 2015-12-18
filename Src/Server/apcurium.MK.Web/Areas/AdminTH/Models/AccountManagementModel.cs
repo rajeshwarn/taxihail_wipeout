@@ -15,26 +15,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
    public class AccountManagementModel
    {
-      private IOrderDao _orderDao;
-
       public AccountManagementModel()
       {
-      }
-
-      public IOrderDao OrderDao
-      {
-         get
-         {
-            return _orderDao;
-         }
-
-         set
-         {
-            if (_orderDao != value)
-            {
-               _orderDao = value;
-            }
-         }
       }
 
       [Display(Name = "Id")]
@@ -81,10 +63,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
       [Display(Name = "Credit card last 4 digits")]
       public string CreditCardLast4Digits { get; set; }
-
-      public List<SelectListItem> CountryCodesList { get; set; }
-
-      public List<Order> OrderDetailList { get; set; }
    }
 
    public static class OrderExtensions
@@ -137,11 +115,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
       public static string StatusText(this Order order)
       {
          return order.Status.ToString();
-      }
-
-      public static bool IsRemovedFromHistory(this Order order, AccountManagementModel accountManagementModel)
-      {
-         return accountManagementModel.OrderDao.FindById(order.Id).IsRemovedFromHistory;
       }
    }
 
