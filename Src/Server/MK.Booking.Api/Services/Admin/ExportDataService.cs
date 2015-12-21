@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                            };
                 case DataType.Orders:
 
-                    var orders = (accountId.HasValue()) ? _reportDao.GetOrderReportsByAccountId((Guid)accountId, startDate, endDate) : _reportDao.GetOrderReports(startDate, endDate);
+                    var orders = (accountId.HasValue()) ? _reportDao.GetOrderReportsByAccountId((Guid)accountId) : _reportDao.GetOrderReports(startDate, endDate);
 
                     var exportedOrderReports = new List<Dictionary<string, string>>();
 

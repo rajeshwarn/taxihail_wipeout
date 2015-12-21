@@ -26,15 +26,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IEnumerable<OrderReportDetail> GetOrderReportsByAccountId(Guid accountId, DateTime startDate, DateTime endDate)
+        public IEnumerable<OrderReportDetail> GetOrderReportsByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderReportDetail>()
                     .OrderBy(x => x.Order.CreateDateTime)
-                    .Where(x => x.Account.AccountId == accountId
-                             && x.Order.CreateDateTime >= startDate
-                             && x.Order.CreateDateTime <= endDate).ToList();
+                    .Where(x => x.Account.AccountId == accountId).ToList();
             }
         }
 
