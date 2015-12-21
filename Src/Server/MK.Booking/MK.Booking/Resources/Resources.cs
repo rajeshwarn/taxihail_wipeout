@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Resources
 
         public string FormatPrice(double? price)
         {
-            var culture = _serverSettings.ServerData.PriceFormat;
+            var culture = string.IsNullOrEmpty(_serverSettings.ServerData.PriceFormat) ? "en-CA" : _serverSettings.ServerData.PriceFormat;
             var currencyPriceFormat = Get("CurrencyPriceFormat", culture);
             return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
