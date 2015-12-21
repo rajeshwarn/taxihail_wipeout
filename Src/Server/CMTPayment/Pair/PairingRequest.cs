@@ -34,5 +34,7 @@ namespace CMTPayment.Pair
         public string LastFour { get; set; }
         
         public double? TipIncentive { get; set; }
+
+        public string ZipCode { get; set; }
     }
 }
