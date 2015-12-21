@@ -436,7 +436,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, (TBookOrder_12)order, vehicleComps);
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
                 Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 
@@ -535,11 +535,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_11
+            var order = new TBookOrder_12
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,

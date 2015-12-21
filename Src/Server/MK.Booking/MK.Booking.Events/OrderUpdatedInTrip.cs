@@ -8,7 +8,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class OrderInTripUpdated : VersionedEvent
+    public class OrderUpdatedInTrip : VersionedEvent
     {
         public Guid OrderId { get; set; }
 

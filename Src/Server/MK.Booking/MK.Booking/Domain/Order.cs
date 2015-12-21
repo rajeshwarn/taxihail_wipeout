@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
-            Handles<OrderInTripUpdated>(NoAction);
+            Handles<OrderUpdatedInTrip>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -436,7 +436,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateOrderInTrip(UpdateOrderInTrip orderInTrip)
         {
-            Update(new OrderInTripUpdated
+            Update(new OrderUpdatedInTrip
             {
                 OrderId = orderInTrip.OrderId,
                 DropOffAddress = orderInTrip.DropOffAddress

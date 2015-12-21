@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderInTripUpdated>
+        IEventHandler<OrderUpdatedInTrip>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -740,7 +740,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderInTripUpdated @event)
+        public void Handle(OrderUpdatedInTrip @event)
         {
             using (var context = _contextFactory.Invoke())
             {
