@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _sut.Given(new OrderCancelled { SourceId = _orderId });
             _sut.When(new AddIbsOrderInfoToOrder { OrderId = _orderId, IBSOrderId = 99 });
 
-            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder>();
+            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder_V2>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual(99, @event.IBSOrderId);
             Assert.AreEqual(true, @event.CancelWasRequested);

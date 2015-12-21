@@ -277,6 +277,7 @@ namespace DatabaseInitializer.Services
                 SourceId = oldEvent.SourceId,
                 Version = oldEvent.Version,
                 IBSOrderId = oldEvent.IBSOrderId,
+                CancelWasRequested = oldEvent.CancelWasRequested
                 // TODO for memory eventhandler replay get info from readmodel if possible
             };
         }
