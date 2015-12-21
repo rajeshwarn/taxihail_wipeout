@@ -9,7 +9,9 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Web.Areas.AdminTH.Models;
+using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceModel;
@@ -23,6 +25,7 @@ using System.Web.Mvc;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
+    [AuthorizationRequired(RoleName.Support)]
     public class AccountManagementController : ServiceStackController
     {
         private readonly IAccountDao _accountDao;
@@ -57,41 +60,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Index(Guid id)
         {
-            AccountManagementModel accountManagementModel = InitialiseModel(id);
-
+            AccountManagementModel accountManagementModel = InitializeModel(id);
             return View(accountManagementModel);
-        }
-
-        private AccountManagementModel InitialiseModel(Guid id)
-        {
-            var accountDetail = _accountDao.FindById(id);
-            var accountManagementModel = new AccountManagementModel();
-
-            accountManagementModel.Id = id;
-            accountManagementModel.Name = accountDetail.Name;
-            accountManagementModel.Email = accountDetail.Email;
-            accountManagementModel.CustomerNumber = accountDetail.Settings.CustomerNumber;
-            accountManagementModel.CreationDate = accountDetail.CreationDate;
-            accountManagementModel.FacebookAccount = accountDetail.FacebookId;
-            accountManagementModel.IBSAccountId = accountDetail.IBSAccountId;
-            accountManagementModel.IsConfirmed = accountDetail.IsConfirmed;
-            accountManagementModel.IsEnabled = !accountDetail.DisabledByAdmin;
-            accountManagementModel.CountryCode = accountDetail.Settings.Country;
-            accountManagementModel.PhoneNumber = accountDetail.Settings.Phone;
-            accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
-            accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
-            accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
-            if (accountDetail.DefaultCreditCard != null
-               && accountDetail.DefaultCreditCard.GetValueOrDefault() != null
-               && _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
-            {
-                accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
-            }
-
-            // save IOrderDao object in session
-            HttpContext.Session.Add("orderDao", _orderDao);
-
-            return accountManagementModel;
         }
 
         [HttpPost]
@@ -159,7 +129,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _commandBus.Send(resetCommand);
             _commandBus.Send(emailCommand);
 
-            TempData["UserMessage"] = "Operation done successfully";
+            TempData["UserMessage"] = "Operation done successfully, new password: " + newPassword;
             return View("Index", accountManagementModel);
         }
 
@@ -225,7 +195,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
             var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
-               && paymentSettings.IsOutOfAppPaymentDisabled;
+               && (paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None);
 
             _commandBus.Send(new DeleteCreditCardsFromAccounts
             {
@@ -262,5 +232,38 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return File(new ASCIIEncoding().GetBytes(csvFlatted.ToString()), "text/csv", "Export.csv");
 
         }
+
+        private AccountManagementModel InitializeModel(Guid id)
+        {
+            var accountDetail = _accountDao.FindById(id);
+            var accountManagementModel = new AccountManagementModel();
+
+            accountManagementModel.Id = id;
+            accountManagementModel.Name = accountDetail.Name;
+            accountManagementModel.Email = accountDetail.Email;
+            accountManagementModel.CustomerNumber = accountDetail.Settings.CustomerNumber;
+            accountManagementModel.CreationDate = accountDetail.CreationDate;
+            accountManagementModel.FacebookAccount = accountDetail.FacebookId;
+            accountManagementModel.IBSAccountId = accountDetail.IBSAccountId;
+            accountManagementModel.IsConfirmed = accountDetail.IsConfirmed;
+            accountManagementModel.IsEnabled = !accountDetail.DisabledByAdmin;
+            accountManagementModel.CountryCode = accountDetail.Settings.Country;
+            accountManagementModel.PhoneNumber = accountDetail.Settings.Phone;
+            accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
+            accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
+            accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
+            if (accountDetail.DefaultCreditCard != null
+               && accountDetail.DefaultCreditCard.GetValueOrDefault() != null
+               && _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
+            {
+                accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
+            }
+
+            // save IOrderDao object in session
+            HttpContext.Session.Add("orderDao", _orderDao);
+
+            return accountManagementModel;
+        }
+
     }
 }
