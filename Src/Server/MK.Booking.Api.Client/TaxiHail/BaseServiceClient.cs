@@ -54,7 +54,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             // CustomSSLVerification must be set to true to enable certificate pinning.
             var nativeHandler = new NativeMessageHandler(throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
-            
+
+            // otherwise we won't be able to handle 304 NotModified ourselves (ie: Terms & Conditions)
+            nativeHandler.DisableCaching = true;
+
             var client = new HttpClient(nativeHandler)
             {
                 BaseAddress = uri,
