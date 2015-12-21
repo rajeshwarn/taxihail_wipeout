@@ -21,24 +21,36 @@ namespace apcurium.MK.Booking.ReadModel.Query
             {
                 return context.Query<OrderReportDetail>()
                     .OrderBy(x => x.Order.CreateDateTime)
-                    .Where(x => x.Order.CreateDateTime >= startDate 
+                    .Where(x => x.Order.CreateDateTime >= startDate
                              && x.Order.CreateDateTime <= endDate).ToList();
             }
         }
 
-		public OrderReportDetail GetOrderReportWithOrderId(Guid orderId)
-		{
-			using (var context = _contextFactory.Invoke())
-			{
-				var orders = context.Query<OrderReportDetail>().Where(x => x.Id == orderId);
+        public IEnumerable<OrderReportDetail> GetOrderReportsByAccountId(Guid accountId, DateTime startDate, DateTime endDate)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<OrderReportDetail>()
+                    .OrderBy(x => x.Order.CreateDateTime)
+                    .Where(x => x.Account.AccountId == accountId
+                             && x.Order.CreateDateTime >= startDate
+                             && x.Order.CreateDateTime <= endDate).ToList();
+            }
+        }
 
-				if (orders.Any())
-				{
-					return orders.First();
-				}
+        public OrderReportDetail GetOrderReportWithOrderId(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orders = context.Query<OrderReportDetail>().Where(x => x.Id == orderId);
 
-				return null;
-			}
-		}
+                if (orders.Any())
+                {
+                    return orders.First();
+                }
+
+                return null;
+            }
+        }
     }
 }
