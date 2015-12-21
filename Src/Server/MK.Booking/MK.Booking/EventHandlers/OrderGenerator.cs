@@ -498,6 +498,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                return;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
