@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.CancelWasRequested)
             {
-                Log.Info("Received OrderCancelledBecauseOfError event but cancel was requested by user before, no need to inform him of order creation failure.");
+                Log.Info(string.Format("Received OrderCancelledBecauseOfError event but cancel was requested by user before, no need to inform him of order creation failure (OrderId: {0}).", @event.SourceId));
                 return;
             }
 

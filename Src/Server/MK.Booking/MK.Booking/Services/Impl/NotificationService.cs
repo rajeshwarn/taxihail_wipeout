@@ -915,7 +915,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             _emailSender.Send(mailMessage);
 
-            _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", ccEmailAddress, templateData));
+            _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", to, templateData));
         }
 
         private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
