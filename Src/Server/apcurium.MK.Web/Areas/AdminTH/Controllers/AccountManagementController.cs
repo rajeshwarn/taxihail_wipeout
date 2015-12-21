@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Services.Admin;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -30,6 +31,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
       private readonly IOrderDao _orderDao;
       private readonly BookingSettingsService _bookingSettingsService;
       private readonly ConfirmAccountService _confirmAccountService;
+      private readonly ExportDataService _exportDataService;
 
       public AccountManagementController(ICacheClient cache,
          IServerSettings serverSettings,
@@ -38,7 +40,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          ICommandBus commandBus,
          IOrderDao orderDao,
          BookingSettingsService bookingSettingsService,
-         ConfirmAccountService confirmAccountService)
+         ConfirmAccountService confirmAccountService,
+         ExportDataService exportDataService)
          : base(cache, serverSettings)
       {
          _accountDao = accountDao;
@@ -48,6 +51,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          _serverSettings = serverSettings;
          _orderDao = orderDao;
          _confirmAccountService = confirmAccountService;
+         _exportDataService = exportDataService;
       }
 
       public ActionResult Index(Guid id)
@@ -229,6 +233,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
          });
 
          TempData["UserMessage"] = "Operation done successfully";
+         return View("Index", accountManagementModel);
+      }
+
+      [HttpPost]
+      public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
+      {
+         _exportDataService.Post(new ExportDataRequest() { Target = DataType.Orders });
+
          return View("Index", accountManagementModel);
       }
    }
