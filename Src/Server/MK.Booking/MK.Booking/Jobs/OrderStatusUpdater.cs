@@ -1038,7 +1038,6 @@ namespace apcurium.MK.Booking.Jobs
 
         private void InitializeCmtServiceClient(ServerPaymentSettings paymentSettings)
         {
-            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
             var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }

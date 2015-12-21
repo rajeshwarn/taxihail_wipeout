@@ -6,7 +6,6 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
-    //todo rename to AddressLineView
     public sealed class AddressLine : LinearLayout
     {
         private Button _button;

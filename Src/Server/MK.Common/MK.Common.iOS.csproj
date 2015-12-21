@@ -191,6 +191,7 @@
     <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
+    <Compile Include="Serializer\TolerantEnumConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

@@ -15,19 +15,14 @@ namespace apcurium.MK.Booking.Api.Services
     public class IbsChargeAccountService : Service
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IServerSettings _serverSettings;
 
-        public IbsChargeAccountService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
+        public IbsChargeAccountService(IIBSServiceProvider ibsServiceProvider)
         {
             _ibsServiceProvider = ibsServiceProvider;
-            _serverSettings = serverSettings;
-            
         }
 
         public IbsChargeAccount Get(IbsChargeAccountRequest request)
         {
-            // TODO: When debugging, verify if at this point I need the company key in the request or the service 
-
             var accountFromIbs = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
             var account = new IbsChargeAccount();
 

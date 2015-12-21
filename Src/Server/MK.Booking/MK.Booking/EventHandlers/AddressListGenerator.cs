@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var existingAddress = list.SingleOrDefault(x => x.Id == @event.Address.Id);
                 if (existingAddress != null)
                 {
-                    // TODO: Log this problem
                     // Address already exist, we cannot continue or we will get a primary key violation error
                     // Avoid throwing an exception, or it will prevent the DB initializer to replay events synchronously
                     return;

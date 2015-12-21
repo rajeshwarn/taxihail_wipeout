@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -131,7 +132,7 @@ namespace apcurium.MK.Booking.Api.Services
 			    var paymentSettings = _serverSettings.GetPaymentSettings();
 
                 var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
-                    && paymentSettings.IsOutOfAppPaymentDisabled;
+                    && paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None;
 
                 _commandBus.Send(new DeleteCreditCardsFromAccounts
 				{

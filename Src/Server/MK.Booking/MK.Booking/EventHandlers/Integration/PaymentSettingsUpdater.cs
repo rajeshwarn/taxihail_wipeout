@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
@@ -33,7 +34,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
             var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
-                    && paymentSettings.IsOutOfAppPaymentDisabled;
+                    && paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None;
 
             _commandBus.Send(new DeleteCreditCardsFromAccounts
             {

@@ -96,6 +96,11 @@ namespace apcurium.MK.Booking.Test
             throw new NotImplementedException();
         }
 
+        public string GetServiceUrl()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetPaymentSettings(string companyKey, ServerPaymentSettings settings)
         {
             companyKey = companyKey ?? string.Empty;

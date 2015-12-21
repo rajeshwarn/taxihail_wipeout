@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Events.Migration.Projections
 {
@@ -46,9 +47,9 @@ namespace apcurium.MK.Events.Migration.Projections
 
         public CreditCardDeactivated Migrate(CreditCardDeactivated @event)
         {
-            if (@event.IsOutOfAppPaymentDisabled == null)
+            if (@event.IsOutOfAppPaymentDisabled == OutOfAppPaymentDisabled.NotSet)
             {
-                @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+                @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled;
                 return @event;
             }
             else

@@ -115,7 +115,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 		public static readonly BigInteger Three = createUValueOf(3);
 		public static readonly BigInteger Ten = createUValueOf(10);
 
-		private static readonly int chunk2 = 1; // TODO Parse 64 bits at a time
+		private static readonly int chunk2 = 1; // TODO_ Parse 64 bits at a time
 		private static readonly BigInteger radix2 = ValueOf(2);
 		private static readonly BigInteger radix2E = radix2.Pow(chunk2);
 
@@ -241,7 +241,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 					rE = radix10E;
 					break;
 				case 16:
-					// TODO Should this be HexNumber?
+					// TODO_ Should this be HexNumber?
 					style = NumberStyles.AllowHexSpecifier;
 					chunk = chunk16;
 					r = radix16;
@@ -300,11 +300,11 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 					switch (radix)
 					{
 						case 2:
-							// TODO Need this because we are parsing in radix 10 above
+							// TODO_ Need this because we are parsing in radix 10 above
 							if (i > 1)
 								throw new FormatException("Bad character in radix 2 string: " + s);
 
-							// TODO Parse 64 bits at a time
+							// TODO_ Parse 64 bits at a time
 							b = b.ShiftLeft(1);
 							break;
 						case 16:
@@ -336,7 +336,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 						// NB: Can't reach here since we are parsing one char at a time
 						Debug.Assert(false);
 
-						// TODO Parse all bits at once
+						// TODO_ Parse all bits at once
 //						b = b.ShiftLeft(s.Length);
 					}
 					else if (radix == 16)
@@ -384,7 +384,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			if (length == 0)
 				throw new FormatException("Zero length BigInteger");
 
-			// TODO Move this processing into MakeMagnitude (provide sign argument)
+			// TODO_ Move this processing into MakeMagnitude (provide sign argument)
 			if ((sbyte)bytes[offset] < 0)
 			{
 				this.sign = -1;
@@ -751,7 +751,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 
 			BigInteger result = new BigInteger(1, resultMag, true);
 
-			// TODO Optimise this case
+			// TODO_ Optimise this case
 			if (resultNeg)
 			{
 				result = result.Not();
@@ -774,7 +774,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 				{
 					if (sign < 0)
 					{
-						// TODO Optimise this case
+						// TODO_ Optimise this case
 						nBits = Not().BitCount;
 					}
 					else
@@ -1222,7 +1222,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			return sign < 0 ? ~hc : hc;
 		}
 
-		// TODO Make public?
+		// TODO_ Make public?
 		private BigInteger Inc()
 		{
 			if (this.sign == 0)
@@ -1296,14 +1296,14 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			}
 
 
-			// TODO Special case for < 10^16 (RabinMiller fixed list)
+			// TODO_ Special case for < 10^16 (RabinMiller fixed list)
 //			if (BitLength < 30)
 //			{
 //				RabinMiller against 2, 3, 5, 7, 11, 13, 23 is sufficient
 //			}
 
 
-			// TODO Is it worth trying to create a hybrid of these two?
+			// TODO_ Is it worth trying to create a hybrid of these two?
 			return RabinMillerTest(certainty, random);
 //			return SolovayStrassenTest(certainty, random);
 
@@ -1333,7 +1333,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 
 			do
 			{
-				// TODO Make a method for random BigIntegers in range 0 < x < n)
+				// TODO_ Make a method for random BigIntegers in range 0 < x < n)
 				// - Method can be optimized by only replacing examined bits at each trial
 				BigInteger a;
 				do
@@ -1389,7 +1389,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 //				while (a.CompareTo(One) <= 0 || a.CompareTo(n) >= 0);
 //
 //
-//				// TODO Check this is redundant given the way Jacobi() works?
+//				// TODO_ Check this is redundant given the way Jacobi() works?
 ////				if (!a.Gcd(n).Equals(One))
 ////					return false;
 //
@@ -1437,7 +1437,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 //				if ((e & 1) != 0 && ((bLsw & 7) == 3 || (bLsw & 7) == 5))
 //					totalS = -totalS;
 //
-//				// TODO Confirm this is faster than later a1.Equals(One) test
+//				// TODO_ Confirm this is faster than later a1.Equals(One) test
 //				if (a.BitLength == e + 1)
 //					break;
 //				BigInteger a1 = a.ShiftRight(e);
@@ -1506,7 +1506,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			if (m.sign < 1)
 				throw new ArithmeticException("Modulus must be positive");
 
-			// TODO Too slow at the moment
+			// TODO_ Too slow at the moment
 //			// "Fast Key Exchange with Elliptic Curve Systems" R.Schoeppel
 //			if (m.TestBit(0))
 //			{
@@ -2334,7 +2334,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 					if (val == 1)
 						return Zero;
 
-					// TODO Make this func work on uint, and handle val == 1?
+					// TODO_ Make this func work on uint, and handle val == 1?
 					int rem = Remainder(val);
 
 					return rem == 0
@@ -2349,7 +2349,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			int[] result;
 			if (n.QuickPow2Check())  // n is power of two
 			{
-				// TODO Move before small values branch above?
+				// TODO_ Move before small values branch above?
 				result = LastNBits(n.Abs().BitLength - 1);
 			}
 			else
@@ -2751,7 +2751,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 		public string ToString(
 			int radix)
 		{
-			// TODO Make this method work for other radices (ideally 2 <= radix <= 16)
+			// TODO_ Make this method work for other radices (ideally 2 <= radix <= 16)
 
 			switch (radix)
 			{
@@ -3018,7 +3018,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 
 			BigInteger result = new BigInteger(1, resultMag, true);
 
-			// TODO Optimise this case
+			// TODO_ Optimise this case
 			if (resultNeg)
 			{
 				result = result.Not();
@@ -3044,7 +3044,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 				? value.magnitude
 				: value.Add(One).magnitude;
 
-			// TODO Can just replace with sign != value.sign?
+			// TODO_ Can just replace with sign != value.sign?
 			bool resultNeg = (sign < 0 && value.sign >= 0) || (sign >= 0 && value.sign < 0);
 			int resultLength = System.Math.Max(aMag.Length, bMag.Length);
 			int[] resultMag = new int[resultLength];
@@ -3077,7 +3077,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 
 			BigInteger result = new BigInteger(1, resultMag, true);
 
-			// TODO Optimise this case
+			// TODO_ Optimise this case
 			if (resultNeg)
 			{
 				result = result.Not();
@@ -3095,7 +3095,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			if (TestBit(n))
 				return this;
 
-			// TODO Handle negative values and zero
+			// TODO_ Handle negative values and zero
 			if (sign > 0 && n < (BitLength - 1))
 				return FlipExistingBit(n);
 
@@ -3111,7 +3111,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			if (!TestBit(n))
 				return this;
 
-			// TODO Handle negative values
+			// TODO_ Handle negative values
 			if (sign > 0 && n < (BitLength - 1))
 				return FlipExistingBit(n);
 
@@ -3124,7 +3124,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Math
 			if (n < 0)
 				throw new ArithmeticException("Bit address less than zero");
 
-			// TODO Handle negative values and zero
+			// TODO_ Handle negative values and zero
 			if (sign > 0 && n < (BitLength - 1))
 				return FlipExistingBit(n);
 

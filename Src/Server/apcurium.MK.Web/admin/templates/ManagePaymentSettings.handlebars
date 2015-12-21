@@ -25,11 +25,12 @@
     <option value="{{invertedBool creditCardIsMandatory}}">{{localizeBool creditCardIsMandatory true="No" false="Yes"}}</option>
 </select>
 
-  <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
-  <select name="isOutOfAppPaymentDisabled" class="settingsBox">
-    <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
-    <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
-  </select>
+<label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
+<select name="isPaymentOutOfAppDisabled" class="settingsBox">
+    <option value="None">{{localize "None (Out Of App Payment enabled for Web and App)"}}</option>
+    <option value="AppOnly">{{localize "App Only (Out Of App Payment enabled for Web only)"}}</option>
+    <option value="All">{{localize "All (Out Of App Payment disabled for Web and App)"}}</option>
+</select>
 
   <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
   <select name="isChargeAccountPaymentEnabled" class="settingsBox">

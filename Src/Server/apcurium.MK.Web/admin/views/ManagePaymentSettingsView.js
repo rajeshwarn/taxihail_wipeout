@@ -12,7 +12,7 @@
             'change [id=prodClientId]': 'onPayPalSettingsChanged',
             'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
             'change [name=isChargeAccountPaymentEnabled]': 'canPaymentMethodBeMandatory',
-            'change [name=isOutOfAppPaymentDisabled]': 'canPaymentMethodBeMandatory',
+            'change [name=isPaymentOutOfAppDisabled]': 'canPaymentMethodBeMandatory',
             'change [name=isPayInTaxiEnabled]': 'canPaymentMethodBeMandatory',
             'change [name=paymentMode]': 'canPaymentMethodBeMandatory',
             'change [name=acceptChange]': 'onAcceptSettingsChanged',
@@ -147,7 +147,7 @@
 
             if (data.isPayInTaxiEnabled != "true"
                 && data.isChargeAccountPaymentEnabled != "true"
-                && data.isOutOfAppPaymentDisabled == "true"
+                && data.isPaymentOutOfAppDisabled != "None"
                 && data.payPalClientSettings.isEnabled != "true") {
                 this.alert("Please select a payment method or enable In Car Payment");
 
@@ -221,13 +221,13 @@
             }
 
             var newIsChargeAccountPaymentEnabled = this.$("[name = isChargeAccountPaymentEnabled]").val() == 'true';
-            var newIsOutOfAppPaymentDisabled = this.$("[name = isOutOfAppPaymentDisabled]").val() == 'true';
+            var newIsPaymentOutOfAppDisabled = this.$("[name = isPaymentOutOfAppDisabled]").val() != 'None';
             var newIsPayInTaxiEnabled = this.$("[name = isPayInTaxiEnabled]").val() == 'true';
             var newPaymentMode = this.$("[name = paymentMode]").val();
 
             var inputCreditCardMandatory = this.$("[name=creditCardIsMandatory]");
 
-            if ((!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsOutOfAppPaymentDisabled) || newPaymentMode == 'None') {
+            if ((!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsPaymentOutOfAppDisabled) || newPaymentMode == 'None') {
                 inputCreditCardMandatory.val('false');
                 inputCreditCardMandatory.attr('disabled', 'disabled');
             } else {

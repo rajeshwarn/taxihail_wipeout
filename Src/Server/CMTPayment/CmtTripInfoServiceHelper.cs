@@ -87,7 +87,7 @@ namespace CMTPayment
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
-				if (trip.HttpStatusCode == (int)HttpStatusCode.BadRequest && (trip.ErrorCode == CmtErrorCodes.UnableToPair || trip.ErrorCode == CmtErrorCodes.CreditCardDeclinedOnPreauthorization || trip.ErrorCode == CmtErrorCodes.UnablePreauthorizeCreditCard))
+				if (trip != null && trip.HttpStatusCode == (int)HttpStatusCode.BadRequest && (trip.ErrorCode == CmtErrorCodes.UnableToPair || trip.ErrorCode == CmtErrorCodes.CreditCardDeclinedOnPreauthorization || trip.ErrorCode == CmtErrorCodes.UnablePreauthorizeCreditCard))
 				{
 					return trip;
 				}

@@ -7,6 +7,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Projections;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -209,14 +210,14 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardDeactivated @event)
         {
-            if (!@event.IsOutOfAppPaymentDisabled.Value)
+            if (@event.IsOutOfAppPaymentDisabled == OutOfAppPaymentDisabled.None)
             {
                 _projections.Update(@event.SourceId, account =>
                 {
                     account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 });
             }
-    }
+        }
 
         public void Handle(AccountLinkedToIbs @event)
         {

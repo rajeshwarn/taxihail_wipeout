@@ -292,25 +292,22 @@ namespace DatabaseInitializer
 
                 Console.WriteLine("Migration of Payment Settings ...");
 
-                MigratePaymentSettings(serverSettings, commandBus);
+                MigratePaymentSettings(serverSettings, commandBus, appSettings);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
 #if DEBUG
-                if (IsUpdate)
-                {
-                    var iisManager = new ServerManager();
-                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+                var iisManager = new ServerManager();
+                var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
 
-                    if (appPool != null
-                        && appPool.State == ObjectState.Stopped)
-                    {
-                        appPool.Start();
-                        Console.WriteLine("App Pool started.");
-                    }
+                if (appPool != null
+                    && appPool.State == ObjectState.Stopped)
+                {
+                    appPool.Start();
+                    Console.WriteLine("App Pool started.");
                 }
 #endif
-                
+
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
@@ -641,7 +638,7 @@ namespace DatabaseInitializer
                 Name = "Administrator",
                 Country = new CountryISOCode("CA"),
                 Phone = "6132875020",
-                Password = "1l1k3B4n4n@", //Todo Make the admin portal customizable
+                Password = "1l1k3B4n4n@", //TODO MKTAXI-3573: Super admin password should be customizable
                 IsAdmin = true
             };
 
@@ -1033,16 +1030,17 @@ namespace DatabaseInitializer
             }
         }
 
-        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
+        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus, IDictionary<string, string> appSettings)
         {
             var paymentSettings = serverSettings.GetPaymentSettings();
-            var needsUpdate = false;
+            var paymentSettingsNeedsUpdate = false;
+            var serverSettingsNeedsUpdate = false;
 
             if (paymentSettings.AutomaticPaymentPairing)
             {
                 paymentSettings.IsUnpairingDisabled = true;
                 paymentSettings.AutomaticPaymentPairing = false;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (paymentSettings.NoShowFee.HasValue)
@@ -1061,28 +1059,43 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
-                needsUpdate = true;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
             {
                 paymentSettings.CmtPaymentSettings.UsePairingCode = true;
-                needsUpdate = true;
+                appSettings["UsePairingCodeWhenUsingRideLinqCmtPayment"] = "false";
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
+            }
+
+            if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
+            {
+                paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
+                paymentSettingsNeedsUpdate = true;
             }
 
             if (serverSettings.ServerData.CreditCardIsMandatory)
             {
                 paymentSettings.CreditCardIsMandatory = true;
-                needsUpdate = true;
+                appSettings["CreditCardIsMandatory"] = "false";
+                paymentSettingsNeedsUpdate = true;
+                serverSettingsNeedsUpdate = true;
             }
 
-            if (needsUpdate)
+            if (paymentSettingsNeedsUpdate)
             {
                 commandBus.Send(new UpdatePaymentSettings
                 {
                     CompanyId = AppConstants.CompanyId,
                     ServerPaymentSettings = paymentSettings
                 });
+            }
+
+            if (serverSettingsNeedsUpdate)
+            {
+                AddOrUpdateAppSettings(commandBus, appSettings);
             }
         }
 

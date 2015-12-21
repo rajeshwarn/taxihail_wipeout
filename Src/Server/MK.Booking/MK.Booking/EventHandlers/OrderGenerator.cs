@@ -483,6 +483,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                return;
+            }
+
             _orderDetailProjectionSet.Update(@event.SourceId, order =>
             {
                 order.IBSOrderId = @event.IBSOrderId;

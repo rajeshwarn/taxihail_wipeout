@@ -41,12 +41,9 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             string companyKey,
             Guid orderId,
             AccountDetail account,
-            string clientLanguageCode,
             bool isFutureBooking,
             decimal? appEstimateWithTip,
             decimal bookingFees,
-            bool isPayPal,
-            CreateReportOrder createReportOrder,
             string cvv = null)
         {
             if (!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking)
@@ -81,8 +78,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             decimal appEstimateWithTip,
             int tipPercentage,
             decimal bookingFees,
-            string cvv,
-            CreateReportOrder createReportOrder)
+            string cvv)
         {
             // Note: No promotion on web
             var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);

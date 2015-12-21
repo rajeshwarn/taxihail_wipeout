@@ -674,7 +674,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						else if(IsMandatory)
 						{
 							await this.Services().Message.ShowMessage(string.Empty, 
-                                PaymentSettings.IsOutOfAppPaymentDisabled ? 
+								PaymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None ? 
 								this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
 								this.Services().Localize["CreditCardAdded"]);
 						}

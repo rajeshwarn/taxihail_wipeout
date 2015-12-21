@@ -22,6 +22,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Provider;
 using MK.Common.Exceptions;
 using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -71,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    private Position _lastMarketPosition = new Position();
 	    private string _lastHashedMarketValue;
 
-        private const int LastMarketDistanceThreshold = 1000; // In meters
+		private const int LastMarketDistanceThresholdInMeters = 1000;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -263,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
+		public async Task<OrderRepresentation> ConfirmOrder()
 		{
 		    _isOrderRebooked = false;
 
@@ -289,10 +290,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
-				Logger.LogMessage("Order created: ID [" + orderCreated.Id.ToString() + "], IBS ID [" + orderStatus.IBSOrderId.ToString() + "]");
+				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
-				// TODO: Refactor so we don't have to return two distinct objects
-				return Tuple.Create(orderCreated, orderStatus);
+				return new OrderRepresentation(orderCreated, orderStatus);
 			}
 			catch(WebServiceException e)
 			{
@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-                    var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.ErrorCode;
+					var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
 
                     throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }
@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(address);
 		}
 
-        public async Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder()
+		public async Task<OrderRepresentation> GetLastActiveOrder()
 		{
 			if (_bookingService.HasLastOrder) 
 			{
@@ -393,7 +393,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     {
                         var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
 
-                        return Tuple.Create(order, status);
+						return new OrderRepresentation(order, status);
                     }
                     catch (Exception ex)
                     {
@@ -596,10 +596,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return address[0];
 			}
 
-			// TODO: Refactor. We should probably throw an exception here.
-			// Error should be handled by the caller.
 			_loadingAddressSubject.OnNext(false);
-			return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
+			return new Address { Latitude = p.Latitude, Longitude = p.Longitude };
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
@@ -1035,7 +1033,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 currentPosition.Latitude, currentPosition.Longitude,
                 _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
 
-            return distanceFromLastMarketRequest > LastMarketDistanceThreshold;
+            return distanceFromLastMarketRequest > LastMarketDistanceThresholdInMeters;
 	    }
 
 		public async Task<bool> ShouldPromptForCvv()

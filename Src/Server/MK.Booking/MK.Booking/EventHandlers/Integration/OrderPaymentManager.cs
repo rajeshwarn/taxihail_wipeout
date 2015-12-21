@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
