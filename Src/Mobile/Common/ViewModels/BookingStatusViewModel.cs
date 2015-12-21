@@ -645,18 +645,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							using (this.Services().Message.ShowProgress())
 							{
 								await _orderWorkflowService.SetAddress(new Address());
-								success = await _orderWorkflowService.UpdateDropOff(((HomeViewModel)Parent).BookingStatus.Order.Id);
+								success = await _orderWorkflowService.UpdateDropOff(Order.Id);
 
 								if(success)
 								{
-									var order = Order;
+									var order = this.Order;
 									order.DropOffAddress = new Address();
-									((HomeViewModel)Parent).BookingStatus.Order = order;
+									this.Order = order;
 									_orderWorkflowService.ClearDestinationAddress();
 									return;
 								}
 
-								this.Services().Message.ShowMessage("Error", "ErrorChangeDropOff_Message");
+								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["ErrorChangeDropOff_Message"]);
 								return;
 							}
 						}
