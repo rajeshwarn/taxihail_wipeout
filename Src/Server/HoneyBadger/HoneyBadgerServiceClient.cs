@@ -122,7 +122,7 @@ namespace HoneyBadger
             var @params = new List<KeyValuePair<string, string>>
 		    {
 			    new KeyValuePair<string, string>("includeEntities", "true"),
-			    //new KeyValuePair<string, string>("market", market)
+			    new KeyValuePair<string, string>("market", market)
 		    };
 
             foreach (var vehicleId in vehicleIds)
