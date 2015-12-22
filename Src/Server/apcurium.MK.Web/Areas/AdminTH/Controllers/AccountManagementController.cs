@@ -145,7 +145,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                && accountManagementModel.CountryCode.Code.HasValueTrimmed()
                && accountManagementModel.PhoneNumber.HasValueTrimmed())
             {
-
                 try
                 {
                     _confirmAccountService.Get(new ConfirmationCodeRequest

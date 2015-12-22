@@ -1,5 +1,6 @@
 ﻿@using apcurium.MK.Web.Areas.AdminTH.Models
 @using apcurium.MK.Common.Entity
+@using apcurium.MK.Web.helpers
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
 @using (Html.BeginForm(FormMethod.Post))
@@ -16,6 +17,7 @@
 
       @Html.AntiForgeryToken()
       @Html.HiddenFor(x => x.Id)
+      @Html.HiddenForEnumerable(x => x.Orders)
 
       <div class="div-account-block">
          <div class="left-column">

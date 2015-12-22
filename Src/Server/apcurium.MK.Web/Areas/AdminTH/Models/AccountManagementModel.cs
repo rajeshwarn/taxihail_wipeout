@@ -61,6 +61,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
     public class OrderModel : OrderDetail
     {
+        public OrderModel()
+        {
+        }
+
         public OrderModel(OrderDetail orderDetail)
         {
             // Initialize properties of base class dynamically
