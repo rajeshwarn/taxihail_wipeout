@@ -193,5 +193,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return new GenerateClientTokenResponse();
 		}
+
+	    public async Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+	    {
+            try
+            {
+                return await GetClient().AddPaymentMethod(nonce);
+            }
+            catch (NotSupportedException)
+            {
+                Logger.LogMessage("Generate token only supported for Braintree");
+            }
+
+            return new TokenizedCreditCardResponse()
+            {
+                IsSuccessful = false
+            };
+        }
     }
 }

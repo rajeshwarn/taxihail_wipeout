@@ -17,6 +17,7 @@ using apcurium.MK.Common.Extensions;
 using Braintree;
 using BraintreeEncryption.Library;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using Environment = Braintree.Environment;
 
@@ -48,6 +49,51 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 tokenizeRequest.EncryptedExpirationDate,
                 tokenizeRequest.EncryptedCvv,
                 tokenizeRequest.PaymentMethodNonce);
+        }
+
+        public object Post(AddPaymentMethodRequest request)
+        {
+            var userId = Guid.Parse(this.GetSession().UserAuthId);
+            var account = _accountDao.FindById(userId);
+
+            
+            if (request.PaymentMethod == PaymentMethods.CreditCard)
+            {
+                var creditCardResult = BraintreeGateway.CreditCard.Create(new CreditCardRequest
+                {
+                    CustomerId = account.BraintreeAccountId,
+                    PaymentMethodNonce = request.Nonce,
+                });
+
+                var creditCard = creditCardResult.Target;
+
+                return new TokenizedCreditCardResponse
+                {
+                    CardOnFileToken = creditCard.Token,
+                    CardType = creditCard.CardType.ToString(),
+                    LastFour = creditCard.LastFour,
+                    BraintreeAccountId = creditCard.CustomerId,
+                    IsSuccessful = creditCardResult.IsSuccess(),
+                    Message = creditCardResult.Message
+                };
+            }
+
+            var paymentMethodResult = BraintreeGateway.PaymentMethod.Create(new PaymentMethodRequest()
+            {
+                CustomerId = account.BraintreeAccountId,
+                PaymentMethodNonce = request.Nonce,
+            });
+
+            var paymentMethod = paymentMethodResult.Target;
+
+            return new TokenizedCreditCardResponse
+            {
+                CardOnFileToken = paymentMethod.Token,
+                PaymentMethod = request.PaymentMethod,
+                BraintreeAccountId = paymentMethod.CustomerId,
+                IsSuccessful = paymentMethodResult.IsSuccess(),
+                Message = paymentMethodResult.Message
+            };
         }
 
         public object Get(GenerateClientTokenBraintreeRequest request)

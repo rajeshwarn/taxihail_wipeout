@@ -1,6 +1,5 @@
 ﻿using System;
 using Cirrious.CrossCore.Droid.Platform;
-using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
@@ -13,13 +12,11 @@ namespace TaxiHail.Shared.PlatformIntegration
 	public class BraintreeDropinViewService : IBraintreeDropinViewService
 	{
 		private readonly IMvxAndroidCurrentTopActivity _activity;
-		private readonly IPaymentServiceClient _paymentService;
-		private const int _requestCode = 52120;
+	    private const int _requestCode = 52120;
 
-		public BraintreeDropinViewService(IMvxAndroidCurrentTopActivity activity, IPaymentServiceClient paymentService)
+		public BraintreeDropinViewService(IMvxAndroidCurrentTopActivity activity)
 		{
-			_paymentService = paymentService;
-			_activity = activity;
+		    _activity = activity;
 		}
 
 		public Task<string> ShowDropinView(string clientToken)

@@ -6,10 +6,11 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 {
 	[Authenticate]
-	[Route("/payments/braintree/generateclienttoken", "GET")]
+	[Route("/payments/braintree/addpaymentmethod", "POST")]
 	public class AddPaymentMethodRequest : IReturn<TokenizedCreditCardResponse>
 	{
 		public string Nonce	{ get; set; }
+	    public PaymentMethods PaymentMethod { get; set; }
 	}
 }
 

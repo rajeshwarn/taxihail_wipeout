@@ -158,13 +158,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
 						return;
 					}
-					var clientToken = await _paymentService.GenerateClientTokenResponse().ShowProgress();
-					var paymentNonce = await _braintreeDropinService.ShowDropinView(clientToken);
+
+					var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+					var paymentNonce = await _braintreeDropinService.ShowDropinView(tokenGenerationResponse.ClientToken);
 					
 					using(this.Services().Message.ShowProgressNonModal())
 					{
 						await _paymentService.AddPaymentMethod(paymentNonce);
-						await GetCreditCards();
+
+                        // Done in parallel to ensure that the app is in a correct state.
+					    await Task.WhenAll(
+                            _accountService.GetDefaultCreditCard(), 
+                            GetCreditCards()
+                       );
 					}
                 });
             }

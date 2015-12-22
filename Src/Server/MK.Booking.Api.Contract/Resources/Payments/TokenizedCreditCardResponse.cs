@@ -10,5 +10,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
         public string CardOnFileToken { get; set; }
 
         public string BraintreeAccountId { get; set; }
+
+        public PaymentMethods PaymentMethod { get; set; }
     }
 }

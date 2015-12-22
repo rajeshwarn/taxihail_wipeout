@@ -119,7 +119,9 @@
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\AddPaymentMethodRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PaymentMethod.cs" />
     <Compile Include="Requests\Payment\EncryptedPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\Payments\GenerateClientTokenBraintreeResponse.cs" />
     <Compile Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\Payments\CmtPaymentPairingResponse.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
