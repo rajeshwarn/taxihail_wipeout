@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Framework;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
 
@@ -25,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
+	    private readonly IPaymentService _paymentService;
+	    private readonly IBraintreeDropinViewService _braintreeDropinViewService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -32,7 +35,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IRegisterWorkflowService registrationService,
-			IVehicleTypeService vehicleTypeService)
+			IVehicleTypeService vehicleTypeService, 
+            IPaymentService paymentService,
+            IBraintreeDropinViewService braintreeDropinViewService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -42,6 +47,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
+            _paymentService = paymentService;
+            _braintreeDropinViewService = braintreeDropinViewService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -474,7 +481,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					else
 					{
-						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
+						await AddCreditCard();
 					}
 					return;
 				}
@@ -507,7 +514,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private async Task<bool> NeedsToNavigateToAddCreditCard()
+	    private async Task AddCreditCard()
+	    {
+            var paymentSettings = await _paymentService.GetPaymentSettings();
+
+            if (paymentSettings.PaymentMode != PaymentMethod.Braintree)
+            {
+                ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions = true, isMandatory = true });
+                return;
+            }
+
+            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+            var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken);
+
+            using (this.Services().Message.ShowProgressNonModal())
+            {
+                await _paymentService.AddPaymentMethod(paymentNonce);
+
+                await _accountService.GetDefaultCreditCard();
+            }
+
+        }
+
+	    private async Task<bool> NeedsToNavigateToAddCreditCard()
 		{
             // Resolve here because we cannot pass it via the constructor since it the PaymentService needs
             // the user to be authenticated and it may not be when the class is initialized

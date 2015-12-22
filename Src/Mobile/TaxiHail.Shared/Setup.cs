@@ -30,6 +30,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
+using TaxiHail.Shared.PlatformIntegration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -81,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
+		    container.Register<IBraintreeDropinViewService, BraintreeDropinViewService>();
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {

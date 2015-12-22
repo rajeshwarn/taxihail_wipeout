@@ -34,14 +34,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
-                _logger.LogError(ex);
-
                 if (shouldThrowExceptionIfError)
                 {
-                    throw ex;
+                    throw;
                 }
 
-			    return new Dictionary<string, string>();
+                _logger.LogError(ex);
+
+                return new Dictionary<string, string>();
 			}
 		}
 
