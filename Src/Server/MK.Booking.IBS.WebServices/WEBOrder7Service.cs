@@ -8198,7 +8198,6 @@ public partial class TBookOrder_7 : TBookOrder_6
 {
 
     private double tipsField;
-    private double vATField;
 
     private double vATField;
 
