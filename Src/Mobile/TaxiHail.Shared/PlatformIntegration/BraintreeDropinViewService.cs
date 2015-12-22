@@ -35,9 +35,16 @@ namespace TaxiHail.Shared.PlatformIntegration
 			{
 			    if (e.Value.RequestCode != _requestCode)
 			    {
+					tcs.SetCanceled();
 			        return;
 			    }
-
+				
+				if(e.Value.Intent == null)
+				{
+					tcs.SetCanceled();
+					return;
+				}
+				
 			    var paymentNonce = (PaymentMethodNonce)e.Value.Intent.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
 
 			    tcs.SetResult(paymentNonce.Nonce);

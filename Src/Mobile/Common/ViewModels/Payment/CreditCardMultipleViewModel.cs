@@ -159,19 +159,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						return;
 					}
 
-					var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
-					var paymentNonce = await _braintreeDropinService.ShowDropinView(tokenGenerationResponse.ClientToken);
-					
-					using(this.Services().Message.ShowProgressNonModal())
-					{
-						await _paymentService.AddPaymentMethod(paymentNonce);
+						try
+						{
+							var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+							var paymentNonce = await _braintreeDropinService.ShowDropinView(tokenGenerationResponse.ClientToken);
 
-                        // Done in parallel to ensure that the app is in a correct state.
-					    await Task.WhenAll(
-                            _accountService.GetDefaultCreditCard(), 
-                            GetCreditCards()
-                       );
-					}
+							using(this.Services().Message.ShowProgressNonModal())
+							{
+								await _paymentService.AddPaymentMethod(paymentNonce);
+
+								// Done in parallel to ensure that the app is in a correct state.
+								await Task.WhenAll(
+									_accountService.GetDefaultCreditCard(), 
+									GetCreditCards()
+								);
+							}
+						}
+						catch(OperationCanceledException)
+						{
+							// User cancelled braintree flow, exiting.
+						}
+					
                 });
             }
         }
