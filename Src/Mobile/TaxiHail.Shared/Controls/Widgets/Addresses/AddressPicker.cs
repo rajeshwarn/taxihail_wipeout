@@ -148,6 +148,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 .For("Click")
                 .To(vm => vm.Cancel);
 
+			set.Bind(_favoriteAddressList)
+				.For(v=>v.AddressLocationTypePicker)
+				.To(vm=> vm.PickerFilter);
+
+			set.Bind(_recentAddressList)
+				.For(v=>v.AddressLocationTypePicker)
+				.To(vm=> vm.PickerFilter);
+
+			set.Bind(_nearbyAddressList)
+				.For(v=>v.AddressLocationTypePicker)
+				.To(vm=> vm.PickerFilter);
+
+			set.Bind(_searchResultsAddressList)
+				.For(v=>v.AddressLocationTypePicker)
+				.To(vm=> vm.PickerFilter);
+
             set.Apply();
         }
 
@@ -187,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 }, Logger.LogError);
 
 			await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
-			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
+			if (filterAddresses == AddressLocationType.Unspecified || ViewModel.AllAddresses.Count > 1)
             {
                 FocusOnTextField();
             }

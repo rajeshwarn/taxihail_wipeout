@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         public async Task<Position> GetUserPosition()
         {
-            // TODO: Handle when location services are not available
 			if((BestPosition != null) && BestPosition.IsActive())
             {
                 return BestPosition;

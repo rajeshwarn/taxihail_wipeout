@@ -31,15 +31,14 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 
         public static bool IsNumber(this string instance)
         {
-            return instance.ToCharArray().All(Char.IsNumber);
+            return instance.ToCharArray().All(char.IsNumber);
         }
 
         public static bool IsDigit(this string instance)
         {
-            return instance.ToCharArray().All(Char.IsDigit);
+            return instance.ToCharArray().All(char.IsDigit);
         }
-
-        //TODO Filter Where HasValue()
+			
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {
             return string.Join(joinBy, items.ToArray());

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,15 +9,13 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -86,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (paymentToSettle != null)
 			{
-				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
+			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
 			}
 
 		}
@@ -282,7 +279,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationYear = value.ToSafeString();
+				Data.ExpirationYear = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationYearDisplay);
 			}
@@ -298,9 +295,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationMonth = value.ToSafeString();
+				Data.ExpirationMonth = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 
-				RaisePropertyChanged();
+                RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationMonthDisplay);
 			}
 		}
@@ -677,7 +674,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						else if(IsMandatory)
 						{
 							await this.Services().Message.ShowMessage(string.Empty, 
-                                PaymentSettings.IsOutOfAppPaymentDisabled ? 
+								PaymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None ? 
 								this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
 								this.Services().Localize["CreditCardAdded"]);
 						}

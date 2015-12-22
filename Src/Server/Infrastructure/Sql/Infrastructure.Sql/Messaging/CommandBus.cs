@@ -59,7 +59,7 @@ namespace Infrastructure.Sql.Messaging
 
         private Message BuildMessage(Envelope<ICommand> command)
         {
-            // TODO: should use the Command ID as a unique constraint when storing it.
+            // TODO_: should use the Command ID as a unique constraint when storing it.
             using (var payloadWriter = new StringWriter())
             {
                 this.serializer.Serialize(payloadWriter, command.Body);

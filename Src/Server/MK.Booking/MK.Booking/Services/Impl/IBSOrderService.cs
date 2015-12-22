@@ -21,7 +21,8 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, string companyKey)
+                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, string companyKey,
+                                           decimal fareAmount = 0, decimal extrasAmount = 0, decimal vatAmount = 0, decimal discountAmount = 0, decimal tollAmount = 0, decimal surchargeAmount = 0)
         {
             if (companyKey.HasValue())
             {
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             if (!_ibsServiceProvider.Booking(companyKey).ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
-                            authorizationCode, cardToken, accountId, name, phone, email, os, userAgent))
+                            authorizationCode, cardToken, accountId, name, phone, email, os, userAgent, fareAmount, extrasAmount, vatAmount, discountAmount, tollAmount, surchargeAmount))
             {
                 throw new Exception("Cannot send payment information to dispatch.");
             }

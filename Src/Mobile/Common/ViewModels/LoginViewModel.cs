@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 
-            this.Services().ApplicationInfo.CheckVersionAsync();
+            this.Services().ApplicationInfo.CheckVersionAsync().FireAndForget();
 
             if (_executeOnStart != null)
             {
@@ -404,7 +404,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var settings = Container.Resolve<IAppSettings>();
 			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
 			{
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
 				if (serverUrl.Contains(staging) && settings.Data.AppleTestAccountUsed)
 				{
@@ -414,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				//Change server Url to use the staging server.
 				// We must also change https to http since staging does not support HTTPS
-				serverUrl = serverUrl.Replace("https://", "http://").Replace(services, staging).Replace(api, staging);
+				serverUrl = serverUrl.Replace(services, staging).Replace(api, staging);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -425,9 +425,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (settings.Data.AppleTestAccountUsed)
 			{
 				//Reset back to normal server.
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
-				serverUrl = serverUrl.Replace("http://", "https://").Replace(staging, api);
+				serverUrl = serverUrl.Replace(staging, api);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -464,9 +464,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = async () => 
+			Func<Task> showNextView = async () => 
             {
-				if (await NeedsToNavigateToAddCreditCard ()) {
+				if (await NeedsToNavigateToAddCreditCard ())
+                {
 					if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
 					{
 						ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
@@ -479,15 +480,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
-				if (LoginSucceeded != null) {
+				if (LoginSucceeded != null) 
+				{
 					LoginSucceeded (this, EventArgs.Empty);
 				}
 			};
 
             // Load and cache company notification settings/payment settings
             // Resolve because the accountService injected in the constructor is not authorized here
-			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
-		    await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
+		    var accountService = Mvx.Resolve<IAccountService>();
+            
+            await accountService.GetNotificationSettings(true, true);
+		    await accountService.GetUserTaxiHailNetworkSettings(true);
             await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
@@ -495,11 +499,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_viewIsStarted) 
 			{
-				showNextView ();
+				await showNextView();
 			}
 			else 
 			{
-				_executeOnStart = showNextView;
+				_executeOnStart = () => showNextView().FireAndForget();
 			}
         }
 
@@ -511,14 +515,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var isPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-			if (isPayInTaxiEnabled && paymentSettings.CreditCardIsMandatory)
-			{
-				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
-				{
-					return true;
-				}
-			}
-			return false;
+		    if (!isPayInTaxiEnabled || !paymentSettings.CreditCardIsMandatory)
+		    {
+		        return false;
+		    }
+
+		    return !_accountService.CurrentAccount.HasValidPaymentInformation;
 		}
 
         private async Task CheckFacebookAccount()

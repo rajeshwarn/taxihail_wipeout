@@ -125,44 +125,22 @@ namespace MK.Common.Configuration
 		[Hidden]
 		public bool AppleTestAccountUsed { get; set; }
 
-		[PropertyEncrypt]
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
-
-		[PropertyEncrypt]
         public OrderStatusSettingContainer OrderStatus { get; protected set; }
-
-		[PropertyEncrypt]
         public GCMSettingContainer GCM { get; protected set; }
-
-		[PropertyEncrypt]
         public DirectionSettingContainer Direction { get; protected set; }
-
-		[PropertyEncrypt]
         public NearbyPlacesServiceSettingContainer NearbyPlacesService { get; protected set; }
-
-		[PropertyEncrypt]
         public MapSettingContainer Map { get; protected set; }
-
-		[PropertyEncrypt]
         public GeoLocSettingContainer GeoLoc { get; protected set; }
-
-		[PropertyEncrypt]
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
-
-		[PropertyEncrypt]
         public NetworkSettingContainer Network { get; protected set; }
-
-		[PropertyEncrypt]
 		public FlightStatsSettingsContainer FlightStats { get; set; }
-
-		[PropertyEncrypt]
 		public StoreSettingContainer Store { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }
 
-		[PropertyEncrypt]
         [Hidden]
         [RequiredAtStartup]
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
@@ -175,7 +153,7 @@ namespace MK.Common.Configuration
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Enabled", Description="Enable register/log in with Twitter")]
-		public bool TwitterEnabled{ get; protected set; }
+		public bool TwitterEnabled { get; protected set; }
 
 		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
@@ -401,7 +379,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead")]
+        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
@@ -590,5 +568,9 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Change credit card while in trip", Description = "Allow the user to change his credit card while in trip")]
         public bool ChangeCreditCardMidtrip { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Unload Timeout", Description = "Time (in seconds) waiting for Charge Amounts from Driver")]
+        public double ChargeAmountsTimeOut { get; set; }
     }
 }

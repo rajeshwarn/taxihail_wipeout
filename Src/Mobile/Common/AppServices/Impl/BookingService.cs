@@ -18,7 +18,7 @@ using Cirrious.CrossCore;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
-using ServiceStack.ServiceClient.Web;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 || status.IBSStatusId == VehicleStatuses.Common.Waiting
                 || status.IBSStatusId == VehicleStatuses.Common.Arrived
                 || status.IBSStatusId == VehicleStatuses.Common.Scheduled
-                || string.IsNullOrEmpty(status.IBSStatusId) && status.IBSOrderId.HasValue;
+                || !status.IBSStatusId.HasValue();
         }
 
         public bool IsCallboxStatusActive(string statusId)
@@ -217,10 +217,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual(VehicleStatuses.Common.Arrived);
         }
 
+
         public bool IsStatusDone(string statusId)
         {
             return statusId.SoftEqual(VehicleStatuses.Common.Done) ||
-                statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
+                statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed) ||
+				statusId.SoftEqual(VehicleStatuses.Common.Unloaded);
         }
 
         public async Task<DirectionInfo> GetFareEstimate(CreateOrderRequest order)
@@ -232,7 +234,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 && order.DropOffAddress.HasValidCoordinate())
             {
                 DirectionInfo directionInfo = null;
-                if (tarifMode != TarifMode.AppTarif)
+				if (tarifMode == TarifMode.Ibs_Distance)
+				{
+					directionInfo =
+						(await
+							_geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+								order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+								order.PickupDate));
+					
+					directionInfo =
+						await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+						service =>
+							service.GetDirectionInfoFromDistance(directionInfo.Distance, directionInfo.EtaDuration,
+                                0, 0, order.Settings.VehicleTypeId, 0, order.Settings.AccountNumber, 0, directionInfo.TripDurationInSeconds));
+				}
+			    else if (tarifMode != TarifMode.AppTarif)
                 {
                     int? duration;
 

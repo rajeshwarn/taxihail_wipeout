@@ -33,58 +33,13 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [Ignore("User must set a confirmed Twilio phone number")]
-        public async void ConfirmAccountViaSMS()
-        {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "true");  // that won't work
-
-            Guid accountId = Guid.NewGuid();
-            string tempEmail = GetTempEmail();
-
-            var newAccount = new RegisterAccount
-            {
-                AccountId = accountId,
-                Phone = "", // TODO: set phone number here
-                Country = new CountryISOCode("CA"),
-                Email = tempEmail,
-                Name = "First Name Test",
-                Language = "en"
-            };
-
-            await sut.RegisterAccount(newAccount);
-
-            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
-            {
-                var unconfirmedAccount = context.Find<AccountDetail>(accountId);
-
-                var request = new ConfirmAccountRequest
-                {
-                    EmailAddress = tempEmail,
-                    ConfirmationToken = unconfirmedAccount.ConfirmationToken,
-                    IsSMSConfirmation = true
-                };
-
-                await sut.ConfirmAccount(request);                
-            }
-
-            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "false"); // that won't work
-
-            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
-            {
-                var confirmedAccount = context.Find<AccountDetail>(accountId);
-                Assert.AreEqual(true, confirmedAccount.IsConfirmed);
-            } 
-        }
-
-        [Test]
         public async void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -107,7 +62,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Email = GetTempEmail(),
                 Country = new CountryISOCode("CA"),
                 Name = "First Name Test",
@@ -193,7 +148,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -219,7 +174,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -297,7 +252,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -308,7 +263,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
@@ -326,7 +281,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -337,7 +292,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -356,7 +311,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -367,7 +322,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount2 = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -384,7 +339,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
@@ -483,7 +438,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
-                Phone = "5146543024",
+                Phone = "5145551234",
                 Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",

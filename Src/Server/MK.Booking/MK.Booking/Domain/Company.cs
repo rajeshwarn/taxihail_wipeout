@@ -227,8 +227,6 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Only one default tariff can be created");
             }
 
-            // TODO: Save default value for "all" in vehicleTypeId
-
             Update(new TariffCreated
             {
                 TariffId = tariffId,

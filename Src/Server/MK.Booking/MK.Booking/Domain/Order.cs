@@ -150,7 +150,8 @@ namespace apcurium.MK.Booking.Domain
         {
             Update(new IbsOrderInfoAddedToOrder
             {
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -268,12 +269,13 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
+        public void CancelBecauseOfError(string errorCode, string errorDescription)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription
+                ErrorDescription = errorDescription,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 

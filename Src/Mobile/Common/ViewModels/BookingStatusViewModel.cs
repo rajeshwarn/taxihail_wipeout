@@ -19,10 +19,9 @@ using System.Reactive;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Booking.Mobile.Models;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -677,7 +676,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var showVehicleInformation = Settings.ShowVehicleInformation;
 				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Unloaded;
 				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue()
 					|| OrderStatusDetail.DriverInfos.FullName.HasValue();
 				
@@ -903,12 +903,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private bool CanRefreshStatus(OrderStatusDetail status)
-		{
-			return status.IBSOrderId.HasValue		// we can exit this loop only if we are assigned an IBSOrderId 
-				|| status.IBSStatusId.HasValue();	// or if we get an IBSStatusId
-		}
-
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
@@ -942,12 +936,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (status == null)
 				{
 					return;
-				}
-
-				while (!CanRefreshStatus(status))
-				{
-					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				}
 
 				cancellationToken.ThrowIfCancellationRequested();

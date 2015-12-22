@@ -14,6 +14,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 

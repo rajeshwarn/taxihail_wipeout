@@ -1,8 +1,6 @@
-﻿using System;
-using CrossUI.Touch.Dialog.Elements;
+﻿using CrossUI.Touch.Dialog.Elements;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
@@ -24,12 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             cell.BackgroundColor = UIColor.Clear;
             cell.ContentView.BackgroundColor = UIColor.Clear;
-            this.Alignment = NaturalLanguageHelper.GetTextAlignment();
+            this.Alignment = UITextAlignment.Natural;
 
             cell.BackgroundView = new CustomCellBackgroundView(cell.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
-                {
-                    HideBottomBar = true
-                };
+            {
+                HideBottomBar = true
+            };
 
             return cell;
         }

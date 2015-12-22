@@ -64,7 +64,7 @@ namespace MK.Common.Configuration
                 OrderPriority = true,
                 TimeDifference = 0,
                 ValidatePickupZone = true,
-                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/", // TODO: Set proper values
+                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/",
                 RestApiUser = @"EUGENE",
                 RestApiSecret = @"T!?_asF",
                 WebServicesPassword = "test",
@@ -116,40 +116,18 @@ namespace MK.Common.Configuration
 				ApplicationKeys = "94705638689d77a3aff2526332969395",
 				ApiUrl = "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/"
 	        };
-
         }
 
-		[PropertyEncrypt]
         public SmtpSettingContainer Smtp { get; protected set; }
-
-		[PropertyEncrypt]
         public APNSSettingContainer APNS { get; protected set; }
-
-		[PropertyEncrypt]
         public BlackberrySettingContainer BBNotificationSettings { get; protected set; }
-
-		[PropertyEncrypt]
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
-
-		[PropertyEncrypt]
 		public IBSSettingContainer IBS { get; protected set; }
-
-		[PropertyEncrypt]
         public EmailSettingContainer Email { get; protected set; }
-
-		[PropertyEncrypt]
         public ReceiptSettingContainer Receipt { get; protected set; }
-
-		[PropertyEncrypt]
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
-
-		[PropertyEncrypt]
         public NetworkSettingContainer Network { get; protected set; }
-
-		[PropertyEncrypt]
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
-
-		[PropertyEncrypt]
 		public CmtGeoSettingContainer CmtGeo { get; protected set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
@@ -219,7 +197,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead", false)]
         [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        

@@ -100,6 +100,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>(), container.Resolve<IServerSettings>()));
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IBlackListEntryService>(new BlackListEntryService(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IAirlineDao>(new AirlineDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPickupPointDao>(new PickupPointDao(() => container.Resolve<BookingDbContext>()));
@@ -180,6 +181,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
             container.RegisterType<IEventHandler, CacheServiceManager>("CacheServiceManager");
             container.RegisterType<IEventHandler, OrderCreationManager>("OrderCreationManager");
+            container.RegisterType<IEventHandler, OrderCancellationManager>("OrderCancellationManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

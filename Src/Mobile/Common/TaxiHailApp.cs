@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -10,7 +9,6 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
-
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -43,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile
 		public TaxiHailApp()
 		{
 			// early loading of libphone library
-			// do not remove, it impoves the time during the binding
+			// do not remove, it improves the time during the binding
 			(new Task(() => { Trace.Write(CountryCode.CountryCodes[0].CountryName.Substring(0, 0)); })).FireAndForget();
 
 			_container = TinyIoCContainer.Current;
@@ -66,23 +64,24 @@ namespace apcurium.MK.Booking.Mobile
             
 			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(),c.Resolve<IPaymentService>()));
 
-			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-            _container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
-            _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));	        
-			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
+			_container.Register((c, p) => new MetricsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));	        
+			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
             
-			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
-            _container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IAccountService, AccountService>();
             _container.Register<IMetricsService, MetricsService>();
@@ -128,8 +127,8 @@ namespace apcurium.MK.Booking.Mobile
                 return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
 			});
             
-			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
-			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 			
 			var lifeTimeMonitor = _container.Resolve<IMvxLifetime> ();
 			lifeTimeMonitor.LifetimeChanged -= TaxiHailApp_LifetimeChanged;
@@ -156,34 +155,53 @@ namespace apcurium.MK.Booking.Mobile
 			"3082010a0282010100ad5bf14c5cfdc46212c2ee9d7f055ec9229650fab5fbc54590c5aadef24d9e667b72f8a4246421ff4b82f325d1df98c18d5b6f8be11b1cfe8a335ce10a1bd017bf9fbddf568f4c72e007770c1560771b40b2163afcea2fa4c743145cff98a98d66957e770fc60ed40af17c13523af7d897bc6ca7b7b2c2cf2cb3c85ae3f6459a29e6072be0dbbab895457fca9e69af3d801ed1a067b347aa84d401e92bece6b68033eeec4178453c977dcdcbdf2c6e864a94bac99c9e122a07c2e526c6251c7d21ef9c6a6ec9fb2c36dd43d541a459ff8b5d5979f52eb5c34ca3481dfd75fc6cef8c641f9c4cf1de643ec12d736a1e6f0e662c9f451361dc127d9f74ab8cdd6f0203010001",
         };
 
+		private static string GetHostFromFullAddress(string url)
+		{
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				return null;
+			}
 
-	    private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-	    {
-		    var request = sender as HttpWebRequest;
+			if(!url.StartsWith("http"))
+			{
+				return url;
+			}
 
-	        if (sslPolicyErrors != SslPolicyErrors.None)
-	        {
-                Mvx.Resolve<ILogger>().LogMessage("WARNING: Following certificate was not found as valid. \n website: {0} \n certificate: {1} \n cause: {2}",
-                    request != null ? request.Host : "unknown",
-                    certificate.ToString(true),
-                    sslPolicyErrors.ToString());
+			var uri = new Uri(url);
 
-                return false;
-            }
+			return uri.Host;
+		}
 
-            // If the certificate is valid but not part of our pinned certs.
-            if (request == null || Hosts.None(request.Host.EndsWith))
-	        {
-	            return true;
-	        }
+		private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+		{
+			var request = sender as HttpWebRequest;
 
-		    var publicKeyString = certificate.GetPublicKeyString();
+			var host = request != null
+				? request.Host
+				: GetHostFromFullAddress(sender as string) ?? "unknown";
+
+			if (sslPolicyErrors != SslPolicyErrors.None)
+			{
+				Mvx.Resolve<ILogger>().LogMessage("WARNING: Following certificate was not found as valid. \n website: {0} \n certificate: {1} \n cause: {2}",
+					host,
+					certificate.ToString(true),
+					sslPolicyErrors.ToString());
+
+				return false;
+			}
+
+			// If the certificate is valid but not part of our pinned certs.
+			if (request == null || Hosts.None(host.EndsWith))
+			{
+				return true;
+			}
+
+			var publicKeyString = certificate.GetPublicKeyString();
 
 			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
-	    }
+		}
 
-
-	    void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
+        void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             switch (e.LifetimeEvent)
             {

@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Moq;
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null);
+                new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             Sut.Setup(new EmailCommandHandler(notificationService));
@@ -136,7 +137,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("TotalFare", "$21.00");
             AssertTemplateValueEquals("Tax", "$1.00");
             AssertTemplateValueEquals("ShowTax", "True");
-            AssertTemplateValueEquals("ShowToll", "True");
+            AssertTemplateValueEquals("ShowTollTotal", "True");
             AssertTemplateValueEquals("ShowSurcharge", "True");
             AssertTemplateValueEquals("ShowBookingFees", "True");
             AssertTemplateValueEquals("vatIsEnabled", "False");

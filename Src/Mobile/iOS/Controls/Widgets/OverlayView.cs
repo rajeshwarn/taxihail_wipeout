@@ -34,9 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.White.ColorWithAlpha(0.9f);
         }
 
-		// do not remove this commented code since design is there
-		// see ticket MKTAXI-3611 why commented
-        /*public override void Draw (CGRect rect)
+        public override void Draw (CGRect rect)
         {          
             if (!UIScreen.MainScreen.Bounds.Contains(Frame) || this.Layer.AnimationKeys != null)
             {
@@ -46,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             DrawStroke();
-        }*/
+        }
 
         private CAShapeLayer GetMaskForRoundedCorners()
         {
@@ -118,6 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             if (_shadowView != null)
             {
                 _shadowView.RemoveFromSuperview();
+                _shadowView.Dispose();
                 _shadowView = null;
             }
         }

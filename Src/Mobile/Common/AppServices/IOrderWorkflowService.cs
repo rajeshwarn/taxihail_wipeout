@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    Task<bool> ValidateChargeType();
 
-		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
+		Task<OrderRepresentation> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
 
@@ -111,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveCanExecuteBookingOperation();
 
-		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
+		Task<OrderRepresentation> GetLastActiveOrder();
 
         Task POIRefPickupList(string textMatch, int maxRespSize);
 
