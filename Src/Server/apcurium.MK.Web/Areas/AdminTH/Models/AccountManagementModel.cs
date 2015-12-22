@@ -1,24 +1,16 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common;
+﻿using apcurium.MK.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
     public class AccountManagementModel
     {
-        public AccountManagementModel()
-        {
-        }
-
         [Display(Name = "Id")]
         public Guid Id { get; set; }
 
@@ -63,59 +55,29 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         [Display(Name = "Credit card last 4 digits")]
         public string CreditCardLast4Digits { get; set; }
+
+        public List<OrderModel> Orders { get; set; }
     }
 
-    public static class OrderExtensions
+    public class OrderModel : OrderDetail
     {
-        public static double? TotalAmount(this Order order)
+        public OrderModel(OrderDetail orderDetail)
         {
-            return order.Fare + order.Tax + order.Toll + order.Tip + order.Surcharge;
+            // Initialize properties of base class dynamically
+            foreach (var prop in typeof (OrderDetail).GetProperties())
+            {
+                GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(orderDetail, null), null);
+            }
         }
 
-        public static string CreatedDateText(this Order order)
-        {
-            string txt;
-            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            txt = order.CreatedDate.ToShortDateString();
-            Thread.CurrentThread.CurrentCulture = originalCulture;
-            return txt;
-        }
+        public string PromoCode { get; set; }
 
-        public static string CreatedTimeText(this Order order)
-        {
-            string txt;
-            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            txt = order.CreatedDate.ToShortTimeString();
-            Thread.CurrentThread.CurrentCulture = originalCulture;
-            return txt;
-        }
-
-        public static string PickupDateText(this Order order)
-        {
-            string txt;
-            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            txt = order.PickupDate.ToShortDateString();
-            Thread.CurrentThread.CurrentCulture = originalCulture;
-            return txt;
-        }
-
-        public static string PickupTimeText(this Order order)
-        {
-            string txt;
-            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            txt = order.PickupDate.ToShortTimeString();
-            Thread.CurrentThread.CurrentCulture = originalCulture;
-            return txt;
-        }
-
-        public static string StatusText(this Order order)
-        {
-            return order.Status.ToString();
-        }
+        public string FareString { get; set; }
+        public string TaxString { get; set; }
+        public string TollString { get; set; }
+        public string TipString { get; set; }
+        public string SurchargeString { get; set; }
+        public string TotalAmountString { get; set; }
     }
 
     /// <summary>
@@ -126,33 +88,31 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public static IList<SelectListItem> CountryCodeElements()
         {
             var list = new List<SelectListItem>
-         {
-               new SelectListItem
-                  {
-                     Value = String.Empty,
-                     Text = String.Empty,
-                     Selected = false
-                  }
-         };
-
-            foreach (CountryCode countryCode in CountryCode.CountryCodes)
             {
-                list.Add(new SelectListItem() { Value = countryCode.CountryISOCode.Code, Text = HttpUtility.HtmlDecode(countryCode.GetTextCountryDialCodeAndCountryName()) });
-            }
+                new SelectListItem
+                {
+                    Value = string.Empty,
+                    Text = string.Empty,
+                    Selected = false
+                }
+            };
+
+            list.AddRange(CountryCode.CountryCodes
+                .Select(x => new SelectListItem
+                {
+                    Value = x.CountryISOCode.Code,
+                    Text = HttpUtility.HtmlDecode(x.GetTextCountryDialCodeAndCountryName())
+                }));
 
             return list;
         }
     }
 
-    public static class OrderDetailList
+    public static class OrderExtensions
     {
-        public static IList<Order> OrderDetailElements(IOrderDao orderDao, Guid id)
+        public static double? TotalAmount(this OrderDetail order)
         {
-            var orderMapper = new OrderMapper();
-            return orderDao.FindByAccountId(id)
-               .OrderByDescending(c => c.CreatedDate)
-               .Select(read => orderMapper.ToResource(read))
-               .ToList();
+            return order.Fare + order.Tax + order.Toll + order.Tip + order.Surcharge;
         }
     }
 }

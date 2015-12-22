@@ -1,27 +1,23 @@
-﻿using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Requests;
+﻿using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Admin;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
-using ServiceStack.ServiceModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using apcurium.MK.Booking.Resources;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -33,9 +29,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
+        private readonly IPromotionDao _promoDao;
         private readonly BookingSettingsService _bookingSettingsService;
         private readonly ConfirmAccountService _confirmAccountService;
         private readonly ExportDataService _exportDataService;
+        private readonly Resources _resources;
 
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
@@ -43,6 +41,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            ICreditCardDao creditCardDao,
            ICommandBus commandBus,
            IOrderDao orderDao,
+           IPromotionDao promoDao,
            BookingSettingsService bookingSettingsService,
            ConfirmAccountService confirmAccountService,
            ExportDataService exportDataService)
@@ -54,8 +53,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _commandBus = commandBus;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
+            _promoDao = promoDao;
             _confirmAccountService = confirmAccountService;
             _exportDataService = exportDataService;
+
+            _resources = new Resources(serverSettings);
         }
 
         public ActionResult Index(Guid id)
@@ -66,32 +68,34 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public async Task<ActionResult> Save(AccountManagementModel accountManagementModel)
+        public ActionResult Save(AccountManagementModel accountManagementModel)
         {
             if (ModelState.IsValid)
             {
                 var accountDetail = _accountDao.FindById(accountManagementModel.Id);
 
-                var bookingSettingsRequest = new BookingSettingsRequest();
-                bookingSettingsRequest.AccountNumber = accountDetail.Settings.AccountNumber;
-                bookingSettingsRequest.ChargeTypeId = accountDetail.Settings.ChargeTypeId;
-                bookingSettingsRequest.Country = accountManagementModel.CountryCode;
-                bookingSettingsRequest.CustomerNumber = accountDetail.Settings.CustomerNumber;
-                bookingSettingsRequest.DefaultTipPercent = accountManagementModel.DefaultTipPercent;
-                bookingSettingsRequest.Email = accountManagementModel.Email;
-                bookingSettingsRequest.FirstName = accountDetail.Name;
-                bookingSettingsRequest.LastName = accountDetail.Name;
-                bookingSettingsRequest.Name = accountManagementModel.Name;
-                bookingSettingsRequest.NumberOfTaxi = accountDetail.Settings.NumberOfTaxi;
-                bookingSettingsRequest.Passengers = accountDetail.Settings.Passengers;
-                bookingSettingsRequest.PayBack = accountDetail.Settings.PayBack;
-                bookingSettingsRequest.Phone = accountManagementModel.PhoneNumber;
-                bookingSettingsRequest.ProviderId = accountDetail.Settings.ProviderId;
-                bookingSettingsRequest.VehicleTypeId = accountDetail.Settings.VehicleTypeId;
-
-                var accountUpdateRequest = new AccountUpdateRequest();
-                accountUpdateRequest.AccountId = accountManagementModel.Id;
-                accountUpdateRequest.BookingSettingsRequest = bookingSettingsRequest;
+                var accountUpdateRequest = new AccountUpdateRequest
+                {
+                    AccountId = accountManagementModel.Id,
+                    BookingSettingsRequest = new BookingSettingsRequest
+                    {
+                        AccountNumber = accountDetail.Settings.AccountNumber,
+                        ChargeTypeId = accountDetail.Settings.ChargeTypeId,
+                        Country = accountManagementModel.CountryCode,
+                        CustomerNumber = accountDetail.Settings.CustomerNumber,
+                        DefaultTipPercent = accountManagementModel.DefaultTipPercent,
+                        Email = accountManagementModel.Email,
+                        FirstName = accountDetail.Name,
+                        LastName = accountDetail.Name,
+                        Name = accountManagementModel.Name,
+                        NumberOfTaxi = accountDetail.Settings.NumberOfTaxi,
+                        Passengers = accountDetail.Settings.Passengers,
+                        PayBack = accountDetail.Settings.PayBack,
+                        Phone = accountManagementModel.PhoneNumber,
+                        ProviderId = accountDetail.Settings.ProviderId,
+                        VehicleTypeId = accountDetail.Settings.VehicleTypeId
+                    }
+                };
 
                 try
                 {
@@ -136,18 +140,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [HttpPost]
         public async Task<ActionResult> SendConfirmationCodeSMS(AccountManagementModel accountManagementModel)
         {
-            if (accountManagementModel.Email != null
-               && accountManagementModel.Email.Length > 0
+            if (accountManagementModel.Email.HasValueTrimmed()
                && accountManagementModel.CountryCode != null
-               && accountManagementModel.CountryCode.Code != null
-               && accountManagementModel.CountryCode.Code.Length > 0
-               && accountManagementModel.PhoneNumber != null
-               && accountManagementModel.PhoneNumber.Length > 0)
+               && accountManagementModel.CountryCode.Code.HasValueTrimmed()
+               && accountManagementModel.PhoneNumber.HasValueTrimmed())
             {
 
                 try
                 {
-                    _confirmAccountService.Get(new ConfirmationCodeRequest() { CountryCode = accountManagementModel.CountryCode.Code, Email = accountManagementModel.Email, PhoneNumber = accountManagementModel.PhoneNumber });
+                    _confirmAccountService.Get(new ConfirmationCodeRequest
+                    {
+                        CountryCode = accountManagementModel.CountryCode.Code,
+                        Email = accountManagementModel.Email,
+                        PhoneNumber = accountManagementModel.PhoneNumber
+                    });
                     TempData["UserMessage"] = "Operation done successfully";
                 }
                 catch (Exception e)
@@ -164,7 +170,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EnableDisableAccount(AccountManagementModel accountManagementModel)
+        public ActionResult EnableDisableAccount(AccountManagementModel accountManagementModel)
         {
             if (accountManagementModel.IsEnabled)
             {
@@ -182,7 +188,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> UnlinkIBSAccount(AccountManagementModel accountManagementModel)
+        public ActionResult UnlinkIBSAccount(AccountManagementModel accountManagementModel)
         {
             _commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
             TempData["UserMessage"] = "Operation done successfully";
@@ -190,7 +196,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DeleteCreditCardsInfo(AccountManagementModel accountManagementModel)
+        public ActionResult DeleteCreditCardsInfo(AccountManagementModel accountManagementModel)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
@@ -210,59 +216,73 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [HttpPost]
         public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
         {
-
-            List<Dictionary<string, string>> csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest() { AccountId = accountManagementModel.Id, Target = DataType.Orders });
-            StringBuilder csvFlatted = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in csv.ElementAt(0))
+            var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
+            var csvFlattened = new StringBuilder();
+            foreach (var item in csv.ElementAt(0))
             {
-                csvFlatted.Append(item.Key).Append(";");
+                csvFlattened.Append(item.Key).Append(";");
             }
 
-            csvFlatted.Append("\n");
+            csvFlattened.Append("\n");
 
-            foreach (Dictionary<string, string> line in csv)
+            foreach (var line in csv)
             {
-                foreach (KeyValuePair<string, string> item in line)
+                foreach (var item in line)
                 {
-                    csvFlatted.Append(item.Value).Append(";");
+                    csvFlattened.Append(item.Value).Append(";");
                 }
-                csvFlatted.Append("\n");
+                csvFlattened.Append("\n");
             }
 
-            return File(new ASCIIEncoding().GetBytes(csvFlatted.ToString()), "text/csv", "Export.csv");
-
+            return File(new ASCIIEncoding().GetBytes(csvFlattened.ToString()), "text/csv", "Export.csv");
         }
 
-        private AccountManagementModel InitializeModel(Guid id)
+        private AccountManagementModel InitializeModel(Guid accountId)
         {
-            var accountDetail = _accountDao.FindById(id);
-            var accountManagementModel = new AccountManagementModel();
-
-            accountManagementModel.Id = id;
-            accountManagementModel.Name = accountDetail.Name;
-            accountManagementModel.Email = accountDetail.Email;
-            accountManagementModel.CustomerNumber = accountDetail.Settings.CustomerNumber;
-            accountManagementModel.CreationDate = accountDetail.CreationDate;
-            accountManagementModel.FacebookAccount = accountDetail.FacebookId;
-            accountManagementModel.IBSAccountId = accountDetail.IBSAccountId;
-            accountManagementModel.IsConfirmed = accountDetail.IsConfirmed;
-            accountManagementModel.IsEnabled = !accountDetail.DisabledByAdmin;
-            accountManagementModel.CountryCode = accountDetail.Settings.Country;
-            accountManagementModel.PhoneNumber = accountDetail.Settings.Phone;
-            accountManagementModel.ChargeType = accountDetail.Settings.ChargeType;
-            accountManagementModel.DefaultTipPercent = accountDetail.DefaultTipPercent;
-            accountManagementModel.IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked;
-            if (accountDetail.DefaultCreditCard != null
-               && accountDetail.DefaultCreditCard.GetValueOrDefault() != null
-               && _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()) != null)
+            var accountDetail = _accountDao.FindById(accountId);
+            var model = new AccountManagementModel
             {
-                accountManagementModel.CreditCardLast4Digits = _creditCardDao.FindById(accountDetail.DefaultCreditCard.GetValueOrDefault()).Last4Digits;
+                Id = accountId,
+                Name = accountDetail.Name,
+                Email = accountDetail.Email,
+                CustomerNumber = accountDetail.Settings.CustomerNumber,
+                CreationDate = accountDetail.CreationDate,
+                FacebookAccount = accountDetail.FacebookId,
+                IBSAccountId = accountDetail.IBSAccountId,
+                IsConfirmed = accountDetail.IsConfirmed,
+                IsEnabled = !accountDetail.DisabledByAdmin,
+                CountryCode = accountDetail.Settings.Country,
+                PhoneNumber = accountDetail.Settings.Phone,
+                ChargeType = accountDetail.Settings.ChargeType,
+                DefaultTipPercent = accountDetail.DefaultTipPercent,
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
+            };
+
+            if (accountDetail.DefaultCreditCard != null)
+            {
+                var defaultCreditCard = _creditCardDao.FindById(accountDetail.DefaultCreditCard.Value);
+                model.CreditCardLast4Digits = defaultCreditCard.Last4Digits;
             }
 
-            // save IOrderDao object in session
-            HttpContext.Session.Add("orderDao", _orderDao);
+            model.Orders = _orderDao.FindByAccountId(accountId)
+                .OrderByDescending(c => c.CreatedDate)
+                .Select(x =>
+                {
+                    var promo = _promoDao.FindByOrderId(x.Id);
+                    return new OrderModel(x)
+                    {
+                        PromoCode = promo != null ? promo.Code : string.Empty,
+                        FareString = _resources.FormatPrice(x.Fare),
+                        TaxString = _resources.FormatPrice(x.Tax),
+                        TollString = _resources.FormatPrice(x.Toll),
+                        TipString = _resources.FormatPrice(x.Tip),
+                        SurchargeString = _resources.FormatPrice(x.Surcharge),
+                        TotalAmountString = _resources.FormatPrice(x.TotalAmount())
+                    };
+                })
+                .ToList();
 
-            return accountManagementModel;
+            return model;
         }
 
     }
