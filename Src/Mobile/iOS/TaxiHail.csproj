@@ -320,6 +320,7 @@
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
+    <Compile Include="PlatformIntegration\BraintreeDropinViewService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />

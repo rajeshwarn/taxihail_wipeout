@@ -72,6 +72,7 @@
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PaymentMethod.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />

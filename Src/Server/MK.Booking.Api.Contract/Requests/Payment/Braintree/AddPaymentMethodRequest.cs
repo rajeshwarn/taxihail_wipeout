@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 	{
 		public string Nonce	{ get; set; }
 	    public PaymentMethods PaymentMethod { get; set; }
+        public string CreditCardCompany { get; set; }
 	}
 }
 

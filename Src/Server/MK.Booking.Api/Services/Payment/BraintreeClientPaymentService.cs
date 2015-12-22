@@ -67,6 +67,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 var creditCard = creditCardResult.Target;
 
+                var test = BraintreeGateway.PaymentMethodNonce.Find(request.Nonce);
+
+                _commandBus.Send(new AddOrUpdateCreditCard
+                {
+                    AccountId = userId,
+                    BraintreeAccountId = account.BraintreeAccountId,
+                    
+                });
+
                 return new TokenizedCreditCardResponse
                 {
                     CardOnFileToken = creditCard.Token,

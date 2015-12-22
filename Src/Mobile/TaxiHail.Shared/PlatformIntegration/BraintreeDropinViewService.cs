@@ -33,12 +33,14 @@ namespace TaxiHail.Shared.PlatformIntegration
 
 			activity.StartActivityForResultCalled += (sender, e) => 
 			{
-				if(e.Value.RequestCode == _requestCode)
-				{
-					var paymentNonce = (PaymentMethodNonce)e.Value.Intent.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
-					
-					tcs.SetResult(paymentNonce.Nonce);
-				}
+			    if (e.Value.RequestCode != _requestCode)
+			    {
+			        return;
+			    }
+
+			    var paymentNonce = (PaymentMethodNonce)e.Value.Intent.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
+
+			    tcs.SetResult(paymentNonce.Nonce);
 			};
 					
 			activity.StartActivityForResult(paymentRequest.GetIntent(activity), _requestCode);
