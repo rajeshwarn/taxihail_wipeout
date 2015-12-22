@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/Order/ViewDebug/5
         public ActionResult ViewDebug(int id)
         {
-            var model = new OrderDebug();
+            var model = new OrderDebugModel();
 
             var orderAndPaymentIds = new List<Guid>();
             using (var context = _bookingContextFactory.Invoke())

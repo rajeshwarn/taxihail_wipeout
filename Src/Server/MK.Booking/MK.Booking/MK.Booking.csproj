@@ -187,6 +187,7 @@
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
+    <Compile Include="Comparer\AccountDetailComparer.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Data\BestAvailableCompany.cs" />
     <Compile Include="Data\IBSOrderResult.cs" />

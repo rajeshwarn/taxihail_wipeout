@@ -1,54 +1,54 @@
-﻿<div class="well sidebar-nav" style='padding: 9px 0;' >
-  <ul class="nav nav-list">
-    <li class="nav-header">{{localize "Address Management"}}</li>
-    <li data-route=""><a href="#">{{localize "Default favorite addresses"}}</a></li>
-    <li data-route="addresses/popular"><a href="#">{{localize "Popular addresses"}}</a></li>
+﻿<div class="well sidebar-nav" style='padding: 9px 0;'>
+   <ul class="nav nav-list">
+      <li class="nav-header">{{localize "Address Management"}}</li>
+      <li data-route=""><a href="#">{{localize "Default favorite addresses"}}</a></li>
+      <li data-route="addresses/popular"><a href="#">{{localize "Popular addresses"}}</a></li>
 
-    {{#if isAdmin}}
-    <li class="nav-header">{{localize "Settings"}}</li>
-    <li><a href="../AdminTh/CompanySettings/">{{localize "Company Settings"}}</a></li>
-    <li data-route="notificationSettings"><a href="#">{{localize "Notification Settings"}}</a></li>
-    {{#if isSuperAdmin }}
-        <li data-route="paymentSettings"><a href="#">{{localize "Payment Settings"}}</a></li>
-    {{/if}}
-    {{#if isTaxiHailPro}}
-        <li data-route="accounts"><a href="#">{{localize "Charge Accounts"}}</a></li>
-        <li data-route="vehicleTypes"><a href="#">{{localize "Vehicle Types"}}</a></li>
-    {{/if}}
-    <li data-route="tariffs"><a href="#">Ride Estimates</a></li>
-    <li data-route="ratings"><a href="#">{{localize "Ride Ratings"}}</a></li>
-    <li data-route="rules"><a href="#">Booking Rules</a></li>
-    <li data-route="termsandconditions"><a href="#">{{localize "Terms and Conditions"}}</a></li>
-    <li><a href="../AdminTh/Privacy/">{{localize "Privacy Policy"}}</a></li>
+      {{#if isAdmin}}
+      <li class="nav-header">{{localize "Settings"}}</li>
+      <li><a href="../AdminTh/CompanySettings/">{{localize "Company Settings"}}</a></li>
+      <li data-route="notificationSettings"><a href="#">{{localize "Notification Settings"}}</a></li>
+      {{#if isSuperAdmin }}
+      <li data-route="paymentSettings"><a href="#">{{localize "Payment Settings"}}</a></li>
+      {{/if}}
+      {{#if isTaxiHailPro}}
+      <li data-route="accounts"><a href="#">{{localize "Charge Accounts"}}</a></li>
+      <li data-route="vehicleTypes"><a href="#">{{localize "Vehicle Types"}}</a></li>
+      {{/if}}
+      <li data-route="tariffs"><a href="#">Ride Estimates</a></li>
+      <li data-route="ratings"><a href="#">{{localize "Ride Ratings"}}</a></li>
+      <li data-route="rules"><a href="#">Booking Rules</a></li>
+      <li data-route="termsandconditions"><a href="#">{{localize "Terms and Conditions"}}</a></li>
+      <li><a href="../AdminTh/Privacy/">{{localize "Privacy Policy"}}</a></li>
 
-    <li class="nav-header">{{localize "TaxiHail Network"}}</li>
-    <li><a href="../AdminTh/TaxiHailNetwork/">{{localize "Configure"}}</a></li>
-    <li><a href="../AdminTh/TaxiHailNetwork/Fees">{{localize "Fees"}}</a></li>
-    {{/if}}
+      <li class="nav-header">{{localize "TaxiHail Network"}}</li>
+      <li><a href="../AdminTh/TaxiHailNetwork/">{{localize "Configure"}}</a></li>
+      <li><a href="../AdminTh/TaxiHailNetwork/Fees">{{localize "Fees"}}</a></li>
+      {{/if}}
 
-    {{#if isTaxiHailPro}}
-        <li class="nav-header">{{localize "Promo Codes"}}</li>
-        <li><a href="../AdminTh/PromoCode/">{{localize "Configure"}}</a></li>
+      {{#if isTaxiHailPro}}
+      <li class="nav-header">{{localize "Promo Codes"}}</li>
+      <li><a href="../AdminTh/PromoCode/">{{localize "Configure"}}</a></li>
       <li><a href="../AdminTh/PromoCode/Unlock">{{localize "Customer Support"}}</a></li>
-    {{/if}}
+      {{/if}}
 
-    <li class="nav-header">{{localize "User Management"}}</li>
-    {{#if isAdmin}}
-    <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
-    {{/if}}
-  	<li data-route="accountsManagement"><a href="#">{{localize "Accounts Management"}}</a></li>
-    <li><a href="../AdminTh/BlackList/">{{localize "BlackList"}}</a></li>
-    <li data-route="signup"><a href="#">{{localize "Signup"}}</a></li>
+      <li class="nav-header">{{localize "User Management"}}</li>
+      {{#if isAdmin}}
+      <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
+      {{/if}}
+      <li><a href="../AdminTh/AccountsManagement/">{{localize "Accounts Management"}}</a></li>
+      <li><a href="../AdminTh/BlackList/">{{localize "BlackList"}}</a></li>
+      <li data-route="signup"><a href="#">{{localize "Signup"}}</a></li>
 
-    <li class="nav-header">{{localize "Test Notifications"}}</li>  
-    <li data-route="sendpushnotification"><a href="#">{{localize "Send Push"}}</a></li>
-    <li data-route="sendtestemail"><a href="#">{{localize "Send Test Email"}}</a></li>
+      <li class="nav-header">{{localize "Test Notifications"}}</li>
+      <li data-route="sendpushnotification"><a href="#">{{localize "Send Push"}}</a></li>
+      <li data-route="sendtestemail"><a href="#">{{localize "Send Test Email"}}</a></li>
 
-    <li class="nav-header">{{localize "Export"}}</li>
-    <li data-route="exportaccounts"><a href="#" >{{localize "ExportAccounts"}}</a></li>
-    <li data-route="exportorders"><a href="#">{{localize "ExportOrders"}}</a></li>
-  	<li data-route="exportpromotions"><a href="#">{{localize "ExportPromotions"}}</a></li>
-    <li class="nav-header">{{localize "Version"}}</li>
-    <li>{{version}}</li>
-  </ul>
+      <li class="nav-header">{{localize "Export"}}</li>
+      <li data-route="exportaccounts"><a href="#">{{localize "ExportAccounts"}}</a></li>
+      <li data-route="exportorders"><a href="#">{{localize "ExportOrders"}}</a></li>
+      <li data-route="exportpromotions"><a href="#">{{localize "ExportPromotions"}}</a></li>
+      <li class="nav-header">{{localize "Version"}}</li>
+      <li>{{version}}</li>
+   </ul>
 </div>
