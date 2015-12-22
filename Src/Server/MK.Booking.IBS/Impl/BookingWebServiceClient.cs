@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Text.RegularExpressions;
+using apcurium.MK.Common.Entity;
 
 #endregion
 
@@ -605,6 +606,27 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
                 success = result == 0;
+            });
+            return success;
+        }
+
+        public bool UpdateDropOffInTrip(int ibsOrderId, Guid orderId, Address dropOffAddress)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var providerId = _serverSettings.ServerData.DefaultBookingSettings.ProviderId.HasValue
+                        ? _serverSettings.ServerData.DefaultBookingSettings.ProviderId.Value
+                        : 0;
+                var result = service.UpdateDestinationAddress(UserNameApp, PasswordApp, providerId, ibsOrderId, orderId.ToString(), new TWEBAddress()
+                {
+                    StreetPlace = dropOffAddress.FullAddress,
+                    AptBaz = dropOffAddress.Apartment,
+                    Longitude = dropOffAddress.Longitude,
+                    Latitude = dropOffAddress.Latitude,
+                    Postal = dropOffAddress.ZipCode
+                });
+                success = result == 1;
             });
             return success;
         }

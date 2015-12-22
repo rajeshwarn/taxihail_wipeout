@@ -42,7 +42,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateAutoTip>,
         ICommandHandler<LogOriginalEta>,
         ICommandHandler<UpdateOrderNotificationDetail>,
-		ICommandHandler<CreateReportOrder>
+		ICommandHandler<CreateReportOrder>,
+        ICommandHandler<UpdateOrderInTrip>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -290,6 +291,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Get(command.OrderId);
             order.UpdateOrderNotificationDetail(command);
+            _repository.Save(order, command.Id.ToString());
+        }
+        public void Handle(UpdateOrderInTrip command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateOrderInTrip(command);
             _repository.Save(order, command.Id.ToString());
         }
     }

@@ -119,6 +119,7 @@
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
+    <Compile Include="Requests\OrderUpdateRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\EncryptedPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />

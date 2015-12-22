@@ -717,6 +717,7 @@
 "OrderStatus_Medallion"="Medallion";
 "OrderStatus_AddDestination"="Ajouter votre destination";
 "OrderStatus_RemoveDestination"="Enlever votre destination";
+"ErrorChangeDropOff_Message"="Désolé, votre destination n'a pas pu être modifiée";
 "WaitingCarLandscapeViewCloseButtonText"="Retour";
 "WaitingCarLandscapeViewCarNumber"="Numéro de voiture";
 "WaitingCarLandscapeActivityName"="Numéro de voiture";

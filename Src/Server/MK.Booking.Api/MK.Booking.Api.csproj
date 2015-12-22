@@ -142,6 +142,7 @@
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
+    <Compile Include="Services\OrderUpdateService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
