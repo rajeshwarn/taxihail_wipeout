@@ -7,8 +7,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using ServiceStack.CacheAccess;
-using ServiceStack.ServiceModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -35,34 +33,31 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // POST: AdminTH/AccountsManagement/Search
         [HttpPost]
         [ValidateInput(false)]
-        public async Task<ActionResult> Search(string searchCriteria)
+        public ActionResult Search(string searchCriteria)
         {
             if (string.IsNullOrEmpty(searchCriteria))
             {
                 TempData["SearchCriteriaEmpty"] = "Search criteria field should not be empty.";
                 return RedirectToAction("Index");
             }
-            else
+
+            var accountsManagement = new AccountsManagementModel { SearchCriteria = searchCriteria };
+
+            accountsManagement.Accounts = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)
+                .Concat(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
+                .Concat(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
+                .Distinct(new AccountDetailComparer())
+                .ToArray();
+
+            accountsManagement.CountryDialCode = new string[accountsManagement.Accounts.Length];
+            var idx = 0;
+            foreach (var accoutDetail in accountsManagement.Accounts)
             {
-                var accountsManagement = new AccountsManagementModel();
-                accountsManagement.SearchCriteria = searchCriteria;
-
-                accountsManagement.AccountsDetail = _accountDao.FindByNamePattern(accountsManagement.SearchCriteria)
-                   .Concat<AccountDetail>(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
-                   .Concat<AccountDetail>(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
-                   .Distinct<AccountDetail>(new AccountDetailComparer())
-                   .ToArray();
-
-                accountsManagement.CountryDialCode = new string[accountsManagement.AccountsDetail.Length];
-                int idx = 0;
-                foreach (AccountDetail accoutDetail in accountsManagement.AccountsDetail)
-                {
-                    CountryCode countryCode = new CountryCode() { CountryISOCode = accoutDetail.Settings.Country };
-                    accountsManagement.CountryDialCode[idx++] = countryCode.СountryDialCodeInternationalFormat;
-                }
-
-                return View("Index", accountsManagement);
+                var countryCode = new CountryCode { CountryISOCode = accoutDetail.Settings.Country };
+                accountsManagement.CountryDialCode[idx++] = countryCode.СountryDialCodeInternationalFormat;
             }
+
+            return View("Index", accountsManagement);
         }
     }
 }

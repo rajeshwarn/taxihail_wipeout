@@ -29,7 +29,7 @@
 		</div>
 	</div>
 
-	if (Model.AccountsDetail != null && Model.AccountsDetail.Length != 0)
+	if (Model.Accounts != null && Model.Accounts.Length != 0)
 	{
 		<div class="well clearfix form-horizontal">
 			<div class="control-group">
@@ -47,7 +47,7 @@
 					</thead>
 					<tbody>
 
-						@foreach (var item in Model.AccountsDetail.Zip(Model.CountryDialCode, (accountDetail, countryDialCode) => new { AccountDetail = accountDetail, CountryDialCode = countryDialCode }))
+						@foreach (var item in Model.Accounts.Zip(Model.CountryDialCode, (accountDetail, countryDialCode) => new { AccountDetail = accountDetail, CountryDialCode = countryDialCode }))
 						{
 							<tr onclick="location.href='@Url.Action("Index", "AccountManagement", new { id = item.AccountDetail.Id })'">
 								<td style="width:170px;">@item.AccountDetail.Name</td>
