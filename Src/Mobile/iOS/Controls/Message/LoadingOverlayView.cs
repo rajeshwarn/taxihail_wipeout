@@ -104,14 +104,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public void Show()
         {
-            _modalWindow =  _modalWindow ?? new UIWindow(UIScreen.MainScreen.Bounds);
-            _modalWindow.Add(this);
+            _modalWindow =  _modalWindow ?? new UIWindow(UIScreen.MainScreen.Bounds)
+            { 
+                WindowLevel = UIWindowLevel.Alert,
+                RootViewController = new UIViewController()
+            };
 
             _modalWindow.MakeKeyAndVisible();
+            _modalWindow.RootViewController.View.AddSubview(this);
 
             _isLoading = true;
             Animate();
-
         }
 
         public void Dismiss()

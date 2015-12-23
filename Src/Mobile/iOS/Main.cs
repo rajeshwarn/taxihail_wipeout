@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, window);
             setup.Initialize();
 
+            window.WindowLevel = UIWindowLevel.Normal;
             window.RootViewController = new SplashView();
 
 			var startup = Mvx.Resolve<IMvxAppStart>();
