@@ -524,7 +524,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return;
             }
 
-            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
             var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken);
 
             using (this.Services().Message.ShowProgressNonModal())
