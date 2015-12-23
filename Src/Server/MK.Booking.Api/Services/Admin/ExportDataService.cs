@@ -129,8 +129,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
                         orderReportEntry["Payment.Id"] = orderReport.Payment.PaymentId.ToString();
                         orderReportEntry["Payment.DriverId"] = orderReport.Payment.DriverId;
-                        orderReportEntry["Payment.Medaillon"] = orderReport.Payment.Medaillon;
-                        orderReportEntry["Payment.Last4Digits"] = orderReport.Payment.Last4Digits;
+                        orderReportEntry["Payment.Medallion"] = orderReport.Payment.Medallion;
+                        orderReportEntry["Payment.Last4Digits"] = orderReport.Payment.Last4Digits.IsNullOrEmpty() ? string.Empty : string.Format("'{0}'", orderReport.Payment.Last4Digits);
                         orderReportEntry["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString();
                         orderReportEntry["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString();
                         orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();

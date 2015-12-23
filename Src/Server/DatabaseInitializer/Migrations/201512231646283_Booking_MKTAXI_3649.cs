@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Migrations
         public override void Up()
         {
             AddColumn("Booking.OrderReportDetail", "Payment_DriverId", c => c.String());
-            AddColumn("Booking.OrderReportDetail", "Payment_Medaillon", c => c.String());
+            AddColumn("Booking.OrderReportDetail", "Payment_Medallion", c => c.String());
             AddColumn("Booking.OrderReportDetail", "Payment_Last4Digits", c => c.String());
             AddColumn("Booking.OrderReportDetail", "VehicleInfos_DriverId", c => c.String());
         }
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Migrations
         {
             DropColumn("Booking.OrderReportDetail", "VehicleInfos_DriverId");
             DropColumn("Booking.OrderReportDetail", "Payment_Last4Digits");
-            DropColumn("Booking.OrderReportDetail", "Payment_Medaillon");
+            DropColumn("Booking.OrderReportDetail", "Payment_Medallion");
             DropColumn("Booking.OrderReportDetail", "Payment_DriverId");
         }
     }

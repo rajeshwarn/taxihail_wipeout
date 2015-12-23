@@ -191,10 +191,10 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(cc => cc.AccountId == orderReport.Account.AccountId);
+                var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(x => x.Token == @event.TokenOfCardToBeUsedForPayment);
 
                 orderReport.Payment.DriverId = @event.DriverId;
-                orderReport.Payment.Medaillon = @event.Medallion;
+                orderReport.Payment.Medallion = @event.Medallion;
                 orderReport.Payment.IsPaired = true;
                 orderReport.Payment.Last4Digits = creditCard != null ? creditCard.Last4Digits : "";
                 context.Save(orderReport);
@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
                     var orderReport = existingReport ?? new OrderReportDetail { Id = @event.OrderId };
-                    var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(cc => cc.AccountId == orderReport.Account.AccountId);
+                    var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(x => x.Token == @event.CardToken);
 
                     orderReport.Payment.PaymentId = @event.SourceId;
                     orderReport.Payment.PreAuthorizedAmount = @event.Amount;

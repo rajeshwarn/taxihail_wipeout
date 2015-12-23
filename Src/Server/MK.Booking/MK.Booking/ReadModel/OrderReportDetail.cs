@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string DriverId { get; set; }
 
-        public string Medaillon { get; set; }
+        public string Medallion { get; set; }
 
         public string PairingToken { get; set; }
 
