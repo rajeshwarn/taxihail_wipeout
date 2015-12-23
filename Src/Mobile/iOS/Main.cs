@@ -7,16 +7,11 @@ using Foundation;
 using ObjCRuntime;
 using UIKit;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
-using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 
