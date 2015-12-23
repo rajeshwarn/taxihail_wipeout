@@ -14,6 +14,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
+using Cirrious.CrossCore;
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -23,22 +25,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class PaymentService : BaseService, IPaymentService
     {
-		private readonly ConfigurationClientService _serviceClient;
         private readonly ICacheService _cache;
 		private readonly IPackageInfo _packageInfo;
         private readonly ILogger _logger; 
         private readonly string _baseUrl;
-        private readonly string _sessionId;
+	    private readonly Func<string> _sessionId;
 
-		private static IPaymentServiceClient _client;
+	    private static IPaymentServiceClient _client;
 		private static ClientPaymentSettings _cachedSettings;
         
         private const string PayedCacheSuffix = "_Payed";
 		private const string PaymentSettingsCacheKey = "PaymentSettings";
 		private const string OnErrorMessage = "Payment Method not found or unknown";
 
-		public PaymentService(string url, string sessionId,
-            ConfigurationClientService serviceClient,
+		public PaymentService(string url,
+            Func<string> sessionId,
             ICacheService cache,
             IPackageInfo packageInfo,
             ILogger logger)
@@ -46,9 +47,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_logger = logger;
 			_packageInfo = packageInfo;
             _baseUrl = url;
-            _sessionId = sessionId;
-            _cache = cache;
-			_serviceClient = serviceClient;
+		    _sessionId = sessionId;
+		    _cache = cache;
         }
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
@@ -78,7 +78,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    try
 		    {
-                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
+		        var serviceClient = Mvx.Resolve<ConfigurationClientService>();
+
+                _cachedSettings = await serviceClient.GetPaymentSettings().ConfigureAwait(false);
                 _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
                 _client = GetClient(_cachedSettings);
             }
@@ -138,13 +140,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+            return await new PairingServiceClient(_baseUrl, _sessionId(), _packageInfo)
                 .Unpair(orderId);
         }
 
         public async Task<bool> UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+            return await new PairingServiceClient(_baseUrl, _sessionId(), _packageInfo)
                 .UpdateAutoTip(orderId, autoTipPercentage);
         }
 
@@ -163,14 +165,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo);
+                    return new BraintreeServiceClient(_baseUrl, _sessionId(), settings.BraintreeClientSettings.ClientKey, _packageInfo);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
+                    return new CmtPaymentClient(_baseUrl, _sessionId(), settings.CmtPaymentSettings, _packageInfo, null);
 
                 case PaymentMethod.Moneris:
-                    return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger);
+                    return new MonerisServiceClient(_baseUrl, _sessionId(), settings.MonerisPaymentSettings, _packageInfo, _logger);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();
