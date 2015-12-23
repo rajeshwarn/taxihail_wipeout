@@ -5,8 +5,6 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceInterface;
 
@@ -59,9 +57,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, order.CompanyKey);
 
-            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value, order.CompanyKey))
             {
                 var response = _paymentService.Unpair(order.CompanyKey, request.OrderId);
                 if (response.IsSuccessful)
@@ -77,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return new BasePaymentResponse { IsSuccessful = false };
         }
 
-        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
+        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey)
         {
             // Change payment type to Pay in Car            
             return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
