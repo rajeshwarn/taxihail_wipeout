@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
             set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
             set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
-            set.Bind(_appBarDropOffSelection).For("DataContext").To(vm => vm.DropOffSelection.BottomBar);
+            set.Bind(_appBarDropOffSelection).For("DataContext").To(vm => vm.BottomBar);
             set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
             set.Bind(_dropOffSelection).For("DataContext").To(vm => vm.DropOffSelection);
 
@@ -571,8 +571,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
-            // See http://code.google.com/p/gmaps-api-issues/issues/detail?id=6237 Comment #9
-            // TODO: Adapt solution to C#/mvvm. Currently help to avoid a crash after tombstone but map state isn't saved
+            // TODO MKTAXI-3708
 
             var mapViewSaveState = new Bundle(outState);
             _touchMap.OnSaveInstanceState(mapViewSaveState);
@@ -637,7 +636,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (state == HomeViewModelState.AddressSearch)
             {
-                _searchAddress.Open(AddressLocationType.Unspeficied);
+                _searchAddress.Open(AddressLocationType.Unspecified);
             }
             else if (state == HomeViewModelState.AirportSearch)
             {

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             ILocalization localize,
             IAppSettings appSettings,
             IGeolocService geolocService,
-            IMessageService messageService)
+	    IMessageService messageService)
         {
             _geolocService = geolocService;
             _messageService = messageService;
@@ -70,7 +70,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             Task.Run(() => _accountService.RefreshCache(true)).FireAndForget();
 
             return orderDetail;
-        }
+		}
+
+		public async Task<bool> UpdateDropOff (Guid orderId, Address dropOffAddress)
+		{
+			Logger.LogMessage("Starting: *************************************   UseServiceClient : UpdateDropOff ID : {0} DropOff : {1}", orderId, dropOffAddress);
+
+			var success = await Mvx.Resolve<OrderServiceClient>().UpdateDropOff(orderId, dropOffAddress);
+
+			//if non success => pop up it didn't work + update order with previous address
+
+			return success;
+		}
 
         public async Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(Guid orderId, string nextDispatchCompanyKey, string nextDispatchCompanyName)
         {
@@ -189,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 || status.IBSStatusId == VehicleStatuses.Common.Waiting
                 || status.IBSStatusId == VehicleStatuses.Common.Arrived
                 || status.IBSStatusId == VehicleStatuses.Common.Scheduled
-                || string.IsNullOrEmpty(status.IBSStatusId) && status.IBSOrderId.HasValue;
+                || !status.IBSStatusId.HasValue();
         }
 
         public bool IsCallboxStatusActive(string statusId)

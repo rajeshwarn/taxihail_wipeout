@@ -33,51 +33,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [Ignore("User must set a confirmed Twilio phone number")]
-        public async void ConfirmAccountViaSMS()
-        {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "true");  // that won't work
-
-            Guid accountId = Guid.NewGuid();
-            string tempEmail = GetTempEmail();
-
-            var newAccount = new RegisterAccount
-            {
-                AccountId = accountId,
-                Phone = "", // TODO: set phone number here
-                Country = new CountryISOCode("CA"),
-                Email = tempEmail,
-                Name = "First Name Test",
-                Language = "en"
-            };
-
-            await sut.RegisterAccount(newAccount);
-
-            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
-            {
-                var unconfirmedAccount = context.Find<AccountDetail>(accountId);
-
-                var request = new ConfirmAccountRequest
-                {
-                    EmailAddress = tempEmail,
-                    ConfirmationToken = unconfirmedAccount.ConfirmationToken,
-                    IsSMSConfirmation = true
-                };
-
-                await sut.ConfirmAccount(request);                
-            }
-
-            ConfigurationManager.AppSettings.Set("SMSConfirmationEnabled", "false"); // that won't work
-
-            using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
-            {
-                var confirmedAccount = context.Find<AccountDetail>(accountId);
-                Assert.AreEqual(true, confirmedAccount.IsConfirmed);
-            } 
-        }
-
-        [Test]
         public async void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
@@ -185,59 +140,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void registering_account_and_confirm_by_admin_then_is_confirmed()
-        {
-            var email = GetTempEmail();
-
-            var client = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var newAccount = new RegisterAccount
-            {
-                AccountId = Guid.NewGuid(),
-                Phone = "5145551234",
-                Country = new CountryISOCode("CA"),
-                Email = email,
-                Name = "First Name Test",
-                Password = "password"
-            };
-            await client.RegisterAccount(newAccount);
-
-            await CreateAndAuthenticateTestAdminAccount();
-
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            sut.EnableAccount(new EnableAccountByAdminRequest {AccountEmail = email});
-
-            var auth = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo());
-            Assert.DoesNotThrow(() => auth.Authenticate(email, "password"));
-        }
-
-        [Test]
-        public async void registering_account_confirm_by_admin_and_disable_by_admin_then_is_not_confirmed()
-        {
-            var email = GetTempEmail();
-
-            var client = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var newAccount = new RegisterAccount
-            {
-                AccountId = Guid.NewGuid(),
-                Phone = "5145551234",
-                Country = new CountryISOCode("CA"),
-                Email = email,
-                Name = "First Name Test",
-                Password = "password"
-            };
-            await client.RegisterAccount(newAccount);
-
-            await CreateAndAuthenticateTestAdminAccount();
-
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            sut.EnableAccount(new EnableAccountByAdminRequest {AccountEmail = email});
-            sut.DisableAccount(new DisableAccountByAdminRequest {AccountEmail = email});
-
-            var auth = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo());
-            Assert.Throws<WebServiceException>(async () => await auth.Authenticate(email, "password"));
-        }
-
-        [Test]
         public async void registering_account_has_settings()
         {
             // Arrange
@@ -245,7 +147,7 @@ namespace apcurium.MK.Web.Tests
 
             // Act
             var account = await new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).GetMyAccount();
-            
+
             // Assert
             Assert.AreEqual("en", account.Language);
             Assert.IsNotNull(account.Settings);
@@ -272,7 +174,7 @@ namespace apcurium.MK.Web.Tests
             await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest {AccountEmail = fbAccount.Email}));
+            Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
         }
 
         [Test]
@@ -285,7 +187,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = await asc.CreateTestAccount();
             await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(newAccount.Email, TestAccountPassword);
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest {AccountEmail = fbAccount.Email}));
+            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
         }
 
         [Test]
@@ -426,11 +328,11 @@ namespace apcurium.MK.Web.Tests
             var account = await CreateAndAuthenticateTestAccount();
 
             await sut.UpdatePassword(new UpdatePassword
-                {
-                    AccountId = account.Id,
-                    CurrentPassword = TestAccountPassword,
-                    NewPassword = "p@55w0rddddddddd"
-                });
+            {
+                AccountId = account.Id,
+                CurrentPassword = TestAccountPassword,
+                NewPassword = "p@55w0rddddddddd"
+            });
 
             Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(account.Email, "p@55w0rddddddddd"));
         }
@@ -499,6 +401,6 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
             Assert.Throws<WebServiceException>(async () => await sut.UpdatePassword(request));
-        }            
+        }
     }
 }

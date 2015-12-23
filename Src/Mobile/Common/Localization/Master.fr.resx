@@ -2276,6 +2276,9 @@
   <data name="OrderStatus_RemoveDestination" xml:space="preserve">
     <value>Enlever votre destination</value>
   </data>
+  <data name="ErrorChangeDropOff_Message" xml:space="preserve">
+    <value>Désolé, votre destination n'a pas pu être modifiée</value>
+  </data>
   <data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
     <value>Retour</value>
   </data>

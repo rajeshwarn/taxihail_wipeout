@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Text.RegularExpressions;
+using apcurium.MK.Common.Entity;
 
 #endregion
 
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     // ReSharper disable CompareOfFloatsByEqualityOperator
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
-                    result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
+                    result.Tip = order.Tips == 0 ? (double?)null : order.Tips;
                     result.VAT = order.VAT == 0 ? (double?)null : order.VAT;
                     // ReSharper restore CompareOfFloatsByEqualityOperator
                     result.CallNumber = order.CallNumber;
@@ -454,8 +455,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     int collect = 0;
                     int balance = 0;
-                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,
-                        null, 0, 0, 0, 0,
+                    result = service.SaveExtrPayment_3(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,null, 0, 0, 0, 0,
                         0, 0, 0, accountId, name, CleanPhone(phone), email, "", "", orderId.ToString(), 0, 0, 0,
                         collect, balance);
 
@@ -606,6 +606,27 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
                 success = result == 0;
+            });
+            return success;
+        }
+
+        public bool UpdateDropOffInTrip(int ibsOrderId, Guid orderId, Address dropOffAddress)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var providerId = _serverSettings.ServerData.DefaultBookingSettings.ProviderId.HasValue
+                        ? _serverSettings.ServerData.DefaultBookingSettings.ProviderId.Value
+                        : 0;
+                var result = service.UpdateDestinationAddress(UserNameApp, PasswordApp, providerId, ibsOrderId, orderId.ToString(), new TWEBAddress()
+                {
+                    StreetPlace = dropOffAddress.FullAddress,
+                    AptBaz = dropOffAddress.Apartment,
+                    Longitude = dropOffAddress.Longitude,
+                    Latitude = dropOffAddress.Latitude,
+                    Postal = dropOffAddress.ZipCode
+                });
+                success = result == 1;
             });
             return success;
         }

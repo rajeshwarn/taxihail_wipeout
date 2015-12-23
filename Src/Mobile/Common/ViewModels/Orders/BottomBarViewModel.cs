@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Plugins.PhoneCall;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -608,27 +609,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
 
-							if (questions != null
-								&& questions.Length > 0
-								&& questions[0].Question.HasValue())
+					if (questions != null
+						&& questions.Length > 0
+						&& questions[0].Question.HasValue())
 					{
 						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
-								// Navigate to Q&A page
 
-						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
+						// Navigate to Q&A page
+						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, OrderRepresentation>(
 							null, 
-							result => ParentViewModel.GotoBookingStatus(result.Item1, result.Item2)
+							result => ParentViewModel.GotoBookingStatus(result.Order, result.OrderStatus)
 						);
 					}
 					else
 					{
-								// Skip Q&A page and confirm order
+						// Skip Q&A page and confirm order
 						await ConfirmOrderAndGoToBookingStatus();
 					}
 				}
 				else
 				{
-							// Skip Q&A page and confirm order
+					// Skip Q&A page and confirm order
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
@@ -650,7 +651,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								{
 									var orderInfos = await GetOrderInfos(pendingOrderId);
 
-									ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
+									ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Order, orderInfos.OrderStatus);
 
 									ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
 									ParentViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
@@ -690,7 +691,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var result = await _orderWorkflowService.ConfirmOrder();
 				this.Services().Analytics.LogEvent("Book");
-				ParentViewModel.GotoBookingStatus(result.Item1, result.Item2);
+				ParentViewModel.GotoBookingStatus(result.Order, result.OrderStatus);
 			}
 		}
 
@@ -1034,7 +1035,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private async Task<Tuple<Order, OrderStatusDetail>> GetOrderInfos(Guid pendingOrderId)
+		private async Task<OrderRepresentation> GetOrderInfos(Guid pendingOrderId)
         {
             var order = await _accountService.GetHistoryOrderAsync(pendingOrderId);
 
@@ -1049,8 +1050,53 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 VehicleLongitude = null
             };
 
-            return Tuple.Create(order, orderStatus);
+			return new OrderRepresentation(order, orderStatus);
         }
+
+		public ICommand CancelChangeDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						// Reset destination selection
+						ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+						await _orderWorkflowService.SetAddress(new Address());
+						_orderWorkflowService.SetDropOffSelectionMode(false);
+						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
+					});
+			}
+		}
+
+		public ICommand SaveDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						var success = false;
+
+						using (this.Services().Message.ShowProgress())
+						{
+							success = await _orderWorkflowService.UpdateDropOff(ParentViewModel.BookingStatus.Order.Id);
+						}
+
+						if(success)
+						{
+							// add destination selected to order and go back to booking view 
+							var order = ParentViewModel.BookingStatus.Order;
+							order.DropOffAddress = ParentViewModel.DropOffSelection.DestinationAddress;
+							ParentViewModel.BookingStatus.Order = order;
+							ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+							_orderWorkflowService.SetDropOffSelectionMode(false);
+							return;
+						}
+
+						_orderWorkflowService.ClearDestinationAddress();
+						this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["ErrorChangeDropOff_Message"]);
+					});
+			}
+		}
     }
 }
 

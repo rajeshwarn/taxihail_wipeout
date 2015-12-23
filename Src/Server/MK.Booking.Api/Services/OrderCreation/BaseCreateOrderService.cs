@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     string.Format(_resources.Get("PhoneNumberFormat", request.ClientLanguageCode), countryCode.GetPhoneExample()));
             }
 
-            // TODO: Find a better way to do this...
+            // TODO MKTAXI-3576: Find a better way to do this...
             var isFromWebApp = request.FromWebApp;
 
             if (!isFromWebApp)
@@ -346,7 +346,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected DateTime GetCurrentOffsetedTime(string companyKey)
         {
-            //TODO : need to check ibs setup for shortesst time
+            //TODO MKTAXI-2296: need to check ibs setup for shortesst time
 
             var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
@@ -407,27 +407,20 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private void ValidateAppVersion(string clientLanguage, CreateReportOrder createReportOrder)
         {
-            var appVersion = base.Request.Headers.Get("ClientVersion");
-            var minimumAppVersion = _serverSettings.ServerData.MinimumRequiredAppVersion;
+            var appVersionString = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
 
-            if (appVersion.IsNullOrEmpty() || minimumAppVersion.IsNullOrEmpty())
+            if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
             {
                 return;
             }
 
-            var minimumMajorMinorBuild = minimumAppVersion.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-            var appMajorMinorBuild = appVersion.Split('.');
+            var mobileVersion = new ApplicationVersion(appVersionString);
+            var minimumAppVersion = new ApplicationVersion(minimumAppVersionString);
 
-            for (var i = 0; i < appMajorMinorBuild.Length; i++)
+            if (mobileVersion < minimumAppVersion)
             {
-                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
-                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
-
-                if (appVersionItem < minimumVersionItem)
-                {
-                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
-                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
-                }
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
             }
         }
 
@@ -550,7 +543,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
 
-                    var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv, createReportOrder);
+                    var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv);
                     if (!result.IsSuccessful)
                     {
                         ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, result.Message);
@@ -566,8 +559,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
 
                     var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account,
-                        request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees,
-                        false, createReportOrder, request.Cvv);
+                        isFutureBooking, appEstimateWithTip, bookingFees, request.Cvv);
 
                     if (!isSuccessful)
                     {
@@ -619,7 +611,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
             }
 
-            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, clientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, true, createReportOrder);
+            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, isFutureBooking, appEstimateWithTip, bookingFees);
             if (!isSuccessful)
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode));

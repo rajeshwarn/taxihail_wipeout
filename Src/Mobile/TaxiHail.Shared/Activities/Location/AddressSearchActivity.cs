@@ -3,6 +3,7 @@ using Android.Content.PM;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
@@ -19,7 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 
 			var addressPicker = FindViewById<AddressPicker>(Resource.Id.searchAddressControl);
 			addressPicker.Bind(this, "DataContext;");
-			addressPicker.DelayBind(() => addressPicker.FocusOnTextField ());
+			addressPicker.DelayBind(() => 
+			{
+				addressPicker.FocusOnTextField ();
+				addressPicker.Open(AddressLocationType.Unspecified);
+			});
 		}
 	}
 }

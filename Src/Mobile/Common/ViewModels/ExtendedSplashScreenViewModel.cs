@@ -38,9 +38,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return;
             }
 
-            if (currentOrder.Item1.IsManualRideLinq)
+			if (currentOrder.Order.IsManualRideLinq)
             {
-                var orderManualRideLinqDetail = await Task.Run(() => _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Item1.Id));
+				var orderManualRideLinqDetail = await Task.Run(() => _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Order.Id));
 
                 ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
                 {
@@ -53,8 +53,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
             {
-                order = currentOrder.Item1.ToJson(),
-                orderStatusDetail = currentOrder.Item2.ToJson(),
+				order = currentOrder.Order.ToJson(),
+				orderStatusDetail = currentOrder.OrderStatus.ToJson(),
                 locateUser = false
             });
         }

@@ -191,12 +191,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin.ToString();
         }
 
-        private CompanySettings GetAvailableSettingsForUser()
+        private CompanySettingsModel GetAvailableSettingsForUser()
         {
             var settings = _serverSettings.ServerData.GetType().GetAllProperties().OrderBy(s => s.Key);
 
             var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
-            var companySettings = new CompanySettings(_serverSettings, isSuperAdmin);
+            var companySettings = new CompanySettingsModel(_serverSettings, isSuperAdmin);
             
             foreach (var setting in settings)
             {

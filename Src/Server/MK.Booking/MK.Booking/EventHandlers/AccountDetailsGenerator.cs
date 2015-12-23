@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using System.Globalization;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Helpers;
 
 #endregion
@@ -316,7 +317,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
+                if (_serverSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.None)
                 {
                     // If pay in taxi is not disable, this becomes the default payment method
                     var account = context.Find<AccountDetail>(@event.SourceId);

@@ -1,29 +1,31 @@
 ﻿@model apcurium.MK.Booking.ReadModel.CompanyDetail
 
-<h4 class="table-title">Privacy Policy</h4>
-@if (@TempData["Info"] != null)
-{
-    <div class="alert alert-info" style="margin-top: 10px;">
-        @TempData["Info"]
-    </div>
-}
-
-@using (Html.BeginForm("Update", "Privacy", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="control-group">
-        @Html.LabelFor(x => x.PrivacyPolicy, "Content", new {@class = "control-label"})
-        <div class="controls">
-            @{
-                var policyText = (string)TempData["PrivacyPolicy"] ?? Model.PrivacyPolicy;
-            }
-            @Html.TextArea("PrivacyPolicy", policyText, new { @class = "input-block-level", @rows = 20 })
-            @Html.ValidationMessageFor(x => x.PrivacyPolicy)
+<div class="well clearfix form-horizontal">
+    <h4 class="table-title">Privacy Policy</h4>
+    @if (@TempData["Info"] != null)
+    {
+        <div class="alert alert-info" style="margin-top: 10px;">
+            @TempData["Info"]
         </div>
-    </div>
+    }
 
-    <div class="control-group btn-right-alignment">
-        <button type="submit" class="btn btn-primary span">Save</button>
-    </div>
-}
+    @using (Html.BeginForm("Update", "Privacy", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="control-group">
+            @Html.LabelFor(x => x.PrivacyPolicy, "Content", new { @class = "control-label" })
+            <div class="controls">
+                @{
+                    var policyText = (string)TempData["PrivacyPolicy"] ?? Model.PrivacyPolicy;
+                }
+                @Html.TextArea("PrivacyPolicy", policyText, new { @class = "input-block-level", @rows = 20 })
+                @Html.ValidationMessageFor(x => x.PrivacyPolicy)
+            </div>
+        </div>
+
+        <div class="control-group btn-right-alignment">
+            <button type="submit" class="btn btn-primary span">Save</button>
+        </div>
+                    }
+</div>

@@ -188,6 +188,7 @@
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
+    <Compile Include="Comparer\AccountDetailComparer.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Data\BestAvailableCompany.cs" />
     <Compile Include="Data\IBSOrderResult.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\CacheServiceManager.cs" />
+    <Compile Include="EventHandlers\Integration\OrderCancellationManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderCreationManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />

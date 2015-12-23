@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
+            Handles<OrderUpdatedInTrip>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -149,7 +150,8 @@ namespace apcurium.MK.Booking.Domain
         {
             Update(new IbsOrderInfoAddedToOrder
             {
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -267,12 +269,13 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
+        public void CancelBecauseOfError(string errorCode, string errorDescription)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription
+                ErrorDescription = errorDescription,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -430,6 +433,15 @@ namespace apcurium.MK.Booking.Domain
                 IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
                 IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
                 InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver
+            });
+        }
+
+        public void UpdateOrderInTrip(UpdateOrderInTrip orderInTrip)
+        {
+            Update(new OrderUpdatedInTrip
+            {
+                OrderId = orderInTrip.OrderId,
+                DropOffAddress = orderInTrip.DropOffAddress
             });
         }
 

@@ -30,7 +30,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<ManualRideLinqTripInfoUpdated>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
-        IEventHandler<OrderNotificationDetailUpdated>
+        IEventHandler<OrderNotificationDetailUpdated>,
+        IEventHandler<OrderUpdatedInTrip>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -498,6 +499,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                return;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
@@ -753,7 +759,23 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        // TODO remove this once CMT has real preauth
+        public void Handle(OrderUpdatedInTrip @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+
+                if (orderDetail == null)
+                {
+                    return;
+                }
+
+                orderDetail.DropOffAddress = @event.DropOffAddress;
+
+                context.Save(orderDetail);
+            }
+        }
+
         private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);

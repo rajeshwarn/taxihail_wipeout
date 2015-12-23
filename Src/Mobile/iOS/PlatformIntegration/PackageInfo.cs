@@ -4,6 +4,7 @@ using UIKit;
 using TinyIoC;
 using Cirrious.CrossCore.Core;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -36,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-
         public string UserAgent
         {
             get
@@ -44,8 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 if ( _userAgent == null )
                 {
                     _userAgent = "";
-                    //TODO: This will probably not work on the first call;
-					TinyIoCContainer.Current.Resolve<IMvxMainThreadDispatcher>().RequestMainThreadAction(() =>
+
+                    // this will not be called until the app is fully launched
+                    UIApplication.SharedApplication.InvokeOnMainThread(() =>
                     {
                         try
                         {

@@ -9,26 +9,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class DropOffSelectionMidTripViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
-		private DropOffSelectionBottomBarViewModel _bottomBar;
 
 		public DropOffSelectionMidTripViewModel(IOrderWorkflowService orderWorkflowService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 
-			BottomBar = AddChild<DropOffSelectionBottomBarViewModel>();
-
 			Observe (_orderWorkflowService.GetAndObserveDestinationAddress (), address => DestinationAddress = address);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
-		}
-
-		public DropOffSelectionBottomBarViewModel BottomBar
-		{
-			get { return _bottomBar; }
-			set
-			{
-				_bottomBar = value; 
-				RaisePropertyChanged();
-			}
 		}
 
 		private Address _destinationAddress;

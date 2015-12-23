@@ -427,7 +427,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
 			{
-                //todo avoir une cache propre au login du user
                 UserCache.Clear (HistoryAddressesCacheKey);
                 UserCache.Clear (FavoriteAddressesCacheKey);
 

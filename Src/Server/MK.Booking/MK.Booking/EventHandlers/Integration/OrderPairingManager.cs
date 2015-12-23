@@ -2,7 +2,6 @@
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;

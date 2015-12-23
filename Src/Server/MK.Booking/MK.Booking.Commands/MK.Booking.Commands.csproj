@@ -71,6 +71,7 @@
     <Compile Include="UpdateCreditCardLabel.cs" />
     <Compile Include="UpdateDefaultCreditCard.cs" />
     <Compile Include="UpdateFees.cs" />
+    <Compile Include="UpdateOrderInTrip.cs" />
     <Compile Include="UpdateOrderNotificationDetail.cs" />
     <Compile Include="UpdateRoleToUserAccount.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />

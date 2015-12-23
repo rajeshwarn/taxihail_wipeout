@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return string.Empty;
 
-            // TODO: feature on hold
+            // feature on hold
             //if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
             //{
             //    return string.Empty;
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return true;
 
-            // TODO: feature on hold
+            // feature on hold
             //if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
             //{
             //    return true;

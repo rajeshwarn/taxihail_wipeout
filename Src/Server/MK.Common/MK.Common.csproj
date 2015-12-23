@@ -249,6 +249,7 @@
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="Serializer\TolerantEnumConverter.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>

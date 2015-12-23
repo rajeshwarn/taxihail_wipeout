@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Views.BookingBottomBar;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -19,7 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private BookingBarConfirmation _bookingBarConfirmation;
 		private BookingBarEdit _bookingBarEdit;
 		private BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
-		private BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
+        private BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
+        private BookingBarDropOffSelection _bookingBarDropOffSelection;
 
 		protected UIView Line { get; set; }
 
@@ -56,7 +58,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Add(_bookingBarInTripNormalBooking);
 
 			_bookingBarInTripManualRideLinQBooking = BookingBarInTripManualRideLinQBooking.LoadViewFromFile();
-			Add(_bookingBarInTripManualRideLinQBooking);
+            Add(_bookingBarInTripManualRideLinQBooking);
+
+            _bookingBarDropOffSelection = BookingBarDropOffSelection.LoadViewFromFile();
+            Add(_bookingBarDropOffSelection);
 
             Line = new UIView
             {
@@ -77,7 +82,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			setBooking.Bind(_bookingBarConfirmation).For(v => v.DataContext).To(vm => vm.BottomBar);
 			setBooking.Bind(_bookingBarEdit).For(v => v.DataContext).To(vm => vm.BottomBar);
             setBooking.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
-			setBooking.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
+            setBooking.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
+            setBooking.Bind(_bookingBarDropOffSelection).For(v => v.DataContext).To(vm => vm);
 
 			setBooking.Apply();
 		}

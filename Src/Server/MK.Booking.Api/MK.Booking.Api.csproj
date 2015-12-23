@@ -143,6 +143,7 @@
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
+    <Compile Include="Services\OrderUpdateService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
@@ -154,7 +155,6 @@
     <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
-    <Compile Include="Services\AdminAccountManagementService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />

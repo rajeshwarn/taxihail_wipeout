@@ -379,7 +379,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead")]
+        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
@@ -536,7 +536,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
 
-        [SendToClient, CustomizableByCompany, Hidden]
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
         public bool ChangeDropOffAddressMidTrip { get; protected set; }
         

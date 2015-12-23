@@ -48,8 +48,6 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // TODO: Should we check for same Guid in db context?
-
                 foreach (var account in @event.AccountCharges)
                 {
                     var accountChargeDetail = new AccountChargeDetail

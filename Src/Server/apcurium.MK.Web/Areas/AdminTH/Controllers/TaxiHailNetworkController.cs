@@ -131,7 +131,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> Fees()
         {
             var fees = _feesDao.GetAll();
-            var feesPreferences = new MarketFees();
+            var feesPreferences = new MarketFeesModel();
 
             var localFees = fees.FirstOrDefault(f => !f.Market.HasValue());
             if (localFees == null)
@@ -198,7 +198,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Fees(MarketFees marketFees)
+        public async Task<ActionResult> Fees(MarketFeesModel marketFees)
         {
             _commandBus.Send(new UpdateFees
             {

@@ -18,7 +18,7 @@
         android:layout_marginRight="8dip"
         android:layout_gravity="center_vertical"
         android:text="@string/Cancel"
-        local:MvxBind="Click Cancel" />
+        local:MvxBind="Click CancelChangeDropOff" />
     <Button
         android:id="@+id/OkBtn"
         style="@style/ButtonActionGreenStyle"

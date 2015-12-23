@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Commands
 
         public string ErrorDescription { get; set; }
 
-        public bool WasPrepaid { get; set; }
-
         public Guid Id { get; private set; }
     }
 }

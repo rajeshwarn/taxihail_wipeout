@@ -66,7 +66,6 @@ namespace apcurium.MK.Common.Extensions
             return bool.TryParse(instance, out isBoolean);
         }
 
-        //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {
             return string.Join(joinBy, items.ToArray());
