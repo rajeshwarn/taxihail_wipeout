@@ -1,5 +1,5 @@
 ﻿@using Newtonsoft.Json.Linq
-@model apcurium.MK.Web.Areas.AdminTH.Models.OrderDebug
+@model apcurium.MK.Web.Areas.AdminTH.Models.OrderDebugModel
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -26,53 +26,54 @@
     <script src="~/scripts/json.human.js"></script>
 </head>
 <body>
-<header>
-    <div class="login-status-zone">
-        <div><a href='@ViewData["BaseUrl"]' class='brand'></a>
+    <header>
+        <div class="login-status-zone">
+            <div>
+                <a href='@ViewData["BaseUrl"]' class='brand'></a>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<div class="container">
-    <div class='notification-zone'></div>
-    <div class='row'>
-        <div id='main' class='span12'>
-            <div class="well clearfix form-horizontal">
-                <h4 class="table-title">Order Debug Info</h4>
-                @if (Model.OrderDetail == null)
-                {
-                    <div class="alert alert-error" style="margin-top: 10px;">
-                        Order cannot be found.
-                    </div>
-                }
-                else
-                {
-                    <h5>User</h5>
-                    <div>@Model.UserEmail</div>
+    <div class="container">
+        <div class='notification-zone'></div>
+        <div class='row'>
+            <div id='main' class='span12'>
+                <div class="well clearfix form-horizontal">
+                    <h4 class="table-title">Order Debug Info</h4>
+                    @if (Model.OrderDetail == null)
+                    {
+                        <div class="alert alert-error" style="margin-top: 10px;">
+                            Order cannot be found.
+                        </div>
+                    }
+                    else
+                    {
+                        <h5>User</h5>
+                        <div>@Model.UserEmail</div>
 
-                    <h5>OrderDetail</h5>
-                    <div id="orderDetail"></div>
+                        <h5>OrderDetail</h5>
+                        <div id="orderDetail"></div>
 
-                    <h5>OrderStatusDetail</h5>
-                    <div id="orderStatusDetail">No OrderStatusDetail found</div>
+                        <h5>OrderStatusDetail</h5>
+                        <div id="orderStatusDetail">No OrderStatusDetail found</div>
 
-                    <h5>OrderPairingDetail</h5>
-                    <div id="orderPairingDetail">No OrderPairingDetail found</div>
+                        <h5>OrderPairingDetail</h5>
+                        <div id="orderPairingDetail">No OrderPairingDetail found</div>
 
-                    <h5>OrderPaymentDetail</h5>
-                    <div id="orderPaymentDetail">No OrderPaymentDetail found</div>
+                        <h5>OrderPaymentDetail</h5>
+                        <div id="orderPaymentDetail">No OrderPaymentDetail found</div>
 
-                    <h5>OverduePaymentDetail</h5>
-                    <div id="overduePaymentDetail">No OverduePaymentDetail found</div>
+                        <h5>OverduePaymentDetail</h5>
+                        <div id="overduePaymentDetail">No OverduePaymentDetail found</div>
 
-                    <h5>Related events</h5>
-                    <div id="relatedEvents"></div>
-                }
+                        <h5>Related events</h5>
+                        <div id="relatedEvents"></div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class='modal-zone'></div>
+    <div class='modal-zone'></div>
 </body>
 
 <script type="text/javascript">
@@ -80,24 +81,24 @@
         $('#orderDetail').append(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderDetail))));
 
         @if (Model.OrderStatusDetail != null)
-        {
-            <text>$('#orderStatusDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderStatusDetail))));</text>
-        }
+    {
+        <text>$('#orderStatusDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderStatusDetail))));</text>
+    }
 
         @if (Model.OrderPairingDetail != null)
-        {
-            <text>$('#orderPairingDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPairingDetail))));</text>
-        }
+    {
+        <text>$('#orderPairingDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPairingDetail))));</text>
+    }
 
         @if (Model.OrderPaymentDetail != null)
-        {
-            <text>$('#orderPaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPaymentDetail))));</text>
-        }
+    {
+        <text>$('#orderPaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OrderPaymentDetail))));</text>
+    }
 
         @if (Model.OverduePaymentDetail != null)
-        {
-            <text>$('#overduePaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OverduePaymentDetail))));</text>
-        }
+    {
+        <text>$('#overduePaymentDetail').html(JsonHuman.format(@Html.Raw(JObject.FromObject(Model.OverduePaymentDetail))));</text>
+    }
 
         $('#relatedEvents').append(JsonHuman.format(@Html.Raw(Model.RelatedEvents)));
     });

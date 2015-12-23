@@ -756,6 +756,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             return !_cacheService.Get<string>("RateLastRideDontPrompt").HasValue();
 	    }
 
+		public async Task<bool> UpdateDropOff (Guid orderId)
+		{
+			var address = await GetCurrentAddress(); 
+
+			return await _bookingService.UpdateDropOff(orderId, address);
+		}
+
 		public async Task<bool> ShouldGoToAccountNumberFlow()
 		{
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();

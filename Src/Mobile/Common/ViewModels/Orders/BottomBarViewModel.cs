@@ -1052,6 +1052,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			return new OrderRepresentation(order, orderStatus);
         }
+
+		public ICommand CancelChangeDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						// Reset destination selection
+						ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+						await _orderWorkflowService.SetAddress(new Address());
+						_orderWorkflowService.SetDropOffSelectionMode(false);
+						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
+					});
+			}
+		}
+
+		public ICommand SaveDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						var success = false;
+
+						using (this.Services().Message.ShowProgress())
+						{
+							success = await _orderWorkflowService.UpdateDropOff(ParentViewModel.BookingStatus.Order.Id);
+						}
+
+						if(success)
+						{
+							// add destination selected to order and go back to booking view 
+							var order = ParentViewModel.BookingStatus.Order;
+							order.DropOffAddress = ParentViewModel.DropOffSelection.DestinationAddress;
+							ParentViewModel.BookingStatus.Order = order;
+							ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+							_orderWorkflowService.SetDropOffSelectionMode(false);
+							return;
+						}
+
+						_orderWorkflowService.ClearDestinationAddress();
+						this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["ErrorChangeDropOff_Message"]);
+					});
+			}
+		}
     }
 }
 
