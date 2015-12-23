@@ -114,13 +114,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 if (account.BraintreeAccountId.HasValueTrimmed())
                 {
-                    var tokenRequest = new ClientTokenRequest()
-                    {
-                        CustomerId = account.BraintreeAccountId,
-                        MerchantAccountId = BraintreeGateway.MerchantId,
-                    };
-
-                    return BraintreeGateway.ClientToken.generate(tokenRequest);
+                    return GetClientToken(account.BraintreeAccountId);
                 }
 
                 var customerId = GetOrGenerateBraintreeCustomerId(account);
@@ -131,16 +125,28 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     BraintreeAccountId = customerId
                 });
 
-                return BraintreeGateway.ClientToken.generate(new ClientTokenRequest()
-                {
-                    CustomerId = customerId
-                });
-
+                return GetClientToken(account.BraintreeAccountId);
             }
             catch (Exception ex)
             {
                 throw new HttpException((int) HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        private object GetClientToken(string customerId)
+        {
+            var tokenRequest = new ClientTokenRequest()
+            {
+                CustomerId = customerId,
+                MerchantAccountId = BraintreeGateway.MerchantId,
+            };
+
+            var clientToken = BraintreeGateway.ClientToken.generate(tokenRequest);
+
+            return new GenerateClientTokenResponse()
+            {
+                ClientToken = clientToken
+            };
         }
 
         private string GetOrGenerateBraintreeCustomerId(AccountDetail account)
