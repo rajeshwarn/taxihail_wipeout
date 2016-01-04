@@ -1,14 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Android.App;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using Android.Content.PM;
-using Java.Security;
-using Android.Util;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid.Platform;
 using Android.Content;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Android.OS;
@@ -20,30 +15,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 	public class FacebookService : IFacebookService
 	{
 		// milliseconds
-		private static readonly long MinimumTimeTokenStayActive = 60 * 60 * 1000; 
-		
-		private static string _facebookApplicationID;
-		ICallbackManager _facebookCallbackManager;
-		FacebookCallback<Java.Lang.Object> _facebookCallback = new FacebookCallback<Java.Lang.Object>();
+	    private const long MinimumTimeTokenStayActive = 60*60*1000;
+
+	    private static string _facebookApplicationId;
+	    private ICallbackManager _facebookCallbackManager;
+	    private readonly FacebookCallback<Java.Lang.Object> _facebookCallback = new FacebookCallback<Java.Lang.Object>();
 
 		public void ActivityOnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
+		    if (!FacebookSdk.IsFacebookRequestCode(requestCode))
+		    {
+		        return;
+		    }
 			_facebookCallbackManager.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
 		public void Init()
 		{
-			if (!FacebookSdk.IsInitialized)
-			{
-				IAppSettings appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
+		    if (FacebookSdk.IsInitialized)
+		    {
+		        return;
+		    }
+		    var appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
 
-				_facebookApplicationID = appSettings.Data.FacebookAppId;
-				FacebookSdk.ApplicationId = _facebookApplicationID;
-				FacebookSdk.ApplicationName = appSettings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty);
-				FacebookSdk.SdkInitialize(Application.Context);
-				_facebookCallbackManager = CallbackManagerFactory.Create();
-				LoginManager.Instance.RegisterCallback(_facebookCallbackManager, _facebookCallback);
-			}
+		    _facebookApplicationId = appSettings.Data.FacebookAppId;
+		    FacebookSdk.ApplicationId = _facebookApplicationId;
+		    FacebookSdk.ApplicationName = appSettings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty);
+		    FacebookSdk.SdkInitialize(Application.Context);
+		    _facebookCallbackManager = CallbackManagerFactory.Create();
+		    LoginManager.Instance.RegisterCallback(_facebookCallbackManager, _facebookCallback);
 		}
 
 		/// <summary>
@@ -60,11 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 						|| (AccessToken.CurrentAccessToken != null
 							&& (new Java.Util.Date()).CompareTo(new Java.Util.Date(AccessToken.CurrentAccessToken.Expires.Time - MinimumTimeTokenStayActive)) > 0))
 				{
-					Activity currentActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+					var currentActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
 					_facebookCallback.SetTaskCompletionSource(loginTaskCompletionSource);
 
 					LoginManager.Instance.SetLoginBehavior(LoginBehavior.NativeWithFallback);
-					LoginManager.Instance.LogInWithReadPermissions(currentActivity, new string[] { "public_profile", "email" });
+					LoginManager.Instance.LogInWithReadPermissions(currentActivity, new[] { "public_profile", "email" });
 				}
 				else
 				{
@@ -86,27 +86,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
-			var _taskCompletionSource = new TaskCompletionSource<FacebookUserInfo>();
+			var taskCompletionSource = new TaskCompletionSource<FacebookUserInfo>();
 
-			Bundle parameters = new Bundle();
+			var parameters = new Bundle();
 			parameters.PutString("fields", "id,first_name,last_name,email");
 
-			GraphRequest graphRequestData = new GraphRequest();
-			GraphRequest userInfoGraphRequest = new GraphRequest(AccessToken.CurrentAccessToken, "me", parameters, graphRequestData.HttpMethod, new GetUserInfoCallback(_taskCompletionSource), graphRequestData.Version);
+			var graphRequestData = new GraphRequest();
+			var userInfoGraphRequest = new GraphRequest(AccessToken.CurrentAccessToken, "me", parameters, graphRequestData.HttpMethod, new GetUserInfoCallback(taskCompletionSource), graphRequestData.Version);
 
 			userInfoGraphRequest.ExecuteAsync();
 			
-			return _taskCompletionSource.Task;
+			return taskCompletionSource.Task;
 		}
 
 		public void PublishInstall()
 		{
-			AppEventsLogger.ActivateApp(Application.Context, _facebookApplicationID);
+			AppEventsLogger.ActivateApp(Application.Context, _facebookApplicationId);
 		}
 
-		class GetUserInfoCallback : Java.Lang.Object, GraphRequest.ICallback
+	    private class GetUserInfoCallback : Java.Lang.Object, GraphRequest.ICallback
 		{
-			TaskCompletionSource<FacebookUserInfo> _taskCompletionSource;
+	        private readonly TaskCompletionSource<FacebookUserInfo> _taskCompletionSource;
 
 			public GetUserInfoCallback(TaskCompletionSource<FacebookUserInfo> taskCompletionSource)
 			{
@@ -117,11 +117,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			{
 				if (response.Error == null)
 				{
-					Org.Json.JSONArray userInfoKeys = response.JSONObject.Names();
+					var userInfoKeys = response.JSONObject.Names();
 
-					Dictionary<string, string> userInfo = new Dictionary<string, string>();
+					var userInfo = new Dictionary<string, string>();
 
-					for (int i = 0; i < userInfoKeys.Length(); i++)
+					for (var i = 0; i < userInfoKeys.Length(); i++)
 					{
 						userInfo.Add(userInfoKeys.Get(i).ToString(), response.JSONObject.GetString(userInfoKeys.Get(i).ToString()));
 					}
@@ -135,9 +135,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			}
 		}
 
-		class FacebookCallback<TResult> : Java.Lang.Object, IFacebookCallback where TResult : Java.Lang.Object
+	    private class FacebookCallback<TResult> : Java.Lang.Object, IFacebookCallback where TResult : Java.Lang.Object
 		{
-			private static object _exclusiveAccess = new object();
+			private static readonly object _exclusiveAccess = new object();
 			private TaskCompletionSource<object> _loginTaskCompletionSource;
 
 			public void SetTaskCompletionSource(TaskCompletionSource<object> taskCompletionSource)

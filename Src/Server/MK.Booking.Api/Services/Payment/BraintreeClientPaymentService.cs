@@ -67,13 +67,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 var creditCard = creditCardResult.Target;
 
-                var test = BraintreeGateway.PaymentMethodNonce.Find(request.Nonce);
-
                 _commandBus.Send(new AddOrUpdateCreditCard
                 {
                     AccountId = userId,
+                    CreditCardId = Guid.NewGuid(),
                     BraintreeAccountId = account.BraintreeAccountId,
-                    
+                    CreditCardCompany = creditCard.CardType.ToString(),
+                    NameOnCard = creditCard.CardholderName,
+                    Last4Digits = creditCard.LastFour,
+                    Token = creditCard.Token,
+                    ExpirationMonth = creditCard.ExpirationMonth,
+                    ExpirationYear = creditCard.ExpirationYear,
                 });
 
                 return new TokenizedCreditCardResponse
@@ -93,7 +97,33 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 PaymentMethodNonce = request.Nonce,
             });
 
+            
             var paymentMethod = paymentMethodResult.Target;
+
+            if (request.PaymentMethod == PaymentMethods.Paypal)
+            {
+                var paypalResult = BraintreeGateway.PayPalAccount.Find(paymentMethod.Token);
+
+                _commandBus.Send(new AddOrUpdateCreditCard
+                {
+                    AccountId = userId,
+                    BraintreeAccountId = account.BraintreeAccountId,
+                    CreditCardCompany = "Paypal",
+                    NameOnCard = paypalResult.Email,
+                    Token = paymentMethod.Token
+                });
+            }
+            else
+            {
+                _commandBus.Send(new AddOrUpdateCreditCard
+                {
+                    AccountId = userId,
+                    BraintreeAccountId = account.BraintreeAccountId,
+                    CreditCardCompany = "ApplePay",
+                    Token = paymentMethod.Token
+                });
+            }
+            
 
             return new TokenizedCreditCardResponse
             {
@@ -153,7 +183,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var name = account.SelectOrDefault(acc => acc.Name.Split(' '), new string[0]);
 
-            if (account.DefaultCreditCard.HasValue)
+            if (account.DefaultCreditCard.HasValue && account.DefaultCreditCard != Guid.Empty)
             {
                 var creditcard = _creditCardDao.FindById(account.DefaultCreditCard.Value);
 

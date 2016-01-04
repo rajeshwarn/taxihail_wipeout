@@ -496,10 +496,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Load and cache company notification settings/payment settings
             // Resolve because the accountService injected in the constructor is not authorized here
 		    var accountService = Mvx.Resolve<IAccountService>();
-            
-            await accountService.GetNotificationSettings(true, true);
-		    await accountService.GetUserTaxiHailNetworkSettings(true);
-            await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+
+		    var paymentService = Mvx.Resolve<IPaymentService>();
+            await Task.WhenAll(
+                accountService.GetNotificationSettings(true, true),
+                accountService.GetUserTaxiHailNetworkSettings(true),
+                paymentService.GetPaymentSettings(true)
+            );
 
             // Log user session start
 			Mvx.Resolve<IMetricsService>().LogApplicationStartUp();
@@ -527,13 +530,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
             var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken);
 
-            using (this.Services().Message.ShowProgressNonModal())
-            {
-                await _paymentService.AddPaymentMethod(paymentNonce);
-
-                await _accountService.GetDefaultCreditCard();
-            }
-
+            await _paymentService.AddPaymentMethod(paymentNonce);
+            await _accountService.GetDefaultCreditCard();
         }
 
 	    private async Task<bool> NeedsToNavigateToAddCreditCard()

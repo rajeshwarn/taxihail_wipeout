@@ -46,13 +46,25 @@
         <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
     </receiver>
-    <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.PayPalFuturePaymentActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.FuturePaymentConsentActivity" />
-    <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
+    <!-- Required to use Drop-In -->
+    <activity android:name="com.braintreepayments.api.BraintreePaymentActivity" />
+
+    <!-- Required to use PayPal -->
+    <activity android:name="com.paypal.android.sdk.onetouch.core.PayPalOneTouchActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+    <!-- Required to use 3D Secure -->
+    <activity android:name="com.braintreepayments.api.threedsecure.ThreeDSecureWebViewActivity" />
+    <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+        android:launchMode="singleTask"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="${applicationId}.braintree" />
+        </intent-filter>
+    </activity>
     <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
     <activity android:name="io.card.payment.DataEntryActivity" />
     <provider android:name="android.support.v4.content.FileProvider" android:authorities="com.apcurium.fileprovider" android:exported="false" android:grantUriPermissions="true">

@@ -3,9 +3,11 @@ using Cirrious.CrossCore.Droid.Platform;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
+using Android.App;
 using Braintree.Api;
 using Cirrious.MvvmCross.Droid.Fragging;
 using Braintree.Api.Models;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace TaxiHail.Shared.PlatformIntegration
 {
@@ -23,33 +25,42 @@ namespace TaxiHail.Shared.PlatformIntegration
 		{
 			var paymentRequest = new PaymentRequest()
 				.ActionBarTitle("Add a payment method")
-				.PrimaryDescription("Enter a new payment method for your account.")
+                .PaypalAdditionalScopes(new[]
+                {
+                    "profile"
+                })
+                .PrimaryDescription("Enter a new payment method for your account.")
 				.SubmitButtonText("Save")
 				.ClientToken(clientToken);
 
 			var tcs = new TaskCompletionSource<string>();
 
-			var activity = (MvxFragmentActivity)_activity.Activity;
+			var activity = (MvxActivity)_activity.Activity;
 
-			activity.StartActivityForResultCalled += (sender, e) => 
+			activity.ActivityResultCalled += (sender, e) => 
 			{
 			    if (e.Value.RequestCode != _requestCode)
 			    {
-					tcs.SetCanceled();
 			        return;
 			    }
+                
+			    if (e.Value.ResultCode == Result.Canceled)
+			    {
+                    tcs.SetCanceled();
+                    return;
+                }
+
+			    if (e.Value.Data == null)
+			    {
+                    tcs.SetCanceled();
+                    return;
+                }
 				
-				if(e.Value.Intent == null)
-				{
-					tcs.SetCanceled();
-					return;
-				}
-				
-			    var paymentNonce = (PaymentMethodNonce)e.Value.Intent.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
+			    var paymentNonce = (PaymentMethodNonce)e.Value.Data.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
 
 			    tcs.SetResult(paymentNonce.Nonce);
 			};
-					
+
 			activity.StartActivityForResult(paymentRequest.GetIntent(activity), _requestCode);
 
 			return tcs.Task;

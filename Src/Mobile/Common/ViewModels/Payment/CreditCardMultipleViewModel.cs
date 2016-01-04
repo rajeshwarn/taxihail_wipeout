@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 							var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
 							var paymentNonce = await _braintreeDropinService.ShowDropinView(tokenGenerationResponse.ClientToken);
 
-							using(this.Services().Message.ShowProgressNonModal())
+							using(this.Services().Message.ShowProgress())
 							{
 								await _paymentService.AddPaymentMethod(paymentNonce);
 
