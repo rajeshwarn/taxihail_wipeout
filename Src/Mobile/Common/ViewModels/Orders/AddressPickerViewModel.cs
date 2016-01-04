@@ -167,6 +167,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        try
 	        {
+                if(_isInLocationDetail)
+                {
+                    //Prevent from locating user when coming from Location
+                    return; 
+                }
+
 		        if (filter == AddressLocationType.Unspecified)
 	            {
 					var disposable = new CancellationDisposable();
