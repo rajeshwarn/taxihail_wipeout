@@ -347,9 +347,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var canRate = IsDone && !HasRated;
 					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 						{														
-							orderId = OrderId, 
+							orderId = OrderId.ToString(), 
 							canRate
-						}.ToJson(),
+						},
 						RefreshOrderStatus);
                	});
             }
