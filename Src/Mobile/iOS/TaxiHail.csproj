@@ -31,7 +31,6 @@
     <MtouchUseSGen>True</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
-    <MtouchSdkVersion>8.1</MtouchSdkVersion>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
@@ -297,8 +296,8 @@
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.xib" />
     <InterfaceDefinition Include="Controls\Widgets\ChangeDropOffControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\AppBarDropOffSelection.xib" />
     <None Include="CustomLinker.xml" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -713,12 +712,12 @@
     <Compile Include="Controls\Widgets\DropOffSelectionControl.designer.cs">
       <DependentUpon>DropOffSelectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
-    <Compile Include="Controls\Widgets\AppBarDropOffSelection.designer.cs">
-      <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
+      <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

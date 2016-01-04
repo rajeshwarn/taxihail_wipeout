@@ -365,7 +365,6 @@
     <Compile Include="AppServices\IRateApplicationService.cs" />
     <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
-    <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />

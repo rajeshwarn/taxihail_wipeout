@@ -120,6 +120,7 @@
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
+    <Compile Include="Requests\OrderUpdateRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\EncryptedPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
@@ -139,8 +140,6 @@
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\DisableAccountByAdminRequest.cs" />
-    <Compile Include="Requests\EnableAccountByAdminRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
@@ -200,7 +199,6 @@
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UnassignedReferenceDataVehiclesRequest.cs" />
-    <Compile Include="Requests\UnlinkAccountByAdminRequest.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Requests\VehicleTypeRequest.cs" />

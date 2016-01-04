@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 using Moq;
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 null,
                 null,
                 null,
-                null);
+                new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
             _sut.Setup(new EmailCommandHandler(notificationService));
         }

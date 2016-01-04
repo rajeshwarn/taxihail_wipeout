@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Response;
@@ -96,7 +97,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null,
                 _geocodingMock.Object,
                 taxihailNetworkServiceClientMock.Object,
-                null);
+                new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             sut.Setup(new EmailCommandHandler(notificationService));

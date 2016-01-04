@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _firstTime;
 
-		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
+		public void Init(bool locateUser, string defaultHintZoomLevel = null, string order = null, string orderStatusDetail = null, string manualRidelinqDetail = null)
         {
 			_locateUser = locateUser;
 		    _defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();
@@ -629,21 +629,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_bottomBar.EstimateSelected = false;
 				}
 
-				if (value != HomeViewModelState.AddressSearch)
+				if (value == HomeViewModelState.DropOffAddressSelection)
 				{
-					if (value == HomeViewModelState.DropOffAddressSelection)
+					if (DropOffSelection.DestinationAddress.Id == Guid.Empty)
 					{
-						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.DropoffSelection);
-						if (DropOffSelection.DestinationAddress.Id == Guid.Empty)
-						{
-							LocateMe.ExecuteIfPossible();
-						}
-						_orderWorkflowService.SetDropOffSelectionMode(true);
+						LocateMe.ExecuteIfPossible();
 					}
-					else
-					{
-						_orderWorkflowService.SetDropOffSelectionMode(false);
-					}
+					_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.DropoffSelection);
+					_orderWorkflowService.SetDropOffSelectionMode(true);
 				}
 
 				_currentViewState = value;

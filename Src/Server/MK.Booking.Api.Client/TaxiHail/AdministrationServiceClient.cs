@@ -37,24 +37,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Put<string>(req, request);
         }
 
-        public void EnableAccount(EnableAccountByAdminRequest request)
-        {
-            var req = string.Format("/account/adminenable");
-            Client.Put<string>(req, request);
-        }
-
-        public void DisableAccount(DisableAccountByAdminRequest request)
-        {
-            var req = string.Format("/account/admindisable");
-            Client.Put<string>(req, request);
-        }
-
-        public void UnlinkAccount(UnlinkAccountByAdminRequest request)
-        {
-            var req = string.Format("/account/unlink");
-            Client.Put<string>(req, request);
-        }
-
         public IList<Address> GetDefaultFavoriteAddresses()
         {
             var req = string.Format("/admin/addresses");

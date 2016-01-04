@@ -635,12 +635,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{ 
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 					{
 						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
 						{
-							//Need endpoint to remove destination address
-							return;
+							var success = false;
+
+							using (this.Services().Message.ShowProgress())
+							{
+								await _orderWorkflowService.SetAddress(new Address());
+								success = await _orderWorkflowService.UpdateDropOff(Order.Id);
+
+								if(success)
+								{
+									var order = this.Order;
+									order.DropOffAddress = new Address();
+									this.Order = order;
+									_orderWorkflowService.ClearDestinationAddress();
+									return;
+								}
+
+								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["ErrorChangeDropOff_Message"]);
+								return;
+							}
 						}
                         ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
 					}); 
@@ -1297,9 +1314,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				TaxiLocation.Longitude.HasValue;
 
 			var isVehicleAssigned = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned));
+			var isVehicleArrived = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived));
 
 			if (Order != null
-				&& isVehicleAssigned
+				&& (isVehicleAssigned || isVehicleArrived)
 				&& hasValidVehiclePosition
 				&& !MapCenter.HasValue()
 				)
@@ -1319,7 +1337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			if (!isVehicleAssigned)
+			if (!isVehicleAssigned && !isVehicleArrived)
 	        {
 		        MapCenter = new CoordinateViewModel[0];
 	        }

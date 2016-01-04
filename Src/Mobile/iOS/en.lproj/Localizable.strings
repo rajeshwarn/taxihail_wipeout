@@ -724,6 +724,7 @@
 "OrderStatus_Medallion"="Medallion";
 "OrderStatus_AddDestination"="Add your destination";
 "OrderStatus_RemoveDestination"="Remove your destination";
+"ErrorChangeDropOff_Message"="Sorry, we couldn’t update your destination.";
 "WaitingCarLandscapeViewCloseButtonText"="Back";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";

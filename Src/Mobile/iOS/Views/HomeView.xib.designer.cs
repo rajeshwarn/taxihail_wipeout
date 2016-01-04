@@ -49,9 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintAppBarBookingStatusVerticalSpace { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint constraintAppBarDropOffSelection { get; set; }
-
-		[Outlet]
 		UIKit.NSLayoutConstraint constraintAppBarStatusBottomSpace { get; set; }
 
 		[Outlet]
@@ -107,9 +104,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderReviewView ctrlOrderReview { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarDropOffSelection dropOffSelectionBottomBar { get; set; }
 
 		[Outlet]
 		UIKit.UIView homeView { get; set; }
@@ -306,16 +300,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (panelMenu != null) {
 				panelMenu.Dispose ();
 				panelMenu = null;
-			}
-
-			if (dropOffSelectionBottomBar != null) {
-				dropOffSelectionBottomBar.Dispose ();
-				dropOffSelectionBottomBar = null;
-			}
-
-			if (constraintAppBarDropOffSelection != null) {
-				constraintAppBarDropOffSelection.Dispose ();
-				constraintAppBarDropOffSelection = null;
 			}
 		}
 	}

@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    FilteredPlaces = new AddressViewModel[0];
 		}
 
-		public void Init(string searchCriteria)
+		public void Init(string searchCriteria = null)
 		{
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 			_currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
@@ -167,6 +167,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        try
 	        {
+                if(_isInLocationDetail)
+                {
+                    //Prevent from locating user when coming from Location
+                    return; 
+                }
+
 		        if (filter == AddressLocationType.Unspecified)
 	            {
 					var disposable = new CancellationDisposable();

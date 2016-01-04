@@ -142,6 +142,7 @@
     <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Requests\OrderUpdateRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

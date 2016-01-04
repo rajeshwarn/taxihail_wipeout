@@ -56,7 +56,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
             else
             {
-                var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
+                var promotions = _promotionDao.GetAll().Select(x => new PromoCodeModel(x));
                 return View(promotions);
             }
         }
@@ -65,12 +65,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [SkipAuthentication]
         public ActionResult Create()
         {
-            return View(new PromoCode());
+            return View(new PromoCodeModel());
         }
 
         // POST: AdminTH/PromoCode/Create
         [HttpPost]
-        public ActionResult Create(PromoCode promoCode)
+        public ActionResult Create(PromoCodeModel promoCode)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
 
-                var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x)).ToList();
+                var promotions = _promotionDao.GetAll().Select(x => new PromoCodeModel(x)).ToList();
                 promotions.Add(promoCode);
                 var orderedPromotions = promotions.OrderBy(p => p.Name);
 
@@ -153,7 +153,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var promotion = _promotionDao.FindById(id);
 
-            var model = new PromoCode(promotion);
+            var model = new PromoCodeModel(promotion);
             if (promotion.TriggerSettings.Type != PromotionTriggerTypes.NoTrigger)
             {
                 model.CanModifyTriggerGoal = !_promotionDao.GetProgressByPromo(id).Any();
@@ -164,7 +164,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/PromoCode/Edit/5
         [HttpPost]
-        public ActionResult Edit(PromoCode promoCode)
+        public ActionResult Edit(PromoCodeModel promoCode)
         {
             try
             {
@@ -277,7 +277,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         new DeletePromotion { PromoId = id }
                     });
 
-                TempData["Model"] = promotions.Select(x => new PromoCode(x)).OrderBy(p => p.Name);
+                TempData["Model"] = promotions.Select(x => new PromoCodeModel(x)).OrderBy(p => p.Name);
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" Deleted", promToDelete.Name);
             }
@@ -289,13 +289,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public ActionResult Statistics(Guid id)
         {
             var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
-            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
+            return View(promotionUsages.Any() ? new PromoStatsModel(promotionUsages) : null);
         }
 
         public ActionResult UserStatistics(Guid id)
         {
             var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
-            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
+            return View(promotionUsages.Any() ? new PromoStatsModel(promotionUsages) : null);
         }
 
         public ActionResult Unlock()
@@ -305,10 +305,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return View(promotions);
         }
 
-        private IEnumerable<PromoCode> GetCustomerSupportPromoCodes()
+        private IEnumerable<PromoCodeModel> GetCustomerSupportPromoCodes()
         {
             return _promotionDao.GetAll()
-                .Select(p => new PromoCode(p))
+                .Select(p => new PromoCodeModel(p))
                 .Where(p => p.Active
                     && p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
         }

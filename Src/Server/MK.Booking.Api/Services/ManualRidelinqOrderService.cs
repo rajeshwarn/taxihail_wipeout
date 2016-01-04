@@ -115,7 +115,8 @@ namespace apcurium.MK.Booking.Api.Services
 			        PairingCode = request.PairingCode,
 			        AutoCompletePayment = true,
                     CardOnFileId = creditCard.Token,
-                    LastFour = creditCard.Last4Digits
+                    LastFour = creditCard.Last4Digits,
+                    ZipCode = creditCard.ZipCode
 		        };
 
 		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
