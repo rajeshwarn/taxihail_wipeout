@@ -7,7 +7,7 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderCancellationManager : IIntegrationEventHandler,
-        IEventHandler<IbsOrderInfoAddedToOrder>
+        IEventHandler<IbsOrderInfoAddedToOrder_V2>
     {
         private readonly IOrderDao _orderDao;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _logger = logger;
         }
 
-        public void Handle(IbsOrderInfoAddedToOrder @event)
+        public void Handle(IbsOrderInfoAddedToOrder_V2 @event)
         {
             if (!@event.CancelWasRequested)
             {

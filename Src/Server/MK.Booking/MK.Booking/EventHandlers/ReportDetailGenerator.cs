@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalPaymentCancellationFailed>,
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<IbsOrderInfoAddedToOrder_V2>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderTimedOut>,
         IEventHandler<PrepaidOrderPaymentInfoUpdated>,
@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         DropOffAddress = @event.DropOffAddress,
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
+                        CompanyFleetId = @event.CompanyFleetId,
                         Market = @event.Market
                     };
                     orderReport.Client = new OrderReportClient
@@ -134,6 +135,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         DropOffAddress = @event.DropOffAddress,
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
+                        CompanyFleetId = @event.CompanyFleetId,
                         Market = @event.Market,
                         Error = @event.Error
                     };
@@ -434,7 +436,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(IbsOrderInfoAddedToOrder @event)
+        public void Handle(IbsOrderInfoAddedToOrder_V2 @event)
         {
             if (@event.CancelWasRequested)
             {
@@ -445,6 +447,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.IBSOrderId = @event.IBSOrderId;
+                orderReport.Order.CompanyKey = @event.CompanyKey;
                 context.Save(orderReport);
             }
         }
@@ -456,6 +459,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.CompanyName = @event.CompanyName;
                 orderReport.Order.CompanyKey = @event.CompanyKey;
+                orderReport.Order.CompanyFleetId = null;
                 orderReport.Order.Market = @event.Market;
                 orderReport.Order.IBSOrderId = @event.IBSOrderId;
                 orderReport.Order.WasSwitchedToAnotherCompany = true;

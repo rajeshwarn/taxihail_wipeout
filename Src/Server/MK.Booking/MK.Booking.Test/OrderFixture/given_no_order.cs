@@ -1,16 +1,11 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -21,7 +16,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -65,20 +60,20 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 CompanyName = "Kramerica Industries",
                 EstimatedFare = 50.5,
                 IsChargeAccountPaymentWithCardOnFile = true,
-                IsPrepaid = true
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 88,
-                ProviderId = 11,
-                Phone = "5145551212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith",
-                AccountNumber = "account",
-                CustomerNumber = "customer",
-                PayBack = "123"
+                IsPrepaid = true,
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 88,
+                    ProviderId = 11,
+                    Phone = "5145551212",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith",
+                    AccountNumber = "account",
+                    CustomerNumber = "customer",
+                    PayBack = "123"
+                }
             };
 
             _sut.When(order);
@@ -128,33 +123,36 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 AccountId = _accountId,
                 PickupDate = pickupDate,
-                PickupAddress =
-                    new Address
-                    {
-                        RingCode = "3131",
-                        Latitude = 45.515065,
-                        Longitude = -73.558064,
-                        FullAddress = "1234 rue Saint-Hubert",
-                        Apartment = "3939"
-                    },
-                DropOffAddress =
-                    new Address {Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel"},
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 88,
-                ProviderId = 11,
-                Phone = "5145551212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-            order.Payment = new CreateOrder.PaymentInformation
-            {
-                PayWithCreditCard = true,
-                CreditCardId = creditCardId,
-                TipPercent = 15
+                PickupAddress = new Address
+                {
+                    RingCode = "3131",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    FullAddress = "1234 rue Saint-Hubert",
+                    Apartment = "3939"
+                },
+                DropOffAddress = new Address
+                {
+                    Latitude = 45.50643,
+                    Longitude = -73.554052,
+                    FullAddress = "Velvet auberge st gabriel"
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 88,
+                    ProviderId = 11,
+                    Phone = "5145551212",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith"
+                },
+                Payment = new CreateOrder.PaymentInformation
+                {
+                    PayWithCreditCard = true,
+                    CreditCardId = creditCardId,
+                    TipPercent = 15
+                },
             };
 
             _sut.When(order);
@@ -176,25 +174,24 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 AccountId = _accountId,
                 PickupDate = pickupDate,
-                PickupAddress =
-                    new Address
-                    {
-                        RingCode = "3131",
-                        Latitude = 45.515065,
-                        Longitude = -73.558064,
-                        FullAddress = "1234 rue Saint-Hubert",
-                        Apartment = "3939"
-                    },
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 88,
-                ProviderId = 11,
-                Phone = "5145551212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
+                PickupAddress = new Address
+                {
+                    RingCode = "3131",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    FullAddress = "1234 rue Saint-Hubert",
+                    Apartment = "3939"
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 88,
+                    ProviderId = 11,
+                    Phone = "5145551212",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith"
+                },
             };
 
             _sut.When(order);

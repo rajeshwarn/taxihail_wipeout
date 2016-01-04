@@ -64,21 +64,25 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var ibsOrderId = @event.IBSOrderId;
+            var dispatcherTimedOut = false;
+            var companyKey = @event.CompanyKey;
 
             if (!ibsOrderId.HasValue)
             {
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
-                var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
+                var result = _ibsCreateOrderService.CreateIbsOrder(@event.AccountId, @event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                     @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive);
+                    @event.TipIncentive, companyFleedId: @event.CompanyFleetId);
 
-                ibsOrderId = result.CreateOrderResult;
+                ibsOrderId = result.OrderKey.IbsOrderId;
+                dispatcherTimedOut = result.DispatcherTimedOut;
+                companyKey = result.CompanyKey;
             }
 
-            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, dispatcherTimedOut, @event.ClientLanguageCode, false, companyKey);
             if (success)
             {
                 SendConfirmationEmail(ibsOrderId.Value, @event.AccountId, @event.Settings, @event.ChargeTypeEmail,
@@ -94,14 +98,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             // Order switched to another company
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
+            var result = _ibsCreateOrderService.CreateIbsOrder(@event.AccountId, @event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                 @event.TipIncentive);
 
-            SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
+            SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
 
         public void Handle(PrepaidOrderPaymentInfoUpdated @event)
@@ -113,24 +117,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             DeleteTempOrderData(@event.OrderId);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
+            var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.AccountId, orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
 
-            var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, orderInfo.Request.ClientLanguageCode, false, result.CompanyKey);
             if (success)
             {
-                SendConfirmationEmail(result.CreateOrderResult.Value, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
+                SendConfirmationEmail(result.OrderKey.IbsOrderId, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
                     orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.PickupDate, orderInfo.Request.UserNote, orderInfo.Request.ClientLanguageCode);
             }
 
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
 
-        public bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool isPrepaid, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
+        private bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool dispatcherTimedOut, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
         {
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -145,11 +149,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
                 };
 
+                if (dispatcherTimedOut)
+                {
+                    errorCommand.DispatcherTimedOut = true;
+                    errorCommand.ErrorDescription = _resources.Get("OrderStatus_wosTIMEOUT", clientLanguageCode);
+                }
+                else
+                {
+                    errorCommand.ErrorDescription = _resources.Get(errorCode, clientLanguageCode);
+                }
+
                 _commandBus.Send(errorCommand);
 
                 return false;
             }
-            else if (switchedCompany)
+
+            if (switchedCompany)
             {
                 var orderDetail = _orderDao.FindById(orderId);
 
@@ -167,19 +182,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 return true;
             }
-            else
+
+            _logger.LogMessage(string.Format("Adding IBSOrderId {0} to order {1}", ibsOrderId, orderId));
+
+            var ibsCommand = new AddIbsOrderInfoToOrder
             {
-                _logger.LogMessage(string.Format("Adding IBSOrderId {0} to order {1}", ibsOrderId, orderId));
+                OrderId = orderId,
+                IBSOrderId = ibsOrderId.Value,
+                CompanyKey = newCompanyKey
+            };
+            _commandBus.Send(ibsCommand);
 
-                var ibsCommand = new AddIbsOrderInfoToOrder
-                {
-                    OrderId = orderId,
-                    IBSOrderId = ibsOrderId.Value
-                };
-                _commandBus.Send(ibsCommand);
-
-                return true;
-            }
+            return true;
         }
 
         public void SendConfirmationEmail(int ibsOrderId, Guid accountId, BookingSettings bookingSettings, string chargeTypeEmail,

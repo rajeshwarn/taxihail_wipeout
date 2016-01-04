@@ -113,20 +113,20 @@ namespace apcurium.MK.Web
 
         private DeploymentTargets ResolveDeploymentTarget(string host)
         {
-            var caseInsensitiveHost = host.ToLower();
+            //var caseInsensitiveHost = host.ToLower();
 
-            if (caseInsensitiveHost.Contains("localhost"))
-            {
-                return DeploymentTargets.Local;
-            }
-            if (caseInsensitiveHost.Contains("test.taxihail.biz"))
-            {
-                return DeploymentTargets.Dev;
-            }
-            if (caseInsensitiveHost.Contains("staging"))
-            {
-                return DeploymentTargets.Staging;
-            }
+            //if (caseInsensitiveHost.Contains("localhost"))
+            //{
+            //    return DeploymentTargets.Local;
+            //}
+            //if (caseInsensitiveHost.Contains("test.taxihail.biz"))
+            //{
+            //    return DeploymentTargets.Dev;
+            //}
+            //if (caseInsensitiveHost.Contains("staging"))
+            //{
+            //    return DeploymentTargets.Staging;
+            //}
 
             return DeploymentTargets.Production;
         }

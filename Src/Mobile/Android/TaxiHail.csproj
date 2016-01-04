@@ -590,7 +590,6 @@
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
-    <AndroidResource Include="Resources\Layout\View_Tutorial.axml" />
     <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
     <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
@@ -868,6 +867,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

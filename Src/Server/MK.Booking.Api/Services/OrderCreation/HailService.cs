@@ -27,8 +27,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;  
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
+        private readonly IDispatcherService _dispatcherService;
         private readonly Resources.Resources _resources;
 
         public HailService(
@@ -50,18 +50,19 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IPayPalServiceFactory payPalServiceFactory,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IRuleCalculator ruleCalculator,
+            IDispatcherService dispatcherService,
             Resources.Resources resources)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                   ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                   payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
-                  feesDao, referenceDataService, orderDao)
+                  feesDao, referenceDataService, orderDao, dispatcherService)
         {
             _orderDao = orderDao;
             _logger = logger;
             _commandBus = commandBus;
-            _ibsServiceProvider = ibsServiceProvider;
             _accountDao = accountDao;
             _ibsCreateOrderService = ibsCreateOrderService;
+            _dispatcherService = dispatcherService;
             _resources = resources;
         }
 
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             var createOrderCommand = BuildCreateOrderCommand(createOrderRequest, account, createReportOrder);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(createOrderCommand.OrderId, createOrderCommand.PickupAddress,
+            var result = _ibsCreateOrderService.CreateIbsOrder(createOrderCommand.AccountId, createOrderCommand.OrderId, createOrderCommand.PickupAddress,
                 createOrderCommand.DropOffAddress, createOrderCommand.Settings.AccountNumber, createOrderCommand.Settings.CustomerNumber,
                 createOrderCommand.CompanyKey, createOrderCommand.IbsAccountId, createOrderCommand.Settings.Name, createOrderCommand.Settings.Phone,
                 createOrderCommand.Settings.Passengers, createOrderCommand.Settings.VehicleTypeId, createOrderCommand.IbsInformationNote,
@@ -84,14 +85,16 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 createOrderCommand.Market, createOrderCommand.Settings.ChargeTypeId, createOrderCommand.Settings.ProviderId, createOrderCommand.Fare,
                 createOrderCommand.TipIncentive, true, createOrderCommand.CompanyFleetId);
 
-            if (result.HailResult.OrderKey.IbsOrderId > -1)
+            if (result.OrderKey.IbsOrderId > -1)
             {
-                createOrderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
+                // TODO: cancel ibsorder if vehicle candidates list is empty
+
+                createOrderCommand.IbsOrderId = result.OrderKey.IbsOrderId;
 
                 _commandBus.Send(createOrderCommand);
             }
 
-            return result.HailResult;
+            return result;
         }
 
         public object Post(ConfirmHailRequest request)
@@ -114,29 +117,27 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             _logger.LogMessage(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
 
-            var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
-            var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
-
-            var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
-            if (confirmHailResult == null || confirmHailResult < 0)
+            try
             {
-                var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
-                _logger.LogMessage(errorMessage);
+                var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
+                var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
 
-                return new HttpResult(HttpStatusCode.InternalServerError, errorMessage);
+                _dispatcherService.AssignJobToVehicle(orderDetail.CompanyKey, ibsOrderKey, ibsVehicleCandidate);
+
+                return new OrderStatusDetail
+                {
+                    OrderId = request.OrderKey.TaxiHailOrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusId = VehicleStatuses.Common.Assigned,
+                    IBSStatusDescription = string.Format(
+                        _resources.Get("OrderStatus_CabDriverNumberAssigned", orderDetail.ClientLanguageCode),
+                        request.VehicleCandidate.VehicleId)
+                };
             }
-
-            _logger.LogMessage("Hail request confirmed");
-
-            return new OrderStatusDetail
+            catch (Exception ex)
             {
-                OrderId = request.OrderKey.TaxiHailOrderId,
-                Status = OrderStatus.Created,
-                IBSStatusId = VehicleStatuses.Common.Assigned,
-                IBSStatusDescription = string.Format(
-                    _resources.Get("OrderStatus_CabDriverNumberAssigned", orderDetail.ClientLanguageCode),
-                    request.VehicleCandidate.VehicleId)
-            };
+                return new HttpResult(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

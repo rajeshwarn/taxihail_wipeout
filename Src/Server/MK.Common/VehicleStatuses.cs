@@ -36,6 +36,9 @@
             public const string CancelledDone = "wosCANCELLED_DONE";
 
             public const string Timeout = "wosTIMEOUT";
+
+            // This is an Apcurium Dispatcher status
+            public const string Bailed = "wosBAILED";
         }
 
         public class CreditCards

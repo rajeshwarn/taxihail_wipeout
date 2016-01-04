@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -43,14 +44,13 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
-        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IFeesDao _feesDao;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IOrderDao _orderDao;
+        private readonly IDispatcherService _dispatcherService;
 
         private readonly Resources.Resources _resources;
 
@@ -72,7 +72,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IRuleCalculator ruleCalculator,
             IFeesDao feesDao,
             ReferenceDataService referenceDataService,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IDispatcherService dispatcherService)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -82,16 +83,15 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _ibsServiceProvider = ibsServiceProvider;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _accountDao = accountDao;
             _logger = logger;
-            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _ruleCalculator = ruleCalculator;
             _feesDao = feesDao;
             _referenceDataService = referenceDataService;
             _orderDao = orderDao;
+            _dispatcherService = dispatcherService;
 
             _resources = new Resources.Resources(_serverSettings);
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
 
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
@@ -121,8 +121,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
+            var market = _dispatcherService.GetSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude).Market;
 
             createReportOrder.Market = market;
 
@@ -144,6 +143,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
+            createReportOrder.CompanyFleetId = bestAvailableCompany.FleetId;
 
             if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
             {
@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             if (market.HasValue())
             {
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.IsConfiguredForCmtPayment(bestAvailableCompany.CompanyKey);
 
                 if (!isConfiguredForCmtPayment)
                 {
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             createReportOrder.IsPrepaid = isPrepaid;
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            account.IBSAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
 
             var isFutureBooking = request.PickupDate.HasValue;
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            var ibsInformationNote = IbsNoteBuilder.BuildNote(
+            var ibsInformationNote = IbsHelper.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 request.Note,
@@ -356,31 +356,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             return offsetedTime;
-        }
-
-        protected int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
-        {
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
-            if (ibsAccountId.HasValue)
-            {
-                return ibsAccountId.Value;
-            }
-
-            // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
-                account.Email,
-                string.Empty,
-                account.Name,
-                account.Settings.Phone);
-
-            _commandBus.Send(new LinkAccountToIbs
-            {
-                AccountId = account.Id,
-                IbsAccountId = ibsAccountId.Value,
-                CompanyKey = companyKey
-            });
-
-            return ibsAccountId.Value;
         }
 
         protected CreateReportOrder CreateReportOrder(CreateOrderRequest request, AccountDetail account)

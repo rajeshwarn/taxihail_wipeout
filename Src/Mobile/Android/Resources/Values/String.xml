@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="ApplicationName">TaxiHail</string>
-  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="GoogleMapKey">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
@@ -750,4 +749,8 @@
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
   <string name="ServiceErrorCallTitle">Server error</string>
+  <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
+  <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
+  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
+  <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
 </resources>

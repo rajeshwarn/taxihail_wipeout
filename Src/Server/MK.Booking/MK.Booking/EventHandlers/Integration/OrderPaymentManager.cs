@@ -202,7 +202,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
-                if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
+                if (pairingInfo != null
+                    && _serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // Check if card declined
                     InitializeCmtServiceClient();

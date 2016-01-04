@@ -16,6 +16,11 @@ namespace CustomerPortal.Web.Extensions
         /// <returns></returns>
         public static Market GetMarket(this IRepository<Market> repo, string market)
         {
+            if (market == null)
+            {
+                return null;
+            }
+
             // this does a "like" search
             var nameQuery = Query<Market>.Matches(x => x.Name, new BsonRegularExpression(market, "i"));
 

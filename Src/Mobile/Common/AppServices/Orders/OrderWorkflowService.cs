@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
@@ -345,8 +345,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-                var hashedMarket = await _hashedMarketSubject.Take(1).ToTask();
-		        if (hashedMarket.HasValue())
+                var marketSettings = await _marketSettingsSubject.Take(1).ToTask();
+		        if (marketSettings.HashedMarket.HasValue())
 		        {
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 
@@ -557,15 +557,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _dropOffSelectionModeSubject;
 		}
 
-		public IObservable<string> GetAndObserveHashedMarket()
+		public IObservable<MarketSettings> GetAndObserveMarketSettings()
 		{
-			return _hashedMarketSubject;
+			return _marketSettingsSubject;
 		}
 
 		public IObservable<bool> GetAndObserveIsUsingGeo()
 		{
-			return _hashedMarketSubject
-				.Select(hashedMarket => hashedMarket.HasValue()
+			return _marketSettingsSubject
+                .Select(marketSettings => marketSettings.HashedMarket.HasValue()
 					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
 					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
 				);
@@ -609,7 +609,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
-						await SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
+						await SetMarketSettings(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
 					} 
 					else 
 					{
@@ -958,20 +958,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-	    private async Task SetMarket(Position currentPosition)
+	    private async Task SetMarketSettings(Position currentPosition)
 	    {
             if (ShouldUpdateMarket(currentPosition))
 	        {
-	            var hashedMarket = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+	            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
 
                 _lastMarketPosition = currentPosition;
 
-                _hashedMarketSubject.OnNext(hashedMarket);
-
+                _marketSettingsSubject.OnNext(marketSettings);
+                
                 // If we changed market
-	            if (hashedMarket != _lastHashedMarketValue)
+	            if (marketSettings.HashedMarket != _lastHashedMarketValue)
 	            {
-                    if (hashedMarket.HasValue())
+                    if (marketSettings.HashedMarket.HasValue())
                     {
                         // Set vehicles list with data from external market
                         await SetMarketVehicleTypes(currentPosition);
@@ -983,7 +983,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     }
 	            }
 
-                _lastHashedMarketValue = hashedMarket;
+                _lastHashedMarketValue = marketSettings.HashedMarket;
 	        }
 	    }
 

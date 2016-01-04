@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
             }
 
-            return _ibsSettings[companyKey]; 
+            return _ibsSettings[companyKey];
         }
     }
 }

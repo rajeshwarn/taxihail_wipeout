@@ -4,10 +4,17 @@ namespace apcurium.MK.Booking.Data
 {
     public class IBSOrderResult
     {
-        public int? CreateOrderResult { get; set; }
+        public IBSOrderResult()
+        {
+            VehicleCandidates = new VehicleCandidate[0];
+        }
 
-        public OrderHailResult HailResult { get; set; }
+        public OrderKey OrderKey { get; set; }
 
-        public bool IsHailRequest { get; set; }
+        public VehicleCandidate[] VehicleCandidates { get; set; }
+
+        public bool DispatcherTimedOut { get; set; }
+
+        public string CompanyKey { get; set; }
     }
 }

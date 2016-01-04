@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Api.Services
     public class CancelOrderService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
@@ -29,8 +28,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly ILogger _logger;
 
-        public CancelOrderService(ICommandBus commandBus, 
-            IIBSServiceProvider ibsServiceProvider, 
+        public CancelOrderService(
+            ICommandBus commandBus, 
             IOrderDao orderDao, 
             IAccountDao accountDao,
             IUpdateOrderStatusJob updateOrderStatusJob, 
@@ -38,7 +37,6 @@ namespace apcurium.MK.Booking.Api.Services
             IIbsCreateOrderService ibsCreateOrderService,
             ILogger logger)
         {
-            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
@@ -79,6 +77,7 @@ namespace apcurium.MK.Booking.Api.Services
                         || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
                         || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
                         || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
+                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Bailed)
                         || canCancelWhenPaired))
                 {
                     _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId.Value, order.CompanyKey, order.Settings.Phone, account.Id);
@@ -86,8 +85,8 @@ namespace apcurium.MK.Booking.Api.Services
                 else
                 {
                     var errorReason = !currentIbsAccountId.HasValue
-                    ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
-                    : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}, state: {1}", orderStatus.IBSStatusId, orderStatus.IBSStatusId);
+                        ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
+                        : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}, state: {1}", orderStatus.IBSStatusId, orderStatus.IBSStatusId);
                     var errorMessage = string.Format("Could not cancel order because {0}", errorReason);
 
                     _logger.LogMessage(errorMessage);

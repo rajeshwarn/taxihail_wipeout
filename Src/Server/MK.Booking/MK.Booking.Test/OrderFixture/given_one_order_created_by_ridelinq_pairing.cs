@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
-using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -26,7 +19,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -38,7 +31,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 SourceId = _orderId,
                 AccountId = _accountId,
-                PickupDate = DateTime.Now,
+                PickupDate = DateTime.Now
             });
             _sut.Given(new OrderManuallyPairedForRideLinq()
             {
@@ -58,7 +51,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Tax = 3f,
                 TollTotal = 1f,
                 Extra = .5f,
-                Tip= 1.5f,
+                Tip= 1.5f
             });
 
             var @event = _sut.ThenHasOne<ManualRideLinqTripInfoUpdated>();
@@ -98,7 +91,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Tip = 1.5f,
                 TollTotal = 1f,
                 Extra = .5f,
-                EndTime = endTime,
+                EndTime = endTime
             });
 
 

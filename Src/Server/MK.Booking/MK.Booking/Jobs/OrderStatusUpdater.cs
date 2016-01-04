@@ -1,11 +1,13 @@
 ﻿using System;
-using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel;
@@ -20,12 +22,10 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceClient.Web;
-using Order = PayPal.Api.Order;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -51,12 +51,17 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IFeeService _feeService;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
+        private readonly IDispatcherService _dispatcherService;
+        private readonly IVehicleTypeDao _vehicleTypeDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+        private TaxiHailNetworkHelper _taxiHailNetworkHelper;
 
         private string _languageCode = string.Empty;
+        
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
@@ -73,6 +78,10 @@ namespace apcurium.MK.Booking.Jobs
             IFeeService feeService,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
+            IDispatcherService dispatcherService,
+            IVehicleTypeDao vehicleTypeDao,
+            IIBSServiceProvider ibsServiceProvider,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -91,7 +100,12 @@ namespace apcurium.MK.Booking.Jobs
             _paymentDao = paymentDao;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
+            _dispatcherService = dispatcherService;
+            _vehicleTypeDao = vehicleTypeDao;
+            _ibsServiceProvider = ibsServiceProvider;
+
             _resources = new Resources.Resources(serverSettings);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -132,7 +146,9 @@ namespace apcurium.MK.Booking.Jobs
 
             _logger.LogMessage("Running order update" );
 
-            PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
+            var hasDriverBailed = HasDriverBailed(orderStatusDetail, orderFromIbs);
+
+            PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail, hasDriverBailed);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail);
 
@@ -145,6 +161,25 @@ namespace apcurium.MK.Booking.Jobs
                 Tax = orderFromIbs.VAT,
                 Surcharge = orderFromIbs.Surcharge
             });
+
+            if (hasDriverBailed)
+            {
+                Task.Run(() =>
+                {
+                    var ibsOrderResult = DispatchAgainIfDriverBailed(orderStatusDetail.OrderId, orderStatusDetail.Market, orderStatusDetail.DriverInfos.VehicleRegistration);
+
+                    if (ibsOrderResult != null)
+                    {
+                        var orderBailedHelper = new OrderBailedCreationHelper(_commandBus, _serverSettings, _logger);
+                        orderBailedHelper.SendOrderCreationCommands(
+                            ibsOrderResult.OrderKey.TaxiHailOrderId,
+                            ibsOrderResult.OrderKey.IbsOrderId,
+                            ibsOrderResult.DispatcherTimedOut,
+                            ibsOrderResult.CompanyKey,
+                            orderDetail.ClientLanguageCode);
+                    }
+                });
+            }
         }
 
         void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
@@ -284,21 +319,32 @@ namespace apcurium.MK.Booking.Jobs
             _logger.LogMessage("Trip for order {0} is in progress. Nothing to update.", orderStatusDetail.OrderId);
         }
 
-        private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, OrderDetail orderDetail)
+        private bool HasDriverBailed(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned &&
-                           ibsOrderInfo.IsWaitingToBeAssigned;
+            // Detect if a bail occurred
+            return orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                && ibsOrderInfo.IsWaitingToBeAssigned;
+        }
+
+        private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, OrderDetail orderDetail, bool hasDriverBailed)
+        {
+            if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Bailed
+                && ibsOrderInfo.IsCanceled)
+            {
+                // Do nothing, yo
+                return;
+            }
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
 
-            orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
+            orderStatusDetail.IBSStatusId =                     hasDriverBailed ? VehicleStatuses.Common.Bailed : ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
             orderStatusDetail.DriverInfos.MobilePhone =         ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
             orderStatusDetail.DriverInfos.VehicleColor =        ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
             orderStatusDetail.DriverInfos.VehicleMake =         ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
             orderStatusDetail.DriverInfos.VehicleModel =        ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
-            orderStatusDetail.DriverInfos.VehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
+            orderStatusDetail.DriverInfos.VehicleRegistration = GetVehicleRegistration(ibsOrderInfo, orderStatusDetail);
             orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
             orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
             orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
@@ -308,19 +354,96 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
 
-            UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
+            UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo, hasDriverBailed);
 
-            var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+            var wasProcessingOrderOrWaitingForDriver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed, orderDetail);
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDriver && ibsOrderInfo.IsAssigned, hasDriverBailed, orderDetail);
         }
 
-        private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        private IBSOrderResult DispatchAgainIfDriverBailed(Guid orderId, string market, string driverIdWhoBailed)
         {
-            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+            var dispatcherSettings = _dispatcherService.GetSettings(market);
+
+            if (dispatcherSettings.NumberOfOffersPerCycle <= 0)
+            {
+                return null;
+            }
+            
+            var orderDetail = _orderDao.FindById(orderId);
+
+            // Prepare order for re-dispatch
+            var ibsAccountIdForOrderToCancel = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
+            if (ibsAccountIdForOrderToCancel.HasValue)
+            {
+                _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountIdForOrderToCancel.Value);
+
+                var referenceDataCompanyList = _ibsServiceProvider.StaticData(orderDetail.CompanyKey).GetCompaniesList();
+
+                var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
+
+                var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
+                    _serverSettings.ServerData.IBS, defaultVehicleType,
+                    orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
+                    orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
+                    orderDetail.Settings.CustomerNumber, referenceDataCompanyList,
+                    orderDetail.Market, orderDetail.Settings.ProviderId, orderDetail.CompanyKey);
+
+                var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+                var driverIdsToExclude = new List<string> {driverIdWhoBailed};
+
+                // Determine best available company now based on available vehicles
+                var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, driverIdsToExclude);
+
+                _logger.LogMessage("Driver {0} bailed, trying to dispatch again to new found best avail company: {1} (fleetid: {2})", driverIdWhoBailed, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
+
+                var accountDetail = _accountDao.FindById(orderDetail.AccountId);
+                var ibsAccountIdForBestAvailableCompany = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(accountDetail, bestAvailableCompany.CompanyKey);
+
+                // Re-dispatch order (don't dispatch again to the driver who bailed)
+                var ibsOrderResult =_dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
+                    ibsOrderParams,
+                    bestAvailableCompany,
+                    dispatcherSettings,
+                    orderDetail.Settings.AccountNumber,
+                    ibsAccountIdForBestAvailableCompany,
+                    orderDetail.Settings.Name,
+                    orderDetail.Settings.Phone,
+                    orderDetail.Settings.Passengers,
+                    orderDetail.Settings.VehicleTypeId,
+                    IbsHelper.BuildNote(
+                        _serverSettings.ServerData.IBS.NoteTemplate,
+                        _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat),
+                        orderDetail.UserNote,
+                        orderDetail.PickupAddress.BuildingName,
+                        orderDetail.Settings.LargeBags,
+                        _serverSettings.ServerData.IBS.HideChargeTypeInUserNote),
+                    orderDetail.PickupDate,
+                    null,
+                    null,
+                    orderDetail.Market,
+                    FareHelper.GetFareFromEstimate(new RideEstimate { Price = orderDetail.EstimatedFare }),
+                    orderDetail.TipIncentive,
+                    driverIdsToExclude: driverIdsToExclude);
+
+                return ibsOrderResult;
+            }
+
+            return null;
+        }
+
+        private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, bool driverHasBailed)
+        {
+            if (driverHasBailed 
+                || orderStatusDetail.Status == OrderStatus.WaitingForPayment
                 || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
-                _logger.LogMessage("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: Status is: {1} Bail Detected: {2}. Don't update since it's a special case outside of IBS.", orderStatusDetail.OrderId, orderStatusDetail.Status, driverHasBailed);
                 return;
             }
 
@@ -449,9 +572,24 @@ namespace apcurium.MK.Booking.Jobs
             return false;
         }
 
-        private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus, OrderDetail orderDetail)
+        private string GetVehicleRegistration(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-			// We are not supposed to attempt to show the vehicle position when not in the proper state.
+            var vehicleRegistration = orderStatusDetail.DriverInfos.VehicleRegistration;
+
+            if (!vehicleRegistration.HasValue())
+            {
+                var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
+                vehicleRegistration = vehicleMapping != null
+                    ? vehicleMapping.DeviceName
+                    : ibsOrderInfo.VehicleRegistration;
+            }
+
+            return vehicleRegistration;
+        }
+
+	private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus, OrderDetail orderDetail)
+        {
+		// We are not supposed to attempt to show the vehicle position when not in the proper state.
 	        if (VehicleStatuses.ShowOnMapStatuses.None(status => status.Equals(ibsOrderInfo.Status)))
 	        {
 				return;
@@ -464,10 +602,12 @@ namespace apcurium.MK.Booking.Jobs
             var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
 
+            var vehicleRegistration = GetVehicleRegistration(ibsOrderInfo, orderStatus);
+
             // Override with Geo position if enabled and if we have a vehicle registration.
-            if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
+            if (isUsingGeo && vehicleRegistration.HasValue())
             {
-                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
+                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, vehicleRegistration);
 
                 if (vehicleStatus.Latitude != 0.0f && vehicleStatus.Longitude != 0.0f)
                 {

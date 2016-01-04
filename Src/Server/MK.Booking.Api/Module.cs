@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.Api.Services.Maps;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
@@ -146,8 +147,8 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<OrderKey, IbsOrderKey>();
             Mapper.CreateMap<IbsOrderKey, OrderKey>();
             Mapper.CreateMap<VehicleCandidate, IbsVehicleCandidate>();
-            Mapper.CreateMap<IbsHailResponse, OrderHailResult>();
             Mapper.CreateMap<IbsVehicleCandidate, VehicleCandidate>();
+            Mapper.CreateMap<IbsResponse, IBSOrderResult>();
         }
     }
 

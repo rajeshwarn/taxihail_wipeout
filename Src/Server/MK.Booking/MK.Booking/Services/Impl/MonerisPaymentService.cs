@@ -356,7 +356,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     && orderStatus.DriverInfos.DriverId.HasValue())
                 {
                     //add driver id to "memo" field
-                    completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId); 
+                    completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId);
                 }
 
                 var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);

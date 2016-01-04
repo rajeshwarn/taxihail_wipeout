@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -10,8 +9,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
-using ServiceStack.Common;
-using ServiceStack.Text;
 
 namespace CMTServices
 {
@@ -68,7 +65,7 @@ namespace CMTServices
                 var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 // make sure that if ETA is null they are last in the list
                 var orderedVehicleList = response.Entities
-                    .OrderBy(v => (v.ETASeconds != null ? 0 : 1))
+                    .OrderBy(v => v.ETASeconds != null ? 0 : 1)
                     .ThenBy(v => v.ETASeconds)
                     .ThenBy(v => v.Medallion);
 
@@ -96,6 +93,7 @@ namespace CMTServices
             response.DeviceName = entity.DeviceName;
             response.CompassCourse = entity.CompassCourse;
             response.Market = entity.Market;
+            response.LegacyDispatchId = entity.LegacyDispatchId;
 
             return response;
         }
@@ -166,8 +164,6 @@ namespace CMTServices
 		        ? MeterStates.Hired
 		        : MeterStates.ForHire;
 
-			
-
             var @params = new List<KeyValuePair<string, object>>
                 {
                     new KeyValuePair<string, object>("meterState", ((int)meterState).ToString()),
@@ -186,7 +182,6 @@ namespace CMTServices
             if (market.HasValue())
             {
                 @params.Add(new KeyValuePair<string, object>("markets", market.Split(',')));
-
             }
 
             if (wheelchairAccessibleOnly)

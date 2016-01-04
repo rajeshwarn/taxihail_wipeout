@@ -242,10 +242,11 @@ namespace apcurium.MK.Booking.Test.ExportFixture
 
         private void RaiseIbsOrderInfoAddedToOrder()
         {
-            _reportDetailGenerator.Handle(new IbsOrderInfoAddedToOrder
+            _reportDetailGenerator.Handle(new IbsOrderInfoAddedToOrder_V2
             {
                 SourceId = _orderId,
-                IBSOrderId = IbsOrderId
+                IBSOrderId = IbsOrderId,
+                CompanyKey = null
             });
         }
 

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
-            Handles<IbsOrderInfoAddedToOrder>(NoAction);
+            Handles<IbsOrderInfoAddedToOrder_V2>(NoAction);
             Handles<OrderCancelledBecauseOfError>(NoAction);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, int? companyFleetId, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
             string chargeTypeEmail, int? ibsOrderId = null)
 		{
@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Domain
 				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
 				CompanyKey = companyKey,
 				CompanyName = companyName,
+                CompanyFleetId = companyFleetId,
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
@@ -107,9 +108,9 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderReportCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
-            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId = null)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, int? companyFleetId, string market, bool isPrepaid, decimal bookingFees, string error,
+            double? tipIncentive, string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking,
+            ListItem[] referenceDataCompanyList, int? ibsOrderId = null)
 		{
 			Update(new OrderReportCreated
 			{
@@ -129,6 +130,7 @@ namespace apcurium.MK.Booking.Domain
 				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
 				CompanyKey = companyKey,
 				CompanyName = companyName,
+                CompanyFleetId = companyFleetId,
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
@@ -146,11 +148,12 @@ namespace apcurium.MK.Booking.Domain
 			});
 		}
 
-        public void AddIbsOrderInfo(int ibsOrderId)
+        public void AddIbsOrderInfo(int ibsOrderId, string companyKey)
         {
-            Update(new IbsOrderInfoAddedToOrder
+            Update(new IbsOrderInfoAddedToOrder_V2
             {
                 IBSOrderId = ibsOrderId,
+                CompanyKey = companyKey,
                 CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
@@ -269,12 +272,13 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription)
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool dispatcherTimedOut)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
                 ErrorDescription = errorDescription,
+                IsDispatcherTimedOut = dispatcherTimedOut,
                 CancelWasRequested = _status == OrderStatus.Canceled
             });
         }

@@ -22,6 +22,8 @@ namespace CMTServices.Responses
 
         public string DeviceName { get; set; }
 
+        public string LegacyDispatchId { get; set; }
+
         public int VehicleType { get; set; }
 
         public string Market { get; set; }

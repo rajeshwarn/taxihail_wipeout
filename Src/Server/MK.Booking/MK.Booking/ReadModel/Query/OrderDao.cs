@@ -187,5 +187,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
 		    }
 	    }
+
+        public VehicleIdMappingDetail GetVehicleMapping(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<VehicleIdMappingDetail>().FirstOrDefault(v => v.OrderId == orderId);
+            }
+        }
     }
 }

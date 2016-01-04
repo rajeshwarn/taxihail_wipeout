@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderPreparedForNextDispatch>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
-        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<IbsOrderInfoAddedToOrder_V2>,
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
@@ -78,16 +78,25 @@ namespace apcurium.MK.Booking.EventHandlers
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
-                    order.Status = (int)OrderStatus.Canceled;
+                    order.Status = @event.IsDispatcherTimedOut
+                        ? (int)OrderStatus.DispatcherTimedOut
+                        : (int)OrderStatus.Canceled;
+
                     context.Save(order);
                 }
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
                 {
-                    details.Status = OrderStatus.Canceled;
-                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
+                    details.Status = @event.IsDispatcherTimedOut
+                        ? OrderStatus.DispatcherTimedOut
+                        : OrderStatus.Canceled;
+                    details.IBSStatusId = @event.IsDispatcherTimedOut
+                        ? VehicleStatuses.Common.Timeout
+                        : VehicleStatuses.Common.CancelledDone;
+
                     details.IBSStatusDescription = @event.ErrorDescription;
+
                     context.Save(details);
                 }
 
@@ -118,6 +127,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
+                    CompanyFleetId = @event.CompanyFleetId,
                     Market = @event.Market,
                     BookingFees = @event.BookingFees,
                     TipIncentive = @event.TipIncentive
@@ -149,6 +159,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.ClientVersion = @event.ClientVersion;
                         order.CompanyKey = @event.CompanyKey;
                         order.CompanyName = @event.CompanyName;
+                        order.CompanyFleetId = @event.CompanyFleetId;
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
                         order.TipIncentive = @event.TipIncentive;
@@ -497,7 +508,7 @@ namespace apcurium.MK.Booking.EventHandlers
             return details.ChargeAmountsTimeOut;
         }
 
-        public void Handle(IbsOrderInfoAddedToOrder @event)
+        public void Handle(IbsOrderInfoAddedToOrder_V2 @event)
         {
             if (@event.CancelWasRequested)
             {
@@ -508,10 +519,12 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IBSOrderId = @event.IBSOrderId;
+                order.CompanyKey = @event.CompanyKey;
 
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                 orderStatus.IBSOrderId = @event.IBSOrderId;
-                
+                orderStatus.CompanyKey = @event.CompanyKey;
+
                 context.SaveChanges();
             }
         }

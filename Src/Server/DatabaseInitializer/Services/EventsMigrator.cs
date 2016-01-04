@@ -146,6 +146,17 @@ namespace DatabaseInitializer.Services
 
                     context.SaveChanges();
 
+                    // convert IbsOrderInfoAddedToOrder to IbsOrderInfoAddedToOrder_V2
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.IbsOrderInfoAddedToOrder")))
+                    {
+                        var @event = Deserialize<IbsOrderInfoAddedToOrder>(message.Payload);
+                        var newEvent = Convert(@event);
+                        message.Payload = Serialize(newEvent);
+                        message.EventType = message.EventType.Replace("IbsOrderInfoAddedToOrder", "IbsOrderInfoAddedToOrder_V2");
+                    }
+
+                    context.SaveChanges();
+
                     // convert OrderFareUpdated to OrderStatusChanged
                     foreach (var message in events.Where(x => x.EventType.Contains("OrderFareUpdated")).ToList())
                     {
@@ -255,6 +266,19 @@ namespace DatabaseInitializer.Services
 
                 Meter = System.Convert.ToDecimal(fareObject.AmountExclTax),
                 Tax = System.Convert.ToDecimal(fareObject.TaxAmount)
+            };
+        }
+
+        private IbsOrderInfoAddedToOrder_V2 Convert(IbsOrderInfoAddedToOrder oldEvent)
+        {
+            return new IbsOrderInfoAddedToOrder_V2
+            {
+                EventDate = oldEvent.EventDate,
+                SourceId = oldEvent.SourceId,
+                Version = oldEvent.Version,
+                IBSOrderId = oldEvent.IBSOrderId,
+                CancelWasRequested = oldEvent.CancelWasRequested
+                // TODO for memory eventhandler replay get info from readmodel if possible
             };
         }
     }

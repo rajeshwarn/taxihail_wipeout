@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Commands
 
         public int IBSOrderId { get; set; }
 
+        public string CompanyKey { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

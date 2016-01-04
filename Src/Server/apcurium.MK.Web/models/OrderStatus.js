@@ -32,6 +32,10 @@
             return this.get('ibsStatusId') === 'wosWAITING';
         },
 
+        driverHasBailed: function () {
+            return this.get('ibsStatusId') === 'wosBAILED';
+        },
+
         showEta: function() {
             return this.get('ibsStatusId') === 'wosASSIGNED' && this.hasVehicle() && TaxiHail.parameters.isEtaEnabled;
         },
@@ -50,7 +54,7 @@
             // Check if we have all required information to display the vehicle position on a map
             // It's possible to receive coordinates but no vehicle number
             // if the driver has been assigned but has not yet accepted the offer.
-            return this.get('vehicleLatitude') && this.get('vehicleLongitude') && this.get('vehicleNumber');
+            return this.get('vehicleLatitude') && this.get('vehicleLongitude') && this.get('vehicleNumber') && !this.driverHasBailed();
         }
     });
 

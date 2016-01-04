@@ -184,12 +184,14 @@
     <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
+    <Compile Include="CommandHandlers\NonDomainRelatedCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Comparer\AccountDetailComparer.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Data\BestAvailableCompany.cs" />
+    <Compile Include="Data\IbsOrderParams.cs" />
     <Compile Include="Data\IBSOrderResult.cs" />
     <Compile Include="Data\TemporaryOrderCreationInfo.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -233,6 +235,9 @@
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
+    <Compile Include="Helpers\IbsHelper.cs" />
+    <Compile Include="Helpers\OrderBailedCreationHelper.cs" />
+    <Compile Include="Helpers\TaxiHailNetworkHelper.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
@@ -325,6 +330,7 @@
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="ReadModel\TemporaryOrderCreationInfo.cs" />
     <Compile Include="ReadModel\TemporaryOrderPaymentInfoDetail.cs" />
+    <Compile Include="ReadModel\VehicleIdMappingDetail.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
     <Compile Include="Resources\Aexid.fr.Designer.cs">
       <DependentUpon>Aexid.fr.resx</DependentUpon>
@@ -411,12 +417,14 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\IDispatcherService.cs" />
     <Compile Include="Services\IFeeService.cs" />
     <Compile Include="Services\IIbsCreateOrderService.cs" />
     <Compile Include="Services\IIbsOrderService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
+    <Compile Include="Services\Impl\DispatcherService.cs" />
     <Compile Include="Services\Impl\FeeService.cs" />
     <Compile Include="Services\Impl\IbsCreateOrderService.cs" />
     <Compile Include="Services\Impl\IBSOrderService.cs" />

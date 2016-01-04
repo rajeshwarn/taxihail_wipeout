@@ -73,6 +73,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string CompanyKey { get; set; }
 
+        public int? CompanyFleetId { get; set; }
+
         public string Market { get; set; }
 
         public string ChargeType { get; set; }

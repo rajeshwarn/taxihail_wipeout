@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -17,6 +18,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTServices;
+using CustomerPortal.Client.Impl;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -77,13 +79,17 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 null,
                 accountDao,
                 IbsOrderServiceMock.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), ConfigurationManager, null), 
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), ConfigurationManager, null),
                 null,
                 PaymentServiceMock.Object,
                 new CreditCardDao(() => new BookingDbContext(DbName)),
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
                 notificationDetailsDaoMock.Object,
-                new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object), 
+                new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object),
+                new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, new TaxiHailNetworkServiceClient(ConfigurationManager)), ConfigurationManager, bus.Object, new TaxiHailNetworkServiceClient(ConfigurationManager), accountDao),
+                new VehicleTypeDao(() => new BookingDbContext(DbName)), 
+                new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, new TaxiHailNetworkServiceClient(ConfigurationManager)),
+                new TaxiHailNetworkServiceClient(ConfigurationManager),
                 LoggerMock.Object);
         }
         

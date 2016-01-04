@@ -15,5 +15,8 @@ namespace CMTServices.Responses
 
 		[JsonProperty("cc")]
 		public float CompassCourse { get; set; }
+
+        [JsonProperty("ldi")]
+        public string LegacyDispatchId { get; set; }
     }
 }

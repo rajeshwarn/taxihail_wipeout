@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Entity;
-
-#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -70,6 +66,8 @@ namespace apcurium.MK.Booking.ReadModel
         public string CompanyKey { get; set; }
 
         public string CompanyName { get; set; }
+
+        public int? CompanyFleetId { get; set; }
 
         public string Market { get; set; }
 
