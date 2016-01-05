@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 {
     public class FakePaymentClient : IPaymentServiceClient
     {
-        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
         {
             return Task.FromResult(new TokenizedCreditCardResponse
             {

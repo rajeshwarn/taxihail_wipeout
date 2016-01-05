@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
-        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
 		{
             return Tokenize(MonerisClient, creditCardNumber, expiryDate);
 		}

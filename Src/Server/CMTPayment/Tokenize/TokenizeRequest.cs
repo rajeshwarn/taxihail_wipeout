@@ -19,5 +19,11 @@ namespace CMTPayment.Tokenize
         public string Cvv { get; set; }
 
         public string ZipCode { get; set; }
+
+        /// <summary>
+        /// Fraud session id (Kount)
+        /// </summary>
+        /// <value>The session identifier.</value>
+        public string SessionId { get; set; }
     }
 }

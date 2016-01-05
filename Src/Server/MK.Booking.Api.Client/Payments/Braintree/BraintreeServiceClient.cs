@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         protected string ClientKey { get; set; }
 
-        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
         {
             try
             {

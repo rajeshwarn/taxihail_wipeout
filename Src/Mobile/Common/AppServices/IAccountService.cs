@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<CreditCardDetails> GetDefaultCreditCard ();
 		Task<IEnumerable<CreditCardDetails>> GetCreditCards ();
-		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false);
+		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, string kountSessionId, bool isUpdate = false);
 		Task RemoveCreditCard (Guid creditCardId, bool replacedByPayPal = false);
 		Task<bool> UpdateDefaultCreditCard(Guid creditCardId);
 		Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label);

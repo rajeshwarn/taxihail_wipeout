@@ -36,19 +36,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, zipCode);
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, kountSessionId, zipCode);
         }
 
 		/// <summary>
-		/// This method does not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
+		/// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
 		/// </summary>
 		/// <param name="cardToken"></param>
 		/// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-			return new DeleteTokenizedCreditcardResponse();
+            return new DeleteTokenizedCreditcardResponse { IsSuccessful = true };
         }
 
         public Task<OverduePayment> GetOverduePayment()
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         }
 
         private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
-            string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
+            string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
         {
             try
             {
@@ -82,9 +82,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                         ValidateAccountInformation = false,
                         #endif
                         Cvv = cvv,
+                        SessionId = kountSessionId
                     };
                 
-                if(!string.IsNullOrEmpty(zipCode))
+                if(zipCode.HasValue())
                 {
                     request.ZipCode = zipCode;
                 }
