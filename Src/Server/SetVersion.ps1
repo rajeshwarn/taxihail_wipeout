@@ -81,6 +81,32 @@ function UpdateAndroidVersion ( $versionVal )
     $xam.Save( $manifestPath)
 }
 
+function UpdateBlackberryVersion ( $versionVal )
+{
+
+    $executingScriptDirectory =   get-scriptdirectory       
+
+    $manifestPath = Join-Path  $executingScriptDirectory "..\Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml"
+
+
+    # Load the bootstrap file
+    [xml] $xam = Get-Content -Path ($manifestPath)
+    
+    # Get the version from Android Manifest
+    $version = Select-Xml -xml $xam  -Xpath "/manifest/@android:versionName" -namespace @{android="http://schemas.android.com/apk/res/android"}
+        
+    $version.Node.Value = $versionVal
+
+    $versionCode = Select-Xml -xml $xam  -Xpath "/manifest/@android:versionCode" -namespace @{android="http://schemas.android.com/apk/res/android"}
+    
+    [int] $iVer  = $versionCode.Node.Value
+
+    $versionCode.Node.Value = ($iVer + 1)
+ 
+    # Save the file
+    $xam.Save( $manifestPath)
+}
+
 function UpdateCallboxVersion ( $versionVal )
 {
 
@@ -225,6 +251,7 @@ if ($r.Success)
 		echo "Inserting new version...";
 	  Update-AllAssemblyInfoFiles $args[0];
 	  UpdateAndroidVersion $args[0];
+	  UpdateBlackberryVersion $args[0];
 	  UpdateCallboxVersion $args[0];
 	  UpdateIosVersion $args[0];
 	  Add-Content ..\..\tagsList ($args[0])
