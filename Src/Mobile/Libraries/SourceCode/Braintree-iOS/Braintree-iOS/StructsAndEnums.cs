@@ -1,10 +1,10 @@
 using System;
 using ObjCRuntime;
 
-namespace BraintreeBindings
+namespace Braintree
 {
 	[Native]
-	public enum BTClientMetadataSourceType : long
+	public enum BTClientMetadataSourceType : nint
 	{
 		Unknown = 0,
 		PayPalApp,
@@ -14,7 +14,7 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTClientMetadataIntegrationType : long
+	public enum BTClientMetadataIntegrationType : nint
 	{
 		Custom,
 		DropIn,
@@ -22,7 +22,7 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTJSONErrorCode : int
+	public enum BTJSONErrorCode : nint
 	{
 		ValueUnknown = 0,
 		ValueInvalid = 1,
@@ -30,14 +30,14 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTAPIClientErrorType : int
+	public enum BTAPIClientErrorType : nint
 	{
 		Unknown = 0,
 		ConfigurationUnavailable
 	}
 
 	[Native]
-	public enum BTAppSwitchTarget : long
+	public enum BTAppSwitchTarget : nint
 	{
 		Unknown = 0,
 		NativeApp,
@@ -45,7 +45,7 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTClientTokenError : int
+	public enum BTClientTokenError : nint
 	{
 		Unknown = 0,
 		Invalid,
@@ -53,14 +53,14 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTError : int
+	public enum BTError : nint
 	{
 		Unknown = 0,
 		CustomerInputInvalid
 	}
 
 	[Native]
-	public enum BTHTTPErrorCode : int
+	public enum BTHTTPErrorCode : nint
 	{
 		Unknown = 0,
 		ResponseContentTypeNotAcceptable,
@@ -70,7 +70,7 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTLogLevel : ulong
+	public enum BTLogLevel : nuint
 	{
 		None = 0,
 		Critical = 1,
@@ -81,22 +81,14 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTTokenizationServiceError : int
+	public enum BTTokenizationServiceError : nint
 	{
 		Unknown = 0,
 		TypeNotRegistered
 	}
 
 	[Native]
-	public enum BTApplePayErrorType : int
-	{
-		Unknown = 0,
-		Unsupported,
-		Integration
-	}
-
-	[Native]
-	public enum BTCardNetwork : int
+	public enum BTCardNetwork : nint
 	{
 		Unknown = 0,
 		Amex,
@@ -114,14 +106,40 @@ namespace BraintreeBindings
 	}
 
 	[Native]
-	public enum BTCardClientErrorType : int
+	public enum BTCardClientErrorType : nint
 	{
 		Unknown = 0,
 		Integration
 	}
 
 	[Native]
-	public enum BTPayPalDriverErrorType : int
+	public enum BTThreeDSecureErrorType : nint
+	{
+		Unknown = 0,
+		FailedLookup,
+		FailedAuthentication,
+		Integration
+	}
+
+	[Native]
+	public enum BTApplePayErrorType : nint
+	{
+		Unknown = 0,
+		Unsupported,
+		Integration
+	}
+
+	[Native]
+	public enum BTDataCollectorEnvironment : nint
+	{
+		Development,
+		Qa,
+		Sandbox,
+		Production
+	}
+
+	[Native]
+	public enum BTPayPalDriverErrorType : nint
 	{
 		Unknown = 0,
 		Disabled,
@@ -130,5 +148,92 @@ namespace BraintreeBindings
 		InvalidConfiguration,
 		InvalidRequest,
 		Integration
+	}
+
+	[Native]
+	public enum BTUIPaymentOptionType : nint
+	{
+		Unknown = 0,
+		Amex,
+		DinersClub,
+		Discover,
+		MasterCard,
+		Visa,
+		Jcb,
+		Laser,
+		Maestro,
+		UnionPay,
+		Solo,
+		Switch,
+		UKMaestro,
+		PayPal,
+		Coinbase,
+		Venmo
+	}
+
+	[Native]
+	public enum BTUICardFormOptionalFields : nuint
+	{
+		None = 0,
+		Cvv = 1 << 0,
+		PostalCode = 1 << 1,
+		All = Cvv | PostalCode
+	}
+
+	[Native]
+	public enum BTUICardFormField : nuint
+	{
+		Number = 0,
+		Expiration,
+		Cvv,
+		PostalCode
+	}
+
+	[Native]
+	public enum BTCardHintDisplayMode : nint
+	{
+		ardType,
+		VVHint
+	}
+
+	[Native]
+	public enum BTDropInContentViewStateType : nuint
+	{
+		Form = 0,
+		PaymentMethodsOnFile,
+		Activity
+	}
+
+	[Native]
+	public enum PayPalOneTouchRequestTarget : nuint
+	{
+		None,
+		Browser,
+		OnDeviceApplication,
+		Unknown
+	}
+
+	[Native]
+	public enum PayPalOneTouchErrorCode : nuint
+	{
+		Unknown = -1000,
+		ParsingFailed = -1001,
+		NoTargetAppFound = -1002,
+		OpenURLFailed = -1003
+	}
+
+	[Native]
+	public enum PayPalOneTouchResultType : nuint
+	{
+		Error,
+		Cancel,
+		Success
+	}
+
+	[Native]
+	public enum BTThreeDSecureViewControllerCompletionStatus : nint
+	{
+		Failure = 0,
+		Success
 	}
 }
