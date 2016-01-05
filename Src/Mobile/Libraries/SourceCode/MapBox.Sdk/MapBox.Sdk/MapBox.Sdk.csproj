@@ -166,10 +166,10 @@
     <Folder Include="JavaDocs\" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\MapboxGLAndroidSDK-release.aar" />
-  </ItemGroup>
-  <ItemGroup>
     <JavaDocIndex Include="JavaDocs\index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
+  <ItemGroup>
+    <LibraryProjectZip Include="Jars\mapbox-android-sdk-3.0.0.aar" />
+  </ItemGroup>
 </Project>
