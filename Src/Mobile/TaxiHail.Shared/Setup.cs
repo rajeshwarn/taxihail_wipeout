@@ -64,24 +64,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPackageInfo>(new PackageInfo(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<IMessageService, MessageService>();
             container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
-
             container.Register<ILocationService, LocationService>();
-
             container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<ICacheService>(new CacheService());
             container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
             container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
-
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
-
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
-
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
-
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
-
+            container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
+            container.Register<IQuitApplicationService, QuitApplicationService>();
+            container.Register<IDeviceCollectorService, DeviceCollectorService>();
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
@@ -93,9 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
-            
-			container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
-			container.Register<IQuitApplicationService, QuitApplicationService>();
 
 			InitializeSocialNetwork();
         }

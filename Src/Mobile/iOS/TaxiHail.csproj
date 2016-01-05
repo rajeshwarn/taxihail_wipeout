@@ -273,6 +273,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsIOS">
+      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -718,6 +721,7 @@
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

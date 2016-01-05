@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#ffffffff"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="Kount API - Xamarin Android Test Application"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:gravity="center_horizontal"
+        android:textColor="#ff00508c" />
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView1"
+        android:scaleType="fitCenter"
+        android:background="#ffffffff"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="URL"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/collecttext"
+            android:gravity="center_vertical"
+            android:textColor="#ff444444"
+            android:paddingStart="8dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/collectvalue"
+            android:textColor="#ff666666"
+            android:textColorHint="#ffaaaaaa"
+            android:typeface="normal"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:gravity="right"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:paddingEnd="8dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:text="Merchant ID"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/merchidtext"
+            android:gravity="center_vertical"
+            android:textColor="#ff444444"
+            android:paddingStart="8dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/merchidvalue"
+            android:textColor="#ff666666"
+            android:textColorHint="#ffaaaaaa"
+            android:typeface="normal"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:gravity="right"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:paddingEnd="8dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4">
+        <TextView
+            android:text="Session ID"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/guidlabel"
+            android:gravity="center"
+            android:textColor="#ff444444"
+            android:paddingStart="8dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/guidtext"
+            android:textColor="#ff666666"
+            android:textColorHint="#ffaaaaaa"
+            android:typeface="normal"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:gravity="right"
+            android:scrollbars="none"
+            android:layout_marginLeft="0.0dp"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:paddingEnd="8dp" />
+    </LinearLayout>
+    <Button
+        android:text="Generate New Session ID"
+        android:id="@+id/refreshguid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/sendDataButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/senddata" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/outputtext"
+        android:textColor="#ff222222"
+        android:textSize="8dp"
+        android:maxLines="26"
+        android:gravity="bottom"
+        android:scrollbars="vertical"
+        android:typeface="normal"
+        android:textStyle="normal" />
+</LinearLayout>

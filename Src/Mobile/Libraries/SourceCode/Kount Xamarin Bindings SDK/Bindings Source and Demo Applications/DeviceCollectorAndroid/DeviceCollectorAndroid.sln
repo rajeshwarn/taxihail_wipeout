@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kount API Demo", "DeviceCollectorSample\Kount API Demo.csproj", "{EC19609E-3C40-43DB-A0E3-BEB88552C11B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceCollectorBindingsAndroid", "DeviceCollectorBindings\DeviceCollectorBindingsAndroid.csproj", "{13BC0031-477B-4DF6-B53C-CFF6AD103F03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13BC0031-477B-4DF6-B53C-CFF6AD103F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13BC0031-477B-4DF6-B53C-CFF6AD103F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13BC0031-477B-4DF6-B53C-CFF6AD103F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13BC0031-477B-4DF6-B53C-CFF6AD103F03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC19609E-3C40-43DB-A0E3-BEB88552C11B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC19609E-3C40-43DB-A0E3-BEB88552C11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC19609E-3C40-43DB-A0E3-BEB88552C11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC19609E-3C40-43DB-A0E3-BEB88552C11B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		description = Xamarin Android Kount SDK
+		version = 2.5
+	EndGlobalSection
+EndGlobal
