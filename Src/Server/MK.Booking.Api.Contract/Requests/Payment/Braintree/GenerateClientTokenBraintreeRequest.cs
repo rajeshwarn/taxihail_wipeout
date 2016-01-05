@@ -6,7 +6,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 {
     [Authenticate]
     [Route("/payments/braintree/generateclienttoken", "GET")]
-    public class GenerateClientTokenBraintreeRequest : IReturn<GenerateClientTokenResponse>
+	public class GenerateClientTokenBraintreeRequest : IReturn<GenerateClientTokenResponse>
     {
+		
     }
 }

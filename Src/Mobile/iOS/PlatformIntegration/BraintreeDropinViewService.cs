@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         public Task<string> ShowDropinView(string clientToken)
         {
-            throw new NotImplementedException();
+			throw new Exception();
         }
     }
 }
