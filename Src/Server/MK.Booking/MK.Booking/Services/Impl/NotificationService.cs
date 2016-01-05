@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -485,7 +486,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
 
-        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+        public async Task SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
             SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
@@ -567,7 +568,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     paymentTransactionId = paymentInfo.TransactionId;
                 }
 
-                var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
+                var addressToUseForDropOff = await TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
                 var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
 
                 var hasDropOffAddress = addressToUseForDropOff != null
@@ -712,10 +713,8 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
-                {
-                    _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
-                    _logger.LogError(e);
-                }
+                _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
+                _logger.LogError(e);
             }
         }
 
@@ -790,7 +789,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendPushOrSms(account.Id, alert, data);
         }
 
-        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
+        private async Task<Address> TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
             if ((orderStatus == null
@@ -820,10 +819,10 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             // Find the exact dropoff address using the last vehicle position
-            var exactDropOffAddress = _geocoding.Search(
+            var exactDropOffAddress = (await _geocoding.SearchAsync(
                 latitude,
                 longitude,
-                clientLanguageCode).FirstOrDefault();
+                clientLanguageCode)).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
         }
