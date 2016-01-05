@@ -9,6 +9,8 @@ namespace apcurium.MK.Booking.Api.Client
     {
         Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null);
 
+        Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null);
+
         Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);
 
         Task<OverduePayment> GetOverduePayment();

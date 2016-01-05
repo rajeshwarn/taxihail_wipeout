@@ -67,6 +67,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
+        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        {
+            return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
+        }
+
         public Task<OverduePayment> GetOverduePayment()
         {
             return Client.GetAsync<OverduePayment>("/account/overduepayment");

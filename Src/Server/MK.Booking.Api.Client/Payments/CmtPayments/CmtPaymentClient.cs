@@ -41,6 +41,47 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, kountSessionId, zipCode);
         }
 
+        public async Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        {
+            try
+            {
+                var request = new TokenizeValidateRequest
+                {
+                    Token = cardToken,
+                    Cvv = cvv,
+                    SessionId = kountSessionId
+                };
+
+                if(zipCode.HasValue())
+                {
+                    request.ZipCode = zipCode;
+                }
+
+                var response = await CmtPaymentServiceClient.PostAsync(request);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = response.ResponseCode == 1,
+                    Message = response.ResponseMessage
+                };
+            }
+            catch(Exception e)
+            {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
+        }
+
 		/// <summary>
 		/// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
 		/// </summary>

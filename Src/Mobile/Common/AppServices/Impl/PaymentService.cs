@@ -121,10 +121,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return GetClient().Tokenize(creditCardNumber, expiryDate, cvv, kountSessionId, zipCode);
         }
 
-        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
+        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-			return await GetClient().ForgetTokenizedCard(cardToken);
+			return GetClient().ForgetTokenizedCard(cardToken);
         }
+
+		public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+		{
+			return GetClient().ValidateTokenizedCard(cardToken, cvv, kountSessionId, zipCode);
+		}
 
 		public async Task<OverduePayment> GetOverduePayment()
 		{

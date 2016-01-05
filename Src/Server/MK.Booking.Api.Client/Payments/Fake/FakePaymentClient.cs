@@ -29,6 +29,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
+        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        {
+            return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
+        }
+
         public Task<OverduePayment> GetOverduePayment()
         {
             return Task.FromResult((OverduePayment)null);
