@@ -28,11 +28,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address GetPlaceDetail(string name, string placeId)
+        public async Task<Address> GetPlaceDetail(string name, string placeId)
         {
-            var place = _client.GetPlaceDetail(placeId);
+            var place =  await _client.GetPlaceDetailAsync(placeId);
 
-			var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 
             return result;
         }
