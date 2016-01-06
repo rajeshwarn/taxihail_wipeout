@@ -528,7 +528,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-            var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken);
+            var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
 
             await _paymentService.AddPaymentMethod(paymentNonce);
             await _accountService.GetDefaultCreditCard();

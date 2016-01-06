@@ -147,6 +147,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
         public void ShowProgress(bool show)
         {
+
+            IsProgressShown = show;
             var dispatcher = Mvx.Resolve<IMvxViewDispatcher>();
 
             dispatcher.RequestMainThreadAction(() => {
@@ -253,6 +255,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             ShowProgressNonModal (true);
             return Disposable.Create (() => ShowProgressNonModal(false));
         }
+
+        public bool IsProgressShown { get; private set; }
 
         public void ShowToast(string message, ToastDuration duration)
         {
