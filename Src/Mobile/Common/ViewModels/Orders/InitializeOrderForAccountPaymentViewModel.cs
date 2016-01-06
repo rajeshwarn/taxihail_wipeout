@@ -46,7 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-					// TODO handle credit card error?
 					try
 					{
 						using(this.Services().Message.ShowProgress())
@@ -66,6 +65,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							this.ReturnResult(result);
 						}
 					}
+					catch(InvalidCreditCardException e)
+					{
+						Logger.LogError(e);
+
+						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+						var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+						// don't prompt for automatic redirect to cof update here since the risk of this exception happening here is very low
+						await this.Services().Message.ShowMessage(title, message);
+					}
 					catch(OrderCreationException e)
 					{
 						Logger.LogError(e);
@@ -77,10 +86,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							this.Services().Message.ShowMessage(title,
 								e.Message,
-								"Call",
-								() => _phone.MakePhoneCall (settings.TaxiHail.ApplicationName, settings.DefaultPhoneNumber),
-								"Cancel",
-								delegate { });
+								this.Services().Localize["CallButton"], () => _phone.MakePhoneCall (settings.TaxiHail.ApplicationName, settings.DefaultPhoneNumber),
+								this.Services().Localize["Cancel"], () => { });
 						}
 						else
 						{

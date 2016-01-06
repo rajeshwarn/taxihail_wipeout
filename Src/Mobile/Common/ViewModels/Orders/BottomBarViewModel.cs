@@ -640,7 +640,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 				var message = this.Services().Localize["InvalidCreditCardMessage"];
 
-				await this.Services().Message.ShowMessage(title, message,
+				this.Services().Message.ShowMessage(title, message,
 					this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
 						// Force the user to return to redo the Confirm Order flow
 						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
@@ -679,8 +679,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							if (!Settings.HideCallDispatchButton)
 							{
 								this.Services().Message.ShowMessage(title, e.Message,
-									"Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
-									"Cancel", () => { });
+									this.Services().Localize["CallButton"], () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+									this.Services().Localize["Cancel"], () => { });
 							}
 							else
 							{

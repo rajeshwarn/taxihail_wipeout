@@ -371,6 +371,7 @@
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
     <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
+    <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

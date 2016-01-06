@@ -1052,6 +1052,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05017f
 			public const int CreditCardCCV = 2131034495;
 			
+			// aapt resource value: 0x7f05030b
+			public const int CreditCardDeclinedOnPreauthorizationErrorText = 2131034891;
+			
 			// aapt resource value: 0x7f050184
 			public const int CreditCardErrorInvalid = 2131034500;
 			
@@ -1105,6 +1108,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05017c
 			public const int CreditCardType = 2131034492;
+			
+			// aapt resource value: 0x7f05030c
+			public const int CreditCardUnanbleToPreathorizeErrorText = 2131034892;
 			
 			// aapt resource value: 0x7f050173
 			public const int CreditCardZipCode = 2131034483;
@@ -1255,6 +1261,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05001e
 			public const int ErrorCancellingOrderTitle = 2131034142;
+			
+			// aapt resource value: 0x7f050308
+			public const int ErrorChangeDropOff_Message = 2131034888;
 			
 			// aapt resource value: 0x7f050249
 			public const int ErrorCreateOrder_PendingOrder = 2131034697;
@@ -1465,6 +1474,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f0500ff
 			public const int InvalidChoiceTitle = 2131034367;
+			
+			// aapt resource value: 0x7f05030f
+			public const int InvalidCreditCardMessage = 2131034895;
+			
+			// aapt resource value: 0x7f050310
+			public const int InvalidCreditCardUpdateCardButton = 2131034896;
 			
 			// aapt resource value: 0x7f0500dc
 			public const int InvalidEmailMessage = 2131034332;
@@ -1964,6 +1979,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050257
 			public const int Overdue_TransactionId = 2131034711;
 			
+			// aapt resource value: 0x7f050309
+			public const int PairingProcessingErrorTitle = 2131034889;
+			
 			// aapt resource value: 0x7f050131
 			public const int PanelMenuViewAboutUsText = 2131034417;
 			
@@ -2393,8 +2411,14 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050024
 			public const int ServiceErrorCallTitle = 2131034148;
 			
+			// aapt resource value: 0x7f05030e
+			public const int ServiceErrorCreateAccount_InvalidConfirmationToken = 2131034894;
+			
 			// aapt resource value: 0x7f050026
 			public const int ServiceErrorDefaultMessage = 2131034150;
+			
+			// aapt resource value: 0x7f05030d
+			public const int ServiceErrorResetPassword_AccountNotFound = 2131034893;
 			
 			// aapt resource value: 0x7f050025
 			public const int ServiceErrorUnauthorized = 2131034149;
@@ -2593,6 +2617,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05029d
 			public const int TrainStationsButton = 2131034781;
+			
+			// aapt resource value: 0x7f05030a
+			public const int TripUnableToPairErrorText = 2131034890;
 			
 			// aapt resource value: 0x7f050151
 			public const int Tuto01Bottom = 2131034449;
