@@ -19,10 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var viewControllerDelegate = new BraintreeDelegate();
 
-			var root = UIApplication.SharedApplication.KeyWindow.RootViewController;
-
-
-			var dropInViewController = new BTDropInViewController(client)
+            var dropInViewController = new BTDropInViewController(client)
 			{
 				Delegate = viewControllerDelegate
 			};
@@ -34,8 +31,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			dropInViewController.NavigationItem.LeftBarButtonItem = cancelButton;
 
-			var navController = new UINavigationController(root);
-			await navController.PresentViewControllerAsync(dropInViewController, true);
+            var navController = Mvx.Resolve<UINavigationController>();
+
+            await navController.PresentViewControllerAsync(dropInViewController, true);
 
 			return await viewControllerDelegate.GetTask();
         }
