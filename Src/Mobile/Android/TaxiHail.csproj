@@ -248,7 +248,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
-    <Compile Include="PlatformIntegration\IDropInViewService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
