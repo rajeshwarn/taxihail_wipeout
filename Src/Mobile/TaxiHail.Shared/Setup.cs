@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
-		    container.Register<IBraintreeDropinViewService, BraintreeDropinViewService>();
+		    container.Register<IDropInViewService, BraintreeDropInViewService>();
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {

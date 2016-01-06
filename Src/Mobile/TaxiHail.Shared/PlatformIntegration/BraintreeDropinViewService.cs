@@ -1,27 +1,23 @@
-﻿using System;
-using Cirrious.CrossCore.Droid.Platform;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+﻿using Cirrious.CrossCore.Droid.Platform;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using Android.App;
 using Braintree.Api;
-using Cirrious.MvvmCross.Droid.Fragging;
 using Braintree.Api.Models;
 using Cirrious.MvvmCross.Droid.Views;
 
 namespace TaxiHail.Shared.PlatformIntegration
 {
-	public class BraintreeDropinViewService : IBraintreeDropinViewService
+	public class BraintreeDropInViewService : IDropInViewService
 	{
 		private readonly IMvxAndroidCurrentTopActivity _activity;
 	    private const int _requestCode = 52120;
 
-		public BraintreeDropinViewService(IMvxAndroidCurrentTopActivity activity)
+		public BraintreeDropInViewService(IMvxAndroidCurrentTopActivity activity)
 		{
 		    _activity = activity;
 		}
 
-		public Task<string> ShowDropinView(string clientToken)
+		public Task<string> ShowDropInView(string clientToken)
 		{
 			var paymentRequest = new PaymentRequest()
 				.ActionBarTitle("Add a payment method")

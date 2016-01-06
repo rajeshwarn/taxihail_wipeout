@@ -182,6 +182,7 @@
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IDropInViewService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
@@ -369,7 +370,6 @@
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
-    <Compile Include="Infrastructure\IBraintreeDropinViewService.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
   </ItemGroup>
   <ItemGroup>

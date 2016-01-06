@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
 	    private readonly IPaymentService _paymentService;
-	    private readonly IBraintreeDropinViewService _braintreeDropinViewService;
+	    private readonly IDropInViewService _dropInViewService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IRegisterWorkflowService registrationService,
 			IVehicleTypeService vehicleTypeService, 
             IPaymentService paymentService,
-            IBraintreeDropinViewService braintreeDropinViewService)
+            IDropInViewService dropInViewService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
             _paymentService = paymentService;
-            _braintreeDropinViewService = braintreeDropinViewService;
+            _dropInViewService = dropInViewService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -528,7 +528,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-            var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
+            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
 
             await _paymentService.AddPaymentMethod(paymentNonce);
             await _accountService.GetDefaultCreditCard();

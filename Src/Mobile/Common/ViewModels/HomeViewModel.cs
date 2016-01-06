@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
-		private string _lastHashedMarket = string.Empty;
+	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
@@ -57,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
             IMetricsService metricsService,
-			IBookingService bookingService)
+			IBookingService bookingService, IDropInViewService dropInViewService)
 		{
-			_locationService = locationService;
+		    _locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
 			_tutorialService = tutorialService;
 			_pushNotificationService = pushNotificationService;
@@ -68,10 +68,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _mvxLifetime = mvxLifetime;
 		    _metricsService = metricsService;
 			_bookingService = bookingService;
-			_accountService = accountService;
+		    _accountService = accountService;
 			_paymentService = paymentService;
 
-            Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
+            Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService, dropInViewService);
 
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();

@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
-		private readonly IBraintreeDropinViewService _braintreeDropinService;
+		private readonly IDropInViewService _dropInService;
 		private readonly IPaymentService _paymentService;
 
 		private string _paymentToSettle;
@@ -27,12 +27,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService,
-			IBraintreeDropinViewService braintreeDropinService,
+			IDropInViewService dropInService,
 			IAppSettings appSettings)
 			:base(locationService, paymentService, accountService)
         {
 			_paymentService = paymentService;
-			_braintreeDropinService = braintreeDropinService;
+			_dropInService = dropInService;
 			_appSettings = appSettings;
             _accountService = accountService;
         }
@@ -159,26 +159,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						return;
 					}
 
-						try
-						{
-							var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
-							var paymentNonce = await _braintreeDropinService.ShowDropinView(tokenGenerationResponse.ClientToken);
+					try
+					{
+						var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
+						var paymentNonce = await _dropInService.ShowDropInView(tokenGenerationResponse.ClientToken);
 
-							using(this.Services().Message.ShowProgress())
-							{
-								await _paymentService.AddPaymentMethod(paymentNonce);
-
-								// Done in parallel to ensure that the app is in a correct state.
-								await Task.WhenAll(
-									_accountService.GetDefaultCreditCard(), 
-									GetCreditCards()
-								);
-							}
-						}
-						catch(OperationCanceledException)
+						using(this.Services().Message.ShowProgress())
 						{
-							// User cancelled braintree flow, exiting.
+							await _paymentService.AddPaymentMethod(paymentNonce);
+
+							// Done in parallel to ensure that the app is in a correct state.
+							await Task.WhenAll(
+								_accountService.GetDefaultCreditCard(), 
+								GetCreditCards()
+							);
 						}
+					}
+					catch(OperationCanceledException)
+					{
+						// User cancelled braintree flow, exiting.
+					}
 					
                 });
             }

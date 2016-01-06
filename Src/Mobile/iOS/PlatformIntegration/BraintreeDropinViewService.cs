@@ -11,9 +11,9 @@ using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    public class BraintreeDropinViewService : IBraintreeDropinViewService
+    public class BraintreeDropInViewService : IDropInViewService
     {
-        public async Task<string> ShowDropinView(string clientToken)
+        public async Task<string> ShowDropInView(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);
 

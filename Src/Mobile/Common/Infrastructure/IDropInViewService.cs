@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
-	public interface IBraintreeDropinViewService
+	public interface IDropInViewService
 	{
-		Task<string> ShowDropinView(string clientToken);
+		Task<string> ShowDropInView(string clientToken);
 	}
 }
 

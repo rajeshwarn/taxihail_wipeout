@@ -8,6 +8,7 @@ using Cirrious.MvvmCross.Plugins.WebBrowser;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 		private readonly IPromotionService _promotionService;
+	    private IDropInViewService _dropInViewService;
 
 		private bool _isCreatingMenu;
 
@@ -28,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IPaymentService paymentService,
-			IPromotionService promotionService)
+			IPromotionService promotionService, 
+            IDropInViewService dropInViewService)
         {
 		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
@@ -36,7 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_paymentService = paymentService;
 			_promotionService = promotionService;
-			PartialConstructor();
+		    _dropInViewService = dropInViewService;
+		    PartialConstructor();
         }
 
 		public async Task Start()
@@ -318,18 +322,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 				{
-                        CloseMenu();
+                    CloseMenu();
 
-						if(Settings.MaxNumberOfCardsOnFile > 1)
-						{
-							ShowViewModel<CreditCardMultipleViewModel>();
-						}
-						else
-						{
-							ShowViewModel<CreditCardAddViewModel>();
-						}
+					if(Settings.MaxNumberOfCardsOnFile > 1)
+					{
+						ShowViewModel<CreditCardMultipleViewModel>();
+					}
+					else
+					{
+						var settings = await _paymentService.GetPaymentSettings();
+
+						var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
+						                                    _accountService.CurrentAccount.DefaultCreditCard == null;
+
+
+                        if (shouldShowDropInView)
+                        {
+                            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
+                            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
+
+                            await _paymentService.AddPaymentMethod(paymentNonce);
+                            await _accountService.GetDefaultCreditCard();
+                        }
+
+                        ShowViewModel<CreditCardAddViewModel>();
+                    }
 				});
 			}
 		}
