@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System;\
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -16,17 +12,17 @@ namespace apcurium.MK.Booking.ReadModel
         [Key]
         public Guid Id { get; set; }
 
-        public Guid AccountId { get; set; }
+        public string AccountId { get; set; }
 
         public string AccountEmail { get; set; }
 
         public DateTime Date { get; set; }
 
-        public Dictionary<string, string> OldValues { get; set; }
+        public string OldValues { get; set; }
 
-        public Dictionary<string, string> NewValues { get; set; }
+        public string NewValues { get; set; }
 
-        public ConfigurationChangeType Type { get; set; }
+        public string Type { get; set; }
     }
 
     public enum ConfigurationChangeType

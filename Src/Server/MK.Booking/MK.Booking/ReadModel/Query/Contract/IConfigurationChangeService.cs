@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface IConfigurationChangeService
     {
         IList<ConfigurationChangeEntry> GetAll();
-        void Add(ConfigurationChangeEntry entry);
-        void Delete(Guid id);
-        void DeleteAll();
+        void Add(Dictionary<string, string> oldValues, Dictionary<string, string> newValues, ConfigurationChangeType type, string accountId, string email);
     }
 }

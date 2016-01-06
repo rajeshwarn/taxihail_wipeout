@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Extensions;
@@ -26,29 +24,23 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public void Add(ConfigurationChangeEntry entry)
+        public void Add(Dictionary<string, string> oldValues, Dictionary<string, string> newValues, ConfigurationChangeType type, string accountId, string email)
         {
-            using (var context = _contextFactory.Invoke())
+            if (oldValues.Count > 0 && newValues.Count > 0)
             {
-                context.Save(entry);
-            }
-        }
-
-        public void Delete(Guid id)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveWhere<ConfigurationChangeEntry>(c => c.Id.Equals(id));
-                context.SaveChanges();
-            }
-        }
-
-        public void DeleteAll()
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveAll<ConfigurationChangeEntry>();
-                context.SaveChanges();
+                var configurationChange = new ConfigurationChangeEntry
+                {
+                    AccountId = accountId,
+                    AccountEmail = email,
+                    OldValues = oldValues.ToJson(),
+                    NewValues = newValues.ToJson(),
+                    Date =  DateTime.Now,
+                    Type = type.ToString()
+                };
+                using (var context = _contextFactory.Invoke())
+                {
+                    context.Save(configurationChange);
+                }
             }
         }
     }
