@@ -61,6 +61,12 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\Mobile\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="OkHttp">
+      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationVersion.cs" />
@@ -178,6 +184,8 @@
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
     <Compile Include="Serializer\TolerantEnumConverter.cs" />
+    <Compile Include="IConnectivityService.cs" />
+    <Compile Include="CustomNativeMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -193,6 +201,10 @@
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="modernhttpclient">
+      <Version>2.4.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

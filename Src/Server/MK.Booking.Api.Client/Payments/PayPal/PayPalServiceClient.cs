@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -13,8 +16,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.PayPal
 {
     public class PayPalServiceClient : BaseServiceClient
     {
-        public PayPalServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public PayPalServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

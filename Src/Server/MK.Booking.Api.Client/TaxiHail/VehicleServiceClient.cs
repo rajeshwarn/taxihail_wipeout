@@ -6,6 +6,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using System;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -15,8 +18,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
         private readonly ILogger _logger;
-        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
-            : base(url, sessionId, packageInfo)
+        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
 			_logger = logger;
         }

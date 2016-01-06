@@ -370,7 +370,6 @@
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
-    <Compile Include="Infrastructure\IConnectivityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -20,8 +23,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-		public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger)
-            : base(url, sessionId, packageInfo)
+        public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
 		{
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}

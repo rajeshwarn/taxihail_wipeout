@@ -11,6 +11,7 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
@@ -30,7 +31,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
 
-        public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+        public GoogleApiClient(IConnectivityService connectivityService, IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+            : base (connectivityService)
         {
             _logger = logger;
             _settings = settings;

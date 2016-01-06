@@ -29,28 +29,19 @@ namespace apcurium.MK.Common.Extensions
             return client.GetAsync<T>(url);
         }
 
-        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
-            string url,
-            Action<HttpResponseMessage> onSuccess = null,
-            Action<HttpResponseMessage> onError = null)
+        private static string GetForEndpointIfNeeded(this HttpClient client, string url)
         {
-            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
-        }
-
-
-	    private static string GetForEndpointIfNeeded(this HttpClient client, string url)
-	    {
-	        if (url.StartsWith("http") || client.BaseAddress == null)
-	        {
-	            return url;
-	        }
+            if (url.StartsWith("http") || client.BaseAddress == null)
+            {
+                return url;
+            }
 
             var currentRelativeUrl = client.BaseAddress.LocalPath;
-           
-	        return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+
+            return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
                 ? currentRelativeUrl + url
-                : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
-	    }
+                    : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
+        }
 
         public static Task<T> DeleteAsync<T>(this HttpClient client,
             string url,
@@ -67,6 +58,14 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onError = null)
         {
             return Task.Run(() => InnerPostAsync<TResult>(client, url, content, onSuccess, onError));
+        }
+
+        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
+            string url,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
+        {
+            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
         }
 
 	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)

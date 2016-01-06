@@ -8,6 +8,9 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 using System.Linq;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -19,8 +22,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
-            : base(url, sessionId, packageInfo)
+        public AccountServiceClient(IConnectivityService connectivityService, string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
             _paymentService = tokenizationService;
         }

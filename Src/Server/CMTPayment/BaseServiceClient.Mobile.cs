@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using ModernHttpClient;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 namespace CMTPayment
 {
@@ -23,7 +24,7 @@ namespace CMTPayment
 			var cookieHandler = new NativeCookieHandler();
 
 			// CustomSSLVerification must be set to true to enable certificate pinning.
-			var nativeHandler = new NativeMessageHandler(throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
+            var nativeHandler = new CustomNativeMessageHandler(_connectivityService, throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
 
 			var client = new HttpClient(nativeHandler)
 				{

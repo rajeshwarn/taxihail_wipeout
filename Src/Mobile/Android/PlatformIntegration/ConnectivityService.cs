@@ -1,6 +1,7 @@
 ﻿using System;
 using Connectivity.Plugin;
 using System.Reactive.Subjects;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

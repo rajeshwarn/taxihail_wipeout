@@ -1,14 +1,7 @@
 ﻿using System;
 using Connectivity.Plugin;
 using System.Reactive.Subjects;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Reactive.Linq;
-using System.Reactive.Disposables;
-using System.Threading;
-using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using System.Collections.Generic;
-using UIKit;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -17,13 +10,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         readonly ISubject<bool> _isConnectedSubject = new BehaviorSubject<bool>(false);
 
         //To remove when toast service is done
-        UIAlertView cav = new UIAlertView();
+//        UIAlertView cav = new UIAlertView();
 
         public ConnectivityService()
         {
             //To remove when toast service is done
-            cav.Message = "testmessage";
-            cav.Title = "testtitle";
+//            cav.Message = "testmessage";
+//            cav.Title = "testtitle";
 
             IsConnected = CrossConnectivity.Current.IsConnected;
             CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
@@ -55,12 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                     if (IsConnected)
                     {
                         //To remove when toast service is done
-                        cav.DismissWithClickedButtonIndex(0,true);
+//                        cav.DismissWithClickedButtonIndex(0,true);
                     }
                     else
                     {
                         //To remove when toast service is done
-                        cav.Show();
+//                        cav.Show();
                     }
                 }
             }

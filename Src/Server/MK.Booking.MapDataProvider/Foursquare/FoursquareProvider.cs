@@ -9,7 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.MapDataProvider.Extensions;
+using apcurium.MK.Common;
 
 namespace MK.Booking.MapDataProvider.Foursquare
 {
@@ -40,7 +40,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		private const string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
 
 
-        public FoursquareProvider(IAppSettings settings, ILogger logger)
+        public FoursquareProvider(IAppSettings settings, ILogger logger, IConnectivityService connectivityService)
+            : base (connectivityService)
 		{
 		    _settings = settings;
 		    _logger = logger;
