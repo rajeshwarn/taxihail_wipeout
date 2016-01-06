@@ -75,7 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var locationService = new LocationService ();
 
 			container.Register<ILocationService> (locationService);
-			container.Register<IMessageService, MessageService> ();
+            container.Register<IMessageService, MessageService> ();
+            container.Register<IConnectivityService, ConnectivityService> ();
 			container.Register<IPackageInfo> (new PackageInfo ());
 
 			container.Register<ILocalization, Localize> ();

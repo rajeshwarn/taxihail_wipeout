@@ -273,6 +273,12 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -298,6 +304,7 @@
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
     <None Include="CustomLinker.xml" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -718,6 +725,7 @@
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
