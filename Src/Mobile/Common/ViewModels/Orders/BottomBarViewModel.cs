@@ -633,6 +633,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
+			catch(InvalidCreditCardException e)
+			{
+				Logger.LogError(e);
+
+				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+				var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+				await this.Services().Message.ShowMessage(title, message,
+					this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
+						// Force the user to return to redo the Confirm Order flow
+						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
+						ParentViewModel.Panel.NavigateToPaymentInformation.ExecuteIfPossible();
+					},
+					this.Services().Localize["Cancel"], () => {});
+			}
 			catch (OrderCreationException e)
 			{
 				Logger.LogError(e);

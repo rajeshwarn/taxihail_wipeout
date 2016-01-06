@@ -7,6 +7,8 @@ using apcurium.MK.Common.Entity;
 using System.Net;
 using CMTPayment;
 using MK.Common.Exceptions;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -67,12 +69,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            var isCreditCardDeactivated = await _orderWorkflowService.ValidateIsCardDeactivated();
-                            if (isCreditCardDeactivated)
-                            {
-                                 this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqCreditCardDisabled"]).FireAndForget();
-                                 return;
-                            }
+							var kountSessionId = "";
+							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, kountSessionId);
 
                             // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
                             await _orderWorkflowService.SetAddressToUserLocation();
@@ -84,6 +82,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.ReturnResult(orderManualRideLinqDetail);
                         }
                     }
+					catch(InvalidCreditCardException e)
+					{
+						Logger.LogError(e);
+
+						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+						var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+						this.Services().Message.ShowMessage(title, message,
+							this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
+								if(Settings.MaxNumberOfCardsOnFile > 1)
+								{
+									ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel>();
+								}
+								else
+								{
+									ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>();
+								}
+							},
+							this.Services().Localize["Cancel"], () => {});
+					}
                     catch (WebServiceException ex)
                     {
                         Logger.LogError(ex);

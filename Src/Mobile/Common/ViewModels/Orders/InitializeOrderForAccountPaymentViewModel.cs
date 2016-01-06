@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
+					// TODO handle credit card error?
 					try
 					{
 						using(this.Services().Message.ShowProgress())

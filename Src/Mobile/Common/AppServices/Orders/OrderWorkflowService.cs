@@ -272,6 +272,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
+				var kountSessionId = "";
+				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, kountSessionId);
+
 				var orderStatus = await _bookingService.CreateOrder(order);
 
 			    var currentDate = DateTime.Now;
@@ -293,6 +296,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
 				return new OrderRepresentation(orderCreated, orderStatus);
+			}
+			catch(InvalidCreditCardException ex)
+			{
+				// will be handled by calling method
+				throw ex;
 			}
 			catch(WebServiceException e)
 			{
@@ -844,6 +852,45 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return validationResult;
 		}
 
+		public async Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId)
+		{
+			try
+			{
+				if (isManualRideLinq || chargeTypeId == ChargeTypes.CardOnFile.Id)
+				{
+					throw new Exception();
+
+					var creditCard = await _accountService.GetDefaultCreditCard();
+					if (creditCard == null)
+					{
+						throw new Exception();
+					}
+
+					if (creditCard.IsExpired())
+					{
+						throw new Exception();
+					}
+
+					if (creditCard.IsDeactivated)
+					{
+						throw new Exception();
+					}
+
+					var cvv = await _cvvSubject.Take(1).ToTask();
+
+					var response = await _paymentService.ValidateTokenizedCard(creditCard.Token, cvv, kountSessionId, creditCard.ZipCode);
+					if(!response.IsSuccessful)
+					{
+						throw new Exception();
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new InvalidCreditCardException();
+			}
+		}
+
 		public async Task<bool> ValidateCardOnFile()
 		{
 			var orderToValidate = await GetOrder ();	
@@ -873,13 +920,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return true;
 		}
-
-        public async Task<bool> ValidateIsCardDeactivated()
-        {
-            var creditCard = await _accountService.GetDefaultCreditCard();
-
-            return creditCard == null || creditCard.IsDeactivated;
-        }
 
 		public async Task<bool> ValidatePromotionUseConditions()
 		{
