@@ -2375,10 +2375,16 @@
   	<data name="BaseRate_PerMinute" xml:space="preserve">
 		<value>{0} per minute</value>
 	</data>
-	<data name="BaseRate_AirportMeetAndGreet" xml:space="preserve">
-		<value>Airport Meet And Greet</value>
-	</data>
  	<data name="BaseRate_RateStructure" xml:space="preserve">
     	<value>RATE STRUCTURE</value>
   	</data>
+  	<data name="BookingGratuityText" xml:space="preserve">
+		<value>If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</value>
+	</data>
+	<data name="GratuitActivityName" xml:space="preserve">
+		<value>Gratuity</value>
+	</data>
+	<data name="Gratuity_Pay" xml:space="preserve">
+		<value>Give Gratuity</value>
+	</data>
 </root>

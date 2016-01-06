@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public const float ItemHPadding = 12f;
 		public const float LabelHWeight = 0.45f;
 
-		public const int NumberOfItems = 5;
+		public const int NumberOfItems = 4;
 
 		private UILabel[] _labels;
 		private UILabel[] _descriptions;
@@ -44,16 +44,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				this.Services ().Localize ["BaseRate_MinimumFare"],  
 				this.Services ().Localize ["BaseRate_BaseRate"], 
 				this.Services ().Localize ["BaseRate_PerMileRate"], 
-				this.Services ().Localize ["BaseRate_WaitTime"], 
-				this.Services ().Localize ["BaseRate_AirportMeetAndGreet"]
+				this.Services ().Localize ["BaseRate_WaitTime"]
 			};
 
 			var descriptionsText = new [] { 
 				ToCurrency (BaseRate.MinimumFare),
 				ToCurrency (BaseRate.BaseRateNoMiles), 
 				string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (BaseRate.PerMileRate), ToCurrency (BaseRate.PerMileRate / 10)),
-				string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (BaseRate.WaitTime)),
-				ToCurrency (BaseRate.AirportMeetAndGreet)
+				string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (BaseRate.WaitTime))
 			};
 
 			for (int i = NumberOfItems - 1; i > -1; i--)

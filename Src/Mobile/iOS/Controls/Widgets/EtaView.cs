@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class EtaView : UIView
     {
     	private const float EtaLabelHeight = 44f;
-		private const float BaseRateHeight = 124f;
+		private const float BaseRateHeight = 104f;
 
         private CGSize ImageSize = new CGSize(34f, 34f);
 

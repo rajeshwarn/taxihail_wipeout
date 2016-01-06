@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	[Register("apcurium.mk.booking.mobile.client.controls.widgets.BaseRateControl")]
 	public class BaseRateControl : LinearLayout
     {
-		private const int BaseRateControlHeightInDip = 130;
+		private const int BaseRateControlHeightInDip = 110;
 
 		private List<TextView> _labels = new List<TextView>();
 		private List<TextView> _descriptions = new List<TextView>();
@@ -39,24 +39,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				Localize ("BaseRate_MinimumFare"),  
 				Localize ("BaseRate_BaseRate"), 
 				Localize ("BaseRate_PerMileRate"), 
-				Localize ("BaseRate_WaitTime"), 
-				Localize ("BaseRate_AirportMeetAndGreet")
+				Localize ("BaseRate_WaitTime")
 			};
 
 			var labelIds = new [] { 
 				Resource.Id.baseRateLabel1, 
 				Resource.Id.baseRateLabel2, 
 				Resource.Id.baseRateLabel3, 
-				Resource.Id.baseRateLabel4, 
-				Resource.Id.baseRateLabel5
+				Resource.Id.baseRateLabel4
 			};
 
 			var descriptionIds = new [] { 
 				Resource.Id.baseRateDescription1, 
 				Resource.Id.baseRateDescription2, 
 				Resource.Id.baseRateDescription3, 
-				Resource.Id.baseRateDescription4, 
-				Resource.Id.baseRateDescription5
+				Resource.Id.baseRateDescription4
 			};
 
 			for (int i = 0; i < labelIds.Length; i++)
@@ -82,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     					ToCurrency (value.MinimumFare),
     					ToCurrency (value.BaseRateNoMiles), 
     					string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (value.PerMileRate), ToCurrency (value.PerMileRate / 10)),
-    					string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (value.WaitTime)),
-    					ToCurrency (value.AirportMeetAndGreet)
+    					string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (value.WaitTime))
 				    } 
                     : new string[5];
 

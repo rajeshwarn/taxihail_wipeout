@@ -172,13 +172,13 @@
 "CreateAccount_AccountAlreadyExist"="This email is already in use.";
 "Language"="English";
 "TrainStationsButton"="Train Stations";
+"Gratuity_Pay"="Give Gratuity";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "UpdateBookingSettingsInvalidAccount"="The account or rider number that was entered doesn't exist";
 "RefineAddressTitle"="Refine an address";
 "BuildingName"="Building Name / Remark";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "UpdatePasswordConfirmationLabel"="Confirm New Password";
-"BaseRate_AirportMeetAndGreet"="Airport Meet And Greet";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "EtaDurationUnitPlural"="mins";
 "MessageActivityName"="Message";
@@ -188,6 +188,7 @@
 "TabSearch"="Search";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
 "ReminderTitle"="{0} Booked";
+"GratuitActivityName"="Gratuity";
 "StreetNumberPlacesBt"="Search for places";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "ResendConfirmationCodeButtonText"="Resend confirmation code";
@@ -383,6 +384,7 @@
 "CarAssigned"="Your vehicle {0}";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "DriverInfoMake"="Make:";
+"BookingGratuityText"="If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below";
 "InitializeOrderForAccountPaymentActivityName"="Initialition of order of account payment";
 "NotesToDriveLabel"="Notes to driver (Name of business, specific entrance, ...)";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
@@ -756,11 +758,8 @@
 "ManualRideLinqStatus_PairingError_Luxury"="An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.";
 "EtaNoTaxiAvailable_Luxury"="Sorry, no vehicles currently available nearby.";
 "HomeView_BookTaxi_Luxury"="Need a vehicle";
-"BookingGratuityText"="If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below";
 "MarketChangedMessage_Luxury"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.";
-"GratuitActivityName"="Gratuity";
 "EtaLessThanAMinute_Luxury"="Nearest vehicle is less than a minute away";
 "StatusConfirmNewBooking_Luxury"="Booking a new vehicle will keep this order active, do you want to continue ?";
 "ReminderDetails_Luxury"="Reminder: A vehicle will pick you up from {0} at {1} on {2}.";
-"Gratuity_Pay"="Give Gratuity";
 "Eta_Luxury"="Nearest vehicle is {0} {1} away";
