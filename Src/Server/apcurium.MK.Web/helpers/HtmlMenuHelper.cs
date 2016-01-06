@@ -43,16 +43,19 @@ namespace apcurium.MK.Web.helpers
             var model = helper.ViewData.Model;
             var list = expression.Compile()(model);
 
-            for (var i = 0; i < list.Count(); i++)
+            if (list != null)
             {
-                var item = list.ElementAt(i);
-
-                var properties = new Dictionary<string, object>();
-                IterateProps(item, string.Format("{0}[{1}]", membername, i), ref properties);
-
-                foreach (var prop in properties)
+                for (var i = 0; i < list.Count(); i++)
                 {
-                    sb.Append(helper.Hidden(prop.Key, prop.Value));
+                    var item = list.ElementAt(i);
+
+                    var properties = new Dictionary<string, object>();
+                    IterateProps(item, string.Format("{0}[{1}]", membername, i), ref properties);
+
+                    foreach (var prop in properties)
+                    {
+                        sb.Append(helper.Hidden(prop.Key, prop.Value));
+                    }
                 }
             }
 

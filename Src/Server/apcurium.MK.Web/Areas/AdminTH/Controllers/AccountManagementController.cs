@@ -25,6 +25,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class AccountManagementController : ServiceStackController
     {
         private readonly IAccountDao _accountDao;
+        private readonly IAccountNoteDao _accountNoteDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -38,6 +39,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
            IAccountDao accountDao,
+           IAccountNoteDao accountNoteDao,
            ICreditCardDao creditCardDao,
            ICommandBus commandBus,
            IOrderDao orderDao,
@@ -48,6 +50,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            : base(cache, serverSettings)
         {
             _accountDao = accountDao;
+            _accountNoteDao = accountNoteDao;
             _creditCardDao = creditCardDao;
             _bookingSettingsService = bookingSettingsService;
             _commandBus = commandBus;
@@ -216,6 +219,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
         {
             var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
+            if(csv.IsEmpty())
+            {
+                return null;
+            }
+
             var csvFlattened = new StringBuilder();
             foreach (var item in csv.ElementAt(0))
             {
@@ -234,6 +242,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
             return File(new ASCIIEncoding().GetBytes(csvFlattened.ToString()), "text/csv", "Export.csv");
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult AddNote(AccountManagementModel accountManagementModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View("Index", accountManagementModel);
         }
 
         private AccountManagementModel InitializeModel(Guid accountId)
@@ -278,6 +297,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         SurchargeString = _resources.FormatPrice(x.Surcharge),
                         TotalAmountString = _resources.FormatPrice(x.TotalAmount())
                     };
+                })
+                .ToList();
+
+            model.Notes = _accountNoteDao.FindByAccountId(accountId)
+                .OrderByDescending(c => c.CreationDate)
+                .Select(x =>
+                {
+                    return new NoteModel(x);
                 })
                 .ToList();
 

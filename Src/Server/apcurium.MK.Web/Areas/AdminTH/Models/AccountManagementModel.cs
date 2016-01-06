@@ -57,6 +57,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string CreditCardLast4Digits { get; set; }
 
         public List<OrderModel> Orders { get; set; }
+
+        public List<NoteModel> Notes { get; set; }
     }
 
     public class OrderModel : OrderDetail
@@ -82,6 +84,22 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TipString { get; set; }
         public string SurchargeString { get; set; }
         public string TotalAmountString { get; set; }
+    }
+
+    public class NoteModel : AccountNoteDetail
+    {
+        public NoteModel()
+        {
+        }
+
+        public NoteModel(AccountNoteDetail accountNoteDetail)
+        {
+            // Initialize properties of base class dynamically
+            foreach (var prop in typeof(AccountNoteDetail).GetProperties())
+            {
+                GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(accountNoteDetail, null), null);
+            }
+        }
     }
 
     /// <summary>
