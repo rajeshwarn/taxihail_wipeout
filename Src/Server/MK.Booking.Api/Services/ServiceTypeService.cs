@@ -52,8 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
                     ServiceType = request.ServiceType.Value,
                     IBSWebServicesUrl = request.IBSWebServicesUrl,
                     ProviderId = request.ProviderId,
-                    WaitTimeRatePerMinute = request.WaitTimeRatePerMinute,
-                    AirportMeetAndGreetRate = request.AirportMeetAndGreetRate
+                    WaitTimeRatePerMinute = request.WaitTimeRatePerMinute
                 }
             };
 

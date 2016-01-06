@@ -209,7 +209,6 @@ namespace apcurium.MK.Booking.Api.Services
 
                         var baseRate = new BaseRateInfo
                         {
-                            AirportMeetAndGreet = (decimal)serviceTypeSetting.AirportMeetAndGreetRate,
                             WaitTime = (decimal)serviceTypeSetting.WaitTimeRatePerMinute,
                             BaseRateNoMiles = tariff.FlatRate,
                             MinimumFare = (decimal)tariff.MinimumRate,

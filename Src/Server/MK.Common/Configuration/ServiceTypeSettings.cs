@@ -13,8 +13,5 @@ namespace MK.Common.Configuration
         public int ProviderId { get; set; }
 
         public double WaitTimeRatePerMinute { get; set; }
-
-        public double AirportMeetAndGreetRate { get; set; }
-
     }
 }

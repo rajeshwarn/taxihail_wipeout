@@ -21,7 +21,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public int ProviderId { get; set; }
 
         public double WaitTimeRatePerMinute { get; set; }
-
-        public double AirportMeetAndGreetRate { get; set; }
     }
 }

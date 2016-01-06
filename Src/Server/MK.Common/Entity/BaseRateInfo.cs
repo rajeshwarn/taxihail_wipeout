@@ -10,6 +10,5 @@ namespace apcurium.MK.Common.Entity
         public decimal BaseRateNoMiles { get; set; }
         public decimal PerMileRate { get; set; }
 		public decimal WaitTime { get; set; }
-		public decimal AirportMeetAndGreet { get; set; }
 	}
 }

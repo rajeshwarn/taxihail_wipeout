@@ -26,7 +26,6 @@
                     ibsWebServicesUrl: "required",
                     providerId: "required",
                     waitTimeRatePerMinute: "required",
-                    airportMeetAndGreetRate: "required"
                 },
                 messages: {
                     ibsWebServicesUrl: {
@@ -37,9 +36,6 @@
                     },
                     waitTimeRatePerMinute: {
                         required: TaxiHail.localize('error.serviceTypeWaitTimeRatePerMinuteRequired')
-                    },
-                    airportMeetAndGreetRate: {
-                        required: TaxiHail.localize('error.serviceTypeAirportMeetAndGreetRateRequired')
                     }
                 },
                 submitHandler: this.save

@@ -1082,7 +1082,6 @@ namespace DatabaseInitializer
                         {
                             ServiceType = ServiceType.Taxi,
                             WaitTimeRatePerMinute = 0,
-                            AirportMeetAndGreetRate = 0,
                             IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl,
                             ProviderId = 0
                         } 
@@ -1094,7 +1093,6 @@ namespace DatabaseInitializer
                         {
                             ServiceType = ServiceType.Luxury,
                             WaitTimeRatePerMinute = 0,
-                            AirportMeetAndGreetRate = 0,
                             IBSWebServicesUrl = "",
                             ProviderId = 0,
                         }

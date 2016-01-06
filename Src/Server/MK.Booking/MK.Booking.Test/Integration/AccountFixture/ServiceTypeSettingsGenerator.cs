@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ServiceType = ServiceType.Luxury,
                     ProviderId = 0,
                     WaitTimeRatePerMinute = 2,
-                    AirportMeetAndGreetRate = 10,
                     IBSWebServicesUrl = "test"
                 }
             });
@@ -47,7 +46,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(ServiceType.Luxury, dto.ServiceType);
                 Assert.AreEqual(0, dto.ProviderId);
                 Assert.AreEqual(2, dto.WaitTimeRatePerMinute);
-                Assert.AreEqual(10, dto.AirportMeetAndGreetRate);
                 Assert.AreEqual("test", dto.IBSWebServicesUrl);
             }
         }
@@ -68,7 +66,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ServiceType = ServiceType.Luxury,
                     ProviderId = 0,
                     WaitTimeRatePerMinute = 2,
-                    AirportMeetAndGreetRate = 10,
                     IBSWebServicesUrl = "test"
                 }
             });
@@ -85,7 +82,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ServiceType = ServiceType.Luxury,
                     ProviderId = 0,
                     WaitTimeRatePerMinute = 1,
-                    AirportMeetAndGreetRate = 8,
                     IBSWebServicesUrl = "test2"
                 }
             });
@@ -98,7 +94,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(ServiceType.Luxury, dto.ServiceType);
                 Assert.AreEqual(0, dto.ProviderId);
                 Assert.AreEqual(1, dto.WaitTimeRatePerMinute);
-                Assert.AreEqual(8, dto.AirportMeetAndGreetRate);
                 Assert.AreEqual("test2", dto.IBSWebServicesUrl);
             }
         }
