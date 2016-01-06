@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Eta" xml:space="preserve">
-    <value>Nearest taxi is {0} {1} away</value>
+    <value>Nearest car is {0} {1} away</value>
   </data>
 </root>
