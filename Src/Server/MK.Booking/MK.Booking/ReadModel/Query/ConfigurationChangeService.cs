@@ -26,20 +26,19 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public void Add(Dictionary<string, string> oldValues, Dictionary<string, string> newValues, ConfigurationChangeType type, string accountId, string email)
         {
-            if (oldValues.Count > 0 && newValues.Count > 0)
+            if (oldValues.Any() && newValues.Any())
             {
-                var configurationChange = new ConfigurationChangeEntry
-                {
-                    AccountId = accountId,
-                    AccountEmail = email,
-                    OldValues = oldValues.ToJson(),
-                    NewValues = newValues.ToJson(),
-                    Date =  DateTime.Now,
-                    Type = type.ToString()
-                };
                 using (var context = _contextFactory.Invoke())
                 {
-                    context.Save(configurationChange);
+                    context.Save(new ConfigurationChangeEntry
+                    {
+                        AccountId = accountId,
+                        AccountEmail = email,
+                        OldValues = oldValues.ToJson(),
+                        NewValues = newValues.ToJson(),
+                        Date = DateTime.UtcNow,
+                        Type = type.ToString()
+                    });
                 }
             }
         }
