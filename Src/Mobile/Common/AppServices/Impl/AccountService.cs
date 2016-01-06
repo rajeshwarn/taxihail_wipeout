@@ -640,7 +640,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			
 		public async Task RemoveCreditCard(Guid creditCardId, bool replacedByPayPal = false)
 		{
-			var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId));
+            var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+            var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId, creditCard.Token));
 
 			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
