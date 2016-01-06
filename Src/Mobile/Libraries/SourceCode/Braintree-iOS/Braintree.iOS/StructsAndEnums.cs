@@ -214,12 +214,12 @@ namespace Braintree
 	}
 
 	[Native]
-	public enum PayPalOneTouchErrorCode : long
+	public enum PayPalOneTouchErrorCode : ulong
 	{
-		Unknown = -1000,
-		ParsingFailed = -1001,
-		NoTargetAppFound = -1002,
-		OpenURLFailed = -1003
+		Unknown = 1000,
+		ParsingFailed = 1001,
+		NoTargetAppFound = 1002,
+		OpenURLFailed = 1003
 	}
 
 	[Native]

@@ -5,4 +5,5 @@ using ObjCRuntime;
 	    | LinkTarget.Arm64
 	    | LinkTarget.ArmV7, 
 	    ForceLoad = true,
+		Frameworks = "CoreLocation MessageUI SystemConfiguration",
 	    IsCxx = true)] 

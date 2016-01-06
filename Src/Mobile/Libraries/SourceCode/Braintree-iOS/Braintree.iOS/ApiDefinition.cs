@@ -150,11 +150,11 @@ namespace Braintree
 
 		// -(NSInteger)asIntegerOrZero;
 		[Export ("asIntegerOrZero")]
-		nint ToIntegerOrZero();
+		long ToIntegerOrZero();
 
 		// -(NSInteger)asEnum:(NSDictionary * _Nonnull)mapping orDefault:(NSInteger)defaultValue;
 		[Export ("asEnum:orDefault:")]
-		nint ToEnum (NSDictionary mapping, nint defaultValue);
+		long ToEnum (NSDictionary mapping, long defaultValue);
 
 		// @property (readonly, assign, nonatomic) BOOL isString;
 		[Export ("isString")]
@@ -1668,12 +1668,12 @@ namespace Braintree
 		// +(instancetype)bt_colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b A:(NSInteger)a;
 		[Static]
 		[Export ("bt_colorWithBytesR:G:B:A:")]
-		UIColor Bt_colorWithBytesR (nint r, nint g, nint b, nint a);
+		UIColor Bt_colorWithBytesR (long r, long g, long b, long a);
 
 		// +(instancetype)bt_colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b;
 		[Static]
 		[Export ("bt_colorWithBytesR:G:B:")]
-		UIColor Bt_colorWithBytesR (nint r, nint g, nint b);
+		UIColor Bt_colorWithBytesR (long r, long g, long b);
 
 		// +(instancetype)bt_colorFromHex:(NSString *)hex alpha:(CGFloat)alpha;
 		[Static]
@@ -1764,13 +1764,14 @@ namespace Braintree
 	}
 
 	// @interface  (BTAPIClient)
-	//// [Category]
+	[Category]
 	[BaseType (typeof(BTAPIClient))]
-	interface BTAPIClient_
+	interface BTAPIClient_Extensions
 	{
 		// @property (copy, nonatomic) NSString * tokenizationKey;
 		[Export ("tokenizationKey")]
-		string TokenizationKey { get; set; }
+		[static]
+		string SetTokenizationKey(); { get; set; }
 
 		// @property (copy, nonatomic) NSString * clientJWT;
 		[Export ("clientJWT")]
@@ -2048,12 +2049,14 @@ namespace Braintree
 
 		// @property (assign, nonatomic) NSInteger selectedPaymentMethodIndex;
 		[Export ("selectedPaymentMethodIndex")]
-		nint SelectedPaymentMethodIndex { get; set; }
+		long SelectedPaymentMethodIndex { get; set; }
 
 		// @property (nonatomic, strong) BTUI * theme;
 		[Export ("theme", ArgumentSemantic.Strong)]
 		BTUI Theme { get; set; }
 	}
+
+
 
 	// @protocol BTDropInSelectPaymentMethodViewControllerDelegate
 	[Protocol, Model]

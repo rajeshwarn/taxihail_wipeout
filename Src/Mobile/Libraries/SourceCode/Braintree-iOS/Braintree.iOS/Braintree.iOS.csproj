@@ -45,8 +45,8 @@
     <Compile Include="libPayPalOneTouchCore.linkwith.cs">
       <DependentUpon>libPayPalOneTouchCore.a</DependentUpon>
     </Compile>
-    <Compile Include="libPods.linkwith.cs">
-      <DependentUpon>libPods.a</DependentUpon>
+    <Compile Include="libDeviceCollectorLibrary.linkwith.cs">
+      <DependentUpon>libDeviceCollectorLibrary.a</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -56,7 +56,7 @@
   <ItemGroup>
     <ObjcBindingNativeLibrary Include="libBraintree.a" />
     <ObjcBindingNativeLibrary Include="libPayPalOneTouchCore.a" />
-    <ObjcBindingNativeLibrary Include="libPods.a" />
+    <ObjcBindingNativeLibrary Include="libDeviceCollectorLibrary.a" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Braintree-3D-Secure-Localization.bundle\da.lproj\Three-D-Secure.strings" />
@@ -124,6 +124,9 @@
     <BundleResource Include="Resources\Braintree-UI-Localization.bundle\zh-Hans.lproj\UI.strings" />
   </ItemGroup>
   <ItemGroup>
-    <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
+    <ObjcBindingApiDefinition Include="ApiDefinitions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ApiDefinition.cs" />
   </ItemGroup>
 </Project>
