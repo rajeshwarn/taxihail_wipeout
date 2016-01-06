@@ -486,11 +486,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return;
 				}
 
-				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
-				if (LoginSucceeded != null) 
-				{
-					LoginSucceeded (this, EventArgs.Empty);
-				}
+					GoToHomeView();
 			};
 
             // Load and cache company notification settings/payment settings
@@ -517,6 +513,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
+		void GoToHomeView()
+		{
+			ShowViewModelAndRemoveFromHistory<HomeViewModel>(new {
+				locateUser = true
+			});
+			if (LoginSucceeded != null)
+			{
+				LoginSucceeded(this, EventArgs.Empty);
+			}
+		}
+
 	    private async Task AddCreditCard()
 	    {
             var paymentSettings = await _paymentService.GetPaymentSettings();
@@ -528,10 +535,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-            var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
+			var paymentNonce = await _braintreeDropinViewService.ShowDropinView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
 
             await _paymentService.AddPaymentMethod(paymentNonce);
             await _accountService.GetDefaultCreditCard();
+
+			GoToHomeView();
         }
 
 	    private async Task<bool> NeedsToNavigateToAddCreditCard()
