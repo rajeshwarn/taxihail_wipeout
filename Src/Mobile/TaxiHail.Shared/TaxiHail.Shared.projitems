@@ -147,6 +147,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Activities\HomeActivity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\IPAddressManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

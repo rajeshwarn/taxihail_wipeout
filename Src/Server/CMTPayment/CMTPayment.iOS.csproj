@@ -78,6 +78,7 @@
     <Compile Include="Tokenize\TokenizeRequest.cs" />
     <Compile Include="Tokenize\TokenizeResponse.cs" />
     <Compile Include="Tokenize\TokenizeValidateRequest.cs" />
+    <Compile Include="Tokenize\BasePaymentValidationRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="modernhttpclient">

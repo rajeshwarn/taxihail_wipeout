@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 {
     public class FakePaymentClient : IPaymentServiceClient
     {
-        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             return Task.FromResult(new TokenizedCreditCardResponse
             {
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
-        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
         {
             return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
         }

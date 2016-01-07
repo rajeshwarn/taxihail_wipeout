@@ -367,17 +367,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<OrderServiceClient>(service => service.RateOrder(request));
         }
 
-        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, string kountSessionId)
         {
             var request = new ManualRideLinqPairingRequest
             {
                 PairingCode = pairingCode,
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
+				KountSessionId = kountSessionId
             };
+
             try
             {
-
                 var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(
                     service => RunWithRetryAsync(() => service.Pair(request), TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, 30));
 

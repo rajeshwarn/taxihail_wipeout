@@ -192,6 +192,7 @@
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
     <Compile Include="Serializer\TolerantEnumConverter.cs" />
+    <Compile Include="IIPAddressManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

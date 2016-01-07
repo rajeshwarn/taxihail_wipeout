@@ -95,11 +95,9 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 			_container.Register<IAccountPaymentService, AccountPaymentService>();
 			_container.Register<IRegisterWorkflowService,RegisterWorkflowService> ();
-
 			_container.Register<IGeolocService, GeolocService>();
 			_container.Register<IGoogleService, GoogleService>();
 			_container.Register<IApplicationInfoService, ApplicationInfoService>();
-
 			_container.Register<IPriceCalculator, PriceCalculator>();
 			_container.Register<IAddresses, Addresses>();
 			_container.Register<IDirections, Directions>();
@@ -108,25 +106,11 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
             _container.Register<IPOIProvider, POIProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
-
 			_container.Register<IAirportInformationService, AirportInformationService>();
-
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
-
-            // ***** PayPal *****
 			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-
-			_container.Register<IPaymentService>((c, p) =>
-			{
-				var appSettingsService = c.Resolve<IAppSettings>();
-
-				var baseUrl = appSettingsService.GetServiceUrl();
-                var sessionId = GetSessionId();
-
-                return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
-			});
-            
+			_container.Register<IPaymentService>((c, p) => new PaymentService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IIPAddressManager>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
 			

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -27,21 +28,24 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
-            IPackageInfo packageInfo, ILogger logger)
+        private readonly IIPAddressManager _ipAddressManager;
+
+        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger)
             : base(baseUrl, sessionId, packageInfo)
         {
+            _ipAddressManager = ipAddressManager;
+
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger);
         }
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, kountSessionId, zipCode);
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
-        public async Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        public async Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
             {
@@ -49,7 +53,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 {
                     Token = cardToken,
                     Cvv = cvv,
-                    SessionId = kountSessionId
+                    SessionId = kountSessionId,
+                    Email = account.Email,
+                    CustomerIpAddress = _ipAddressManager.GetIPAddress()
                 };
 
                 if(zipCode.HasValue())
@@ -110,21 +116,24 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
-            string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
+        private async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
+            string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
             {
                 var request = new TokenizeRequest
-                    {
-                        AccountNumber = accountNumber,
-                        ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-                        #if DEBUG
-                        ValidateAccountInformation = false,
-                        #endif
-                        Cvv = cvv,
-                        SessionId = kountSessionId
-                    };
+                {
+                    AccountNumber = accountNumber,
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
+                    #if DEBUG
+                    ValidateAccountInformation = false,
+                    #endif
+                    Cvv = cvv,
+                    SessionId = kountSessionId,
+                    Email = account.Email,
+                    CustomerId = account.Id.ToString(),
+                    CustomerIpAddress = _ipAddressManager.GetIPAddress()
+                };
                 
                 if(zipCode.HasValue())
                 {
@@ -167,7 +176,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 {
                     AccountNumber = accountNumber,
                     ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-                    ValidateAccountInformation = false //this must be false when testing because we try to tokenize a fake card
+                    ValidateAccountInformation = false
                 });
 
                 response.Wait();
@@ -178,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     IsSuccessful = response.Result.ResponseCode == 1,
                     Message = response.Result.ResponseMessage,
                     CardType = response.Result.CardType,
-                    LastFour = response.Result.LastFour,
+                    LastFour = response.Result.LastFour
                 };
             }
             catch (Exception e)

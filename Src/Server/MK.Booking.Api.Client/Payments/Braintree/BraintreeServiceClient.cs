@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -25,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         protected string ClientKey { get; set; }
 
-        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
+        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
             {
@@ -67,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
         {
             return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
         }

@@ -1,8 +1,6 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Foundation;
 using UIKit;
-using TinyIoC;
-using Cirrious.CrossCore.Core;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using System;
 

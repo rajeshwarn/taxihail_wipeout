@@ -3,7 +3,7 @@
 namespace CMTPayment.Pair
 {
     [Route("init/pairing/external/cof")]
-    public class ManualRideLinqCoFPairingRequest : IReturn<CmtPairingResponse>
+    public class ManualRideLinqCoFPairingRequest : BasePaymentValidationRequest, IReturn<CmtPairingResponse>
     {
         public string PairingCode { get; set; }
 
@@ -22,7 +22,5 @@ namespace CMTPayment.Pair
         public string CardOnFileId { get; set; }
 
         public string LastFour { get; set; }
-
-        public string ZipCode { get; set; }
     }
 }

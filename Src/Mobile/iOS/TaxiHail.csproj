@@ -722,6 +722,7 @@
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="PlatformIntegration\IPAddressManager.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -9,6 +9,7 @@ using CMTPayment;
 using MK.Common.Exceptions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -16,14 +17,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IBookingService _bookingService;
         private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IDeviceCollectorService _deviceCollectorService;
+
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
+		private string _kountSessionId;
 
-        public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService)
+		public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService, IDeviceCollectorService deviceCollectorService)
         {
-            _bookingService = bookingService;
+			_bookingService = bookingService;
             _orderWorkflowService = orderWorkflowService;
+			_deviceCollectorService = deviceCollectorService;
         }
+
+		public void Init()
+		{
+			_kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+		}
 
         public string PairingCodeLeft
         {
@@ -69,15 +79,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-							var kountSessionId = "";
-							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, kountSessionId);
+							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, _kountSessionId);
 
                             // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
                             await _orderWorkflowService.SetAddressToUserLocation();
 
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
-                            var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress);
+							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, _kountSessionId);
 
 							this.ReturnResult(orderManualRideLinqDetail);
                         }

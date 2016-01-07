@@ -14,6 +14,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources;
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -25,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		private readonly ConfigurationClientService _serviceClient;
         private readonly ICacheService _cache;
+        private readonly IIPAddressManager _ipAddressManager;
 		private readonly IPackageInfo _packageInfo;
         private readonly ILogger _logger; 
         private readonly string _baseUrl;
@@ -40,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public PaymentService(string url, string sessionId,
             ConfigurationClientService serviceClient,
             ICacheService cache,
+            IIPAddressManager ipAddressManager,
             IPackageInfo packageInfo,
             ILogger logger)
         {
@@ -49,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _sessionId = sessionId;
             _cache = cache;
 			_serviceClient = serviceClient;
+			_ipAddressManager = ipAddressManager;
         }
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
@@ -82,12 +87,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
                 _client = GetClient(_cachedSettings);
             }
-		    catch (Exception ex)
+		    catch (Exception)
 		    {
-		        
 		        throw;
 		    }
-			
 		}
 
 		public void ClearPaymentSettingsFromCache()
@@ -116,9 +119,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode = null)
+		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-			return GetClient().Tokenize(creditCardNumber, expiryDate, cvv, kountSessionId, zipCode);
+			return GetClient().Tokenize(creditCardNumber, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
@@ -126,9 +129,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return GetClient().ForgetTokenizedCard(cardToken);
         }
 
-		public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode = null)
+		public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
 		{
-			return GetClient().ValidateTokenizedCard(cardToken, cvv, kountSessionId, zipCode);
+			return GetClient().ValidateTokenizedCard(cardToken, cvv, kountSessionId, zipCode, account);
 		}
 
 		public async Task<OverduePayment> GetOverduePayment()
@@ -172,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
+                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _ipAddressManager, _packageInfo, null);
 
                 case PaymentMethod.Moneris:
                     return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger);
