@@ -3,8 +3,7 @@
 @using apcurium.MK.Web.helpers
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "accountManagementForm" }))
-{
+
    <div class="well clearfix form-horizontal">
       <h4 class="table-title">Account</h4>
 
@@ -137,7 +136,7 @@
          </div>
       </div>
 
-      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary span buttonaccount" value="Save Account" />
+      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary span" value="Save Account" />
       <br />
       <br />
       <input type="submit" formaction='@Url.Action("SendConfirmationCodeSMS")' class="btn-link" value="Send Account Confirmation Code via SMS" />
@@ -190,7 +189,7 @@
             </div>
         }
         <br />
-        <button type="button" class="btn btn-primary span buttonaccount" data-toggle="modal" data-target="#addNoteModalDialog">Add Note</button> 
+        <button type="button" class="btn btn-primary span" data-toggle="modal" data-target="#addNoteModalDialog">Add Note</button> 
         <br />
     </div>
 
@@ -255,7 +254,7 @@
             </div>
         }
     </div>
-}
+
 
 
 @section ModalDialogSection{
@@ -271,17 +270,7 @@
                 @Html.TextArea("noteContent", (string)TempData["NoteContent"], new { @class = "input-block-level", @rows = 5 })
             </div>
             <div class="modal-footer">
-                <input type="submit" formaction='@Url.Action("AddNote")' class="btn btn-default" value="Add" data-dismiss="modal" />
-                <button type="button" class="btn btn-default" data-dismiss="modal">Add model</button>
-
-
-
-
-                @{
-                    string urlAction = Url.Action("AddNote");
-                }
-                <input type='submit' value='Submit' onclick="document.getElementById('accountManagementForm').action='@urlAction';" />
-
+                <input type="submit" formaction='@Url.Action("AddNote")' class="btn btn-primary span" value="Add"  />
             </div>
         </div>
 

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -221,7 +222,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
             if(csv.IsEmpty())
             {
-                return null;
+                return View("Index", accountManagementModel);
             }
 
             var csvFlattened = new StringBuilder();
@@ -250,7 +251,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
+                var noteContent = (string)TempData["NoteContent"];
+                AccountNoteDetail accountNoteDetail = new AccountNoteDetail()
+                {
 
+                    Type = Common.Enumeration.NoteType.Standard,
+                    CreationDate = DateTime.Now,
+                    Note = noteContent
+                };
+                accountManagementModel.Notes.Add(new NoteModel(accountNoteDetail));
             }
             return View("Index", accountManagementModel);
         }
