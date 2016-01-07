@@ -1,7 +1,3 @@
-#if IOS
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Common.ServiceClient.Web;
-#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
