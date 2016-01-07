@@ -726,6 +726,8 @@
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="Helper\ToastHelper.cs" />
+    <Compile Include="Controls\ToastView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

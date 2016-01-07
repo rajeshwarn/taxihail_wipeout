@@ -8,15 +8,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     public class ConnectivityService : IConnectivityService
     {
         readonly ISubject<bool> _isConnectedSubject = new BehaviorSubject<bool>(false);
+        private readonly IMessageService _messageService;
+        private readonly ILocalization _localize;
 
-        //To remove when toast service is done
-//        UIAlertView cav = new UIAlertView();
-
-        public ConnectivityService()
+        public ConnectivityService(IMessageService messageService, ILocalization localize)
         {
-            //To remove when toast service is done
-//            cav.Message = "testmessage";
-//            cav.Title = "testtitle";
+            _messageService = messageService;
+            _localize = localize;
 
             IsConnected = CrossConnectivity.Current.IsConnected;
             CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
@@ -31,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             return _isConnectedSubject;
         }
 
-        private bool _isConnected;
+        private bool _isConnected = true;
         public bool IsConnected
         {
             get
@@ -47,13 +45,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
                     if (IsConnected)
                     {
-                        //To remove when toast service is done
-//                        cav.DismissWithClickedButtonIndex(0,true);
+                        _messageService.DismissToast();
                     }
                     else
                     {
-                        //To remove when toast service is done
-//                        cav.Show();
+                        _messageService.ShowToast(_localize["NoConnectionMessage"]);
                     }
                 }
             }

@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void ShowDialog(Type type);
 		void ShowDialog<T>(string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult);
 		Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false, string inputText = "");
+
+		void ShowToast(string message);
+		void DismissToast();
     }
 
     public enum ToastDuration

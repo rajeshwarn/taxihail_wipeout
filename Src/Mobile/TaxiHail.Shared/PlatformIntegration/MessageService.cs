@@ -13,6 +13,9 @@ using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+using TaxiHail.Shared.Helpers;
+
+
 #if CALLBOX
 using Android.App;
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
@@ -336,6 +339,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 });
 
 			return tcs.Task;
+        }
+
+        public void ShowToast(string message)
+        {           
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => 
+                ToastHelper.Show(Context.Activity, message));
+        }
+
+        public void DismissToast()
+        {
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => 
+                ToastHelper.Dismiss());
         }
     }
 }

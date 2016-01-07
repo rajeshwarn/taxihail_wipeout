@@ -115,5 +115,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             return MessageHelper.Prompt (title, message, cancelAction, isNumericOnly, inputText);
         }
+
+        public void ShowToast(string message)
+        {           
+            ToastHelper.Show(message);
+        }
+
+        public void DismissToast()
+        {
+            ToastHelper.Dismiss();
+        }
 	}
 }
