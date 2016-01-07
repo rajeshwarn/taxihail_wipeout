@@ -324,31 +324,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
-                    CloseMenu();
+				    try
+				    {
+                        CloseMenu();
 
-					if(Settings.MaxNumberOfCardsOnFile > 1)
-					{
-						ShowViewModel<CreditCardMultipleViewModel>();
-					}
-					else
-					{
-						var settings = await _paymentService.GetPaymentSettings();
-
-						var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
-						                                    _accountService.CurrentAccount.DefaultCreditCard == null;
-
-
-                        if (shouldShowDropInView)
+                        if (Settings.MaxNumberOfCardsOnFile > 1)
                         {
-                            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-                            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
-
-                            await _paymentService.AddPaymentMethod(paymentNonce);
-                            await _accountService.GetDefaultCreditCard();
+                            ShowViewModel<CreditCardMultipleViewModel>();
                         }
+                        else
+                        {
+                            var settings = await _paymentService.GetPaymentSettings();
 
-                        ShowViewModel<CreditCardAddViewModel>();
+                            var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
+                                                                _accountService.CurrentAccount.DefaultCreditCard == null;
+
+
+                            if (shouldShowDropInView)
+                            {
+                                var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
+                                var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
+
+                                await _paymentService.AddPaymentMethod(paymentNonce);
+                                await _accountService.GetDefaultCreditCard();
+                            }
+
+                            ShowViewModel<CreditCardAddViewModel>();
+                        }
                     }
+				    catch (TaskCanceledException)
+				    {
+				        // Ignore this exception since it's probably caused by user backed out of DropInView.
+				    }
+                    
 				});
 			}
 		}
