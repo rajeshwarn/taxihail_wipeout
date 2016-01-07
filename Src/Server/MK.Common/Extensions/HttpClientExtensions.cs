@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MK.Common.Exceptions;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -104,7 +105,9 @@ namespace apcurium.MK.Common.Extensions
 
                 var body = await result.Content.ReadAsStringAsync();
 
-                throw new WebServiceException(result.ReasonPhrase)
+				var errorResponse = body.FromJson<ErrorResponse>();
+
+				throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode)
                 {
                     StatusCode = (int)result.StatusCode,
                     StatusDescription = result.ReasonPhrase,
@@ -133,7 +136,9 @@ namespace apcurium.MK.Common.Extensions
 
                 var body = await result.Content.ReadAsStringAsync();
 
-                throw new WebServiceException(result.ReasonPhrase)
+				var errorResponse = body.FromJson<ErrorResponse>();
+
+				throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode)
                 {
                     StatusCode = (int)result.StatusCode,
                     StatusDescription = result.ReasonPhrase,

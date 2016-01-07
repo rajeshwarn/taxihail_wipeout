@@ -6,17 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
-using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
+using AutoMapper.Internal;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
-using ServiceStack.Common;
 using ServiceStack.ServiceModel.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -26,19 +27,56 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
+        private readonly IConfigurationChangeService _configurationChangeService;
 
         // GET: AdminTH/CompanySettings
-        public CompanySettingsController(ICacheClient cache, IServerSettings serverSettings, ICommandBus commandBus)
+        public CompanySettingsController(ICacheClient cache, IServerSettings serverSettings, ICommandBus commandBus, IConfigurationChangeService configurationChangeService)
             : base(cache, serverSettings)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
+            _configurationChangeService = configurationChangeService;
         }
 
         public ActionResult Index()
         {
             ValidateFakeIBS();
             return View(GetAvailableSettingsForUser());
+        }
+
+        private void SaveConfigurationChanges(Dictionary<string,string> appSettings)
+        {
+            var oldSettings = _serverSettings.ServerData.GetType().GetAllProperties()
+                .ToDictionary(s => s.Key, s => _serverSettings.ServerData.GetNestedPropertyValue(s.Key).ToNullSafeString());
+            var oldValues = new Dictionary<string, string>();
+            var newValues = new Dictionary<string, string>();
+
+            foreach (var oldSetting in oldSettings)
+            {
+                if (appSettings.ContainsKey(oldSetting.Key))
+                {
+                    var newValue = appSettings[oldSetting.Key].ToLowerInvariant();
+                    
+                    //Special case for nullable bool
+                    if (newValue == "null")
+                    {
+                        newValue = string.Empty;
+                    }
+                    var oldValue = oldSetting.Value != null ? oldSetting.Value.ToLowerInvariant() : string.Empty;
+
+                    if (oldValue != newValue)
+                    {
+                        oldValues.Add(oldSetting.Key, oldSetting.Value);
+                        newValues.Add(oldSetting.Key, appSettings[oldSetting.Key]);
+                    }
+                }
+            }
+
+            _configurationChangeService.Add(oldValues,
+                newValues, 
+                ConfigurationChangeType.CompanySettings, 
+                AuthSession.UserAuthId, 
+                AuthSession.UserAuthName);
         }
 
         // POST: AdminTH/CompanySettings/Update
@@ -56,6 +94,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
+
+                SaveConfigurationChanges(appSettings);
+
                 // Only the superadmin should be able to change the availability option of the settings.
                 var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
                 if (isSuperAdmin)

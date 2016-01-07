@@ -102,6 +102,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IBlackListEntryService>(new BlackListEntryService(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IConfigurationChangeService>(new ConfigurationChangeService(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IAirlineDao>(new AirlineDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPickupPointDao>(new PickupPointDao(() => container.Resolve<BookingDbContext>()));
