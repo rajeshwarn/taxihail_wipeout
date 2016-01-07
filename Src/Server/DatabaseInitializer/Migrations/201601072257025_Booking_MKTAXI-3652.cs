@@ -8,14 +8,14 @@ namespace apcurium.MK.Booking.Migrations
         public override void Up()
         {
             CreateTable(
-                "Booking.AccountNoteDetail",
+                "Booking.AccountNoteEntry",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        AccountId = c.Guid(nullable: false),
+                        AccountId = c.String(),
                         Note = c.String(),
                         Type = c.Int(nullable: false),
-                        WriterEmail = c.String(),
+                        AccountEmail = c.String(),
                         CreationDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Migrations
         
         public override void Down()
         {
-            DropTable("Booking.AccountNoteDetail");
+            DropTable("Booking.AccountNoteEntry");
         }
     }
 }

@@ -58,6 +58,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public List<OrderModel> Orders { get; set; }
 
+        public string NotePopupContent { get; set; }
+
         public List<NoteModel> Notes { get; set; }
     }
 
@@ -86,18 +88,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TotalAmountString { get; set; }
     }
 
-    public class NoteModel : AccountNoteDetail
+    public class NoteModel : AccountNoteEntry
     {
         public NoteModel()
         {
         }
 
-        public NoteModel(AccountNoteDetail accountNoteDetail)
+        public NoteModel(AccountNoteEntry accountNoteEntry)
         {
             // Initialize properties of base class dynamically
-            foreach (var prop in typeof(AccountNoteDetail).GetProperties())
+            foreach (var prop in typeof(AccountNoteEntry).GetProperties())
             {
-                GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(accountNoteDetail, null), null);
+                GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(accountNoteEntry, null), null);
             }
         }
     }

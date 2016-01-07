@@ -26,7 +26,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class AccountManagementController : ServiceStackController
     {
         private readonly IAccountDao _accountDao;
-        private readonly IAccountNoteDao _accountNoteDao;
+        private readonly IAccountNoteService _accountNoteService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
            IAccountDao accountDao,
-           IAccountNoteDao accountNoteDao,
+           IAccountNoteService accountNoteService,
            ICreditCardDao creditCardDao,
            ICommandBus commandBus,
            IOrderDao orderDao,
@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            : base(cache, serverSettings)
         {
             _accountDao = accountDao;
-            _accountNoteDao = accountNoteDao;
+            _accountNoteService = accountNoteService;
             _creditCardDao = creditCardDao;
             _bookingSettingsService = bookingSettingsService;
             _commandBus = commandBus;
@@ -251,15 +251,21 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
-                var noteContent = (string)TempData["NoteContent"];
-                AccountNoteDetail accountNoteDetail = new AccountNoteDetail()
+                AccountNoteEntry accountNoteEntry = new AccountNoteEntry()
                 {
-
+                    AccountId = AuthSession.UserAuthId,
+                    AccountEmail = AuthSession.UserAuthName,
                     Type = Common.Enumeration.NoteType.Standard,
                     CreationDate = DateTime.Now,
-                    Note = noteContent
+                    Note = accountManagementModel.NotePopupContent
                 };
-                accountManagementModel.Notes.Add(new NoteModel(accountNoteDetail));
+
+                _accountNoteService.Add(accountNoteEntry);
+                if (accountManagementModel.Notes == null)
+                {
+                    accountManagementModel.Notes = new List<NoteModel>();
+                }
+                accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
             }
             return View("Index", accountManagementModel);
         }
@@ -309,7 +315,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 })
                 .ToList();
 
-            model.Notes = _accountNoteDao.FindByAccountId(accountId)
+            model.Notes = _accountNoteService.FindByAccountId(AuthSession.UserAuthId)
                 .OrderByDescending(c => c.CreationDate)
                 .Select(x =>
                 {

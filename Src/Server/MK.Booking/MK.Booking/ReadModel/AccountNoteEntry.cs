@@ -4,22 +4,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace apcurium.MK.Booking.ReadModel
 {
-    public class AccountNoteDetail
+    public class AccountNoteEntry
     {
-        public AccountNoteDetail()
+        public AccountNoteEntry()
         {
+            Id = Guid.NewGuid();
         }
 
         [Key]
         public Guid Id { get; set; }
 
-        public Guid AccountId { get; set; }
+        public string AccountId { get; set; }
 
         public string Note { get; set; }
 
         public NoteType Type { get; set; }
 
-        public string WriterEmail { get; set; }
+        public string AccountEmail { get; set; }
 
         public DateTime CreationDate { get; set; }
 

@@ -260,10 +260,10 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
-    <Compile Include="ReadModel\AccountNoteDetail.cs" />
-    <Compile Include="ReadModel\Query\AccountNoteDao.cs" />
+    <Compile Include="ReadModel\AccountNoteEntry.cs" />
+    <Compile Include="ReadModel\Query\AccountNoteService.cs" />
     <Compile Include="ReadModel\Query\BlackListEntryService.cs" />
-    <Compile Include="ReadModel\Query\Contract\IAccountNoteDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IAccountNoteService.cs" />
     <Compile Include="ReadModel\Query\ConfigurationChangeService.cs" />
     <Compile Include="ReadModel\Query\Contract\IBlackListEntryService.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationChangeService.cs" />

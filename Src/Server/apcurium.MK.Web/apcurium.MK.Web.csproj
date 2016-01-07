@@ -704,6 +704,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="helpers\HiddenExtensions.cs" />
     <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />
     <Compile Include="Module.cs" />

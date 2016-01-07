@@ -17,6 +17,7 @@
       @Html.AntiForgeryToken()
       @Html.HiddenFor(x => x.Id)
       @Html.HiddenForEnumerable(x => x.Orders)
+      @Html.HiddenForEnumerable(x => x.Notes)
 
       <div class="div-account-block">
          <div class="left-column">
@@ -181,7 +182,7 @@
                                 <td style="width:700px;">@note.Note</td>
                                 <td style="width:100px;">@note.CreationDate.ToShortDateString()</td>
                                 <td style="width:200px;">@note.Type</td>
-                                <td style="width:200px;">@note.WriterEmail</td>
+                                <td style="width:200px;">@note.AccountEmail</td>
                             </tr>
                         }
                     </tbody>
@@ -267,7 +268,10 @@
                 <h4 class="modal-title">Add note</h4>
             </div>
             <div class="modal-body">
-                @Html.TextArea("noteContent", (string)TempData["NoteContent"], new { @class = "input-block-level", @rows = 5 })
+                @{
+                    Model.NotePopupContent = string.Empty;
+                }
+                @Html.TextArea("notePopupContent", Model.NotePopupContent, new { @class = "input-block-level", @rows = 5 })
             </div>
             <div class="modal-footer">
                 <input type="submit" formaction='@Url.Action("AddNote")' class="btn btn-primary span" value="Add"  />
