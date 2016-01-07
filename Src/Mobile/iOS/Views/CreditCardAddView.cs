@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
         private void ConfigurePayPalSection()
         {
-            Mvx.Resolve<IPayPalConfigurationService>().InitializeService(_payPalSettings);
+            //Mvx.Resolve<IPayPalConfigurationService>().InitializeService(_payPalSettings);
             
             lblPayPalLinkedInfo.Text = Localize.GetValue("PayPalLinkedInfo");
 
