@@ -245,13 +245,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-					#if __IOS__
-					await HandleAppleCredentialsIfNeeded(Email, Password);
-					#endif
+#if __IOS__
+                    await HandleAppleCredentialsIfNeeded(Email, Password);
+#endif
 
-					await _accountService.SignIn(Email, Password);   
-                    Password = string.Empty;                    
-					await OnLoginSuccess();
+                    await _accountService.SignIn(Email, Password);
+                    Password = string.Empty;
+                    await OnLoginSuccess();
                 }
                 catch (AuthException e)
                 {
@@ -260,64 +260,68 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         case AuthFailure.InvalidServiceUrl:
                         case AuthFailure.NetworkError:
-	                        {
-	                            var title = localize["NoConnectionTitle"];
-	                            var msg = localize["NoConnectionMessage"];
-	                            this.Services().Message.ShowMessage (title, msg);
-	                        }
+                        {
+                            var title = localize["NoConnectionTitle"];
+                            var msg = localize["NoConnectionMessage"];
+                            this.Services().Message.ShowMessage(title, msg);
+                        }
                             break;
                         case AuthFailure.InvalidUsernameOrPassword:
-	                        {
-	                            var title = localize["InvalidLoginMessageTitle"];
-	                            var message = localize["InvalidLoginMessage"];
-	                            this.Services().Message.ShowMessage (title, message);
-	                        }
+                        {
+                            var title = localize["InvalidLoginMessageTitle"];
+                            var message = localize["InvalidLoginMessage"];
+                            this.Services().Message.ShowMessage(title, message);
+                        }
                             break;
                         case AuthFailure.AccountDisabled:
-	                        {
-	                            var title = this.Services().Localize["InvalidLoginMessageTitle"];
-	                            string message = null;
-	                            if (!Settings.HideCallDispatchButton)
-	                            {
-	                                var companyName = Settings.TaxiHail.ApplicationName;
-	                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
-	                                message = string.Format(localize[e.Message], companyName, phoneNumber);
-	                            }
-	                            else 
-	                            {
-	                                message = localize["AccountDisabled_NoCall"];
-	                            }
-	                            this.Services().Message.ShowMessage(title, message);
-	                        }
+                        {
+                            var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                            string message = null;
+                            if (!Settings.HideCallDispatchButton)
+                            {
+                                var companyName = Settings.TaxiHail.ApplicationName;
+                                var phoneNumber = Settings.DefaultPhoneNumberDisplay;
+                                message = string.Format(localize[e.Message], companyName, phoneNumber);
+                            }
+                            else
+                            {
+                                message = localize["AccountDisabled_NoCall"];
+                            }
+                            this.Services().Message.ShowMessage(title, message);
+                        }
                             break;
-						case AuthFailure.AccountNotActivated:
-							{
+                        case AuthFailure.AccountNotActivated:
+                        {
 
-                                if (Settings.SMSConfirmationEnabled)
-                                {
-                                    var title = localize["InvalidLoginMessageTitle"];
-                                    var message = localize["AccountNotActivatedCodeBySMS"];
+                            if (Settings.SMSConfirmationEnabled)
+                            {
+                                var title = localize["InvalidLoginMessageTitle"];
+                                var message = localize["AccountNotActivatedCodeBySMS"];
 
-                                    this.Services().Message.ShowMessage(title, message, GoToAccountConfirmationPageBySMS);
-                                }
-                                else
-                                {
-                                    var title = localize["InvalidLoginMessageTitle"];
-                                    var message = localize["AccountNotActivated"];
+                                this.Services().Message.ShowMessage(title, message, GoToAccountConfirmationPageBySMS);
+                            }
+                            else
+                            {
+                                var title = localize["InvalidLoginMessageTitle"];
+                                var message = localize["AccountNotActivated"];
 
-                                    this.Services().Message.ShowMessage(title, message);
-                                }
-							}
-							break;
-						case AuthFailure.FacebookEmailAlreadyUsed:
-							{
-								var title = localize["FacebookLoginErrorTitle"];
-								var message = localize["FacebookLoginErrorMessage"];
+                                this.Services().Message.ShowMessage(title, message);
+                            }
+                        }
+                            break;
+                        case AuthFailure.FacebookEmailAlreadyUsed:
+                        {
+                            var title = localize["FacebookLoginErrorTitle"];
+                            var message = localize["FacebookLoginErrorMessage"];
 
-								this.Services().Message.ShowMessage(title, message);
-							}
-							break;
+                            this.Services().Message.ShowMessage(title, message);
+                        }
+                            break;
                     }
+                }
+                catch (TaskCanceledException)
+                {
+                    // Supressing Operation canceled exception since it was probably cancelled by the user (user backed out of dropin view).
                 }
                 catch (Exception e)
                 {

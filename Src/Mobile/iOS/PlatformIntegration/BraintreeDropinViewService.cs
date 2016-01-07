@@ -19,17 +19,28 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var viewControllerDelegate = new BraintreeDelegate();
 
+            var paymentRequest = new BTPaymentRequest()
+            {
+                CallToActionText = "Save",
+                AdditionalPayPalScopes = new NSSet<NSString>(new NSString("profile")),
+                SummaryDescription = "Enter a new payment method for your account."
+            };
+
             var dropInViewController = new BTDropInViewController(client)
 			{
-				Delegate = viewControllerDelegate
-			};
+				Delegate = viewControllerDelegate,
+                PaymentRequest = paymentRequest,
+            };
 
 			var cancelButton = new UIBarButtonItem(UIBarButtonSystemItem.Cancel,(s,e) => 
-				{
-					viewControllerDelegate.DropInViewControllerDidCancel(dropInViewController);
-				});
+			{
+				viewControllerDelegate.DropInViewControllerDidCancel(dropInViewController);
+			});
 
 			dropInViewController.NavigationItem.LeftBarButtonItem = cancelButton;
+            dropInViewController.NavigationItem.Title = "Add a payment method";
+            dropInViewController.NavigationController.NavigationBarHidden = false;
+            dropInViewController.NavigationItem.SetHidesBackButton(true, false);
 
             var navController = Mvx.Resolve<UINavigationController>();
 
@@ -43,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		private class BraintreeDelegate : BTDropInViewControllerDelegate
 		{
-			private TaskCompletionSource<string> _taskCompletionSource;
+			private readonly TaskCompletionSource<string> _taskCompletionSource;
 
 			public BraintreeDelegate ()
 			{

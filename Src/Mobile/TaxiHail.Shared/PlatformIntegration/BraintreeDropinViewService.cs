@@ -1,10 +1,16 @@
-﻿using Cirrious.CrossCore.Droid.Platform;
+﻿using System;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using Cirrious.CrossCore.Droid.Platform;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.App;
 using Braintree.Api;
 using Braintree.Api.Models;
+using Cirrious.CrossCore.Core;
+using Cirrious.CrossCore.Droid.Views;
 using Cirrious.MvvmCross.Droid.Views;
+using Observable = System.Reactive.Linq.Observable;
 
 namespace TaxiHail.Shared.PlatformIntegration
 {
@@ -30,37 +36,30 @@ namespace TaxiHail.Shared.PlatformIntegration
 				.SubmitButtonText("Save")
 				.ClientToken(clientToken);
 
-			var tcs = new TaskCompletionSource<string>();
-
 			var activity = (MvxActivity)_activity.Activity;
 
-			activity.ActivityResultCalled += (sender, e) => 
-			{
-			    if (e.Value.RequestCode != _requestCode)
-			    {
-			        return;
-			    }
-                
-			    if (e.Value.ResultCode == Result.Canceled)
-			    {
-                    tcs.SetCanceled();
-                    return;
-                }
+            var activtyResultObservable = Observable.FromEventPattern<EventHandler<MvxValueEventArgs<MvxActivityResultParameters>>, MvxValueEventArgs<MvxActivityResultParameters>>
+                (
+                    h => activity.ActivityResultCalled += h,
+                    h => activity.ActivityResultCalled -= h
+                )
+                .Select(result => result.EventArgs.Value)
+                .Where(args => args.RequestCode == _requestCode);
 
-			    if (e.Value.Data == null)
-			    {
-                    tcs.SetCanceled();
-                    return;
-                }
-				
-			    var paymentNonce = (PaymentMethodNonce)e.Value.Data.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce);
+            activity.StartActivityForResult(paymentRequest.GetIntent(activity), _requestCode);
 
-			    tcs.SetResult(paymentNonce.Nonce);
-			};
-
-			activity.StartActivityForResult(paymentRequest.GetIntent(activity), _requestCode);
-
-			return tcs.Task;
+		    return activtyResultObservable
+                .Take(1) // This forces to complete the observable flow.
+                .Do(args =>
+                {
+                    if (args.ResultCode == Result.Canceled || args.Data == null)
+                    {
+                        throw new TaskCanceledException("Braintree flow was cancelled by user");
+                    }
+                })
+                .Select(args => (PaymentMethodNonce)args.Data.GetParcelableExtra(BraintreePaymentActivity.ExtraPaymentMethodNonce))
+                .Select(paymentMethodNonce => paymentMethodNonce.Nonce)
+                .ToTask();
 		}
 	}
 }
