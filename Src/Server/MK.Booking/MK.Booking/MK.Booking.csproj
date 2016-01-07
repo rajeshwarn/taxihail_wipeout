@@ -541,6 +541,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ArroNT.resx" />
+    <EmbeddedResource Include="Resources\ArroUAT.resx" />
     <EmbeddedResource Include="Resources\Blueline Taxi.resx" />
     <EmbeddedResource Include="Resources\Capital Taxi Ottawa.resx">
       <Generator>ResXFileCodeGenerator</Generator>
