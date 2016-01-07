@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private void MoveMarker(MarkerOptions pin, Sprite icon, double lat, double lng)
+        private void MoveMarker(MarkerOptions pin, Icon icon, double lat, double lng)
         {
             pin.InvokeIcon(icon);
             pin.InvokePosition(new LatLng(lat, lng));
@@ -102,14 +102,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         // Not working with MapBox for now
         private void AnimateMarkerOnMap(Icon icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
         {
-                        markerToUpdate.InvokeIcon(icon);
-            
-                        var evaluator = new LatLngEvaluator ();
-                        var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
-                        valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
-                        valueAnimator.SetDuration (5000);
-                        valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
-                        valueAnimator.Start();
+            markerToUpdate.InvokeIcon(icon);
+
+            var evaluator = new LatLngEvaluator ();
+            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
+            valueAnimator.SetDuration (5000);
+            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+            valueAnimator.Start();
         }
 
         private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
