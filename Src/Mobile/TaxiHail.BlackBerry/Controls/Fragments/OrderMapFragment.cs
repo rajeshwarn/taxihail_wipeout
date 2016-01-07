@@ -51,10 +51,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private readonly List<MarkerOptions> _availableVehicleMarkers = new List<MarkerOptions> ();
 
-        private Sprite _destinationIcon;
-        private Sprite _hailIcon;
+        private Icon _destinationIcon;
+        private Icon _hailIcon;
 
-        private IDictionary<string, Sprite> _vehicleIcons; 
+        private IDictionary<string, Icon> _vehicleIcons; 
 
         public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -99,19 +99,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         // Animate Marker on the map between retrieving positions
-        private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
+        // Not working with MapBox for now
+        private void AnimateMarkerOnMap(Icon icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
         {
-            // Animation doesn't work on MapBox for now, so we just move the marker
-            MoveMarker(markerToUpdate, icon, newPosition.Latitude, newPosition.Longitude);
-
-            //            markerToUpdate.InvokeIcon(icon);
-            //
-            //            var evaluator = new LatLngEvaluator ();
-            //            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
-            //            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
-            //            valueAnimator.SetDuration (5000);
-            //            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
-            //            valueAnimator.Start();
+                        markerToUpdate.InvokeIcon(icon);
+            
+                        var evaluator = new LatLngEvaluator ();
+                        var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+                        valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
+                        valueAnimator.SetDuration (5000);
+                        valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+                        valueAnimator.Start();
         }
 
         private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
@@ -153,8 +151,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (_taxiLocationPin != null)
                 {
                     var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
-                        ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
-                        : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
+                        ? Map.IconFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
+                        : Map.IconFactory.FromBitmap(CreateTaxiBitmap());
 
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng(value.Latitude.Value, value.Longitude.Value));
 
@@ -170,8 +168,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue
-                            ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
-                            : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
+                            ? Map.IconFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
+                            : Map.IconFactory.FromBitmap(CreateTaxiBitmap());
 
                         var mapOptions = new MarkerOptions()
                             .InvokePosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
@@ -209,7 +207,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (value == null && _taxiLocationPin != null)
             {
                 _isBookingMode = false;
-                _taxiLocationPin.Marker.Remove();
+                Map.RemoveMarker(_taxiLocationPin.Marker);
+                //_taxiLocationPin.Marker.Remove();
                 _taxiLocationPin = null;
             }
         }
@@ -297,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void InitDrawables()
         {     
-            _vehicleIcons = new Dictionary<string, Sprite>();
+            _vehicleIcons = new Dictionary<string, Icon>();
 
             var useCompanyColor = _settings.UseThemeColorForMapIcons;
             var companyColor = _resources.GetColor (Resource.Color.company_color);
@@ -305,17 +304,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var red = Color.Argb(255, 255, 0, 23);
             var green = Color.Argb(255, 30, 192, 34);
 
-            _destinationIcon = Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@destination_icon, red, true));
-            _hailIcon = Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@hail_icon, green, true));
+            _destinationIcon = Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@destination_icon, red, true));
+            _hailIcon = Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@hail_icon, green, true));
 
-            _vehicleIcons.Add("nearby_taxi", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_taxi, companyColor, false)));
-            _vehicleIcons.Add("nearby_suv", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_suv, companyColor, false)));
-            _vehicleIcons.Add("nearby_blackcar", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_blackcar, companyColor, false)));
-            _vehicleIcons.Add("nearby_wheelchair", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_wheelchair, companyColor, false)));
-            _vehicleIcons.Add("cluster_taxi", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_taxi, companyColor, false)));
-            _vehicleIcons.Add("cluster_suv", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_suv, companyColor, false)));
-            _vehicleIcons.Add("cluster_blackcar", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_blackcar, companyColor, false)));
-            _vehicleIcons.Add("cluster_wheelchair", Map.SpriteFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_wheelchair, companyColor, false)));
+            _vehicleIcons.Add("nearby_taxi", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_taxi, companyColor, false)));
+            _vehicleIcons.Add("nearby_suv", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_suv, companyColor, false)));
+            _vehicleIcons.Add("nearby_blackcar", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_blackcar, companyColor, false)));
+            _vehicleIcons.Add("nearby_wheelchair", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_wheelchair, companyColor, false)));
+            _vehicleIcons.Add("cluster_taxi", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_taxi, companyColor, false)));
+            _vehicleIcons.Add("cluster_suv", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_suv, companyColor, false)));
+            _vehicleIcons.Add("cluster_blackcar", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_blackcar, companyColor, false)));
+            _vehicleIcons.Add("cluster_wheelchair", Map.IconFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_wheelchair, companyColor, false)));
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -437,7 +436,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private LatLng GetMarkerPositionWithAnchor(LatLng position, Sprite image)
+        private LatLng GetMarkerPositionWithAnchor(LatLng position, Icon image)
         {
             var point = Map.ToScreenLocation(position);
             point.Y = point.Y - image.Bitmap.Height / 2;
@@ -495,7 +494,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             // if it uses pin message in future - it has to use RotateImageByDegreesWithСenterCrop instead of RotateImageByDegrees
             var icon = ViewModel.Settings.ShowOrientedPins
-                ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                ? Map.IconFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
 
             var vehicleMarker = new MarkerOptions()
@@ -519,7 +518,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
             var icon = ViewModel.Settings.ShowOrientedPins
-                ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                ? Map.IconFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
 
             AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
