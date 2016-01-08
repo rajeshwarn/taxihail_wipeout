@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             _paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
             ConfigureCreditCardSection();
-            ConfigurePayPalSection();
 		}
 
         protected override void OnDestroy()
@@ -102,53 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             }
         }
 
-        private void ConfigurePayPalSection()
-        {
-            var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
-            var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
-            var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
-
-            // Use PayPal settings
-            if (_paymentSettings.PayPalClientSettings.IsEnabled)
-            {
-                var payPalConfigurationService = Mvx.Resolve<IPayPalConfigurationService>();
-                payPalConfigurationService.InitializeService(_paymentSettings.PayPalClientSettings);
-
-                var intent = new Intent(this, typeof(PayPalService));
-                intent.PutExtra(PayPalService.ExtraPaypalConfiguration, (PayPalConfiguration)payPalConfigurationService.GetConfiguration());
-                StartService(intent);
-
-                btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
-                btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
-            }
-            else
-            {
-                // Paypal disabled
-                paypalSeparator.Visibility = ViewStates.Gone;
-            }
-        }
-
-        private void LinkPayPayAccount()
-        {
-            if (ViewModel.IsEditing)
-            {
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["DeleteCreditCardTitle"],
-                    this.Services().Localize["LinkPayPalCCWarning"],
-                    this.Services().Localize["LinkPayPalConfirmation"], () =>
-                    {
-                        var intent = new Intent(this, typeof (PayPalFuturePaymentActivity));
-                        StartActivityForResult(intent, LinkPayPalAccountRequestCode);
-                    },
-                    this.Services().Localize["Cancel"], () => { });
-            }
-            else
-            {
-                var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
-                StartActivityForResult(intent, LinkPayPalAccountRequestCode);
-            }
-        }
-
         private void ScanCard()
         {
             StartActivityForResult(_scanIntent, CardIOScanRequestCode);
@@ -163,8 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 return;
             }
 
-            if (requestCode == CardIOScanRequestCode 
-                && data.HasExtra(CardIOActivity.ExtraScanResult))
+            if (requestCode == CardIOScanRequestCode && data.HasExtra(CardIOActivity.ExtraScanResult))
             {
                 var scanRes = data.GetParcelableExtra(CardIOActivity.ExtraScanResult);
                 var scanResult = scanRes.JavaCast<CreditCard>();
@@ -172,34 +123,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 var txtCardNumber = FindViewById<EditTextLeftImage>(Resource.Id.CreditCardNumberEditText);
                 ViewModel.Data.CardNumber = scanResult.CardNumber;
                 txtCardNumber.CreditCardNumber = scanResult.CardNumber;
-            }
-            else if (requestCode == LinkPayPalAccountRequestCode)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    var rawAuthResponse = data.GetParcelableExtra(PayPalFuturePaymentActivity.ExtraResultAuthorization);
-                    var authResponse = rawAuthResponse.JavaCast<PayPalAuthorization>();
-                    if (authResponse != null)
-                    {
-                        try
-                        {
-                            ViewModel.LinkPayPalAccount(authResponse.AuthorizationCode);
-                        }
-                        catch (JSONException e)
-                        {
-                            Logger.LogError(e);
-                            Mvx.Resolve<IMessageService>().ShowMessage(Mvx.Resolve<ILocalization>()["Error"], e.GetBaseException().Message);
-                        }
-                    }
-                }
-                else if (resultCode == Result.Canceled)
-                {
-                    Logger.LogMessage("PayPal LinkAccount: The user canceled the operation");
-                }
-                else if ((int)resultCode == PayPalFuturePaymentActivity.ResultExtrasInvalid)
-                {
-                    Logger.LogMessage("The attempt to previously start the PayPalService had an invalid PayPalConfiguration. Please see the docs.");
-                }
             }
         }
     }

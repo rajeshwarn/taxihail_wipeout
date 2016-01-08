@@ -170,8 +170,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 CustomerId = customerId,
                 MerchantAccountId = BraintreeGateway.MerchantId,
+                
             };
 
+            
             var clientToken = BraintreeGateway.ClientToken.generate(tokenRequest);
 
             return new GenerateClientTokenResponse()
@@ -200,6 +202,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return braintreeCreditCard.CustomerId;
             }
+
+            
 
             var braintreeCustomerCreation = new CustomerRequest()
             {

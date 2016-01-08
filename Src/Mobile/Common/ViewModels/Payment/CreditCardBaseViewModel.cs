@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.Start();
 			try
 			{
-				PaymentSettings = await _paymentService.GetPaymentSettings();
+                PaymentSettings = await _paymentService.GetPaymentSettings();
 			}
 			catch(Exception ex)
 			{

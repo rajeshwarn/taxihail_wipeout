@@ -89,8 +89,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    local:MvxBind="Visibility IsPayPalOnly, Converter=InvertedVisibility">
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -133,7 +132,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
                         android:inputType="textCapWords"
-                        local:MvxBind="Text Data.NameOnCard"
+                        local:MvxBind="Text Data.NameOnCard; Enabled IsBraintreePaymentMode, Converter=InvertedBool"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/CreditCardName" />
                     <LinearLayout
@@ -174,7 +173,7 @@
                             android:layout_weight="0.8"
                             android:singleLine="true"
                             android:inputType="number"
-                            local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath"
+                            local:MvxBind="CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath; Enabled IsBraintreePaymentMode, Converter=InvertedBool"
                             android:contentDescription="@string/CreditCardNumber" />
                     <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                         <View
@@ -188,7 +187,7 @@
                             android:layout_weight="0.2"
                             android:inputType="number"
                             android:singleLine="true"
-                            local:MvxBind="Text Data.CCV"
+                            local:MvxBind="Text Data.CCV; Visibility IsBraintreePaymentMode, Converter=InvertedVisibility"
                             android:layout_marginBottom="8dp"
                             android:hint="@string/CreditCardCCV" />
                     </LinearLayout>
@@ -235,7 +234,7 @@
                             android:inputType="number"
                             android:singleLine="true"
                             local:allowEmptySelection="true"
-                            local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth"
+                            local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth; Enabled IsBraintreePaymentMode, Converter=InvertedBool"
                             android:contentDescription="@string/CreditCardExpMonth" />
                     <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                         <View
@@ -250,7 +249,7 @@
                             android:inputType="number"
                             android:singleLine="true"
                             local:allowEmptySelection="true"
-                            local:MvxBind="Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear"
+                            local:MvxBind="Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear; Enabled IsBraintreePaymentMode, Converter=InvertedBool"
                             android:contentDescription="@string/CreditCardExpYear" />
                     </LinearLayout>
                     <TextView
@@ -264,7 +263,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
                         android:inputType="textCapWords"
-                        local:MvxBind="Text Data.ZipCode"
+                        local:MvxBind="Text Data.ZipCode; Enabled IsBraintreePaymentMode, Converter=InvertedBool"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/CreditCardZipCode" />
                     <Button
@@ -296,7 +295,7 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
+                        local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand; Visibility IsBraintreePaymentMode, Converter=InvertedVisibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button
@@ -310,68 +309,6 @@
                         local:MvxBind="Click DeleteCreditCardCommand; Visibility CanDeleteCreditCard, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
-                </LinearLayout>
-            <!-- PayPal section -->
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip">
-                    <LinearLayout
-                        android:id="@+id/PayPalSeparator"
-                        android:layout_margin="0dip"
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:background="@color/top_bar_separator_color"
-                        android:orientation="vertical" />
-                    <Button
-                        style="@style/ButtonActionGrayStyle"
-                        android:id="@+id/LinkPayPalAccountButton"
-                        android:drawableLeft="@drawable/paypal_icon"
-                        android:drawablePadding="-2dip"
-                        android:layout_gravity="center|left"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
-                        android:singleLine="true"
-                        android:lines="1"
-                        android:text="@string/LinkPayPal"
-                        local:MvxBind="Visibility CanLinkPayPalAccount, Converter=Visibility"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
-                    <Button
-                        style="@style/ButtonActionGrayStyle"
-                        android:id="@+id/UnLinkPayPalAccountButton"
-                        android:drawableLeft="@drawable/paypal_icon"
-                        android:drawablePadding="-2dip"
-                        android:layout_gravity="center|left"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
-                        android:singleLine="true"
-                        android:lines="1"
-                        android:text="@string/UnlinkPayPal"
-                        local:MvxBind="Visibility CanUnlinkPayPalAccount, Converter=Visibility"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        local:MvxBind="Visibility ShowLinkedPayPalInfo, Converter=Visibility">
-                        <ImageView
-                            android:id="@+id/paypalImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="fill_parent"
-                            android:layout_marginLeft="5dp"
-                            android:src="@drawable/paypal" />
-                        <TextView
-                            style="@style/BlackTextLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/top_bar_title_height"
-                            android:gravity="center"
-                            android:text="@string/PayPalLinkedInfo" />
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

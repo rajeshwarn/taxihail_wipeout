@@ -179,9 +179,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private async Task UnregisterTokenizedCards(Guid creditCardId, string skipThisToken = null)
         {
-            var cards = await GetCreditCards ();
+            var cards = await GetCreditCards();
             var card = cards.FirstOrDefault(c => c.CreditCardId == creditCardId);
-           
+
             if (card != null)
             {
                 if (card.Token.HasValue() && card.Token != skipThisToken)
