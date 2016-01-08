@@ -87,10 +87,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reverse\ReverseRequest.cs" />
     <Compile Include="Reverse\ReverseResponse.cs" />
+    <Compile Include="Tokenize\BasePaymentValidationRequest.cs" />
     <Compile Include="Tokenize\TokenizeDeleteRequest.cs" />
     <Compile Include="Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Tokenize\TokenizeRequest.cs" />
     <Compile Include="Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Tokenize\TokenizeValidateRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">

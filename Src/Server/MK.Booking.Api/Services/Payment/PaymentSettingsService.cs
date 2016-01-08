@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Moneris).Visa;
-                var result = MonerisServiceClient.TestClient(request.MonerisPaymentSettings, cc.Number, cc.ExpirationDate, _logger);
+                var result = MonerisServiceClient.TestClient(request.MonerisPaymentSettings, cc.Number, cc.ExpirationDate, _logger, cc.ZipCode);
                 if (result)
                 {
                     return new TestServerPaymentSettingsResponse
