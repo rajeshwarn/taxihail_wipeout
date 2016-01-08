@@ -443,14 +443,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var confirmationMessage = Settings.WarnForFeesOnCancel
-                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
-                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
-                        : this.Services().Localize["StatusConfirmCancelRide"]; 
+				var statusConfirmCancelRideAndWarnForCancellationFees = string.Format(this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"], Settings.TaxiHail.ApplicationName);
+				var statusConfirmCancelRide = this.Services().Localize["StatusConfirmCancelRide"];
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
 					string.Empty,
-                    confirmationMessage, 
+					Settings.WarnForFeesOnCancel && VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId) ?
+					 statusConfirmCancelRideAndWarnForCancellationFees : statusConfirmCancelRide, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{
