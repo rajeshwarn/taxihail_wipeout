@@ -29,7 +29,7 @@ namespace apcurium.MK.Web.helpers
 
                     foreach (var prop in properties)
                     {
-                        sb.Append(helper.Hidden(prop.Key, prop.Value));
+                        sb.Append(helper.Hidden(prop.Key, prop.Value)).Append('\n');
                     }
                 }
             }

@@ -228,7 +228,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var csvFlattened = new StringBuilder();
             foreach (var item in csv.ElementAt(0))
             {
-                csvFlattened.Append(item.Key).Append(";");
+                csvFlattened.Append(item.Key).Append(",");
             }
 
             csvFlattened.Append("\n");
@@ -237,7 +237,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 foreach (var item in line)
                 {
-                    csvFlattened.Append(item.Value).Append(";");
+                    csvFlattened.Append(item.Value).Append(",");
                 }
                 csvFlattened.Append("\n");
             }
@@ -267,6 +267,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
                 accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
             }
+
+            TempData["UserMessage"] = "Note added";
+            ModelState.Clear();
             return View("Index", accountManagementModel);
         }
 
