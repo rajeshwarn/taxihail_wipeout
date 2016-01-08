@@ -371,10 +371,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						VehicleLatitude = null,
 						VehicleLongitude = null
 					};
-					ShowViewModel<BookingStatusViewModel>(new {
-						order =  Order.ToJson(),
-						orderStatus = orderStatus.ToJson()
-					});
+
+					GoBackToOrder(orderStatus);
                 });
             }
         }
@@ -421,6 +419,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private async Task GoBackToOrder (OrderStatusDetail status)
+		{
+			var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+
+			if (order != null)
+			{
+				if (order.IsManualRideLinq)
+				{
+					var orderManualRideLinqDetail = await Task.Run (() => _bookingService.GetTripInfoFromManualRideLinq (order.Id));
+
+					ShowViewModel<HomeViewModel> (new
+	                {
+	                    manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson (),
+	                    locateUser = false
+	                });
+
+					return;
+				}
+
+				ShowViewModel<HomeViewModel> (new
+	            {
+	                order = order.ToJson (),
+	                orderStatusDetail = status.ToJson (),
+	                locateUser = false
+	            });
+			}
+		}
+
 		public ICommand SendReceipt
         {
             get
@@ -443,14 +469,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var confirmationMessage = Settings.WarnForFeesOnCancel
-                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
-                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
-                        : this.Services().Localize["StatusConfirmCancelRide"]; 
+				var statusConfirmCancelRideAndWarnForCancellationFees = string.Format(this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"], Settings.TaxiHail.ApplicationName);
+				var statusConfirmCancelRide = this.Services().Localize["StatusConfirmCancelRide"];
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
 					string.Empty,
-                    confirmationMessage, 
+					Settings.WarnForFeesOnCancel && VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId) ?
+					 statusConfirmCancelRideAndWarnForCancellationFees : statusConfirmCancelRide, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{
