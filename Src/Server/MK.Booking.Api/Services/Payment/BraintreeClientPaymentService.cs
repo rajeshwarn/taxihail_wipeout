@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     NameOnCard = creditCard.CardholderName,
                     Last4Digits = creditCard.LastFour,
                     Token = creditCard.Token,
+                    Label = CreditCardLabelConstants.Personal.ToString(),
                     ExpirationMonth = creditCard.ExpirationMonth,
                     ExpirationYear = creditCard.ExpirationYear,
                 });

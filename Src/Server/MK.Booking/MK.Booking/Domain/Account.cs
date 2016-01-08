@@ -234,6 +234,7 @@ namespace apcurium.MK.Booking.Domain
                 Last4Digits = last4Digits,
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
+                BraintreeAccountId = braintreeAccountId,
                 Token = token,
                 Label = label,
                 ZipCode = zipCode,

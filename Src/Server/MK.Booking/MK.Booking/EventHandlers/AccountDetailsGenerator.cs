@@ -261,12 +261,12 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
 
-                if (!@event.BraintreeAccountId.HasValueTrimmed() && account.BraintreeAccountId != @event.BraintreeAccountId)
+                if (@event.BraintreeAccountId.HasValueTrimmed() && account.BraintreeAccountId != @event.BraintreeAccountId)
                 {
                     account.BraintreeAccountId = @event.BraintreeAccountId;
                 }
 
-                if (!account.DefaultCreditCard.HasValue)
+                if (account.DefaultCreditCard == Guid.Empty)
                 {
                     account.DefaultCreditCard = @event.CreditCardId;
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
