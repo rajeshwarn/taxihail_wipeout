@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _firstTime;
 
-		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
+		public void Init(bool locateUser, string defaultHintZoomLevel = null, string order = null, string orderStatusDetail = null, string manualRidelinqDetail = null)
         {
 			_locateUser = locateUser;
 		    _defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();

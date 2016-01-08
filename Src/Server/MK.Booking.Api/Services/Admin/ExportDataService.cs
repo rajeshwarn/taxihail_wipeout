@@ -128,6 +128,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
 
                         orderReportEntry["Payment.Id"] = orderReport.Payment.PaymentId.ToString();
+                        orderReportEntry["Payment.DriverId"] = orderReport.Payment.DriverId;
+                        orderReportEntry["Payment.Medallion"] = orderReport.Payment.Medallion;
+                        orderReportEntry["Payment.Last4Digits"] = orderReport.Payment.Last4Digits.IsNullOrEmpty() ? string.Empty : string.Format("'{0}'", orderReport.Payment.Last4Digits);
                         orderReportEntry["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString();
                         orderReportEntry["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString();
                         orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
@@ -165,6 +168,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         orderReportEntry["VehicleInfos.Model"] = orderReport.VehicleInfos.Model;
                         orderReportEntry["VehicleInfos.Color"] = orderReport.VehicleInfos.Color;
                         orderReportEntry["VehicleInfos.Registration"] = orderReport.VehicleInfos.Registration;
+                        orderReportEntry["VehicleInfos.DriverId"] = orderReport.VehicleInfos.DriverId;
                         orderReportEntry["VehicleInfos.DriverFirstName"] = orderReport.VehicleInfos.DriverFirstName;
                         orderReportEntry["VehicleInfos.DriverLastName"] = orderReport.VehicleInfos.DriverLastName;
 

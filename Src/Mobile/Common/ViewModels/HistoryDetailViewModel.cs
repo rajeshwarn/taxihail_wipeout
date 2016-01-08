@@ -335,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsCompleted = _bookingService.IsStatusCompleted(Status);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
-			CanCancel = _bookingService.IsOrderCancellable (Status);
+			CanCancel = !IsDone && !IsCompleted && _bookingService.IsOrderCancellable (Status);
 		}
 
 		public ICommand NavigateToRatingPage
@@ -347,9 +347,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var canRate = IsDone && !HasRated;
 					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 						{														
-							orderId = OrderId, 
+							orderId = OrderId.ToString(), 
 							canRate
-						}.ToJson(),
+						},
 						RefreshOrderStatus);
                	});
             }
