@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
@@ -60,6 +61,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public string NotePopupContent { get; set; }
 
+        public string DisableAccountNotePopupContent { get; set; }
+
         public List<NoteModel> Notes { get; set; }
     }
 
@@ -100,6 +103,24 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             foreach (var prop in typeof(AccountNoteEntry).GetProperties())
             {
                 GetType().GetProperty(prop.Name).SetValue(this, prop.GetValue(accountNoteEntry, null), null);
+            }
+        }
+
+        public string TypeString
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case NoteType.Standard:
+                        return "Standard";
+                    case NoteType.DeactivateAccount:
+                        return "Deactivate account";
+                    case NoteType.Refunded:
+                        return "Refunded";
+                    default:
+                        return "";
+                };
             }
         }
     }

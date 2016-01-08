@@ -19,6 +19,7 @@ using System.Web.Mvc;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -111,6 +112,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     TempData["UserMessage"] = e.Message;
                 }
             }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
+            }
 
             return View("Index", accountManagementModel);
         }
@@ -175,18 +180,28 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [HttpPost]
         public ActionResult EnableDisableAccount(AccountManagementModel accountManagementModel)
         {
-            if (accountManagementModel.IsEnabled)
+            if (ModelState.IsValid)
             {
-                _commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
-                accountManagementModel.IsEnabled = false;
+                if (accountManagementModel.IsEnabled)
+                {
+                    AddNote(accountManagementModel, NoteType.DeactivateAccount, accountManagementModel.DisableAccountNotePopupContent);
+                    _commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
+                    accountManagementModel.IsEnabled = false;
+                }
+                else
+                {
+                    _commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
+                    accountManagementModel.IsEnabled = true;
+                }
+
+                ModelState.Clear();
+                TempData["UserMessage"] = "Operation done successfully";
             }
             else
             {
-                _commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
-                accountManagementModel.IsEnabled = true;
+                TempData["UserMessage"] = "Model state is not valid";
             }
 
-            TempData["UserMessage"] = "Operation done successfully";
             return View("Index", accountManagementModel);
         }
 
@@ -247,30 +262,39 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult AddNote(AccountManagementModel accountManagementModel)
+        public ActionResult AddStandardNote(AccountManagementModel accountManagementModel)
         {
             if (ModelState.IsValid)
             {
-                AccountNoteEntry accountNoteEntry = new AccountNoteEntry()
-                {
-                    AccountId = AuthSession.UserAuthId,
-                    AccountEmail = AuthSession.UserAuthName,
-                    Type = Common.Enumeration.NoteType.Standard,
-                    CreationDate = DateTime.Now,
-                    Note = accountManagementModel.NotePopupContent
-                };
-
-                _accountNoteService.Add(accountNoteEntry);
-                if (accountManagementModel.Notes == null)
-                {
-                    accountManagementModel.Notes = new List<NoteModel>();
-                }
-                accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
+                AddNote(accountManagementModel, NoteType.Standard, accountManagementModel.NotePopupContent);
+                TempData["UserMessage"] = "Note added";
+                ModelState.Clear();
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
             }
 
-            TempData["UserMessage"] = "Note added";
-            ModelState.Clear();
             return View("Index", accountManagementModel);
+        }
+
+        private void AddNote(AccountManagementModel accountManagementModel, NoteType noteType, string noteContent)
+        {
+            AccountNoteEntry accountNoteEntry = new AccountNoteEntry()
+            {
+                AccountId = AuthSession.UserAuthId,
+                AccountEmail = AuthSession.UserAuthName,
+                Type = noteType,
+                CreationDate = DateTime.Now,
+                Note = noteContent
+            };
+
+            _accountNoteService.Add(accountNoteEntry);
+            if (accountManagementModel.Notes == null)
+            {
+                accountManagementModel.Notes = new List<NoteModel>();
+            }
+            accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
         }
 
         private AccountManagementModel InitializeModel(Guid accountId)
