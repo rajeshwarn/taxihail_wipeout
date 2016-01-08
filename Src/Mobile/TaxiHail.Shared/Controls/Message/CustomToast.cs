@@ -4,49 +4,58 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Animation;
+using Android.Util;
+using Java.Interop;
+using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
     public class CustomToast
     {
         private ViewGroup _rootView;
-        private RelativeLayout _toastRootView;
-        private LinearLayout _toastView;
         private TextView _txtMessage;
         private View _viewToDisplay;
+        private Activity _owner;
 
         public CustomToast(Activity owner, string message)
         {
-            InitView(owner, message);
+            _owner = owner;
+            InitView(message);
         }
 
-        private void InitView(Activity owner, string message)
+        private void InitView(string message)
         {
-            _rootView = owner.Window.DecorView.RootView as ViewGroup;
+            _rootView = _owner.Window.DecorView.RootView as ViewGroup;
 
             // We know the view will be attached to the rootview, but we don't want to attach it now
-            _viewToDisplay = LayoutInflater.FromContext(owner.ApplicationContext).Inflate(Resource.Layout.CustomToastView, _rootView, false);
+            _viewToDisplay = LayoutInflater.FromContext(_owner.ApplicationContext).Inflate(Resource.Layout.CustomToastView, _rootView, false);
 
-            _toastRootView = _viewToDisplay.FindViewById<RelativeLayout>(Resource.Id.CustomToastRootView);
-            _toastView = _viewToDisplay.FindViewById<LinearLayout>(Resource.Id.CustomToastView);
             _txtMessage = _viewToDisplay.FindViewById<TextView>(Resource.Id.CustomToastMessage);
-
             DrawHelper.SupportLoginTextColor(_txtMessage);
-
             _txtMessage.Text = message;
         }
 
         public void Show()
         {
+            // Hide toast while setting its place on screen
             _viewToDisplay.Visibility = ViewStates.Invisible;
 
             // add the view to the rootview 
             _rootView.AddView(_viewToDisplay);
 
-            _viewToDisplay.SetY(_rootView.Height);
+            // Get size of the screen because sometimes _rootView.Height == 0
+            var display = _owner.ApplicationContext.GetSystemService(Context.WindowService).JavaCast<IWindowManager>().DefaultDisplay;
+            var metrics = new DisplayMetrics();
+            display.GetMetrics(metrics);
+
+            // Set the Toast a the bottom of the view
+            _viewToDisplay.SetY(metrics.HeightPixels);
+
+            // Now we can make it visible
             _viewToDisplay.Visibility = ViewStates.Visible;
 
-            var objectAnimator = ObjectAnimator.OfFloat(_viewToDisplay, "y", _rootView.Height, _rootView.Height-168);
+            // Slide in animation
+            var objectAnimator = ObjectAnimator.OfFloat(_viewToDisplay, "y", metrics.HeightPixels, metrics.HeightPixels-_viewToDisplay.LayoutParameters.Height);
             objectAnimator.SetDuration(300);
             var yAnimator = new AnimatorSet();
             yAnimator.Play(objectAnimator);
@@ -55,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public void Dismiss()
         {
-            var objectAnimator = ObjectAnimator.OfFloat(_viewToDisplay, "y", _rootView.Height-168, _rootView.Height);
+            // Slide out animation
+            var objectAnimator = ObjectAnimator.OfFloat(_viewToDisplay, "y", _rootView.Height-_viewToDisplay.LayoutParameters.Height, _rootView.Height);
             objectAnimator.SetDuration(300);
             var yAnimator = new AnimatorSet();
             yAnimator.Play(objectAnimator);
