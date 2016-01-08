@@ -67,5 +67,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Cvv { get; set; }
 
         public double? TipIncentive { get; set; }
+
+        public string KountSessionId { get; set; }
     }
 }

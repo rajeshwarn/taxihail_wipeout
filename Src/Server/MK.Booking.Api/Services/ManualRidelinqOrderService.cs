@@ -116,7 +116,10 @@ namespace apcurium.MK.Booking.Api.Services
 			        AutoCompletePayment = true,
                     CardOnFileId = creditCard.Token,
                     LastFour = creditCard.Last4Digits,
-                    ZipCode = creditCard.ZipCode
+                    ZipCode = creditCard.ZipCode,
+                    Email = account.Email,
+                    CustomerIpAddress = RequestContext.IpAddress,
+                    SessionId = request.KountSessionId
 		        };
 
 		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
@@ -159,8 +162,10 @@ namespace apcurium.MK.Booking.Api.Services
 						TripId = trip.TripId,
 						DriverId = trip.DriverId,
 						LastFour = trip.LastFour,
-						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2)
-					};
+						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2),
+                        OriginatingIpAddress = RequestContext.IpAddress,
+                        KountSessionId = request.KountSessionId
+                    };
 
 					_commandBus.Send(command);
 

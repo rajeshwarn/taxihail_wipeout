@@ -1,5 +1,3 @@
-using ServiceStack.ServiceHost;
-
 namespace CMTPayment.Tokenize
 {
     public class BasePaymentValidationRequest

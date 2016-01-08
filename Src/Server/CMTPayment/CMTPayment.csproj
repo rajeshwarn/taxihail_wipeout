@@ -77,9 +77,8 @@
     <Compile Include="OAuthAuthorizer.cs" />
     <Compile Include="Pair\CmtPairingResponse.cs" />
     <Compile Include="Pair\CmtUnpairingResponse.cs" />
-    <Compile Include="Pair\ManualRideLinqCoFPairingRequest.cs" />
     <Compile Include="Pair\ManualRidelinqPairingRequest.cs" />
-    <Compile Include="Pair\PairingRequest.cs" />
+    <Compile Include="Pair\ManualRideLinqCoFPairingRequest.cs" />
     <Compile Include="Pair\Trip.cs" />
     <Compile Include="Pair\TripRequest.cs" />
     <Compile Include="Pair\UnpairingRequest.cs" />

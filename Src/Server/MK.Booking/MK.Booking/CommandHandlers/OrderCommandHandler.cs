@@ -92,7 +92,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
                     command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
                     command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
-                    command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId);
+                    command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId,
+                    command.OriginatingIpAddress, command.KountSessionId);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -118,7 +119,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
 				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
                 command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
-                command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId);
+                command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId,
+                command.OriginatingIpAddress, command.KountSessionId);
 
 			if (command.Payment.PayWithCreditCard)
 			{
@@ -249,7 +251,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.DeviceName,
-				command.TripId, command.DriverId, command.AccessFee, command.LastFour);
+				command.TripId, command.DriverId, command.AccessFee, command.LastFour, command.OriginatingIpAddress, command.KountSessionId);
 
             _repository.Save(order, command.Id.ToString());
         }

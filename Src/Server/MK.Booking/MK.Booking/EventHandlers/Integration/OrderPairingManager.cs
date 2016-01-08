@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-
             _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
             
             switch (@event.Status.IBSStatusId)
