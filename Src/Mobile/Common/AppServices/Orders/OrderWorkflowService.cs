@@ -973,8 +973,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 : (double?)null;
 
 			order.QuestionsAndAnswers = await _accountPaymentQuestions.Take(1).ToTask ();
-
 			order.Cvv = await _cvvSubject.Take(1).ToTask();
+			order.KountSessionId = _kountSessionId;
 
 			return order;
 		}

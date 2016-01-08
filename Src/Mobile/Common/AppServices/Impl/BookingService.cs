@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             ILocalization localize,
             IAppSettings appSettings,
             IGeolocService geolocService,
-	    IMessageService messageService)
+	    	IMessageService messageService)
         {
             _geolocService = geolocService;
             _messageService = messageService;
