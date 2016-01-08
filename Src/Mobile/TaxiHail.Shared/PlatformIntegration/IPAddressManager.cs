@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 var adresses = Dns.GetHostAddresses(Dns.GetHostName());
 
-                if (adresses !=null && adresses[0] != null)
+                if (adresses != null && adresses[0] != null)
                 {
                     return adresses[0].ToString();
                 }
