@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CustomerId = account.BraintreeAccountId,
                 PaymentMethodNonce = request.Nonce,
             });
-
             
             var paymentMethod = paymentMethodResult.Target;
 

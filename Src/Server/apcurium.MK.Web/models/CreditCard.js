@@ -50,10 +50,10 @@
 
             $.ajax({
                 type: 'GET',
-                url: 'api/payments/braintree/generateclienttoken'
+                url: 'api/payments/braintree/generateclienttoken?format=json'
             })
-            .then(function (clientToken) {
-                     var client = new braintree.api.Client({ clientToken: clientToken });
+            .then(function (generatedClientToken) {
+                var client = new braintree.api.Client({ clientToken: generatedClientToken.clientToken });
                      // Get nonce from SDK
                      client.tokenizeCard(
                          {
@@ -67,10 +67,10 @@
                          // Tokenizing card by sending the nonce to server
                          $.ajax({
                              type: 'POST',
-                             url: 'api/payments/braintree/tokenize',
+                             url: 'api/payments/braintree/addpaymentmethod',
                              dataType: 'json',
                              data: {
-                                 paymentMethodNonce: nonce
+                                 nonce: nonce
                              }
                          }).then(d.resolve, d.reject);
                      });
