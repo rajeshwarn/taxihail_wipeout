@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
@@ -10,7 +7,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         IList<AccountNoteEntry> GetAll();
         AccountNoteEntry FindById(Guid id);
-        IList<AccountNoteEntry> FindByAccountId(string accountId);
+        IList<AccountNoteEntry> FindByAccountId(Guid accountId);
         void Add(AccountNoteEntry accountNoteEntry);
     }
 }

@@ -280,9 +280,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         private void AddNote(AccountManagementModel accountManagementModel, NoteType noteType, string noteContent)
         {
-            AccountNoteEntry accountNoteEntry = new AccountNoteEntry()
+            var accountNoteEntry = new AccountNoteEntry
             {
-                AccountId = AuthSession.UserAuthId,
+                AccountId = new Guid(AuthSession.UserAuthId),
                 AccountEmail = AuthSession.UserAuthName,
                 Type = noteType,
                 CreationDate = DateTime.Now,
@@ -342,12 +342,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 })
                 .ToList();
 
-            model.Notes = _accountNoteService.FindByAccountId(AuthSession.UserAuthId)
+            model.Notes = _accountNoteService.FindByAccountId(new Guid(AuthSession.UserAuthId))
                 .OrderByDescending(c => c.CreationDate)
-                .Select(x =>
-                {
-                    return new NoteModel(x);
-                })
+                .Select(x => new NoteModel(x))
                 .ToList();
 
             return model;

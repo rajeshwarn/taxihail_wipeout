@@ -1,11 +1,8 @@
 ﻿using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using ServiceStack.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -34,7 +31,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IList<AccountNoteEntry> FindByAccountId(string accountId)
+        public IList<AccountNoteEntry> FindByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {
