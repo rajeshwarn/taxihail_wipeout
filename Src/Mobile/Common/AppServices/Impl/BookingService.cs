@@ -28,18 +28,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private readonly IAppSettings _appSettings;
         private readonly IGeolocService _geolocService;
         private readonly IMessageService _messageService;
+		private readonly IIPAddressManager _ipAddressManager;
 
         public BookingService(IAccountService accountService,
             ILocalization localize,
             IAppSettings appSettings,
             IGeolocService geolocService,
-	    	IMessageService messageService)
+	    	IMessageService messageService,
+			IIPAddressManager ipAddressManager)
         {
             _geolocService = geolocService;
             _messageService = messageService;
             _appSettings = appSettings;
             _localize = localize;
             _accountService = accountService;
+			_ipAddressManager = ipAddressManager;
         }
 
         public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order)
@@ -56,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public async Task<OrderStatusDetail> CreateOrder(CreateOrderRequest order)
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
+			order.CustomerIpAddress = _ipAddressManager.GetIPAddress();
 
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
@@ -373,7 +377,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 PairingCode = pairingCode,
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
-				KountSessionId = kountSessionId
+				KountSessionId = kountSessionId,
+				CustomerIpAddress = _ipAddressManager.GetIPAddress()
             };
 
             try
