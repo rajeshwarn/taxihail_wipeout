@@ -18,7 +18,6 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using apcurium.MK.Booking.Services;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -163,7 +162,7 @@ namespace apcurium.MK.Booking.Api.Services
 						DriverId = trip.DriverId,
 						LastFour = trip.LastFour,
 						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2),
-                        OriginatingIpAddress = RequestContext.IpAddress,
+                        OriginatingIpAddress = request.CustomerIpAddress,
                         KountSessionId = request.KountSessionId
                     };
 
