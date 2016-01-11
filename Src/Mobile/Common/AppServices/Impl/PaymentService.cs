@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
-
 			_cachedSettings = _cache.Get<ClientPaymentSettings>(PaymentSettingsCacheKey);
 
 			if (_cachedSettings == null || cleanCache)
