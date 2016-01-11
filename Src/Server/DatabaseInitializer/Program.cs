@@ -1081,9 +1081,8 @@ namespace DatabaseInitializer
                         ServiceTypeSettings = new ServiceTypeSettings
                         {
                             ServiceType = ServiceType.Taxi,
-                            WaitTimeRatePerMinute = 0,
-                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl,
-                            ProviderId = 0
+                            IBSWebServicesUrl = "http://64.179.222.39:2555/dev/IBSCab.dll/soap/", //serverSettings.ServerData.IBS.WebServicesUrl,
+                            ProviderId = 1
                         } 
                     },
                     new UpdateServiceTypeSettings
@@ -1092,9 +1091,8 @@ namespace DatabaseInitializer
                         ServiceTypeSettings = new ServiceTypeSettings
                         {
                             ServiceType = ServiceType.Luxury,
-                            WaitTimeRatePerMinute = 0,
-                            IBSWebServicesUrl = "",
-                            ProviderId = 0,
+                            IBSWebServicesUrl = "http://mdsibs.mears.com:43550/IBScab/IBScab.dll/soap/",
+                            ProviderId = 99,
                         }
                     }
                 };

@@ -24,8 +24,7 @@
                 rules: {
                     serviceType: "required",
                     ibsWebServicesUrl: "required",
-                    providerId: "required",
-                    waitTimeRatePerMinute: "required",
+                    providerId: "required"
                 },
                 messages: {
                     ibsWebServicesUrl: {
@@ -33,9 +32,6 @@
                     },
                     providerId: {
                         required: TaxiHail.localize('error.serviceTypeProviderIdRequired')
-                    },
-                    waitTimeRatePerMinute: {
-                        required: TaxiHail.localize('error.serviceTypeWaitTimeRatePerMinuteRequired')
                     }
                 },
                 submitHandler: this.save

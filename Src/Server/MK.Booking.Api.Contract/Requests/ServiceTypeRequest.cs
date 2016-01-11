@@ -19,7 +19,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string IBSWebServicesUrl { get; set; }
 
         public int ProviderId { get; set; }
-
-        public double WaitTimeRatePerMinute { get; set; }
     }
 }

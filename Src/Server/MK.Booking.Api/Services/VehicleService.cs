@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                         var baseRate = new BaseRateInfo
                         {
-                            WaitTime = (decimal)serviceTypeSetting.WaitTimeRatePerMinute,
+                            WaitTime = (decimal) tariff.PerMinuteRate,
                             BaseRateNoMiles = tariff.FlatRate,
                             MinimumFare = (decimal)tariff.MinimumRate,
                             PerMileRate = decimal.Round((decimal)(tariff.KilometricRate * 1.609344), 2)
