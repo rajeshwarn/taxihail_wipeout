@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		void ShowToast(string message);
 		void DismissToast();
+		void DismissToastNoAnimation();
     }
 
     public enum ToastDuration

@@ -356,5 +356,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             dispatcher.RequestMainThreadAction(() => 
                 ToastHelper.Dismiss());
         }
+
+        public void DismissToastNoAnimation()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

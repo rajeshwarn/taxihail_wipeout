@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
     {
         private ViewGroup _rootView;
         private TextView _txtMessage;
+        private LinearLayout _btnDismiss;
         private View _viewToDisplay;
         private Activity _owner;
 
@@ -31,8 +32,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _viewToDisplay = LayoutInflater.FromContext(_owner.ApplicationContext).Inflate(Resource.Layout.CustomToastView, _rootView, false);
 
             _txtMessage = _viewToDisplay.FindViewById<TextView>(Resource.Id.CustomToastMessage);
+            _btnDismiss = _viewToDisplay.FindViewById<LinearLayout>(Resource.Id.CustomToastButton);
+
             DrawHelper.SupportLoginTextColor(_txtMessage);
             _txtMessage.Text = message;
+
+            _btnDismiss.Click += (object sender, EventArgs e) => 
+                {
+                    Dismiss();
+                };
         }
 
         public void Show()

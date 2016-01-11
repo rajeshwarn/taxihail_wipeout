@@ -28,6 +28,19 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             return _isConnectedSubject;
         }
 
+        public void HandleToastInNewView()
+        {
+            if (IsConnected)
+            {
+                _messageService.DismissToast();
+            }
+            else
+            {
+                _messageService.DismissToastNoAnimation();
+                _messageService.ShowToast(_localize["NoConnectionMessage"]);
+            }
+        }
+
         private bool _isConnected = true;
         public bool IsConnected
         {

@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static void Show(string message)
         {
-            UIApplication.SharedApplication.InvokeOnMainThread(async () =>
+            UIApplication.SharedApplication.InvokeOnMainThread(() =>
                 {
                     Toast = new ToastView(message);
 
@@ -25,6 +25,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                     if(Toast != null)
                     {
                         Toast.Dismiss();
+                    }
+                });
+        }
+
+        public static void DismissNoAnimation()
+        {
+            UIApplication.SharedApplication.InvokeOnMainThread(() =>
+                {
+                    if(Toast != null)
+                    {
+                        Toast.DismissNoAnimation();
                     }
                 });
         }

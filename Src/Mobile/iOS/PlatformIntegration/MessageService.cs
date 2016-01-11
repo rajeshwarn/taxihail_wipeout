@@ -125,5 +125,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             ToastHelper.Dismiss();
         }
+
+        public void DismissToastNoAnimation()
+        {
+            ToastHelper.DismissNoAnimation();
+        }
 	}
 }

@@ -2,6 +2,7 @@
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -10,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private string _message;
         private UIWindow _modalWindow;
         private UILabel _messageView;
+        private UIButton _buttonView;
         private const float _dialogEdgeConstraint = 10f;
         private const float _dialogTopEdgeConstraint = 3f;
         private const float _toastHeight = 65f;
@@ -23,17 +25,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public async void Show()
         {
-            _modalWindow = _modalWindow ?? new UIWindow(UIScreen.MainScreen.Bounds) 
+            _modalWindow = _modalWindow ?? new UIWindow(new CGRect(0, UIScreen.MainScreen.Bounds.Height-_toastHeight, UIScreen.MainScreen.Bounds.Width, _toastHeight)) 
                 { 
                     RootViewController = new UIViewController()
                 };
-
             _modalWindow.MakeKeyAndVisible();
             _modalWindow.RootViewController.View.AddSubview(this);
 
             await UIView.AnimateAsync(0.3, () =>
                 {
-                    this.Frame = new CGRect(0, UIScreen.MainScreen.Bounds.Height-_toastHeight, UIScreen.MainScreen.Bounds.Width, _toastHeight);
+                    this.Frame = new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width, _toastHeight);
                 });
         }
 
@@ -46,8 +47,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             await UIView.AnimateAsync(0.3, () =>
                 {
-                    this.Frame = new CGRect(0, UIScreen.MainScreen.Bounds.Height, UIScreen.MainScreen.Bounds.Width, _toastHeight);
+                    this.Frame = new CGRect(0, _toastHeight, UIScreen.MainScreen.Bounds.Width, _toastHeight);
                 });
+
+            this.RemoveFromSuperview();
+            _modalWindow.Hidden = true;
+            LayoutIfNeeded();
+        }
+
+        public void DismissNoAnimation()
+        {
+            if (_modalWindow == UIApplication.SharedApplication.KeyWindow)
+            {
+                UIApplication.SharedApplication.Windows[0].MakeKeyWindow();
+            }
+
+            this.Frame = new CGRect(0, _toastHeight, UIScreen.MainScreen.Bounds.Width, _toastHeight);
 
             this.RemoveFromSuperview();
             _modalWindow.Hidden = true;
@@ -70,13 +85,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     TextColor = Theme.GetContrastBasedColor(Theme.LoginColor)
                 };
 
+            _buttonView = new UIButton
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                };
+
+            var image = ImageHelper.GetImage("close_tutorial_button");
+            _buttonView.SetImage(image, UIControlState.Normal);
+            _buttonView.TouchDown += (object sender, EventArgs e) => 
+                {
+                    Dismiss();
+                };
+
             this.Add(_messageView); 
+            this.Add(_buttonView); 
 
             this.AddConstraints(new [] 
                 {
+                    NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this, NSLayoutAttribute.CenterY, 1f, 0),
+                    NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Trailing, 1f, _dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, this, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, image.Size.Width),
+                    NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, image.Size.Height),
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, _dialogTopEdgeConstraint),
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, this, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, this, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _buttonView, NSLayoutAttribute.Leading, 1f, -_dialogEdgeConstraint),
                 });
         }
     }

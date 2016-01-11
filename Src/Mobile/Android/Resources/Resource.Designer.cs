@@ -5210,13 +5210,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int CustomDialogTitle = 2131624112;
 			
 			// aapt resource value: 0x7f0e00bd
-			public const int CustomToastMessage = 2131624125;
+			public const int CustomToastButton = 2131624125;
+			
+			// aapt resource value: 0x7f0e00bc
+			public const int CustomToastMessage = 2131624124;
 			
 			// aapt resource value: 0x7f0e00bb
 			public const int CustomToastRootView = 2131624123;
-			
-			// aapt resource value: 0x7f0e00bc
-			public const int CustomToastView = 2131624124;
 			
 			// aapt resource value: 0x7f0e0129
 			public const int DShadow = 2131624233;
