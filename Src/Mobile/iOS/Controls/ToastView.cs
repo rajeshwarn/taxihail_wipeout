@@ -3,6 +3,8 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using Cirrious.CrossCore;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -53,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.RemoveFromSuperview();
             _modalWindow.Hidden = true;
             LayoutIfNeeded();
+            Mvx.Resolve<IConnectivityService>().ToastDismissed();
         }
 
         public void DismissNoAnimation()
@@ -67,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.RemoveFromSuperview();
             _modalWindow.Hidden = true;
             LayoutIfNeeded();
+            Mvx.Resolve<IConnectivityService>().ToastDismissed();
         }
 
         private void InitToastView()

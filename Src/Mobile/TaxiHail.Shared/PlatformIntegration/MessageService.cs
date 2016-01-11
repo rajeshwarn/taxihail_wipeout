@@ -13,7 +13,6 @@ using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
-using TaxiHail.Shared.Helpers;
 
 
 #if CALLBOX

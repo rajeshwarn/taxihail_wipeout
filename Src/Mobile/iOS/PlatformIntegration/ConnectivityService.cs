@@ -7,9 +7,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
     public class ConnectivityService : IConnectivityService
     {
-        private readonly ISubject<bool> _isConnectedSubject = new BehaviorSubject<bool>(false);
         private readonly IMessageService _messageService;
         private readonly ILocalization _localize;
+        private bool _isDisplayed = false;
 
         public ConnectivityService(IMessageService messageService, ILocalization localize)
         {
@@ -21,11 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 {
                     IsConnected = args.IsConnected;
                 };
-        }
 
-        public IObservable<bool> GetAndObserveIsConnected()
-        {
-            return _isConnectedSubject;
         }
 
         public void HandleToastInNewView()
@@ -33,11 +29,30 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             if (IsConnected)
             {
                 _messageService.DismissToast();
+                _isDisplayed = false;
             }
             else
             {
-                _messageService.DismissToastNoAnimation();
+                if (!_isDisplayed)
+                {
+                    _messageService.DismissToastNoAnimation();
+                    _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                    _isDisplayed = true;
+                }
+            }
+        }
+
+        public void ToastDismissed()
+        {
+            _isDisplayed = false;
+        }
+
+        public void ShowToast()
+        {
+            if (!_isDisplayed)
+            {
                 _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                _isDisplayed = true;
             }
         }
 
@@ -53,15 +68,19 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 if (_isConnected != value)
                 {
                     _isConnected = value;
-                    _isConnectedSubject.OnNext(IsConnected);
 
                     if (IsConnected)
                     {
                         _messageService.DismissToast();
+                        _isDisplayed = false;
                     }
                     else
                     {
-                        _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                        if (!_isDisplayed)
+                        {
+                            _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                            _isDisplayed = true;
+                        }
                     }
                 }
             }

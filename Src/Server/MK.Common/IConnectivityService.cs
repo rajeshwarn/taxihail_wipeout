@@ -4,8 +4,9 @@ namespace apcurium.MK.Common
 {
     public interface IConnectivityService
     {
-        IObservable<bool> GetAndObserveIsConnected();
         void HandleToastInNewView();
+        void ToastDismissed();
+        void ShowToast();
         bool IsConnected { get; }
     }
 }

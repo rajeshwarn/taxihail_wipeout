@@ -2,11 +2,20 @@
 using Android.App;
 using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Animation;
 using Android.Util;
 using Java.Interop;
 using Android.Content;
+using Cirrious.CrossCore;
+using apcurium.MK.Common;
+
+#if CALLBOX
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client;
+#else
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+#endif
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -40,11 +49,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _btnDismiss.Click += (object sender, EventArgs e) => 
                 {
                     Dismiss();
+                    Mvx.Resolve<IConnectivityService>().ToastDismissed();
                 };
         }
 
         public void Show()
         {
+            if (_rootView.ChildCount > 1)
+            {
+                return;
+            }
             // Hide toast while setting its place on screen
             _viewToDisplay.Visibility = ViewStates.Invisible;
 
