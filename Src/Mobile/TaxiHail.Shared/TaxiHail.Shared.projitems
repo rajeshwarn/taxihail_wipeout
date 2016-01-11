@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -134,7 +134,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\AndroidMapApiClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\MessageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PhoneService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Social\FacebookService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Social\TwitterService.cs" />

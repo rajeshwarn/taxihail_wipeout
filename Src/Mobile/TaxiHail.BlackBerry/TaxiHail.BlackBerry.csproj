@@ -216,7 +216,7 @@
   <ItemGroup>
     <XamarinComponentReference Include="cardioandroid">
       <Visible>False</Visible>
-      <Version>3.1.5</Version>
+      <Version>5.2.0.0</Version>
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>

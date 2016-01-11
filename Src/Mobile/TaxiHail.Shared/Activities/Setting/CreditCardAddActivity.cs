@@ -1,25 +1,18 @@
-using System;
 using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.CrossCore;
-using Org.Json;
-using PaypalSdkDroid.CardPayment;
-using PaypalSdkDroid.Payments;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.OS;
 using Android.Views.InputMethods;
+using Card.IO;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -45,17 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             ConfigureCreditCardSection();
 		}
-
-        protected override void OnDestroy()
-        {
-            if (_paymentSettings.PayPalClientSettings.IsEnabled)
-            {
-                // Stop service when done
-                StopService(new Intent(this, typeof(PayPalService)));
-            }
-            
-            base.OnDestroy();
-        }
 
         private void ConfigureCreditCardSection()
         {

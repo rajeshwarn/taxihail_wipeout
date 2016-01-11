@@ -102,20 +102,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 lblInstructions.RemoveFromSuperview();
             }
 
-            if (!ViewModel.IsPayPalOnly)
-            {
-                ConfigureCreditCardSection();
-            }
-            else
-            {
-                viewCreditCard.RemoveFromSuperview();
-            }
+            ConfigureCreditCardSection();
 
-            if (PayPalIsEnabled)
-            {
-                ConfigurePayPalSection();
-            }
-            else
+            //TODO: braintree paypal
+            //if (PayPalIsEnabled)
+            //{
+            //    ConfigurePayPalSection();
+            //}
+            //else
             {
                 viewPayPal.RemoveFromSuperview();
             }
@@ -176,20 +170,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.CCV);
 
-            set.Bind(btnLinkPayPal)
-                .For(v => v.Hidden)
-                .To(vm => vm.CanLinkPayPalAccount)
-                .WithConversion("BoolInverter");
+            //set.Bind(btnLinkPayPal)
+            //    .For(v => v.Hidden)
+            //    .To(vm => vm.CanLinkPayPalAccount)
+            //    .WithConversion("BoolInverter");
 
-            set.Bind(btnUnlinkPayPal)
-                .For(v => v.Hidden)
-                .To(vm => vm.CanUnlinkPayPalAccount)
-                .WithConversion("BoolInverter");
+            //set.Bind(btnUnlinkPayPal)
+            //    .For(v => v.Hidden)
+            //    .To(vm => vm.CanUnlinkPayPalAccount)
+            //    .WithConversion("BoolInverter");
 
-            set.Bind(viewPayPalIsLinkedInfo)
-                .For(v => v.Hidden)
-                .To(vm => vm.ShowLinkedPayPalInfo)
-                .WithConversion("BoolInverter");
+            //set.Bind(viewPayPalIsLinkedInfo)
+            //    .For(v => v.Hidden)
+            //    .To(vm => vm.ShowLinkedPayPalInfo)
+            //    .WithConversion("BoolInverter");
 
             set.Bind(txtTip)
                 .For(v => v.Text)
@@ -293,16 +287,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnLinkPayPal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
             //btnLinkPayPal.TouchUpInside += (sender, e) => PayPalFlow();
 
-            FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
-			btnLinkPayPal.SetLeftImage("paypal_icon.png");
-            btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
-            btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnlinkPayPalAccount();
+   //         FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
+			//btnLinkPayPal.SetLeftImage("paypal_icon.png");
+   //         btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
+   //         btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnlinkPayPalAccount();
 
-            // Add horizontal separator
-            if (!ViewModel.IsPayPalOnly)
-            {
-                viewPayPal.AddSubview(Line.CreateHorizontal(8f, 0f, viewPayPal.Frame.Width - (2*8f), UIColor.Black, 1f));
-            }
+   //         // Add horizontal separator
+   //         if (!ViewModel.IsPayPalOnly)
+   //         {
+   //             viewPayPal.AddSubview(Line.CreateHorizontal(8f, 0f, viewPayPal.Frame.Width - (2*8f), UIColor.Black, 1f));
+   //         }
         }
 
         public override void ViewDidLayoutSubviews()

@@ -77,8 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 
-		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
-
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 

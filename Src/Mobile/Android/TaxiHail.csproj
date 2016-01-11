@@ -63,7 +63,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Card.IO.Android">
-      <HintPath>..\Components\cardioandroid-3.1.5\lib\android\Card.IO.Android.dll</HintPath>
+      <HintPath>..\Components\cardioandroid-5.2.0.0\lib\android\Card.IO.Android.dll</HintPath>
     </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
@@ -94,9 +94,6 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="PaypalSdkDroid">
-      <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
@@ -811,7 +808,7 @@
   <ItemGroup>
     <XamarinComponentReference Include="cardioandroid">
       <Visible>False</Visible>
-      <Version>3.1.5</Version>
+      <Version>5.2.0.0</Version>
     </XamarinComponentReference>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
