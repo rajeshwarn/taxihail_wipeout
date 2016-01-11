@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAccountNoteService>(new AccountNoteService(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IFeesDao>(new FeesDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));

@@ -22,6 +22,8 @@
       </div>
    </header>
 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "containerForm" }))
+{
    <div class="container">
       <div class='notification-zone'></div>
       <div class='row'>
@@ -37,15 +39,15 @@
                      <li class="nav-header">Settings</li>
                      <li>@Html.MenuLink("Company Settings", "Index", "CompanySettings")</li>
                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#notificationSettings")" class="navbar-brand">Notification Settings</a></li>
-                     if (Convert.ToBoolean(ViewData["IsSuperAdmin"]))
-                     {
+                      if (Convert.ToBoolean(ViewData["IsSuperAdmin"]))
+                      {
                         <li><a href="@(ViewData["BaseUrl"] + "/admin/#paymentSettings")" class="navbar-brand">Payment Settings</a></li>
-                     }
-                     if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
-                     {
+                      }
+                      if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                      {
                         <li><a href="@(ViewData["BaseUrl"] + "/admin/#accounts")" class="navbar-brand">Charge Accounts</a></li>
                         <li><a href="@(ViewData["BaseUrl"] + "/admin/#vehicleTypes")" class="navbar-brand">Vehicle Types</a></li>
-                     }
+                      }
                      <li><a href="@(ViewData["BaseUrl"] + "/admin/#tariffs")" class="navbar-brand">Ride Estimates</a></li>
                      <li><a href="@(ViewData["BaseUrl"] + "/admin/#ratings")" class="navbar-brand">Ride Ratings</a></li>
                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#rules")" class="navbar-brand">Booking Rules</a></li>
@@ -93,7 +95,11 @@
          </div>
       </div>
    </div>
+
    <div class='modal-zone'></div>
+
+   @RenderSection("ModalDialogSection", false)
+}
 
    @Scripts.Render("~/bundles/jqueryval")
    @Scripts.Render("~/admin/bundles/assets")

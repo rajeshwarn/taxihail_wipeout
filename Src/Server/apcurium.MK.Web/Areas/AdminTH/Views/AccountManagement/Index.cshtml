@@ -3,8 +3,7 @@
 @using apcurium.MK.Web.helpers
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
-@using (Html.BeginForm(FormMethod.Post))
-{
+
    <div class="well clearfix form-horizontal">
       <h4 class="table-title">Account</h4>
 
@@ -18,6 +17,7 @@
       @Html.AntiForgeryToken()
       @Html.HiddenFor(x => x.Id)
       @Html.HiddenForEnumerable(x => x.Orders)
+      @Html.HiddenForEnumerable(x => x.Notes)
 
       <div class="div-account-block">
          <div class="left-column">
@@ -137,7 +137,7 @@
          </div>
       </div>
 
-      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary span buttonaccount" value="Save Account" />
+      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary span" value="Save Account" />
       <br />
       <br />
       <input type="submit" formaction='@Url.Action("SendConfirmationCodeSMS")' class="btn-link" value="Send Account Confirmation Code via SMS" />
@@ -146,7 +146,7 @@
       <br />
       @if (Model.IsEnabled)
       {
-         <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn-link" value="Disable Account" />
+         <input type="submit" class="btn-link" data-toggle="modal" data-target="#addDisableAccountNoteModalDialog" value="Disable Account" />
       }
       else
       {
@@ -160,64 +160,147 @@
    </div>
 
    <div class="well clearfix form-horizontal" style="width:1250px;">
-      <h4 class="table-title">Orders <small><input type="submit" formaction='@Url.Action("ExportOrders")' class="btn-link" value="Export to csv" /></small></h4>
+        <h4 class="table-title">Notes</h4>
 
-         @if (Model.Orders != null && Model.Orders.Any())
-         {
+        @if (Model.Notes != null && Model.Notes.Any())
+        {
             <div class="control-group">
-               <table class="table-accountslist">
-                  <thead>
-                     <tr>
-                        <th>Created Date</th>
-                        <th>Pickup Date</th>
-                        <th>Pickup Address</th>
-                        <th>Drop Off Address</th>
-                        <th>Fare</th>
-                        <th>Status</th>
-                        <th>Note</th>
-                        <th>Promo Code</th>
-                        <th>Is Manual RideLinQ</th>
-                        <th>Is Removed from History</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-
-                  @foreach (var order in Model.Orders)
-                  {
+                <table class="table-accountslist">
+                    <thead>
                         <tr>
-                           <td style="width:110px;"><div>@order.CreatedDate.ToShortDateString()</div><div>@order.CreatedDate.ToShortTimeString()</div></td>
-                           <td style="width:110px;"><div>@order.PickupDate.ToShortDateString()</div><div>@order.PickupDate.ToShortTimeString()</div></td>
-                           <td style="width:210px;"><div>@order.PickupAddress.StreetNumber @order.PickupAddress.Street</div><div>@order.PickupAddress.City @order.PickupAddress.ZipCode @order.PickupAddress.State</div></td>
-                           <td style="width:210px;"><div>@order.DropOffAddress.StreetNumber @order.DropOffAddress.Street</div><div>@order.DropOffAddress.City @order.DropOffAddress.ZipCode @order.DropOffAddress.State</div></td>
-                           <td style="width:210px;">
-                              <div class="divPayment" title="Fare: @order.FareString&#013;&#010;Tax: @order.TaxString&#013;&#010;Toll: @order.TollString&#013;&#010;Tip: @order.TipString&#013;&#010;Surcharge: @order.SurchargeString">
-                                 <div class="divText">Total:</div><div class="divAmount">@order.TotalAmountString</div>
-                              </div>
-                           </td>
-                           <td style="width:90px;">@((OrderStatus)order.Status)</td>
-                           <td style="width:130px;">@order.UserNote</td>
-                           <td style="width:80px;">@order.PromoCode</td>
-                           @if (order.IsManualRideLinq)
-                           {
-                              <td style="width:130px;">Yes</td>
-                           }
-                           else
-                           {
-                              <td style="width:130px;">No</td>
-                           }
-                           @if (order.IsRemovedFromHistory)
-                           {
-                              <td style="width:130px;">Yes</td>
-                           }
-                           else
-                           {
-                              <td style="width:130px;">No</td>
-                           }
+                            <th>Note</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Writer email</th>
                         </tr>
-                     }
-                  </tbody>
-               </table>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var note in Model.Notes)
+                        {
+                            <tr>
+                                <td style="width:760px;">@note.Note</td>
+                                <td style="width:120px;">@note.CreationDate.ToShortDateString() @note.CreationDate.ToShortTimeString()</td>
+                                <td style="width:120px;">@note.TypeString</td>
+                                <td style="width:200px;">@note.AccountEmail</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-         }
-   </div>
+        }
+        <br />
+        <button type="button" class="btn btn-primary span" data-toggle="modal" data-target="#addNoteModalDialog">Add Note</button> 
+        <br />
+    </div>
+
+    <div class="well clearfix form-horizontal" style="width:1250px;">
+        <h4 class="table-title">Orders <small><input type="submit" formaction='@Url.Action("ExportOrders")' class="btn-link" value="Export to csv" /></small></h4>
+
+        @if (Model.Orders != null && Model.Orders.Any())
+        {
+            <div class="control-group">
+                <table class="table-accountslist">
+                    <thead>
+                        <tr>
+                            <th>Created Date</th>
+                            <th>Pickup Date</th>
+                            <th>Pickup Address</th>
+                            <th>Drop Off Address</th>
+                            <th>Fare</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                            <th>Promo Code</th>
+                            <th>Is Manual RideLinQ</th>
+                            <th>Is Removed from History</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td style="width:100px;"><div>@order.CreatedDate.ToShortDateString()</div><div>@order.CreatedDate.ToShortTimeString()</div></td>
+                                <td style="width:100px;"><div>@order.PickupDate.ToShortDateString()</div><div>@order.PickupDate.ToShortTimeString()</div></td>
+                                <td style="width:200px;"><div>@order.PickupAddress.StreetNumber @order.PickupAddress.Street</div><div>@order.PickupAddress.City @order.PickupAddress.ZipCode @order.PickupAddress.State</div></td>
+                                <td style="width:200px;"><div>@order.DropOffAddress.StreetNumber @order.DropOffAddress.Street</div><div>@order.DropOffAddress.City @order.DropOffAddress.ZipCode @order.DropOffAddress.State</div></td>
+                                <td style="width:150px;">
+                                    <div class="divPayment" title="Fare: @order.FareString&#013;&#010;Tax: @order.TaxString&#013;&#010;Toll: @order.TollString&#013;&#010;Tip: @order.TipString&#013;&#010;Surcharge: @order.SurchargeString">
+                                        <div class="divText">Total:</div><div class="divAmount">@order.TotalAmountString</div>
+                                    </div>
+                                </td>
+                                <td style="width:80px;">@((OrderStatus)order.Status)</td>
+                                <td style="width:120px;">@order.UserNote</td>
+                                <td style="width:80px;">@order.PromoCode</td>
+                                @if (order.IsManualRideLinq)
+                                {
+                                    <td style="width:110px;">Yes</td>
+                                }
+                                else
+                                {
+                                    <td style="width:110px;">No</td>
+                                }
+                                @if (order.IsRemovedFromHistory)
+                                {
+                                    <td style="width:110px;">Yes</td>
+                                }
+                                else
+                                {
+                                    <td style="width:110px;">No</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+
+
+@section ModalDialogSection{
+
+<div class="modal fade" id="addNoteModalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add note</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.NotePopupContent = string.Empty;
+                }
+                @Html.TextArea("NotePopupContent", Model.NotePopupContent, new { @class = "input-block-level", @rows = 5 })
+            </div>
+            <div class="modal-footer">
+                <input type="submit" formaction='@Url.Action("AddStandardNote")' class="btn btn-primary span" value="Add"  />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="addDisableAccountNoteModalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add disable account note</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.DisableAccountNotePopupContent = string.Empty;
+                }
+                @Html.TextArea("DisableAccountNotePopupContent", Model.DisableAccountNotePopupContent, new { @class = "input-block-level", @rows = 5 })
+            </div>
+            <div class="modal-footer">
+                <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn btn-primary span" value="Add" />
+            </div>
+        </div>
+
+    </div>
+</div>
+    
 }

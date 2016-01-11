@@ -9,17 +9,14 @@
 <p>
     <h5>Phone numbers should not contain Country Code, dashes or spaces</h5>
     
-    @using (Html.BeginForm("Create", "BlackList", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
 
+    <div class="control-group btn-left-alignment">
+        @Html.TextBox("PhoneNumber", null, new {required = "required"})
+        <input type="submit" formaction='@Url.Action("Create")' class="btn btn-primary" value="Add" />
+    </div>
 
-        <div class="control-group btn-left-alignment">
-            @Html.TextBox("PhoneNumber", null, new {required = "required"})
-            <button type="submit" class="btn btn-primary">Add</button>
-        </div>
-    }
 </p>
 <table class="table">
     <tr>
