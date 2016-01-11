@@ -291,7 +291,17 @@ Version bump 3.2.20
 Version bump 3.2.21
 	Bug fix - Fix issue were on CC decline on eHail trip, the user was not notified
 	Bug fix - Adress picker issue on Android
-
+Version bump 3.2.22
+	Bug fix - Fix unpairing; always trying to call local ibs
+	Bug fix - Fix iOS 9 crash with popup at startup of app
+	Bug fix - Fix the way we check for minimum app version server-side
+	Bug fix - Fix Account Confirmation view on iOS (constraints not correct)
+	Add more stuff to the CustomLinker.xml file (fixes registration issue)
+Version Bump 3.2.23
+	Updated MapBox to version 3.0
+Version Bump 3.2.24
+	History detail - Cannot cancel scheduled order
+	EastsideForARide - Custom strings
 
 
 
