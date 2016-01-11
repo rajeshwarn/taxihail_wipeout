@@ -231,11 +231,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="admin\assets\img\blackcar_badge.png" />
-    <Content Include="admin\assets\img\no.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
     <Content Include="admin\assets\img\wheelchair_badge.png" />
-    <Content Include="admin\assets\img\yes.png" />
     <Content Include="admin\collections\RideRatingCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
@@ -321,12 +319,14 @@
     <Content Include="assets\img\email_logo.png" />
     <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
+    <Content Include="assets\img\no.png" />
     <Content Include="assets\img\pin_cluster.png" />
     <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
     <Content Include="assets\img\tony.jpg" />
     <Content Include="assets\img\wheelchair_badge.png" />
+    <Content Include="assets\img\yes.png" />
     <Content Include="assets\js\additional-methods.js" />
     <Content Include="assets\js\handlebars-v3.0.3.js" />
     <Content Include="assets\js\jquery.cookie.js" />
@@ -491,6 +491,8 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\TaxiHail\img\app-stores-itunes.png" />
+    <Content Include="themes\TaxiHail\img\appstores-play.png" />
     <Content Include="themes\TaxiHail\img\email_logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />

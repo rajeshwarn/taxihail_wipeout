@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public void Add(Dictionary<string, string> oldValues, Dictionary<string, string> newValues, ConfigurationChangeType type, string accountId, string email)
+        public void Add(Dictionary<string, string> oldValues, Dictionary<string, string> newValues, ConfigurationChangeType type, Guid accountId, string email)
         {
             if (oldValues.Any() && newValues.Any())
             {
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         OldValues = oldValues.ToJson(),
                         NewValues = newValues.ToJson(),
                         Date = DateTime.UtcNow,
-                        Type = type.ToString()
+                        Type = type
                     });
                 }
             }

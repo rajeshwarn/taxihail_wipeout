@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _configurationChangeService.Add(oldValues,
                 newValues, 
                 ConfigurationChangeType.CompanySettings, 
-                AuthSession.UserAuthId, 
+                new Guid(AuthSession.UserAuthId), 
                 AuthSession.UserAuthName);
         }
 
