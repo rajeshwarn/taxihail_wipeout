@@ -46,8 +46,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Sut.Setup(new EmailCommandHandler(notificationService));
 
             _geocodingMock
-                .Setup(x => x.Search(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
-                .Returns(new [] {new Address { FullAddress = "full dropoff" }});
+                .Setup(x => x.SearchAsync(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
+                .ReturnsAsync(new [] {new Address { FullAddress = "full dropoff" }});
 
             TemplateServiceMock
                 .Setup(x => x.InlineCss(It.IsAny<string>()))
@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
+            _geocodingMock.Verify(g => g.SearchAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "full dropoff");
@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is not called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
+            _geocodingMock.Verify(g => g.SearchAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "-");
@@ -271,7 +271,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is not called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
+            _geocodingMock.Verify(g => g.SearchAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "hardcoded dropoff");
@@ -314,7 +314,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
+            _geocodingMock.Verify(g => g.SearchAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "full dropoff");

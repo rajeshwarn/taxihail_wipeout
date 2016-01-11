@@ -122,7 +122,11 @@ namespace apcurium.MK.Booking.ConfigTool
 
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
 				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
-	                	
+                	new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/provider[contains(@android:authorities,""com.apcurium.MK.TaxiHailDemo.fileprovider"")]", Attribute="android:authorities", SetterAtt = ( app, att )=> 
+                    {
+                        att.Value = androidPackage + ".fileprovider";
+                    }},
+                    
 					/* open app from browser settings */
 				    new ConfigSource(this) { Source = @"Mobile\TaxiHail.Shared\Activities\SplashActivity.cs", ToReplace = "TaxiHailDemo", ReplaceWith = Config.ApplicationName},
 
