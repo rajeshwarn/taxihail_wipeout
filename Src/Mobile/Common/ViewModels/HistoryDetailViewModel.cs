@@ -448,8 +448,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
 					string.Empty,
-					Settings.WarnForFeesOnCancel && VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId) ?
-					 statusConfirmCancelRideAndWarnForCancellationFees : statusConfirmCancelRide, 
+					Settings.WarnForFeesOnCancel && VehicleStatuses.CanCancelOrderStatusButCouldBeChargedFees.Contains(Status.IBSStatusId) 
+						? statusConfirmCancelRideAndWarnForCancellationFees 
+						: statusConfirmCancelRide, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{
@@ -469,8 +470,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			                    }
 							}
 		                },
-                    this.Services().Localize["NoButton"], 
-						() => { })); 
+                    this.Services().Localize["NoButton"], () => { })); 
             }
         }
 
