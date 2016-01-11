@@ -361,18 +361,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>                                        
                 {
-					var orderStatus = new OrderStatusDetail
-					{ 
-						IBSOrderId = Order.IBSOrderId,
-						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-						IBSStatusId = string.Empty,
-						OrderId = OrderId,
-						Status = OrderStatus.Unknown,
-						VehicleLatitude = null,
-						VehicleLongitude = null
-					};
-
-					GoBackToOrder(orderStatus);
+					GoBackToOrder();
                 });
             }
         }
@@ -419,15 +408,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private async Task GoBackToOrder (OrderStatusDetail status)
+		private async Task GoBackToOrder ()
 		{
-			var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
-
-			if (order != null)
+			if (Order != null)
 			{
-				if (order.IsManualRideLinq)
+				if (Order.IsManualRideLinq)
 				{
-					var orderManualRideLinqDetail = await Task.Run (() => _bookingService.GetTripInfoFromManualRideLinq (order.Id));
+					var orderManualRideLinqDetail = await Task.Run (() => _bookingService.GetTripInfoFromManualRideLinq (Order.Id));
 
 					ShowViewModel<HomeViewModel> (new
 	                {
@@ -440,8 +427,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				ShowViewModel<HomeViewModel> (new
 	            {
-	                order = order.ToJson (),
-	                orderStatusDetail = status.ToJson (),
+	                order = Order.ToJson (),
+	                orderStatusDetail = Status.ToJson (),
 	                locateUser = false
 	            });
 			}
