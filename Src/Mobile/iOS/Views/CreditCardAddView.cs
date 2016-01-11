@@ -2,13 +2,12 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
-//using Card.IO;
+using Card.IO;
 using System;
 using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration.Impl;
-//using PaypalSdkTouch.Unified;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -23,18 +22,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
         private PayPalClientSettings _payPalSettings;
-        //private CardIOPaymentViewController _cardScanner;
-        //private CardScannerDelegate _cardScannerDelegate;
-        //private PayPalCustomFuturePaymentViewController _payPalPayment;
-        //private PayPalDelegate _payPalPaymentDelegate;
+        private CardIOPaymentViewController _cardScanner;
+        private CardScannerDelegate _cardScannerDelegate;
 
         private bool CardIOIsEnabled
         {
             get 
             { 
                 // CardIOToken is only used to know if the company wants it or not
-				return false; //CardIOUtilities.CanReadCardWithCamera()
-                    //&& !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
+				return Utilities.CanReadCardWithCamera() 
+					&& !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
         }
 
@@ -62,10 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ChangeRightBarButtonFontToBold();
 
-//            if (CardIOIsEnabled)
-//            {
-//                CardIOUtilities.Preload();
-//            }
+            if (CardIOIsEnabled)
+            {
+                Utilities.Preload();
+            }
         }
 
         public override async void ViewDidLoad ()
@@ -224,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
-                //btnScanCard.TouchUpInside += (sender, e) => ScanCard();
+                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
             }
             else
             {
@@ -275,29 +272,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
         }
-            
-        private void ConfigurePayPalSection()
-        {
-            //Mvx.Resolve<IPayPalConfigurationService>().InitializeService(_payPalSettings);
-            
-            lblPayPalLinkedInfo.Text = Localize.GetValue("PayPalLinkedInfo");
-
-            FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
-			btnLinkPayPal.SetLeftImage("paypal_icon.png");
-            btnLinkPayPal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
-            //btnLinkPayPal.TouchUpInside += (sender, e) => PayPalFlow();
-
-   //         FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
-			//btnLinkPayPal.SetLeftImage("paypal_icon.png");
-   //         btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
-   //         btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnlinkPayPalAccount();
-
-   //         // Add horizontal separator
-   //         if (!ViewModel.IsPayPalOnly)
-   //         {
-   //             viewPayPal.AddSubview(Line.CreateHorizontal(8f, 0f, viewPayPal.Frame.Width - (2*8f), UIColor.Black, 1f));
-   //         }
-        }
 
         public override void ViewDidLayoutSubviews()
         {
@@ -322,125 +296,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             return true;
         }
 
-//        private void PayPalFlow()
-//        {
-//            if (_payPalPayment == null)
-//            {
-//                _payPalPaymentDelegate = new PayPalDelegate(authCode => ViewModel.LinkPayPalAccount(authCode));
-//                _payPalPayment = new PayPalCustomFuturePaymentViewController((PayPalConfiguration)Mvx.Resolve<IPayPalConfigurationService>().GetConfiguration(), _payPalPaymentDelegate);
-//            }
-//
-//            if (ViewModel.IsEditing)
-//            {
-//                this.Services().Message.ShowMessage(
-//                    this.Services().Localize["DeleteCreditCardTitle"],
-//                    this.Services().Localize["LinkPayPalCCWarning"],
-//                    this.Services().Localize["LinkPayPalConfirmation"], () =>
-//                    {
-//                        PresentViewController(_payPalPayment, true, null);
-//                    },
-//                    this.Services().Localize["Cancel"], () => { });
-//            }
-//            else
-//            {
-//                PresentViewController(_payPalPayment, true, null);
-//            }
-//        }
+        private void ScanCard ()
+        {           
+            if (_cardScanner == null)
+            {
+                _cardScannerDelegate = new CardScannerDelegate(PopulateCreditCardName);
+                _cardScanner = new CardIOPaymentViewController(_cardScannerDelegate)
+                {
+                    GuideColor = this.View.BackgroundColor,
+                    SuppressScanConfirmation = true,
+                    CollectCVV = false,
+                    CollectExpiry = false,
+                    DisableManualEntryButtons = true,
+                    DisableBlurWhenBackgrounding = true,
+                    AutomaticallyAdjustsScrollViewInsets = false,
+                    HideCardIOLogo = true,
+                };
+            }
 
-//        private void ScanCard ()
-//        {           
-//            if (_cardScanner == null)
-//            {
-//                _cardScannerDelegate = new CardScannerDelegate(PopulateCreditCardName);
-//                _cardScanner = new CardIOPaymentViewController(_cardScannerDelegate)
-//                {
-//                    GuideColor = this.View.BackgroundColor,
-//                    SuppressScanConfirmation = true,
-//                    CollectCVV = false,
-//                    CollectExpiry = false,
-//                    DisableManualEntryButtons = true,
-//                    DisableBlurWhenBackgrounding = true,
-//                    AutomaticallyAdjustsScrollViewInsets = false,
-//                    HideCardIOLogo = true,
-//                };
-//            }
-//
-//            PresentViewController(_cardScanner, true, null);
-//        }
-//
-//		private void PopulateCreditCardName(CardIOCreditCardInfo info)
-//        {
-//            txtCardNumber.Text = info.CardNumber;
-//            ViewModel.CreditCardNumber = info.CardNumber;
-//            txtCvv.BecomeFirstResponder();
-//        }
-//
-//        private class CardScannerDelegate : CardIOPaymentViewControllerDelegate
-//        {
-//            private Action<CardIOCreditCardInfo> _cardScanned;
-//
-//            public CardScannerDelegate (Action<CardIOCreditCardInfo> cardScanned)
-//            {
-//                _cardScanned = cardScanned;
-//            }
-//
-//            public override void UserDidCancel(CardIOPaymentViewController paymentViewController)
-//            {
-//                paymentViewController.DismissViewController(true, null);
-//            }
-//
-//            public override void UserDidProvideCreditCardInfo(CardIOCreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
-//            {
-//                _cardScanned(cardInfo);
-//                paymentViewController.DismissViewController(true, null);
-//            }
-//        }
-//
-//        private class PayPalDelegate : PayPalFuturePaymentDelegate
-//        {
-//            private readonly Action<string> _futurePaymentAuthorized;
-//
-//            public PayPalDelegate (Action<string> futurePaymentAuthorized)
-//            {
-//                _futurePaymentAuthorized = futurePaymentAuthorized;
-//            }
-//
-//            public override void DidCancelFuturePayment(PayPalFuturePaymentViewController futurePaymentViewController)
-//            {
-//                Logger.LogMessage("PayPal LinkAccount: The user canceled the operation");
-//                futurePaymentViewController.DismissViewController(true, null);
-//            }
-//
-//            public override void DidAuthorizeFuturePayment(PayPalFuturePaymentViewController futurePaymentViewController, NSDictionary futurePaymentAuthorization)
-//            {
-//                // The user has successfully logged into PayPal, and has consented to future payments.
-//                // Your code must now send the authorization response to your server.
-//                try
-//                {
-//                    NSError error;
-//                    var contentJsonData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
-//
-//                    if (error != null)
-//                    {
-//                        throw new Exception(error.LocalizedDescription + " " + error.LocalizedFailureReason);
-//                    }
-//
-//                    var authResponse = contentJsonData.ToString().FromJson<FuturePaymentAuthorization>();
-//                    if (authResponse != null)
-//                    {
-//                        _futurePaymentAuthorized(authResponse.Response.Code);
-//                    }
-//
-//                    // Be sure to dismiss the PayPalLoginViewController.
-//                    futurePaymentViewController.DismissViewController(true, null);
-//                }
-//                catch(Exception e)
-//                {
-//                    Logger.LogError(e);
-//                    Mvx.Resolve<IMessageService>().ShowMessage(Mvx.Resolve<ILocalization>()["Error"], e.GetBaseException().Message);
-//                }
-//            }
-//        }
+            PresentViewController(_cardScanner, true, null);
+        }
+
+		private void PopulateCreditCardName(CreditCardInfo info)
+        {
+            txtCardNumber.Text = info.CardNumber;
+            ViewModel.CreditCardNumber = info.CardNumber;
+            txtCvv.BecomeFirstResponder();
+        }
+
+        private class CardScannerDelegate : CardIOPaymentViewControllerDelegate
+        {
+            private Action<CreditCardInfo> _cardScanned;
+
+            public CardScannerDelegate (Action<CreditCardInfo> cardScanned)
+            {
+                _cardScanned = cardScanned;
+            }
+
+			public override void UserDidCancelPaymentViewController(CardIOPaymentViewController paymentViewController)
+			{
+				paymentViewController.DismissViewController(true, null);
+			}
+
+            public override void UserDidProvideCreditCardInfo(CreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
+            {
+                _cardScanned(cardInfo);
+                paymentViewController.DismissViewController(true, null);
+            }
+        }
 
         private class FuturePaymentAuthorization
         {
@@ -456,56 +359,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 public string Code { get; set; }
             }
         }
-
-//        private class PayPalCustomFuturePaymentViewController : PayPalFuturePaymentViewController
-//        {
-//            public PayPalCustomFuturePaymentViewController(PayPalConfiguration configuration, PayPalFuturePaymentDelegate futurePaymentDelegate)
-//                : base(configuration, futurePaymentDelegate)
-//            {
-//            }
-//
-//            public override void ViewWillAppear(bool animated)
-//            {
-//                base.ViewWillAppear(animated);
-//
-//                // change navbar colors to PayPal light blue so we see it on the white background
-//                var payPalLightBlue = UIColor.FromRGB(40, 155, 228);
-//                ChangeNavBarButtonColor(payPalLightBlue);
-//            }
-//
-//            public override void ViewWillDisappear(bool animated)
-//            {
-//                base.ViewWillDisappear(animated);
-//
-//                // revert navbar colors
-//                ChangeNavBarButtonColor(Theme.LabelTextColor);
-//            }
-//
-//            private void ChangeNavBarButtonColor(UIColor textColor)
-//            {
-//                var buttonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
-//
-//                // set back/left/right button color
-//                var buttonTextColor = new UITextAttributes 
-//                {
-//                    Font = buttonFont,
-//                    TextColor = textColor,
-//                    TextShadowColor = UIColor.Clear,
-//                    TextShadowOffset = new UIOffset(0,0)
-//                };
-//                var selectedButtonTextColor = new UITextAttributes
-//                {
-//                    Font = buttonFont,
-//                    TextColor = textColor.ColorWithAlpha(0.5f),
-//                    TextShadowColor = UIColor.Clear,
-//                    TextShadowOffset = new UIOffset(0,0)
-//                };
-//
-//                UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-//                UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-//                UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
-//            }
-//        }
     }
 }
 

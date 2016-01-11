@@ -169,9 +169,6 @@
     <MtouchLink>Full</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Card.IO">
-      <HintPath>..\Components\cardioios-5.1.0.0\lib\ios-unified\Card.IO.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.CrossCore.dll</HintPath>
     </Reference>
@@ -275,6 +272,9 @@
     </Reference>
     <Reference Include="Braintree.iOS">
       <HintPath>..\Libraries\Monotouch\Braintree.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO">
+      <HintPath>..\Components\cardioios-5.0.6.0\lib\ios-unified\Card.IO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1000,10 +1000,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <XamarinComponentReference Include="cardioios">
-      <Visible>False</Visible>
-      <Version>5.1.0.0</Version>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="modernhttpclient">
       <Version>2.4.2</Version>
       <Visible>False</Visible>
@@ -1018,6 +1014,10 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookios">
       <Version>4.3.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="cardioios">
+      <Version>5.0.6.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
