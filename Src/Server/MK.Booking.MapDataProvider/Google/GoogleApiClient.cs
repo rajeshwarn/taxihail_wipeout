@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	    {
             try
             {
-                var result = await apiCall.Invoke();
+                var result = await apiCall().ConfigureAwait(false);
 
                 if (result.Status == ResultStatus.OVER_QUERY_LIMIT)
                 {
