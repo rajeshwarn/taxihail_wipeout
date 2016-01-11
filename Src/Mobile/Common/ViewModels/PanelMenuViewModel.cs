@@ -334,22 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                         else
                         {
-                            var settings = await _paymentService.GetPaymentSettings();
-
-                            var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
-                                                                _accountService.CurrentAccount.DefaultCreditCard == null;
-
-
-                            if (shouldShowDropInView)
-                            {
-                                var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-                                var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
-
-                                await _paymentService.AddPaymentMethod(paymentNonce);
-                                await _accountService.GetDefaultCreditCard();
-                            }
-
-                            ShowViewModel<CreditCardAddViewModel>();
+                            await NavigateToCreditCardAddView();
                         }
                     }
 				    catch (TaskCanceledException)
@@ -361,7 +346,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public ICommand NavigateToNotificationsSettings
+	    private async Task NavigateToCreditCardAddView()
+	    {
+	        var settings = await _paymentService.GetPaymentSettings();
+
+	        var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
+	                                   _accountService.CurrentAccount.DefaultCreditCard == null;
+
+
+	        if (shouldShowDropInView)
+	        {
+	            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
+	            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
+	            using (this.Services().Message.ShowProgress())
+	            {
+                    await _paymentService.AddPaymentMethod(paymentNonce);
+                    await _accountService.GetDefaultCreditCard();
+                }
+	        }
+
+	        ShowViewModel<CreditCardAddViewModel>();
+	    }
+
+	    public ICommand NavigateToNotificationsSettings
         {
             get
             {

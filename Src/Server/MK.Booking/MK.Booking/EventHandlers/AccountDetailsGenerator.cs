@@ -266,7 +266,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.BraintreeAccountId = @event.BraintreeAccountId;
                 }
 
-                if (account.DefaultCreditCard == Guid.Empty)
+                if (!account.DefaultCreditCard.HasValue || account.DefaultCreditCard == Guid.Empty)
                 {
                     account.DefaultCreditCard = @event.CreditCardId;
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;

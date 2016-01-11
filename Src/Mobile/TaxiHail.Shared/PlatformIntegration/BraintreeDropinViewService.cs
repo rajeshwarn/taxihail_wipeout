@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using Cirrious.CrossCore.Droid.Platform;
@@ -36,16 +37,19 @@ namespace TaxiHail.Shared.PlatformIntegration
 				.SubmitButtonText("Save")
 				.ClientToken(clientToken);
 
-			var activity = (MvxActivity)_activity.Activity;
+
+		    var eventSourceActivity = (IMvxEventSourceActivity) _activity.Activity;
+                
 
             var activtyResultObservable = Observable.FromEventPattern<EventHandler<MvxValueEventArgs<MvxActivityResultParameters>>, MvxValueEventArgs<MvxActivityResultParameters>>
                 (
-                    h => activity.ActivityResultCalled += h,
-                    h => activity.ActivityResultCalled -= h
+                    h => eventSourceActivity.ActivityResultCalled += h,
+                    h => eventSourceActivity.ActivityResultCalled -= h
                 )
                 .Select(result => result.EventArgs.Value)
                 .Where(args => args.RequestCode == _requestCode);
 
+            var activity = _activity.Activity;
             activity.StartActivityForResult(paymentRequest.GetIntent(activity), _requestCode);
 
 		    return activtyResultObservable
