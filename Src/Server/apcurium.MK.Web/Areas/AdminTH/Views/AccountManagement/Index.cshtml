@@ -159,7 +159,7 @@
       <br />
    </div>
 
-   <div class="well clearfix form-horizontal" style="width:1250px;">
+   <div class="well clearfix form-horizontal" style="width:auto;">
         <h4 class="table-title">Notes</h4>
 
         @if (Model.Notes != null && Model.Notes.Any())
@@ -169,7 +169,7 @@
                     <thead>
                         <tr>
                             <th>Note</th>
-                            <th>Date</th>
+                            <th style="min-width: 150px;">Date</th>
                             <th>Type</th>
                             <th>Writer email</th>
                         </tr>
@@ -194,7 +194,7 @@
         <br />
     </div>
 
-    <div class="well clearfix form-horizontal" style="width:1250px;">
+    <div class="well clearfix form-horizontal" style="width:auto;">
         <h4 class="table-title">Orders <small><input type="submit" formaction='@Url.Action("ExportOrders")' class="btn-link" value="Export to csv" /></small></h4>
 
         @if (Model.Orders != null && Model.Orders.Any())
