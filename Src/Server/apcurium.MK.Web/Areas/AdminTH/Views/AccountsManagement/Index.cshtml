@@ -2,8 +2,7 @@
 @using apcurium.MK.Common.Extensions
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountsManagementModel
 
-@using (Html.BeginForm("Search", "AccountsManagement", FormMethod.Post))
-{
+
 	<div class="well clearfix form-horizontal">
 		<h4 class="table-title">Accounts Management</h4>
 		@if (@TempData["SearchCriteriaEmpty"] != null)
@@ -25,11 +24,11 @@
 		</div>
 
 		<div class="control-group">
-			<button type="submit" class="btn btn-primary span" style="margin-left:560px">Search</button>
+            <input type="submit" formaction='@Url.Action("Search")' class="btn btn-primary span" style="margin-left:560px" value="Search" />
 		</div>
 	</div>
 
-	if (Model.Accounts != null && Model.Accounts.Length != 0)
+	@if (Model.Accounts != null && Model.Accounts.Length != 0)
 	{
 		<div class="well clearfix form-horizontal">
 			<div class="control-group">
@@ -90,4 +89,4 @@
 			</div>
 		</div>
 	}
-}
+

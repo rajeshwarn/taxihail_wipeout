@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _configurationChangeService.Add(oldValues, 
                 newValues, 
                 ConfigurationChangeType.PaymentSetttings, 
-                authSession.UserAuthId, 
+                new Guid(authSession.UserAuthId), 
                 authSession.UserAuthName);
 
         }

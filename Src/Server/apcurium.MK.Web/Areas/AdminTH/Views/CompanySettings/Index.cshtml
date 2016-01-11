@@ -25,121 +25,117 @@
     }
 
 
-    @using (Html.BeginForm("Update", "CompanySettings", FormMethod.Post))
+    @Html.AntiForgeryToken()
+
+    @if (Model.IsSuperAdmin)
     {
-        @Html.AntiForgeryToken()
+        <legend>
+            @Html.DisplayName("Super Admin Only")
+        </legend>
 
-        if (Model.IsSuperAdmin)
-        {
-            <legend>
-                @Html.DisplayName("Super Admin Only")
-            </legend>
+        @BuildSettingControls(Model.SuperAdminSettings)
+        <br />
 
-            @BuildSettingControls(Model.SuperAdminSettings)
-            <br />
+        <legend>
+            @Html.DisplayName("Available to Admin")
+        </legend>
 
-            <legend>
-                @Html.DisplayName("Available to Admin")
-            </legend>
+        @BuildSettingControls(Model.AdminSettings)
+    }
+    else
+    {
+        @BuildSettingControls(Model.AdminSettings)
+    }
 
-            @BuildSettingControls(Model.AdminSettings)
-        }
-        else
-        {
-            @BuildSettingControls(Model.AdminSettings)
-        }
-
-        if (Model.IsSuperAdmin || (!Model.IsSuperAdmin && Model.AdminSettings.Any()))
-        {
-            <div class="control-group">
-                <button type="submit" class="btn btn-primary span">Save</button>
-            </div>
-        }
-
-        @helper BuildSettingControls(Dictionary<string, PropertyInfo> settings)
-        {
-if (!settings.Any())
-{
-        <h5>No settings available</h5>
-}
-
-var sortedSetting = from temp in settings orderby temp.Value.GetDisplayName() ascending select temp;
-
-foreach (var setting in sortedSetting)
-{
-    var settingType = setting.Value.PropertyType;
-    var settingValue = Model.Settings.GetNestedPropertyValue(setting.Key);
-    var isAvailableToAdmin = Model.Settings.SettingsAvailableToAdmin.HasValue()
-        && Model.Settings.SettingsAvailableToAdmin.Contains(setting.Key);
-
+    @if (Model.IsSuperAdmin || (!Model.IsSuperAdmin && Model.AdminSettings.Any()))
+    {
         <div class="control-group">
-            @if (Model.IsSuperAdmin)
-            {
-                <div class="control-group left-control-group" style="width: 60%">
-                    <label class="checkbox">
-                        @Html.CheckBox("CheckBox_" + setting.Key, isAvailableToAdmin, new { @class = "checkbox inline", @title = "Check to make setting available to Admin" })
-                        @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
-                    </label>
-                </div>
-            }
-            else
-            {
-                @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
-            }
+            <input type="submit" formaction='@Url.Action("Update")' class="btn btn-primary" value="Save" />
+        </div>
+    }
 
-            <div class="control-group right-control-group" style="width: 40%">
-                @if (settingType == typeof(bool))
+    @helper BuildSettingControls(Dictionary<string, PropertyInfo> settings)
+    {
+        if (!settings.Any())
+        {
+            <h5>No settings available</h5>
+        }
+
+        var sortedSetting = from temp in settings orderby temp.Value.GetDisplayName() ascending select temp;
+
+        foreach (var setting in sortedSetting)
+        {
+            var settingType = setting.Value.PropertyType;
+            var settingValue = Model.Settings.GetNestedPropertyValue(setting.Key);
+            var isAvailableToAdmin = Model.Settings.SettingsAvailableToAdmin.HasValue()
+                && Model.Settings.SettingsAvailableToAdmin.Contains(setting.Key);
+
+            <div class="control-group">
+                @if (Model.IsSuperAdmin)
                 {
-                    var boolValue = Convert.ToBoolean(settingValue);
-                    @Html.DropDownList(
-                                    setting.Key,
-                                    new[]
-                                    {
-                                        new SelectListItem { Text = "Yes", Value = "true", Selected = boolValue },
-                                        new SelectListItem { Text = "No", Value = "false", Selected = !boolValue }
-                                    },
-                                    new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
-                }
-                else if (settingType == typeof(bool?))
-                {
-                    var nullaboolValue = (bool?)settingValue;
-                    @Html.DropDownList(
-                                    setting.Key,
-                                    new[]
-                                    {
-                                        new SelectListItem { Text = "Required", Value = "true", Selected = nullaboolValue == true },
-                                        new SelectListItem { Text = "Optional", Value = "false", Selected = nullaboolValue == false },
-                                        new SelectListItem { Text = "Off", Value = "null", Selected = nullaboolValue == null }
-                                    },
-                                    new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
-                }
-                else if (settingType.BaseType == typeof(Enum))
-                {
-                    var enumListItems = new List<SelectListItem>();
-
-                    var enumValues = Enum.GetValues(settingType);
-                    foreach (var enumValue in enumValues)
-                    {
-                        var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
-
-                        enumListItems.Add(new SelectListItem
-                        {
-                            Text = fieldInfo.GetDisplayName(),
-                            Value = enumValue.ToString(),
-                            Selected = settingValue.ToString() == enumValue.ToString()
-                        });
-                    }
-
-                    @Html.DropDownList(setting.Key, enumListItems, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    <div class="control-group left-control-group" style="width: 60%">
+                        <label class="checkbox">
+                            @Html.CheckBox("CheckBox_" + setting.Key, isAvailableToAdmin, new { @class = "checkbox inline", @title = "Check to make setting available to Admin" })
+                            @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
+                        </label>
+                    </div>
                 }
                 else
                 {
-                    @Html.TextBox(setting.Key, settingValue, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
                 }
-            </div>
-        </div>
-}
-}
-    }
 
+                <div class="control-group right-control-group" style="width: 40%">
+                    @if (settingType == typeof(bool))
+                    {
+                        var boolValue = Convert.ToBoolean(settingValue);
+                        @Html.DropDownList(
+                                        setting.Key,
+                                        new[]
+                                        {
+                                            new SelectListItem { Text = "Yes", Value = "true", Selected = boolValue },
+                                            new SelectListItem { Text = "No", Value = "false", Selected = !boolValue }
+                                        },
+                                        new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    }
+                    else if (settingType == typeof(bool?))
+                    {
+                        var nullaboolValue = (bool?)settingValue;
+                        @Html.DropDownList(
+                                        setting.Key,
+                                        new[]
+                                        {
+                                            new SelectListItem { Text = "Required", Value = "true", Selected = nullaboolValue == true },
+                                            new SelectListItem { Text = "Optional", Value = "false", Selected = nullaboolValue == false },
+                                            new SelectListItem { Text = "Off", Value = "null", Selected = nullaboolValue == null }
+                                        },
+                                        new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    }
+                    else if (settingType.BaseType == typeof(Enum))
+                    {
+                        var enumListItems = new List<SelectListItem>();
+
+                        var enumValues = Enum.GetValues(settingType);
+                        foreach (var enumValue in enumValues)
+                        {
+                            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+
+                            enumListItems.Add(new SelectListItem
+                            {
+                                Text = fieldInfo.GetDisplayName(),
+                                Value = enumValue.ToString(),
+                                Selected = settingValue.ToString() == enumValue.ToString()
+                            });
+                        }
+
+                        @Html.DropDownList(setting.Key, enumListItems, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    }
+                    else
+                    {
+                        @Html.TextBox(setting.Key, settingValue, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    }
+                </div>
+            </div>
+        }
+    }
 </div>

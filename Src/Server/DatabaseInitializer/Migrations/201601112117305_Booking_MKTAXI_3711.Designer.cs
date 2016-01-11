@@ -7,13 +7,13 @@ namespace apcurium.MK.Booking.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class Booking_MKTAXI3731 : IMigrationMetadata
+    public sealed partial class Booking_MKTAXI_3711 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Booking_MKTAXI3731));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Booking_MKTAXI_3711));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601061903501_Booking_MKTAXI-3731"; }
+            get { return "201601112117305_Booking_MKTAXI_3711"; }
         }
         
         string IMigrationMetadata.Source

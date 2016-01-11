@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -25,6 +27,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class AccountManagementController : ServiceStackController
     {
         private readonly IAccountDao _accountDao;
+        private readonly IAccountNoteService _accountNoteService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -38,6 +41,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
            IAccountDao accountDao,
+           IAccountNoteService accountNoteService,
            ICreditCardDao creditCardDao,
            ICommandBus commandBus,
            IOrderDao orderDao,
@@ -48,6 +52,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            : base(cache, serverSettings)
         {
             _accountDao = accountDao;
+            _accountNoteService = accountNoteService;
             _creditCardDao = creditCardDao;
             _bookingSettingsService = bookingSettingsService;
             _commandBus = commandBus;
@@ -106,6 +111,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     TempData["UserMessage"] = e.Message;
                 }
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
             }
 
             return View("Index", accountManagementModel);
@@ -171,18 +180,28 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [HttpPost]
         public ActionResult EnableDisableAccount(AccountManagementModel accountManagementModel)
         {
-            if (accountManagementModel.IsEnabled)
+            if (ModelState.IsValid)
             {
-                _commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
-                accountManagementModel.IsEnabled = false;
+                if (accountManagementModel.IsEnabled)
+                {
+                    AddNote(accountManagementModel, NoteType.DeactivateAccount, accountManagementModel.DisableAccountNotePopupContent);
+                    _commandBus.Send(new DisableAccountByAdmin { AccountId = accountManagementModel.Id });
+                    accountManagementModel.IsEnabled = false;
+                }
+                else
+                {
+                    _commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
+                    accountManagementModel.IsEnabled = true;
+                }
+
+                ModelState.Clear();
+                TempData["UserMessage"] = "Operation done successfully";
             }
             else
             {
-                _commandBus.Send(new EnableAccountByAdmin { AccountId = accountManagementModel.Id });
-                accountManagementModel.IsEnabled = true;
+                TempData["UserMessage"] = "Model state is not valid";
             }
 
-            TempData["UserMessage"] = "Operation done successfully";
             return View("Index", accountManagementModel);
         }
 
@@ -216,10 +235,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
         {
             var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
+            if(csv.IsEmpty())
+            {
+                return View("Index", accountManagementModel);
+            }
+
             var csvFlattened = new StringBuilder();
             foreach (var item in csv.ElementAt(0))
             {
-                csvFlattened.Append(item.Key).Append(";");
+                csvFlattened.Append(item.Key).Append(",");
             }
 
             csvFlattened.Append("\n");
@@ -228,12 +252,49 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 foreach (var item in line)
                 {
-                    csvFlattened.Append(item.Value).Append(";");
+                    csvFlattened.Append(item.Value).Append(",");
                 }
                 csvFlattened.Append("\n");
             }
 
             return File(new ASCIIEncoding().GetBytes(csvFlattened.ToString()), "text/csv", "Export.csv");
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult AddStandardNote(AccountManagementModel accountManagementModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AddNote(accountManagementModel, NoteType.Standard, accountManagementModel.NotePopupContent);
+                TempData["UserMessage"] = "Note added";
+                ModelState.Clear();
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
+            }
+
+            return View("Index", accountManagementModel);
+        }
+
+        private void AddNote(AccountManagementModel accountManagementModel, NoteType noteType, string noteContent)
+        {
+            var accountNoteEntry = new AccountNoteEntry
+            {
+                AccountId = new Guid(AuthSession.UserAuthId),
+                AccountEmail = AuthSession.UserAuthName,
+                Type = noteType,
+                CreationDate = DateTime.Now,
+                Note = noteContent
+            };
+
+            _accountNoteService.Add(accountNoteEntry);
+            if (accountManagementModel.Notes == null)
+            {
+                accountManagementModel.Notes = new List<NoteModel>();
+            }
+            accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
         }
 
         private AccountManagementModel InitializeModel(Guid accountId)
@@ -279,6 +340,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         TotalAmountString = _resources.FormatPrice(x.TotalAmount())
                     };
                 })
+                .ToList();
+
+            model.Notes = _accountNoteService.FindByAccountId(new Guid(AuthSession.UserAuthId))
+                .OrderByDescending(c => c.CreationDate)
+                .Select(x => new NoteModel(x))
                 .ToList();
 
             return model;
