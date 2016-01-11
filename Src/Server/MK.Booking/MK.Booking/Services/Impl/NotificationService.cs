@@ -308,6 +308,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
             string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            string imageAppleLogoUrl = GetRefreshableImageUrl(GetBaseUrls().AppleLogoImg);
+            string imagePlayLogoUrl = GetRefreshableImageUrl(GetBaseUrls().PlayLogoImg);
 
             var templateData = new
             {
@@ -315,7 +317,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
-                LogoImg = imageLogoUrl
+                LogoImg = imageLogoUrl,
+                PlayLogoImg = imagePlayLogoUrl,
+                AppleLogoImg = imageAppleLogoUrl,
+                PlayLink = _serverSettings.ServerData.Store.PlayLink,
+                AppleLink = _serverSettings.ServerData.Store.AppleLink
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -1031,11 +1037,17 @@ namespace apcurium.MK.Booking.Services.Impl
             public BaseUrls(Uri baseUrl, IServerSettings serverSettings)
             {
                 LogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
+                AppleLogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/app-stores-itunes.png");
+                PlayLogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/appstores-play.png");
                 BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
                 Uri = baseUrl;
             }
 
             public string LogoImg { get; private set; }
+
+            public string PlayLogoImg { get; private set; }
+
+            public string AppleLogoImg { get; private set; }
 
             public string BaseUrlAssetsImg { get; private set; }
 

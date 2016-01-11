@@ -491,6 +491,8 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\TaxiHail\img\app-stores-itunes.png" />
+    <Content Include="themes\TaxiHail\img\appstores-play.png" />
     <Content Include="themes\TaxiHail\img\email_logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
