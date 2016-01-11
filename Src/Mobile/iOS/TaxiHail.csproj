@@ -169,6 +169,9 @@
     <MtouchLink>Full</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Card.IO">
+      <HintPath>..\Components\cardioios-5.1.0.0\lib\ios-unified\Card.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.CrossCore.dll</HintPath>
     </Reference>
@@ -997,6 +1000,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <XamarinComponentReference Include="cardioios">
+      <Visible>False</Visible>
+      <Version>5.1.0.0</Version>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="modernhttpclient">
       <Version>2.4.2</Version>
       <Visible>False</Visible>
