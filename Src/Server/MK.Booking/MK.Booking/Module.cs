@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAccountNoteService>(new AccountNoteService(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IFeesDao>(new FeesDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
@@ -108,6 +109,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IBlackListEntryService>(new BlackListEntryService(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IConfigurationChangeService>(new ConfigurationChangeService(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAirlineDao>(new AirlineDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPickupPointDao>(new PickupPointDao(() => container.Resolve<BookingDbContext>()));
 

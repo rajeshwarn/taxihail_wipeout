@@ -42,7 +42,9 @@ namespace apcurium.MK.Common.Extensions
 
             foreach (var propertyName in matches)
             {
-                var property = properties.First(p => p.Name == propertyName);
+                var property = properties.First(p => 
+                    p.Name == propertyName || p.Name == propertyName.Replace("{","").Replace("}","")
+                );
 
                 address = address.Replace(propertyName, property.Value.ToString());
             }

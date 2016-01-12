@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _notificationService.SendTripReceiptEmail(command.OrderId, command.IBSOrderId, command.VehicleNumber, command.DriverInfos, command.Fare, command.Toll, command.Tip,
                 command.Tax, command.Extra, command.Surcharge, command.BookingFees, command.TotalFare, command.PaymentInfo, command.PickupAddress, command.DropOffAddress,
                 command.PickupDate, command.UtcDropOffDate, command.EmailAddress, command.ClientLanguageCode, command.AmountSavedByPromotion, command.PromoCode,
-                command.CmtRideLinqFields);
+                command.CmtRideLinqFields).HandleErrors();
         }
     }
 }

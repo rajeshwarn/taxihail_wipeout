@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<PromotionUsageDetail>().ToTable("PromotionUsageDetail", SchemaName);
             modelBuilder.Entity<PromotionProgressDetail>().ToTable("PromotionProgressDetail", SchemaName);
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
+            modelBuilder.Entity<AccountNoteEntry>().ToTable("AccountNoteEntry", SchemaName);
             modelBuilder.Entity<AccountIbsDetail>().ToTable("AccountIbsDetail", SchemaName);
             modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
             modelBuilder.Entity<OrderStatusUpdateDetail>().ToTable("OrderStatusUpdateDetail", SchemaName);
@@ -77,6 +78,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<FeesDetail>().ToTable("FeesDetail", SchemaName);
             modelBuilder.Entity<VehicleIdMappingDetail>().ToTable("VehicleIdMappingDetail", SchemaName);
             modelBuilder.Entity<BlackListEntry>().ToTable("BlackListEntry", SchemaName);
+            modelBuilder.Entity<ConfigurationChangeEntry>().ToTable("ConfigurationChangeEntry", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
