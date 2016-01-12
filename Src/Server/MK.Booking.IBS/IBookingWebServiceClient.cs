@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.IBS
 {
