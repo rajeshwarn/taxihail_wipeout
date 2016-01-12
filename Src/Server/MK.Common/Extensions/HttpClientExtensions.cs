@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MK.Common.Exceptions;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -91,38 +92,25 @@ namespace apcurium.MK.Common.Extensions
             });
         }
 
-        public static async Task HandleResult(this Task<HttpResponseMessage> response,
-            Action<HttpResponseMessage> onSuccess,
-            Action<HttpResponseMessage> onError)
+        public static async Task HandleResult(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
         {
             var result = await response;
 
-            if (!result.IsSuccessStatusCode && onError != null)
-            {
-                onError(result);
-
-                var body = await result.Content.ReadAsStringAsync();
-
-                throw new WebServiceException(result.ReasonPhrase)
-                {
-                    StatusCode = (int)result.StatusCode,
-                    StatusDescription = result.ReasonPhrase,
-                    ResponseBody = body
-                };
-            }
-
-            if (onSuccess != null)
-            {
-                onSuccess(result);
-            }
+            await result.HandleResultInternal(onSuccess, onError);
         }
 
-        private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response,
-            Action<HttpResponseMessage> onSuccess,
-            Action<HttpResponseMessage> onError)
+        private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
         {
             var result = await response;
 
+            await result.HandleResultInternal(onSuccess, onError);
+
+            var jsonContent = await result.Content.ReadAsStringAsync();
+            return jsonContent.FromJson<TResult>();
+        }
+
+        private static async Task HandleResultInternal(this HttpResponseMessage result, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
+        {
             if (!result.IsSuccessStatusCode)
             {
                 if (onError != null)
@@ -131,24 +119,32 @@ namespace apcurium.MK.Common.Extensions
                 }
 
                 var body = await result.Content.ReadAsStringAsync();
+                var errorResponse = body.FromJson<ErrorResponse>();
 
-                throw new WebServiceException(result.ReasonPhrase)
+                if (errorResponse != null)
                 {
-                    StatusCode = (int)result.StatusCode,
-                    StatusDescription = result.ReasonPhrase,
-                    ResponseBody = body
-                };
-                
+                    throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode) 
+                    {
+                        StatusCode = (int)result.StatusCode,
+                        StatusDescription = result.ReasonPhrase,
+                        ResponseBody = body
+                    };
+                }
+                else
+                {
+                    throw new WebServiceException(result.ReasonPhrase) 
+                    {
+                        StatusCode = (int)result.StatusCode,
+                        StatusDescription = result.ReasonPhrase,
+                        ResponseBody = body
+                    };
+                }
             }
 
             if (onSuccess != null)
             {
                 onSuccess(result);
             }
-
-            var jsonContent = await result.Content.ReadAsStringAsync();
-
-            return jsonContent.FromJson<TResult>();
         }
     }
 }

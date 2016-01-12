@@ -12,7 +12,6 @@ using apcurium.MK.Common;
 #if CLIENT
 using MK.Common.Exceptions;
 using System.Net.Http;
-using System.Net.Http.Headers;
 #else
 using apcurium.MK.Booking.Api.Client.Extensions;
 using ServiceStack.ServiceClient.Web;
@@ -46,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
         }
 
-        private void AddVersionInformation()
+        private void AddVersionInformation(HttpClient client)
         {
             //get the etag from the cache and add it to the headers
             var version = _cacheService.Get<string>(CacheKey_TermsVersion);
@@ -55,12 +54,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 return;
             }
 
-            if (Client.DefaultRequestHeaders.Any(header => header.Key == "If-None-Match"))
+            if (client.DefaultRequestHeaders.Any(header => header.Key == "If-None-Match"))
             {
-                Client.DefaultRequestHeaders.Remove("If-None-Match");
+                client.DefaultRequestHeaders.Remove("If-None-Match");
             }
 
-            Client.DefaultRequestHeaders.TryAddWithoutValidation("If-None-Match", version);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("If-None-Match", version);
         }
 #else
         private void HandleResponseHeader(HttpWebResponse response)
@@ -86,13 +85,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             try
             {
+                TermsAndConditions termsAndConditions;
 #if CLIENT
-                AddVersionInformation();
-                var termsAndConditions = await Client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
+                using(var client = Client)
+                {
+                    AddVersionInformation(client);
+                    termsAndConditions = await client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
+                }
 #else
                 Client.LocalHttpWebRequestFilter += AddVersionInformation;
                 Client.LocalHttpWebResponseFilter += HandleResponseHeader;
-                var termsAndConditions = await Client.GetAsync<TermsAndConditions>("/termsandconditions");
+                termsAndConditions = await Client.GetAsync<TermsAndConditions>("/termsandconditions");
 #endif
                 _cacheService.Set(CacheKey_Terms, termsAndConditions);
 

@@ -9,23 +9,21 @@
         </div>
     }
 
-    @using (Html.BeginForm("Update", "Privacy", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-        <div class="control-group">
-            @Html.LabelFor(x => x.PrivacyPolicy, "Content", new { @class = "control-label" })
-            <div class="controls">
-                @{
-                    var policyText = (string)TempData["PrivacyPolicy"] ?? Model.PrivacyPolicy;
-                }
-                @Html.TextArea("PrivacyPolicy", policyText, new { @class = "input-block-level", @rows = 20 })
-                @Html.ValidationMessageFor(x => x.PrivacyPolicy)
-            </div>
+    <div class="control-group">
+        @Html.LabelFor(x => x.PrivacyPolicy, "Content", new { @class = "control-label" })
+        <div class="controls">
+            @{
+                var policyText = (string)TempData["PrivacyPolicy"] ?? Model.PrivacyPolicy;
+            }
+            @Html.TextArea("PrivacyPolicy", policyText, new { @class = "input-block-level", @rows = 20 })
+            @Html.ValidationMessageFor(x => x.PrivacyPolicy)
         </div>
+    </div>
 
-        <div class="control-group btn-right-alignment">
-            <button type="submit" class="btn btn-primary span">Save</button>
-        </div>
-                    }
+    <div class="control-group btn-right-alignment">
+        <input type="submit" formaction='@Url.Action("Update")' class="btn btn-primary span" value="Save" />
+    </div>
+   
 </div>

@@ -16,12 +16,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Common;
 
-
-#if IOS
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Common.ServiceClient.Web;
-#endif
-
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService

@@ -17,6 +17,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using SendReceipt = apcurium.MK.Booking.Commands.SendReceipt;
@@ -176,7 +177,7 @@ namespace apcurium.MK.Booking.Api.Services
                                     }
                                 },
                                 TipIncentive = tipIncentive
-                            }, true);
+                            }, true).HandleErrors();
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);

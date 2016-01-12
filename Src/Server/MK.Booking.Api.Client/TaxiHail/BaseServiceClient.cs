@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #if CLIENT
         protected HttpClient Client
         {
-            get { return _client ?? (_client = CreateClient()); }
+            // Recreate the HttpClient everytime to fix the problem with certain calls returning Unauthorized for no reason (seems to be on Android only)
+            get { return CreateClient(); }
         }
 
         private HttpClient CreateClient()
