@@ -9,10 +9,11 @@ namespace apcurium.MK.Booking.ReadModel
         {
             Id = Guid.NewGuid();
         }
+
         [Key]
         public Guid Id { get; set; }
 
-        public string AccountId { get; set; }
+        public Guid AccountId { get; set; }
 
         public string AccountEmail { get; set; }
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string NewValues { get; set; }
 
-        public string Type { get; set; }
+        public ConfigurationChangeType Type { get; set; }
     }
 
     public enum ConfigurationChangeType
