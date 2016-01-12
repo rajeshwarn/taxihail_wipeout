@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 	public class AddPaymentMethodRequest : IReturn<TokenizedCreditCardResponse>
 	{
 		public string Nonce	{ get; set; }
+	    public string CardholderName { get; set; }
 	    public PaymentMethods PaymentMethod { get; set; }
         public string CreditCardCompany { get; set; }
 	}

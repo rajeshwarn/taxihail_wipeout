@@ -39,7 +39,15 @@
 
             if (isEditing) {
                 creditCard = this.model.toJSON();
-                var cardNumber = "************" + creditCard.last4Digits;
+
+                var cardNumber = "";
+
+                if (creditCard.CreditCardCompany != "Paypal" && creditCard.CreditCardCompany != "ApplePay") {
+                    cardNumber = "************" + creditCard.last4Digits;
+                } else {
+                    cardNumber = "Not applicable: " + creditCard.CreditCardCompany + " account";
+                }
+                
                 _.extend(creditCard, {
                     cardNumber: cardNumber,
                     expirationMonths: expMonths,
@@ -89,6 +97,29 @@
             });
 
             this.$el.html(this.renderTemplate(creditCard));
+                $.ajax({
+                    type: 'GET',
+                    url: 'api/payments/braintree/generateclienttoken?format=json'
+                })
+            .then(function (generatedClientToken) {
+                braintree.setup(generatedClientToken.clientToken, "custom", {
+                    paypal: {
+                        container: "paypal-container"
+                    },
+                    onPaymentMethodReceived: function (obj) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'api/payments/braintree/addpaymentmethod',
+                            dataType: 'json',
+                            data: {
+                                nonce: obj.nonce,
+                                paymentMethod: 'Paypal'
+                            }
+                        }).then(d.resolve, d.reject);
+                    }
+                });
+            });
+            
 
             this.validate({
                 rules: {
@@ -276,6 +307,7 @@
 	                    this.model.set("last4Digits", tokenizedCard.lastFour);
 	                    this.model.set("creditCardCompany", tokenizedCard.cardType);
 	                    this.model.set("label", label);
+	                    this.model.set("creditCardId", tokenizedCard.creditCardId);
 
 	                    // Update card on file
 	                    this.model.updateCreditCard()

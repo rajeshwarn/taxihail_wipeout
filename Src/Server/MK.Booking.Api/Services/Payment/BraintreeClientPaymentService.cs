@@ -56,7 +56,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var userId = Guid.Parse(this.GetSession().UserAuthId);
             var account = _accountDao.FindById(userId);
 
-            
+            var creditCardId = Guid.NewGuid();
+
             if (request.PaymentMethod == PaymentMethods.CreditCard)
             {
                 var creditCardResult = BraintreeGateway.CreditCard.Create(new CreditCardRequest
@@ -70,10 +71,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _commandBus.Send(new AddOrUpdateCreditCard
                 {
                     AccountId = userId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     BraintreeAccountId = account.BraintreeAccountId,
                     CreditCardCompany = creditCard.CardType.ToString(),
-                    NameOnCard = creditCard.CardholderName,
+                    NameOnCard = request.CardholderName,
                     Last4Digits = creditCard.LastFour,
                     Token = creditCard.Token,
                     Label = CreditCardLabelConstants.Personal.ToString(),
@@ -84,6 +85,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 return new TokenizedCreditCardResponse
                 {
                     CardOnFileToken = creditCard.Token,
+                    CreditCardId = creditCardId,
                     CardType = creditCard.CardType.ToString(),
                     LastFour = creditCard.LastFour,
                     BraintreeAccountId = creditCard.CustomerId,
@@ -107,6 +109,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _commandBus.Send(new AddOrUpdateCreditCard
                 {
                     AccountId = userId,
+                    CreditCardId = creditCardId,
                     BraintreeAccountId = account.BraintreeAccountId,
                     CreditCardCompany = "Paypal",
                     NameOnCard = paypalResult.Email,
@@ -118,8 +121,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 _commandBus.Send(new AddOrUpdateCreditCard
                 {
                     AccountId = userId,
+                    CreditCardId = creditCardId,
                     BraintreeAccountId = account.BraintreeAccountId,
-                    CreditCardCompany = "ApplePay",
+                    CreditCardCompany = request.PaymentMethod.ToString(),
+                    NameOnCard = request.CardholderName??account.Name,
                     Token = paymentMethod.Token
                 });
             }
@@ -129,6 +134,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 CardOnFileToken = paymentMethod.Token,
                 PaymentMethod = request.PaymentMethod,
+                CreditCardId = creditCardId,
                 BraintreeAccountId = paymentMethod.CustomerId,
                 IsSuccessful = paymentMethodResult.IsSuccess(),
                 Message = paymentMethodResult.Message

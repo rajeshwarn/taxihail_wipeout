@@ -63,14 +63,14 @@
                              cvv: cvv
                          },
 
-                     function (err, nonce) {
-                         // Tokenizing card by sending the nonce to server
+                     function(err, nonce) {
                          $.ajax({
                              type: 'POST',
                              url: 'api/payments/braintree/addpaymentmethod',
                              dataType: 'json',
                              data: {
-                                 nonce: nonce
+                                 nonce: nonce,
+                                 paymentMethod: 'CreditCard'
                              }
                          }).then(d.resolve, d.reject);
                      });

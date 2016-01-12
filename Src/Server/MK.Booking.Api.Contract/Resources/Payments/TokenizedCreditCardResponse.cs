@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Resources;
+﻿using System;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
 {
@@ -10,6 +11,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
         public string CardOnFileToken { get; set; }
 
         public string BraintreeAccountId { get; set; }
+
+        public Guid CreditCardId { get; set; }
 
         public PaymentMethods PaymentMethod { get; set; }
     }
