@@ -32,10 +32,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
 
-        private BestAvailableCompany _bestAvailableCompany;
-        private int? _providerId;
-        private int _ibsAccountId;
-
         private static readonly Dictionary<Guid, List<Tuple<string, string>>> LegacyVehicleIdMapping = new Dictionary<Guid, List<Tuple<string, string>>>();
         private static readonly Dictionary<string, DispatcherSettingsResponse> DispatcherSettings = new Dictionary<string, DispatcherSettingsResponse>();
 
@@ -74,9 +70,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
             initialBestAvailableCompany.FleetId = initialBestAvailableCompany.FleetId ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId;
 
-            _bestAvailableCompany = initialBestAvailableCompany;
-            _providerId = ibsOrderParams.ProviderId;
-            _ibsAccountId = initialIbsAccountId;
+            var bestAvailableCompany = initialBestAvailableCompany;
+            var providerId = ibsOrderParams.ProviderId;
+            var ibsAccountId = initialIbsAccountId;
 
             var availableFleetsInMarket = market.HasValue()
                 ? _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market).ToArray()
@@ -86,12 +82,12 @@ namespace apcurium.MK.Booking.Services.Impl
 
             for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
-                _logger.LogMessage("Starting new dispatch cycle (Cycle #{0}, Company {1}, FleetId: {2})", i, _bestAvailableCompany.CompanyKey, _bestAvailableCompany.FleetId);
+                _logger.LogMessage("Starting new dispatch cycle (Cycle #{0}, Company {1}, FleetId: {2})", i, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
 
                 // Call geo to get a list of available vehicles
                 var vehicleCandidates = GetVehicleCandidates(
                     orderId,
-                    _bestAvailableCompany,
+                    bestAvailableCompany,
                     dispatcherSettings.Market,
                     ibsOrderParams.IbsPickupAddress.Latitude,
                     ibsOrderParams.IbsPickupAddress.Longitude,
@@ -110,10 +106,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Call CreateIbsOrder from IbsCreateOrderService
                 var ibsVehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
 
-                orderResult = _ibsServiceProvider.Booking(_bestAvailableCompany.CompanyKey).CreateOrder(
+                orderResult = _ibsServiceProvider.Booking(bestAvailableCompany.CompanyKey).CreateOrder(
                     orderId,
-                    _providerId,
-                    _ibsAccountId,
+                    providerId,
+                    ibsAccountId,
                     name,
                     phone,
                     passengers,
@@ -134,7 +130,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ibsVehicleCandidates);
 
                 // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
-                var candidatesResponse = WaitForCandidatesResponse(_bestAvailableCompany.CompanyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
+                var candidatesResponse = WaitForCandidatesResponse(bestAvailableCompany.CompanyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
 
                 if (isHailRequest)
                 {
@@ -150,7 +146,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     try
                     {
                         // Update job to Vehicle
-                        AssignJobToVehicle(_bestAvailableCompany.CompanyKey, orderResult.OrderKey, bestVehicle);
+                        AssignJobToVehicle(bestAvailableCompany.CompanyKey, orderResult.OrderKey, bestVehicle);
 
                         vehicleAssigned = true;
 
@@ -183,9 +179,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 // 9. If nothing found: cancel ibs order + find best available company based on ETA + start over
-                CancelIbsOrder(orderResult.OrderKey.IbsOrderId, _bestAvailableCompany.CompanyKey, phone, _ibsAccountId);
+                CancelIbsOrder(orderResult.OrderKey.IbsOrderId, bestAvailableCompany.CompanyKey, phone, ibsAccountId);
 
-                PrepareForNewDispatchLoop(
+                var dispatcherContext = PrepareForNewDispatchLoop(
                     accountId,
                     orderId,
                     dispatcherSettings,
@@ -194,6 +190,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     ibsOrderParams.ProviderId,
                     vehicleCandidatesOfferedTheJob,
                     availableFleetsInMarket);
+
+                if (dispatcherContext != null)
+                {
+                    bestAvailableCompany = dispatcherContext.BestAvailableCompany;
+                    providerId = dispatcherContext.ProviderId;
+                    ibsAccountId = dispatcherContext.IbsAccountId;
+                }
             }
 
             if (!vehicleAssigned)
@@ -212,7 +215,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     OrderKey = new IbsOrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
                 });
 
-            result.CompanyKey = _bestAvailableCompany.CompanyKey;
+            result.CompanyKey = bestAvailableCompany.CompanyKey;
 
             return result;
         }
@@ -236,7 +239,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private void PrepareForNewDispatchLoop(
+        private DispatcherContext PrepareForNewDispatchLoop(
             Guid accountId,
             Guid orderId,
             DispatcherSettingsResponse dispatcherSettings,
@@ -264,13 +267,13 @@ namespace apcurium.MK.Booking.Services.Impl
             var newBestAvailableVehicle = vehicleCandidates.FirstOrDefault();
             if (newBestAvailableVehicle == null)
             {
-                return;
+                return null;
             }
 
             var newBestFleet = availableFleetsInMarket.FirstOrDefault(fleet => fleet.FleetId == newBestAvailableVehicle.FleetId);
             if (newBestFleet == null)
             {
-                return;
+                return null;
             }
 
             var referenceDataCompanyList = _ibsServiceProvider.StaticData(newBestFleet.CompanyKey).GetCompaniesList();
@@ -283,17 +286,20 @@ namespace apcurium.MK.Booking.Services.Impl
                     : homeMarketProviderId;
 
             var accountDetail = _accountDao.FindById(accountId);
-            _ibsAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(accountDetail, newBestFleet.CompanyKey);
-            _providerId = providerId;
 
-            _bestAvailableCompany = new BestAvailableCompany
+            return new DispatcherContext
             {
-                CompanyKey = newBestFleet.CompanyKey,
-                CompanyName = newBestFleet.CompanyName,
-                FleetId = newBestFleet.FleetId
+                IbsAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(accountDetail, newBestFleet.CompanyKey),
+                ProviderId = providerId,
+                BestAvailableCompany = new BestAvailableCompany
+                {
+                    CompanyKey = newBestFleet.CompanyKey,
+                    CompanyName = newBestFleet.CompanyName,
+                    FleetId = newBestFleet.FleetId
+                }
             };
         }
-
+        
         private VehicleCandidate FindBestVehicleCandidate(IEnumerable<VehicleCandidate> vehicleCandidates)
         {
             // Order by ETA
@@ -470,6 +476,13 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             return filteredList;
+        }
+
+        private class DispatcherContext
+        {
+            public int IbsAccountId { get; set; }
+            public int? ProviderId { get; set; }
+            public BestAvailableCompany BestAvailableCompany { get; set; }
         }
     }
 }
