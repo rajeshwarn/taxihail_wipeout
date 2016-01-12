@@ -19,6 +19,7 @@ using PayPal.Api;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
+    [Obsolete("Kept for legacy support (order still in progress during update), use Braintree vZero instead")]
     public class PayPalService : BasePayPalService
     {
         private readonly IServerSettings _serverSettings;
@@ -747,25 +748,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 message = "The transaction couldn't be cancelled " + exceptionMessage;
                 throw;
-            }
-        }
-
-        public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
-        {
-            try
-            {
-                var payPalMode = isSandbox ? BaseConstants.SandboxMode : BaseConstants.LiveMode;
-
-                var config = new Dictionary<string, string> { { BaseConstants.ApplicationModeConfig, payPalMode } };
-
-                var tokenCredentials = new OAuthTokenCredential(payPalClientSettings.ClientId, payPalServerSettings.Secret, config);
-                var accessToken = tokenCredentials.GetAccessToken();
-
-                return accessToken.HasValue();
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
     }

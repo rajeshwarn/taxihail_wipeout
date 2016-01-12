@@ -1,0 +1,42 @@
+diff a/Src/Server/MK.Common/Configuration/Impl/ClientPaymentSettings.cs b/Src/Server/MK.Common/Configuration/Impl/ClientPaymentSettings.cs	(rejected hunks)
+@@ -11,7 +11,6 @@
+             CmtPaymentSettings = new CmtPaymentSettings();
+             BraintreeClientSettings = new BraintreeClientSettings();
+ 			MonerisPaymentSettings = new MonerisPaymentSettings();
+-            PayPalClientSettings = new PayPalClientSettings();
+ 
+             IsChargeAccountPaymentEnabled = false;
+             IsPayInTaxiEnabled = false;
+@@ -59,29 +58,13 @@
+ 		[PropertyEncrypt]
+         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }
+ 
+-		[PropertyEncrypt]
+-        public PayPalClientSettings PayPalClientSettings { get; set; }
+-
+         public SupportedPaymentMethod SupportedPaymentMethod
+         {
+             get
+             {
+-                if (PayPalClientSettings.IsEnabled && IsPayInTaxiEnabled)
+-                {
+-                    return SupportedPaymentMethod.Multiple;
+-                }
+-
+-                if (PayPalClientSettings.IsEnabled)
+-                {
+-                    return SupportedPaymentMethod.PayPalOnly;
+-                }
+-
+-                if (IsPayInTaxiEnabled)
+-                {
+-                    return SupportedPaymentMethod.CreditCardOnly;
+-                }
+-
+-                return SupportedPaymentMethod.None;
++                return IsPayInTaxiEnabled 
++                    ? SupportedPaymentMethod.CreditCardOnly 
++                    : SupportedPaymentMethod.None;
+             }
+         }
+     }

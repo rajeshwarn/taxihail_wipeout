@@ -67,7 +67,6 @@ namespace apcurium.MK.Booking.Api.Services
             var paymentSettings = _serverSettings.GetPaymentSettings(request.CompanyKey);
 
             var isChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
-            var isPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
             var isPaymentOutOfAppDisabled = paymentSettings.IsPaymentOutOfAppDisabled;
 
             IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
@@ -75,10 +74,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (!isChargeAccountPaymentEnabled)
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.Account.Id);
-            }
-            if (!isPayPalEnabled)
-            {
-                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PayPal.Id);
             }
             if (isPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None)
             {

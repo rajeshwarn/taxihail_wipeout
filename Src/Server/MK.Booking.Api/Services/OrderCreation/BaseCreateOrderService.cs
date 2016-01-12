@@ -567,13 +567,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                             _resources.Get("CannotCreateOrder_CreditCardWasDeclined", request.ClientLanguageCode));
                     }
                 }
-
-                // Payment mode is PayPal
-                if (request.Settings.ChargeTypeId.HasValue
-                    && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
-                {
-                    ValidatePayPal(companyKey, orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, createReportOrder);
-                }
             }
         }
 
@@ -603,21 +596,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
         }
 
-        private void ValidatePayPal(string companyKey, Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimateWithTip, decimal bookingFees, CreateReportOrder createReportOrder)
-        {
-            if (!_serverSettings.GetPaymentSettings(companyKey).PayPalClientSettings.IsEnabled
-                    || !account.IsPayPalAccountLinked)
-            {
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
-            }
-
-            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, isFutureBooking, appEstimateWithTip, bookingFees);
-            if (!isSuccessful)
-            {
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode));
-            }
-        }
-
         private Guid? ValidatePromotion(string companyKey, string promoCode, int? chargeTypeId, Guid accountId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode, CreateReportOrder createReportOrder)
         {
             if (!promoCode.HasValue())
@@ -629,18 +607,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
             if (!usingPaymentInApp)
             {
-                var payPalIsEnabled = _serverSettings.GetPaymentSettings(companyKey).PayPalClientSettings.IsEnabled;
-                var cardOnFileIsEnabled = _serverSettings.GetPaymentSettings(companyKey).IsPayInTaxiEnabled;
-
                 var promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFile";
-                if (payPalIsEnabled && cardOnFileIsEnabled)
-                {
-                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal";
-                }
-                else if (payPalIsEnabled)
-                {
-                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUsePayPal";
-                }
 
                 // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get(promotionErrorResourceKey, clientLanguageCode));

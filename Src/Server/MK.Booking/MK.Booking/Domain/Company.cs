@@ -37,8 +37,7 @@ namespace apcurium.MK.Booking.Domain
 
         protected PaymentMethod PaymentMode { get; set; }
 
-        protected PayPalClientSettings PayPalClientSettings { get; set; }
-
+        [Obsolete("Kept for legacy compatibility, use paypal via Braintree")]
         protected PayPalServerSettings PayPalServerSettings { get; set; }
 
         protected bool IsChargeAccountEnabled { get; set; }

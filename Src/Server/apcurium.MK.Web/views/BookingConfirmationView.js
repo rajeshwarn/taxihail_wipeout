@@ -149,7 +149,6 @@
             if ( (this.showEstimate) && ( this.showEstimateWarning )) {
                 this.showEstimatedFareWarning();
             }
-            
 
             if (this.hasWarning) {
                 var $alert = $('<div class="alert alert-info" />');

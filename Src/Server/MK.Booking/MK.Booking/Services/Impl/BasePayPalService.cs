@@ -8,6 +8,7 @@ using PayPal.Api;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
+    [Obsolete("Kept for legacy support (order still in progress during update), use Braintree vZero instead")]
     public class BasePayPalService
     {
         private readonly ServerPaymentSettings _serverPaymentSettings;

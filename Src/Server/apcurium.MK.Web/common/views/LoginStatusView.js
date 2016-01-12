@@ -22,7 +22,7 @@
                 SocialMediaPinterestURL: TaxiHail.parameters.SocialMediaPinterestURL,
                 SocialMediaTwitterURL: TaxiHail.parameters.SocialMediaTwitterURL,
                 isLoggedIn: TaxiHail.auth.isLoggedIn(),
-                isPayPalEnabled: TaxiHail.parameters.isPayPalEnabled,
+                displayPayPalLogo: TaxiHail.parameters.displayPayPalLogo,
                 name: this.model.has('settings') ? this.model.get('settings').name : this.model.get('name')
             });
 

@@ -192,58 +192,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         }
 
-        public TestServerPaymentSettingsResponse Post(TestPayPalProductionSettingsRequest request)
-        {
-            var response = new TestServerPaymentSettingsResponse
-            {
-                IsSuccessful = false,
-                Message = "Paypal Production Credentials are invalid"
-            };
-
-            try
-            {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
-                {
-                    return new TestServerPaymentSettingsResponse
-                    {
-                        IsSuccessful = true,
-                        Message = "Paypal Production Credentials are valid"
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message += "\n" + e.Message;
-            }
-            return response;
-        }
-
-        public TestServerPaymentSettingsResponse Post(TestPayPalSandboxSettingsRequest request)
-        {
-            var response = new TestServerPaymentSettingsResponse
-            {
-                IsSuccessful = false,
-                Message = "Paypal Sandbox Credentials are invalid"
-            };
-
-            try
-            {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
-                {
-                    return new TestServerPaymentSettingsResponse
-                    {
-                        IsSuccessful = true,
-                        Message = "Paypal Sandbox Credentials are valid"
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message += "\n" + e.Message;
-            }
-            return response;
-        }
-
         public TestServerPaymentSettingsResponse Post(TestBraintreeSettingsRequest request)
         {
             var response = new TestServerPaymentSettingsResponse

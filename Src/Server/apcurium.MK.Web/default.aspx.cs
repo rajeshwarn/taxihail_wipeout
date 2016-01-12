@@ -61,7 +61,7 @@ namespace apcurium.MK.Web
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
         protected int MaxNumberOfCreditCards { get; private set; }
-        protected bool IsPayPalEnabled { get; private set; }
+        protected bool DisplayPayPalLogo { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
@@ -144,8 +144,7 @@ namespace apcurium.MK.Web
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;
-            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled
-                && paymentSettings.IsPrepaidEnabled;
+            DisplayPayPalLogo = paymentSettings.BraintreeClientSettings.DisplayPayPalLogo;
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
 
             PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
@@ -172,7 +171,7 @@ namespace apcurium.MK.Web
                 referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
             }
 
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, DisplayPayPalLogo);
 
             ReferenceData = referenceData.ToString();
 

@@ -122,13 +122,13 @@
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
     <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\Impl\PayPalServerCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerSettings.cs" />
     <Compile Include="Configuration\IServerSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
-    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
-    <Compile Include="Configuration\Impl\PayPalServerCredentials.cs" />
-    <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\ServerTaxiHailSetting.cs" />

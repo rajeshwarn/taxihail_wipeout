@@ -11,6 +11,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeClientSettings = new BraintreeClientSettings();
 			MonerisPaymentSettings = new MonerisPaymentSettings();
+            PayPalClientSettings = new PayPalClientSettings();
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
@@ -54,6 +55,8 @@ namespace apcurium.MK.Common.Configuration.Impl
 
 		[PropertyEncrypt]
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
+
+        public PayPalClientSettings PayPalClientSettings { get; set; }
 
 		[PropertyEncrypt]
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }

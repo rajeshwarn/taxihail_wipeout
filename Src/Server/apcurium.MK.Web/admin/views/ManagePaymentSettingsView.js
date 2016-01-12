@@ -290,7 +290,7 @@
                 monerisDiv.hide();
             }
 
-            if (!isPayPalEnabled && newPaymentMode == 'None') {
+            if (newPaymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 isUnpairingDisabledDiv.hide();

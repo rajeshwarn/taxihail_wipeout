@@ -1,6 +1,8 @@
-﻿using apcurium.MK.Common.Cryptography;
+﻿using System;
+using apcurium.MK.Common.Cryptography;
 namespace apcurium.MK.Common.Configuration.Impl
 {
+    [Obsolete("Kept for legacy support (order still in progress during update), use Braintree vZero instead")]
     public class PayPalServerCredentials
     {
         public PayPalServerCredentials()
