@@ -163,8 +163,10 @@ namespace apcurium.MK.Booking.Services
                 return _payPalServiceFactory.GetInstance(companyKey).Pair(orderId, autoTipPercentage);
             }
 
-            var card = _creditCardDao.FindByAccountId(order.AccountId).First();
-            return GetInstance(companyKey).Pair(companyKey, orderId, card.Token, autoTipPercentage);
+            var account = _accountDao.FindById(order.AccountId);
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+
+            return GetInstance(companyKey).Pair(companyKey, orderId, creditCard.Token, autoTipPercentage);
         }
 
         public BasePaymentResponse Unpair(string companyKey, Guid orderId)
