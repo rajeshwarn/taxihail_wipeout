@@ -233,65 +233,6 @@
 </div>
 
 <br />
-
-<!-- PAYPAL SETTINGS-->
-<h4 class="table-title">{{localize "PayPal Settings"}}</h4>
-
-
-<label class="control-label settingsLabel">{{{localize "Enable PayPal"}}}</label>
-<select id="isPayPalEnabled" name="payPalClientSettings.isEnabled" class="settingsBox">
-    <option value="{{payPalClientSettings.isEnabled}}" selected="">{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
-    <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>
-</select>
-
-<label class="control-label settingsLabel">{{{localize "Sandbox Mode"}}}</label>
-<select id="isSandbox" name="payPalClientSettings.isSandbox" class="settingsBox">
-    <option value="{{payPalClientSettings.isSandbox}}" selected="">{{localizeBool payPalClientSettings.isSandbox true="Yes" false="No"}}</option>
-    <option value="{{invertedBool payPalClientSettings.isSandbox}}">{{localizeBool payPalClientSettings.isSandbox true="No" false="Yes"}}</option>
-</select>
-
-<label class="control-label settingsLabel">{{{localize "Web Landing Page"}}}</label>
-<select id="landingPageType" name="payPalServerSettings.landingPageType" class="settingsBox">
-    <option value="login">{{localize "Login"}}</option>
-    <option value="billing">{{localize "Billing"}}</option>
-</select>
-
-<h5>{{{localize "Sandbox Credentials"}}}</h5>
-
-<label class="control-label settingsLabel">{{{localize "ClientId"}}}</label>
-<input id="sandboxClientId" type="text" class="input-block-level settingsBox" name="payPalClientSettings.sandboxCredentials.clientId" value="{{payPalClientSettings.sandboxCredentials.clientId}}" />
-
-<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input id="sandboxClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.secret" value="{{payPalServerSettings.sandboxCredentials.secret}}" />
-
-<label class="control-label settingsLabel">{{{localize "MerchantId"}}}</label>
-<input id="sandboxMerchantId" type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.merchantId" value="{{payPalServerSettings.sandboxCredentials.merchantId}}" />
-
-<div id="payPalSandboxSettingsMessageZone"></div>
-<button type='button' id="testPayPalSandboxSettingsButton" class='btn'>{{localize "Test"}}</button>
-
-
-<h5>{{{localize "Production Credentials"}}}</h5>
-
-<label class="control-label settingsLabel">{{{localize "ClientId"}}}</label>
-<input id="prodClientId" type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
-
-<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input id="prodClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}"/>
-
-<label class="control-label settingsLabel">{{{localize "MerchantId"}}}</label>
-<input id="prodMerchantId" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.merchantId" value="{{payPalServerSettings.credentials.merchantId}}" />
-
-<div id="payPalProductionSettingsMessageZone"></div>
-<button type='button' id="payPalProductionSettingsButton" class='btn'>{{localize "Test"}}</button>
-
-<div>
-    <div id="payPalWarning" class="alert">
-        <input type="checkbox" name="acceptPayPalChange"> {{localize "I understand that changing the PayPal settings will UNLINK all users account."}}</input>
-    </div>
-</div>
-
-<br />
 <br />
 
 <div>
