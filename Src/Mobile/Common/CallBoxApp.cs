@@ -63,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile
 				c.Resolve<ILocalization>(), 
 				c.Resolve<IAppSettings>(),
 				null,
-				c.Resolve<IMessageService>()));
+				c.Resolve<IMessageService>(),
+				c.Resolve<IIPAddressManager>()));
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
 

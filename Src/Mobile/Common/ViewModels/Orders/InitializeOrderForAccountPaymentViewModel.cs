@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						var message = this.Services().Localize["InvalidCreditCardMessage"];
 
 						// don't prompt for automatic redirect to cof update here since the risk of this exception happening here is very low
-						await this.Services().Message.ShowMessage(title, message);
+						this.Services().Message.ShowMessage(title, message);
 					}
 					catch(OrderCreationException e)
 					{
