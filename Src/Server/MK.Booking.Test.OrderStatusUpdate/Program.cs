@@ -70,7 +70,6 @@ namespace MK.Booking.Test.OrderStatusUpdate
 
                 if (_runOldUpdate)
                 {
-                    Console.WriteLine("Starting Old Order Update");
 
                     var oldUpdateOrderStatusJob = new OldUpdateOrderStatusJob(
                         new FakeOrderDao(),
@@ -80,13 +79,15 @@ namespace MK.Booking.Test.OrderStatusUpdate
                         new FakeHoneyBadgerServiceClient(fakeServerSettings),
                         fakeServerSettings);
 
+                    Console.WriteLine("Starting Old Order Update");
+                    time = DateTime.Now;
+
                     oldUpdateOrderStatusJob.CheckStatus(string.Empty, 5);
 
                     Console.WriteLine("Old Order Update took :" + DateTime.Now.Subtract(time).TotalSeconds);
                 }
                 else if (_runNewUpdate)
                 {
-                    time = DateTime.Now;
 
                     var updateOrderStatusJob = new UpdateOrderStatusJob(
                         new FakeOrderDao(),
@@ -99,6 +100,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
                     updateOrderStatusJob.MaxParallelism = ChangeMaxDegreeOfParallelismIfRequested(maxDegreeOfParallelism);
 
                     Console.WriteLine("Starting New Order Update");
+                    time = DateTime.Now;
 
                     updateOrderStatusJob.CheckStatus(string.Empty, 5);
 
@@ -106,8 +108,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
                 }
                 else if (_runBoth)
                 {
-                    Console.WriteLine("Starting Old Order Update");
-                    time = DateTime.Now;
+                    maxDegreeOfParallelism = ChangeMaxDegreeOfParallelismIfRequested(maxDegreeOfParallelism);
 
                     var oldUpdateOrderStatusJob = new OldUpdateOrderStatusJob(
                         new FakeOrderDao(),
@@ -116,6 +117,9 @@ namespace MK.Booking.Test.OrderStatusUpdate
                         new FakeOrderStatusUpdater(fakeServerSettings),
                         new FakeHoneyBadgerServiceClient(fakeServerSettings),
                         fakeServerSettings);
+
+                    Console.WriteLine("Starting Old Order Update");
+                    time = DateTime.Now;
 
                     oldUpdateOrderStatusJob.CheckStatus(string.Empty, 5);
 
@@ -131,7 +135,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
                         new FakeHoneyBadgerServiceClient(fakeServerSettings),
                         fakeServerSettings);
 
-                    updateOrderStatusJob.MaxParallelism = ChangeMaxDegreeOfParallelismIfRequested(maxDegreeOfParallelism);
+                    updateOrderStatusJob.MaxParallelism = maxDegreeOfParallelism;
                     Console.WriteLine("Starting New Order Update");
 
                     updateOrderStatusJob.CheckStatus(string.Empty, 5);
