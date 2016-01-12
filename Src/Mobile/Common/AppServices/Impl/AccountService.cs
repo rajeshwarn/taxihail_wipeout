@@ -534,6 +534,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
+			if (refData == null)
+			{
+				return null;
+			}
+
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
@@ -552,8 +557,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<CreditCardDetails> GetDefaultCreditCard ()
         {
-			
 			var account = await GetAccount();
+
+			if (account == null)
+			{
+				return null;
+			}
 
 			var creditCard = account.DefaultCreditCard;
 

@@ -6,6 +6,10 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Exceptions;
+using System.Net;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -15,15 +19,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IPromotionService _promotionService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
+		private readonly IConnectivityService _connectivityService;
 
 		private ClientPaymentSettings _paymentSettings;
 
-		public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService, IAccountService accountService, IPaymentService paymentService)
+		public PromotionViewModel(IOrderWorkflowService orderWorkflowService, 
+			IPromotionService promotionService, 
+			IAccountService accountService, 
+			IPaymentService paymentService, 
+			IConnectivityService connectivityService)
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
 			_accountService = accountService;
 			_paymentService = paymentService;
+			_connectivityService = connectivityService;
 
             ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
@@ -172,6 +182,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var activePromotions = await _promotionService.GetActivePromotions();
 
+					if(activePromotions == null)
+					{
+						return;
+					}
+
                     foreach (var activePromotion in activePromotions)
                     {
                         ActivePromotions.Add(new PromotionItemViewModel(activePromotion, SelectPromotion));
@@ -181,8 +196,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PromotionLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+
+					var webServiceException = ex as WebServiceException;
+					var webException = ex as WebException;
+					var statusCode = webServiceException.SelectOrDefault(service => (int?) service.StatusCode, null) ??
+						webException.SelectOrDefault(service => (int?) service.Status, null);
+
+					switch (statusCode)
+					{
+						case (int)HttpStatusCode.ServiceUnavailable:
+						case (int)WebExceptionStatus.ConnectFailure:
+						case (int)WebExceptionStatus.NameResolutionFailure:
+							{
+								_connectivityService.ShowToast();
+								break;
+							}
+						default:
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PromotionLoadError"]);
+								break;
+							}
+					}
                 }
             }
         }

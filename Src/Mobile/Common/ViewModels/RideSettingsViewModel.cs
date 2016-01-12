@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,7 +22,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
-	    private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IConnectivityService _connectivityService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -32,13 +34,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleTypeService vehicleTypeService,
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
-			IOrderWorkflowService orderWorkflowService)
+			IOrderWorkflowService orderWorkflowService, 
+			IConnectivityService connectivityService)
 		{
 			this._vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
-		    _accountService = accountService;
+			_accountService = accountService;
+			_connectivityService = connectivityService;
             PhoneNumber = new PhoneNumberModel();
 		}
 
@@ -78,8 +82,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    catch (Exception ex)
 			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+
+					var webServiceException = ex as WebServiceException;
+					var webException = ex as WebException;
+					var statusCode = webServiceException.SelectOrDefault(service => (int?) service.StatusCode, null) ??
+						webException.SelectOrDefault(service => (int?) service.Status, null);
+
+					switch (statusCode)
+					{
+						case (int)HttpStatusCode.ServiceUnavailable:
+						case (int)WebExceptionStatus.ConnectFailure:
+						case (int)WebExceptionStatus.NameResolutionFailure:
+							{
+								_connectivityService.ShowToast();
+								break;
+							}
+						default:
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+								break;
+							}
+					}
 			    }
 			}
 		}

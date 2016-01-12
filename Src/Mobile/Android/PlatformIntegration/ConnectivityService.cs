@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             }
             else
             {
+                _messageService.DismissToast();
                 _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
             }
         }

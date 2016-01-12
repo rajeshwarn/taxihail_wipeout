@@ -12,16 +12,21 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using MK.Common.Exceptions;
+using System.Net;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class HistoryListViewModel : PageViewModel
     {
 		private readonly IAccountService _accountService;
+		private readonly IConnectivityService _connectivityService;
 
-		public HistoryListViewModel(IAccountService accountService)
+		public HistoryListViewModel(IAccountService accountService, IConnectivityService connectivityService)
         {
 			_accountService = accountService;
+			_connectivityService = connectivityService;
         }
 
 		private ObservableCollection<OrderViewModel> _orders;
@@ -104,7 +109,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    catch (Exception ex)
 			    {
                     Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+
+					var webServiceException = ex as WebServiceException;
+					var webException = ex as WebException;
+					var statusCode = webServiceException.SelectOrDefault(service => (int?) service.StatusCode, null) ??
+						webException.SelectOrDefault(service => (int?) service.Status, null);
+
+					switch (statusCode)
+					{
+						case (int)HttpStatusCode.ServiceUnavailable:
+						case (int)WebExceptionStatus.ConnectFailure:
+						case (int)WebExceptionStatus.NameResolutionFailure:
+							{
+								_connectivityService.ShowToast();
+								break;
+							}
+						default:
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+								break;
+							}
+					}
 			    }
 
 				if (orders.Any())
