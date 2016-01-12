@@ -8,8 +8,8 @@ using Java.Interop;
 using Android.Content;
 using Cirrious.CrossCore;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client;
 
 
 namespace apcurium.MK.Callbox.Mobile.Client.Controls.Message
@@ -51,7 +51,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Controls.Message
         public bool Show()
         {
             // Prevent multiple toasts to be displayed on home activity
-            if (_rootView.ChildCount > 1 && _owner is HomeActivity)
+            if (_rootView.ChildCount > 1) //&& _owner is HomeActivity)
             {
                 return false;
             }

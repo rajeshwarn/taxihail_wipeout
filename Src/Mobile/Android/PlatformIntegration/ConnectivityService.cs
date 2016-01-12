@@ -1,7 +1,12 @@
 ﻿using System;
-using Connectivity.Plugin;
 using System.Reactive.Subjects;
 using apcurium.MK.Common;
+
+#if CALLBOX
+using Plugin.Connectivity;
+#else
+using Connectivity.Plugin;
+#endif
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
