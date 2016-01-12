@@ -340,12 +340,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return tcs.Task;
         }
 
-        public void ShowToast(string message)
-        {           
+        public bool ShowToast(string message)
+        {       
+            bool success = false;
+
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
             dispatcher.RequestMainThreadAction(() => 
-                ToastHelper.Show(Context.Activity, message));
+                {
+                    success = ToastHelper.Show(Context.Activity, message);
+                });
+
+            return success;
         }
 
         public void DismissToast()

@@ -1,6 +1,7 @@
 ﻿using System;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -8,14 +9,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
     {
         public static ToastView Toast { get; set;}
 
-        public static void Show(string message)
+        public static bool Show(string message)
         {
+            if(UIApplication.SharedApplication.Windows != null 
+                && UIApplication.SharedApplication.Windows.Length > 0 
+                && UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length-1].RootViewController != null
+                && UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length-1].RootViewController is SplashView)
+            {
+                return false;
+            }
+
             UIApplication.SharedApplication.InvokeOnMainThread(() =>
                 {
                     Toast = new ToastView(message);
 
                     Toast.Show();
                 });
+
+            return true;
         }
 
         public static void Dismiss()

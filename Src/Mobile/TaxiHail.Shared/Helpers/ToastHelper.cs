@@ -2,8 +2,6 @@
 using Android.App;
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-using Cirrious.CrossCore;
-using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -11,17 +9,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
     {
         public static CustomToast Toast { get; set;}
 
-        public static void Show(Activity owner, string message)
+        public static bool Show(Activity owner, string message)
         {
             if (owner is SplashActivity)
             {
-                Mvx.Resolve<IConnectivityService>().ToastDismissed();
-                return;
+                return false;
             }
 
             Toast = new CustomToast(owner, message);
 
-            Toast.Show();
+            return Toast.Show();
         }
 
         public static void Dismiss()

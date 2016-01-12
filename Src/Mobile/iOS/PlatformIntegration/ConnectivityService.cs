@@ -36,8 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 if (!_isDisplayed)
                 {
                     _messageService.DismissToastNoAnimation();
-                    _messageService.ShowToast(_localize["NoConnectionMessage"]);
-                    _isDisplayed = true;
+                    _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
                 }
             }
         }
@@ -51,8 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         {
             if (!_isDisplayed)
             {
-                _messageService.ShowToast(_localize["NoConnectionMessage"]);
-                _isDisplayed = true;
+                _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
             }
         }
 
@@ -78,8 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                     {
                         if (!_isDisplayed)
                         {
-                            _messageService.ShowToast(_localize["NoConnectionMessage"]);
-                            _isDisplayed = true;
+                            _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
                         }
                     }
                 }

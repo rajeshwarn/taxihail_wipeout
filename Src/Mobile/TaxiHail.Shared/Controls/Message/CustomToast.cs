@@ -53,11 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 };
         }
 
-        public void Show()
+        public bool Show()
         {
             if (_rootView.ChildCount > 1)
             {
-                return;
+                return false;
             }
             // Hide toast while setting its place on screen
             _viewToDisplay.Visibility = ViewStates.Invisible;
@@ -82,6 +82,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             var yAnimator = new AnimatorSet();
             yAnimator.Play(objectAnimator);
             yAnimator.Start(); 
+
+            return true;
         }
 
         public void Dismiss()
