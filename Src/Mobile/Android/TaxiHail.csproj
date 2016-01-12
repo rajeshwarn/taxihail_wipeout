@@ -603,7 +603,6 @@
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
-    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
     <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
   </ItemGroup>
   <ItemGroup>

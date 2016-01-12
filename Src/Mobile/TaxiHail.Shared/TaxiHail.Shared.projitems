@@ -148,6 +148,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Activities\HomeActivity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ToastHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Message\CustomToast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\ConnectivityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

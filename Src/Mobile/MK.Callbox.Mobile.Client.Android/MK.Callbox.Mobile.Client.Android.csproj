@@ -133,11 +133,11 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Connectivity">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.2.0.2\lib\MonoAndroid10\Plugin.Connectivity.dll</HintPath>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Connectivity.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.2.0.2\lib\MonoAndroid10\Plugin.Connectivity.Abstractions.dll</HintPath>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +197,7 @@
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Controls\Message\CustomToast.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
-    <Compile Include="..\Android\PlatformIntegration\ConnectivityService.cs">
+    <Compile Include="..\TaxiHail.Shared\PlatformIntegration\ConnectivityService.cs">
       <Link>PlatformIntegration\ConnectivityService.cs</Link>
     </Compile>
   </ItemGroup>
@@ -233,6 +233,7 @@
     <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cancel.png">
       <Link>Resources\drawable-hdpi\cancel.png</Link>
     </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\Main.axml" />
