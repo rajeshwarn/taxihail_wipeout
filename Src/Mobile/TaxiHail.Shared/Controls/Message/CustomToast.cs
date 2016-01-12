@@ -8,6 +8,7 @@ using Java.Interop;
 using Android.Content;
 using Cirrious.CrossCore;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 
 #if CALLBOX
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
@@ -55,10 +56,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public bool Show()
         {
-            if (_rootView.ChildCount > 1)
+            // Prevent multiple toasts to be displayed on home activity
+            if (_rootView.ChildCount > 1 && _owner is HomeActivity)
             {
                 return false;
             }
+
             // Hide toast while setting its place on screen
             _viewToDisplay.Visibility = ViewStates.Invisible;
 
