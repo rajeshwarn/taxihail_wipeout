@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace apcurium.MK.Booking.ReadModel
 {
+    [Obsolete]
     public class PayPalAccountDetails
     {
         [Key]

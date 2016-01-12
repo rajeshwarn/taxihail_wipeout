@@ -132,7 +132,6 @@
             var data = $(form).serializeObject();
 
             this.$("#warning").hide();
-            this.$("#payPalWarning").hide();
             this.$('#warningChargeAccount').hide();
 
             if (data.paymentMode == "None" && data.isPayInTaxiEnabled == "true") {

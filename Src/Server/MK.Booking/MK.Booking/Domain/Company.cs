@@ -95,8 +95,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
         {
             PaymentMode = obj.ServerPaymentSettings.PaymentMode;
-            PayPalClientSettings = obj.ServerPaymentSettings.PayPalClientSettings;
-            PayPalServerSettings = obj.ServerPaymentSettings.PayPalServerSettings;
 
             IsChargeAccountEnabled = obj.ServerPaymentSettings.IsChargeAccountPaymentEnabled;
         }
@@ -432,11 +430,6 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PaymentModeChanged());
             }
 
-            if (HavePayPalSettingsChanged(command.ServerPaymentSettings))
-            {
-                Update(new PayPalSettingsChanged());
-            }
-
             if (ChargeAccountPaymentEnabledChanged(command.ServerPaymentSettings) && 
                 !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
             {
@@ -452,28 +445,6 @@ namespace apcurium.MK.Booking.Domain
         private bool ChargeAccountPaymentEnabledChanged(ServerPaymentSettings newPaymentSettings)
         {
             return newPaymentSettings.IsChargeAccountPaymentEnabled != IsChargeAccountEnabled;
-        }
-
-        private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
-        {
-            if (PayPalClientSettings == null || PayPalServerSettings == null)
-            {
-                return true;
-            }
-
-            var disabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
-
-            var webLandingPageChanged = PayPalServerSettings.LandingPageType != newPaymentSettings.PayPalServerSettings.LandingPageType;
-
-            var environmentChanged = PayPalClientSettings.IsSandbox != newPaymentSettings.PayPalClientSettings.IsSandbox;
-
-            var sandboxSettingsChanged = PayPalClientSettings.SandboxCredentials.ClientId != newPaymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
-                || PayPalServerSettings.SandboxCredentials.Secret != newPaymentSettings.PayPalServerSettings.SandboxCredentials.Secret;
-
-            var prodSettingsChanged = PayPalClientSettings.Credentials.ClientId != newPaymentSettings.PayPalClientSettings.Credentials.ClientId
-                   || PayPalServerSettings.Credentials.Secret != newPaymentSettings.PayPalServerSettings.Credentials.Secret;
-
-            return disabledStatusChanged || webLandingPageChanged || environmentChanged || sandboxSettingsChanged || prodSettingsChanged;
         }
 
         public void ActivateRule(Guid ruleId)

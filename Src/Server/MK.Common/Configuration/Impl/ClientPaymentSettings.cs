@@ -11,7 +11,6 @@ namespace apcurium.MK.Common.Configuration.Impl
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeClientSettings = new BraintreeClientSettings();
 			MonerisPaymentSettings = new MonerisPaymentSettings();
-            PayPalClientSettings = new PayPalClientSettings();
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
@@ -59,29 +58,13 @@ namespace apcurium.MK.Common.Configuration.Impl
 		[PropertyEncrypt]
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }
 
-		[PropertyEncrypt]
-        public PayPalClientSettings PayPalClientSettings { get; set; }
-
         public SupportedPaymentMethod SupportedPaymentMethod
         {
             get
             {
-                if (PayPalClientSettings.IsEnabled && IsPayInTaxiEnabled)
-                {
-                    return SupportedPaymentMethod.Multiple;
-                }
-
-                if (PayPalClientSettings.IsEnabled)
-                {
-                    return SupportedPaymentMethod.PayPalOnly;
-                }
-
-                if (IsPayInTaxiEnabled)
-                {
-                    return SupportedPaymentMethod.CreditCardOnly;
-                }
-
-                return SupportedPaymentMethod.None;
+                return IsPayInTaxiEnabled 
+                    ? SupportedPaymentMethod.CreditCardOnly 
+                    : SupportedPaymentMethod.None;
             }
         }
     }
