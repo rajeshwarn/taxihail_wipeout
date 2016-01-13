@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Braintree;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -13,6 +14,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class BraintreeVZeroService : IPaymentProviderClientService
     {
+        
+
+
         public async Task<string> ShowDropInView(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);

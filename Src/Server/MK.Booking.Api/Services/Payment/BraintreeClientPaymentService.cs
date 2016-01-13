@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 });
 
                 var creditCard = creditCardResult.Target;
-
+                
                 _commandBus.Send(new AddOrUpdateCreditCard
                 {
                     AccountId = userId,
@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Label = CreditCardLabelConstants.Personal.ToString(),
                     ExpirationMonth = creditCard.ExpirationMonth,
                     ExpirationYear = creditCard.ExpirationYear,
+                    ZipCode = creditCard.BillingAddress.PostalCode
                 });
 
                 return new TokenizedCreditCardResponse

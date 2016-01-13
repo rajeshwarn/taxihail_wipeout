@@ -192,11 +192,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return new GenerateClientTokenResponse();
 		}
 
-	    public async Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+	    public async Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, string cardholderName = null)
 	    {
             try
             {
-                return await GetClient().AddPaymentMethod(nonce);
+                return await GetClient().AddPaymentMethod(nonce, method, cardholderName);
             }
             catch (NotSupportedException)
             {

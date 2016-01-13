@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 RaisePropertyChanged(() => Data);
                 RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
-                RaisePropertyChanged(() => IsBraintreePaymentMode);
+                RaisePropertyChanged(() => IsPaypalEnabled);
                 RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 
                 if (_paymentToSettle != null)
@@ -210,9 +210,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-	    public bool IsBraintreePaymentMode
+	    public bool IsPaypalEnabled
 	    {
-	        get { return PaymentSettings.PaymentMode == PaymentMethod.Braintree; }
+	        get { return PaymentSettings.PaymentMode == PaymentMethod.Braintree
+                    && PaymentSettings.BraintreeClientSettings.EnablePayPal; }
 	    }
 
 		public string CreditCardNumber
@@ -490,7 +491,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	                var paymentNonce = await _paymentProviderClientService.GetPayPalNonce(clientToken.ClientToken);
 
-                    await _paymentService.AddPaymentMethod(paymentNonce);
+                    await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.Paypal);
 
                     CloseView();
                 });
@@ -596,7 +597,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     Data.ZipCode
                 );
 
-	        await _paymentService.AddPaymentMethod(paymentNonce);
+	        await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.CreditCard, Data.NameOnCard);
 
             CloseView();
         }

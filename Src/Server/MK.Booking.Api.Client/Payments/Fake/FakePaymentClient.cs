@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 			});
 		}
 
-		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce)
+		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, string cardholderName = null)
 		{
 			throw new NotSupportedException("This method is only supported for Braintree Payment");
 		}

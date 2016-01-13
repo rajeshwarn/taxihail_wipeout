@@ -1262,6 +1262,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05001e
 			public const int ErrorCancellingOrderTitle = 2131034142;
 			
+			// aapt resource value: 0x7f05030f
+			public const int ErrorChangeDropOff_Message = 2131034895;
+			
 			// aapt resource value: 0x7f050249
 			public const int ErrorCreateOrder_PendingOrder = 2131034697;
 			
@@ -2728,6 +2731,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050041
 			public const int UpdatedTermsAndConditionsAcceptButton = 2131034177;
+			
+			// aapt resource value: 0x7f05030e
+			public const int UsePayPal = 2131034894;
 			
 			// aapt resource value: 0x7f0502e9
 			public const int UserTaxiHailNetworkSettingsActivityName = 2131034857;
