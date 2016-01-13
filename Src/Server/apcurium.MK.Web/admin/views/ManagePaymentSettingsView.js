@@ -5,11 +5,6 @@
         className: 'well clearfix form-horizontal',
 
         events: {
-            'change [id=isSandbox]': 'onPayPalSettingsChanged',
-            'change [id=sandboxClientId]': 'onPayPalSettingsChanged',
-            'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
-            'change [id=prodClientId]': 'onPayPalSettingsChanged',
-            'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
             'change [name=isChargeAccountPaymentEnabled]': 'canPaymentMethodBeMandatory',
             'change [name=isPaymentOutOfAppDisabled]': 'canPaymentMethodBeMandatory',
             'change [name=isPayInTaxiEnabled]': 'canPaymentMethodBeMandatory',
@@ -40,13 +35,11 @@
             this.$("[id=landingPageType] option[value=" + data.serverPaymentSettings.payPalServerSettings.landingPageType + "]").attr("selected", "selected");
 
             this.warningDiv = this.$("#warning");
-            this.payPalWarningDiv = this.$("#payPalWarning");
             this.saveButton = this.$("#saveButton");
 
             this.chargeAccountDiv = this.$("#warningChargeAccount");
 
             this.onPaymentModeChanged();
-            this.onPayPalSettingsChanged();
 
             this.onChargeAccountSettingsChanged();
             this.canPaymentMethodBeMandatory();
@@ -96,18 +89,6 @@
 
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testMoneris(data), this.$("#monerisSettingsMessageZone"));
-        },
-
-        payPalProductionSettingsButtonClick: function() {
-
-            var data = this.$el.serializeObject();
-            this.testConfig(this.model.testPayPalProduction(data), this.$("#payPalProductionSettingsMessageZone"));
-        },
-
-        testPayPalSandboxSettingsButtonClick: function() {
-
-            var data = this.$el.serializeObject();
-            this.testConfig(this.model.testPayPalSandbox(data), this.$("#payPalSandboxSettingsMessageZone"));
         },
 
         alert: function(message, type, selector) {
