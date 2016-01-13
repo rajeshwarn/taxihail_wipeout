@@ -166,7 +166,7 @@ namespace apcurium.MK.Web
                 referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
             }
 
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, EnablePayPal);
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled);
 
             ReferenceData = referenceData.ToString();
 

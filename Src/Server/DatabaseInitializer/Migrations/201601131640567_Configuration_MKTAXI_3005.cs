@@ -7,12 +7,12 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.PaymentSettings", "BraintreeClientSettings_DisplayPayPalLogo", c => c.Boolean(nullable: false));
+            AddColumn("Config.PaymentSettings", "BraintreeClientSettings_EnablePayPal", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("Config.PaymentSettings", "BraintreeClientSettings_DisplayPayPalLogo");
+            DropColumn("Config.PaymentSettings", "BraintreeClientSettings_EnablePayPal");
         }
     }
 }
