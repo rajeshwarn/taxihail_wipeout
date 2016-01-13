@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
-                        CreditCardId = creditCard.CreditCardId.GetValueOrDefault(),
+                        CreditCardId = creditCard.CreditCardId,
                         AccountId = creditCard.AccountId,
                         NameOnCard = creditCard.NameOnCard,
                         Token = creditCard.Token,

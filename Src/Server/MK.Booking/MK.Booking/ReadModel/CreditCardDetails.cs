@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
         }
 
         [Key]
-        public Guid? CreditCardId { get; set; }
+        public Guid CreditCardId { get; set; }
 
         public Guid AccountId { get; set; }
 
