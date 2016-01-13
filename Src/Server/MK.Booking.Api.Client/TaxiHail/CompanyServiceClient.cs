@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -41,12 +42,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private void HandleResponseHeader(HttpWebResponse response)
         {
-            var version = response.Headers[HttpHeaders.ETag];
-            if (version != null)
-            {
-                //put in the cache the etag
-                _cacheService.Set("TermsVersion", version);
-            }
+			try 
+			{
+				var version = response.Headers.GetValues(HttpHeaders.ETag).FirstOrDefault();
+				if (version != null)
+				{
+					//put in the cache the etag
+					_cacheService.Set("TermsVersion", version);
+				}
+			}
+			catch 
+			{
+			}
         }
 
         private void AddVersionInformation(HttpWebRequest request)
