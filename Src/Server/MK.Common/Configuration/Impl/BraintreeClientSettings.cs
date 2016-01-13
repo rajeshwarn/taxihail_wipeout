@@ -14,6 +14,6 @@ namespace apcurium.MK.Common.Configuration.Impl
 		[PropertyEncrypt]
         public string ClientKey { get; set; }
 
-        public bool DisplayPayPalLogo { get; set; }
+        public bool EnablePayPal { get; set; }
     }
 }

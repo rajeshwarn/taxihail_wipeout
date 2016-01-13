@@ -105,10 +105,10 @@
     <label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeClientSettings.clientKey" value="{{braintreeClientSettings.clientKey}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Display PayPal Logo"}}}</label>
-    <select name="braintreeClientSettings.displayPayPalLogo" class="settingsBox">
-        <option value="{{braintreeClientSettings.displayPayPalLogo}}" selected>{{localizeBool braintreeClientSettings.displayPayPalLogo true="Yes" false="No"}}</option>
-        <option value="{{invertedBool braintreeClientSettings.displayPayPalLogo}}">{{localizeBool braintreeClientSettings.displayPayPalLogo true="No" false="Yes"}}</option>
+    <label class="control-label settingsLabel">{{{localize "Use PayPal"}}}</label>
+    <select name="braintreeClientSettings.enablePayPal" class="settingsBox">
+        <option value="{{braintreeClientSettings.enablePayPal}}" selected>{{localizeBool braintreeClientSettings.enablePayPal true="Yes" false="No"}}</option>
+        <option value="{{invertedBool braintreeClientSettings.enablePayPal}}">{{localizeBool braintreeClientSettings.enablePayPal true="No" false="Yes"}}</option>
     </select>
 
     <br />

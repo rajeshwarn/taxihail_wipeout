@@ -72,7 +72,7 @@
             TaxiHail.parameters.isChargeAccountPaymentEnabled = <%: IsChargeAccountPaymentEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isBraintreePrepaidEnabled = <%: IsBraintreePrepaidEnabled ? "true" : "false" %>;
             TaxiHail.parameters.maxNumberOfCreditCards = <%: MaxNumberOfCreditCards %>;
-            TaxiHail.parameters.displayPayPalLogo = <%: DisplayPayPalLogo ? "true" : "false" %>;
+            TaxiHail.parameters.enablePayPal = <%: EnablePayPal ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
             TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';

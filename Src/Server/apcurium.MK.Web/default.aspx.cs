@@ -61,8 +61,7 @@ namespace apcurium.MK.Web
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
         protected int MaxNumberOfCreditCards { get; private set; }
-        protected bool DisplayPayPalLogo { get; private set; }
-        protected string PayPalMerchantId { get; private set; }
+        protected bool EnablePayPal { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
@@ -144,12 +143,8 @@ namespace apcurium.MK.Web
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;
-            DisplayPayPalLogo = paymentSettings.BraintreeClientSettings.DisplayPayPalLogo;
+            EnablePayPal = paymentSettings.BraintreeClientSettings.EnablePayPal;
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
-
-            PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
-                ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId
-                : paymentSettings.PayPalServerSettings.Credentials.MerchantId;
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
@@ -171,7 +166,7 @@ namespace apcurium.MK.Web
                 referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
             }
 
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, DisplayPayPalLogo);
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, EnablePayPal);
 
             ReferenceData = referenceData.ToString();
 
@@ -197,18 +192,13 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled, bool payPalPrepaidEnabled)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled)
         {
             var paymentTypesToHide = new List<int?>();
 
             if (!creditCardPrepaidEnabled)
             {
                 paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
-            }
-
-            if (!payPalPrepaidEnabled)
-            {
-                paymentTypesToHide.Add(ChargeTypes.PayPal.Id);
             }
 
             return paymentList.Where(paymentType => !paymentTypesToHide.Contains(paymentType.Id)).ToList();
