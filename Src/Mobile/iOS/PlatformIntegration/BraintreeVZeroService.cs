@@ -11,7 +11,7 @@ using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    public class BraintreeDropInViewService : IDropInViewService
+    public class BraintreeVZeroService : IPaymentProviderClientService
     {
         public async Task<string> ShowDropInView(string clientToken)
         {
@@ -49,10 +49,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return await viewControllerDelegate.GetTask();
         }
 
+        public Task<string> GetPayPalNonce(string clientToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth,
+            string expirationYear, string firstName, string lastName, string zipCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetPlatformPayNone(string clientToken)
+        {
+            throw new NotImplementedException();
+        }
 
 
-
-		private class BraintreeDelegate : BTDropInViewControllerDelegate
+        private class BraintreeDelegate : BTDropInViewControllerDelegate
 		{
 			private readonly TaskCompletionSource<string> _taskCompletionSource;
 

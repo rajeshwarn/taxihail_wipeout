@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     {
         private Intent _scanIntent { get; set; }
         private const int CardIOScanRequestCode = 981288735;
-        private const int LinkPayPalAccountRequestCode = 481516234;
 
         private ClientPaymentSettings _paymentSettings;
 

@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
-		private readonly IDropInViewService _dropInService;
+		private readonly IPaymentProviderClientService _dropInService;
 		private readonly IPaymentService _paymentService;
 
 		private string _paymentToSettle;
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService,
-			IDropInViewService dropInService,
+			IPaymentProviderClientService dropInService,
 			IAppSettings appSettings)
 			:base(locationService, paymentService, accountService)
         {
@@ -151,35 +151,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-                return this.GetCommand(async () =>
+                return this.GetCommand(() =>
                 {
-					if(PaymentSettings.PaymentMode != PaymentMethod.Braintree)
-					{
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
-						return;
-					}
-
-					try
-					{
-						var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse().ShowProgress();
-						var paymentNonce = await _dropInService.ShowDropInView(tokenGenerationResponse.ClientToken);
-
-						using(this.Services().Message.ShowProgress())
-						{
-							await _paymentService.AddPaymentMethod(paymentNonce);
-
-							// Done in parallel to ensure that the app is in a correct state.
-							await Task.WhenAll(
-								_accountService.GetDefaultCreditCard(), 
-								GetCreditCards()
-							);
-						}
-					}
-					catch(OperationCanceledException)
-					{
-						// User cancelled braintree flow, exiting.
-					}
-					
+                    ShowViewModel<CreditCardAddViewModel>(new { isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle });
                 });
             }
         }

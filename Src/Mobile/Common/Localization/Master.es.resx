@@ -2988,4 +2988,7 @@
     <value>Código de confirmación inválido</value>
     <comment>The confirmation code is incorrect.</comment>
   </data>
+  <data name="UsePayPal" xml:space="preserve">
+    <value>Use PayPal</value>
+  </data>
 </root>

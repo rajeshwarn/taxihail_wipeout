@@ -1791,6 +1791,9 @@
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
+  <data name="UsePayPal" xml:space="preserve">
+    <value>Use PayPal</value>
+  </data>
   <data name="LinkPayPal" xml:space="preserve">
     <value>Link PayPal</value>
   </data>

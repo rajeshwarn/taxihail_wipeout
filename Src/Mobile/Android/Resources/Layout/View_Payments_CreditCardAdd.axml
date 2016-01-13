@@ -299,6 +299,20 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button
+                        style="@style/ButtonActionGrayStyle"
+                        android:id="@+id/UsePayPalAccountButton"
+                        android:drawableLeft="@drawable/paypal_icon"
+                        android:drawablePadding="-2dip"
+                        android:layout_gravity="center|left"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightButton"
+                        android:singleLine="true"
+                        android:lines="1"
+                        android:text="@string/UsePayPal"
+                        local:MvxBind="Visibility CanUnlinkPayPalAccount, Converter=Visibility, Click UsePaypalFlow"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
+                    <Button
                         style="@style/ButtonActionRedStyle"
                         android:id="@+id/DeleteCreditCardButton"
                         android:layout_width="fill_parent"

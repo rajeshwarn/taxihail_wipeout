@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 		private readonly IPromotionService _promotionService;
-	    private IDropInViewService _dropInViewService;
+	    private IPaymentProviderClientService _paymentProviderClientService;
 
 		private bool _isCreatingMenu;
 
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			IPaymentService paymentService,
 			IPromotionService promotionService, 
-            IDropInViewService dropInViewService)
+            IPaymentProviderClientService paymentProviderClientService)
         {
 		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_paymentService = paymentService;
 			_promotionService = promotionService;
-		    _dropInViewService = dropInViewService;
+		    _paymentProviderClientService = paymentProviderClientService;
 		    PartialConstructor();
         }
 
@@ -322,7 +322,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(() =>
 				{
 				    try
 				    {
@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                         else
                         {
-                            await NavigateToCreditCardAddView();
+                            ShowViewModel<CreditCardAddViewModel>();
                         }
                     }
 				    catch (TaskCanceledException)
@@ -345,28 +345,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-
-	    private async Task NavigateToCreditCardAddView()
-	    {
-	        var settings = await _paymentService.GetPaymentSettings();
-
-	        var shouldShowDropInView = settings.PaymentMode == PaymentMethod.Braintree &&
-	                                   _accountService.CurrentAccount.DefaultCreditCard == null;
-
-
-	        if (shouldShowDropInView)
-	        {
-	            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-	            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken);
-	            using (this.Services().Message.ShowProgress())
-	            {
-                    await _paymentService.AddPaymentMethod(paymentNonce);
-                    await _accountService.GetDefaultCreditCard();
-                }
-	        }
-
-	        ShowViewModel<CreditCardAddViewModel>();
-	    }
 
 	    public ICommand NavigateToNotificationsSettings
         {

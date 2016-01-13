@@ -138,7 +138,7 @@
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
-    <Compile Include="Infrastructure\IDropInViewService.cs" />
+    <Compile Include="Infrastructure\IPaymentProviderClientService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
     <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />

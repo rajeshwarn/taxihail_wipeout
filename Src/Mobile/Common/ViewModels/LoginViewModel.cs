@@ -26,18 +26,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
-	    private readonly IPaymentService _paymentService;
-	    private readonly IDropInViewService _dropInViewService;
 
-        public LoginViewModel(IFacebookService facebookService,
+	    public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IRegisterWorkflowService registrationService,
-			IVehicleTypeService vehicleTypeService, 
-            IPaymentService paymentService,
-            IDropInViewService dropInViewService)
+			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -47,8 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
-            _paymentService = paymentService;
-            _dropInViewService = dropInViewService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -485,8 +479,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					else
 					{
-						await AddCreditCard();
-					}
+                        ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions = true, isMandatory = true });
+                    }
 					return;
 				}
 
@@ -527,25 +521,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				LoginSucceeded(this, EventArgs.Empty);
 			}
 		}
-
-	    private async Task AddCreditCard()
-	    {
-            var paymentSettings = await _paymentService.GetPaymentSettings();
-
-            if (paymentSettings.PaymentMode != PaymentMethod.Braintree)
-            {
-                ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(new { showInstructions = true, isMandatory = true });
-                return;
-            }
-
-            var tokenGenerationResponse = await _paymentService.GenerateClientTokenResponse();
-            var paymentNonce = await _dropInViewService.ShowDropInView(tokenGenerationResponse.ClientToken).HideProgressDuringTaskIfNeeded();
-
-            await _paymentService.AddPaymentMethod(paymentNonce);
-            await _accountService.GetDefaultCreditCard();
-
-			GoToHomeView();
-        }
 
 	    private async Task<bool> NeedsToNavigateToAddCreditCard()
 		{
