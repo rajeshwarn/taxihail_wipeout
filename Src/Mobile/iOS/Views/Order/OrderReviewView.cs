@@ -142,10 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             lblRingCode.Maybe(ve => ve.AccessibilityHint = Localize.GetValue("EntryCodeLabel"));
 
-            set.BindSafe(lblNbLargeBags)
-                .For(v => v.Text)
-                .To(vm => vm.Settings.LargeBags);
-
             set.Bind(txtNote)
 				.For(v => v.Text)
                 .To(vm => vm.Note);
