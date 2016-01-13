@@ -7063,109 +7063,106 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int SubView_OrderReview = 2130903157;
 			
 			// aapt resource value: 0x7f030076
-			public const int SubView_OrderReview_Thriev = 2130903158;
+			public const int support_simple_spinner_dropdown_item = 2130903158;
 			
 			// aapt resource value: 0x7f030077
-			public const int support_simple_spinner_dropdown_item = 2130903159;
+			public const int TogglableSettingsListItem = 2130903159;
 			
 			// aapt resource value: 0x7f030078
-			public const int TogglableSettingsListItem = 2130903160;
+			public const int TutorialListItem = 2130903160;
 			
 			// aapt resource value: 0x7f030079
-			public const int TutorialListItem = 2130903161;
+			public const int VehicleInfoWindow = 2130903161;
 			
 			// aapt resource value: 0x7f03007a
-			public const int VehicleInfoWindow = 2130903162;
+			public const int View_About = 2130903162;
 			
 			// aapt resource value: 0x7f03007b
-			public const int View_About = 2130903163;
+			public const int View_AccountConfirmation = 2130903163;
 			
 			// aapt resource value: 0x7f03007c
-			public const int View_AccountConfirmation = 2130903164;
+			public const int View_AddressPickerContainer = 2130903164;
 			
 			// aapt resource value: 0x7f03007d
-			public const int View_AddressPickerContainer = 2130903165;
+			public const int View_Book_RideSummaryPage = 2130903165;
 			
 			// aapt resource value: 0x7f03007e
-			public const int View_Book_RideSummaryPage = 2130903166;
+			public const int View_BookingRating = 2130903166;
 			
 			// aapt resource value: 0x7f03007f
-			public const int View_BookingRating = 2130903167;
+			public const int View_CreateAccount = 2130903167;
 			
 			// aapt resource value: 0x7f030080
-			public const int View_CreateAccount = 2130903168;
+			public const int View_DateTimePicker = 2130903168;
 			
 			// aapt resource value: 0x7f030081
-			public const int View_DateTimePicker = 2130903169;
+			public const int View_EditAutoTip = 2130903169;
 			
 			// aapt resource value: 0x7f030082
-			public const int View_EditAutoTip = 2130903170;
+			public const int View_ExtendedSplashScreen = 2130903170;
 			
 			// aapt resource value: 0x7f030083
-			public const int View_ExtendedSplashScreen = 2130903171;
+			public const int View_HistoryDetail = 2130903171;
 			
 			// aapt resource value: 0x7f030084
-			public const int View_HistoryDetail = 2130903172;
+			public const int View_HistoryList = 2130903172;
 			
 			// aapt resource value: 0x7f030085
-			public const int View_HistoryList = 2130903173;
+			public const int View_Home = 2130903173;
 			
 			// aapt resource value: 0x7f030086
-			public const int View_Home = 2130903174;
+			public const int View_InitializeOrderForAccountPayment = 2130903174;
 			
 			// aapt resource value: 0x7f030087
-			public const int View_InitializeOrderForAccountPayment = 2130903175;
+			public const int View_LocationDetail = 2130903175;
 			
 			// aapt resource value: 0x7f030088
-			public const int View_LocationDetail = 2130903176;
+			public const int View_LocationList = 2130903176;
 			
 			// aapt resource value: 0x7f030089
-			public const int View_LocationList = 2130903177;
+			public const int View_Login = 2130903177;
 			
 			// aapt resource value: 0x7f03008a
-			public const int View_Login = 2130903178;
+			public const int View_ManualPairingForRideLinq = 2130903178;
 			
 			// aapt resource value: 0x7f03008b
-			public const int View_ManualPairingForRideLinq = 2130903179;
+			public const int View_NotificationSettings = 2130903179;
 			
 			// aapt resource value: 0x7f03008c
-			public const int View_NotificationSettings = 2130903180;
+			public const int View_OverduePayment = 2130903180;
 			
 			// aapt resource value: 0x7f03008d
-			public const int View_OverduePayment = 2130903181;
+			public const int View_PasswordRecovery = 2130903181;
 			
 			// aapt resource value: 0x7f03008e
-			public const int View_PasswordRecovery = 2130903182;
+			public const int View_Payments_CreditCardAdd = 2130903182;
 			
 			// aapt resource value: 0x7f03008f
-			public const int View_Payments_CreditCardAdd = 2130903183;
+			public const int View_Payments_CreditCardMultiple = 2130903183;
 			
 			// aapt resource value: 0x7f030090
-			public const int View_Payments_CreditCardMultiple = 2130903184;
+			public const int View_Promotion = 2130903184;
 			
 			// aapt resource value: 0x7f030091
-			public const int View_Promotion = 2130903185;
+			public const int View_RideSettings = 2130903185;
 			
 			// aapt resource value: 0x7f030092
-			public const int View_RideSettings = 2130903186;
+			public const int View_TermsAndConditions = 2130903186;
 			
 			// aapt resource value: 0x7f030093
-			public const int View_TermsAndConditions = 2130903187;
+			public const int View_Tutorial = 2130903187;
 			
 			// aapt resource value: 0x7f030094
-			public const int View_Tutorial = 2130903188;
+			public const int View_UpdatedTermsAndConditions = 2130903188;
 			
 			// aapt resource value: 0x7f030095
-			public const int View_UpdatedTermsAndConditions = 2130903189;
+			public const int View_UpdatePassword = 2130903189;
 			
 			// aapt resource value: 0x7f030096
-			public const int View_UpdatePassword = 2130903190;
+			public const int View_UserTaxiHailNetworkSettings = 2130903190;
 			
 			// aapt resource value: 0x7f030097
-			public const int View_UserTaxiHailNetworkSettings = 2130903191;
-			
-			// aapt resource value: 0x7f030098
-			public const int View_WaitingCarLandscape = 2130903192;
+			public const int View_WaitingCarLandscape = 2130903191;
 			
 			static Layout()
 			{
