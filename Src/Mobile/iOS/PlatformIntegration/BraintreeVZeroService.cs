@@ -14,89 +14,64 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class BraintreeVZeroService : IPaymentProviderClientService
     {
-        
-
-
-        public async Task<string> ShowDropInView(string clientToken)
+        public Task<string> GetPayPalNonce(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);
 
-			var viewControllerDelegate = new BraintreeDelegate();
+			var navController = Mvx.Resolve<UINavigationController>();
 
-            var paymentRequest = new BTPaymentRequest()
-            {
-                CallToActionText = "Save",
-                AdditionalPayPalScopes = new NSSet<NSString>(new NSString("profile")),
-                SummaryDescription = "Enter a new payment method for your account."
-            };
-
-            var dropInViewController = new BTDropInViewController(client)
+			var paypalDriver = new BTPayPalDriver(client)
 			{
-				Delegate = viewControllerDelegate,
-                PaymentRequest = paymentRequest,
-            };
+					ViewControllerPresentingDelegate = navController
+			};
 
-			var cancelButton = new UIBarButtonItem(UIBarButtonSystemItem.Cancel,(s,e) => 
-			{
-				viewControllerDelegate.DropInViewControllerDidCancel(dropInViewController);
-			});
+			var tcs = new TaskCompletionSource<string>();
 
-			dropInViewController.NavigationItem.LeftBarButtonItem = cancelButton;
-            dropInViewController.NavigationItem.Title = "Add a payment method";
-            dropInViewController.NavigationController.NavigationBarHidden = false;
-            dropInViewController.NavigationItem.SetHidesBackButton(true, false);
+			paypalDriver.AuthorizeAccountWithAdditionalScopes(new NSSet("profile"), (paypalNonce, error) =>
+				{
+					if(error != null)
+					{
+						var exception = new NSErrorException(error);
 
-            var navController = Mvx.Resolve<UINavigationController>();
+						tcs.TrySetException(exception);
+					}
 
-            await navController.PresentViewControllerAsync(dropInViewController, true);
+					tcs.TrySetResult(paypalNonce.Nonce);
+				});
 
-			return await viewControllerDelegate.GetTask();
-        }
-
-        public Task<string> GetPayPalNonce(string clientToken)
-        {
-            throw new NotImplementedException();
+			return tcs.Task;
         }
 
         public Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth,
             string expirationYear, string firstName, string lastName, string zipCode)
         {
-            throw new NotImplementedException();
+			var braintreeClient = new BTAPIClient(clientToken);
+
+			var cardClient = new BTCardClient(braintreeClient);
+
+			var card = new BTCard(creditCardNumber, expirationMonth, expirationYear, ccv);
+			card.PostalCode = zipCode;
+
+			var tcs = new TaskCompletionSource<string>();
+
+			cardClient.TokenizeCard(card, (nonce, error) =>
+				{
+					if(error != null)
+					{
+						var exception = new NSErrorException(error);
+
+						tcs.TrySetException(exception);
+					}
+
+					tcs.TrySetResult(nonce.Nonce);
+				});
+
+			return tcs.Task;
         }
 
         public Task<string> GetPlatformPayNone(string clientToken)
         {
             throw new NotImplementedException();
         }
-
-
-        private class BraintreeDelegate : BTDropInViewControllerDelegate
-		{
-			private readonly TaskCompletionSource<string> _taskCompletionSource;
-
-			public BraintreeDelegate ()
-			{
-				_taskCompletionSource = new TaskCompletionSource<string>();
-			}
-
-			#region implemented abstract members of BTDropInViewControllerDelegate
-			public override void DropInViewController(BTDropInViewController viewController, BTPaymentMethodNonce paymentMethodNonce)
-			{
-				_taskCompletionSource.TrySetResult(paymentMethodNonce.Nonce);
-				viewController.DismissViewControllerAsync(true).FireAndForget();
-			}
-			public override void DropInViewControllerDidCancel(BTDropInViewController viewController)
-			{
-				_taskCompletionSource.TrySetCanceled();
-				viewController.DismissViewControllerAsync(true).FireAndForget();
-			}
-			#endregion
-
-
-			public Task<string> GetTask()
-			{
-				return _taskCompletionSource.Task;
-			}
-		}
     }
 }
