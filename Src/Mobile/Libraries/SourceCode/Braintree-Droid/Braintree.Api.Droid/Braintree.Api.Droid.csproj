@@ -41,6 +41,7 @@
     <Compile Include="Additions\AbstractAsyncCollectorTask.Fixup.cs" />
     <Compile Include="Additions\AbstractCollectorProcess.Fixup.cs" />
     <Compile Include="Additions\AsyncTransmissionTask.Fixup.cs" />
+    <Compile Include="Additions\BraintreeFragment.Fixup.cs" />
     <Compile Include="Additions\ErrorEditText.Fixup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
