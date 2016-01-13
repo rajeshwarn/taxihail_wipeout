@@ -4,7 +4,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public abstract class BaseDeviceCollectorService : IDeviceCollectorService
 	{
-		protected string DeviceCollectorUrl = "https://tst.kaptcha.com/";
+		protected string DeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
 		protected string MerchantId = "160700";
 
         public abstract string CollectAndReturnSessionId();
