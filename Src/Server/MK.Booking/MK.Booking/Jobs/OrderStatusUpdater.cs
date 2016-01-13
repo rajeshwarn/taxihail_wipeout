@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Jobs
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
-        public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
+        public virtual void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
@@ -239,7 +239,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        public void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
+        public virtual void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
         {
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderStatusDetail.OrderId);
             if (rideLinqDetails == null)
