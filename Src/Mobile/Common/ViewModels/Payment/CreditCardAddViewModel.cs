@@ -481,7 +481,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	        get { return PaymentSettings.PaymentMode == PaymentMethod.Braintree; }
 	    }
 
-	    public ICommand UsePaypalFlow
+	    public ICommand UsePaypalCommand
 	    {
 	        get
 	        {
