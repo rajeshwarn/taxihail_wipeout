@@ -35,13 +35,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #if CLIENT
         private void HandleResponseHeader(HttpResponseMessage response)
         {
-            var version = response.Headers.GetValues("ETag").FirstOrDefault();
+			try 
+			{
+				var version = response.Headers.GetValues("ETag").FirstOrDefault();
 
-            if (version.HasValueTrimmed())
-            {
-                //put in the cache the etag
-                _cacheService.Set(CacheKey_TermsVersion, version);
-            }
+				if (version.HasValueTrimmed())
+				{
+					//put in the cache the etag
+					_cacheService.Set(CacheKey_TermsVersion, version);
+				}
+			}
+			catch
+			{
+			}
         }
 
         private void AddVersionInformation(HttpClient client)
