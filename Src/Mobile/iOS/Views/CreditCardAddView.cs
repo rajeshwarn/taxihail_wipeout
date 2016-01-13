@@ -16,12 +16,12 @@ using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
-        private PayPalClientSettings _payPalSettings;
         private CardIOPaymentViewController _cardScanner;
         private CardScannerDelegate _cardScannerDelegate;
 
@@ -33,11 +33,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				return Utilities.CanReadCardWithCamera() 
 					&& !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
-        }
-
-        private bool PayPalIsEnabled
-        {
-            get { return _payPalSettings.IsEnabled; }
         }
 
         public CreditCardAddView () : base("CreditCardAddView", null)
@@ -72,7 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-            _payPalSettings = paymentSettings.PayPalClientSettings;
 
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
 
@@ -101,12 +95,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ConfigureCreditCardSection();
 
-            //TODO: braintree paypal
-            //if (PayPalIsEnabled)
-            //{
-            //    ConfigurePayPalSection();
-            //}
-            //else
+			if (paymentSettings.PaymentMode == PaymentMethod.Braintree && paymentSettings.BraintreeClientSettings.EnablePayPal)
+            {
+                ConfigurePayPalSection();
+            }
+            else
             {
                 viewPayPal.RemoveFromSuperview();
             }
@@ -167,20 +160,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.CCV);
 
-            //set.Bind(btnLinkPayPal)
-            //    .For(v => v.Hidden)
-            //    .To(vm => vm.CanLinkPayPalAccount)
-            //    .WithConversion("BoolInverter");
-
-            //set.Bind(btnUnlinkPayPal)
-            //    .For(v => v.Hidden)
-            //    .To(vm => vm.CanUnlinkPayPalAccount)
-            //    .WithConversion("BoolInverter");
-
-            //set.Bind(viewPayPalIsLinkedInfo)
-            //    .For(v => v.Hidden)
-            //    .To(vm => vm.ShowLinkedPayPalInfo)
-            //    .WithConversion("BoolInverter");
+            set.Bind(btnLinkPayPal)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsPaypalEnabled)
+                .WithConversion("BoolInverter");
 
             set.Bind(txtTip)
                 .For(v => v.Text)
@@ -195,6 +178,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             txtNameOnCard.ShouldReturn += GoToNext;
         }
+
+		private void ConfigurePayPalSection()
+		{
+			FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
+			btnLinkPayPal.SetTitle(Localize.GetValue("UsePayPal"), UIControlState.Normal);
+			btnLinkPayPal.TouchUpInside += (s, e) => ViewModel.UsePaypalCommand.ExecuteIfPossible();
+		}
 
         private void ConfigureTipSection()
         {

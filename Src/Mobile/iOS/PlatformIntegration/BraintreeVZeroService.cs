@@ -22,12 +22,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var paypalDriver = new BTPayPalDriver(client)
 			{
-					ViewControllerPresentingDelegate = navController
+					ViewControllerPresentingDelegate = new PresentingDelegate(navController)
 			};
 
 			var tcs = new TaskCompletionSource<string>();
 
-			paypalDriver.AuthorizeAccountWithAdditionalScopes(new NSSet("profile"), (paypalNonce, error) =>
+			var paypalScopes = new NSSet<NSString>(new NSString("profile"));
+
+			paypalDriver.AuthorizeAccountWithAdditionalScopes(paypalScopes, (paypalNonce, error) =>
 				{
 					if(error != null)
 					{
@@ -71,7 +73,36 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public Task<string> GetPlatformPayNone(string clientToken)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Apple pay is not currently implemented. This will be implemented in a future release.");
         }
+
+
+		private class PresentingDelegate: BTViewControllerPresentingDelegate
+		{
+			private UINavigationController _navController;
+
+			public PresentingDelegate(UINavigationController navController)
+			{
+				_navController = navController;
+			}
+
+			#region implemented abstract members of BTViewControllerPresentingDelegate
+			public override void RequestsDismissalOfViewController(NSObject driver, UIViewController viewController)
+			{
+				_navController.DismissViewControllerAsync(true).FireAndForget();
+			}
+			public override void RequestsPresentationOfViewController(NSObject driver, UIViewController viewController)
+			{
+				_navController.PresentViewControllerAsync(viewController, true).FireAndForget();
+			}
+			#endregion
+			
+		}
+
+
+
     }
+
+
+
 }
