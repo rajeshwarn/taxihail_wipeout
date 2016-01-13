@@ -120,7 +120,16 @@ namespace apcurium.MK.Common.Extensions
                 }
 
                 var body = await result.Content.ReadAsStringAsync();
-                var errorResponse = body.FromJson<ErrorResponse>();
+
+                ErrorResponse errorResponse;
+                try
+                {
+                    errorResponse = body.FromJson<ErrorResponse>()
+                }
+                catch
+                {
+                    errorResponse = null;
+                }
 
                 if (errorResponse != null)
                 {
