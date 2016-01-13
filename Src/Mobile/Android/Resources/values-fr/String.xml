@@ -719,6 +719,7 @@
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="OrderStatus_AddDestination">Ajouter votre destination</string>
   <string name="OrderStatus_RemoveDestination">Enlever votre destination</string>
+  <string name="ErrorChangeDropOff_Message">Désolé, votre destination n\'a pas pu être modifiée</string>
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
@@ -755,4 +756,5 @@
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">Aucun compte n\'a été trouvé pour cet email</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
+  <string name="UsePayPal">Utiliser PayPal</string>
 </resources>

@@ -558,6 +558,7 @@
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="PromoProgress">Progress :</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="UsePayPal">Use PayPal</string>
   <string name="LinkPayPal">Link PayPal</string>
   <string name="UnlinkPayPal">Unlink PayPal</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
@@ -726,6 +727,7 @@
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="OrderStatus_AddDestination">Add your destination</string>
   <string name="OrderStatus_RemoveDestination">Remove your destination</string>
+  <string name="ErrorChangeDropOff_Message">Sorry, we couldn’t update your destination.</string>
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>

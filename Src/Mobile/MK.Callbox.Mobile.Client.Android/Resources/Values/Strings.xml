@@ -781,4 +781,6 @@
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="UsePayPal">Use PayPal</string>
+  <string name="ErrorChangeDropOff_Message">Sorry, we couldn’t update your destination.</string>
 </resources>
