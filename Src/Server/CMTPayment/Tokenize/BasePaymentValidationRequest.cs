@@ -11,6 +11,11 @@ namespace CMTPayment.Tokenize
         public string SessionId { get; set; }
 
         /// <summary>
+        /// Note: This field is only used if the first name and last name are not provided
+        /// </summary>
+        public string BillingFullName { get; set; }
+
+        /// <summary>
         /// Warning: Don't send it now since we only have fullname
         /// </summary>
         /// <value>The first name for the billing info.</value>

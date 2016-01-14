@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         protected string ClientKey { get; set; }
 
-        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 };
             }
         }
-
+        
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
             return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
         {
             return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
         }

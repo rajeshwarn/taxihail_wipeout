@@ -113,7 +113,7 @@ namespace apcurium.MK.Web.Tests
                 context.RemoveAll<OverduePaymentDetail>();
                 context.SaveChanges();
 
-                var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
+                var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.NameOnCard, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
                 var token = tokenizeResponse.CardOnFileToken;
 
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
@@ -185,7 +185,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetPaymentClient();
             
-            var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
+            var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.NameOnCard, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
             var token = tokenizeResponse.CardOnFileToken;
 
             var response = await client.ForgetTokenizedCard(token);
@@ -196,7 +196,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_tokenizing_a_credit_card_amex()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2.ToString(), null, TestCreditCards.AmericanExpress.ZipCode, TestAccount);
+            var response = await client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.NameOnCard, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2.ToString(), null, TestCreditCards.AmericanExpress.ZipCode, TestAccount);
             Assert.True(response.IsSuccessful, response.Message);
         }
 
@@ -204,7 +204,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_tokenizing_a_credit_card_discover()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2.ToString(), null, TestCreditCards.Discover.ZipCode, TestAccount);
+            var response = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.NameOnCard, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2.ToString(), null, TestCreditCards.Discover.ZipCode, TestAccount);
             Assert.True(response.IsSuccessful, response.Message);
         }
 
@@ -212,7 +212,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_tokenizing_a_credit_card_mastercard()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2.ToString(), null, TestCreditCards.Mastercard.ZipCode, TestAccount);
+            var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.NameOnCard, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2.ToString(), null, TestCreditCards.Mastercard.ZipCode, TestAccount);
             Assert.True(response.IsSuccessful, response.Message);
         }
 
@@ -220,7 +220,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_tokenizing_a_credit_card_visa()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
+            var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.NameOnCard, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2.ToString(), null, TestCreditCards.Visa.ZipCode, TestAccount);
             Assert.True(response.IsSuccessful, response.Message);
         }
     }

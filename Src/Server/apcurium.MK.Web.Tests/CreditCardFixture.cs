@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Tests
             const string label = "Personal";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
-            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2.ToString(), null, cc.Discover.ZipCode, TestAccount);
+            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.NameOnCard, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2.ToString(), null, cc.Discover.ZipCode, TestAccount);
 
             await sut.AddCreditCard(new CreditCardRequest
             {
@@ -89,7 +89,7 @@ namespace apcurium.MK.Web.Tests
                 Label = label
             });
 
-            var tokenResponse2 = await client.Tokenize(cc.AmericanExpress.Number, cc.AmericanExpress.ExpirationDate, cc.AmericanExpress.AvcCvvCvv2.ToString(), null, cc.AmericanExpress.ZipCode, TestAccount);
+            var tokenResponse2 = await client.Tokenize(cc.AmericanExpress.Number, cc.AmericanExpress.NameOnCard, cc.AmericanExpress.ExpirationDate, cc.AmericanExpress.AvcCvvCvv2.ToString(), null, cc.AmericanExpress.ZipCode, TestAccount);
 
             await sut.UpdateCreditCard(new CreditCardRequest
             {
@@ -130,7 +130,7 @@ namespace apcurium.MK.Web.Tests
             const string label = "Personal";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
-            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2.ToString(), null, cc.Discover.ZipCode, TestAccount);
+            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.NameOnCard, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2.ToString(), null, cc.Discover.ZipCode, TestAccount);
 
             await sut.AddCreditCard(new CreditCardRequest
             {

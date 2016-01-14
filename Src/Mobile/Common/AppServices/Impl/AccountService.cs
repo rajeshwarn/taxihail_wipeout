@@ -571,6 +571,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
+                creditCard.NameOnCard,
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
 				creditCard.CCV,
 				kountSessionId,

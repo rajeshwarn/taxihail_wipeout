@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
-        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
 		{
             return Tokenize(MonerisClient, creditCardNumber, expiryDate);
 		}
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-        public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
         {
             return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
         }

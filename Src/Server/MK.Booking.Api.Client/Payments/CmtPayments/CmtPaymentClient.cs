@@ -40,27 +40,28 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
+            return Tokenize(CmtPaymentServiceClient, accountNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
-        public async Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
+        public async Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
         {
             try
             {
                 var request = new TokenizeValidateRequest
                 {
-                    Token = cardToken,
+                    Token = creditCard.Token,
                     Cvv = cvv,
                     SessionId = kountSessionId,
                     Email = account.Email,
+                    BillingFullName = creditCard.NameOnCard,
                     CustomerIpAddress = _ipAddressManager.GetIPAddress()
                 };
 
-                if(zipCode.HasValue())
+                if(creditCard.ZipCode.HasValue())
                 {
-                    request.ZipCode = zipCode;
+                    request.ZipCode = creditCard.ZipCode;
                 }
 
                 var response = await CmtPaymentServiceClient.PostAsync(request);
@@ -116,7 +117,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        private async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
+        private async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient, string nameOnCard,
             string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
@@ -131,6 +132,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     Cvv = cvv,
                     SessionId = kountSessionId,
                     Email = account.Email,
+                    BillingFullName = nameOnCard,
                     CustomerId = account.Id.ToString(),
                     CustomerIpAddress = _ipAddressManager.GetIPAddress()
                 };

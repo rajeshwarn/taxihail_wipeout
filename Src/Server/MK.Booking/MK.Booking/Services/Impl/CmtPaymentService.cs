@@ -436,6 +436,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ZipCode = creditCardDetail.ZipCode,
                     Email = accountDetail.Email,
                     CustomerIpAddress = orderDetail.OriginatingIpAddress,
+                    BillingFullName = creditCardDetail.NameOnCard,
                     SessionId = orderDetail.KountSessionId
                 };
 

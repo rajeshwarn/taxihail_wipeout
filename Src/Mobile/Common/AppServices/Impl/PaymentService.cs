@@ -114,9 +114,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-			return GetClient().Tokenize(creditCardNumber, expiryDate, cvv, kountSessionId, zipCode, account);
+			return GetClient().Tokenize(creditCardNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
@@ -124,9 +124,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return GetClient().ForgetTokenizedCard(cardToken);
         }
 
-		public Task<BasePaymentResponse> ValidateTokenizedCard(string cardToken, string cvv, string kountSessionId, string zipCode, Account account)
+		public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
 		{
-			return GetClient().ValidateTokenizedCard(cardToken, cvv, kountSessionId, zipCode, account);
+			return GetClient().ValidateTokenizedCard(creditCard, cvv, kountSessionId, account);
 		}
 
 		public async Task<OverduePayment> GetOverduePayment()

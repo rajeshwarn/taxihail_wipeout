@@ -880,7 +880,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 					var cvv = await _cvvSubject.Take(1).ToTask();
 
-					var response = await _paymentService.ValidateTokenizedCard(creditCard.Token, cvv, kountSessionId, creditCard.ZipCode, _accountService.CurrentAccount);
+					var response = await _paymentService.ValidateTokenizedCard(creditCard, cvv, kountSessionId, _accountService.CurrentAccount);
 					if(!response.IsSuccessful)
 					{
 						throw new Exception();

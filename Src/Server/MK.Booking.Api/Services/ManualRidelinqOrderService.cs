@@ -118,6 +118,7 @@ namespace apcurium.MK.Booking.Api.Services
                     ZipCode = creditCard.ZipCode,
                     Email = account.Email,
                     CustomerIpAddress = RequestContext.IpAddress,
+                    BillingFullName = creditCard.NameOnCard,
                     SessionId = request.KountSessionId
 		        };
 
