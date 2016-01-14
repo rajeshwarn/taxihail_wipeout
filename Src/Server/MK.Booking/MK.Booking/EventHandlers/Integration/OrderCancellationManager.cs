@@ -37,11 +37,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 string.Format("User requested a cancellation before IbsOrderId was received, cancel the order on ibs now that we have it (OrderId: {0}, IbsOrderId: {1}, CompanyKey {2})",
                     @event.SourceId,
                     @event.IBSOrderId,
-                    orderDetail.CompanyKey
+                    @event.CompanyKey
                     ));
 
             // Cancel order on current company IBS
-            _ibsCreateOrderService.CancelIbsOrder(@event.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, orderDetail.AccountId);
+            _ibsCreateOrderService.CancelIbsOrder(@event.IBSOrderId, @event.CompanyKey, orderDetail.Settings.Phone, orderDetail.AccountId);
         }
     }
 }
