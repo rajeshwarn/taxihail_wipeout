@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private MvxSpinner _txtDialCode;
         private EditText _txtPhone;
         private EditText _txtPassengers;
-        private EditText _txtLargeBags;
         private EditText _txtApartment;
         private EditText _txtEntryCode;
         private EditTextSpinner _txtChargeType;
@@ -49,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _txtName = Content.FindViewById<EditText>(Resource.Id.txtName);
                 _txtPhone = Content.FindViewById<EditText>(Resource.Id.txtPhone);
                 _txtPassengers = Content.FindViewById<EditText>(Resource.Id.txtPassengers);
-                _txtLargeBags = Content.FindViewById<EditText>(Resource.Id.txtLargeBags);
                 _txtApartment = Content.FindViewById<EditText>(Resource.Id.txtApartment);
                 _txtEntryCode = Content.FindViewById<EditText>(Resource.Id.txtEntryCode);
                 _txtChargeType = Content.FindViewById<EditTextSpinner>(Resource.Id.txtChargeType);
@@ -57,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
                 TextFieldInHomeSubviewsBehavior.ApplyTo(
-                    new List<EditText>{ _txtName, _txtPhone, _txtPassengers, _txtLargeBags, _txtApartment, _txtEntryCode },
+                    new List<EditText>{ _txtName, _txtPhone, _txtPassengers, _txtApartment, _txtEntryCode },
                     () => _bottomPadding.Visibility = ViewStates.Visible,
                     () => _bottomPadding.Visibility = ViewStates.Gone
                 );
@@ -205,10 +203,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.BindSafe(_txtPassengers)
                 .For(v => v.Text)
                 .To(vm => vm.BookingSettings.Passengers);
-
-            set.BindSafe(_txtLargeBags)
-                .For(v => v.Text)
-                .To(vm => vm.BookingSettings.LargeBags);
 
             set.BindSafe(_txtApartment)
                 .For(v => v.Text)

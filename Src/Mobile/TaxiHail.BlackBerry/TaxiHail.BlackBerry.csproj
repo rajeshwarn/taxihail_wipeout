@@ -1448,17 +1448,11 @@
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderAirport.axml">
       <Link>Resources\Layout\SubView_OrderAirport.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderEdit_Thriev.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit.axml">
       <Link>Resources\Layout\SubView_OrderEdit.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderOptions.axml">
       <Link>Resources\Layout\SubView_OrderOptions.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderReview_Thriev.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview.axml">
       <Link>Resources\Layout\SubView_OrderReview.axml</Link>
@@ -1484,14 +1478,8 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_Book_RideSummaryPage.axml">
       <Link>Resources\Layout\View_Book_RideSummaryPage.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <Link>Resources\Layout\View_BookEditInformation_Thriev.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation.axml">
       <Link>Resources\Layout\View_BookEditInformation.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail_Thriev.axml">
-      <Link>Resources\Layout\View_BookingDetail_Thriev.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail.axml">
       <Link>Resources\Layout\View_BookingDetail.axml</Link>

@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
             Handles<IbsOrderInfoAddedToOrder>(NoAction);
-            Handles<OrderCancelledBecauseOfError>(NoAction);
+            Handles<OrderCancelledBecauseOfError>(OnOrderCancelledBecauseOfError);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
             Handles<OrderManuallyPairedForRideLinq>(NoAction);
@@ -306,7 +306,17 @@ namespace apcurium.MK.Booking.Domain
 
         public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
         {
-            if (status == null) throw new InvalidOperationException();
+            if (status == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (_status == OrderStatus.Canceled)
+            {
+                // Order was cancelled, we might have a race condition where OrderStatusUpdater would overwrite 
+                // the cancel status and continue polling the order forever
+                return;
+            }
 
             if (status.Status != _status || status.IBSStatusId != _ibsStatus || _fare != fare)
             {
@@ -482,6 +492,11 @@ namespace apcurium.MK.Booking.Domain
 		}
 
         private void OnOrderCancelled(OrderCancelled obj)
+        {
+            _status = OrderStatus.Canceled;
+        }
+
+        private void OnOrderCancelledBecauseOfError(OrderCancelledBecauseOfError obj)
         {
             _status = OrderStatus.Canceled;
         }

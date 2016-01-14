@@ -481,8 +481,6 @@
     <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
     <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
