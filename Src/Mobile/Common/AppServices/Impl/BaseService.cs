@@ -7,12 +7,13 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System.Net;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-        
 		protected static async Task<TResult> RunWithRetryAsync<TResult>(
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,

@@ -1,6 +1,8 @@
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Droid.Fragging;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -38,7 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             base.OnStart();
             ViewModel.OnViewStarted(_firstStart);
-            _firstStart = false;
+            _firstStart = false;            
+            Mvx.Resolve<IConnectivityService>().HandleToastInNewView();
         }
 
         protected override void OnStop()
