@@ -13,9 +13,9 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public FakeServerSettings(bool useHoneyBadger = false)
         {
             ServerData = new ServerTaxiHailSetting();
-            var config = new Dictionary<string, string>()
+            var config = new Dictionary<string, string>
             {
-                 ["TaxiHail.ApplicationName"] = "Apcurium"
+                {"TaxiHail.ApplicationName", "Apcurium" }
             };
 
             if (useHoneyBadger)
