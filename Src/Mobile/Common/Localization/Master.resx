@@ -2391,4 +2391,10 @@
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
   </data>
+  <data name="PaypalErrorMessage" xml:space="preserve">
+  	<value>An error occurred while attempting to contact paypal</value>
+  </data>
+  <data name="PaypalError_Title" xml:space="preserve">
+  	<value>Paypal error</value>
+  </data>
 </root>

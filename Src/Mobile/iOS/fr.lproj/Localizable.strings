@@ -755,3 +755,4 @@
 "ServiceErrorResetPassword_AccountNotFound"="Aucun compte n'a été trouvé pour cet email";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
 "UsePayPal"="Utiliser PayPal";
+"PaypalErrorMessage"="Une erreur est arrivée lors de la communication avec Paypal.";

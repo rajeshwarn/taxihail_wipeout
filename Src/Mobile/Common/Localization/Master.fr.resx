@@ -2390,4 +2390,10 @@
   <data name="UsePayPal" xml:space="preserve">
     <value>Utiliser PayPal</value>
   </data>
+  <data name="PaypalErrorTitle" xml:space="preserve">
+  	<value>Erreur Paypal</value>
+  </data>
+  <data name="PaypalErrorMessage" xml:space="preserve">
+  	<value>Une erreur est arrivée lors de la communication avec Paypal.</value>
+  </data>
 </root>

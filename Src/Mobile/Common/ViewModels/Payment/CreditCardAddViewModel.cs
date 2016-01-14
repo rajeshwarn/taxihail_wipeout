@@ -432,14 +432,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{ 
 			get
 			{
-				return this.GetCommand(() =>
-					{
-                        SaveCreditCard();
-                    });
+				return this.GetCommand(() => SaveCreditCard());
 			} 
 		}
-
-
 
 		public ICommand DeleteCreditCardCommand
 		{
@@ -487,13 +482,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	        {
 	            return this.GetCommand(async () =>
 	            {
-                    var clientToken = await _paymentService.GenerateClientTokenResponse();
+					var messageService = this.Services().Message;
 
-	                var paymentNonce = await _paymentProviderClientService.GetPayPalNonce(clientToken.ClientToken);
+					try
+					{
+						using(messageService.ShowProgress())
+						{
+							var clientToken = await _paymentService.GenerateClientTokenResponse();
 
-                    await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.Paypal);
+							var paymentNonce = await _paymentProviderClientService.GetPayPalNonce(clientToken.ClientToken);
 
-                    CloseView();
+							await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.Paypal);
+						}
+						CloseView();
+					}
+					catch (Exception ex)
+					{
+						var localize = this.Services().Localize;
+						messageService(localize["PaypalError_Title"], localize["PaypalErrorMessage"]);
+						this.Logger.LogError(ex);
+					}
                 });
 
 	        }
@@ -518,7 +526,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-        private async void SaveCreditCard()
+        private async Task SaveCreditCard()
         {
             try
             {

@@ -32,7 +32,6 @@
                 <outlet property="viewCreditCard" destination="hLR-a7-OyV" id="Jpd-Ur-EDi"/>
                 <outlet property="viewLabel" destination="agx-4W-Kx5" id="57P-eT-f1A"/>
                 <outlet property="viewPayPal" destination="pfD-TX-kyS" id="1za-Jl-ynx"/>
-                <outlet property="viewPayPalIsLinkedInfo" destination="MIO-8W-uf4" id="J0y-44-aVK"/>
                 <outlet property="viewTip" destination="jyp-DI-ki8" id="6aT-Wz-Llh"/>
             </connections>
         </placeholder>
@@ -325,31 +324,11 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIO-8W-uf4">
-                                    <rect key="frame" x="23" y="15" width="275" height="41"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paypal.png" translatesAutoresizingMaskIntoConstraints="NO" id="oSK-1c-cwo">
-                                            <rect key="frame" x="10" y="5" width="90" height="31"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="90" id="5kY-06-rzs"/>
-                                                <constraint firstAttribute="height" constant="31" id="yj3-Il-DcI"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="oSK-1c-cwo" secondAttribute="centerY" id="5gJ-dp-IeR"/>
-                                        <constraint firstAttribute="width" constant="275" id="FsE-4x-rxJ"/>
-                                        <constraint firstAttribute="height" constant="41" id="Uba-yM-miZ"/>
-                                        <constraint firstItem="oSK-1c-cwo" firstAttribute="leading" secondItem="MIO-8W-uf4" secondAttribute="leading" constant="10" id="akP-Hc-L7m"/>
-                                    </constraints>
-                                </view>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="centerX" secondItem="MIO-8W-uf4" secondAttribute="centerX" id="7aN-L5-mOX"/>
-                                <constraint firstAttribute="bottom" secondItem="MIO-8W-uf4" secondAttribute="bottom" constant="15" id="Qc5-bj-nRS"/>
                                 <constraint firstAttribute="centerX" secondItem="btW-1V-APs" secondAttribute="centerX" id="Rmy-yy-coH"/>
+                                <constraint firstAttribute="bottom" secondItem="btW-1V-APs" secondAttribute="bottom" constant="15" id="fdf-x5-mnc"/>
                                 <constraint firstItem="btW-1V-APs" firstAttribute="top" secondItem="pfD-TX-kyS" secondAttribute="top" constant="15" id="jJb-Yn-tEo"/>
-                                <constraint firstItem="MIO-8W-uf4" firstAttribute="top" secondItem="btW-1V-APs" secondAttribute="top" id="oSh-ai-3ty"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -396,7 +375,4 @@
             <point key="canvasLocation" x="361" y="409.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="paypal.png" width="90" height="31"/>
-    </resources>
 </document>

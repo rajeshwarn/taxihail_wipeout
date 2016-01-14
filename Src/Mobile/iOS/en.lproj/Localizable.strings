@@ -756,3 +756,5 @@
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"PaypalErrorMessage"="An error occurred while attempting to contact paypal";
+"PaypalError_Title"="Paypal error";

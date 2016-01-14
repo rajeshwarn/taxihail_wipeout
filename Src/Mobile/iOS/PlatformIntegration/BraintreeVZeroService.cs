@@ -9,11 +9,13 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using UIKit;
 using Cirrious.CrossCore;
 using Foundation;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class BraintreeVZeroService : IPaymentProviderClientService
     {
+
         public Task<string> GetPayPalNonce(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);
@@ -22,7 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var paypalDriver = new BTPayPalDriver(client)
 			{
-					ViewControllerPresentingDelegate = new PresentingDelegate(navController)
+				ViewControllerPresentingDelegate = new PresentingDelegate(navController),
+				//TODO MKTAXI-3005: Make this configurable in admin panel
+				ReturnURLScheme = "com.apcurium.MK.TaxiHailDemo.paypal"
 			};
 
 			var tcs = new TaskCompletionSource<string>();
@@ -36,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 						var exception = new NSErrorException(error);
 
 						tcs.TrySetException(exception);
+
+						return;
 					}
 
 					tcs.TrySetResult(paypalNonce.Nonce);

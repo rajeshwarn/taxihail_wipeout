@@ -182,8 +182,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private void ConfigurePayPalSection()
 		{
 			FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
+			btnLinkPayPal.SetLeftImage("paypal_icon.png");
 			btnLinkPayPal.SetTitle(Localize.GetValue("UsePayPal"), UIControlState.Normal);
-			btnLinkPayPal.TouchUpInside += (s, e) => ViewModel.UsePaypalCommand.ExecuteIfPossible();
+			btnLinkPayPal.TouchUpInside += (s, e) =>
+			{
+				ViewModel.UsePaypalCommand.ExecuteIfPossible();
+			};
 		}
 
         private void ConfigureTipSection()
