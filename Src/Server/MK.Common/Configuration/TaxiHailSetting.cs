@@ -64,6 +64,8 @@ namespace MK.Common.Configuration
                 PlayLink = "http://www.mobile-knowledge.com/"
 			};
 
+            Kount = new KountSettingsContainer();
+
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
