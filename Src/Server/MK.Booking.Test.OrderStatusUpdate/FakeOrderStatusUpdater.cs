@@ -1,26 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
-using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using CMTServices;
 
 namespace MK.Booking.Test.OrderStatusUpdate
 {
     public class FakeOrderStatusUpdater : OrderStatusUpdater
     {
         public FakeOrderStatusUpdater(IServerSettings serverSettings)
-            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -103,8 +100,11 @@ namespace MK.Booking.Test.OrderStatusUpdate
             throw new NotImplementedException();
         }
 
-#endregion
+        public VehicleIdMappingDetail GetVehicleMapping(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
 
-
+        #endregion
     }
 }
