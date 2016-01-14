@@ -58,7 +58,7 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
-			Store = new StoreSettingContainer()
+			Store = new StoreSettingContainer
 			{
 				AppleLink = "http://www.mobile-knowledge.com/",
                 PlayLink = "http://www.mobile-knowledge.com/"
@@ -136,6 +136,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
 		public FlightStatsSettingsContainer FlightStats { get; set; }
 		public StoreSettingContainer Store { get; protected set; }
+        public KountSettingsContainer Kount { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
