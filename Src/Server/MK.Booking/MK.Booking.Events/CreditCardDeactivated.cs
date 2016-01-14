@@ -5,6 +5,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class CreditCardDeactivated : VersionedEvent
     {
-        public Guid CreditCardId { get; set; }
+        public Guid? CreditCardId { get; set; }
     }
 }
