@@ -188,6 +188,12 @@
     <Reference Include="DeviceCollectorBindingsAndroid">
       <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
     </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +209,7 @@
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -1564,6 +1571,9 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_Tutorial.axml">
       <Link>Resources\Layout\View_Tutorial.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CustomToastView.axml">
+      <Link>Resources\Layout\CustomToastView.axml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>

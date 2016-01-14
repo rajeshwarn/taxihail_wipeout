@@ -68,7 +68,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetFakePaymentClient();
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), client);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, client);
 
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
@@ -119,7 +119,7 @@ namespace apcurium.MK.Web.Tests
         {
             var client = GetFakePaymentClient();
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), client);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, client);
 
             const string creditCardComapny = "visa";
             const string nameOnCard = "Bob";

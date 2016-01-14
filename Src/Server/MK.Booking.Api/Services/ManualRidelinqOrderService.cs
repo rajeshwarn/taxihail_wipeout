@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
 			_notificationService = notificationService;
 
             // Since CMT will handle the payment on their ends. We do not need to know the actual company of the cab from wich we do the manual pairing.
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
 
             _resources = new Resources.Resources(_serverSettings);

@@ -5,6 +5,9 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
+
 #if CLIENT
 using System.Linq;
 using System.Net.Http;
@@ -19,10 +22,11 @@ namespace CMTPayment
     public partial class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger)
+
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
-                : cmtSettings.BaseUrl, sessionId, packageInfo)
+                : cmtSettings.BaseUrl, sessionId, packageInfo, connectivityService)
         {
             _logger = logger;
 

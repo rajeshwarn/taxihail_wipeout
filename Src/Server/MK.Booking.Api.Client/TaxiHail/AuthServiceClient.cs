@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
 
 #if CLIENT
 using apcurium.MK.Common.Extensions;
@@ -19,8 +20,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AuthServiceClient : BaseServiceClient, IAuthServiceClient
     {
-        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

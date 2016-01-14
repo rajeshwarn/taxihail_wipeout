@@ -2,7 +2,7 @@ using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 
-namespace apcurium.MK.Booking.Mobile.Client.Localization
+namespace apcurium.MK.Callbox.Mobile.Client.Localization
 {
     public class Localize : ILocalization
     {

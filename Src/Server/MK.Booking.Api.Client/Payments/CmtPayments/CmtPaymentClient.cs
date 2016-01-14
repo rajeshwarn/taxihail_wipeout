@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -30,12 +31,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
         private readonly IIPAddressManager _ipAddressManager;
 
-        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger)
-            : base(baseUrl, sessionId, packageInfo)
+        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(baseUrl, sessionId, packageInfo, connectivityService)
         {
             _ipAddressManager = ipAddressManager;
 
-            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger);
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
         }
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
@@ -211,7 +212,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
-            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, null, logger);
+            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, null, logger, null);
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessful;
         }

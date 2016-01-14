@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -12,8 +15,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class NetworkRoamingServiceClient : BaseServiceClient
     {
-        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

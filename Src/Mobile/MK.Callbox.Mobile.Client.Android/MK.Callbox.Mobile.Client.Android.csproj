@@ -133,6 +133,12 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\TaxiHail.Shared\Activities\EditTextDialogActivity.cs">
@@ -190,6 +196,11 @@
     <Compile Include="Setup.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="Controls\Message\CustomToast.cs" />
+    <Compile Include="Helpers\ToastHelper.cs" />
+    <Compile Include="..\TaxiHail.Shared\PlatformIntegration\ConnectivityService.cs">
+      <Link>PlatformIntegration\ConnectivityService.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Bold.otf" />
@@ -214,6 +225,16 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\CustomAlertDialogView.axml" />
+    <AndroidResource Include="..\Android\Resources\Layout\CustomToastView.axml">
+      <Link>Resources\Layout\CustomToastView.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cancel.png">
+      <Link>Resources\Drawable\cancel.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cancel.png">
+      <Link>Resources\drawable-hdpi\cancel.png</Link>
+    </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\Main.axml" />

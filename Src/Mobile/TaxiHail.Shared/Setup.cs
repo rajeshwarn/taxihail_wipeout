@@ -30,6 +30,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPackageInfo>(new PackageInfo(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<IIPAddressManager, IPAddressManager>();
             container.Register<IMessageService, MessageService>();
+            container.Register<IConnectivityService, ConnectivityService> ();
             container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
             container.Register<ILocationService, LocationService>();
             container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
@@ -73,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
-            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
             container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
@@ -84,10 +86,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
 	                case MapProvider.TomTom:
-	                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+                            return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>());
 	                case MapProvider.Google:
 	                default:
-	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+                            return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
 

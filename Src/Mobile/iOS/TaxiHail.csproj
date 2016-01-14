@@ -276,6 +276,12 @@
     <Reference Include="DeviceCollectorBindingsIOS">
       <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
     </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -301,6 +307,7 @@
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
     <None Include="CustomLinker.xml" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -723,6 +730,11 @@
     </Compile>
     <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
     <Compile Include="PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="Helper\ToastHelper.cs" />
+    <Compile Include="Controls\ToastView.cs" />
+    <BundleResource Include="Resources\cancel.png" />
+    <BundleResource Include="Resources\cancel%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

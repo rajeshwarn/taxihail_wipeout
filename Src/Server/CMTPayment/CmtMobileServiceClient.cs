@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using ServiceStack.ServiceHost;
 
@@ -8,10 +9,10 @@ namespace CMTPayment
 {
     public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxMobileBaseUrl
-                : cmtSettings.MobileBaseUrl, sessionId, packageInfo)
+                : cmtSettings.MobileBaseUrl, sessionId, packageInfo, connectivityService)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
