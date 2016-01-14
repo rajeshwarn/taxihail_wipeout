@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
@@ -16,9 +13,9 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public FakeServerSettings(bool useHoneyBadger = false)
         {
             ServerData = new ServerTaxiHailSetting();
-            var config = new Dictionary<string, string>()
+            var config = new Dictionary<string, string>
             {
-                 ["TaxiHail.ApplicationName"] = "Apcurium"
+                {"TaxiHail.ApplicationName", "Apcurium" }
             };
 
             if (useHoneyBadger)
@@ -41,7 +38,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
         {
             SettingsLoader.InitializeDataObjects(ServerData, values, null);
         }
-        public ServerTaxiHailSetting ServerData { get; }
+        public ServerTaxiHailSetting ServerData { get; private set; }
         public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
             throw new NotImplementedException();

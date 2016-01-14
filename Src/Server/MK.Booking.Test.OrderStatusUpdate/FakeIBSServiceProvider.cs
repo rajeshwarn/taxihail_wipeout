@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.ChargeAccounts;
-using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 
 namespace MK.Booking.Test.OrderStatusUpdate
 {
@@ -61,7 +59,8 @@ namespace MK.Booking.Test.OrderStatusUpdate
 
             return response;
         }
-#region
+
+        #region
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
@@ -105,6 +104,12 @@ namespace MK.Booking.Test.OrderStatusUpdate
             throw new NotImplementedException();
         }
 
+        public IBSDistanceEstimate GetDistanceEstimate(double distance, int? waitTime, int? stopCount, int? passengerCount,
+            int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber, int? tripTime)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
         {
             throw new NotImplementedException();
@@ -116,6 +121,15 @@ namespace MK.Booking.Test.OrderStatusUpdate
         }
 
         public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount,
+            string type, string provider, string transactionId, string authorizationCode, string cardToken, int accountID,
+            string name, string phone, string email, string os, string userAgent, decimal fareAmount = 0,
+            decimal extrasAmount = 0, decimal vatAmount = 0, decimal discountAmount = 0, decimal tollAmount = 0,
+            decimal surchargeAmount = 0)
         {
             throw new NotImplementedException();
         }
@@ -142,6 +156,11 @@ namespace MK.Booking.Test.OrderStatusUpdate
         {
             throw new NotImplementedException();
         }
-#endregion
+
+        public bool UpdateDropOffInTrip(int ibsOrderId, Guid orderId, Address dropOffAddress)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
