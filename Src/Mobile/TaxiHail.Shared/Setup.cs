@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
-            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IConnectivityService>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>());
 	                case MapProvider.Google:
 	                default:
-                            return new GoogleApiClient(c.Resolve<IConnectivityService>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+                            return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
             

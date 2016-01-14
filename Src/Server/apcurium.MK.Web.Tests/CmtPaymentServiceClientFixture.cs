@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new CmtPaymentClient(BaseUrl, SessionId, new CmtPaymentSettings(), new DummyPackageInfo(), null);
+            return new CmtPaymentClient(BaseUrl, SessionId, new CmtPaymentSettings(), new DummyPackageInfo(), null, null);
         }
 
         protected override PaymentProvider GetProvider()

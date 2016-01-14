@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(IConnectivityService connectivityService, string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, IPaymentServiceClient tokenizationService = null)
             : base(url, sessionId, packageInfo, connectivityService)
         {
             _paymentService = tokenizationService;

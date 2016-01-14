@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
         }
 
         [TestFixtureSetUp]

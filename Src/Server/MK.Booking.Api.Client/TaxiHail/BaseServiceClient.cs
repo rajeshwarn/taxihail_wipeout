@@ -4,7 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-
+using System.Net;
 
 #if CLIENT
 using ModernHttpClient;

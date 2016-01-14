@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
 
-        public GoogleApiClient(IConnectivityService connectivityService, IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+        public GoogleApiClient(IAppSettings settings, ILogger logger, IConnectivityService connectivityService, IGeocoder fallbackGeocoder = null)
             : base (connectivityService)
         {
             _logger = logger;

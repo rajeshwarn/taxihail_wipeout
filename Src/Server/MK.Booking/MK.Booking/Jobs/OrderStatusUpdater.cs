@@ -1038,7 +1038,7 @@ namespace apcurium.MK.Booking.Jobs
 
         private void InitializeCmtServiceClient(ServerPaymentSettings paymentSettings)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }
