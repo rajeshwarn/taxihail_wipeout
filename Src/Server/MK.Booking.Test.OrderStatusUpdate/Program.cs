@@ -156,7 +156,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
 
         private static int ChangeMaxDegreeOfParallelismIfRequested(int maxDegreeOfParallelism)
         {
-            Console.WriteLine($"The Current degree of parallelism is {maxDegreeOfParallelism}. Do you want to Change it ? ");
+            Console.WriteLine(String.Format("The Current degree of parallelism is {0}. Do you want to Change it ? ", maxDegreeOfParallelism));
             Console.WriteLine("y/N");
 
             if (Console.ReadLine().Equals("y", StringComparison.InvariantCultureIgnoreCase))

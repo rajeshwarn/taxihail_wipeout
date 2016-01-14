@@ -122,7 +122,9 @@
             if ($('#ServerId').find(":selected").text() == 'Production'
              || $('#ServerId').find(":selected").text() == 'ProductionV2'
              || $('#ServerId').find(":selected").text() == 'Prod3'
-             || $('#ServerId').find(":selected").text() == 'OVH'                ) {
+             || $('#ServerId').find(":selected").text() == 'TH AWS Prod 1'
+             || $('#ServerId').find(":selected").text() == 'TH AWS Prod 2'
+             || $('#ServerId').find(":selected").text() == 'OVH') {
                 if (confirm("Are you sure you want to deploy on a PRODUCTION server?"))
                     return true;
                 else
