@@ -50,8 +50,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Controls.Message
 
         public bool Show()
         {
-            // Prevent multiple toasts to be displayed on home activity
-            if (_rootView.ChildCount > 1) //&& _owner is HomeActivity)
+            // Prevent multiple toasts to be displayed
+            if (_rootView.ChildCount > 1)
             {
                 return false;
             }

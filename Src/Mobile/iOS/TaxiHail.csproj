@@ -728,6 +728,8 @@
     <Compile Include="PlatformIntegration\ConnectivityService.cs" />
     <Compile Include="Helper\ToastHelper.cs" />
     <Compile Include="Controls\ToastView.cs" />
+    <BundleResource Include="Resources\cancel.png" />
+    <BundleResource Include="Resources\cancel%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

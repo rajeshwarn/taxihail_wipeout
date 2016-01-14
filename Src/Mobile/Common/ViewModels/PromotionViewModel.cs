@@ -19,21 +19,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IPromotionService _promotionService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
-		private readonly IConnectivityService _connectivityService;
 
 		private ClientPaymentSettings _paymentSettings;
 
 		public PromotionViewModel(IOrderWorkflowService orderWorkflowService, 
 			IPromotionService promotionService, 
 			IAccountService accountService, 
-			IPaymentService paymentService, 
-			IConnectivityService connectivityService)
+			IPaymentService paymentService)
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
 			_accountService = accountService;
 			_paymentService = paymentService;
-			_connectivityService = connectivityService;
 
             ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
@@ -197,27 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (Exception ex)
                 {
 					Logger.LogMessage(ex.Message, ex.ToString());
-
-					var webServiceException = ex as WebServiceException;
-					var webException = ex as WebException;
-					var statusCode = webServiceException.SelectOrDefault(service => (int?) service.StatusCode, null) ??
-						webException.SelectOrDefault(service => (int?) service.Status, null);
-
-					switch (statusCode)
-					{
-						case (int)HttpStatusCode.ServiceUnavailable:
-						case (int)WebExceptionStatus.ConnectFailure:
-						case (int)WebExceptionStatus.NameResolutionFailure:
-							{
-								_connectivityService.ShowToast();
-								break;
-							}
-						default:
-							{
-								this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PromotionLoadError"]);
-								break;
-							}
-					}
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PromotionLoadError"]);
                 }
             }
         }

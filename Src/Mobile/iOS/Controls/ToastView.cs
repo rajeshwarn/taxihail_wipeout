@@ -29,8 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             _modalWindow = _modalWindow ?? new UIWindow(new CGRect(0, UIScreen.MainScreen.Bounds.Height-_toastHeight, UIScreen.MainScreen.Bounds.Width, _toastHeight)) 
                 { 
+                    WindowLevel = UIWindowLevel.Alert,
                     RootViewController = new UIViewController()
                 };
+            
             _modalWindow.MakeKeyAndVisible();
             _modalWindow.RootViewController.View.AddSubview(this);
 
