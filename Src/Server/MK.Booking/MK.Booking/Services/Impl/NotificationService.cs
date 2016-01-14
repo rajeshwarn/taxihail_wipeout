@@ -492,7 +492,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
 
-        public async Task SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
             SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
@@ -574,7 +574,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     paymentTransactionId = paymentInfo.TransactionId;
                 }
 
-                var addressToUseForDropOff = await TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
+                var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
                 var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
 
                 var hasDropOffAddress = addressToUseForDropOff != null
@@ -795,7 +795,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendPushOrSms(account.Id, alert, data);
         }
 
-        private async Task<Address> TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
+        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
             if ((orderStatus == null
@@ -825,10 +825,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             // Find the exact dropoff address using the last vehicle position
-            var exactDropOffAddress = (await _geocoding.SearchAsync(
-                latitude,
-                longitude,
-                clientLanguageCode)).FirstOrDefault();
+            var exactDropOffAddress = _geocoding.Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
         }

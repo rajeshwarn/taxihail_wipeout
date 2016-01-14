@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Api.Services
                         _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra,
                             surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra + tipIncentive - amountSavedByPromo,
                             _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow,
-                            request.EmailAddress, "en", amountSavedByPromo, "PROMO10", new SendReceipt.CmtRideLinqReceiptFields
+                            request.EmailAddress, request.Language, amountSavedByPromo, "PROMO10", new SendReceipt.CmtRideLinqReceiptFields
                             {
                                 Distance = 13,
                                 DriverId = "D1337",
@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Api.Services
                                     }
                                 },
                                 TipIncentive = tipIncentive
-                            }, true).HandleErrors();
+                            }, true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
