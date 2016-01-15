@@ -865,17 +865,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					var creditCard = await _accountService.GetDefaultCreditCard();
 					if (creditCard == null)
 					{
-						throw new Exception();
+						throw new Exception("No credit card in account");
 					}
 
 					if (creditCard.IsExpired())
 					{
-						throw new Exception();
+						throw new Exception("Credit card has expired");
 					}
 
 					if (creditCard.IsDeactivated)
 					{
-						throw new Exception();
+						throw new Exception("Credit card is deactivated");
 					}
 
 					var cvv = await _cvvSubject.Take(1).ToTask();
@@ -883,13 +883,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					var response = await _paymentService.ValidateTokenizedCard(creditCard, cvv, kountSessionId, _accountService.CurrentAccount);
 					if(!response.IsSuccessful)
 					{
-						throw new Exception();
+						throw new Exception("PaymentService.ValidateTokenizedCard() returned an unsuccessful response");
 					}
 				}
 			}
 			catch(Exception ex)
 			{
-				throw new InvalidCreditCardException();
+				throw new InvalidCreditCardException("Validation of tokenized card failed", ex);
 			}
 		}
 
