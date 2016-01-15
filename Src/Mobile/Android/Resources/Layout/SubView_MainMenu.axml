@@ -378,7 +378,7 @@
                     android:gravity="left" />
                 <TextView
                     android:text="2.0.17"
-                    local:MvxBind="Text Panel.Version"
+                    local:MvxBind="Text Panel.Version; Click Panel.OpenDebugMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"

@@ -735,6 +735,7 @@
     <Compile Include="Controls\ToastView.cs" />
     <BundleResource Include="Resources\cancel.png" />
     <BundleResource Include="Resources\cancel%402x.png" />
+    <Compile Include="Views\DebugView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -76,7 +76,9 @@ namespace MK.Common.Configuration
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+            DebugViewEnabled = true;
 #endif
+
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -575,5 +577,10 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Unload Timeout", Description = "Time (in seconds) waiting for Charge Amounts from Driver")]
         public double ChargeAmountsTimeOut { get; set; }
+
+        [PropertyEncrypt]
+        [SendToClient]
+        [Display(Name = "Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
+        public bool DebugViewEnabled { get; protected set; }
     }
 }

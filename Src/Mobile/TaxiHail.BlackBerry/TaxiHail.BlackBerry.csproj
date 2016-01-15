@@ -1575,5 +1575,8 @@
     <AndroidResource Include="..\Android\Resources\Layout\CustomToastView.axml">
       <Link>Resources\Layout\CustomToastView.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Debug.axml">
+      <Link>Resources\Layout\View_Debug.axml</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>

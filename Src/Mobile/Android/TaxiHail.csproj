@@ -605,6 +605,9 @@
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
     <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
+    <AndroidResource Include="Resources\Layout\View_Debug.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
