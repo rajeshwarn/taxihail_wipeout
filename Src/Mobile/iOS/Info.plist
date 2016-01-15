@@ -61,7 +61,10 @@
     <string>Resources/Images.xcassets/LaunchImage.launchimage</string>
     <key>NSAppTransportSecurity</key>
     <dict>
-      <key>NSExceptionDomains</key>
+      <!--Connect to anything (this is probably BAD)-->
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+      <!-- <key>NSExceptionDomains</key>
       <dict>
         <key>test.taxihail.biz</key>
         <dict>
@@ -84,8 +87,7 @@
           <key>NSIncludesSubdomains</key>
           <true />
         </dict>
-
-      </dict>
+      </dict> -->
     </dict>
   </dict>
 </plist>
