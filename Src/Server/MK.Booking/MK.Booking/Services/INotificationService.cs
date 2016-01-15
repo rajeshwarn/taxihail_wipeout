@@ -1,11 +1,8 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Services
 {
@@ -36,7 +33,7 @@ namespace apcurium.MK.Booking.Services
 
         void SendNoShowFeesReceiptEmail(int ibsOrderId, double feeAmount, Address pickUpAddress, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
-        Task SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip, double tax,
+        void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip, double tax,
             double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion,
             string promoCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false);

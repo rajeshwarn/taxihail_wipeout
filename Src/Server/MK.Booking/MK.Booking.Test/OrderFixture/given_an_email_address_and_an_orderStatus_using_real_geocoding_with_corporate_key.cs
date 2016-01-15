@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new AccountDao(() => new BookingDbContext(DbName)), 
                 new StaticMap(),
                 null,
-                new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger()), ConfigurationManager, null, new Logger()),
+                new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger(), null), ConfigurationManager, null, new Logger()),
                 null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "7250 Rue du Mile End, Montréal, QC H2R 2W1"))), Times.Exactly(2));
+            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "7250 Rue du Mile End, Montral, QC H2R 2W1"))), Times.Exactly(2));
             TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45.531608,-73.622791"))), Times.Exactly(2));
         }
 
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "7250 Rue du Mile End, Montréal, QC H2R 2W1"))), Times.Exactly(2));
+            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "7250 Rue du Mile End, Montral, QC H2R 2W1"))), Times.Exactly(2));
             TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri","?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45.531608,-73.622791"))), Times.Exactly(2));
         }
     }

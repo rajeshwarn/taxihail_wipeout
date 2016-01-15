@@ -29,7 +29,13 @@ namespace apcurium.MK.Booking.Comparer
 
 		public int GetHashCode(AccountDetail obj)
 		{
-			int hashName = obj.Name == null ? 0 : obj.Name.GetHashCode();
+            // Check whether the object is null
+            if (Object.ReferenceEquals(obj, null))
+            {
+                return 0;
+            }
+
+            int hashName = obj.Name == null ? 0 : obj.Name.GetHashCode();
 			int hashEmail = obj.Email.GetHashCode();
 			int hashPhone = obj.Settings.Phone.GetHashCode();
 

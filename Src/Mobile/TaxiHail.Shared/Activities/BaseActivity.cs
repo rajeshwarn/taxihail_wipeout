@@ -1,6 +1,8 @@
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -25,7 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 		protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
-			ViewModel.OnViewLoaded();
+            ViewModel.OnViewLoaded();
+            Mvx.Resolve<IConnectivityService>().HandleToastInNewView();
 		}
 
         protected override void OnStart()

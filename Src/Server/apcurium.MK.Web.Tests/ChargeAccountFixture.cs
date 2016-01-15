@@ -12,7 +12,7 @@ namespace apcurium.MK.Web.Tests
         public override void Setup()
         {
             base.Setup();
-            Sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            Sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
         }
 
         [TestFixtureSetUp]

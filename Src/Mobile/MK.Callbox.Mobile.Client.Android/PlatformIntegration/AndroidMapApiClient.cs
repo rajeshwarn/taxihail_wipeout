@@ -13,7 +13,7 @@ using Android.Locations;
 using Cirrious.CrossCore.Droid;
 
 #endregion
-namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
+namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
 	public class AndroidGeocoder : IGeocoder
 	{

@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
-	    private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -38,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
-		    _accountService = accountService;
+			_accountService = accountService;
             PhoneNumber = new PhoneNumberModel();
 		}
 
@@ -78,8 +79,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    catch (Exception ex)
 			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
 			    }
 			}
 		}

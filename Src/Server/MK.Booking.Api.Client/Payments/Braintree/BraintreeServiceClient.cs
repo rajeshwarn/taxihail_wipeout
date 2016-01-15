@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -17,8 +20,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
-        public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
             ClientKey = clientKey;
         }

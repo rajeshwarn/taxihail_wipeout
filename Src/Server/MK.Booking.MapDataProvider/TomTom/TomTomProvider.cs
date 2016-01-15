@@ -7,6 +7,7 @@ using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -24,7 +25,8 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 		private const string PointsFormat = "{0},{1}:{2},{3}";
 		private const string DateTimeFormat = "&day={0}&time={1}";
 
-        public TomTomProvider(IAppSettings settings, ILogger logger)
+        public TomTomProvider(IAppSettings settings, ILogger logger, IConnectivityService connectivityService)
+            : base (connectivityService)
 		{
 			_logger = logger;
 			_settings = settings;
