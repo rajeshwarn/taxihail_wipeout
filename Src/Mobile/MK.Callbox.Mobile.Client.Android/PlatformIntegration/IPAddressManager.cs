@@ -1,7 +1,9 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Net;
+using System.Collections.Generic;
+using System;
 
-namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class IPAddressManager : IIPAddressManager
     {
@@ -11,7 +13,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             {
                 var adresses = Dns.GetHostAddresses(Dns.GetHostName());
 
-                if (adresses !=null && adresses[0] != null)
+                if (adresses != null && adresses[0] != null)
                 {
                     return adresses[0].ToString();
                 }
@@ -24,6 +26,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             {
                 return null;
             }
+        }
+
+        public IDictionary<string,IPAddress> GetIPAddresses()
+        {
+            throw new NotImplementedException();
         }
     }
 }

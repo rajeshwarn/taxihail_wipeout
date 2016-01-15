@@ -580,7 +580,7 @@ namespace MK.Common.Configuration
 
         [PropertyEncrypt]
         [SendToClient]
-        [Display(Name = "Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
+        [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
         public bool DebugViewEnabled { get; protected set; }
     }
 }

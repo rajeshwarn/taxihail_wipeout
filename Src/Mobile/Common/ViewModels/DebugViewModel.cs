@@ -42,7 +42,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			entries.Add("IP Addresses");
 		
-			entries.Add(string.Format("\tCellular: {0}", _ipAddressManager.GetIPAddress()));
+			var cellIp = _ipAddressManager.GetIPAddress();
+			foreach (var ip in _ipAddressManager.GetIPAddresses())
+			{
+				entries.Add(string.Format("\t{0}{1}: {2}", ip.Key, cellIp == ip.Value.ToString() ? "*" : "", ip.Value));
+			}
 
 			entries.Add(string.Empty);
 

@@ -1,3 +1,6 @@
+using System.Net;
+using System.Collections.Generic;
+
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 
@@ -8,5 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         /// </summary>
         /// <returns>The IP address.</returns>
         string GetIPAddress();
+
+        IDictionary<string,IPAddress> GetIPAddresses();
     }
 }

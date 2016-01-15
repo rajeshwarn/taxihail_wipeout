@@ -1,5 +1,7 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Net;
+using System.Collections.Generic;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -24,6 +26,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 return null;
             }
+        }
+
+        public IDictionary<string,IPAddress> GetIPAddresses()
+        {
+            throw new NotImplementedException();
         }
     }
 }
