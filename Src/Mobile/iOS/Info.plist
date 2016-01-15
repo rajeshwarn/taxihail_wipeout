@@ -29,9 +29,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>4.0.16</string>
+    <string>4.0.21</string>
     <key>CFBundleShortVersionString</key>
-    <string>4.0.16</string>
+    <string>4.0.21</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -63,7 +63,7 @@
     <dict>
       <!--Connect to anything (this is probably BAD)-->
       <key>NSAllowsArbitraryLoads</key>
-      <true/>
+      <true />
       <!-- <key>NSExceptionDomains</key>
       <dict>
         <key>test.taxihail.biz</key>
