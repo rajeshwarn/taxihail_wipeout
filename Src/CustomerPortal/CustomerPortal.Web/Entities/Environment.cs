@@ -17,6 +17,7 @@ namespace CustomerPortal.Web.Entities
     {
         public string Name { get; set; }
         public string Url { get; set; }
+        public string IP { get; set; }
 
         public EnvironmentRole Role { get; set; }
         public string SqlServerInstance { get; set; }
