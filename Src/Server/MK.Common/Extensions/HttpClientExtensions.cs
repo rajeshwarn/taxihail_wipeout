@@ -25,7 +25,7 @@ namespace apcurium.MK.Common.Extensions
 
         public static Task<T> GetAsync<T>(this HttpClient client, IReturn<T> request)
         {
-            var url = request.GetUrlFromRoute();
+            var url = request.GetUrlFromRoute(true);
 
             return client.GetAsync<T>(url);
         }
@@ -66,12 +66,15 @@ namespace apcurium.MK.Common.Extensions
             Action<HttpResponseMessage> onSuccess = null,
             Action<HttpResponseMessage> onError = null)
         {
+            
             return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
         }
 
 	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
 	    {
-	        var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+	        var jsonContent = content.ToJson();
+
+            var body = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
 	        var relativeUrl = client.GetForEndpointIfNeeded(url);
 
