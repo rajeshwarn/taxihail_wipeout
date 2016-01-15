@@ -157,7 +157,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
     {
         public static double? TotalAmount(this OrderDetail order)
         {
-            return order.Fare + order.Tax + order.Toll + order.Tip + order.Surcharge;
+            return order.Fare.GetValueOrDefault()
+                + order.Tax.GetValueOrDefault()
+                + order.Toll.GetValueOrDefault()
+                + order.Tip.GetValueOrDefault()
+                + order.Surcharge.GetValueOrDefault();
         }
     }
 }
