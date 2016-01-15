@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var cellIp = _ipAddressManager.GetIPAddress();
 			foreach (var ip in _ipAddressManager.GetIPAddresses())
 			{
-				entries.Add(string.Format("\t{0}{1}: {2}", ip.Key, cellIp == ip.Value.ToString() ? "*" : "", ip.Value));
+				entries.Add(string.Format("\t{0}{1}: {2}", ip.Key, cellIp.ToSafeString() == ip.Value.ToSafeString() ? "*" : "", ip.Value));
 			}
 
 			entries.Add(string.Empty);
