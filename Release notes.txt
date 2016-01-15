@@ -46,7 +46,7 @@
 	Bug fix - Issue where zoom would not work correctly when taxi was assinged.
 	Bug fix - Fixed issue where Assigned taxi location would remain sticky when order was either completed, cancelled, or the driver bailed
 3.1.9 
-	Version bump for TestFlight
+	for TestFlight
 3.1.10
 	Crash issue on Android
 	filter sensibility decreased
@@ -176,23 +176,43 @@
     Merge branch 'MKTAXI-3493-DestinationPopupPromptAfterBookPopup' into Production_3_1
 3.1.30
     Metadata disabled for service
-    Updateversion bump script (add verification)
+    Updatescript (add verification)
     Deployment build fix
 3.1.31
     Add ArroUAT resource files
-Version Bump 3.2.0
+3.1.32
+	Fixed crash in market vehicles request if best available company is null
+	Fixed a bug where the city information was not present in an address of type "Places"
+3.1.33
+	Fixed issue where GoogleMap not appear or address not working correctly
+3.1.34
+	Fix older version of the app causing problems when updating booking settings and would remove the email of the account
+	Fixed issue where garbage errors where appearing in the logger.
+3.1.35
+	Added a Throttle to TipIncentive to prevent reentry
+	Fix problem with app crashing on iOS 9 when newer version popup would appear at startup
+	Fix problem with iOS street number picker not working (closing keyboard immediately)
+	Taxihail Network - Don't call TH network if network is disabled
+3.1.36
+	Fixed vehicles availables displayed
+3.1.37
+	Custom strings change for EastsideForARide
+3.1.38
+	Custom strings change
+	
+3.2.0
 	Add - App rating
-Version Bump 3.2.1
+3.2.1
 	Fixed duplicate destination button
 	Bug fix - Fixed issue where the app would check at the wrong place for the AuthenticationData. Now correctly obtaining the SessionId.
 	String change
 	Bug fix - Crash on login with SSL on iOS
-Version Bump 3.2.2
+3.2.2
 	Bug fix- Fix problem in ReportDetailGenerator where 2 events could be handled at the same time and one would fail to write to db
 	Bug fix - Fixed account confirmation page
 	Improved Memory usage
 	Added log file presence check added;
-Version Bump 3.2.3
+3.2.3
 	Store/update dispatcher settings for a specific market
 	Bug fix - Fixed issue where the AccountConfirmationView would bounce horizontally on iOS8 and iOS9
 	Bug fix - Fixed odd coloured bar.
@@ -216,7 +236,7 @@ Version Bump 3.2.3
 	Localization update
 	Bug fix - Text issue on Order Review
 	Fix tag list and use saveBookOrder_10
-Version Bump 3.2.4
+3.2.4
 	Merge pull request #224 from apcurium/MKTAXI-3433_Android_Black_screen_after_login
 	Fixed issue where app would use an authenticated call before verifying that it was once logged before.
 	BlakcBerry Set build target framework to 21
@@ -231,30 +251,30 @@ Version Bump 3.2.4
 	Added - Notification of pairing failure to user
 	String changes
 	Added - Casco - Modified receipts to add extra fields (Driver photo, vehicle color, vehicle plate, etc.)
-Version Bump 3.2.5
+3.2.5
 	Added Callbox to Taxihail solution
 	Bug fix - Fixed logger causing application to freeze on startup.
 	Bug fix - Fixed deployment tool Android
-Version Bump 3.2.6
+3.2.6
 	Bug fix - Problem with deployment service for building blackberry
 	Bug fix - When finding you a taxi is not at the top of order status control when order number not shown
 	Fix build
-Version Bump 3.2.7
+3.2.7
 	Bug fix - Fixed deployment service for BlackBerry
 	Bug fix - Order report - Aggregate id issue
 	Bug fix - Driver photo not displayed
 	Bug fix - FourSquare Image Partially Hidden
-Version Bump 3.2.8
+3.2.8
 	Fixed build
-Version Bump 3.2.9
+3.2.9
 	Add localization for CCI for Tolls field + add Tolls field to receipt email
 	Updated wsdl
-Version Bump 3.2.10
+3.2.10
 	Updated constraints now tip and card name are displayed correctly
 	change description time out settings + removed unused comment
-Version Bump 3.2.11
+3.2.11
 	Resize app for Central Niagara only
-Version Bump 3.2.12
+3.2.12
 	Bug fix - Callbox - With only one order in queue, the user is sent back to the home screen/unable to cancel
 	Bug fix - If you enter a wrong sms code during account activation, the translation string is not correct: CreateAccount_InvalidConfirmationToken 
 	Bug fix - Driver bonus - Dragging the slider will cause it to jump back and forth
@@ -268,38 +288,38 @@ Version Bump 3.2.12
 	Bug fix -  tip and card name are displayed correctly need to check that modifying the constraints has not break anything
 	Bug fix - Fixed issue where full linker was not enabled for AdHoc and Appstore.
 	Fetch of network fleets in local market should also return fleetid like roaming fleets
-Version Bump 3.2.13
+3.2.13
 	Debug - Change configuration to not build Android projects while building iOS related configs
-Version Bump 3.2.14
+3.2.14
 	Debug - Remove full linker on AdHoc for testing
-Version Bump 3.2.15
+3.2.15
 	UI and performance/memory improvements on iOS 
 	Fix problem with iOS street number picker not working
-Version bump 3.2.16
+3.2.16
 	Version for Central Niagara only
-Version bump 3.2.18
+3.2.18
 	Bug fix - on how we get the service URL
 	Build fix
-Version bump 3.2.19
+3.2.19
 	Change "Cancel this Order" unpair button label to "Cancel Order" to fit smaller iOS devices
 	Remove log when VerifyAppVersion throws an exception
 	When changing server url, it's ok for GetSettings to throw an exception to alert the dev that the server doesn't exist and revert server url
-Version bump 3.2.20
+3.2.20
 	UI fix
 	If the order creation fails because of anything else than a bad request, show the generic error message instead of showing nothing and aborting
 	Bug fix - Fix vehicles available on web (only 1 cab was showing up)
-Version bump 3.2.21
+3.2.21
 	Bug fix - Fix issue were on CC decline on eHail trip, the user was not notified
 	Bug fix - Adress picker issue on Android
-Version bump 3.2.22
+3.2.22
 	Bug fix - Fix unpairing; always trying to call local ibs
 	Bug fix - Fix iOS 9 crash with popup at startup of app
 	Bug fix - Fix the way we check for minimum app version server-side
 	Bug fix - Fix Account Confirmation view on iOS (constraints not correct)
 	Add more stuff to the CustomLinker.xml file (fixes registration issue)
-Version Bump 3.2.23
+3.2.23
 	Updated MapBox to version 3.0
-Version Bump 3.2.24
+3.2.24
 	History detail - Cannot cancel scheduled order
 	EastsideForARide - Custom strings
 Version bump 3.3.1
