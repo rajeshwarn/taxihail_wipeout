@@ -593,6 +593,7 @@
     <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <AndroidResource Include="Resources\Layout\SpinnerEmptyItem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
