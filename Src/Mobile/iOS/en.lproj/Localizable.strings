@@ -755,3 +755,5 @@
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
+"InvalidCreditCardUpdateCardButton"="Update Card";

@@ -61,6 +61,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 EstimatedFare = 50.5,
                 IsChargeAccountPaymentWithCardOnFile = true,
                 IsPrepaid = true,
+                OriginatingIpAddress = "192.168.12.30",
+                KountSessionId = "1i3u13n123",
                 Settings = new BookingSettings
                 {
                     ChargeTypeId = 99,
@@ -112,6 +114,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(50.5, orderCreated.EstimatedFare);
             Assert.AreEqual(true, orderCreated.IsChargeAccountPaymentWithCardOnFile);
             Assert.AreEqual(true, orderCreated.IsPrepaid);
+            Assert.AreEqual("192.168.12.30", orderCreated.OriginatingIpAddress);
+            Assert.AreEqual("1i3u13n123", orderCreated.KountSessionId);
         }
 
         [Test]

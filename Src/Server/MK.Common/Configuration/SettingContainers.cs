@@ -417,4 +417,12 @@ namespace apcurium.MK.Common.Configuration
 		[Display(Name = "FlightStats - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
 		public bool UseAirportDetails { get; set; }
 	}
+
+    public class KountSettingsContainer
+    {
+        [PropertyEncrypt]
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Kount - Use Sandbox", Description = "Determines which Url and MerchantId to use for Kount")]
+        public bool UseSandbox { get; set; }
+    }
 }

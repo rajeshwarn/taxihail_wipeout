@@ -70,34 +70,26 @@ namespace apcurium.MK.Booking.Mobile.Client
          
 			var container = TinyIoCContainer.Current;
 
-			container.Register<IAnalyticsService, GoogleAnalyticsService> ();
-
-			var locationService = new LocationService ();
-
-			container.Register<ILocationService> (locationService);
+            container.Register<IAnalyticsService, GoogleAnalyticsService> ();
+            container.Register<ILocationService> (new LocationService ());
             container.Register<IMessageService, MessageService> ();
             container.Register<IConnectivityService, ConnectivityService> ();
 			container.Register<IPackageInfo> (new PackageInfo ());
-
+            container.Register<IIPAddressManager, IPAddressManager>();
 			container.Register<ILocalization, Localize> ();
 			container.Register<ILogger, LoggerWrapper> ();        
 			container.Register<ICacheService> (new CacheService ());
 			container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
-
 			container.Register<IPhoneService, PhoneService> ();
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
-
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
-
             container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
-
-
-			Cirrious.MvvmCross.Plugins.DownloadCache.PluginLoader.Instance.EnsureLoaded ();
-			Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
-			Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
-
             container.Register<IGeocoder> ((c, p) => new AppleGeocoder ());
-			container.Register<IPlaceDataProvider, FoursquareProvider> ();
+            container.Register<IPlaceDataProvider, FoursquareProvider> ();
+            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
+            container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
+            container.Register<IQuitApplicationService, QuitApplicationService>();
+            container.Register<IDeviceCollectorService, DeviceCollectorService>();
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
@@ -111,13 +103,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             });
 
-            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
-			container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
-
-			container.Register<IQuitApplicationService, QuitApplicationService>();
-
-
-			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
+            Cirrious.MvvmCross.Plugins.DownloadCache.PluginLoader.Instance.EnsureLoaded ();
+            Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
+            Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
 
 			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 

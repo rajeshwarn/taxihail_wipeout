@@ -58,11 +58,13 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
-			Store = new StoreSettingContainer()
+			Store = new StoreSettingContainer
 			{
 				AppleLink = "http://www.mobile-knowledge.com/",
                 PlayLink = "http://www.mobile-knowledge.com/"
 			};
+
+            Kount = new KountSettingsContainer();
 
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
@@ -74,7 +76,9 @@ namespace MK.Common.Configuration
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+            DebugViewEnabled = true;
 #endif
+
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -136,6 +140,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
 		public FlightStatsSettingsContainer FlightStats { get; set; }
 		public StoreSettingContainer Store { get; protected set; }
+        public KountSettingsContainer Kount { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -573,5 +578,10 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Unload Timeout", Description = "Time (in seconds) waiting for Charge Amounts from Driver")]
         public double ChargeAmountsTimeOut { get; set; }
+
+        [PropertyEncrypt]
+        [SendToClient]
+        [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
+        public bool DebugViewEnabled { get; protected set; }
     }
 }

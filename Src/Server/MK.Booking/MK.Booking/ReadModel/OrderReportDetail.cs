@@ -148,6 +148,10 @@ namespace apcurium.MK.Booking.ReadModel
         public long? OriginalEta { get; set; }
 
         public string Error { get; set; }
+
+        public string OriginatingIpAddress { get; set; }
+
+        public string KountSessionId { get; set; }
     }
 
     public class OrderReportOrderStatus

@@ -185,6 +185,7 @@
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
     <Compile Include="Serializer\TolerantEnumConverter.cs" />
+    <Compile Include="IIPAddressManager.cs" />
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="CustomNativeMessageHandler.cs" />
   </ItemGroup>

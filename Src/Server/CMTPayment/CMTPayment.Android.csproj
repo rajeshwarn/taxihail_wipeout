@@ -64,6 +64,8 @@
     <Compile Include="Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Tokenize\TokenizeRequest.cs" />
     <Compile Include="Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Tokenize\TokenizeValidateRequest.cs" />
+    <Compile Include="Tokenize\BasePaymentValidationRequest.cs" />
     <Compile Include="Utilities\OAuthUtils.cs" />
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
   </ItemGroup>

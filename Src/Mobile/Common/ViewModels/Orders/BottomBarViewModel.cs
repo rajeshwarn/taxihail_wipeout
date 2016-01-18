@@ -633,6 +633,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
+			catch(InvalidCreditCardException e)
+			{
+				Logger.LogError(e);
+
+				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+				var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+				this.Services().Message.ShowMessage(title, message,
+					this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
+						// Force the user to return to redo the Confirm Order flow
+						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
+						ParentViewModel.Panel.NavigateToPaymentInformation.ExecuteIfPossible();
+					},
+					this.Services().Localize["Cancel"], () => {});
+			}
 			catch (OrderCreationException e)
 			{
 				Logger.LogError(e);
@@ -664,8 +679,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							if (!Settings.HideCallDispatchButton)
 							{
 								this.Services().Message.ShowMessage(title, e.Message,
-									"Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
-									"Cancel", () => { });
+									this.Services().Localize["CallButton"], () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+									this.Services().Localize["Cancel"], () => { });
 							}
 							else
 							{

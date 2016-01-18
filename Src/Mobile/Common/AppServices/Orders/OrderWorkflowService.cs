@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IPaymentService _paymentService;
         readonly IPOIProvider _poiProvider;
 	    private readonly ILogger _logger;
+        private readonly IDeviceCollectorService _deviceCollectorService;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -71,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private Position _lastMarketPosition = new Position();
 	    private string _lastHashedMarketValue;
+        private string _kountSessionId;
 
 		private const int LastMarketDistanceThresholdInMeters = 1000;
 
@@ -86,7 +88,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IPaymentService paymentService,
             ILogger logger,
             IPOIProvider poiProvider,
-			IVehicleTypeService vehicleTypeService)
+			IVehicleTypeService vehicleTypeService,
+            IDeviceCollectorService deviceCollectorService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -94,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountService = accountService;
 			_vehicleTypeService = vehicleTypeService;
 			_locationService = locationService;
+            _deviceCollectorService = deviceCollectorService;
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 
@@ -272,6 +276,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
+				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, _kountSessionId);
+
 				var orderStatus = await _bookingService.CreateOrder(order);
 
 			    var currentDate = DateTime.Now;
@@ -293,6 +299,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
 				return new OrderRepresentation(orderCreated, orderStatus);
+			}
+			catch(InvalidCreditCardException ex)
+			{
+				// will be handled by calling method
+				throw ex;
 			}
 			catch(WebServiceException e)
 			{
@@ -836,12 +847,50 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null)
 		{
+            _kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
             _orderValidationResultSubject.OnNext(validationResult);
 
-
 			return validationResult;
+		}
+
+		public async Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId)
+		{
+			try
+			{
+				if (isManualRideLinq || chargeTypeId == ChargeTypes.CardOnFile.Id)
+				{
+					var creditCard = await _accountService.GetDefaultCreditCard();
+					if (creditCard == null)
+					{
+						throw new Exception("No credit card in account");
+					}
+
+					if (creditCard.IsExpired())
+					{
+						throw new Exception("Credit card has expired");
+					}
+
+					if (creditCard.IsDeactivated)
+					{
+						throw new Exception("Credit card is deactivated");
+					}
+
+					var cvv = await _cvvSubject.Take(1).ToTask();
+
+					var response = await _paymentService.ValidateTokenizedCard(creditCard, cvv, kountSessionId, _accountService.CurrentAccount);
+					if(!response.IsSuccessful)
+					{
+						throw new Exception("PaymentService.ValidateTokenizedCard() returned an unsuccessful response");
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new InvalidCreditCardException("Validation of tokenized card failed", ex);
+			}
 		}
 
 		public async Task<bool> ValidateCardOnFile()
@@ -873,13 +922,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return true;
 		}
-
-        public async Task<bool> ValidateIsCardDeactivated()
-        {
-            var creditCard = await _accountService.GetDefaultCreditCard();
-
-            return creditCard == null || creditCard.IsDeactivated;
-        }
 
 		public async Task<bool> ValidatePromotionUseConditions()
 		{
@@ -931,8 +973,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 : (double?)null;
 
 			order.QuestionsAndAnswers = await _accountPaymentQuestions.Take(1).ToTask ();
-
 			order.Cvv = await _cvvSubject.Take(1).ToTask();
+			order.KountSessionId = _kountSessionId;
 
 			return order;
 		}

@@ -1,13 +1,7 @@
-﻿#region
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
-
-#endregion
 
 namespace apcurium.MK.Booking.Events
 {
@@ -82,5 +76,9 @@ namespace apcurium.MK.Booking.Events
         public ListItem[] ReferenceDataCompanyList { get; set; }
 
         public string ChargeTypeEmail { get; set; }
+
+        public string OriginatingIpAddress { get; set; }
+
+        public string KountSessionId { get; set; }
     }
 }

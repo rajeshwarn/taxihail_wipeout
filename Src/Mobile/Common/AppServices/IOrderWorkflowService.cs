@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
-	    Task<bool> ValidateIsCardDeactivated();
+		Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId);
 		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);

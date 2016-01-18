@@ -1,0 +1,6 @@
+<WorkspaceItem ctype="Workspace">
+  <Items>
+    <Item>DeviceCollectorAndroid/DeviceCollectorAndroid.sln</Item>
+    <Item>DeviceCollectorIOS/DeviceCollectorIOS.sln</Item>
+  </Items>
+</WorkspaceItem>

@@ -737,3 +737,5 @@
 "Callbox.ApplicationName"="TaxiHail Callbox";
 "ServiceErrorResetPassword_AccountNotFound"="لا يوجد حساب خاص بهذا العنوان الإلكتروني.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
+"InvalidCreditCardUpdateCardButton"="Update Card";
