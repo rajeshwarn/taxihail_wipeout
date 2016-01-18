@@ -26,9 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
-using java.lang;
 using MK.Common.Configuration;
-using String = System.String;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
