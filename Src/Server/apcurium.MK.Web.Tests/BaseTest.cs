@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Web.SelfHost;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using log4net.Config;
 
@@ -36,6 +38,11 @@ namespace apcurium.MK.Web.Tests
             public string GetIPAddress()
             {
                 return null;
+            }
+
+            public IDictionary<string, IPAddress> GetIPAddresses()
+            {
+                return new Dictionary<string, IPAddress>();
             }
         }
 
