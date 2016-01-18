@@ -100,7 +100,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
             var response = GetCompanyMarketSettingsInternal(companyId, latitude, longitude);
-
+            
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(response.Market)) 
@@ -143,16 +143,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var localCompany = companiesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
             if (localCompany != null)
             {
-                response.DispatcherSettings = GetMarketSettings(localCompany.Market);
+                response = GetMarketSettings(localCompany.Market);
 
                 // Check if we have changed market
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
-                if (homeCompany != null)
+                if (homeCompany == null                             // company not found in network
+                    || !homeCompany.IsInNetwork                     // company is not network enabled
+                    || localCompany.Market == homeCompany.Market)   // company is in local market
                 {
-                    if (localCompany.Market != homeCompany.Market)
-                    {
-                        response.Market = localCompany.Market;
-                    }
+                    response.Market = null;
                 }
             }
 
@@ -287,15 +286,24 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return allowed;
         }
 
-        private DispatcherSettings GetMarketSettings(string marketName)
+        private CompanyMarketSettingsResponse GetMarketSettings(string marketName)
         {
             if (marketName == null)
             {
-                return new DispatcherSettings();
+                return new CompanyMarketSettingsResponse();
             }
 
-            var market = _marketRepository.GetMarket(marketName);
-            return market != null ? market.DispatcherSettings : new DispatcherSettings();
+            var marketSettings = _marketRepository.GetMarket(marketName);
+
+            return marketSettings != null
+                ? new CompanyMarketSettingsResponse()
+                {
+                    Market = marketName,
+                    DispatcherSettings = marketSettings.DispatcherSettings,
+                    EnableDriverBonus = marketSettings.EnableDriverBonus,
+                    ReceiptFooter = marketSettings.ReceiptFooter
+                }
+                : new CompanyMarketSettingsResponse();
         }
     }
 }
