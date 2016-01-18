@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using ModernHttpClient;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
+using CMTPayment.Authorization;
 
 namespace CMTPayment
 {
