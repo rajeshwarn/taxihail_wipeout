@@ -185,6 +185,9 @@
     <Reference Include="OkHttp">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
     <Reference Include="Connectivity.Plugin">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
@@ -1571,6 +1574,9 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\CustomToastView.axml">
       <Link>Resources\Layout\CustomToastView.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Debug.axml">
+      <Link>Resources\Layout\View_Debug.axml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>

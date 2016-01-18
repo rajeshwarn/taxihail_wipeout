@@ -885,8 +885,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder(OrderStatusDetail status)
         {
-            if (!HasSeenReminderPrompt(status.OrderId)
-				&& _phoneService.CanUseCalendarAPI())
+            if (!HasSeenReminderPrompt(status.OrderId))
             {
                 SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread(() => this.Services().Message.ShowMessage(

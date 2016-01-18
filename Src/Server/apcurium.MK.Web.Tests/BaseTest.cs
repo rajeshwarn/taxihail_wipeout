@@ -31,6 +31,14 @@ namespace apcurium.MK.Web.Tests
             public string UserAgent { get; set; }
         }
 
+        protected class DummyIPAddressManager : IIPAddressManager
+        {
+            public string GetIPAddress()
+            {
+                return null;
+            }
+        }
+
         protected static readonly AppHost AppHost;
         protected string BaseUrl { get { return "http://localhost:6903/"; } }
         protected Account TestAccount { get; set; }

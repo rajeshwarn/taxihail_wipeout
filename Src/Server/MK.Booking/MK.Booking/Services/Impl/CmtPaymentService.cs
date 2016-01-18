@@ -418,7 +418,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // send pairing request                                
                 var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
-                var pairingRequest = new PairingRequest
+                var pairingRequest = new ManualRideLinqCoFPairingRequest
                 {
                     AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
@@ -433,7 +433,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
                     LastFour = creditCardDetail.Last4Digits,
                     TipIncentive = orderDetail.TipIncentive,
-                    ZipCode = creditCardDetail.ZipCode
+                    ZipCode = creditCardDetail.ZipCode,
+                    Email = accountDetail.Email,
+                    CustomerIpAddress = orderDetail.OriginatingIpAddress,
+                    BillingFullName = creditCardDetail.NameOnCard,
+                    SessionId = orderDetail.KountSessionId
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())

@@ -273,6 +273,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsIOS">
+      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
+    </Reference>
     <Reference Include="Connectivity.Plugin">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
     </Reference>
@@ -725,11 +728,14 @@
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="PlatformIntegration\IPAddressManager.cs" />
     <Compile Include="PlatformIntegration\ConnectivityService.cs" />
     <Compile Include="Helper\ToastHelper.cs" />
     <Compile Include="Controls\ToastView.cs" />
     <BundleResource Include="Resources\cancel.png" />
     <BundleResource Include="Resources\cancel%402x.png" />
+    <Compile Include="Views\DebugView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

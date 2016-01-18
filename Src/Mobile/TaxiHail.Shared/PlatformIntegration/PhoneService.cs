@@ -111,12 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 logger.LogError(e);
             }
         }
-
-        public bool CanUseCalendarAPI()
-        {
-            return (int) Build.VERSION.SdkInt > 8;
-        }
-
+            
         private long GetDateTimeMS(DateTime date)
         {
             var c = Calendar.GetInstance(TimeZone.Default);

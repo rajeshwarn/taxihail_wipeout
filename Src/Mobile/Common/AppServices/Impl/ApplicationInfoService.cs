@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-using MK.Common.Android.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -25,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
       public ApplicationInfoService(ILocalization localize,
             IMessageService messageService,
-         IQuitApplicationService quitApplicationService,
+         	IQuitApplicationService quitApplicationService,
             IPackageInfo packageInfo,
             ICacheService cacheService,
             ILogger logger)

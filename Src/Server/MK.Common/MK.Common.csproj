@@ -230,6 +230,7 @@
     <Compile Include="Http\Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IClock.cs" />
+    <Compile Include="IIPAddressManager.cs" />
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />

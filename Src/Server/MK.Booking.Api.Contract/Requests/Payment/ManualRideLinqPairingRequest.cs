@@ -15,5 +15,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
         public Address PickupAddress { get; set; }
 
         public string ClientLanguageCode { get; set; }
+
+        public string KountSessionId { get; set; }
+
+        public string CustomerIpAddress { get; set; }
     }
 }

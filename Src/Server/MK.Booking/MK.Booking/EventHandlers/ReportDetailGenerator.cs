@@ -85,7 +85,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         DropOffAddress = @event.DropOffAddress,
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
-                        Market = @event.Market
+                        Market = @event.Market,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
                     };
                     orderReport.Client = new OrderReportClient
                     {
@@ -135,7 +137,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
                         Market = @event.Market,
-                        Error = @event.Error
+                        Error = @event.Error,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
                     };
                     orderReport.Client = new OrderReportClient
                     {
@@ -525,7 +529,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
                     PickupDateTime = @event.PairingDate,
                     CreateDateTime = @event.PairingDate,
-                    PickupAddress = @event.PickupAddress
+                    PickupAddress = @event.PickupAddress,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
                 };
                 orderReport.Client = new OrderReportClient
                 {

@@ -237,6 +237,9 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
     <Reference Include="Connectivity.Plugin">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
@@ -603,6 +606,9 @@
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
     <AndroidResource Include="Resources\Layout\SpinnerEmptyItem.axml" />
     <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
+    <AndroidResource Include="Resources\Layout\View_Debug.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
