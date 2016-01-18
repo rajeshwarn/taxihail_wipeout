@@ -533,6 +533,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
         public bool HideTHNetworkAppMenu { get; protected set; }
 
+        [Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
