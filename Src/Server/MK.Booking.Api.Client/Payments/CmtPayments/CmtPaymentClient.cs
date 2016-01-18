@@ -79,9 +79,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     {
                         AccountNumber = accountNumber,
                         ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-                        #if DEBUG
-                        ValidateAccountInformation = false,
-                        #endif
                         Cvv = cvv,
                     };
                 

@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null, _connectivityService);
+					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, _logger, _connectivityService);
 
                 case PaymentMethod.Moneris:
 					return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger, _connectivityService);

@@ -85,6 +85,7 @@ namespace CMTPayment
 
         private async void LogSuccess(HttpResponseMessage response)
         {
+        #if DEBUG
             try
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -93,16 +94,17 @@ namespace CMTPayment
             }
             catch (Exception ex)
             {
-				if (_logger != null)
-				{
-					_logger.LogError(ex);
-				}
+                if (_logger != null)
+                {
+                    _logger.LogError(ex);
+                }
             }
-            
+        #endif 
         }
 
         private async void LogError(HttpResponseMessage response)
         {
+        #if DEBUG
             try
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -116,6 +118,7 @@ namespace CMTPayment
 					_logger.LogError(ex);
 				}
             }
+        #endif 
         }
 #else   
         public Task<T> GetAsync<T>(IReturn<T> request)
