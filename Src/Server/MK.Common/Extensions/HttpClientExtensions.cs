@@ -72,9 +72,7 @@ namespace apcurium.MK.Common.Extensions
 
 	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
 	    {
-	        var jsonContent = content.ToJson();
-
-            var body = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+			var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
 	        var relativeUrl = client.GetForEndpointIfNeeded(url);
 
