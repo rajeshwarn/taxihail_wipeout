@@ -131,7 +131,7 @@ namespace apcurium.MK.Common.Extensions
                     errorResponse = null;
                 }
 
-                if (errorResponse != null)
+                if (errorResponse != null && errorResponse.ResponseStatus != null)
                 {
                     throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode) 
                     {
