@@ -20,6 +20,19 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
             }
         }
 
+		public static int SpinnerEmptyItemKey = int.MinValue + 1;
+
+		public static ListItemData SpinnerEmptyItem
+		{
+			get
+			{ 
+				return new ListItemData 
+				{
+					Key = int.MinValue + 1
+				};
+			}
+		}
+
         public string Value { get; set; }
 
         public int Key { get; set; }
