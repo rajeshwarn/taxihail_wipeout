@@ -4,6 +4,7 @@ using System.Net;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+using CMTPayment.Authorization;
 
 namespace CMTPayment
 {
