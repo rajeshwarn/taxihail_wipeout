@@ -30,11 +30,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
         private readonly IIPAddressManager _ipAddressManager;
+        private readonly ILogger _logger;
 
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
             : base(baseUrl, sessionId, packageInfo, connectivityService)
         {
             _ipAddressManager = ipAddressManager;
+            _logger = logger;
 
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
         }
@@ -153,6 +155,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
             catch(Exception e)
             {
+                _logger.Maybe(x => x.LogMessage("Error during tokenization"));
+                _logger.Maybe(x => x.LogError(e));
+
                 var message = e.Message;
                 var exception = e as AggregateException;
                 if (exception != null)
