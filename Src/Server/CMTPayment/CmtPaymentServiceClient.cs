@@ -6,6 +6,7 @@ using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
+using CMTPayment.Authorization;
 
 
 #if CLIENT

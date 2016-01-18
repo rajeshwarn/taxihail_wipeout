@@ -3,6 +3,7 @@ using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using CMTPayment.Authorization;
 using ServiceStack.ServiceHost;
 
 namespace CMTPayment
