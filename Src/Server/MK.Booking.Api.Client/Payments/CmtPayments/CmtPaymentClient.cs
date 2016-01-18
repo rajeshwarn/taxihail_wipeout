@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
+        private async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
             string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
         {
             try
