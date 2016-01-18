@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using CMTPayment.Authorization;
 using CMTPayment.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
