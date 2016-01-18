@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account);
+            return Tokenize(CmtPaymentServiceClient, nameOnCard, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
         public async Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
@@ -77,6 +77,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
             catch(Exception e)
             {
+                _logger.Maybe(x => x.LogMessage("Error during card validation"));
+                _logger.Maybe(x => x.LogError(e));
+
                 var message = e.Message;
                 var exception = e as AggregateException;
                 if (exception != null)
