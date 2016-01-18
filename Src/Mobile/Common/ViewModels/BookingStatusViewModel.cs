@@ -25,7 +25,7 @@ using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public sealed class BookingStatusViewModel : BaseViewModel
+    public sealed class BookingStatusViewModel : BaseViewModel
     {
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
@@ -513,7 +513,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public TaxiLocation TaxiLocation
-		{
+        {
 			get { return _taxiLocation; }
 			set
 			{
@@ -939,7 +939,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				cancellationToken.ThrowIfCancellationRequested();
 
-				if (status.VehicleNumber != null)
+                if (status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
 				}
@@ -980,8 +980,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-				var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
-					.Select(hashedMarket => !hashedMarket.HasValue())
+				var isLocalMarket = await _orderWorkflowService.GetAndObserveMarketSettings()
+					.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
 					.Take(1);
 				var hasVehicleInfo = status.VehicleNumber.HasValue()
 				                     && status.VehicleLatitude.HasValue
@@ -994,7 +994,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				cancellationToken.ThrowIfCancellationRequested();
 				if (Settings.ShowEta
 				    && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
-				    && (hasVehicleInfo || isUsingGeoServices))
+                    && (hasVehicleInfo || isUsingGeoServices))
 				{
 					long? eta = null;
 
@@ -1101,8 +1101,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return;
 				}
 
-				//This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
-				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
+				// This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Bailed)
+                    || VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
 				}
