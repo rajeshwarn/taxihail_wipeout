@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using apcurium.MK.Common.Extensions;
 using CMTPayment.Utilities;
 
 namespace CMTPayment.Authorization
@@ -43,10 +44,9 @@ namespace CMTPayment.Authorization
             }
 
             var nvc = HttpUtility.ParseQueryString(uri.Query);
-            foreach (string key in nvc)
+            foreach (var key in nvc.Cast<string>().Where(key => key != null))
             {
-                if (key != null)
-                    signatureHeaders.Add(key, OAuthUtils.PercentEncode(nvc[key]));
+                signatureHeaders.Add(key, OAuthUtils.PercentEncode(nvc[key]));
             }
 
             var signature = MakeSignature(method, uri.GetLeftPart(UriPartial.Path), signatureHeaders);
@@ -65,9 +65,14 @@ namespace CMTPayment.Authorization
             {
                 var n = Random.Next(35);
                 if (n < 10)
+                {
                     ret[i] = (char) (n + '0');
+                }
                 else
-                    ret[i] = (char) (n - 10 + 'a');
+                {
+                    ret[i] = (char)(n - 10 + 'a');
+                }
+                    
             }
             return new string(ret);
         }
@@ -102,8 +107,9 @@ namespace CMTPayment.Authorization
 
         private static string HeadersToOAuth(Dictionary<string, string> headers)
         {
-            return "OAuth " + 
-                string.Join(",", (from x in headers.Keys select string.Format("{0}=\"{1}\"", x, headers[x])).ToArray());
+            var oAuthContents = headers.Select(h => string.Format("{0}=\"{1}\"", h.Key, h.Value));
+
+            return "OAuth " + oAuthContents.JoinBy(",");
         }
     }
 }
