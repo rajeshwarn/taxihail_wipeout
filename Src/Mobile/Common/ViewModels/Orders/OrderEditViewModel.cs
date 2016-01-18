@@ -53,7 +53,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (marketSettings.HashedMarket.HasValue())
+			if (marketSettings != null
+                && marketSettings.HashedMarket.HasValue())
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
