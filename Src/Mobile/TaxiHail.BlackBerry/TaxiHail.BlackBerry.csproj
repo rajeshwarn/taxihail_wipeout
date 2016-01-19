@@ -46,7 +46,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="Build" command="xbuild /t:SignAndroidPackage" />
-        <Command type="Build" command="xbuild /t:SignAndroidPackage" />
+        <Command type="AfterBuild" command="cp bin/Debug/com.apcurium.MK.TaxiHailDemo-Signed.apk ../../BBTools/Outputs/" />
         <Command type="AfterBuild" command="java -Djava.awt.headless=true -Xmx512M -cp &quot;lib/AndroidTools.jar&quot; net.rim.tools.apk2bar.Apk2Bar &quot;Outputs/&quot; -r" workingdir="../../BBTools/" />
         <Command type="AfterBuild" command="java -Djava.awt.headless=true -Xmx512M -cp &quot;lib/BarSigner.jar:lib/AndroidTools.jar&quot; net.rim.tools.signing.SigningMain -bbidtoken &quot;Outputs/bbidtoken.csk&quot; -storepass apcurium72 -keystore &quot;Outputs/author.p12&quot; &quot;Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar&quot;" workingdir="../../BBTools/" />
         <Command type="AfterBuild" command="rm -rf  com.apcurium.MK.TaxiHailDemo-Signed.apk" workingdir="../../BBTools/Outputs" />
