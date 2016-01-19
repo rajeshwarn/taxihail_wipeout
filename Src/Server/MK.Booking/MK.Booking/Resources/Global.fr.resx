@@ -682,7 +682,7 @@
     <value>Plaque d'immatriculation</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Désolé, une erreur de paiement est survenue, s'il vous plaît payez dans taxi</value>
+    <value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
     <value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
