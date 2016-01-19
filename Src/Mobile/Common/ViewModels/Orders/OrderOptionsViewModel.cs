@@ -12,11 +12,10 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderOptionsViewModel : BaseViewModel
+    public class OrderOptionsViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
@@ -50,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+            Observe (_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
@@ -119,9 +118,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        await SetLocalMarketVehicleTypes();
 	    }
 
-	    private void MarketChanged(string hashedMarket)
+	    private void MarketChanged(MarketSettings marketSettings)
 	    {
-	        _hashedMarket = hashedMarket;
+			_hashedMarket = marketSettings.HashedMarket;
 	    }
 
 	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)

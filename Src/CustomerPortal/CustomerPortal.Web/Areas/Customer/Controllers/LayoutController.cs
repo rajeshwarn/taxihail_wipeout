@@ -32,8 +32,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
             var companyId = (string) filterContext.RouteData.Values["companyId"];
             Layouts = new LayoutsManager(companyId);
         }
-
-
+        
         [ChildActionOnly]
         public ActionResult Index()
         {

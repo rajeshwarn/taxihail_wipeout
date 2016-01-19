@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -745,18 +745,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string hashedMarket)
+        private void MarketChanged(MarketSettings marketSettings)
         {
-            // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket
-                && hashedMarket.HasValue()
-                && !Settings.Network.HideMarketChangeWarning)
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
-                    this.Services().Localize["MarketChangedMessage"]);
-            }
+			// Market changed and not home market
+			if (_lastHashedMarket != marketSettings.HashedMarket
+				&& marketSettings.HashedMarket.HasValue()
+				&& !Settings.Network.HideMarketChangeWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+					this.Services().Localize["MarketChangedMessage"]);
+			}
 
-            _lastHashedMarket = hashedMarket;
+			_lastHashedMarket = marketSettings.HashedMarket;
 
             if (BottomBar != null)
             {

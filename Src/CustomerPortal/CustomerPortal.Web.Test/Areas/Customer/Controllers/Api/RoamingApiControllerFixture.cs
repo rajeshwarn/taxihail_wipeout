@@ -413,6 +413,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
             Assert.AreEqual(1, result.DispatcherSettings.NumberOfCycles);
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(false, result.EnableDriverBonus);
+            Assert.AreEqual(null, result.ReceiptFooter);
         }
 
         [Test]
@@ -427,6 +429,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(4, result.DispatcherSettings.NumberOfOffersPerCycle);
             Assert.AreEqual(5, result.DispatcherSettings.NumberOfCycles);
             Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(true, result.EnableDriverBonus);
+            Assert.AreEqual("my custom footer 1", result.ReceiptFooter);
         }
 
         [Test]
@@ -438,9 +442,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             Assert.AreEqual("SYD", result.Market);
             Assert.NotNull(result.DispatcherSettings);
-            Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
-            Assert.AreEqual(1, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(2, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(3, result.DispatcherSettings.NumberOfCycles);
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(true, result.EnableDriverBonus);
+            Assert.AreEqual(null, result.ReceiptFooter);
         }
 
         [Test]
@@ -506,9 +512,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var collectionMock = MongoMock.CreateMongoCollection<Market>(databaseMock.Object, "FooCollection");
             var cursorMock = MongoMock.CreateMongoCursor(collectionMock.Object, new List<Market>
             {
-                new Market { Name = "MTL", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } },
-                new Market { Name = "NYC", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 } },
-                new Market { Name = "NYCSS", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 } }
+                new Market { Name = "MTL", EnableDriverBonus = true, ReceiptFooter = "my custom footer 1", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } },
+                new Market { Name = "NYC", EnableDriverBonus = false, ReceiptFooter = "my custom footer 2", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 } },
+                new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 } },
+                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 } },
+                new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 } }
             });
             collectionMock.Setup(x => x.Find(It.IsAny<IMongoQuery>())).Returns(cursorMock.Object);
             marketRepositoryMock.Setup(x => x.Collection).Returns(collectionMock.Object);

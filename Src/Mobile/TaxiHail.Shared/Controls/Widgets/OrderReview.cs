@@ -242,11 +242,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Enabled)
                 .To(vm => vm.DriverBonusEnabled);
 
-            set.Bind(this)
-                .For(v => v.RemoveBonusFromView)
-                .To(vm => vm.CanShowDriverBonus)
-                .WithConversion("BoolInverter");
-
 			if (!this.Services().Settings.ShowPassengerName)
             {
                 FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewStates.Gone;
@@ -285,20 +280,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             set.Apply();
-        }
-
-        private bool _removeBonusFromView;
-        public bool RemoveBonusFromView
-        {
-            get { return _removeBonusFromView; }
-            set
-            {
-                _removeBonusFromView = value;
-                if (RemoveBonusFromView)
-                {
-                    _driverBonusView.Visibility = ViewStates.Gone;
-                }
-            }
         }
     }
 }
