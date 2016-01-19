@@ -13,18 +13,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
         }
 
-        public override string CollectAndReturnSessionId()
+        public override void GenerateNewSessionIdAndCollect()
         {     
+            #if !DEBUG
+
             var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
 
-            var sessionId = GenerateSessionId();
+            GenerateSessionId();
 
             var deviceCollector = new DeviceCollector(topActivity.Activity);
             deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
             deviceCollector.SetMerchantId(MerchantId()); 
-            deviceCollector.Collect(sessionId);
+            deviceCollector.Collect(GetSessionId());
 
-            return sessionId;
+            #endif
         }
     }
 }

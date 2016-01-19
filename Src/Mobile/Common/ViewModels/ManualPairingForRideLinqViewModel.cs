@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init()
 		{
-			_kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
         public string PairingCodeLeft
@@ -87,6 +87,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, _kountSessionId);
+
+							_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 							this.ReturnResult(orderManualRideLinqDetail);
                         }

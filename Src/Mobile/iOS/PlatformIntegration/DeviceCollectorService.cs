@@ -11,22 +11,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
         }
 
-        public override string CollectAndReturnSessionId()
+        public override void GenerateNewSessionIdAndCollect()
         {
-            var sessionId = GenerateSessionId();
+            #if !DEBUG
 
-            var debugLogging = false;
+            GenerateSessionId();
 
-            #if DEBUG
-            debugLogging = true;
-            #endif
-
-            var deviceCollector = new DeviceCollectorSDK(debugLogging);
+            var deviceCollector = new DeviceCollectorSDK();
             deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
             deviceCollector.SetMerchantId(MerchantId()); 
-            deviceCollector.Collect(sessionId);
+            deviceCollector.Collect(GetSessionId());
 
-            return sessionId;
+            #endif
         }
     }
 }
