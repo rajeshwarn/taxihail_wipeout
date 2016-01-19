@@ -93,36 +93,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         Logger.LogError(ex);
 
-						var tripInfoHttpStatusCode = (int)HttpStatusCode.BadRequest;
-						int errorCode = 0;
-
-						if (ex.Data != null && ex.Data.Contains("TripInfoHttpStatusCode") && ex.Data.Contains("ErrorCode"))
+						var errorCode = 0;
+						if (ex.Data != null && ex.Data.Contains("ErrorCode") && int.Parse(ex.Data["ErrorCode"].ToSafeString()) > 0)
 						{
-							tripInfoHttpStatusCode = (int)ex.Data["TripInfoHttpStatusCode"];
-
-							if (ex.Data["ErrorCode"] != null)
-							{
-								int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
-							}
+							int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
 						}
 
-						if (tripInfoHttpStatusCode == (int)HttpStatusCode.BadRequest)
+						switch (errorCode)
 						{
-							switch (errorCode)
-							{
-								case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
-									break;
+							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
+								break;
 
-								case CmtErrorCodes.UnablePreauthorizeCreditCard:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
-									break;
+							case CmtErrorCodes.UnablePreauthorizeCreditCard:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
+								break;
 
-								case CmtErrorCodes.UnableToPair:
-								default:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
-									break;
-							}
+							case CmtErrorCodes.UnableToPair:
+							default:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
+								break;
 						}
                     } 
                 });
