@@ -120,15 +120,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private void MarketChanged(MarketSettings marketSettings)
 	    {
-            if (marketSettings != null)
-            {
-                _hashedMarket = marketSettings.HashedMarket;
-            }
+			_hashedMarket = marketSettings.HashedMarket;
 	    }
 
 	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
 	    {
-	        if (_hashedMarket != null && _hashedMarket.HasValue())
+	        if (_hashedMarket.HasValue())
 	        {
                 VehicleTypes = marketVehicleTypes;
 	        }
