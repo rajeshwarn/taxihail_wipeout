@@ -64,7 +64,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            double? tipIncentive, Fare fare = null)
+            double? tipIncentive, int? tipPercent, Fare fare = null)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone,
             int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
             IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength,
-            int defaultVehiculeTypeId, double? tipIncentive, int durationOfOfferInSeconds, Fare fare = null,
+            int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, int durationOfOfferInSeconds, Fare fare = null,
             IEnumerable<IbsVehicleCandidate> vehicleCandidates = null)
         {
             throw new NotImplementedException();

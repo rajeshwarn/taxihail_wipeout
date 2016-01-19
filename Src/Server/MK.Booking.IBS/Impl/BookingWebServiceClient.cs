@@ -488,11 +488,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int durationOfOfferInSeconds, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
+        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, int durationOfOfferInSeconds, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, defaultVehiculeTypeId, tipIncentive, orderId, durationOfOfferInSeconds, fare);
+                promptsLength, defaultVehiculeTypeId, tipIncentive, tipPercent, orderId, durationOfOfferInSeconds, fare);
 
             var orderKey = new TBookOrderKey();
 
@@ -637,7 +637,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
             int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts,
-            int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Guid taxiHailOrderId, int durationOfOfferInSeconds, Fare fare = default(Fare))
+            int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, Guid taxiHailOrderId, int durationOfOfferInSeconds, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
@@ -700,6 +700,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.ContactPhone = CleanPhone(phone);
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
             order.JobOfferPrompt = _serverSettings.ServerData.MessagePromptedToDriver;
+            order.TipPercent = tipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
             var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
 

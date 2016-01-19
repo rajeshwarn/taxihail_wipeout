@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 createOrderCommand.Settings.Passengers, createOrderCommand.Settings.VehicleTypeId, createOrderCommand.IbsInformationNote,
                 createOrderCommand.PickupDate, createOrderCommand.Prompts, createOrderCommand.PromptsLength, createOrderCommand.ReferenceDataCompanyList,
                 createOrderCommand.Market, createOrderCommand.Settings.ChargeTypeId, createOrderCommand.Settings.ProviderId, createOrderCommand.Fare,
-                createOrderCommand.TipIncentive, true, createOrderCommand.CompanyFleetId);
+                createOrderCommand.TipIncentive, account.DefaultTipPercent, true, createOrderCommand.CompanyFleetId);
 
             if (result.OrderKey.IbsOrderId > -1)
             {

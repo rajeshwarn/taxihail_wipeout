@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var bestAvailableCompany = initialBestAvailableCompany;
             var providerId = ibsOrderParams.ProviderId;
             var ibsAccountId = initialIbsAccountId;
+            var account = _accountDao.FindById(accountId);
 
             var availableFleetsInMarket = market.HasValue()
                 ? _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market).ToArray()
@@ -125,6 +127,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     promptsLength,
                     ibsOrderParams.DefaultVehicleTypeId,
                     tipIncentive,
+                    account.DefaultTipPercent,
                     dispatcherSettings.DurationOfOfferInSeconds,
                     fare,
                     ibsVehicleCandidates);
@@ -182,7 +185,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 CancelIbsOrder(orderResult.OrderKey.IbsOrderId, bestAvailableCompany.CompanyKey, phone, ibsAccountId);
 
                 var dispatcherContext = PrepareForNewDispatchLoop(
-                    accountId,
+                    account,
                     orderId,
                     dispatcherSettings,
                     ibsOrderParams.IbsPickupAddress.Latitude,
@@ -240,7 +243,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         private DispatcherContext PrepareForNewDispatchLoop(
-            Guid accountId,
+            AccountDetail account,
             Guid orderId,
             DispatcherSettingsResponse dispatcherSettings,
             double pickupLatitude,
@@ -285,11 +288,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? defaultCompany.Id
                     : homeMarketProviderId;
 
-            var accountDetail = _accountDao.FindById(accountId);
-
             return new DispatcherContext
             {
-                IbsAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(accountDetail, newBestFleet.CompanyKey),
+                IbsAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(account, newBestFleet.CompanyKey),
                 ProviderId = providerId,
                 BestAvailableCompany = new BestAvailableCompany
                 {
