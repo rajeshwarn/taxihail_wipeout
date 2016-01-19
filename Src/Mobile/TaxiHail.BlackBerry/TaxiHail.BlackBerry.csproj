@@ -1581,5 +1581,8 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_Tutorial.axml">
       <Link>Resources\Layout\View_Tutorial.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerEmptyItem.axml">
+      <Link>Resources\Layout\SpinnerEmptyItem.axml</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>
