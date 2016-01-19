@@ -2370,7 +2370,7 @@
     <value>Problème de paiement</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Désolé, une erreur de paiement avec la carte de crédit est survenue, s'il vous plaît payez dans le taxi</value>
+    <value>Désolé, une erreur est survenue, s'il vous plaît payez dans le taxi</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
     <value>Désolé, votre carte de crédit n'a pas pu être autorisée. S'il vous plaît payez dans le taxi</value>
