@@ -10,5 +10,13 @@
         public string HashedMarket { get; set; }
 
         public bool EnableDriverBonus { get; set; }
+
+        public bool OverrideEnableAppFareEstimates { get; set; }
+        public double MinimumRate { get; set; }
+        public decimal FlatRate { get; set; }
+        public double KilometricRate { get; set; }
+        public double PerMinuteRate { get; set; }
+        public double KilometerIncluded { get; set; }
+        public double MarginOfError { get; set; }
     }
 }
