@@ -15,6 +15,7 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using MK.Common.Exceptions;
 using Cirrious.CrossCore;
+using Tariff = apcurium.MK.Common.Entity.Tariff;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -250,10 +251,42 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
+			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true, GetMarketTariffIfPossible(fromLat, fromLng));  
 		}
 
-	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
+        private Tariff GetMarketTariffIfPossible(double latitude, double longitude)
+        {
+            //TODO MKTAXI-3799: place call to MarketSettings here
+
+            var marketSettings = new MarketSettings()
+            {
+                KilometerIncluded = 3,
+                OverrideEnableAppFareEstimates = false,
+                MinimumRate = 2,
+                MarginOfError = 10,
+                PerMinuteRate = 3,
+                FlatRate = 1,
+                KilometricRate = 2
+            };
+
+            if (marketSettings.HashedMarket == null || !marketSettings.OverrideEnableAppFareEstimates)
+            {
+                return null;
+            }
+
+            return new Tariff()
+            {
+                FlatRate = marketSettings.FlatRate,
+                KilometricRate = marketSettings.KilometricRate,
+                MinimumRate = marketSettings.MinimumRate,
+                KilometerIncluded = marketSettings.KilometerIncluded,
+                PerMinuteRate = marketSettings.PerMinuteRate,
+                MarginOfError = marketSettings.MarginOfError,
+                Type = (int)TariffType.Default
+            };
+        }
+
+        public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
             try
             {

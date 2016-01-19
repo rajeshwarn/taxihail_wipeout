@@ -75,13 +75,48 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, vehicleTypeId, date);
+                var marketTariff = GetMarketTariffIfPossible(originLat, originLat);
+
+				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, vehicleTypeId, date, false, marketTariff);
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price, TripDurationInSeconds = (int?)direction.Duration };
             }
             catch
             {
                 return new DirectionInfo();
             }
+        }
+
+        private Tariff GetMarketTariffIfPossible(double latitude, double longitude)
+        {
+            //TODO MKTAXI-3799: place call to MarketSettings here
+
+            var marketSettings = new MarketSettings()
+            {
+                KilometerIncluded = 3,
+                OverrideEnableAppFareEstimates = true,
+                MinimumRate = 2,
+                MarginOfError = 10,
+                PerMinuteRate = 3,
+                FlatRate = 1,
+                KilometricRate = 2,
+                HashedMarket = "notahashedmarket",
+            };
+            
+            if (marketSettings.HashedMarket == null || !marketSettings.OverrideEnableAppFareEstimates)
+            {
+                return null;
+            }
+
+            return new Tariff()
+            {
+                FlatRate = marketSettings.FlatRate,
+                KilometricRate = marketSettings.KilometricRate,
+                MinimumRate = marketSettings.MinimumRate,
+                KilometerIncluded = marketSettings.KilometerIncluded,
+                PerMinuteRate = marketSettings.PerMinuteRate,
+                MarginOfError = marketSettings.MarginOfError,
+                Type = (int)TariffType.Default
+            };
         }
     }
 }

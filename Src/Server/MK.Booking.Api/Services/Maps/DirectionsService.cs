@@ -54,18 +54,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 throw new HttpError(HttpStatusCode.BadRequest, "MissingPosition", "An original longitude and latitude is required");
             }
 
-            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(request.OriginLat.Value, request.OriginLng.Value);
-
-            var marketTariff = new Tariff
-            {
-                Type = (int)TariffType.Default,
-                MinimumRate = marketSettings.MinimumRate,
-                PerMinuteRate = marketSettings.PerMinuteRate,
-                KilometricRate = marketSettings.KilometricRate,
-                KilometerIncluded = marketSettings.KilometerIncluded,
-                FlatRate = marketSettings.FlatRate,
-                MarginOfError = marketSettings.MarginOfError
-            };
+            var marketTariff = GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);
 
             var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
                 request.DestinationLng, request.VehicleTypeId, request.Date,false, marketTariff);
@@ -118,6 +107,27 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             }
 
             return directionInfo;
+        }
+
+        private Tariff GetMarketTariff(double latitude, double longitude)
+        {
+            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(latitude, longitude);
+
+            if (marketSettings.Market != null)
+            {
+                return null;
+            }
+
+            return new Tariff
+            {
+                Type = (int) TariffType.Default,
+                MinimumRate = marketSettings.MinimumRate,
+                PerMinuteRate = marketSettings.PerMinuteRate,
+                KilometricRate = marketSettings.KilometricRate,
+                KilometerIncluded = marketSettings.KilometerIncluded,
+                FlatRate = marketSettings.FlatRate,
+                MarginOfError = marketSettings.MarginOfError
+            };
         }
 
         public Direction Get(AssignedEtaRequest request)
