@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Logger.LogError(ex);
 
 						var errorCode = 0;
-						if (ex.Data != null && ex.Data.Contains("ErrorCode") && (int) ex.Data["ErrorCode"] > 0)
+						if (ex.Data != null && ex.Data.Contains("ErrorCode") && int.Parse(ex.Data["ErrorCode"].ToSafeString()) > 0)
 						{
 							int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
 						}
