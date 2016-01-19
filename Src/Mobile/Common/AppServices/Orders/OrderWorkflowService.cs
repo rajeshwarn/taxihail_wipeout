@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
-				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, _kountSessionId);
+				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, order.KountSessionId);
 
 				var orderStatus = await _bookingService.CreateOrder(order);
 
@@ -297,6 +297,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
+
+				_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}
@@ -847,7 +849,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null)
 		{
-            _kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);

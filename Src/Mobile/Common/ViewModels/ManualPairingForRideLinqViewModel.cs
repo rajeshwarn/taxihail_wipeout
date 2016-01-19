@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init()
 		{
-			_kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
         public string PairingCodeLeft
@@ -88,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, _kountSessionId);
 
+							_deviceCollectorService.GenerateNewSessionIdAndCollect();
+
 							this.ReturnResult(orderManualRideLinqDetail);
                         }
                     }
@@ -120,36 +122,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         Logger.LogError(ex);
 
-						var tripInfoHttpStatusCode = (int)HttpStatusCode.BadRequest;
-						int errorCode = 0;
-
-						if (ex.Data != null && ex.Data.Contains("TripInfoHttpStatusCode") && ex.Data.Contains("ErrorCode"))
+						var errorCode = 0;
+						if (ex.Data != null && ex.Data.Contains("ErrorCode") && int.Parse(ex.Data["ErrorCode"].ToSafeString()) > 0)
 						{
-							tripInfoHttpStatusCode = (int)ex.Data["TripInfoHttpStatusCode"];
-
-							if (ex.Data["ErrorCode"] != null)
-							{
-								int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
-							}
+							int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
 						}
 
-						if (tripInfoHttpStatusCode == (int)HttpStatusCode.BadRequest)
+						switch (errorCode)
 						{
-							switch (errorCode)
-							{
-								case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
-									break;
+							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
+								break;
 
-								case CmtErrorCodes.UnablePreauthorizeCreditCard:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
-									break;
+							case CmtErrorCodes.UnablePreauthorizeCreditCard:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
+								break;
 
-								case CmtErrorCodes.UnableToPair:
-								default:
-									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
-									break;
-							}
+							case CmtErrorCodes.UnableToPair:
+							default:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
+								break;
 						}
                     } 
                 });
