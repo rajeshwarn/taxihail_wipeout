@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile
                 facebookService.PublishInstall();
             }
 
+			Mvx.Resolve<IDeviceCollectorService>().GenerateNewSessionIdAndCollect();
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
             if (accountService.CurrentAccount == null
