@@ -301,7 +301,14 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     Market = marketName,
                     DispatcherSettings = marketSettings.DispatcherSettings,
                     EnableDriverBonus = marketSettings.EnableDriverBonus,
-                    ReceiptFooter = marketSettings.ReceiptFooter
+                    ReceiptFooter = marketSettings.ReceiptFooter,
+                    EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
+                    FlatRate = marketSettings.FlatRate,
+                    KilometricRate = marketSettings.KilometricRate,
+                    KilometerIncluded = marketSettings.KilometerIncluded,
+                    MinimumRate = marketSettings.MinimumRate,
+                    MarginOfError = marketSettings.MarginOfError,
+                    PerMinuteRate = marketSettings.PerMinuteRate
                 }
                 : new CompanyMarketSettingsResponse();
         }
