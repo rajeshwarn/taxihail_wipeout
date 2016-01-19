@@ -6,6 +6,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
+using CustomerPortal.Client;
 
 #endregion
 

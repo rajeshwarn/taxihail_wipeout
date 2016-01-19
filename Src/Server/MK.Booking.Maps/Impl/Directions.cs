@@ -4,6 +4,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.MapDataProvider;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -21,13 +22,13 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
         public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
-		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
+		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overridedTariff = null)
         {
-            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta).Result;
+            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta, overridedTariff).Result;
         }
 
         public async Task<Direction> GetDirectionAsync(double? originLat, double? originLng, double? destinationLat,
-            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
+            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overridedTariff = null)
         {
             var result = new Direction();
 
@@ -51,7 +52,8 @@ namespace apcurium.MK.Booking.Maps.Impl
                     result.Price = _priceCalculator.GetPrice(
                         direction.Distance,
                         date ?? DateTime.Now,
-                        direction.Duration, vehicleTypeId);
+                        direction.Duration, vehicleTypeId,
+                        overridedTariff);
 
                     result.FormattedPrice = result.Price == null 
                         ? string.Empty 
