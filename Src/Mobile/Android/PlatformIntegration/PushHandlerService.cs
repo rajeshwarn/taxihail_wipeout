@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             //Send back to the server
             this.UseServiceClient<PushNotificationRegistrationServiceClient>(
-                service => { service.Register(registrationId, PushNotificationServicePlatform.BlackBerry); });
+                service => { service.Register(registrationId, PushNotificationServicePlatform.Android); });
         }
     }
 }
