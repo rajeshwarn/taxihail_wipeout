@@ -49,7 +49,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
-                ReceiptFooter = marketModel.ReceiptFooter
+                ReceiptFooter = marketModel.ReceiptFooter,
+                EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
+                MinimumRate = marketModel.MinimumRate,
+                MarginOfError = marketModel.MarginOfError,
+                PerMinuteRate = marketModel.PerMinuteRate,
+                KilometricRate = marketModel.KilometricRate,
+                KilometerIncluded = marketModel.KilometerIncluded,
+                FlatRate = marketModel.FlatRate
             });
         }
 
@@ -226,7 +233,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter)
+        public ActionResult SaveSettings(
+            string market, 
+            bool enableDriverBonus, 
+            string receiptFooter, 
+            bool enableAppFareEstimates, 
+            double minimumRate, 
+            decimal flatRate,
+            double kilometricRate,
+            double perMinuteRate,
+            double kilometerIncluded,
+            double marginOfError)
         {
             try
             {
@@ -240,6 +257,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.ReceiptFooter = receiptFooter;
+
+                marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+                marketToEdit.MinimumRate = minimumRate;
+                marketToEdit.FlatRate = flatRate;
+                marketToEdit.KilometricRate = kilometricRate;
+                marketToEdit.PerMinuteRate = perMinuteRate;
+                marketToEdit.KilometerIncluded = kilometerIncluded;
+                marketToEdit.MarginOfError = marginOfError;
 
                 Repository.Update(marketToEdit);
             }
