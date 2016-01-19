@@ -1008,7 +1008,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				if (marketSettings == null)
 				{
-					// in case of no network we get null
+					// in case of no network we get null, init object with a non-null default value
 					marketSettings = new MarketSettings();
 				}
 
