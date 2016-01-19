@@ -60,7 +60,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 .Select(e => new SelectListItem
                 {
                     Value = e.Id,
-                    Text = e.Name
+                    Text = e.GetDisplay()
                 });
 
             var revisions = new MongoRepository<Revision>();
@@ -343,7 +343,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 environments.ToArray().Where(predicate).OrderBy(e => e.Name).Select(e => new SelectListItem
                 {
                     Value = e.Id,
-                    Text = e.Name
+                    Text = e.GetDisplay()
                 });
 
             var revisions = new MongoRepository<Revision>();
