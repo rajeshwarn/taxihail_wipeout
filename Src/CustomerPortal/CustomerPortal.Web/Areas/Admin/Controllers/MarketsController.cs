@@ -49,6 +49,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
+                EnableFutureBooking = marketModel.EnableFutureBooking,
                 ReceiptFooter = marketModel.ReceiptFooter
             });
         }
@@ -226,7 +227,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter)
+        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter, bool enableFutureBooking)
         {
             try
             {
@@ -239,6 +240,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
+                marketToEdit.EnableFutureBooking = enableFutureBooking;
                 marketToEdit.ReceiptFooter = receiptFooter;
 
                 Repository.Update(marketToEdit);
