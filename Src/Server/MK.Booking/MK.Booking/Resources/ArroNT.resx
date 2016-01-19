@@ -162,4 +162,10 @@
   <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
     <value>Sorry, there was a problem. Please try again.</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
 </root>

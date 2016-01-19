@@ -165,4 +165,10 @@
   <data name="PhoneBlackListed" xml:space="preserve">
     <value>Sorry, you are not allowed to create an account. Please contact support@goarro.com for assistance.</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
 </root>
