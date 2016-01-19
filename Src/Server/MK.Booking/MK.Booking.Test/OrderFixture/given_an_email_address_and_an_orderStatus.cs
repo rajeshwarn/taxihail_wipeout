@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _geocodingMock = new Mock<IGeocoding>();
             var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
-            
+
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
                 TemplateServiceMock.Object,

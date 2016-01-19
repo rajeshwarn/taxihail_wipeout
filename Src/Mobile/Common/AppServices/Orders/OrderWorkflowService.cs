@@ -1006,6 +1006,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        {
 	            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
 
+				if (marketSettings == null)
+				{
+					// in case of no network we get null, init object with a non-null default value
+					marketSettings = new MarketSettings();
+				}
+
                 _lastMarketPosition = currentPosition;
 
                 _marketSettingsSubject.OnNext(marketSettings);

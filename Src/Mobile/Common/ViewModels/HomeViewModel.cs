@@ -747,19 +747,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void MarketChanged(MarketSettings marketSettings)
         {
-            if (marketSettings != null)
-            {
-                // Market changed and not home market
-                if (_lastHashedMarket != marketSettings.HashedMarket
-                && marketSettings.HashedMarket.HasValue()
-                && !Settings.Network.HideMarketChangeWarning)
-                {
-                    this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
-                        this.Services().Localize["MarketChangedMessage"]);
-                }
+			// Market changed and not home market
+			if (_lastHashedMarket != marketSettings.HashedMarket
+				&& marketSettings.HashedMarket.HasValue()
+				&& !Settings.Network.HideMarketChangeWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+					this.Services().Localize["MarketChangedMessage"]);
+			}
 
-                _lastHashedMarket = marketSettings.HashedMarket;
-            }
+			_lastHashedMarket = marketSettings.HashedMarket;
 
             if (BottomBar != null)
             {

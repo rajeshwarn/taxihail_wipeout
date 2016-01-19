@@ -1102,8 +1102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				// This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Bailed)
-                    || VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
+				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
 				}

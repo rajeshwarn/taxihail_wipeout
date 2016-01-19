@@ -53,11 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private void MarketChanged(MarketSettings marketSettings)
 	    {
-            _isDriverBonusEnabledForMarket = false;
-            if (marketSettings != null)
-            {
-                _isDriverBonusEnabledForMarket = marketSettings.EnableDriverBonus;
-            }
+			_isDriverBonusEnabledForMarket = marketSettings.EnableDriverBonus;
 
             RaisePropertyChanged(() => CanShowDriverBonus);
         }
