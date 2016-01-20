@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var chargeTypes = await _accountService.GetPaymentsList();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
-            var vehicle = (await _vehicleTypeService.GetAndObserveVehiclesList()).Take(1).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
+			var vehicle = (await _vehicleTypeService.GetAndObserveVehiclesList().Take(1)).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
 			if (vehicle != null)
 			{
 				VehiculeType = vehicle.Name;
