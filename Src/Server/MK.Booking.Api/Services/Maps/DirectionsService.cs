@@ -18,6 +18,7 @@ using ServiceStack.ServiceInterface;
 using Infrastructure.Messaging;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
 using ServiceStack.Common.Web;
 using Tariff = apcurium.MK.Common.Entity.Tariff;
@@ -113,7 +114,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         {
             var marketSettings = _networkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
-            if (marketSettings.Market != null)
+            if (!marketSettings.Market.HasValueTrimmed() || !marketSettings.EnableAppFareEstimates)
             {
                 return null;
             }
