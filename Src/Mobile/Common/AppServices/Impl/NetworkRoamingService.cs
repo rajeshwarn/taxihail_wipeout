@@ -2,64 +2,80 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Reactive.Subjects;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class NetworkRoamingService : BaseService, INetworkRoamingService
+	public class NetworkRoamingService : BaseService, INetworkRoamingService
     {
-        public Task<MarketSettings> GetHashedCompanyMarket(double latitude, double longitude)
-        {
-			var tcs = new TaskCompletionSource<MarketSettings>();
+		private readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
 
+		private Position _lastMarketPosition = new Position();
+
+		private const int LastMarketDistanceThresholdInMeters = 1000;
+
+		public IObservable<MarketSettings> GetAndObserveMarketSettings()
+		{
+			return _marketSettingsSubject;
+		}
+
+		public Position GetLastMarketChangedPositionTrigger()
+		{
+			return _lastMarketPosition;
+		}
+
+		public async Task UpdateMarketSettingsIfNecessary(Position currentPosition)
+		{
+			if (ShouldUpdateMarket(currentPosition))
+			{
+				_lastMarketPosition = currentPosition;
+
+				var marketSettings = await GetMarketSettings(currentPosition.Latitude, currentPosition.Longitude);
+				if (marketSettings == null)
+				{
+					// in case of no network we get null, init object with a non-null default value
+					marketSettings = new MarketSettings();
+				}
+
+				_marketSettingsSubject.OnNext(marketSettings);
+			}
+		}
+
+        public async Task<List<NetworkFleet>> GetNetworkFleets()
+        {
 			try
 			{
-				var result = UseServiceClientAsync<NetworkRoamingServiceClient, MarketSettings>(service => service.GetCompanyMarketSettings(latitude, longitude)).Result;
-				tcs.TrySetResult(result);
+				return await UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(service => service.GetNetworkFleets());
 			}
-			catch
+			catch(Exception ex)
 			{
-				tcs.TrySetResult(new MarketSettings());
+				Logger.LogError(ex);
+				return new List<NetworkFleet>();
 			}
-
-			return tcs.Task;
         }
 
-        public Task<List<NetworkFleet>> GetNetworkFleets()
-        {
-			var tcs = new TaskCompletionSource<List<NetworkFleet>>();
-
+		private async Task<MarketSettings> GetMarketSettings(double latitude, double longitude)
+		{
 			try
 			{
-				var result =
-					UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(
-						service => service.GetNetworkFleets()).Result;
-				tcs.TrySetResult(result);
+				return await UseServiceClientAsync<NetworkRoamingServiceClient, MarketSettings>(service => service.GetCompanyMarketSettings(latitude, longitude));
 			}
-			catch
+			catch(Exception ex)
 			{
-				tcs.TrySetResult(new List<NetworkFleet>());
+				Logger.LogError(ex);
+				return new MarketSettings();
 			}
+		}
 
-			return tcs.Task;
-        }
+		private bool ShouldUpdateMarket(Position currentPosition)
+		{
+			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+				currentPosition.Latitude, currentPosition.Longitude,
+				_lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
 
-        public Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
-        {
-            var tcs = new TaskCompletionSource<List<VehicleType>>();
-
-            try
-            {
-                var result =
-                    UseServiceClientAsync<NetworkRoamingServiceClient, List<VehicleType>>(
-                        service => service.GetExternalMarketVehicleTypes(latitude, longitude)).Result;
-                tcs.TrySetResult(result);
-            }
-            catch
-            {
-                tcs.TrySetResult(new List<VehicleType>());
-            }
-
-            return tcs.Task;
-        }
+			return distanceFromLastMarketRequest > LastMarketDistanceThresholdInMeters;
+		}
     }
 }
