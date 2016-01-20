@@ -7,20 +7,23 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 
     public class GeolocService : BaseService, IGeolocService
     {
-		readonly IGeocoding _geocoding;
-		readonly IAddresses _addresses;
-		readonly IDirections _directions;
+		private readonly IGeocoding _geocoding;
+		private readonly IAddresses _addresses;
+		private readonly IDirections _directions;
+        private readonly INetworkRoamingService _networkRoamingService;
 
-		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions)
+        public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, INetworkRoamingService networkRoamingService)
 		{
 			_directions = directions;
-			_addresses = addresses;
+            _networkRoamingService = networkRoamingService;
+            _addresses = addresses;
 			_geocoding = geocoding;
 		}
 
@@ -75,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var marketTariff = GetMarketTariffIfPossible(originLat, originLat);
+                var marketTariff = await GetMarketTariffIfPossible(originLat, originLong);
 
 				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, vehicleTypeId, date, false, marketTariff);
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price, TripDurationInSeconds = (int?)direction.Duration };
@@ -86,23 +89,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private Tariff GetMarketTariffIfPossible(double latitude, double longitude)
+        private async Task<Tariff> GetMarketTariffIfPossible(double latitude, double longitude)
         {
-            //TODO MKTAXI-3799: place call to MarketSettings here
-
-            var marketSettings = new MarketSettings()
-            {
-                KilometerIncluded = 3,
-                OverrideEnableAppFareEstimates = true,
-                MinimumRate = 2,
-                MarginOfError = 10,
-                PerMinuteRate = 3,
-                FlatRate = 1,
-                KilometricRate = 2,
-                HashedMarket = "notahashedmarket",
-            };
+            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(latitude, longitude);
             
-            if (marketSettings.HashedMarket == null || !marketSettings.OverrideEnableAppFareEstimates)
+            // If we are in local market or the app fare estimates is not ovverridden in the roaming market we do not return a tariff override.
+            if (!marketSettings.HashedMarket.HasValueTrimmed() || !marketSettings.OverrideEnableAppFareEstimates)
             {
                 return null;
             }

@@ -14,8 +14,6 @@ using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using MK.Common.Exceptions;
-using Cirrious.CrossCore;
-using Tariff = apcurium.MK.Common.Entity.Tariff;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -28,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
 
-		private readonly IDirections _directions;
+	    private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
 	    private bool _isStarted;
 
@@ -39,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_directions = directions;
 			_settings = settings;
 
-			// having publish and connect fixes the problem that caused the code to be executed 2 times
+		    // having publish and connect fixes the problem that caused the code to be executed 2 times
 			// because there was 2 subscriptions
             _availableVehiclesObservable = _timerSubject
                 .Switch()
@@ -249,42 +247,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 
 
-		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
+		public async Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true, GetMarketTariffIfPossible(fromLat, fromLng));  
+			return await _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
-
-        private Tariff GetMarketTariffIfPossible(double latitude, double longitude)
-        {
-            //TODO MKTAXI-3799: place call to MarketSettings here
-
-            var marketSettings = new MarketSettings()
-            {
-                KilometerIncluded = 3,
-                OverrideEnableAppFareEstimates = false,
-                MinimumRate = 2,
-                MarginOfError = 10,
-                PerMinuteRate = 3,
-                FlatRate = 1,
-                KilometricRate = 2
-            };
-
-            if (marketSettings.HashedMarket == null || !marketSettings.OverrideEnableAppFareEstimates)
-            {
-                return null;
-            }
-
-            return new Tariff()
-            {
-                FlatRate = marketSettings.FlatRate,
-                KilometricRate = marketSettings.KilometricRate,
-                MinimumRate = marketSettings.MinimumRate,
-                KilometerIncluded = marketSettings.KilometerIncluded,
-                PerMinuteRate = marketSettings.PerMinuteRate,
-                MarginOfError = marketSettings.MarginOfError,
-                Type = (int)TariffType.Default
-            };
-        }
 
         public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
