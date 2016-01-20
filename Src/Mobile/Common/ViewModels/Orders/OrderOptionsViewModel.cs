@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
 	    {
 			var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
-				.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
+				.Select(marketSettings => marketSettings.IsLocalMarket)
 				.Take(1);
 
 			if (!isLocalMarket)

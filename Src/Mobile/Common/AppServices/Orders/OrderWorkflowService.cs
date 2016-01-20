@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// If we changed market
 			if (marketSettings.HashedMarket != lastHashedMarketValue)
 			{
-				if (marketSettings.HashedMarket.HasValue())
+				if (!marketSettings.IsLocalMarket)
 				{
 					// Set vehicles list with data from external market
 					await SetMarketVehicleTypes();
@@ -377,7 +377,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-				if (_marketSettings.HashedMarket.HasValue())
+				if (!_marketSettings.IsLocalMarket)
 		        {
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 
@@ -591,7 +591,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<bool> GetAndObserveIsUsingGeo()
 		{
 			return _networkRoamingService.GetAndObserveMarketSettings()
-                .Select(marketSettings => marketSettings.HashedMarket.HasValue()
+				.Select(marketSettings => !marketSettings.IsLocalMarket
 					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
 					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
 				);

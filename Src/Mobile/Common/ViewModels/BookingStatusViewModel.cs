@@ -984,7 +984,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var statusInfoText = status.IBSStatusDescription;
 
 				var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
-					.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
+					.Select(marketSettings => marketSettings.IsLocalMarket)
 					.Take(1);
 				var hasVehicleInfo = status.VehicleNumber.HasValue()
 				                     && status.VehicleLatitude.HasValue

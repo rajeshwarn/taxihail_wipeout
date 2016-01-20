@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -40,10 +41,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				var previousMarketSettings = await _marketSettingsSubject.Take(1).ToTask();
 				if (previousMarketSettings.HashedMarket != marketSettings.HashedMarket)
 				{
-					// If market has changed, we need to get the external market vehicle types.
-					// Do this before changing the market settings subject so observing classes can call 
-					// GetExternalMarketVehicleTypes() immediately when notified of market settings change
-					_marketVehicleTypes = await GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+					if (marketSettings.IsLocalMarket)
+					{
+						_marketVehicleTypes = new List<VehicleType>();
+					}
+					else
+					{
+						// If market has changed, we need to get the external market vehicle types.
+						// Do this before changing the market settings subject so observing classes can call 
+						// GetExternalMarketVehicleTypes() immediately when notified of market settings change
+						_marketVehicleTypes = await GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+					}
 				}
 
 				_marketSettingsSubject.OnNext(marketSettings);

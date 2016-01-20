@@ -752,7 +752,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			// Market changed and not home market
 			if (_lastHashedMarket != marketSettings.HashedMarket
-				&& marketSettings.HashedMarket.HasValue()
+				&& !marketSettings.IsLocalMarket
 				&& !Settings.Network.HideMarketChangeWarning)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
