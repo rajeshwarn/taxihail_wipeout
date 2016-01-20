@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 
             PhoneNumber = new PhoneNumberModel();
 		}

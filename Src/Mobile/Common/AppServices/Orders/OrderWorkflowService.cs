@@ -110,10 +110,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		
-			Observe (_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 		}
 			
-		private async void MarketChanged(MarketSettings marketSettings)
+		private async Task MarketChanged(MarketSettings marketSettings)
 		{
 			Console.WriteLine("MarketChanged triggered: " + marketSettings.HashedMarket);
 			var lastHashedMarketValue = _marketSettings.HashedMarket;
