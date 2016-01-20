@@ -58,23 +58,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
         readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
         readonly ISubject<double?> _tipIncentiveSubject = new BehaviorSubject<double?>(null);
-
-		private readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
+		readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
 
         private bool _isOrderRebooked;
-
-	    private Position _lastMarketPosition = new Position();
-	    private string _lastHashedMarketValue;
         private string _kountSessionId;
-
-		private const int LastMarketDistanceThresholdInMeters = 1000;
+		private MarketSettings _marketSettings = new MarketSettings();
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -115,8 +109,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _poiProvider = poiProvider;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		
+			Observe (_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 			
+		private async void MarketChanged(MarketSettings marketSettings)
+		{
+			var lastHashedMarketValue = _marketSettings.HashedMarket;
+
+			_marketSettings = marketSettings;
+
+			// If we changed market
+			if (marketSettings.HashedMarket != lastHashedMarketValue)
+			{
+				if (marketSettings.HashedMarket.HasValue())
+				{
+					// Set vehicles list with data from external market
+					await SetMarketVehicleTypes();
+				}
+				else
+				{
+					// Load and cache local vehicle types
+					await SetLocalVehicleTypes();
+				}
+			}
+		}
+
 		public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
@@ -358,8 +376,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-                var marketSettings = await _marketSettingsSubject.Take(1).ToTask();
-		        if (marketSettings.HashedMarket.HasValue())
+				if (_marketSettings.HashedMarket.HasValue())
 		        {
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 
@@ -570,14 +587,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _dropOffSelectionModeSubject;
 		}
 
-		public IObservable<MarketSettings> GetAndObserveMarketSettings()
-		{
-			return _marketSettingsSubject;
-		}
-
 		public IObservable<bool> GetAndObserveIsUsingGeo()
 		{
-			return _marketSettingsSubject
+			return _networkRoamingService.GetAndObserveMarketSettings()
                 .Select(marketSettings => marketSettings.HashedMarket.HasValue()
 					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
 					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
@@ -617,18 +629,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			// Needs to run in a background thread to prevent a potential deadlock issue.
 			await Task.Run(async () =>
+			{
+				var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
+				if (selectionMode == AddressSelectionMode.PickupSelection)
 				{
-					var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
-					if (selectionMode == AddressSelectionMode.PickupSelection)
-					{
-						_pickupAddressSubject.OnNext (address);
-						await SetMarketSettings(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
-					} 
-					else 
-					{
-						_destinationAddressSubject.OnNext (address);
-					}
-				}, token);
+					_pickupAddressSubject.OnNext (address);
+					await _networkRoamingService.UpdateMarketSettingsIfNecessary(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
+				} 
+				else 
+				{
+					_destinationAddressSubject.OnNext (address);
+				}
+			}, token);
 
 			// Do NOT await this
 			CalculateEstimatedFare(token).FireAndForget();
@@ -1002,44 +1014,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-	    private async Task SetMarketSettings(Position currentPosition)
+	    private async Task SetMarketVehicleTypes()
 	    {
-            if (ShouldUpdateMarket(currentPosition))
-	        {
-	            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
-
-				if (marketSettings == null)
-				{
-					// in case of no network we get null, init object with a non-null default value
-					marketSettings = new MarketSettings();
-				}
-
-                _lastMarketPosition = currentPosition;
-
-                _marketSettingsSubject.OnNext(marketSettings);
-
-                // If we changed market
-	            if (marketSettings.HashedMarket != _lastHashedMarketValue)
-	            {
-                    if (marketSettings.HashedMarket.HasValue())
-                    {
-                        // Set vehicles list with data from external market
-                        await SetMarketVehicleTypes(currentPosition);
-                    }
-                    else
-                    {
-                        // Load and cache local vehicle types
-                        await SetLocalVehicleTypes();
-                    }
-	            }
-
-                _lastHashedMarketValue = marketSettings.HashedMarket;
-	        }
-	    }
-
-	    private async Task SetMarketVehicleTypes(Position currentPosition)
-	    {
-            var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+            var networkVehicles = _networkRoamingService.GetExternalMarketVehicleTypes();
 			_vehicleTypeService.SetMarketVehiclesList(networkVehicles);
             _networkVehiclesSubject.OnNext(networkVehicles);
 
@@ -1083,15 +1060,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _isDestinationModeOpenedSubject;
 		}
-
-        private bool ShouldUpdateMarket(Position currentPosition)
-	    {
-            var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
-                currentPosition.Latitude, currentPosition.Longitude,
-                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
-
-            return distanceFromLastMarketRequest > LastMarketDistanceThresholdInMeters;
-	    }
 
 		public async Task<bool> ShouldPromptForCvv()
 		{

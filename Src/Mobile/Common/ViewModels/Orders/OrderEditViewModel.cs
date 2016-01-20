@@ -23,17 +23,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
 		private readonly IVehicleTypeService _vehicleTypeService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, IVehicleTypeService vehicleTypeService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, IVehicleTypeService vehicleTypeService, INetworkRoamingService networkRoamingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
 			_vehicleTypeService = vehicleTypeService;
+			_networkRoamingService = networkRoamingService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 
             PhoneNumber = new PhoneNumberModel();
 		}

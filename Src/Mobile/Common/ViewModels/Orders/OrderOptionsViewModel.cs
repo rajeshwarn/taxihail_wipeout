@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     public class OrderOptionsViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly INetworkRoamingService _networkRoamingService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
 		private readonly IVehicleTypeService _vehicleTypeService;
@@ -31,12 +32,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         private string _hashedMarket;
 
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, INetworkRoamingService networkRoamingService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
 		{
-			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
+			_networkRoamingService = networkRoamingService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
@@ -49,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
+            Observe (_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);

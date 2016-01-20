@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IAccountService _accountService;
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
+		private readonly INetworkRoamingService _networkRoamingService;
 		private bool _isCmtRideLinq;
 	    private bool _isDriverBonusEnabledForMarket;
         
@@ -29,13 +30,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleTypeService vehicleTypeService
+			IVehicleTypeService vehicleTypeService,
+			INetworkRoamingService networkRoamingService
 		)
 		{
 			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
+			_networkRoamingService = networkRoamingService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
@@ -44,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
             Observe(_orderWorkflowService.GetAndObserveTipIncentive().Throttle(TimeSpan.FromMilliseconds(500)), tipIncentive => DriverBonus = tipIncentive);
             Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
-		    Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
+		    Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 
 			_driverBonus = 5;
 
