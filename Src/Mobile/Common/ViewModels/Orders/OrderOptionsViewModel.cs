@@ -30,8 +30,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
 		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
 
-        private string _hashedMarket;
-
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, INetworkRoamingService networkRoamingService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -51,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
@@ -120,14 +117,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        await SetLocalMarketVehicleTypes();
 	    }
 
-	    private void MarketChanged(MarketSettings marketSettings)
-	    {
-			_hashedMarket = marketSettings.HashedMarket;
-	    }
-
 	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
 	    {
-	        if (_hashedMarket.HasValue())
+			var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
+				.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
+				.Take(1);
+
+			if (!isLocalMarket)
 	        {
                 VehicleTypes = marketVehicleTypes;
 	        }
