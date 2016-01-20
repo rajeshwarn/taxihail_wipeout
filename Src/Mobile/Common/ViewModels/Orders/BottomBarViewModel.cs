@@ -24,16 +24,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IMvxPhoneCallTask _phone;
         private readonly IAccountService _accountService;
-        private readonly IPaymentService _paymentService;
+		private readonly IPaymentService _paymentService;		
+		private readonly INetworkRoamingService _networkRoamingService;
 
         private OrderValidationResult _orderValidationResult;
 
-        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService, IPaymentService paymentService)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, 
+			IMvxPhoneCallTask phone, 
+			IAccountService accountService, 
+			IPaymentService paymentService, 
+			INetworkRoamingService networkRoamingService)
         {
             _phone = phone;
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
             _paymentService = paymentService;
+			_networkRoamingService = networkRoamingService;
 
 			if (!Settings.HideDestination)
 			{
@@ -49,14 +55,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
-
 			Observe(_orderWorkflowService.GetAndObserveCanExecuteBookingOperation(), canExecuteBookOperation => CanExecuteBookOperation = canExecuteBookOperation);
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
         }
 
 		public override void Start()
 		{
 			base.Start();
 			Observe(ObserveHomeViewModelState(), RefreshAppBarViewState);
+		}
+
+		private async Task MarketChanged(MarketSettings marketSettings)
+		{
+			if (marketSettings.EnableFutureBooking == IsFutureBookingDisabled)
+			{
+				IsFutureBookingDisabled = !marketSettings.EnableFutureBooking;
+			}
 		}
 
 		private void RefreshAppBarViewState(HomeViewModelState state)
@@ -260,10 +274,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		#endregion
 
-        private void OrderValidated(OrderValidationResult orderValidationResult)
+        private async Task OrderValidated(OrderValidationResult orderValidationResult)
         {
             _orderValidationResult = orderValidationResult;
-            IsFutureBookingDisabled = Settings.DisableFutureBooking 
+
+			var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
+
+			IsFutureBookingDisabled = !marketSettings.EnableFutureBooking 
 				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
 
@@ -922,7 +939,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
 					// popup
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
-						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
+						&& !IsFutureBookingDisabled && !Settings.DisableImmediateBooking)
                     {
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 						var success = await PrevalidatePickupAndDestinationRequired(onValidated);
@@ -942,7 +959,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						CreateOrder.ExecuteIfPossible();
 					}
 					// future booking
-					else if (!Settings.DisableFutureBooking)
+					else if (!IsFutureBookingDisabled)
 					{
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
