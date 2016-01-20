@@ -52,15 +52,20 @@ namespace apcurium.MK.Booking.Api.Services
                 request.RatingScores = ratingScoresCleanedUpForDuplicates;
             }
             
-            var command = new RateOrder
-            {
-				AccountId = accountId,
-                Note = request.Note,
-                OrderId = request.OrderId,
-                RatingScores = request.RatingScores
-            };
+            var ratings = Dao.GetOrderRatingsByOrderId(request.OrderId);
 
-            _commandBus.Send(command);
+            if (ratings.OrderId == Guid.Empty || !ratings.RatingScores.Any())
+            {
+                var command = new RateOrder
+                {
+                    AccountId = accountId,
+                    Note = request.Note,
+                    OrderId = request.OrderId,
+                    RatingScores = request.RatingScores
+                };
+
+                _commandBus.Send(command);
+            }
 
             return String.Empty;
         }
