@@ -1,6 +1,5 @@
 ﻿using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
@@ -8,18 +7,12 @@ using System.Runtime.CompilerServices;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
-using System.Reactive.Subjects;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-		private readonly CompositeDisposable _factorySubsciptions = new CompositeDisposable();
-
 		protected static async Task<TResult> RunWithRetryAsync<TResult>(
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,
@@ -115,52 +108,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
 		{
-			// Buffer to hold the last value produce while service is stopped
-			var buffer = new FixedSizedQueue<T>(1);
-
-			// subject used to record values produced while service is stopped
-			var recordingSubject = new Subject<T>();
-
-			var offline = recordingSubject.Publish();
-			offline.Subscribe(x => buffer.Enqueue(x));
-			var offlineSubscription = offline.Connect();
-
-			// Start recording now 
-			observable.Subscribe(recordingSubject);
-			// subject used to record values produced while VM is started
-			var liveSubject = new Subject<T>();
-			observable.Subscribe(liveSubject);
-
-			var connection = Observable.Create<T>(o =>
-			{
-				// Stop recording offline values;
-				offlineSubscription.Dispose();
-
-				// Produce an observable sequence starting with the last value
-				var subscription = liveSubject
-					.StartWith(buffer.ToArray())
-					.Subscribe(o);
-
-				buffer.Clear();
-
-				// This will reconnect to this offline observable when subscription is disposed
-				var goOffline = Disposable.Create(() => {
-					offlineSubscription = offline.Connect();
-				});
-
-				return new CompositeDisposable(new IDisposable[] {
-					subscription,
-					goOffline
-				});
-
-
-			}).Publish();
-
-			connection
-				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(onNext, Logger.LogError);
-
-			_factorySubsciptions.Add(connection.Connect());
+			observable.Subscribe(onNext, Logger.LogError);
 		}
 
         private ILogger _logger;
