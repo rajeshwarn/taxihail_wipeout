@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class BraintreeClientPaymentService : Service
     {
+        private readonly IServerSettings _serverSettings;
         private readonly IAccountDao _accountDao;
         private BraintreeGateway BraintreeGateway { get; set; }
         private readonly ICommandBus _commandBus;
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BraintreeClientPaymentService(IServerSettings serverSettings, IAccountDao accountDao, ICommandBus commandBus, ICreditCardDao creditCardDao)
         {
+            _serverSettings = serverSettings;
             _accountDao = accountDao;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
@@ -172,13 +174,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private object GetClientToken(string customerId)
         {
+            var braintreeServerSettings = _serverSettings.GetPaymentSettings().BraintreeServerSettings;
+
             var tokenRequest = new ClientTokenRequest()
             {
                 CustomerId = customerId,
-                MerchantAccountId = BraintreeGateway.MerchantId,
-                
+                MerchantAccountId = braintreeServerSettings.MerchantAccountId
             };
-
             
             var clientToken = BraintreeGateway.ClientToken.generate(tokenRequest);
 
