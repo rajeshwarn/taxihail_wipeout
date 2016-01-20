@@ -499,7 +499,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					catch (Exception ex)
 					{
 						var localize = this.Services().Localize;
-						messageService(localize["PaypalError_Title"], localize["PaypalErrorMessage"]);
+						messageService.ShowMessage(localize["PaypalError_Title"], localize["PaypalErrorMessage"]);
 						this.Logger.LogError(ex);
 					}
                 });

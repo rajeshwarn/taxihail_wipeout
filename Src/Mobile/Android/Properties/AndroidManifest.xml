@@ -26,7 +26,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="${applicationId}.braintree" />
+        <data android:scheme="com.apcurium.mk.taxihaildemo.braintree" />
       </intent-filter>
     </activity>
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
