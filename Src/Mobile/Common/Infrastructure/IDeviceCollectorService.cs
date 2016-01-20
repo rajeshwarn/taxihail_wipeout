@@ -6,6 +6,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	public abstract class BaseDeviceCollectorService : IDeviceCollectorService
 	{
 	    private readonly IAppSettings _settings;
+		protected string SessionId = null;
 
 	    public BaseDeviceCollectorService(IAppSettings settings)
 	    {
@@ -17,11 +18,16 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         private string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
         private string ProductionMerchantId = "160700";
 
-        public abstract string CollectAndReturnSessionId();
+		public abstract void GenerateNewSessionIdAndCollect();
 
-		public string GenerateSessionId()
+		public string GetSessionId()
 		{
-			return Guid.NewGuid().ToString("N");
+			return SessionId;
+		}
+
+		protected void GenerateSessionId()
+		{
+			SessionId = Guid.NewGuid().ToString("N");
 		}
 
 	    protected string DeviceCollectorUrl()
@@ -47,6 +53,16 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 	public interface IDeviceCollectorService
 	{
-		string CollectAndReturnSessionId();
+		/// <summary>
+		/// Generates a new Kount session id for the possible next call in the future
+		/// Kount can take up to 15sec to collect the data, so we need to call it way before we need it
+		/// </summary>
+		void GenerateNewSessionIdAndCollect();
+
+		/// <summary>
+		/// Gets the last generated Kount session id
+		/// </summary>
+		/// <returns>The session identifier.</returns>
+		string GetSessionId();
 	}
 }

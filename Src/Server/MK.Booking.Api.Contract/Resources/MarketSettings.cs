@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Booking.Api.Contract.Resources
+﻿using apcurium.MK.Common.Extensions;
+
+namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class MarketSettings
     {
@@ -18,5 +20,10 @@
         public double PerMinuteRate { get; set; }
         public double KilometerIncluded { get; set; }
         public double MarginOfError { get; set; }
+        
+        public bool IsLocalMarket 
+        {
+            get { return !HashedMarket.HasValue(); }
+        }
     }
 }

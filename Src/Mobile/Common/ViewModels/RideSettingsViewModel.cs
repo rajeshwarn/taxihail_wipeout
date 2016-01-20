@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -12,7 +13,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
-using System.Net;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -40,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 			_accountService = accountService;
+
             PhoneNumber = new PhoneNumberModel();
 		}
 
@@ -71,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
-					var v = await _vehicleTypeService.GetVehiclesList();
+					var v = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
                     _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
