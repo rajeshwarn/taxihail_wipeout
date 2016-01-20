@@ -115,6 +115,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			
 		private async void MarketChanged(MarketSettings marketSettings)
 		{
+			Console.WriteLine("MarketChanged triggered: " + marketSettings.HashedMarket);
 			var lastHashedMarketValue = _marketSettings.HashedMarket;
 
 			_marketSettings = marketSettings;
