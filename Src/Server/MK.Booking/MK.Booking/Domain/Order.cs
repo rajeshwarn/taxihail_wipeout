@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Domain
     public class Order : EventSourced
     {
         private string _ibsStatus;
+        private bool _isRated;
         private OrderStatus _status;
         private double? _fare;
         private bool _isTimedOut;
@@ -291,12 +292,15 @@ namespace apcurium.MK.Booking.Domain
 
         public void RateOrder(Guid accountId, string note, List<RatingScore> ratingScores)
         {
-            Update(new OrderRated
+            if (!_isRated)
             {
-				AccountId = accountId,
-                Note = note,
-                RatingScores = ratingScores
-            });
+                Update(new OrderRated
+                {
+                    AccountId = accountId,
+                    Note = note,
+                    RatingScores = ratingScores
+                });
+            }
         }
 
         public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
@@ -503,6 +507,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderRated(OrderRated obj)
         {
+            _isRated = obj.RatingScores.Any();
         }
 
         private void OnOrderTimedOut(OrderTimedOut obj)

@@ -1396,7 +1396,7 @@
     <value>Statut</value>
   </data>
   <data name="View_BookRating" xml:space="preserve">
-    <value>Évaluation du trajet</value>
+    <value>Noter votre trajet</value>
   </data>
   <data name="View_BookSettingMenu" xml:space="preserve">
     <value>Paramètres</value>

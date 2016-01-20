@@ -51,10 +51,8 @@ namespace apcurium.MK.Booking.Api.Services
                 }
                 request.RatingScores = ratingScoresCleanedUpForDuplicates;
             }
-            
-            var ratings = Dao.GetOrderRatingsByOrderId(request.OrderId);
 
-            if (ratings.OrderId == Guid.Empty || !ratings.RatingScores.Any())
+            if (OrderHasNoRatingScore(request.OrderId))
             {
                 var command = new RateOrder
                 {
@@ -68,6 +66,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return String.Empty;
+        }
+
+        private bool OrderHasNoRatingScore(Guid orderId)
+        {
+            var ratings = Dao.GetOrderRatingsByOrderId(orderId);
+            return ratings.OrderId.IsNullOrEmpty() || ratings.RatingScores.None();
         }
     }
 }
