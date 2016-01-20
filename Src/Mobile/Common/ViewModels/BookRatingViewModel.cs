@@ -64,45 +64,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void Init(string orderId, bool canRate = false)
 		{
-			var ratingTypes = await _bookingService.GetRatingTypes();
-
-			RatingList = ratingTypes.Select(c => new RatingModel
-	            {
-	                RatingTypeId = c.Id,
-	                RatingTypeName = c.Name
-	            })
-	            .OrderBy(c => c.RatingTypeId).ToList();
-
-			CanRate = false;
-
-			if (orderId != null)
+			if (orderId != null) 
 			{
-                RatingList = ratingTypes.Select(c => new RatingModel(canRate)
-	                {
-	                    RatingTypeId = c.Id,
-	                    RatingTypeName = c.Name
-	                })
-					.OrderBy(c => c.RatingTypeId).ToList();
-
 				Guid id;
+
 				if (Guid.TryParse (orderId, out id)) 
 				{
 					OrderId = id;
 				}
 
-				CanRate = canRate;
-				if(!CanRate)
+				if (!canRate) 
 				{
-				    _hasRated = true;
-					var orderRatings = await _bookingService.GetOrderRatingAsync(Guid.Parse(orderId));
-					Note = orderRatings.Note;
-					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
-						{
+					var orderRatings = await _bookingService.GetOrderRatingAsync (Guid.Parse (orderId));
+
+					if (orderRatings.OrderId != Guid.Empty) 
+					{
+						_hasRated = true;
+						Note = orderRatings.Note;
+						RatingList = orderRatings.RatingScores.Select (c => new RatingModel {
 							RatingTypeId = c.RatingTypeId,
 							Score = c.Score,
 							RatingTypeName = c.Name
-						}).OrderBy(c=>c.RatingTypeId).ToList();
+						}).OrderBy (c => c.RatingTypeId).ToList ();
+					} else 
+					{
+						canRate = true;
+					}
 				}
+
+				if (canRate) 
+				{
+					var ratingTypes = await _bookingService.GetRatingTypes ();
+
+					RatingList = ratingTypes.Select (c => new RatingModel (true) {
+						RatingTypeId = c.Id,
+						RatingTypeName = c.Name
+					})
+						.OrderBy (c => c.RatingTypeId).ToList ();
+				}
+
+				CanRate = canRate;
 			}
         }
 

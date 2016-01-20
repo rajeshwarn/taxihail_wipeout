@@ -294,13 +294,13 @@ namespace apcurium.MK.Booking.Domain
         {
             if (!_isRated)
             {
-                _isRated = true;
                 Update(new OrderRated
                 {
 					AccountId = accountId,
                     Note = note,
                     RatingScores = ratingScores
                 });
+                _isRated = true;
             }
         }
 
