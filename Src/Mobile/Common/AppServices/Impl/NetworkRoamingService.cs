@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				_lastMarketPosition = currentPosition;
 
-				var marketSettings = await GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+				var marketSettings = await GetMarketSettings(currentPosition.Latitude, currentPosition.Longitude);
 				if (marketSettings == null)
 				{
 					// in case of no network we get null, init object with a non-null default value
@@ -43,40 +43,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-        public Task<List<NetworkFleet>> GetNetworkFleets()
+        public async Task<List<NetworkFleet>> GetNetworkFleets()
         {
-			var tcs = new TaskCompletionSource<List<NetworkFleet>>();
-
 			try
 			{
-				var result =
-					UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(
-						service => service.GetNetworkFleets()).Result;
-				tcs.TrySetResult(result);
+				return await UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(service => service.GetNetworkFleets());
 			}
-			catch
+			catch(Exception ex)
 			{
-				tcs.TrySetResult(new List<NetworkFleet>());
+				Logger.LogError(ex);
+				return new List<NetworkFleet>();
 			}
-
-			return tcs.Task;
         }
 
-		private Task<MarketSettings> GetHashedCompanyMarket(double latitude, double longitude)
+		private async Task<MarketSettings> GetMarketSettings(double latitude, double longitude)
 		{
-			var tcs = new TaskCompletionSource<MarketSettings>();
-
 			try
 			{
-				var result = UseServiceClientAsync<NetworkRoamingServiceClient, MarketSettings>(service => service.GetCompanyMarketSettings(latitude, longitude)).Result;
-				tcs.TrySetResult(result);
+				return await UseServiceClientAsync<NetworkRoamingServiceClient, MarketSettings>(service => service.GetCompanyMarketSettings(latitude, longitude));
 			}
-			catch
+			catch(Exception ex)
 			{
-				tcs.TrySetResult(new MarketSettings());
+				Logger.LogError(ex);
+				return new MarketSettings();
 			}
-
-			return tcs.Task;
 		}
 
 		private bool ShouldUpdateMarket(Position currentPosition)

@@ -66,25 +66,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return vehiclesList;
 		}
 
-		private Task<List<VehicleType>> GetExternalMarketVehicleTypes()
+		private async Task<List<VehicleType>> GetExternalMarketVehicleTypes()
 		{
-			var position = _networkRoamingService.GetLastMarketChangedPositionTrigger();
-
-			var tcs = new TaskCompletionSource<List<VehicleType>>();
-
 			try
 			{
-				var result =
-					UseServiceClientAsync<NetworkRoamingServiceClient, List<VehicleType>>(
-						service => service.GetExternalMarketVehicleTypes(position.Latitude, position.Longitude)).Result;
-				tcs.TrySetResult(result);
+				var position = _networkRoamingService.GetLastMarketChangedPositionTrigger();
+				return await UseServiceClientAsync<NetworkRoamingServiceClient, List<VehicleType>>(service => service.GetExternalMarketVehicleTypes(position.Latitude, position.Longitude));
 			}
-			catch
+			catch(Exception ex)
 			{
-				tcs.TrySetResult(new List<VehicleType>());
+				Logger.LogError(ex);
+				return new List<VehicleType>();
 			}
-
-			return tcs.Task;
 		}
 	}
 }
