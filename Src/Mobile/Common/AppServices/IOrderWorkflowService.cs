@@ -98,8 +98,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<bool> GetAndObserveIsUsingGeo();
 
-		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
-
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
 
 		void SetDropOffSelectionMode(bool isDropOffSelectionMode);

@@ -36,13 +36,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
 			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
+            Observe(_vehicleTypeService.GetAndObserveVehiclesList(), vehicles => Vehicles = vehicles.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray());
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
 		{
-			Vehicles = (await _vehicleTypeService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+			//Vehicles = (await _vehicleTypeService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;

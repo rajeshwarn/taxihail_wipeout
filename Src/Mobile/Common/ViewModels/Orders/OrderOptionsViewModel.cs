@@ -49,9 +49,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
+            Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehicleTypes => VehicleTypesChanged(vehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
-			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
+			Observe (_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
 		}
 
 		public override void Start()
@@ -76,8 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public void Init()
 		{
 			ShowDestination = false;
-
-			StartAsync().FireAndForget();
 		}
 
 		public void UpdateHomeViewState(HomeViewModelState state)
@@ -112,49 +110,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private AvailableVehicle[] _availableVehicles;
 
-	    public async Task StartAsync()
-	    {
-	        await SetLocalMarketVehicleTypes();
-	    }
-
-	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
+	    private async Task VehicleTypesChanged(IList<VehicleType> vehicleTypes)
 	    {
 			var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
 				.Select(marketSettings => marketSettings.IsLocalMarket)
 				.Take(1);
 
-			if (!isLocalMarket)
-	        {
-                VehicleTypes = marketVehicleTypes;
-	        }
-	        else
-	        {
-	            await SetLocalMarketVehicleTypes();
-	        }
-	        
-            RaisePropertyChanged(() => ShowVehicleSelection);
-	    }
-
-	    private async Task SetLocalMarketVehicleTypes()
-	    {
-			var list = await _vehicleTypeService.GetVehiclesList();
-
-            if (list.None())
+            if (isLocalMarket && vehicleTypes.None())
             {
+                // in local market but no vehicle types, create a fake 
+                // vehicle type with the default value of reference data
                 await SetDefaultVehicleType();
             }
             else
             {
-                VehicleTypes = list;
+                VehicleTypes = vehicleTypes;
             }
+
+            RaisePropertyChanged(() => ShowVehicleSelection);
 	    }
 
-	    async Task SetDefaultVehicleType()
+	    private async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
-			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault??false);
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault ?? false);
 			var defaultId = defaultVehicleType != null
-                ? defaultVehicleType.Id??0
+                ? defaultVehicleType.Id ?? 0
                 : 0;
 
 			VehicleTypes = new List<VehicleType>

@@ -14,6 +14,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<List<NetworkFleet>> GetNetworkFleets();
 
-        List<VehicleType> GetExternalMarketVehicleTypes();
+		Position GetLastMarketChangedPositionTrigger();
     }
 }

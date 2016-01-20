@@ -58,7 +58,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-        readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
@@ -110,30 +109,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		
-			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
-		}
-			
-		private async Task MarketChanged(MarketSettings marketSettings)
-		{
-			Console.WriteLine("MarketChanged triggered: " + marketSettings.HashedMarket);
-			var lastHashedMarketValue = _marketSettings.HashedMarket;
-
-			_marketSettings = marketSettings;
-
-			// If we changed market
-			if (marketSettings.HashedMarket != lastHashedMarketValue)
-			{
-				if (!marketSettings.IsLocalMarket)
-				{
-					// Set vehicles list with data from external market
-					await SetMarketVehicleTypes();
-				}
-				else
-				{
-					// Load and cache local vehicle types
-					await SetLocalVehicleTypes();
-				}
-			}
+			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => _marketSettings = marketSettings);
+			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 		}
 
 		public async Task SetAddress(Address address)
@@ -220,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
 		{
 			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
-			var vehicleTypes = await _vehicleTypeService.GetVehiclesList();
+			var vehicleTypes = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
 			var data = await _accountService.GetReferenceData();
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
@@ -597,11 +574,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				);
 		}
 
-	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
-	    {
-	        return _networkVehiclesSubject;
-	    }
-		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			_loadingAddressSubject.OnNext(true);
@@ -1015,41 +987,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-	    private async Task SetMarketVehicleTypes()
-	    {
-            var networkVehicles = _networkRoamingService.GetExternalMarketVehicleTypes();
-			_vehicleTypeService.SetMarketVehiclesList(networkVehicles);
-            _networkVehiclesSubject.OnNext(networkVehicles);
+		private async Task PreselectDefaultVehicleType(IList<VehicleType> vehicleList)
+		{
+			int? selectedVehicleId = null;
 
-	        int? selectedVehicleId = null;
+			if (vehicleList.Any())
+			{
+				if (_marketSettings.IsLocalMarket)
+				{
+					// Try to match with account vehicle type preference if no match, we use the first vehicle
+					var matchingVehicle = vehicleList.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
+					selectedVehicleId = matchingVehicle != null
+						? matchingVehicle.ReferenceDataVehicleId
+						: vehicleList.First().ReferenceDataVehicleId;
+				}
+				else
+				{
+					selectedVehicleId = vehicleList.First().ReferenceDataVehicleId;
+				}
+			}
 
-	        if (networkVehicles.Any())
-	        {
-	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
-	        }
-
-            await SetVehicleType(selectedVehicleId);
-	    }
-
-	    private async Task SetLocalVehicleTypes()
-	    {
-			await _vehicleTypeService.ResetLocalVehiclesList();
-            _networkVehiclesSubject.OnNext(new List<VehicleType>());
-
-	        int? selectedVehicleId = null;
-
-			var localVehicles = await _vehicleTypeService.GetVehiclesList();
-            if (localVehicles.Any())
-            {
-                // Try to match with account vehicle type preference if no match, we use the first vehicle
-                var matchingVehicle = localVehicles.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
-                selectedVehicleId = matchingVehicle != null
-                    ? matchingVehicle.ReferenceDataVehicleId
-                    : localVehicles.First().ReferenceDataVehicleId;
-            }
-
-	        await SetVehicleType(selectedVehicleId);
-	    }
+			await SetVehicleType(selectedVehicleId);
+		}
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
