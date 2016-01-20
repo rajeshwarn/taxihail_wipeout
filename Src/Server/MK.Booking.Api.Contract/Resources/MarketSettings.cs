@@ -10,5 +10,7 @@
         public string HashedMarket { get; set; }
 
         public bool EnableDriverBonus { get; set; }
+
+        public bool EnableFutureBooking { get; set; }
     }
 }

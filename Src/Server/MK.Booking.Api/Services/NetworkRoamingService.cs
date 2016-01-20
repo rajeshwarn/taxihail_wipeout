@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
@@ -11,10 +12,12 @@ namespace apcurium.MK.Booking.Api.Services
     public class NetworkRoamingService : Service
     {
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly IServerSettings _serverSettings;
 
-        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, IServerSettings serverSettings)
         {
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _serverSettings = serverSettings;
         }
 
         public object Get(FindMarketRequest request)
@@ -33,7 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ? new MarketSettings
                     {
                         HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
-                        EnableDriverBonus = marketSettings.EnableDriverBonus
+                        EnableDriverBonus = marketSettings.EnableDriverBonus,
+                        EnableFutureBooking = string.IsNullOrEmpty(marketSettings.Market) ? !_serverSettings.ServerData.DisableFutureBooking : marketSettings.EnableFutureBooking,
                     }
                 : new MarketSettings();
         }
