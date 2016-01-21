@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             GenerateSessionId();
 
-            _deviceCollector = new DeviceCollectorSDK(true);
+            _deviceCollector = new DeviceCollectorSDK();
             _deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
             _deviceCollector.SetMerchantId(MerchantId()); 
             _deviceCollector.Collect(GetSessionId());
