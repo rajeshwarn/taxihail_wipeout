@@ -8,15 +8,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	    private readonly IAppSettings _settings;
 		protected string SessionId = null;
 
-	    public BaseDeviceCollectorService(IAppSettings settings)
+	    protected BaseDeviceCollectorService(IAppSettings settings)
 	    {
 	        _settings = settings;
 	    }
 
-	    private string SandboxDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-        private string SandboxMerchantId = "160700";
-        private string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-        private string ProductionMerchantId = "160700";
+	    private const string SandboxDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
+		private const string SandboxMerchantId = "160700";
+		private const string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
+		private const string ProductionMerchantId = "160700";
 
 		public abstract void GenerateNewSessionIdAndCollect();
 
