@@ -119,16 +119,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 return null;
             }
 
-            return new Tariff
-            {
-                Type = (int) TariffType.Default,
-                MinimumRate = marketSettings.MinimumRate,
-                PerMinuteRate = marketSettings.PerMinuteRate,
-                KilometricRate = marketSettings.KilometricRate,
-                KilometerIncluded = marketSettings.KilometerIncluded,
-                FlatRate = marketSettings.FlatRate,
-                MarginOfError = marketSettings.MarginOfError
-            };
+            return marketSettings.MarketTariff;
         }
 
         public Direction Get(AssignedEtaRequest request)

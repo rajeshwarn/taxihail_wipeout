@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using MongoRepository;
 
@@ -28,17 +29,7 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableAppFareEstimates { get; set; }
 
-        public double MinimumRate { get; set; }
-
-        public decimal FlatRate { get; set; }
-
-        public double KilometricRate { get; set; }
-
-        public double PerMinuteRate { get; set; }
-
-        public double KilometerIncluded { get; set; }
-
-        public double MarginOfError { get; set; }
+        public Tariff MarketTariff { get; set; }
     }
 
     public class Vehicle

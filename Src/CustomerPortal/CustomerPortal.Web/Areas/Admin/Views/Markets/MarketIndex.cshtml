@@ -97,22 +97,22 @@
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
             
             <h5>Minimum Rate</h5>
-            @Html.TextBoxFor(x => x.MinimumRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.TextBoxFor(x => x.MarketTariff.MinimumRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Flat Rate</h5>
-            @Html.TextBoxFor(x => x.FlatRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.TextBoxFor(x => x.MarketTariff.FlatRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Per KM Rate</h5>
-            @Html.TextBoxFor(x => x.KilometricRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.TextBoxFor(x => x.MarketTariff.KilometricRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Per Minute Rate</h5>
-            @Html.TextBoxFor(x => x.PerMinuteRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.TextBoxFor(x => x.MarketTariff.PerMinuteRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Kilometer Included in Flat Rate</h5>
-            @Html.TextBoxFor(x => x.KilometerIncluded, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.TextBoxFor(x => x.MarketTariff.KilometerIncluded, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Overhead (%)</h5>
-            @Html.TextBoxFor(x => x.MarginOfError, new { @class = "input-block-level", @style = "width:250px; margin-right:15px"})
+            @Html.TextBoxFor(x => x.MarketTariff.MarginOfError, new { @class = "input-block-level", @style = "width:250px; margin-right:15px"})
         </div>
     </div>
 

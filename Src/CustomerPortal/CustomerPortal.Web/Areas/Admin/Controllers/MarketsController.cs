@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
@@ -51,12 +52,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 EnableDriverBonus = marketModel.EnableDriverBonus,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
-                MinimumRate = marketModel.MinimumRate,
-                MarginOfError = marketModel.MarginOfError,
-                PerMinuteRate = marketModel.PerMinuteRate,
-                KilometricRate = marketModel.KilometricRate,
-                KilometerIncluded = marketModel.KilometerIncluded,
-                FlatRate = marketModel.FlatRate
+                MarketTariff = marketModel.MarketTariff,
             });
         }
 
@@ -238,12 +234,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             bool enableDriverBonus, 
             string receiptFooter, 
             bool enableAppFareEstimates, 
-            double minimumRate, 
-            decimal flatRate,
-            double kilometricRate,
-            double perMinuteRate,
-            double kilometerIncluded,
-            double marginOfError)
+            Tariff marketTariff)
         {
             try
             {
@@ -259,12 +250,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.ReceiptFooter = receiptFooter;
 
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
-                marketToEdit.MinimumRate = minimumRate;
-                marketToEdit.FlatRate = flatRate;
-                marketToEdit.KilometricRate = kilometricRate;
-                marketToEdit.PerMinuteRate = perMinuteRate;
-                marketToEdit.KilometerIncluded = kilometerIncluded;
-                marketToEdit.MarginOfError = marginOfError;
+
+                marketTariff.Type = (int) TariffType.Market;
+                marketToEdit.MarketTariff = marketTariff;
 
                 Repository.Update(marketToEdit);
             }

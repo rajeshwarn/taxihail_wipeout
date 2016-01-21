@@ -35,12 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
                         HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
                         EnableDriverBonus = marketSettings.EnableDriverBonus,
                         OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
-                        FlatRate = marketSettings.FlatRate,
-                        KilometricRate = marketSettings.KilometricRate,
-                        KilometerIncluded = marketSettings.KilometerIncluded,
-                        MarginOfError = marketSettings.MarginOfError,
-                        MinimumRate = marketSettings.MinimumRate,
-                        PerMinuteRate = marketSettings.PerMinuteRate
+                        MarketTariff = marketSettings.MarketTariff
                     }
                 : new MarketSettings();
         }

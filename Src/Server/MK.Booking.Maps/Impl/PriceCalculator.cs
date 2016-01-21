@@ -22,9 +22,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             _logger = logger;
         }
 
-        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds, int? vehicleTypeId, Tariff overridedTariff = null)
+        public double? GetPrice(int? distance, DateTime pickupDate, int? durationInSeconds, int? vehicleTypeId, Tariff overriddenTariff = null)
         {
-            var tariff = overridedTariff ?? GetTariffFor(pickupDate, vehicleTypeId);
+            var tariff = overriddenTariff ?? GetTariffFor(pickupDate, vehicleTypeId);
 
             if (tariff == null)
             {
