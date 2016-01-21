@@ -100,7 +100,7 @@
             android:gravity="center" />
         <Button
             android:id="@+id/FacebookButton"
-            local:MvxBind="Click  LoginFacebook"
+            local:MvxBind="Click LoginFacebook; Visibility Settings.FacebookEnabled, Converter=Visibility"
             android:text="@string/Facebook"
             android:drawableLeft="@drawable/facebook_icon_state"
             android:drawablePadding="-2dip"
@@ -113,7 +113,7 @@
             android:gravity="center" />
         <Button
             android:id="@+id/TwitterButton"
-            local:MvxBind="Click  LoginTwitter"
+            local:MvxBind="Click LoginTwitter; Visibility Settings.TwitterEnabled, Converter=Visibility"
             android:text="@string/Twitter"
             android:drawableLeft="@drawable/twitter_icon_state"
             android:drawablePadding="-2dip"
@@ -130,7 +130,8 @@
             android:id="@+id/ServerButton"
             android:text="@string/ChangeServer"
             android:drawablePadding="-2dip"
-            android:visibility="invisible"
+            android:visibility="gone"
+            local:MvxBind="Click PromptChangeServerUrl; Visibility Settings.CanChangeServiceUrl, Converter=Visibility"
             android:drawableLeft="@drawable/server_button_state" />
         <TextView
             android:layout_width="wrap_content"
@@ -141,7 +142,7 @@
             android:layout_marginRight="3dp"
             android:id="@+id/SuportButton"
             android:text="@string/LoginSupport"
-            local:MvxBind="Visibility DisplayReportProblem, Converter=Visibility; Click Support"
+            local:MvxBind="Click Support; Visibility DisplayReportProblem, Converter=Visibility"
             style="@style/TitleTextBold" />
     </LinearLayout>
 </RelativeLayout>
