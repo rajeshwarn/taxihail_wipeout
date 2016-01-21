@@ -15,6 +15,8 @@ namespace CustomerPortal.Contract.Response
 
         public bool EnableFutureBooking { get; set; }
 
+        public bool CancelOrderOnUnpair { get; set; }
+
         public string ReceiptFooter { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }

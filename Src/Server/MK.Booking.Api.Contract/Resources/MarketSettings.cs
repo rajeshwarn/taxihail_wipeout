@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         
         public bool EnableFutureBooking { get; set; }
 
+        public bool CancelOrderOnUnpair { get; set; }
+
         public bool OverrideEnableAppFareEstimates { get; set; }
         public double MinimumRate { get; set; }
         public decimal FlatRate { get; set; }

@@ -50,6 +50,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
+                CancelOrderOnUnpair = marketModel.CancelOrderOnUnpair,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
                 MinimumRate = marketModel.MinimumRate,
@@ -238,7 +239,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             string market, 
             bool enableDriverBonus, 
             string receiptFooter,
-            bool enableFutureBooking 
+            bool enableFutureBooking,
+            bool cancelOrderOnUnpair,
             bool enableAppFareEstimates, 
             double minimumRate, 
             decimal flatRate,
@@ -259,8 +261,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
+                marketToEdit.CancelOrderOnUnpair = cancelOrderOnUnpair;
                 marketToEdit.ReceiptFooter = receiptFooter;
-
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
                 marketToEdit.MinimumRate = minimumRate;
                 marketToEdit.FlatRate = flatRate;

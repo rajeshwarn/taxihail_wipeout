@@ -26,6 +26,8 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableFutureBooking { get; set; }
 
+        public bool CancelOrderOnUnpair { get; set; }
+
         public string ReceiptFooter { get; set; }
 
         public bool EnableAppFareEstimates { get; set; }

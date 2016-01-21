@@ -46,6 +46,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool AskForCVVAtBooking { get; set; }
 
+		[Obsolete("CancelOrderOnUnpair is now a market settings, configurable in the Customer Portal")]
         public bool CancelOrderOnUnpair { get; set; }
 
         public bool CreditCardIsMandatory { get; set; }

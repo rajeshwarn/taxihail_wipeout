@@ -89,6 +89,17 @@
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
+            <h5>Cancel Order On Unpair</h5>
+
+            @Html.DropDownList(
+            "CancelOrderOnUnpair",
+            new[]
+            {
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.CancelOrderOnUnpair},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.CancelOrderOnUnpair }
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+
             <h5>Receipt Footer</h5>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 

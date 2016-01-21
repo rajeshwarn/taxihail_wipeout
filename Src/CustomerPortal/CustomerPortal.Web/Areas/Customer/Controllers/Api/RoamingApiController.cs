@@ -301,7 +301,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     Market = marketName,
                     DispatcherSettings = marketSettings.DispatcherSettings,
                     EnableDriverBonus = marketSettings.EnableDriverBonus,
-<<<<<<< HEAD
                     ReceiptFooter = marketSettings.ReceiptFooter,
                     EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                     FlatRate = marketSettings.FlatRate,
@@ -309,11 +308,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     KilometerIncluded = marketSettings.KilometerIncluded,
                     MinimumRate = marketSettings.MinimumRate,
                     MarginOfError = marketSettings.MarginOfError,
-                    PerMinuteRate = marketSettings.PerMinuteRate
-=======
+                    PerMinuteRate = marketSettings.PerMinuteRate,
                     EnableFutureBooking = marketSettings.EnableFutureBooking,
-                    ReceiptFooter = marketSettings.ReceiptFooter
->>>>>>> MKTAXI-3786-ReservationMarketBased
+                    CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair
                 }
                 : new CompanyMarketSettingsResponse();
         }

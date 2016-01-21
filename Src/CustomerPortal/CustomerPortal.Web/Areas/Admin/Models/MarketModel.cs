@@ -21,6 +21,9 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Future Booking Enabled")]
         public bool EnableFutureBooking { get; set; }
 
+        [Display(Name = "Cancel Order On Unpair")]
+        public bool CancelOrderOnUnpair { get; set; }
+
         [Display(Name = "Receipt Footer")]
         public string ReceiptFooter { get; set; }
 
