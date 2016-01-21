@@ -49,6 +49,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
+                EnableFutureBooking = marketModel.EnableFutureBooking,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
                 MinimumRate = marketModel.MinimumRate,
@@ -233,10 +234,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(
+        public ActionResult SaveSettings (
             string market, 
             bool enableDriverBonus, 
-            string receiptFooter, 
+            string receiptFooter,
+            bool enableFutureBooking 
             bool enableAppFareEstimates, 
             double minimumRate, 
             decimal flatRate,
@@ -256,6 +258,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
+                marketToEdit.EnableFutureBooking = enableFutureBooking;
                 marketToEdit.ReceiptFooter = receiptFooter;
 
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;

@@ -78,7 +78,16 @@
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
-            <h4>Email Templates</h4>
+            <h5>Enable Future Booking</h5>
+
+            @Html.DropDownList(
+            "EnableFutureBooking",
+            new[]
+            {
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.EnableFutureBooking},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableFutureBooking }
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
             <h5>Receipt Footer</h5>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
