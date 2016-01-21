@@ -44,25 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             DrawHelper.SupportLoginTextColor(FindViewById<TextView>(Resource.Id.ForgotPasswordButton));
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.SignUpButton));
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.SignInButton));
-
-            if (!this.Services().Settings.FacebookEnabled)
-			{
-                FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
-			}
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.FacebookButton));
-
-            if (this.Services().Settings.CanChangeServiceUrl)
-            {
-                FindViewById<Button>(Resource.Id.ServerButton).Click += (sender, e) => PromptServer();
-                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Visible;
-                DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.ServerButton));
-            }
-
-            if (!this.Services().Settings.TwitterEnabled)
-            {
-                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
-            }
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.TwitterButton));
+            DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.ServerButton));
 
             Observable.FromEventPattern<EventHandler, EventArgs>(
                 ev => ViewModel.LoginSucceeded += ev,
@@ -71,14 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     .Subscribe(__ => RunOnUiThread(Finish)));
 
             InitializeSoftKeyboardNavigation();
-
-			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
-				//just for the first one, it's a nudge to highlight the button as the next step
-				if(ViewModel.SignInCommand.CanExecute(null))
-				{
-					FindViewById<Button>(Resource.Id.SignInButton).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.button_main_selector));
-				}
-			};
         }
 
 	    private void InitializeSoftKeyboardNavigation()
@@ -111,29 +87,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
 	    }
 
-        private async void PromptServer()
-        {
-            try
-            {
-                var serviceUrl = await this.Services().Message.ShowPromptDialog("Server Configuration",
-                    "Enter Server Url",
-                    null,
-                    false,
-                    this.Services().Settings.ServiceUrl
-                );
-
-                if(serviceUrl != null)
-                {
-                    ViewModel.SetServerUrl(serviceUrl);
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-           
-        }
-        
         protected override void OnDestroy()
         {
             base.OnDestroy();

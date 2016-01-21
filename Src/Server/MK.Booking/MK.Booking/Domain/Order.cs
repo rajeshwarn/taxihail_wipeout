@@ -298,10 +298,9 @@ namespace apcurium.MK.Booking.Domain
         {
             if (!_isRated)
             {
-                _isRated = true;
                 Update(new OrderRated
                 {
-					AccountId = accountId,
+                    AccountId = accountId,
                     Note = note,
                     RatingScores = ratingScores
                 });
@@ -512,7 +511,8 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderRated(OrderRated obj)
         {
-            _isRated = true;
+            // allows old non-working ratings from being re-rated
+            _isRated = obj.RatingScores.Any();
         }
 
         private void OnOrderTimedOut(OrderTimedOut obj)
