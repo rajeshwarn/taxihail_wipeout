@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
 			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
-			_container.Register<IPaymentService>((c, p) => new PaymentService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IIPAddressManager>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>()));
+			_container.Register<IPaymentService>((c, p) => new PaymentService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId, c.Resolve<ICacheService>(), c.Resolve<IIPAddressManager>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>()));
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), 
 				c.Resolve<IConnectivityService>()));
 			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));

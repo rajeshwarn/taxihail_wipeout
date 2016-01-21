@@ -409,12 +409,6 @@
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\BlackCabNow.resx" />
-    <EmbeddedResource Include="Localization\Master.es.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\Master.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="Localization\RamRide.resx" />
     <None Include="Localization\Norshore.resx" />
     <None Include="Localization\FlashCab.resx" />
@@ -443,6 +437,12 @@
     <None Include="Localization\UTOG.resx" />
     <None Include="Localization\ArroUAT.resx" />
     <None Include="Localization\Bram City Taxi.resx" />
+    <None Include="Localization\Master.es.resx">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Localization\Master.fr.resx">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>

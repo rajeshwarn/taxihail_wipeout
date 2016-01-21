@@ -740,5 +740,7 @@
   <string name="ServiceErrorResetPassword_AccountNotFound">لا يوجد حساب خاص بهذا العنوان الإلكتروني.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="UsePayPal">Use PayPal</string>
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
+  <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
 </resources>

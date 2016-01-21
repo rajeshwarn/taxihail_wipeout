@@ -14,7 +14,6 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <DeployExternal>False</DeployExternal>
-    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
@@ -22,6 +21,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -42,16 +42,7 @@
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <AndroidLinkSkip />
-    <BundleAssemblies>False</BundleAssemblies>
-    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
-    <AndroidStoreUncompressedFileExtensions />
-    <MandroidI18n />
-    <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -67,12 +58,9 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <DebugType>full</DebugType>
     <Debugger>Xamarin</Debugger>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Card.IO.Android">
-      <HintPath>..\Components\cardioandroid-5.2.0.0\lib\android\Card.IO.Android.dll</HintPath>
-    </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
     </Reference>
@@ -250,9 +238,6 @@
     <Reference Include="Braintree.Api.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.Api.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="DeviceCollectorBindingsAndroid">
-      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
-    </Reference>
     <Reference Include="Braintree.DropIn.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.DropIn.Droid.dll</HintPath>
     </Reference>
@@ -261,6 +246,9 @@
     </Reference>
     <Reference Include="Connectivity.Plugin.Abstractions">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.Android">
+      <HintPath>..\Components\cardioandroid-5.3.0.0\lib\android\Card.IO.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -826,10 +814,6 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="cardioandroid">
-      <Visible>False</Visible>
-      <Version>5.2.0.0</Version>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
       <Visible>False</Visible>
@@ -844,6 +828,10 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="cardioandroid">
+      <Version>5.3.0.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

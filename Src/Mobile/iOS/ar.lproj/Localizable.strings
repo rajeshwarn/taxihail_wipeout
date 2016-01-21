@@ -738,4 +738,6 @@
 "ServiceErrorResetPassword_AccountNotFound"="لا يوجد حساب خاص بهذا العنوان الإلكتروني.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
+"UsePayPal"="Use PayPal";
 "InvalidCreditCardUpdateCardButton"="Update Card";
+"PaypalErrorMessage"="An error occurred while attempting to contact paypal";

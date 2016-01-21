@@ -74,7 +74,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Card.IO.Android">
-      <HintPath>..\Components\cardioandroid-3.1.5\lib\android\Card.IO.Android.dll</HintPath>
+      <HintPath>..\Components\cardioandroid-5.3.0.0\lib\android\Card.IO.Android.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -155,9 +155,6 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="PaypalSdkDroid">
-      <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
-    </Reference>
     <Reference Include="AnalyticsV2">
       <HintPath>..\Libraries\Monodroid\AnalyticsV2.dll</HintPath>
     </Reference>
@@ -188,15 +185,12 @@
     <Reference Include="OkHttp">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
-    <Reference Include="DeviceCollectorBindingsAndroid">
-      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
-    </Reference>
     <Reference Include="Braintree.Api.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.Api.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Braintree.DropIn.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.DropIn.Droid.dll</HintPath>
-   </Reference>
+    </Reference>
     <Reference Include="Connectivity.Plugin">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
@@ -224,10 +218,6 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ItemGroup />
   <ItemGroup>
-    <XamarinComponentReference Include="cardioandroid">
-      <Visible>False</Visible>
-      <Version>5.2.0.0</Version>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>
       <Visible>False</Visible>
@@ -238,6 +228,10 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="modernhttpclient">
       <Version>2.4.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="cardioandroid">
+      <Version>5.3.0.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

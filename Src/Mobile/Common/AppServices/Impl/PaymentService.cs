@@ -146,13 +146,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-			return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo, _connectivityService)
+			return await new PairingServiceClient(_baseUrl, _sessionId(), _packageInfo, _connectivityService)
                 .Unpair(orderId);
         }
 
         public async Task<bool> UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-			return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo, _connectivityService)
+			return await new PairingServiceClient(_baseUrl, _sessionId(), _packageInfo, _connectivityService)
                 .UpdateAutoTip(orderId, autoTipPercentage);
         }
 
@@ -171,14 +171,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo, _connectivityService);
+					return new BraintreeServiceClient(_baseUrl, _sessionId(), settings.BraintreeClientSettings.ClientKey, _packageInfo, _connectivityService);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _ipAddressManager, _packageInfo, _logger, _connectivityService);
+					return new CmtPaymentClient(_baseUrl, _sessionId(), settings.CmtPaymentSettings, _ipAddressManager, _packageInfo, _logger, _connectivityService);
 
                 case PaymentMethod.Moneris:
-					return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger, _connectivityService);
+					return new MonerisServiceClient(_baseUrl, _sessionId(), settings.MonerisPaymentSettings, _packageInfo, _logger, _connectivityService);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
             IMetricsService metricsService,
-			IBookingService bookingService, IPaymentProviderClientService paymentProviderClientService)
+			IBookingService bookingService, 
+			IPaymentProviderClientService paymentProviderClientService,
 			INetworkRoamingService networkRoamingService)
 		{
 		    _locationService = locationService;

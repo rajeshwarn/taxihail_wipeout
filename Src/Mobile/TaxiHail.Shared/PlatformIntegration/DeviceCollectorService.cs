@@ -1,6 +1,6 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using DeviceCollectorBindingsAndroid;
+using Braintree.Device_Collector;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
 
