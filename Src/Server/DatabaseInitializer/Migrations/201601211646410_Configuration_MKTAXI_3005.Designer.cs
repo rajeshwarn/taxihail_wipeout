@@ -13,7 +13,7 @@ namespace apcurium.MK.Common.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201601201841543_Configuration_MKTAXI_3005"; }
+            get { return "201601211646410_Configuration_MKTAXI_3005"; }
         }
         
         string IMigrationMetadata.Source
