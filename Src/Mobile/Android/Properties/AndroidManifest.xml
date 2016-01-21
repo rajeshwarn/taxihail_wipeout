@@ -26,6 +26,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
+        <!--- The scheme defined here must be all in lowercaps.-->
         <data android:scheme="com.apcurium.mk.taxihaildemo.braintree" />
       </intent-filter>
     </activity>
