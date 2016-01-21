@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 	    private readonly IPaymentProviderClientService _paymentProviderClientService;
+		private readonly IDeviceCollectorService _deviceCollectorService;
 
 		private OverduePayment _paymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -31,13 +32,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public CreditCardAddViewModel(
 			ILocationService locationService,
 			IPaymentService paymentService, 
-			IAccountService accountService, 
-            IPaymentProviderClientService paymentProviderClientService)
-			:base(locationService, paymentService, accountService)
+			IAccountService accountService,
+			IDeviceCollectorService deviceCollectorService,
+			IPaymentProviderClientService paymentProviderClientService)
+			: base(locationService, paymentService, accountService)
 		{
 			_paymentService = paymentService;
 			_accountService = accountService;
 		    _paymentProviderClientService = paymentProviderClientService;
+			_deviceCollectorService = deviceCollectorService;
 		}
 
 		private bool _isFromPromotionsView;
@@ -45,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private bool _isAddingNew;
 		private Guid _creditCardId;
 		private int _numberOfCreditCards;
+		private string _kountSessionId;
 
 		#region Const and ReadOnly
 		private const string Visa = "Visa";
@@ -89,6 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
 			}
 
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
         public override async void BaseStart()
@@ -96,13 +101,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             using (this.Services().Message.ShowProgress())
             {
                 CreditCardCompanies = new List<ListItem>
-                    {
-                        new ListItem {Display = Visa, Id = 0},
-                        new ListItem {Display = MasterCard, Id = 1},
-                        new ListItem {Display = Amex, Id = 2},
-                        new ListItem {Display = VisaElectron, Id = 3},
-                        new ListItem {Display = CreditCardGeneric, Id = 4}
-                    };
+				{
+					new ListItem {Display = Visa, Id = 0},
+					new ListItem {Display = MasterCard, Id = 1},
+					new ListItem {Display = Amex, Id = 2},
+					new ListItem {Display = VisaElectron, Id = 3},
+					new ListItem {Display = CreditCardGeneric, Id = 4}
+				};
 
                 ExpirationYears = new List<ListItem>();
                 for (var i = 0; i <= 15; i++)
@@ -620,10 +625,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            Data.CreditCardId = Guid.NewGuid();
 	        }
 
-	        var success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
+					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
 
 	        if (success)
 	        {
+						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+
 	            this.Services().Analytics.LogEvent("AddCOF");
 	            Data.CardNumber = null;
 	            Data.CCV = null;

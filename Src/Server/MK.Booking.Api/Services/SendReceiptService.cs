@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private Trip GetTripInfo(string pairingToken)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
             var cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 
             return cmtTripInfoServiceHelper.GetTripInfo(pairingToken);

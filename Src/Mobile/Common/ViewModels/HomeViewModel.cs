@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
+		private readonly INetworkRoamingService _networkRoamingService;
 	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
@@ -58,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IPromotionService promotionService,
             IMetricsService metricsService,
 			IBookingService bookingService, IPaymentProviderClientService paymentProviderClientService)
+			INetworkRoamingService networkRoamingService)
 		{
 		    _locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -70,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService = bookingService;
 		    _accountService = accountService;
 			_paymentService = paymentService;
+			_networkRoamingService = networkRoamingService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService, paymentProviderClientService);
 
@@ -84,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -745,18 +748,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string hashedMarket)
+        private void MarketChanged(MarketSettings marketSettings)
         {
-            // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket
-                && hashedMarket.HasValue()
-                && !Settings.Network.HideMarketChangeWarning)
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
-                    this.Services().Localize["MarketChangedMessage"]);
-            }
+			// Market changed and not home market
+			if (_lastHashedMarket != marketSettings.HashedMarket
+				&& !marketSettings.IsLocalMarket
+				&& !Settings.Network.HideMarketChangeWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+					this.Services().Localize["MarketChangedMessage"]);
+			}
 
-            _lastHashedMarket = hashedMarket;
+			_lastHashedMarket = marketSettings.HashedMarket;
 
             if (BottomBar != null)
             {

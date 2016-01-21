@@ -13,6 +13,8 @@ using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+
+
 #if CALLBOX
 using Android.App;
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
@@ -340,6 +342,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 });
 
 			return tcs.Task;
+        }
+
+        public bool ShowToast(string message)
+        {       
+            bool success = false;
+
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => 
+                {
+                    success = ToastHelper.Show(Context.Activity, message);
+                });
+
+            return success;
+        }
+
+        public void DismissToast()
+        {
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => 
+                ToastHelper.Dismiss());
+        }
+
+        public void DismissToastNoAnimation()
+        {
+            throw new NotImplementedException();
         }
     }
 }

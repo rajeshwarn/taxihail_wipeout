@@ -107,6 +107,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         ? new ListItemData {Key = i.Id.Value, Value = i.Display, Image = i.Image}
                         : ListItemData.NullListItemData).ToList();
                     _adapter.Clear();
+
+					if (_allowEmptySelection)
+					{
+						_adapter.Add (ListItemData.SpinnerEmptyItem);
+					}
+
                     foreach (var item in data)
                     {
                         _adapter.Add(item);

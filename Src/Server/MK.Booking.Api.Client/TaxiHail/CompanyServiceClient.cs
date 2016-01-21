@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using apcurium.MK.Common;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -26,8 +27,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private readonly ICacheService _cacheService;
 
-        public CompanyServiceClient(string url, string sessionId, IPackageInfo packageInfo, ICacheService cacheService)
-            : base(url, sessionId, packageInfo)
+        public CompanyServiceClient(string url, string sessionId, IPackageInfo packageInfo, ICacheService cacheService, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
             _cacheService = cacheService;
         }
@@ -35,13 +36,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #if CLIENT
         private void HandleResponseHeader(HttpResponseMessage response)
         {
-            var version = response.Headers.GetValues("ETag").FirstOrDefault();
+			try 
+			{
+				var version = response.Headers.GetValues("ETag").FirstOrDefault();
 
-            if (version.HasValueTrimmed())
-            {
-                //put in the cache the etag
-                _cacheService.Set(CacheKey_TermsVersion, version);
-            }
+				if (version.HasValueTrimmed())
+				{
+					//put in the cache the etag
+					_cacheService.Set(CacheKey_TermsVersion, version);
+				}
+			}
+			catch
+			{
+			}
         }
 
         private void AddVersionInformation(HttpClient client)
@@ -63,12 +70,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #else
         private void HandleResponseHeader(HttpWebResponse response)
         {
-            var version = response.Headers[HttpHeaders.ETag];
-            if (version.HasValueTrimmed())
-            {
-                //put in the cache the etag
-                _cacheService.Set(CacheKey_TermsVersion, version);
-            }
+			try 
+			{
+				var version = response.Headers.GetValues(HttpHeaders.ETag).FirstOrDefault();
+				if (version.HasValueTrimmed())
+				{
+					//put in the cache the etag
+					_cacheService.Set(CacheKey_TermsVersion, version);
+				}
+			}
+			catch 
+			{
+			}
         }
         private void AddVersionInformation(HttpWebRequest request)
         {

@@ -755,5 +755,6 @@
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
-  <string name="UsePayPal">Use PayPal</string>
+  <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
 </resources>

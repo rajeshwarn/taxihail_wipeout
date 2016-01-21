@@ -160,7 +160,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\FlightInformation.cs" />
-    <BundleResource Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\MarketSettings.cs" />
+    <Compile Include="Resources\OrderRatings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

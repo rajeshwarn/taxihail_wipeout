@@ -146,6 +146,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Activities\HomeActivity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\BraintreeVZeroService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ToastHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Message\CustomToast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Activities\DebugActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

@@ -250,8 +250,17 @@
     <Reference Include="Braintree.Api.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.Api.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
     <Reference Include="Braintree.DropIn.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.DropIn.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -494,8 +503,6 @@
     <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
     <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
@@ -613,6 +620,11 @@
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
+    <AndroidResource Include="Resources\Layout\SpinnerEmptyItem.axml" />
+    <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
+    <AndroidResource Include="Resources\Layout\View_Debug.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -890,6 +902,7 @@
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

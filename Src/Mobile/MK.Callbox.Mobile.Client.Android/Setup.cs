@@ -12,13 +12,14 @@ using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Callbox.Mobile.Client.Converters;
 using apcurium.MK.Callbox.Mobile.Client.PlatformIntegration;
-using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid;
 using ErrorHandler = apcurium.MK.Booking.Mobile.ErrorHandler;
+using apcurium.MK.Callbox.Mobile.Client.Cache;
+using apcurium.MK.Callbox.Mobile.Client.Localization;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -41,11 +42,13 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
+            container.Register<IIPAddressManager, IPAddressManager>();
 			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>()));
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());
-			container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+            container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+            container.Register<IConnectivityService, ConnectivityService>();
 			container.Register<IErrorHandler, ErrorHandler>();
         }
 

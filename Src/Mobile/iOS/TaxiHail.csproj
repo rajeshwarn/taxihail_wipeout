@@ -273,8 +273,17 @@
     <Reference Include="Braintree.iOS">
       <HintPath>..\Libraries\Monotouch\Braintree.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsIOS">
+      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
+    </Reference>
     <Reference Include="Card.IO">
       <HintPath>..\Components\cardioios-5.0.6.0\lib\ios-unified\Card.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +310,7 @@
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
     <None Include="CustomLinker.xml" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -721,6 +731,14 @@
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="Helper\ToastHelper.cs" />
+    <Compile Include="Controls\ToastView.cs" />
+    <BundleResource Include="Resources\cancel.png" />
+    <BundleResource Include="Resources\cancel%402x.png" />
+    <Compile Include="Views\DebugView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -756,9 +774,7 @@
     <InterfaceDefinition Include="Views\Order\OrderReviewView.xib">
       <SubType>Designer</SubType>
     </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\Order\OrderReviewView_Thriev.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
-    <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />

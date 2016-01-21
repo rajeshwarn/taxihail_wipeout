@@ -20,7 +20,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         [SetUp]
         public void Setup()
         {
-            _sut = new GoogleApiClient(new TestServerSettings(), new Logger());
+            _sut = new GoogleApiClient(new TestServerSettings(), new Logger(), null);
             
         }
 

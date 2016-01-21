@@ -8,7 +8,9 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
-using System.Runtime.CompilerServices;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -20,8 +22,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	{
 	    private readonly ILogger _logger;
 
-	    public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
-			: base(url, sessionId, packageInfo)
+        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
 		{
 		    _logger = logger;
 		}

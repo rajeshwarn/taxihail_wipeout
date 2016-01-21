@@ -261,6 +261,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand OpenDebugMenu
+		{
+			get
+			{
+				return this.GetCommand(() => 
+				{
+					if(this.Settings.DebugViewEnabled)
+					{
+						CloseMenu();
+						ShowViewModel<DebugViewModel>();
+					}
+				});
+			}
+		}
+
 		private void SignOutAccepted()
 		{
             _accountService.SignOut();

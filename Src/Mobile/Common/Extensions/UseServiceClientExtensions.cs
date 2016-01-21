@@ -40,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 					errorHandler(ex);
 				}
 				return ex.Message;
-				
 			}
 		}
 	}

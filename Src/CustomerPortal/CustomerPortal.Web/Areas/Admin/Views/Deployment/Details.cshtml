@@ -8,7 +8,7 @@
 <div class="row">
     <h3>Deployment Details for @Model.Company.CompanyName  </h3>
     <h4>Version : @Model.Revision.Tag (@Model.Revision.Commit)</h4>
-    <h5>Server : @Model.Server.Name </h5>
+    <h5>Server : @Model.Server.GetDisplay() </h5>
     <h5>Started by : @Model.UserName</h5>
     <h5 id="currentStatus">Status : @Model.Status</h5>
     <h5>Version : @Model.Action </h5>

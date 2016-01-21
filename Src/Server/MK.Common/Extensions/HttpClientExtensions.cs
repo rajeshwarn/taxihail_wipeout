@@ -25,33 +25,24 @@ namespace apcurium.MK.Common.Extensions
 
         public static Task<T> GetAsync<T>(this HttpClient client, IReturn<T> request)
         {
-            var url = request.GetUrlFromRoute();
+            var url = request.GetUrlFromRoute(true);
 
             return client.GetAsync<T>(url);
         }
 
-        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
-            string url,
-            Action<HttpResponseMessage> onSuccess = null,
-            Action<HttpResponseMessage> onError = null)
+        private static string GetForEndpointIfNeeded(this HttpClient client, string url)
         {
-            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
-        }
-
-
-	    private static string GetForEndpointIfNeeded(this HttpClient client, string url)
-	    {
-	        if (url.StartsWith("http") || client.BaseAddress == null)
-	        {
-	            return url;
-	        }
+            if (url.StartsWith("http") || client.BaseAddress == null)
+            {
+                return url;
+            }
 
             var currentRelativeUrl = client.BaseAddress.LocalPath;
-           
-	        return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+
+            return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
                 ? currentRelativeUrl + url
-                : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
-	    }
+                    : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
+        }
 
         public static Task<T> DeleteAsync<T>(this HttpClient client,
             string url,
@@ -70,9 +61,18 @@ namespace apcurium.MK.Common.Extensions
             return Task.Run(() => InnerPostAsync<TResult>(client, url, content, onSuccess, onError));
         }
 
+        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
+            string url,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
+        {
+            
+            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
+        }
+
 	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
 	    {
-	        var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+			var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
 	        var relativeUrl = client.GetForEndpointIfNeeded(url);
 
@@ -120,9 +120,18 @@ namespace apcurium.MK.Common.Extensions
                 }
 
                 var body = await result.Content.ReadAsStringAsync();
-                var errorResponse = body.FromJson<ErrorResponse>();
 
-                if (errorResponse != null)
+                ErrorResponse errorResponse;
+                try
+                {
+                    errorResponse = body.FromJson<ErrorResponse>();
+                }
+                catch
+                {
+                    errorResponse = null;
+                }
+
+                if (errorResponse != null && errorResponse.ResponseStatus != null)
                 {
                     throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode) 
                     {

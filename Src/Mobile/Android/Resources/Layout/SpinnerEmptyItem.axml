@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spinnerEmptyItem"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:tag="SpinnerEmptyItem"
+    android:layout_height="0px" />
