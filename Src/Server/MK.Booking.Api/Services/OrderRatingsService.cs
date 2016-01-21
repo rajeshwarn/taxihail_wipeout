@@ -9,7 +9,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -66,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(command);
                 }
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         private bool HasNoValidExistingRating(Guid orderId)

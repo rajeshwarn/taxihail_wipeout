@@ -507,6 +507,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderRated(OrderRated obj)
         {
+            // allows old non-working ratings from being re-rated
             _isRated = obj.RatingScores.Any();
         }
 
