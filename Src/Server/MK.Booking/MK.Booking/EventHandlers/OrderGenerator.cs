@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<ManualRideLinqTripInfoUpdated>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
-        IEventHandler<OrderNotificationDetailUpdated>
+        IEventHandler<OrderNotificationDetailUpdated>,
+        IEventHandler<OrderUpdatedInTrip>
     {
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
@@ -131,7 +132,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 CompanyName = @event.CompanyName,
                 Market = @event.Market,
                 BookingFees = @event.BookingFees,
-                TipIncentive = @event.TipIncentive
+                TipIncentive = @event.TipIncentive,
+                OriginatingIpAddress = @event.OriginatingIpAddress,
+                KountSessionId = @event.KountSessionId
             };
 
             if (@event.IsPrepaid)
@@ -163,6 +166,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
                         order.TipIncentive = @event.TipIncentive;
+                        order.OriginatingIpAddress = @event.OriginatingIpAddress;
+                        order.KountSessionId = @event.KountSessionId;
                     });
                 }
                 else
@@ -514,7 +519,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 UserAgent = @event.UserAgent,
                 ClientLanguageCode = @event.ClientLanguageCode,
                 ClientVersion = @event.ClientVersion,
-                IsManualRideLinq = true
+                    IsManualRideLinq = true,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
             });
             
             // Create an empty OrderStatusDetail row
@@ -728,6 +735,16 @@ namespace apcurium.MK.Booking.EventHandlers
                     notification.InfoAboutPaymentWasSentToDriver = @event.InfoAboutPaymentWasSentToDriver.Value;
                 }
             });
+        }
+
+        public void Handle(OrderUpdatedInTrip @event)
+        {
+            if (!_orderDetailProjectionSet.Exists(@event.SourceId))
+            {
+                return;
+            }
+
+            _orderDetailProjectionSet.Update(@event.SourceId, order => order.DropOffAddress = @event.DropOffAddress);
         }
     }
 }

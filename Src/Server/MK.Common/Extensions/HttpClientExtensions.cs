@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MK.Common.Exceptions;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -24,33 +25,24 @@ namespace apcurium.MK.Common.Extensions
 
         public static Task<T> GetAsync<T>(this HttpClient client, IReturn<T> request)
         {
-            var url = request.GetUrlFromRoute();
+            var url = request.GetUrlFromRoute(true);
 
             return client.GetAsync<T>(url);
         }
 
-        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
-            string url,
-            Action<HttpResponseMessage> onSuccess = null,
-            Action<HttpResponseMessage> onError = null)
+        private static string GetForEndpointIfNeeded(this HttpClient client, string url)
         {
-            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
-        }
-
-
-	    private static string GetForEndpointIfNeeded(this HttpClient client, string url)
-	    {
-	        if (url.StartsWith("http") || client.BaseAddress == null)
-	        {
-	            return url;
-	        }
+            if (url.StartsWith("http") || client.BaseAddress == null)
+            {
+                return url;
+            }
 
             var currentRelativeUrl = client.BaseAddress.LocalPath;
-           
-	        return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+
+            return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
                 ? currentRelativeUrl + url
-                : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
-	    }
+                    : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
+        }
 
         public static Task<T> DeleteAsync<T>(this HttpClient client,
             string url,
@@ -69,9 +61,18 @@ namespace apcurium.MK.Common.Extensions
             return Task.Run(() => InnerPostAsync<TResult>(client, url, content, onSuccess, onError));
         }
 
+        public static Task<TResult> GetAsync<TResult>(this HttpClient client,
+            string url,
+            Action<HttpResponseMessage> onSuccess = null,
+            Action<HttpResponseMessage> onError = null)
+        {
+            
+            return Task.Run(() => client.GetAsync(client.GetForEndpointIfNeeded(url)).HandleResult<TResult>(onSuccess, onError));
+        }
+
 	    private static async Task<TResult> InnerPostAsync<TResult>(HttpClient client, string url, object content, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
 	    {
-	        var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+			var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
 
 	        var relativeUrl = client.GetForEndpointIfNeeded(url);
 
@@ -92,38 +93,25 @@ namespace apcurium.MK.Common.Extensions
             });
         }
 
-        public static async Task HandleResult(this Task<HttpResponseMessage> response,
-            Action<HttpResponseMessage> onSuccess,
-            Action<HttpResponseMessage> onError)
+        public static async Task HandleResult(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
         {
             var result = await response;
 
-            if (!result.IsSuccessStatusCode && onError != null)
-            {
-                onError(result);
-
-                var body = await result.Content.ReadAsStringAsync();
-
-                throw new WebServiceException(result.ReasonPhrase)
-                {
-                    StatusCode = (int)result.StatusCode,
-                    StatusDescription = result.ReasonPhrase,
-                    ResponseBody = body
-                };
-            }
-
-            if (onSuccess != null)
-            {
-                onSuccess(result);
-            }
+            await result.HandleResultInternal(onSuccess, onError);
         }
 
-        private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response,
-            Action<HttpResponseMessage> onSuccess,
-            Action<HttpResponseMessage> onError)
+        private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
         {
             var result = await response;
 
+            await result.HandleResultInternal(onSuccess, onError);
+
+            var jsonContent = await result.Content.ReadAsStringAsync();
+            return jsonContent.FromJson<TResult>();
+        }
+
+        private static async Task HandleResultInternal(this HttpResponseMessage result, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError)
+        {
             if (!result.IsSuccessStatusCode)
             {
                 if (onError != null)
@@ -133,23 +121,40 @@ namespace apcurium.MK.Common.Extensions
 
                 var body = await result.Content.ReadAsStringAsync();
 
-                throw new WebServiceException(result.ReasonPhrase)
+                ErrorResponse errorResponse;
+                try
                 {
-                    StatusCode = (int)result.StatusCode,
-                    StatusDescription = result.ReasonPhrase,
-                    ResponseBody = body
-                };
-                
+                    errorResponse = body.FromJson<ErrorResponse>();
+                }
+                catch
+                {
+                    errorResponse = null;
+                }
+
+                if (errorResponse != null && errorResponse.ResponseStatus != null)
+                {
+                    throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode) 
+                    {
+                        StatusCode = (int)result.StatusCode,
+                        StatusDescription = result.ReasonPhrase,
+                        ResponseBody = body
+                    };
+                }
+                else
+                {
+                    throw new WebServiceException(result.ReasonPhrase) 
+                    {
+                        StatusCode = (int)result.StatusCode,
+                        StatusDescription = result.ReasonPhrase,
+                        ResponseBody = body
+                    };
+                }
             }
 
             if (onSuccess != null)
             {
                 onSuccess(result);
             }
-
-            var jsonContent = await result.Content.ReadAsStringAsync();
-
-            return jsonContent.FromJson<TResult>();
         }
     }
 }

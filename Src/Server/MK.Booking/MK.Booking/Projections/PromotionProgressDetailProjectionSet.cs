@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Projections
         public abstract void Remove(Func<PromotionProgressDetailCollection, bool> predicate);
 
         public abstract IProjection<PromotionProgressDetailCollection> GetProjection(Guid identifier);
+        public abstract IProjection<PromotionProgressDetailCollection> GetProjection(Func<PromotionProgressDetailCollection, bool> predicate);
 
         public abstract void Update(Func<PromotionProgressDetailCollection, bool> predicate, Action<PromotionProgressDetailCollection> action);
 
@@ -34,6 +35,11 @@ namespace apcurium.MK.Booking.Projections
     public class PromotionProgressDetailMemoryProjectionSet : PromotionProgressDetailProjectionSet, IEnumerable<PromotionProgressDetailCollection>
     {
         readonly IDictionary<Guid, PromotionProgressDetailCollection> _cache = new Dictionary<Guid, PromotionProgressDetailCollection>();
+
+        public override IProjection<PromotionProgressDetailCollection> GetProjection(Func<PromotionProgressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void Update(Func<PromotionProgressDetailCollection, bool> predicate, Action<PromotionProgressDetailCollection> action)
         {
@@ -109,6 +115,11 @@ namespace apcurium.MK.Booking.Projections
         public PromotionProgressDetailEntityProjectionSet(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+
+        public override IProjection<PromotionProgressDetailCollection> GetProjection(Func<PromotionProgressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Update(Func<PromotionProgressDetailCollection, bool> predicate, Action<PromotionProgressDetailCollection> action)

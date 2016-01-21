@@ -31,6 +31,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.Extensions;
+using MK.Common.iOS;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -55,33 +56,36 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
 			_container.Register<IAccountServiceClient>((c, p) => 
-				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<IPaymentService>()),
                                                                      "NotAuthenticated");
             
 			_container.Register<IAccountServiceClient>((c, p) =>
-				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IPaymentService>()),
+				new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<IPaymentService>()),
                                                                      "Authenticate");
             
-			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(),c.Resolve<IPaymentService>()));
+			_container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(),
+                c.Resolve<IPaymentService>()));
 
-			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
-			_container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
-			_container.Register((c, p) => new MetricsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-			_container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));	        
-			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>(), 
+				c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new MetricsServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));	        
+			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
             
-			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
-			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), 
+				c.Resolve<IConnectivityService>()));
 
-			_container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
 			_container.Register<IAccountService, AccountService>();
             _container.Register<IMetricsService, MetricsService>();
@@ -95,11 +99,9 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 			_container.Register<IAccountPaymentService, AccountPaymentService>();
 			_container.Register<IRegisterWorkflowService,RegisterWorkflowService> ();
-
 			_container.Register<IGeolocService, GeolocService>();
 			_container.Register<IGoogleService, GoogleService>();
 			_container.Register<IApplicationInfoService, ApplicationInfoService>();
-
 			_container.Register<IPriceCalculator, PriceCalculator>();
 			_container.Register<IAddresses, Addresses>();
 			_container.Register<IDirections, Directions>();
@@ -108,27 +110,14 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
             _container.Register<IPOIProvider, POIProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
-
 			_container.Register<IAirportInformationService, AirportInformationService>();
-
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
-
-            // ***** PayPal *****
-			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
-
-			_container.Register<IPaymentService>((c, p) =>
-			{
-				var appSettingsService = c.Resolve<IAppSettings>();
-
-				var baseUrl = appSettingsService.GetServiceUrl();
-                var sessionId = GetSessionId();
-
-                return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
-			});
-            
-			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
-			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
+			_container.Register<IPaymentService>((c, p) => new PaymentService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IIPAddressManager>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>()));
+			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), 
+				c.Resolve<IConnectivityService>()));
+			_container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 			
 			var lifeTimeMonitor = _container.Resolve<IMvxLifetime> ();
 			lifeTimeMonitor.LifetimeChanged -= TaxiHailApp_LifetimeChanged;

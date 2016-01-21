@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Projections
         void Remove(Func<TProjection, bool> predicate);
 
         IProjection<TProjection> GetProjection(TIdentifier identifier);
+        IProjection<TProjection> GetProjection(Func<TProjection, bool> predicate);
     }
 
     public interface IAppendOnlyProjectionSet<TProjection> where TProjection : class

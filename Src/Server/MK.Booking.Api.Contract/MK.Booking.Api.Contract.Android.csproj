@@ -106,6 +106,7 @@
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\MarketSettings.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Requests\ActivationMethod.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Requests\OrderUpdateRequest.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

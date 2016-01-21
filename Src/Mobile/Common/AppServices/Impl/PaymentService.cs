@@ -14,10 +14,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
-#if IOS
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Common.ServiceClient.Web;
-#endif
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -25,7 +23,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 		private readonly ConfigurationClientService _serviceClient;
         private readonly ICacheService _cache;
+        private readonly IIPAddressManager _ipAddressManager;
 		private readonly IPackageInfo _packageInfo;
+		private readonly IConnectivityService _connectivityService;
         private readonly ILogger _logger; 
         private readonly string _baseUrl;
         private readonly string _sessionId;
@@ -40,8 +40,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public PaymentService(string url, string sessionId,
             ConfigurationClientService serviceClient,
             ICacheService cache,
+            IIPAddressManager ipAddressManager,
             IPackageInfo packageInfo,
-            ILogger logger)
+            ILogger logger,
+			IConnectivityService connectivityService)
         {
 			_logger = logger;
 			_packageInfo = packageInfo;
@@ -49,11 +51,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _sessionId = sessionId;
             _cache = cache;
 			_serviceClient = serviceClient;
+			_ipAddressManager = ipAddressManager;
+			_connectivityService = connectivityService;
         }
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
-
 			_cachedSettings = _cache.Get<ClientPaymentSettings>(PaymentSettingsCacheKey);
 
 			if (_cachedSettings == null || cleanCache)
@@ -82,12 +85,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
                 _client = GetClient(_cachedSettings);
             }
-		    catch (Exception ex)
+		    catch (Exception)
 		    {
-		        
 		        throw;
 		    }
-			
 		}
 
 		public void ClearPaymentSettingsFromCache()
@@ -116,15 +117,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
+		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-			return GetClient().Tokenize(creditCardNumber, expiryDate, cvv, zipCode);
+			return GetClient().Tokenize(creditCardNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account);
         }
 
-        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
+        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-			return await GetClient().ForgetTokenizedCard(cardToken);
+			return GetClient().ForgetTokenizedCard(cardToken);
         }
+
+		public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
+		{
+			return GetClient().ValidateTokenizedCard(creditCard, cvv, kountSessionId, account);
+		}
 
 		public async Task<OverduePayment> GetOverduePayment()
 		{
@@ -138,13 +144,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+			return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo, _connectivityService)
                 .Unpair(orderId);
         }
 
         public async Task<bool> UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+			return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo, _connectivityService)
                 .UpdateAutoTip(orderId, autoTipPercentage);
         }
 
@@ -163,14 +169,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo);
+					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo, _connectivityService);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo, null);
+                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _ipAddressManager, _packageInfo, _logger, _connectivityService);
 
                 case PaymentMethod.Moneris:
-                    return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger);
+					return new MonerisServiceClient(_baseUrl, _sessionId, settings.MonerisPaymentSettings, _packageInfo, _logger, _connectivityService);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

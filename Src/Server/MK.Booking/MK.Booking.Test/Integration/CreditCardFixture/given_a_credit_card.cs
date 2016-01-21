@@ -4,6 +4,7 @@ using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Configuration.Impl;
 using NUnit.Framework;
 
 #endregion
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             Sut.Handle(new CreditCardDeactivated
             {
                 SourceId = _accountId,
-                IsOutOfAppPaymentDisabled = false
+                IsOutOfAppPaymentDisabled = OutOfAppPaymentDisabled.All
             });
 
             using (var context = new BookingDbContext(DbName))

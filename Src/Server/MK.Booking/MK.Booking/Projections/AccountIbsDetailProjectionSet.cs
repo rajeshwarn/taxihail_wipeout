@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Projections
         public abstract void Remove(Func<AccountIbsDetailCollection, bool> predicate);
 
         public abstract IProjection<AccountIbsDetailCollection> GetProjection(Guid identifier);
+        public abstract IProjection<AccountIbsDetailCollection> GetProjection(Func<AccountIbsDetailCollection, bool> predicate);
 
         public abstract void Update(Func<AccountIbsDetailCollection, bool> predicate, Action<AccountIbsDetailCollection> action);
 
@@ -34,6 +35,11 @@ namespace apcurium.MK.Booking.Projections
     public class AccountIbsDetailMemoryProjectionSet : AccountIbsDetailProjectionSet, IEnumerable<AccountIbsDetailCollection>
     {
         readonly IDictionary<Guid, AccountIbsDetailCollection> _cache = new Dictionary<Guid, AccountIbsDetailCollection>();
+
+        public override IProjection<AccountIbsDetailCollection> GetProjection(Func<AccountIbsDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void Update(Func<AccountIbsDetailCollection, bool> predicate, Action<AccountIbsDetailCollection> action)
         {
@@ -109,6 +115,11 @@ namespace apcurium.MK.Booking.Projections
         public AccountIbsDetailEntityProjectionSet(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+
+        public override IProjection<AccountIbsDetailCollection> GetProjection(Func<AccountIbsDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Update(Func<AccountIbsDetailCollection, bool> predicate, Action<AccountIbsDetailCollection> action)

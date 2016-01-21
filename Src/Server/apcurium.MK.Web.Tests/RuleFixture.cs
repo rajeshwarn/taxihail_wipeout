@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
 
-            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             DeleteAllRules(sut);
             sut.CreateRule(new Rule
             {
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Tests
         [TestFixtureTearDown]
         public override void TestFixtureTearDown()
         {
-			var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+			var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 			DeleteAllRules(sut);
 
             base.TestFixtureTearDown();
@@ -104,7 +104,7 @@ namespace apcurium.MK.Web.Tests
 
         private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrderRequest> update, string testZone = null)
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -134,7 +134,7 @@ namespace apcurium.MK.Web.Tests
 
         private async Task<string> CreateOrder(Action<CreateOrderRequest> update)
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -187,7 +187,7 @@ namespace apcurium.MK.Web.Tests
             var name = "TestRule" + Guid.NewGuid();
             var mess = "TestRule Message" + Guid.NewGuid();
 
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var newRule = new Rule
             {
                 Id = ruleId,
@@ -214,7 +214,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void ActivateDeactivate()
         {
-            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             sut.ActivateRule(_knownRuleId);
 
             var rule = sut.GetRules().Single(x => x.Id == _knownRuleId);
@@ -236,7 +236,7 @@ namespace apcurium.MK.Web.Tests
             var activeFromDateRef = DateTime.Today.AddDays(14);
             var name = "AddRuleTest" + Guid.NewGuid();
 
-            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             sut.CreateRule(new Rule
             {
                 Id = ruleId,
@@ -335,7 +335,7 @@ namespace apcurium.MK.Web.Tests
             var name = "DateRuleTest" + Guid.NewGuid();
             var mess = "DateRuleTestMessage";
             var dayOfTheWeek = 1 << (int) DateTime.Now.DayOfWeek;
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             rules.CreateRule(new Rule
             {
                 Id = ruleId,
@@ -355,7 +355,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -623,7 +623,7 @@ namespace apcurium.MK.Web.Tests
             var name = "ReccurencyRuleTest" + Guid.NewGuid();
             var mess = "ReccurencyRuleTestMessage";
             var dayOfTheWeek = 1 << (int) DateTime.Now.DayOfWeek;
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             rules.CreateRule(new Rule
             {
                 Id = ruleId,
@@ -643,7 +643,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -676,7 +676,7 @@ namespace apcurium.MK.Web.Tests
             var name = "ReccurencyRuleTest" + Guid.NewGuid();
             var mess = "ReccurencyRuleTestMessage";
             var dayOfTheWeek = 1 << (int)DateTime.Now.DayOfWeek;
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             rules.CreateRule(new Rule
             {
                 Id = ruleId,
@@ -696,7 +696,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
@@ -724,7 +724,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestWarningRuleIsApplied()
         {
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
@@ -732,7 +732,7 @@ namespace apcurium.MK.Web.Tests
             rule.IsActive = true;
             rules.UpdateRule(rule);
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -760,12 +760,12 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestWarningRuleIsNotApplied()
         {
-            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rules.DeactivateRule(rule.Id);
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -793,7 +793,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateRule()
         {
-            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var newMessage = "UpdateRuleTest" + Guid.NewGuid();
             var newName = "UpdateRuleTest" + Guid.NewGuid();
             var activeFromDateRef = DateTime.Today.AddDays(20);

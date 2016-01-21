@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 #endregion

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -25,8 +25,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
+using CustomerPortal.Client;
 using MK.Common.Configuration;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             ILogger logger)
         {
             _contextFactory = contextFactory;
@@ -75,6 +77,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
 
             _resources = new Resources.Resources(serverSettings);
@@ -84,8 +87,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
-
-
+        
         public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
         {
             var account = _accountDao.FindById(accountId);
@@ -308,6 +310,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
             string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            string imageAppleLogoUrl = GetRefreshableImageUrl(GetBaseUrls().AppleLogoImg);
+            string imagePlayLogoUrl = GetRefreshableImageUrl(GetBaseUrls().PlayLogoImg);
 
             var templateData = new
             {
@@ -315,7 +319,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
-                LogoImg = imageLogoUrl
+                LogoImg = imageLogoUrl,
+                PlayLogoImg = imagePlayLogoUrl,
+                AppleLogoImg = imageAppleLogoUrl,
+                PlayLink = _serverSettings.ServerData.Store.PlayLink,
+                AppleLink = _serverSettings.ServerData.Store.AppleLink
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -597,7 +605,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                     + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
-                var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
+            var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
+
+            var marketSpecificNote = GetMarketReceiptFooter(pickupAddress.Latitude, pickupAddress.Longitude);
 
                 var templateData = new
                 {
@@ -639,7 +649,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tip = _resources.FormatPrice(tip),
                     TipIncentive = _resources.FormatPrice(tipIncentive),
                     TotalFare = _resources.FormatPrice(totalAmount),
-                    Note = _serverSettings.ServerData.Receipt.Note,
+                Note = _serverSettings.ServerData.Receipt.Note + marketSpecificNote,
                     Tax = _resources.FormatPrice(tax),
                     ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                     RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
@@ -712,10 +722,8 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
-                {
-                    _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
-                    _logger.LogError(e);
-                }
+                _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
+                _logger.LogError(e);
             }
         }
 
@@ -820,10 +828,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             // Find the exact dropoff address using the last vehicle position
-            var exactDropOffAddress = _geocoding.Search(
-                latitude,
-                longitude,
-                clientLanguageCode).FirstOrDefault();
+            var exactDropOffAddress = _geocoding.Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
         }
@@ -915,7 +920,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             _emailSender.Send(mailMessage);
 
-            _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", ccEmailAddress, templateData));
+            _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", to, templateData));
         }
 
         private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
@@ -1031,11 +1036,17 @@ namespace apcurium.MK.Booking.Services.Impl
             public BaseUrls(Uri baseUrl, IServerSettings serverSettings)
             {
                 LogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
+                AppleLogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/app-stores-itunes.png");
+                PlayLogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/appstores-play.png");
                 BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
                 Uri = baseUrl;
             }
 
             public string LogoImg { get; private set; }
+
+            public string PlayLogoImg { get; private set; }
+
+            public string AppleLogoImg { get; private set; }
 
             public string BaseUrlAssetsImg { get; private set; }
 
@@ -1111,6 +1122,26 @@ namespace apcurium.MK.Booking.Services.Impl
                     
                     return imageUrl;
                 }
+            }
+        }
+
+        private string GetMarketReceiptFooter(double latitude, double longitude)
+        {
+            try
+            {
+                var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
+
+                if (!marketSettings.ReceiptFooter.HasValueTrimmed())
+                {
+                    return string.Empty;
+                }
+
+                return string.Format("<br>{0}", marketSettings.ReceiptFooter);
+            }
+            catch (Exception)
+            {
+                _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
+                return string.Empty;
             }
         }
     }

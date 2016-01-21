@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 
 #endregion
 
@@ -485,7 +486,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         [Test]
         public void when_creditcard_deactivated_then_dto_updated()
         {
-            Sut.Handle(new CreditCardDeactivated { SourceId = _accountId, IsOutOfAppPaymentDisabled = false});
+            Sut.Handle(new CreditCardDeactivated { SourceId = _accountId, IsOutOfAppPaymentDisabled = OutOfAppPaymentDisabled.All});
 
             using (var context = new BookingDbContext(DbName))
             {

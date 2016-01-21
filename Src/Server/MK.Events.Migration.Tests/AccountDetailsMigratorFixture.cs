@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Test;
 using apcurium.MK.Common;
-using apcurium.MK.Events.Migration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Events.Migration.Projections;
 using NUnit.Framework;
 
@@ -54,22 +54,22 @@ namespace MK.Events.Migration.Tests
         [Test]
         public void given_credit_card_desactivated_event_with_missing_value_then_populated()
         {
-            _testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled = true;
+            _testServerSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             var @event = new CreditCardDeactivated();
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual(_testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled, @event.IsOutOfAppPaymentDisabled);
+            Assert.AreEqual(_testServerSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled, @event.IsOutOfAppPaymentDisabled);
 
         }
 
         [Test]
         public void given_credit_card_desactivated_event_with_value_then_not_updated()
         {
-            _testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled = true;
+            _testServerSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             var @event = new CreditCardDeactivated
             {
-                IsOutOfAppPaymentDisabled = false
+                IsOutOfAppPaymentDisabled = OutOfAppPaymentDisabled.All
             };
 
             @event = Sut.Migrate(@event);
@@ -86,7 +86,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual(_testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled, @event.IsPayInTaxiEnabled);
+            Assert.AreEqual(_testServerSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled, @event.IsPayInTaxiEnabled);
 
         }
 

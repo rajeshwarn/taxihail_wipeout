@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -29,18 +28,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private readonly IAppSettings _appSettings;
         private readonly IGeolocService _geolocService;
         private readonly IMessageService _messageService;
+		private readonly IIPAddressManager _ipAddressManager;
 
         public BookingService(IAccountService accountService,
             ILocalization localize,
             IAppSettings appSettings,
             IGeolocService geolocService,
-            IMessageService messageService)
+	    	IMessageService messageService,
+			IIPAddressManager ipAddressManager)
         {
             _geolocService = geolocService;
             _messageService = messageService;
             _appSettings = appSettings;
             _localize = localize;
             _accountService = accountService;
+			_ipAddressManager = ipAddressManager;
         }
 
         public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order)
@@ -57,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public async Task<OrderStatusDetail> CreateOrder(CreateOrderRequest order)
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
+			order.CustomerIpAddress = _ipAddressManager.GetIPAddress();
 
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
@@ -70,7 +73,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             Task.Run(() => _accountService.RefreshCache(true)).FireAndForget();
 
             return orderDetail;
-        }
+		}
+
+		public async Task<bool> UpdateDropOff (Guid orderId, Address dropOffAddress)
+		{
+			Logger.LogMessage("Starting: *************************************   UseServiceClient : UpdateDropOff ID : {0} DropOff : {1}", orderId, dropOffAddress);
+
+			var success = await Mvx.Resolve<OrderServiceClient>().UpdateDropOff(orderId, dropOffAddress);
+
+			//if non success => pop up it didn't work + update order with previous address
+
+			return success;
+		}
 
         public async Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(Guid orderId, string nextDispatchCompanyKey, string nextDispatchCompanyName)
         {
@@ -356,17 +370,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<OrderServiceClient>(service => service.RateOrder(request));
         }
 
-        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, string kountSessionId)
         {
             var request = new ManualRideLinqPairingRequest
             {
                 PairingCode = pairingCode,
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
+				KountSessionId = kountSessionId,
+				CustomerIpAddress = _ipAddressManager.GetIPAddress()
             };
+
             try
             {
-
                 var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(
                     service => RunWithRetryAsync(() => service.Pair(request), TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, 30));
 

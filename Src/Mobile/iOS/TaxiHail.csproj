@@ -31,7 +31,6 @@
     <MtouchUseSGen>True</MtouchUseSGen>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
-    <MtouchSdkVersion>8.1</MtouchSdkVersion>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
@@ -274,6 +273,15 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsIOS">
+      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -297,8 +305,9 @@
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.xib" />
     <InterfaceDefinition Include="Controls\Widgets\ChangeDropOffControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\AppBarDropOffSelection.xib" />
     <None Include="CustomLinker.xml" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -713,12 +722,20 @@
     <Compile Include="Controls\Widgets\DropOffSelectionControl.designer.cs">
       <DependentUpon>DropOffSelectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
-    <Compile Include="Controls\Widgets\AppBarDropOffSelection.designer.cs">
-      <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
+      <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="Helper\ToastHelper.cs" />
+    <Compile Include="Controls\ToastView.cs" />
+    <BundleResource Include="Resources\cancel.png" />
+    <BundleResource Include="Resources\cancel%402x.png" />
+    <Compile Include="Views\DebugView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -754,9 +771,7 @@
     <InterfaceDefinition Include="Views\Order\OrderReviewView.xib">
       <SubType>Designer</SubType>
     </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\Order\OrderReviewView_Thriev.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
-    <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />

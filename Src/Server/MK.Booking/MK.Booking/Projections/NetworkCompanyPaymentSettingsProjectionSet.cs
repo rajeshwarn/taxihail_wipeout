@@ -77,5 +77,10 @@ namespace apcurium.MK.Booking.Projections
         {
             throw new NotImplementedException();
         }
+
+        public IProjection<ServerPaymentSettings> GetProjection(Func<ServerPaymentSettings, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

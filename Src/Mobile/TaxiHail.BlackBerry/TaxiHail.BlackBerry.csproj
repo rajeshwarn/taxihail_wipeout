@@ -185,6 +185,15 @@
     <Reference Include="OkHttp">
       <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,6 +209,7 @@
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -1445,17 +1455,11 @@
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderAirport.axml">
       <Link>Resources\Layout\SubView_OrderAirport.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderEdit_Thriev.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit.axml">
       <Link>Resources\Layout\SubView_OrderEdit.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderOptions.axml">
       <Link>Resources\Layout\SubView_OrderOptions.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderReview_Thriev.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview.axml">
       <Link>Resources\Layout\SubView_OrderReview.axml</Link>
@@ -1481,14 +1485,8 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_Book_RideSummaryPage.axml">
       <Link>Resources\Layout\View_Book_RideSummaryPage.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <Link>Resources\Layout\View_BookEditInformation_Thriev.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation.axml">
       <Link>Resources\Layout\View_BookEditInformation.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail_Thriev.axml">
-      <Link>Resources\Layout\View_BookingDetail_Thriev.axml</Link>
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail.axml">
       <Link>Resources\Layout\View_BookingDetail.axml</Link>
@@ -1573,6 +1571,15 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_Tutorial.axml">
       <Link>Resources\Layout\View_Tutorial.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CustomToastView.axml">
+      <Link>Resources\Layout\CustomToastView.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerEmptyItem.axml">
+      <Link>Resources\Layout\SpinnerEmptyItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Debug.axml">
+      <Link>Resources\Layout\View_Debug.axml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>

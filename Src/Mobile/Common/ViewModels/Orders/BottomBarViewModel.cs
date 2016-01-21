@@ -633,6 +633,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
+			catch(InvalidCreditCardException e)
+			{
+				Logger.LogError(e);
+
+				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+				var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+				this.Services().Message.ShowMessage(title, message,
+					this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
+						// Force the user to return to redo the Confirm Order flow
+						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
+						ParentViewModel.Panel.NavigateToPaymentInformation.ExecuteIfPossible();
+					},
+					this.Services().Localize["Cancel"], () => {});
+			}
 			catch (OrderCreationException e)
 			{
 				Logger.LogError(e);
@@ -664,8 +679,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							if (!Settings.HideCallDispatchButton)
 							{
 								this.Services().Message.ShowMessage(title, e.Message,
-									"Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
-									"Cancel", () => { });
+									this.Services().Localize["CallButton"], () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+									this.Services().Localize["Cancel"], () => { });
 							}
 							else
 							{
@@ -1052,6 +1067,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			return new OrderRepresentation(order, orderStatus);
         }
+
+		public ICommand CancelChangeDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						// Reset destination selection
+						ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+						await _orderWorkflowService.SetAddress(new Address());
+						_orderWorkflowService.SetDropOffSelectionMode(false);
+						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
+					});
+			}
+		}
+
+		public ICommand SaveDropOff
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						var success = false;
+
+						using (this.Services().Message.ShowProgress())
+						{
+							success = await _orderWorkflowService.UpdateDropOff(ParentViewModel.BookingStatus.Order.Id);
+						}
+
+						if(success)
+						{
+							// add destination selected to order and go back to booking view 
+							var order = ParentViewModel.BookingStatus.Order;
+							order.DropOffAddress = ParentViewModel.DropOffSelection.DestinationAddress;
+							ParentViewModel.BookingStatus.Order = order;
+							ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+							_orderWorkflowService.SetDropOffSelectionMode(false);
+							return;
+						}
+
+						_orderWorkflowService.ClearDestinationAddress();
+						this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["ErrorChangeDropOff_Message"]);
+					});
+			}
+		}
     }
 }
 

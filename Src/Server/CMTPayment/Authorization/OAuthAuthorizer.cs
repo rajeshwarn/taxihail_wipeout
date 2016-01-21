@@ -5,12 +5,14 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using apcurium.MK.Common.Extensions;
+using CMTPayment.Utilities;
 
 namespace CMTPayment.Authorization
 {
     public class OAuthAuthorizer
     {
-        private static readonly Random Random = new Random();
+        private static readonly ThreadSafeRandom Random = new ThreadSafeRandom();
         private static readonly DateTime UnixBaseTime = new DateTime(1970, 1, 1);
 
         public static string AuthorizeRequest(string consumerKey, string consumerKeySecret, string oauthToken,
@@ -42,10 +44,9 @@ namespace CMTPayment.Authorization
             }
 
             var nvc = HttpUtility.ParseQueryString(uri.Query);
-            foreach (string key in nvc)
+            foreach (var key in nvc.Cast<string>().Where(key => key != null))
             {
-                if (key != null)
-                    signatureHeaders.Add(key, OAuthUtils.PercentEncode(nvc[key]));
+                signatureHeaders.Add(key, OAuthUtils.PercentEncode(nvc[key]));
             }
 
             var signature = MakeSignature(method, uri.GetLeftPart(UriPartial.Path), signatureHeaders);
@@ -64,9 +65,14 @@ namespace CMTPayment.Authorization
             {
                 var n = Random.Next(35);
                 if (n < 10)
+                {
                     ret[i] = (char) (n + '0');
+                }
                 else
-                    ret[i] = (char) (n - 10 + 'a');
+                {
+                    ret[i] = (char)(n - 10 + 'a');
+                }
+                    
             }
             return new string(ret);
         }
@@ -101,36 +107,9 @@ namespace CMTPayment.Authorization
 
         private static string HeadersToOAuth(Dictionary<string, string> headers)
         {
-            return "OAuth " +
-                   String.Join(",",
-                       (from x in headers.Keys select String.Format("{0}=\"{1}\"", x, headers[x])).ToArray());
-        }
-    }
+            var oAuthContents = headers.Select(h => string.Format("{0}=\"{1}\"", h.Key, h.Value));
 
-    public static class OAuthUtils
-    {
-        // 
-        // This url encoder is different than regular Url encoding found in .NET 
-        // as it is used to compute the signature based on a url.   Every document
-        // on the web omits this little detail leading to wasting everyone's time.
-        //
-        // This has got to be one of the lamest specs and requirements ever produced
-        //
-        public static string PercentEncode(string s)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var c in Encoding.UTF8.GetBytes(s))
-            {
-                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' || c == '_' ||
-                    c == '.' || c == '~')
-                    sb.Append((char) c);
-                else
-                {
-                    sb.AppendFormat("%{0:X2}", c);
-                }
-            }
-            return sb.ToString();
+            return "OAuth " + oAuthContents.JoinBy(",");
         }
     }
 }

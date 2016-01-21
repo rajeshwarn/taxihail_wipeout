@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -12,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
-	    private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -38,7 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
-		    _accountService = accountService;
+			_accountService = accountService;
+
             PhoneNumber = new PhoneNumberModel();
 		}
 
@@ -70,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
-					var v = await _vehicleTypeService.GetVehiclesList();
+					var v = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
                     _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
@@ -78,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    catch (Exception ex)
 			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
 			    }
 			}
 		}

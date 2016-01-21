@@ -99,7 +99,9 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 CompanyName = "Kramerica Industries",
                 EstimatedFare = 50.5,
                 IsChargeAccountPaymentWithCardOnFile = true,
-                IsPrepaid = true
+                IsPrepaid = true,
+                OriginatingIpAddress = "192.168.12.30",
+                KountSessionId = "1i3u13n123"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -126,6 +128,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual("Kramerica", dto.CompanyKey);
                 Assert.AreEqual("Kramerica Industries", dto.CompanyName);
                 Assert.AreEqual(50.5, dto.EstimatedFare);
+                Assert.AreEqual("192.168.12.30", dto.OriginatingIpAddress);
+                Assert.AreEqual("1i3u13n123", dto.KountSessionId);
 
                 //Settings
                 Assert.AreEqual(99, dto.Settings.ChargeTypeId);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace MK.Common.Exceptions
 {
@@ -99,9 +100,9 @@ namespace MK.Common.Exceptions
                 {
                     return false;
                 }
-                var map = ResponseBody.FromJson<Dictionary<string, string>>();
-
-                return map.TryGetValue("ResponseStatus", out responseStatus);
+				var map = ResponseBody.FromJson<ErrorResponse>();
+				responseStatus = map.ResponseStatus.ToJson();
+                return true;
             }
             catch
             {

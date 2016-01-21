@@ -17,6 +17,7 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -37,24 +38,24 @@ namespace apcurium.MK.Booking.Mobile
 
 			
             _container.Register<IAccountServiceClient>((c, p) => 
-                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, null), 
+                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), null, null, c.Resolve<IConnectivityService>()), 
                 "NotAuthenticated");
 			
             _container.Register<IAccountServiceClient>((c, p) =>
-                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), null),
+                new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), null, c.Resolve<IConnectivityService>()),
                 "Authenticate");
 			
-            _container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(),null));
+            _container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), null, c.Resolve<IConnectivityService>()));
 
-            _container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
-            _container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
-            _container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
             
-            _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>()));
 
-            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>()));
 
 			_container.Register<IAccountService>((c, p) => new AccountService(c.Resolve<IAppSettings>(), null, null, c.Resolve<ILocalization>()));
 
@@ -63,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile
 				c.Resolve<ILocalization>(), 
 				c.Resolve<IAppSettings>(),
 				null,
-				c.Resolve<IMessageService>()));
+				c.Resolve<IMessageService>(),
+				c.Resolve<IIPAddressManager>()));
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
 

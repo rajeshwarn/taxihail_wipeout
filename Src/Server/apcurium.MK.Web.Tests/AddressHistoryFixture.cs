@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             //Act
             var order = new CreateOrderRequest
@@ -64,7 +64,7 @@ namespace apcurium.MK.Web.Tests
             await orderService.CreateOrder(order);
 
             //Assert
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
@@ -82,8 +82,8 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
@@ -161,7 +161,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             
             var order = new CreateOrderRequest
                 {
@@ -189,7 +189,7 @@ namespace apcurium.MK.Web.Tests
                 };
             await orderService.CreateOrder(order);
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
 
             //Act

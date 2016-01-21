@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
-	    Task<bool> ValidateIsCardDeactivated();
+		Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId);
 		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
@@ -96,11 +96,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 
-		IObservable<string> GetAndObserveHashedMarket();
-
-		IObservable<bool> GetAndObserveIsUsingGeo();
-
-		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
+        IObservable<bool> GetAndObserveIsUsingGeo();
 
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
 
@@ -152,6 +148,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		bool ValidateAndSetCvv(string cvv);
 
 		void DisableBooking();
+
+		Task<bool> UpdateDropOff(Guid orderId);
 	}
 }
 

@@ -109,7 +109,12 @@ namespace apcurium.MK.Booking.Projections
 
         public IProjection<TProjection> GetProjection(Guid identifier)
         {
-            return new EntityProjection<TProjection>(_contextFactory, identifier);
+            return new EntityProjection<TProjection>(_contextFactory, null, identifier);
+        }
+
+        public IProjection<TProjection> GetProjection(Func<TProjection, bool> predicate)
+        {
+            return new EntityProjection<TProjection>(_contextFactory, predicate, null);
         }
     }
 }

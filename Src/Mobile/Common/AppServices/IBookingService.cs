@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task SendRatingReview(OrderRatings orderRatings);
 
-        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
+        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, string kountSessionId);
 
         Task UnpairFromManualRideLinq(Guid orderId);
 
@@ -72,5 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<ManualRideLinqResponse> GetTripInfoFromManualRideLinq(Guid orderId);
 
         Task<bool> InitiateCallToDriver(Guid orderId);
+
+		Task<bool> UpdateDropOff (Guid orderId, Address dropOffAddress);
     }
 }

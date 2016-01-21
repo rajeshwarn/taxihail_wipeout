@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>(), container.Resolve<IEventSourcedRepository<Promotion>>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
-                    
+
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAccountNoteService>(new AccountNoteService(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IFeesDao>(new FeesDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
@@ -101,10 +102,11 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IBlackListEntryService>(new BlackListEntryService(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IConfigurationChangeService>(new ConfigurationChangeService(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IAirlineDao>(new AirlineDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPickupPointDao>(new PickupPointDao(() => container.Resolve<BookingDbContext>()));
-            
+
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
@@ -119,8 +121,8 @@ namespace apcurium.MK.Booking
         {
             Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
             Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
-	        Mapper.CreateMap<Address, AddressDetails>()
-		        .ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId));
+            Mapper.CreateMap<Address, AddressDetails>()
+                .ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId));
 
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
@@ -133,12 +135,12 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<Address, DefaultAddressDetails>();
 
             Mapper.CreateMap<Address, PopularAddressDetails>()
-				.ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId))
-				.ForMember(x => x.AddressLocationType, opt => opt.MapFrom(x => (int)x.AddressLocationType));
+                .ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId))
+                .ForMember(x => x.AddressLocationType, opt => opt.MapFrom(x => (int)x.AddressLocationType));
 
             Mapper.CreateMap<PopularAddressDetails, Address>()
-				.ForMember(x => x.PlaceId, opt => opt.MapFrom(x => x.PlaceReference))
-				.ForMember(x => x.AddressLocationType, opt => opt.MapFrom(x => x.AddressLocationType)); ; 
+                .ForMember(x => x.PlaceId, opt => opt.MapFrom(x => x.PlaceReference))
+                .ForMember(x => x.AddressLocationType, opt => opt.MapFrom(x => x.AddressLocationType)); ;
 
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
@@ -150,7 +152,7 @@ namespace apcurium.MK.Booking
 
         private static void RegisterEventHandlers(IUnityContainer container)
         {
-            container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");   
+            container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AccountChargeQuestionAnswerGenerator>("AccountChargeQuestionAnswerGenerator");
             container.RegisterType<IEventHandler, AccountIbsDetailGenerator>("AccountIbsDetailGenerator");
             container.RegisterType<IEventHandler, PaypalAccountDetailsGenerator>("PaypalAccountDetailsGenerator");
@@ -162,7 +164,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
-            container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof (PaymentSettingGenerator).Name);
+            container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof(PaymentSettingGenerator).Name);
             container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
@@ -177,7 +179,7 @@ namespace apcurium.MK.Booking
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
-            container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof (PaymentSettingsUpdater).Name);
+            container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof(PaymentSettingsUpdater).Name);
             container.RegisterType<IEventHandler, MailSender>("MailSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");

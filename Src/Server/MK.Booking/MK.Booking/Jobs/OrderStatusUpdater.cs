@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Jobs
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
+        public virtual void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        public void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
+        public virtual void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
         {
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderStatusDetail.OrderId);
             if (rideLinqDetails == null)
@@ -1038,7 +1038,7 @@ namespace apcurium.MK.Booking.Jobs
 
         private void InitializeCmtServiceClient(ServerPaymentSettings paymentSettings)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

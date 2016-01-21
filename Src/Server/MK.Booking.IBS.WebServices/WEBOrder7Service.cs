@@ -195,7 +195,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     /// <remarks/>
     public WebOrder7Service()
     {
-        this.Url = "http://arcusdemo.drivelinq.com:38928/IBSCAB/IBSCab.dll/soap/IWEBOrder_7";
+        this.Url = "http://64.179.222.39/LAMP/IBSCab.dll/soap/IWEBOrder_7";
     }
 
     /// <remarks/>
@@ -7937,6 +7937,7 @@ public partial class TOrderStatus_2 : TOrderStatus
     private string terminalIdField;
 
     private double vATField;
+    
     /// <remarks/>
     public double VAT
     {
@@ -8197,6 +8198,7 @@ public partial class TBookOrder_7 : TBookOrder_6
 {
 
     private double tipsField;
+
     private double vATField;
 
     /// <remarks/>

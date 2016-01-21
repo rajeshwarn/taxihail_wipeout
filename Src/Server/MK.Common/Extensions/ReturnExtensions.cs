@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using ServiceStack.ServiceHost;
 
@@ -8,7 +8,7 @@ namespace apcurium.MK.Common.Extensions
 {
     public static class ReturnExtensions
     {
-        public static string GetUrlFromRoute<T>(this IReturn<T> request)
+        public static string GetUrlFromRoute<T>(this IReturn<T> request, bool setPropertiesAsUrlParams = false)
         {
             var requestType = request.GetType();
 
@@ -36,18 +36,35 @@ namespace apcurium.MK.Common.Extensions
 
             var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}", RegexOptions.Compiled)
                 .Cast<Match>()
-                .Select(match => match.Value);
+                .Select(match => new
+                {
+                    PropertyName = match.Value.Replace("{", "").Replace("}", ""),
+                    Tag = match.Value
+                })
+                .ToArray();
 
             var address = routeAttribute.Address;
 
-            foreach (var propertyName in matches)
+            foreach (var match in matches)
             {
-                var property = properties.First(p => p.Name == propertyName);
+                var property = properties.First(p => p.Name == match.PropertyName);
 
-                address = address.Replace(propertyName, property.Value.ToString());
+                address = address.Replace(match.Tag, property.Value.ToString());
             }
 
-            return address;
+            if (!setPropertiesAsUrlParams)
+            {
+                return address;
+            }
+
+            var parameters = properties
+                .Where(prop => matches.None(match => prop.Name == match.PropertyName))
+                .Select(prop => prop.Name + "=" + Uri.EscapeUriString(prop.Value.ToString()))
+                .ToArray();
+
+            return parameters.Any()
+                ? address + "?" + parameters.JoinBy("&")
+                : address;
         }
 
         private static RouteAttribute SelectCorrectRouteAttribute(this IEnumerable<RouteAttribute> routes, IEnumerable<string> propertyInfos)

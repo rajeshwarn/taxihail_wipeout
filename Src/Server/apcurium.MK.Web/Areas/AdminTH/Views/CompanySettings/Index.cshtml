@@ -1,41 +1,40 @@
 ﻿@using System.Reflection
 @using apcurium.MK.Common.Extensions
-@model apcurium.MK.Web.Areas.AdminTH.Models.CompanySettings
+@model apcurium.MK.Web.Areas.AdminTH.Models.CompanySettingsModel
 
-<h4 class="table-title">Company Settings</h4>
-@if (@TempData["Info"] != null)
-{
-    <div class="alert alert-info" style="margin-top: 10px;">
-        @TempData["Info"]
-    </div>
-}
-@if (@TempData["ValidationErrors"] != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;">
-        @TempData["ValidationErrors"]
-    </div>
-}
+<div class="well clearfix form-horizontal">
+    <h4 class="table-title">Company Settings</h4>
+    @if (@TempData["Info"] != null)
+    {
+        <div class="alert alert-info" style="margin-top: 10px;">
+            @TempData["Info"]
+        </div>
+    }
+    @if (@TempData["ValidationErrors"] != null)
+    {
+        <div class="alert alert-error" style="margin-top: 10px;">
+            @TempData["ValidationErrors"]
+        </div>
+    }
 
-@if (@TempData["FakeIBSErrors"] != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;">
-        @TempData["FakeIBSErrors"]
-    </div>
-}
+    @if (@TempData["FakeIBSErrors"] != null)
+    {
+        <div class="alert alert-error" style="margin-top: 10px;">
+            @TempData["FakeIBSErrors"]
+        </div>
+    }
 
 
-@using (Html.BeginForm("Update", "CompanySettings", FormMethod.Post))
-{
     @Html.AntiForgeryToken()
 
-    if (Model.IsSuperAdmin)
+    @if (Model.IsSuperAdmin)
     {
         <legend>
             @Html.DisplayName("Super Admin Only")
         </legend>
 
         @BuildSettingControls(Model.SuperAdminSettings)
-        <br/>
+        <br />
 
         <legend>
             @Html.DisplayName("Available to Admin")
@@ -48,20 +47,20 @@
         @BuildSettingControls(Model.AdminSettings)
     }
 
-    if (Model.IsSuperAdmin || (!Model.IsSuperAdmin && Model.AdminSettings.Any()))
+    @if (Model.IsSuperAdmin || (!Model.IsSuperAdmin && Model.AdminSettings.Any()))
     {
         <div class="control-group">
-            <button type="submit" class="btn btn-primary span">Save</button>
+            <input type="submit" formaction='@Url.Action("Update")' class="btn btn-primary" value="Save" />
         </div>
     }
 
     @helper BuildSettingControls(Dictionary<string, PropertyInfo> settings)
-    {        
+    {
         if (!settings.Any())
         {
             <h5>No settings available</h5>
         }
-        
+
         var sortedSetting = from temp in settings orderby temp.Value.GetDisplayName() ascending select temp;
 
         foreach (var setting in sortedSetting)
@@ -91,26 +90,26 @@
                     {
                         var boolValue = Convert.ToBoolean(settingValue);
                         @Html.DropDownList(
-                            setting.Key,
-                            new[]
-                            {
-                                new SelectListItem { Text = "Yes", Value = "true", Selected = boolValue },
-                                new SelectListItem { Text = "No", Value = "false", Selected = !boolValue }
-                            },
-                            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                                        setting.Key,
+                                        new[]
+                                        {
+                                            new SelectListItem { Text = "Yes", Value = "true", Selected = boolValue },
+                                            new SelectListItem { Text = "No", Value = "false", Selected = !boolValue }
+                                        },
+                                        new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
                     }
                     else if (settingType == typeof(bool?))
                     {
                         var nullaboolValue = (bool?)settingValue;
                         @Html.DropDownList(
-                            setting.Key,
-                            new[]
-                            {
-                                new SelectListItem { Text = "Required", Value = "true", Selected = nullaboolValue == true },
-                                new SelectListItem { Text = "Optional", Value = "false", Selected = nullaboolValue == false },
-                                new SelectListItem { Text = "Off", Value = "null", Selected = nullaboolValue == null }
-                            },
-                            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                                        setting.Key,
+                                        new[]
+                                        {
+                                            new SelectListItem { Text = "Required", Value = "true", Selected = nullaboolValue == true },
+                                            new SelectListItem { Text = "Optional", Value = "false", Selected = nullaboolValue == false },
+                                            new SelectListItem { Text = "Off", Value = "null", Selected = nullaboolValue == null }
+                                        },
+                                        new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
                     }
                     else if (settingType.BaseType == typeof(Enum))
                     {
@@ -139,4 +138,4 @@
             </div>
         }
     }
-}
+</div>

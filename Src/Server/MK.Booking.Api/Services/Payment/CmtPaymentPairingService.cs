@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private CmtTripInfoServiceHelper GetTripInfoServiceHelper(string companyKey)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null, null);
             return new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
 

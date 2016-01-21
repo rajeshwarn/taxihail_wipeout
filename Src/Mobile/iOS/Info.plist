@@ -4,9 +4,6 @@
   <dict>
     <key>CFBundleDisplayName</key>
     <string>TaxiHail</string>
-    <key>CFBundleExecutable</key>
-    <string>
-    </string>
     <key>CFBundleIconFiles</key>
     <array>
       <string>app.png</string>
@@ -32,9 +29,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>3.3.0.1</string>
+    <string>3.4.1</string>
     <key>CFBundleShortVersionString</key>
-    <string>3.3.0.1</string>
+    <string>3.4.1</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -64,7 +61,10 @@
     <string>Resources/Images.xcassets/LaunchImage.launchimage</string>
     <key>NSAppTransportSecurity</key>
     <dict>
-      <key>NSExceptionDomains</key>
+      <!--Connect to anything (this is probably BAD)-->
+      <key>NSAllowsArbitraryLoads</key>
+      <true />
+      <!-- <key>NSExceptionDomains</key>
       <dict>
         <key>test.taxihail.biz</key>
         <dict>
@@ -87,7 +87,7 @@
           <key>NSIncludesSubdomains</key>
           <true />
         </dict>
-      </dict>
+      </dict> -->
     </dict>
   </dict>
 </plist>

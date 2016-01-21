@@ -2,6 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -16,8 +19,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PushNotificationRegistrationServiceClient : BaseServiceClient
     {
-        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

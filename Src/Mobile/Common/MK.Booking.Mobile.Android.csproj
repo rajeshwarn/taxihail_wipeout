@@ -365,12 +365,14 @@
     <Compile Include="AppServices\IRateApplicationService.cs" />
     <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
-    <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
+    <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
+    <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
+    <Compile Include="ViewModels\DebugViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -402,6 +404,7 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\yoolka.resx" />
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />

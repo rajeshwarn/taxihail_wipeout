@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
@@ -16,7 +15,7 @@ using apcurium.MK.Booking.Projections;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
-		IEventHandler<OrderReportCreated>,
+        IEventHandler<OrderReportCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderCancelledBecauseOfError>,
@@ -46,18 +45,22 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly IProjectionSet<AccountDetail> _accountDetailProjectionSet;
         private readonly IProjectionSet<OrderReportDetail> _orderReportProjectionSet;
         private readonly IProjectionSet<OrderPaymentDetail> _orderPaymentProjectionSet;
+        private readonly IProjectionSet<CreditCardDetails> _creditCardProjectionSet;
+
         private const int SQLPrimaryKeyViolationErrorNumber = 2627;
 
         public ReportDetailGenerator(
             IProjectionSet<AccountDetail> accountDetailProjectionSet,
             IProjectionSet<OrderReportDetail> orderReportProjectionSet,
             IProjectionSet<OrderPaymentDetail> orderPaymentProjectionSet,
+            IProjectionSet<CreditCardDetails> creditCardProjectionSet,
             ILogger logger)
         {
             _logger = logger;
             _accountDetailProjectionSet = accountDetailProjectionSet;
             _orderReportProjectionSet = orderReportProjectionSet;
             _orderPaymentProjectionSet = orderPaymentProjectionSet;
+            _creditCardProjectionSet = creditCardProjectionSet;
         }
 
         public void Handle(OrderCreated @event)
@@ -95,7 +98,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         DropOffAddress = @event.DropOffAddress,
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
-                        Market = @event.Market
+                        Market = @event.Market,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
                     };
                     orderReport.Client = new OrderReportClient
                     {
@@ -109,12 +114,12 @@ namespace apcurium.MK.Booking.EventHandlers
             WrapWithSqlPrimaryKeyHandling(handling);
         }
 
-		public void Handle(OrderReportCreated @event)
-		{
+        public void Handle(OrderReportCreated @event)
+        {
             var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
 
-		    Action handling = () =>
-		    {
+            Action handling = () =>
+            {
                 if (!_orderReportProjectionSet.Exists(@event.SourceId))
                 {
                     _orderReportProjectionSet.Add(new OrderReportDetail { Id = @event.SourceId });
@@ -145,7 +150,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
                         Market = @event.Market,
-                        Error = @event.Error
+                        Error = @event.Error,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
                     };
                     orderReport.Client = new OrderReportClient
                     {
@@ -154,12 +161,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         Version = @event.ClientVersion
                     };
                 });
-		    };
+            };
 
             WrapWithSqlPrimaryKeyHandling(handling);
-		}
+        }
 
-		public void Handle(OrderStatusChanged @event)
+        public void Handle(OrderStatusChanged @event)
         {
             _orderReportProjectionSet.Update(@event.SourceId, orderReport => {
                 orderReport.Payment.MdtFare = @event.Fare;
@@ -169,6 +176,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (@event.Status != null)
                 {
                     orderReport.Account.AccountId = @event.Status.AccountId;
+                    orderReport.VehicleInfos.DriverId = @event.Status.DriverInfos.DriverId;
                     orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
                     orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
                     orderReport.VehicleInfos.Number = @event.Status.VehicleNumber;
@@ -192,9 +200,14 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPairedForPayment @event)
         {
+            var creditCard = _creditCardProjectionSet.GetProjection(x => x.Token == @event.TokenOfCardToBeUsedForPayment).Load();
+
             _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
             {
+                orderReport.Payment.DriverId = @event.DriverId;
+                orderReport.Payment.Medallion = @event.Medallion;
                 orderReport.Payment.IsPaired = true;
+                orderReport.Payment.Last4Digits = creditCard != null ? creditCard.Last4Digits : "";
             });
         }
 
@@ -218,6 +231,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     _orderReportProjectionSet.Add(new OrderReportDetail { Id = @event.OrderId });
                 }
 
+                var creditCard = _creditCardProjectionSet.GetProjection(x => x.Token == @event.CardToken).Load();
+
                 _orderReportProjectionSet.Update(@event.OrderId, orderReport =>
                 {
                     orderReport.Payment.PaymentId = @event.SourceId;
@@ -225,6 +240,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.Payment.FirstPreAuthTransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                     orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                     orderReport.Payment.CardToken = @event.CardToken;
+                    orderReport.Payment.Last4Digits = creditCard != null ? creditCard.Last4Digits : "";
                     orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
                     orderReport.Payment.Provider = @event.Provider;
                 });
@@ -337,6 +353,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCancelled @event)
         {
+            if (!_orderReportProjectionSet.Exists(@event.SourceId))
+            {
+                return;
+            }
+
             _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
             {
                 orderReport.OrderStatus.OrderIsCancelled = true;
@@ -345,6 +366,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCancelledBecauseOfError @event)
         {
+            if (!_orderReportProjectionSet.Exists(@event.SourceId))
+            {
+                return;
+            }
+
             _orderReportProjectionSet.Update(@event.SourceId, orderReport =>
             {
                 orderReport.OrderStatus.OrderIsCancelled = true;
@@ -470,7 +496,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
                 PickupDateTime = @event.PairingDate,
                 CreateDateTime = @event.PairingDate,
-                PickupAddress = @event.PickupAddress
+                PickupAddress = @event.PickupAddress,
+                OriginatingIpAddress = @event.OriginatingIpAddress,
+                KountSessionId = @event.KountSessionId
             };
             orderReport.Client = new OrderReportClient
             {
@@ -478,7 +506,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 UserAgent = @event.UserAgent,
                 Version = @event.ClientVersion
             };
-                
+
             orderReport.Payment = new OrderReportPayment
             {
                 PairingToken = @event.PairingToken,

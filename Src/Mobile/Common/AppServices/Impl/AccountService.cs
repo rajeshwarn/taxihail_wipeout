@@ -1,7 +1,3 @@
-#if IOS
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Common.ServiceClient.Web;
-#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -534,6 +530,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
+			if (refData == null)
+			{
+				return null;
+			}
+
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
@@ -552,8 +553,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<CreditCardDetails> GetDefaultCreditCard ()
         {
-			
 			var account = await GetAccount();
+
+			if (account == null)
+			{
+				return null;
+			}
 
 			var creditCard = account.DefaultCreditCard;
 
@@ -568,16 +573,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
 		}
 
-		private async Task TokenizeCard(CreditCardInfos creditCard)
+		private async Task TokenizeCard(CreditCardInfos creditCard, string kountSessionId)
 		{
 			var usRegex = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
 			var zipCode = usRegex.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
 
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
+                creditCard.NameOnCard,
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
 				creditCard.CCV,
-				zipCode));
+				kountSessionId,
+				zipCode,
+				CurrentAccount));
 
 		    if (!response.IsSuccessful)
 		    {
@@ -587,11 +595,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			creditCard.Token = response.CardOnFileToken;       
 		}
 
-		public async Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false)
+		public async Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, string kountSessionId, bool isUpdate = false)
         {
 			try
 			{
-				await TokenizeCard (creditCard);
+				await TokenizeCard (creditCard, kountSessionId);
 			}
 			catch
 			{
@@ -640,7 +648,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			
 		public async Task RemoveCreditCard(Guid creditCardId, bool replacedByPayPal = false)
 		{
-			var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId));
+            var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+            var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId, creditCard.Token));
 
 			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 

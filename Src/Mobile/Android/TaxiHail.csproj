@@ -17,7 +17,7 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -236,6 +236,15 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -478,8 +487,6 @@
     <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
     <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
     <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
@@ -597,6 +604,11 @@
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
+    <AndroidResource Include="Resources\Layout\SpinnerEmptyItem.axml" />
+    <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
+    <AndroidResource Include="Resources\Layout\View_Debug.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -870,6 +882,7 @@
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

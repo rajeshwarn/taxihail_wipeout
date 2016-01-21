@@ -343,7 +343,7 @@
   <string name="PaymentDetails.LabelName">Label</string>
   <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
-  <string name="CreditCardZipCode">Zip code</string>
+  <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="View_CreditCard">Payment</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
@@ -726,6 +726,7 @@
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="OrderStatus_AddDestination">Add your destination</string>
   <string name="OrderStatus_RemoveDestination">Remove your destination</string>
+  <string name="ErrorChangeDropOff_Message">Sorry, we couldn’t update your destination.</string>
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
@@ -750,4 +751,12 @@
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
   <string name="ServiceErrorCallTitle">Server error</string>
+  <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
+  <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
+  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
+  <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
 </resources>

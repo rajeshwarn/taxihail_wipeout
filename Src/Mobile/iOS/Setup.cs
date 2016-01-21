@@ -23,12 +23,12 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Google;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -70,53 +70,42 @@ namespace apcurium.MK.Booking.Mobile.Client
          
 			var container = TinyIoCContainer.Current;
 
-			container.Register<IAnalyticsService, GoogleAnalyticsService> ();
-
-			var locationService = new LocationService ();
-
-			container.Register<ILocationService> (locationService);
-			container.Register<IMessageService, MessageService> ();
+            container.Register<IAnalyticsService, GoogleAnalyticsService> ();
+            container.Register<ILocationService> (new LocationService ());
+            container.Register<IMessageService, MessageService> ();
+            container.Register<IConnectivityService, ConnectivityService> ();
 			container.Register<IPackageInfo> (new PackageInfo ());
-
+            container.Register<IIPAddressManager, IPAddressManager>();
 			container.Register<ILocalization, Localize> ();
 			container.Register<ILogger, LoggerWrapper> ();        
 			container.Register<ICacheService> (new CacheService ());
 			container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
-
 			container.Register<IPhoneService, PhoneService> ();
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
-
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
-
             container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
-
-
-			Cirrious.MvvmCross.Plugins.DownloadCache.PluginLoader.Instance.EnsureLoaded ();
-			Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
-			Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
-
             container.Register<IGeocoder> ((c, p) => new AppleGeocoder ());
-			container.Register<IPlaceDataProvider, FoursquareProvider> ();
+            container.Register<IPlaceDataProvider, FoursquareProvider> ();
+            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
+            container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
+            container.Register<IQuitApplicationService, QuitApplicationService>();
+            container.Register<IDeviceCollectorService, DeviceCollectorService>();
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
                     case MapProvider.TomTom:
-                        return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+                            return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>());
                     case MapProvider.Google:
                     default:
 						return new AppleDirectionProvider( c.Resolve<ILogger>());
                 }
             });
 
-            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
-			container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
-
-			container.Register<IQuitApplicationService, QuitApplicationService>();
-
-
-			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
+            Cirrious.MvvmCross.Plugins.DownloadCache.PluginLoader.Instance.EnsureLoaded ();
+            Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
+            Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
 
 			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 

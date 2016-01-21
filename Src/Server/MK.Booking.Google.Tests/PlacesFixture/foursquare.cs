@@ -13,7 +13,7 @@ namespace MK.Booking.Google.Tests.Foursquare
         [SetUp]
         public void Setup()
         {
-            Sut = new FoursquareProvider(new TestServerSettings(), new Logger());
+            Sut = new FoursquareProvider(new TestServerSettings(), new Logger(), null);
         }
 
         [Test]

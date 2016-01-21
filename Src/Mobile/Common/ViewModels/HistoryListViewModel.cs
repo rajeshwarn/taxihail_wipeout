@@ -12,6 +12,11 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using MK.Common.Exceptions;
+using System.Net;
+using apcurium.MK.Common;
+using Cirrious.CrossCore;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -102,9 +107,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     orders = allOrders.ToArray();
                 }
 			    catch (Exception ex)
-			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+				{
+					Logger.LogMessage(ex.Message, ex.ToString());
+
+					if(!Mvx.Resolve<IErrorHandler>().HandleError(ex))
+					{
+						this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+					}
 			    }
 
 				if (orders.Any())

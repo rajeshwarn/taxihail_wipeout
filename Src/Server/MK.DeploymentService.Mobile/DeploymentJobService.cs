@@ -9,11 +9,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
-using System.Threading.Tasks;
-using ServiceStack.Text;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -25,7 +22,6 @@ namespace MK.DeploymentService.Mobile
 		DeploymentJob _job;
 		private MonoBuilder _builder;
 		private CustomerPortalRepository _customerPortalRepository;
-        const string GIT_PATH = "/usr/local/git/bin/git";
 		public bool _isWorking = false;
 
 		public DeploymentJobService ()
@@ -108,9 +104,8 @@ namespace MK.DeploymentService.Mobile
 						Directory.CreateDirectory( sourceDirectory);
 
 					DownloadAndInstallProfileIfNecessary();
-                    var path = System.Configuration.ConfigurationManager.AppSettings["GitPath"];
-                    var isGitHub = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["IsGitHubSourceControl"]);
-                    var taxiRepo = new TaxiRepository (path, sourceDirectory,  isGitHub);
+                    var isGitHub = bool.Parse(ConfigurationManager.AppSettings["IsGitHubSourceControl"]);
+                    var taxiRepo = new TaxiRepository (sourceDirectory,  isGitHub);
 
 					UpdateJob ("FetchSource");
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));

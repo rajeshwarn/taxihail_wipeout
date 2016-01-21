@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Projections
         public abstract void Remove(Func<RatingTypeDetailCollection, bool> predicate);
 
         public abstract IProjection<RatingTypeDetailCollection> GetProjection(Guid identifier);
+        public abstract IProjection<RatingTypeDetailCollection> GetProjection(Func<RatingTypeDetailCollection, bool> predicate);
 
         public abstract void Update(Func<RatingTypeDetailCollection, bool> predicate, Action<RatingTypeDetailCollection> action);
 
@@ -34,6 +35,11 @@ namespace apcurium.MK.Booking.Projections
     public class RatingTypeDetailMemoryProjectionSet : RatingTypeDetailProjectionSet, IEnumerable<RatingTypeDetailCollection>
     {
         readonly IDictionary<Guid, RatingTypeDetailCollection> _cache = new Dictionary<Guid, RatingTypeDetailCollection>();
+
+        public override IProjection<RatingTypeDetailCollection> GetProjection(Func<RatingTypeDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void Update(Func<RatingTypeDetailCollection, bool> predicate, Action<RatingTypeDetailCollection> action)
         {
@@ -109,6 +115,11 @@ namespace apcurium.MK.Booking.Projections
         public RatingTypeDetailEntityProjectionSet(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+
+        public override IProjection<RatingTypeDetailCollection> GetProjection(Func<RatingTypeDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Update(Func<RatingTypeDetailCollection, bool> predicate, Action<RatingTypeDetailCollection> action)

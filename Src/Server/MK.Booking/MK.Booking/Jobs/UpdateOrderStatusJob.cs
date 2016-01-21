@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Jobs
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
-        private const int MaxParallelism = 16;
+        public int MaxParallelism = 16;
 
         public UpdateOrderStatusJob(IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
@@ -130,6 +130,9 @@ namespace apcurium.MK.Booking.Jobs
 
             return hasOrdersWaitingForPayment;
         }
+
+
+        
 
         private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {

@@ -26,12 +26,12 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            var authResponseTask = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo()).Authenticate(TestAccount.Email, TestAccountPassword);
+            var authResponseTask = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null).Authenticate(TestAccount.Email, TestAccountPassword);
             authResponseTask.Wait();
             var authResponse = authResponseTask.Result;
 
             _orderId = Guid.NewGuid();
-            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, new DummyPackageInfo(), null);
             var order = new CreateOrderRequest
             {
                 Id = _orderId,
@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
         {
             await CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             Assert.Throws<WebServiceException>(async () => await sut.GetOrderStatus(_orderId));
         }
@@ -79,7 +79,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void create_and_get_a_valid_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var data = await sut.GetOrderStatus(_orderId);
 
             Assert.AreEqual(OrderStatus.Created, data.Status);
@@ -89,7 +89,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void get_active_orders_status()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var data = await sut.GetActiveOrdersStatus();
             Assert.AreEqual(true, data.Any());
             Assert.AreEqual(true, data.Any(x => x.OrderId == _orderId));

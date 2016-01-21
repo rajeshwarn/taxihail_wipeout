@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -384,7 +385,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, bool isOutOfAppPaymentDisabled)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, OutOfAppPaymentDisabled isOutOfAppPaymentDisabled)
         {
             Update(new CreditCardDeactivated
             {

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using System.Net;
+
 #if CLIENT
 using ModernHttpClient;
 using System.Net.Http;
@@ -23,12 +25,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private string _url;
         private readonly IPackageInfo _packageInfo;
         private HttpClient _client;
+        private readonly IConnectivityService _connectivityService;
 
-        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
         {
             _url = url;
             _sessionId = sessionId;
             _packageInfo = packageInfo;
+            _connectivityService = connectivityService;
         }
 
         public BaseServiceClient()
@@ -43,7 +47,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #if CLIENT
         protected HttpClient Client
         {
-            get { return _client ?? (_client = CreateClient()); }
+            // Recreate the HttpClient everytime to fix the problem with certain calls returning Unauthorized for no reason (seems to be on Android only)
+            get { return CreateClient(); }
         }
 
         private HttpClient CreateClient()
@@ -53,8 +58,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var cookieHandler = new NativeCookieHandler();
 
             // CustomSSLVerification must be set to true to enable certificate pinning.
-            var nativeHandler = new NativeMessageHandler(throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
-            
+            var nativeHandler = new CustomNativeMessageHandler(_connectivityService, throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
+
+            // otherwise we won't be able to handle 304 NotModified ourselves (ie: Terms & Conditions)
+            nativeHandler.DisableCaching = true;
+
             var client = new HttpClient(nativeHandler)
             {
                 BaseAddress = uri,

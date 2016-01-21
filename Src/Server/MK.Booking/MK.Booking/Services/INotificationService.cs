@@ -1,10 +1,8 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Services
 {

@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblChargeType;
         private TextView _lblApt;
         private TextView _lblRingCode;
-        private TextView _lblLargeBags;
         private TextView _lblBonusAmount;
         private EditTextEntry _editNote;
         private EditTextEntry _editPromoCode;
@@ -48,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblDialCode = Content.FindViewById<TextView>(Resource.Id.lblDialCode);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
-                _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
                 _lblDate = Content.FindViewById<TextView>(Resource.Id.lblDate);
                 _lblVehicule = Content.FindViewById<TextView>(Resource.Id.lblVehicule);
                 _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
@@ -211,10 +209,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
 
-            set.BindSafe(_lblLargeBags)
-                .For(v => v.Text)
-                .To(vm => vm.Settings.LargeBags);
-
             set.Bind(_editNote)
                 .For(v => v.Text)
                 .To(vm => vm.Note);
@@ -247,11 +241,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(_lblBonusAmount)
                 .For(v => v.Enabled)
                 .To(vm => vm.DriverBonusEnabled);
-
-            set.Bind(this)
-                .For(v => v.RemoveBonusFromView)
-                .To(vm => vm.CanShowDriverBonus)
-                .WithConversion("BoolInverter");
 
 			if (!this.Services().Settings.ShowPassengerName)
             {
@@ -291,20 +280,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             set.Apply();
-        }
-
-        private bool _removeBonusFromView;
-        public bool RemoveBonusFromView
-        {
-            get { return _removeBonusFromView; }
-            set
-            {
-                _removeBonusFromView = value;
-                if (RemoveBonusFromView)
-                {
-                    _driverBonusView.Visibility = ViewStates.Gone;
-                }
-            }
         }
     }
 }

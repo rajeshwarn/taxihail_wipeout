@@ -325,6 +325,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.PromptsLength = accountValidationResult.PromptsLength;
             orderCommand.PromotionId = promotionId;
             orderCommand.ChargeTypeEmail = chargeTypeEmail;
+            orderCommand.OriginatingIpAddress = createReportOrder.OriginatingIpAddress = request.CustomerIpAddress;
+            orderCommand.KountSessionId = createReportOrder.OriginatingIpAddress = request.KountSessionId;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 

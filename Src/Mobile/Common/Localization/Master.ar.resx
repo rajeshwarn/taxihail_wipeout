@@ -2224,6 +2224,9 @@
   <data name="OrderStatus_RemoveDestination" xml:space="preserve">
     <value>Remove your destination</value>
   </data>
+  <data name="ErrorChangeDropOff_Message" xml:space="preserve">
+    <value>Sorry, we couldn’t update your destination.</value>
+  </data>
   <data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -2331,5 +2334,11 @@
   </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="InvalidCreditCardMessage" xml:space="preserve">
+  	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
+  </data>
+  <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+  	<value>Update Card</value>
   </data>
 </root>

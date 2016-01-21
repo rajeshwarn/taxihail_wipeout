@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Projections
         public abstract void Remove(Func<AddressDetailCollection, bool> predicate);
 
         public abstract IProjection<AddressDetailCollection> GetProjection(Guid identifier);
+        public abstract IProjection<AddressDetailCollection> GetProjection(Func<AddressDetailCollection, bool> predicate);
 
         public abstract void Update(Func<AddressDetailCollection, bool> predicate, Action<AddressDetailCollection> action);
 
@@ -91,6 +92,11 @@ namespace apcurium.MK.Booking.Projections
             {
                 _cache[identifier] = projection;
             });
+        }
+
+        public override IProjection<AddressDetailCollection> GetProjection(Func<AddressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Update(Guid identifier, Action<AddressDetailCollection> action)
@@ -189,6 +195,11 @@ namespace apcurium.MK.Booking.Projections
                     context.Set<AddressDetails>().AddOrUpdate(p.ToArray());
                 }
             });
+        }
+
+        public override IProjection<AddressDetailCollection> GetProjection(Func<AddressDetailCollection, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Update(Guid identifier, Action<AddressDetailCollection> action)

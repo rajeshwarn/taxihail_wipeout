@@ -2,13 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ServiceStack.Common.Utils;
 
 namespace apcurium.MK.Booking.Projections
 {
-    public class MemoryProjectionSet<TProjection>:
-        IProjectionSet<TProjection>,
-        IEnumerable<TProjection> where TProjection : class
+    public class MemoryProjectionSet<TProjection> : IProjectionSet<TProjection>, IEnumerable<TProjection> where TProjection : class
     {
         readonly IDictionary<Guid, TProjection> _cache = new Dictionary<Guid, TProjection>();
         readonly Func<TProjection, Guid> _getId;
@@ -68,6 +65,14 @@ namespace apcurium.MK.Booking.Projections
             }, projection => _cache[identifier] = projection);
         }
 
+        public IProjection<TProjection> GetProjection(Func<TProjection, bool> predicate)
+        {
+            return new ProjectionWrapper<TProjection>(() =>
+            {
+                return _cache.Select(x => x.Value).FirstOrDefault(predicate);
+            }, projection => _cache[_getId(projection)] = projection);
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             TProjection item;
@@ -100,3 +105,4 @@ namespace apcurium.MK.Booking.Projections
 
     }
 }
+

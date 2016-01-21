@@ -5,7 +5,7 @@ using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client.Cache
+namespace apcurium.MK.Callbox.Mobile.Client.Cache
 {
 	public class CacheService : ICacheService
 	{
