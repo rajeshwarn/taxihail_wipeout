@@ -25,6 +25,8 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableDriverBonus { get; set; }
 
+        public bool EnableFutureBooking { get; set; }
+
         public string ReceiptFooter { get; set; }
 
         public bool EnableAppFareEstimates { get; set; }

@@ -232,6 +232,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand PromptChangeServerUrl
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{
+					try
+					{            
+						var serviceUrl = await this.Services().Message.ShowPromptDialog(
+							"Server Url",
+							string.Empty,
+							() => { return; },
+							false,
+							this.Services().Settings.ServiceUrl);
+
+						if(serviceUrl != null)
+						{
+							SetServerUrl(serviceUrl);
+						}
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				});
+			}
+		}
+
         private async Task SignIn()
         {
             using(this.Services().Message.ShowProgress())

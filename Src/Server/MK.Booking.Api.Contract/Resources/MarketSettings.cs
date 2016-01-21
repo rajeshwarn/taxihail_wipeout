@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public bool OverrideEnableAppFareEstimates { get; set; }
 
+        public bool EnableFutureBooking { get; set; }
+        
         public Tariff MarketTariff { get; set; }
         
         public bool IsLocalMarket 
