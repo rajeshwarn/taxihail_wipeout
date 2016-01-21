@@ -9,6 +9,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -49,26 +50,26 @@ namespace apcurium.MK.Booking.Api.Services
                         ratingScoresCleanedUpForDuplicates.Add(rating);
                     }
                 }
+
                 request.RatingScores = ratingScoresCleanedUpForDuplicates;
-            }
 
-            if (OrderHasNoRatingScore(request.OrderId))
-            {
-                var command = new RateOrder
+                if (HasNoValidExistingRating(request.OrderId) && request.RatingScores.Any())
                 {
-                    AccountId = accountId,
-                    Note = request.Note,
-                    OrderId = request.OrderId,
-                    RatingScores = request.RatingScores
-                };
+                    var command = new RateOrder
+                    {
+                        AccountId = accountId,
+                        Note = request.Note,
+                        OrderId = request.OrderId,
+                        RatingScores = request.RatingScores
+                    };
 
-                _commandBus.Send(command);
+                    _commandBus.Send(command);
+                }
             }
-
             return String.Empty;
         }
 
-        private bool OrderHasNoRatingScore(Guid orderId)
+        private bool HasNoValidExistingRating(Guid orderId)
         {
             var ratings = Dao.GetOrderRatingsByOrderId(orderId);
             return ratings.OrderId.IsNullOrEmpty() || ratings.RatingScores.None();

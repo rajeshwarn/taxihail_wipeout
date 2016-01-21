@@ -87,9 +87,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							RatingTypeName = c.Name
 						}).OrderBy (c => c.RatingTypeId).ToList ();
 					} 
-					// There is no existing rating for this order, so we enable rating. Useful for broken ratings.
 					else 
 					{
+						// There is no existing rating for this order, so we enable rating. Useful for broken ratings.
 						canRate = true;
 					}
 				}
