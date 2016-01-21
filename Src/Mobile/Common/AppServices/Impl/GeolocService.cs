@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -78,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var marketTariff = await GetMarketTariffIfPossible(originLat, originLong);
+                var marketTariff = await GetMarketTariffIfPossible();
 
 				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, vehicleTypeId, date, false, marketTariff);
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price, TripDurationInSeconds = (int?)direction.Duration };
@@ -89,26 +91,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private async Task<Tariff> GetMarketTariffIfPossible(double latitude, double longitude)
+        private async Task<Tariff> GetMarketTariffIfPossible()
         {
-            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(latitude, longitude);
-            
-            // If we are in local market or the app fare estimates is not ovverridden in the roaming market we do not return a tariff override.
-            if (!marketSettings.HashedMarket.HasValueTrimmed() || !marketSettings.OverrideEnableAppFareEstimates)
-            {
-                return null;
-            }
+            var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
 
-            return new Tariff()
-            {
-                FlatRate = marketSettings.FlatRate,
-                KilometricRate = marketSettings.KilometricRate,
-                MinimumRate = marketSettings.MinimumRate,
-                KilometerIncluded = marketSettings.KilometerIncluded,
-                PerMinuteRate = marketSettings.PerMinuteRate,
-                MarginOfError = marketSettings.MarginOfError,
-                Type = (int)TariffType.Default
-            };
+            return marketSettings.IsLocalMarket || !marketSettings.OverrideEnableAppFareEstimates
+                ? null 
+                : marketSettings.MarketTariff;
         }
     }
 }

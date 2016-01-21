@@ -22,13 +22,13 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
         public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
-		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overridedTariff = null)
+		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
         {
-            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta, overridedTariff).Result;
+            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta, overriddenTariff).Result;
         }
 
         public async Task<Direction> GetDirectionAsync(double? originLat, double? originLng, double? destinationLat,
-            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overridedTariff = null)
+            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
         {
             var result = new Direction();
 
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                         direction.Distance,
                         date ?? DateTime.Now,
                         direction.Duration, vehicleTypeId,
-                        overridedTariff);
+                        overriddenTariff);
 
                     result.FormattedPrice = result.Price == null 
                         ? string.Empty 

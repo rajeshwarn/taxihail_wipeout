@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
 
@@ -29,18 +30,8 @@ namespace CustomerPortal.Web.Areas.Admin.Models
 
         [Display(Name = "App Fare Estimates Enabled")]
         public bool EnableAppFareEstimates { get; set; }
-        [Display(Name = "Minimum Rate")]
-        public double MinimumRate { get; set; }
-        [Display(Name = "Flat Rate")]
-        public decimal FlatRate { get; set; }
-        [Display(Name = "Per KM Rate")]
-        public double KilometricRate { get; set; }
-        [Display(Name = "Per Minute Rate")]
-        public double PerMinuteRate { get; set; }
-        [Display(Name = "Kilometer Included In Flat Rate")]
-        public double KilometerIncluded { get; set; }
-        [Display(Name = "Overhead")]
-        public double MarginOfError { get; set; }
+
+        public Tariff MarketTariff { get; set; }
     }
 
     public class VehicleModel : Vehicle

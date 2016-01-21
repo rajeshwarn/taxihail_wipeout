@@ -39,13 +39,8 @@ namespace apcurium.MK.Booking.Api.Services
                         EnableDriverBonus = marketSettings.EnableDriverBonus,
                         OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                         EnableFutureBooking = string.IsNullOrEmpty(marketSettings.Market) ? !_serverSettings.ServerData.DisableFutureBooking : marketSettings.EnableFutureBooking,
+                        MarketTariff = marketSettings.MarketTariff
                         CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair,
-                        FlatRate = marketSettings.FlatRate,
-                        KilometricRate = marketSettings.KilometricRate,
-                        KilometerIncluded = marketSettings.KilometerIncluded,
-                        MarginOfError = marketSettings.MarginOfError,
-                        MinimumRate = marketSettings.MinimumRate,
-                        PerMinuteRate = marketSettings.PerMinuteRate
                     }
                 : new MarketSettings();
         }

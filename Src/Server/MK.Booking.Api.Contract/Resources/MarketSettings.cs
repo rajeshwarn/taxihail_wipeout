@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Extensions;
+﻿using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
@@ -18,12 +19,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public bool CancelOrderOnUnpair { get; set; }
 
         public bool OverrideEnableAppFareEstimates { get; set; }
-        public double MinimumRate { get; set; }
-        public decimal FlatRate { get; set; }
-        public double KilometricRate { get; set; }
-        public double PerMinuteRate { get; set; }
-        public double KilometerIncluded { get; set; }
-        public double MarginOfError { get; set; }
+
+        public Tariff MarketTariff { get; set; }
         
         public bool IsLocalMarket 
         {
