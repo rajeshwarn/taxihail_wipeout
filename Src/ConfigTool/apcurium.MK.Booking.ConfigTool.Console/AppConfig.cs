@@ -127,11 +127,19 @@ namespace apcurium.MK.Booking.ConfigTool
                         att.Value = androidPackage + ".fileprovider";
                     }},
 
+
+					/** Setup for braintree paypal. */
                     new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/activity[contains(@android:name,""com.braintreepayments.api.BraintreeBrowserSwitchActivity"")]/intent-filter/data", Attribute="android:scheme" , SetterAtt = (app, att) =>
                     {
                         //We need to force lower case here because of Braintree limitation.
                         att.Value = androidPackage.ToLower() + ".braintree";
                     }},
+
+					new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/activity[contains(@android:name,""com.braintreepayments.api.BraintreeBrowserSwitchActivity"")]/intent-filter/data", Attribute="android:scheme" , SetterAtt = (app, att) =>
+					{
+						//We need to force lower case here because of Braintree limitation.
+						att.Value = androidPackage.ToLower() + ".braintree";
+					}},
                     
                     /* open app from browser settings */
 				    new ConfigSource(this) { Source = @"Mobile\TaxiHail.Shared\Activities\SplashActivity.cs", ToReplace = "TaxiHailDemo", ReplaceWith = Config.ApplicationName},
