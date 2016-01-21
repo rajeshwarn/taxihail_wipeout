@@ -88,11 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnTwLogin.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
             btnTwLogin.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
-            btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
-            btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            btnServer.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
-            btnServer.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
-
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
             set.Bind(btnFbLogin)
