@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public bool EnableDriverBonus { get; set; }
 
+        public bool EnableFutureBooking { get; set; }
+        
         public bool IsLocalMarket 
         {
             get { return !HashedMarket.HasValue(); }
