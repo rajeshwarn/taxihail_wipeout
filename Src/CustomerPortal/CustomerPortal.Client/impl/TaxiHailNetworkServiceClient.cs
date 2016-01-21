@@ -81,9 +81,15 @@ namespace CustomerPortal.Client.Impl
 
             var queryString = BuildQueryString(@params);
 
-            return Client.Get("customer/roaming/marketsettings" + queryString)
+            var response = Client.Get("customer/roaming/marketsettings" + queryString)
                          .Deserialize<CompanyMarketSettingsResponse>()
                          .Result;
+
+            response.EnableFutureBooking = string.IsNullOrEmpty(response.Market)
+                ? !_serverSettings.ServerData.DisableFutureBooking
+                : response.EnableFutureBooking;
+
+            return response;
         }
 
         /// <summary>
