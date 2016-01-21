@@ -51,8 +51,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start()
         {
 #if DEBUG
-//			Email = "john@taxihail.com";
-//			Password = "password";          
+			Email = "john@taxihail.com";
+			Password = "password";          
 #endif
 			_registrationService.PrepareNewRegistration ();
         }
