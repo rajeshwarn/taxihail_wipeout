@@ -53,12 +53,12 @@ namespace apcurium.MK.Booking.Api.Services
                 ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId, request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
                 : null;
 
-            CompanyMarketSettingsResponse market = null;
+            CompanyMarketSettingsResponse marketSettings = null;
 
             try
             {
                 // Find market
-                market = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
             catch (Exception ex)
             {
@@ -70,11 +70,13 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-                                        getPickupZone, getDropoffZone, market.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+                                        getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = market.EnableFutureBooking ? _ruleCalculator.GetDisableFutureBookingRule(market.Market) != null : market.EnableFutureBooking;
+                var disableFutureBooking = marketSettings.EnableFutureBooking 
+                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
+                    : true;
 
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
 
@@ -91,11 +93,13 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-										getPickupZone, getDropoffZone, market.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+										getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
 
                 var hasWarning = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = market.EnableFutureBooking ? _ruleCalculator.GetDisableFutureBookingRule(market.Market) != null : market.EnableFutureBooking;
+                var disableFutureBooking = marketSettings.EnableFutureBooking 
+                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
+                    : true;
 
                 return new OrderValidationResult
                 {
