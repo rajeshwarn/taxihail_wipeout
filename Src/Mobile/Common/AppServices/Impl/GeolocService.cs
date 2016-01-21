@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -93,8 +94,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private async Task<Tariff> GetMarketTariffIfPossible()
         {
             var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
-            
-            return marketSettings.IsLocalMarket 
+
+            return marketSettings.IsLocalMarket || !marketSettings.OverrideEnableAppFareEstimates
                 ? null 
                 : marketSettings.MarketTariff;
         }
