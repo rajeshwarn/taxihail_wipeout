@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace DeploymentServiceTools
 {
     public class VersionControlToolsFactory
     {
-        public static IVersionControlTools GetInstance(string exePath, string sourceDirectory, bool isGitHub)
+        public static IVersionControlTools GetInstance(string sourceDirectory, bool isGitHub)
         {
-            return isGitHub ? (IVersionControlTools)new GitTools(exePath, sourceDirectory) : (IVersionControlTools)new MecurialTools(exePath, sourceDirectory);
+            return isGitHub 
+                ? (IVersionControlTools)new GitTools(ConfigurationManager.AppSettings["GitPath"], sourceDirectory) 
+                : (IVersionControlTools)new MecurialTools(ConfigurationManager.AppSettings["BitBucketPath"], sourceDirectory);
         }
     }
 }
