@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
                         OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                         EnableFutureBooking = !marketSettings.Market.HasValue() ? !_serverSettings.ServerData.DisableFutureBooking : marketSettings.EnableFutureBooking,
                         MarketTariff = marketSettings.MarketTariff,
-                        CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair,
+                        DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
                     }
                 : new MarketSettings();
         }

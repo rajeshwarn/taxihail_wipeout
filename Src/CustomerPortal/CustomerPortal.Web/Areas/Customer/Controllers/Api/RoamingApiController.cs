@@ -305,7 +305,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     EnableFutureBooking = marketSettings.EnableFutureBooking,
                     EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                     MarketTariff = marketSettings.MarketTariff,
-                    CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair
+                    DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
                 }
                 : new CompanyMarketSettingsResponse();
         }

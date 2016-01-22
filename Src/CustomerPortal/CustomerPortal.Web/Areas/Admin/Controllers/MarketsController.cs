@@ -51,7 +51,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
-                CancelOrderOnUnpair = marketModel.CancelOrderOnUnpair,
+                DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
                 MarketTariff = marketModel.MarketTariff,
@@ -236,7 +236,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             bool enableDriverBonus, 
             string receiptFooter,
             bool enableFutureBooking,
-            bool cancelOrderOnUnpair,
+            bool disableOutOfAppPayment,
             bool enableAppFareEstimates, 
             Tariff marketTariff)
         {
@@ -252,7 +252,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
-                marketToEdit.CancelOrderOnUnpair = cancelOrderOnUnpair;
+                marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
 

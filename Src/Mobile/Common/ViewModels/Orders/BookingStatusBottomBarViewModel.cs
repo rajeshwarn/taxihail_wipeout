@@ -179,14 +179,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 
-		private bool _cancelOrderOnUnpair;
+		private bool _disableOutOfAppPayment;
 
-		public bool CancelOrderOnUnpair
+		public bool DisableOutOfAppPayment
 		{
-			get { return _cancelOrderOnUnpair; }
+			get { return _disableOutOfAppPayment; }
 			set
 			{
-				_cancelOrderOnUnpair = value;
+				_disableOutOfAppPayment = value;
 				RaisePropertyChanged("UnpairButtonText");
 			}
 		}
@@ -219,8 +219,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                         _orderWasUnpaired = true;
 								        IsUnpairButtonVisible = false;
 
-									    var paymentSettings = await _paymentService.GetPaymentSettings();
-									    if (paymentSettings.CancelOrderOnUnpair)
+									    //var paymentSettings = await _paymentService.GetPaymentSettings();
+										if (DisableOutOfAppPayment)
 									    {
 										    // Cancel order
                                             var isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{ 
-				return CancelOrderOnUnpair ? this.Services().Localize["UnpairCancelOrder"] : this.Services().Localize["UnpairPayInCar"];
+				return DisableOutOfAppPayment ? this.Services().Localize["UnpairCancelOrder"] : this.Services().Localize["UnpairPayInCar"];
 			}
 		}
 

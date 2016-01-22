@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         
         public bool EnableFutureBooking { get; set; }
 
-        public bool CancelOrderOnUnpair { get; set; }
+        public bool DisableOutOfAppPayment { get; set; }
 
         public bool OverrideEnableAppFareEstimates { get; set; }
 

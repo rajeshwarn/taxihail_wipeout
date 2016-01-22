@@ -93,11 +93,11 @@
             <h4>Cancel Order On Unpair</h4>
 
             @Html.DropDownList(
-            "CancelOrderOnUnpair",
+            "DisableOutOfAppPayment",
             new[]
             {
-                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.CancelOrderOnUnpair},
-                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.CancelOrderOnUnpair }
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.DisableOutOfAppPayment},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.DisableOutOfAppPayment }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
             <br/>

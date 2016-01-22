@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.AreEqual(string.Empty, market.HashedMarket);
             Assert.AreEqual(false, market.EnableDriverBonus);
-            Assert.AreEqual(false, market.CancelOrderOnUnpair);
+            Assert.AreEqual(false, market.DisableOutOfAppPayment);
             Assert.AreEqual(false, market.OverrideEnableAppFareEstimates);
         }
     }

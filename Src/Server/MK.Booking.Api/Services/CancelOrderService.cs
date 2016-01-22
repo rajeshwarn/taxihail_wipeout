@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Services
                 order.PickupAddress.Longitude);
             
                 var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-                    && marketSettings.CancelOrderOnUnpair;
+                    && marketSettings.DisableOutOfAppPayment;
 
                 if (currentIbsAccountId.HasValue
                     && (!orderStatus.IBSStatusId.HasValue()
