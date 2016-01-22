@@ -247,9 +247,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 
 
-		public async Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
+		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return await _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
+			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
 
         public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
