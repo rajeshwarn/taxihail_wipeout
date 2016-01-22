@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using MongoRepository;
 
@@ -27,6 +28,10 @@ namespace CustomerPortal.Web.Entities.Network
         public bool EnableFutureBooking { get; set; }
 
         public string ReceiptFooter { get; set; }
+
+        public bool EnableAppFareEstimates { get; set; }
+
+        public Tariff MarketTariff { get; set; }
     }
 
     public class Vehicle

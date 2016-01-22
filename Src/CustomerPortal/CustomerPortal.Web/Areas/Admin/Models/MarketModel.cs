@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
 
@@ -23,6 +24,11 @@ namespace CustomerPortal.Web.Areas.Admin.Models
 
         [Display(Name = "Receipt Footer")]
         public string ReceiptFooter { get; set; }
+
+        [Display(Name = "App Fare Estimates Enabled")]
+        public bool EnableAppFareEstimates { get; set; }
+
+        public Tariff MarketTariff { get; set; }
     }
 
     public class VehicleModel : Vehicle

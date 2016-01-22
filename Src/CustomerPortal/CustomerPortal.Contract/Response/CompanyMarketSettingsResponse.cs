@@ -1,4 +1,5 @@
-﻿using CustomerPortal.Contract.Resources;
+﻿using apcurium.MK.Common.Entity;
+using CustomerPortal.Contract.Resources;
 
 namespace CustomerPortal.Contract.Response
 {
@@ -18,5 +19,9 @@ namespace CustomerPortal.Contract.Response
         public string ReceiptFooter { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }
+
+        public bool EnableAppFareEstimates { get; set; }
+
+        public Tariff MarketTariff { get; set; }
     }
 }

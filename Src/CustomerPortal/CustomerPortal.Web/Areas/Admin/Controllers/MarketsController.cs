@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
@@ -49,8 +50,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
+                ReceiptFooter = marketModel.ReceiptFooter,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
-                ReceiptFooter = marketModel.ReceiptFooter
+                EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
+                MarketTariff = marketModel.MarketTariff,
             });
         }
 
@@ -227,7 +230,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter, bool enableFutureBooking)
+        public ActionResult SaveSettings(
+            bool enableFutureBooking,
+            string market, 
+            bool enableDriverBonus, 
+            string receiptFooter, 
+            bool enableAppFareEstimates, 
+            Tariff marketTariff)
         {
             try
             {
@@ -242,6 +251,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
                 marketToEdit.ReceiptFooter = receiptFooter;
+
+                marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+
+                marketTariff.Type = (int) TariffType.Market;
+                marketToEdit.MarketTariff = marketTariff;
 
                 Repository.Update(marketToEdit);
             }
