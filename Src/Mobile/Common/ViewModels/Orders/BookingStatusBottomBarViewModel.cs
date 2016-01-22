@@ -197,11 +197,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() =>
 				{
+					var cancelOrPayInCarMessage = DisableOutOfAppPayment ? "UnpairCancel" : "UnpairPayInCar";
+
 					var message = ParentViewModel.Order.PromoCode.HasValue()
-						? this.Services().Localize["UnpairWarningMessageWithPromo"]
-						: this.Services().Localize["UnpairWarningMessage"];
-
-
+						? this.Services().Localize[cancelOrPayInCarMessage + "WarningMessageWithPromo"]
+						: this.Services().Localize[cancelOrPayInCarMessage + "WarningMessage"];
+						
 					this.Services().Message.ShowMessage(
 						this.Services().Localize["WarningTitle"],
 						message,
