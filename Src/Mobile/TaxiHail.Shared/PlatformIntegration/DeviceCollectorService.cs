@@ -8,6 +8,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class DeviceCollectorService : BaseDeviceCollectorService
     {
+        private DeviceCollector _deviceCollector;
+
         public DeviceCollectorService(IAppSettings settings)
             : base(settings)
         {
@@ -21,10 +23,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             GenerateSessionId();
 
-            var deviceCollector = new DeviceCollector(topActivity.Activity);
-            deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
-            deviceCollector.SetMerchantId(MerchantId()); 
-            deviceCollector.Collect(GetSessionId());
+            _deviceCollector = new DeviceCollector(topActivity.Activity);
+            _deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
+            _deviceCollector.SetMerchantId(MerchantId()); 
+            _deviceCollector.Collect(GetSessionId());
 
             #endif
         }

@@ -5,18 +5,19 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public abstract class BaseDeviceCollectorService : IDeviceCollectorService
 	{
-	    private readonly IAppSettings _settings;
+		private readonly IAppSettings _settings;
+
 		protected string SessionId = null;
 
-	    public BaseDeviceCollectorService(IAppSettings settings)
-	    {
-	        _settings = settings;
-	    }
+		protected BaseDeviceCollectorService(IAppSettings settings)
+		{
+			_settings = settings;
+		}
 
-	    private string SandboxDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-        private string SandboxMerchantId = "160700";
-        private string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-        private string ProductionMerchantId = "160700";
+		private const string SandboxDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
+		private const string SandboxMerchantId = "160700";
+		private const string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
+		private const string ProductionMerchantId = "160700";
 
 		public abstract void GenerateNewSessionIdAndCollect();
 
@@ -30,25 +31,25 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			SessionId = Guid.NewGuid().ToString("N");
 		}
 
-	    protected string DeviceCollectorUrl()
-	    {
-	        if (_settings.Data.Kount.UseSandbox)
-	        {
-	            return SandboxDeviceCollectorUrl;
-	        }
+		protected string DeviceCollectorUrl()
+		{
+			if (_settings.Data.Kount.UseSandbox)
+			{
+				return SandboxDeviceCollectorUrl;
+			}
 
-	        return ProductionDeviceCollectorUrl;
-	    }
+			return ProductionDeviceCollectorUrl;
+		}
 
-	    protected string MerchantId()
-	    {
-            if (_settings.Data.Kount.UseSandbox)
-            {
-                return SandboxMerchantId;
-            }
+		protected string MerchantId()
+		{
+			if (_settings.Data.Kount.UseSandbox)
+			{
+				return SandboxMerchantId;
+			}
 
-            return ProductionMerchantId;
-        }
+			return ProductionMerchantId;
+		}
 	}
 
 	public interface IDeviceCollectorService
