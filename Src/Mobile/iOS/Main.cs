@@ -114,6 +114,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
                 return FacebookService.UIApplicationDelegateOpenURL(application, url, sourceApplication, annotation, settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty));
 			}
+			if (url.Scheme.Equals(NSBundle.MainBundle.BundleIdentifier + ".paypal", StringComparison.OrdinalIgnoreCase))
+			{
+					return Braintree.BTAppSwitch.HandleOpenURL(url, sourceApplication);
+			}
 
 			return false;
         }
