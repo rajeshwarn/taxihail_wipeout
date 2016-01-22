@@ -85,7 +85,7 @@ namespace CustomerPortal.Client.Impl
                          .Deserialize<CompanyMarketSettingsResponse>()
                          .Result;
 
-            response.EnableFutureBooking = string.IsNullOrEmpty(response.Market)
+            response.EnableFutureBooking = !response.Market.HasValue()
                 ? !_serverSettings.ServerData.DisableFutureBooking
                 : response.EnableFutureBooking;
 

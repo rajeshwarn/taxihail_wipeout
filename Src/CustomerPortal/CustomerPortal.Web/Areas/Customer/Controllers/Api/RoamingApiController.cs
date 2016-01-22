@@ -302,9 +302,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     DispatcherSettings = marketSettings.DispatcherSettings,
                     EnableDriverBonus = marketSettings.EnableDriverBonus,
                     ReceiptFooter = marketSettings.ReceiptFooter,
+                    EnableFutureBooking = marketSettings.EnableFutureBooking,
                     EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                     MarketTariff = marketSettings.MarketTariff,
-                    EnableFutureBooking = marketSettings.EnableFutureBooking,
                     CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair
                 }
                 : new CompanyMarketSettingsResponse();
