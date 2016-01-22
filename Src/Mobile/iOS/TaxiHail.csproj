@@ -273,9 +273,6 @@
     <Reference Include="Braintree.iOS">
       <HintPath>..\Libraries\Monotouch\Braintree.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="DeviceCollectorBindingsIOS">
-      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
-    </Reference>
     <Reference Include="Card.IO">
       <HintPath>..\Components\cardioios-5.0.6.0\lib\ios-unified\Card.IO.dll</HintPath>
     </Reference>

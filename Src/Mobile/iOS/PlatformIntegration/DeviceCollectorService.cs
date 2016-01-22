@@ -1,6 +1,6 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using DeviceCollectorBindingsIOS;
+using Braintree;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

@@ -126,7 +126,4 @@
   <ItemGroup>
     <ObjcBindingApiDefinition Include="ApiDefinitions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ApiDefinition.cs" />
-  </ItemGroup>
 </Project>
