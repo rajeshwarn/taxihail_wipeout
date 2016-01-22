@@ -748,7 +748,7 @@
 "ServiceErrorUnauthorized"="Votre session est expirée. Veuillez vous authentifier à nouveau.";
 "ServiceErrorCallTitle"="Erreur serveur";
 "PairingProcessingErrorTitle"="Problème de paiement";
-"TripUnableToPairErrorText"="Désolé, une erreur de paiement avec la carte de crédit est survenue, s'il vous plaît payez dans le taxi";
+"TripUnableToPairErrorText"="Désolé, une erreur est survenue, s'il vous plaît payez dans le taxi";
 "CreditCardDeclinedOnPreauthorizationErrorText"="Désolé, votre carte de crédit n'a pas pu être autorisée. S'il vous plaît payez dans le taxi";
 "CreditCardUnanbleToPreathorizeErrorText"="Désolé, une erreur est survenue pendant le traitement de votre carte de crédit. S'il vous plaît payez dans le taxi";
 "Callbox.ApplicationName"="TaxiHail Callbox";
