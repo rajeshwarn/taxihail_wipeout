@@ -117,6 +117,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             ClientKey = request.ServerPaymentSettings.BraintreeClientSettings.ClientKey,
                             IsSandbox = request.ServerPaymentSettings.BraintreeServerSettings.IsSandbox,
                             MerchantId = request.ServerPaymentSettings.BraintreeServerSettings.MerchantId,
+                            MerchantAccountId = request.ServerPaymentSettings.BraintreeServerSettings.MerchantAccountId,
                             PrivateKey = request.ServerPaymentSettings.BraintreeServerSettings.PrivateKey,
                             PublicKey = request.ServerPaymentSettings.BraintreeServerSettings.PublicKey
                         },

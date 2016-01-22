@@ -7,6 +7,8 @@ namespace CustomerPortal.Contract.Resources.Payment
 
         public string MerchantId { get; set; }
 
+        public string MerchantAccountId { get; set; }
+
         public string PublicKey { get; set; }
 
         public string PrivateKey { get; set; }
