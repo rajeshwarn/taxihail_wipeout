@@ -25,8 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			var paypalDriver = new BTPayPalDriver(client)
 			{
 				ViewControllerPresentingDelegate = new PresentingDelegate(navController),
-				//TODO MKTAXI-3005: Make this configurable in admin panel
-				ReturnURLScheme = "com.apcurium.MK.TaxiHailDemo.paypal"
+				ReturnURLScheme = NSBundle.MainBundle.BundleIdentifier + ".paypal"
 			};
 
 			var tcs = new TaskCompletionSource<string>();
