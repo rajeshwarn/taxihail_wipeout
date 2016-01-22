@@ -704,4 +704,7 @@
   <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
     <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
   </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>No Payment Method Available.</value>
+  </data>
 </root>
