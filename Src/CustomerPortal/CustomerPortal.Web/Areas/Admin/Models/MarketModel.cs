@@ -18,6 +18,9 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Driver Bonus Enabled")]
         public bool EnableDriverBonus { get; set; }
 
+        [Display(Name = "Future Booking Enabled")]
+        public bool EnableFutureBooking { get; set; }
+
         [Display(Name = "Receipt Footer")]
         public string ReceiptFooter { get; set; }
     }
