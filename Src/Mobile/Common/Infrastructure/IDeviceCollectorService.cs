@@ -1,6 +1,6 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
