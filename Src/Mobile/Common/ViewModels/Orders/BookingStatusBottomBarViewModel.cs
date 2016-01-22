@@ -66,7 +66,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			try
 			{
-
 				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
 					&& ParentViewModel.OrderStatusDetail != null
 					&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
@@ -179,6 +178,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+
+		private bool _cancelOrderOnUnpair;
+
+		public bool CancelOrderOnUnpair
+		{
+			get { return _cancelOrderOnUnpair; }
+			set
+			{
+				_cancelOrderOnUnpair = value;
+				RaisePropertyChanged("UnpairButtonText");
+			}
+		}
+
 		public ICommand Unpair
 		{
 			get
@@ -251,6 +263,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return _isCmtRideLinq ? this.Services().Localize["StatusEditAutoPaymentButton"] : this.Services().Localize["StatusEditAutoTipButton"];
+			}
+		}
+
+		public string UnpairButtonText
+		{
+			get
+			{ 
+				return CancelOrderOnUnpair ? this.Services().Localize["UnpairCancelOrder"] : this.Services().Localize["UnpairPayInCar"];
 			}
 		}
 

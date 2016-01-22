@@ -29,35 +29,34 @@
     </div>
 </div>
 
-<div class='row'>
-    <div class='span12'>
-        <h4>Vehicle types</h4>
-        <p>
-            <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
-        </p>
-    </div>
-    <div class="span12">
-        <h5>Vehicle Types</h5>
-        <table class="table table-striped">
-            @foreach (var vehicleType in Model.Vehicles)
-            {
-                <tr>
-                    <td>
-                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
 
-                    </td>
-                    <td>
-                        @Html.ActionLink(
-                            "Delete",
-                            "DeleteVehicle",
-                            new {id = vehicleType.Id, market = Model.Market},
-                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+<div>
+    <h4>Vehicle types</h4>
+    <p>
+        <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
+    </p>
 </div>
+<div>
+    <table class="table table-striped">
+        @foreach (var vehicleType in Model.Vehicles)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
+
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Delete",
+                        "DeleteVehicle",
+                        new {id = vehicleType.Id, market = Model.Market},
+                        new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 
 @using (Html.BeginForm("SaveSettings", "Markets", FormMethod.Post))
 {
@@ -77,8 +76,9 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableDriverBonus }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
 
-            <h5>Enable Future Booking</h5>
+            <h4>Enable Future Booking</h4>
 
             @Html.DropDownList(
             "EnableFutureBooking",
@@ -88,8 +88,9 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableFutureBooking }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
 
-            <h5>Cancel Order On Unpair</h5>
+            <h4>Cancel Order On Unpair</h4>
 
             @Html.DropDownList(
             "CancelOrderOnUnpair",
@@ -99,10 +100,11 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.CancelOrderOnUnpair }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
 
-            <h5>Receipt Footer</h5>
+            <h4>Receipt Footer</h4>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
-
+            <br/>
 
             <h4>Ride Estimates</h4>
 
@@ -139,6 +141,7 @@
     <br/>
     <div class="control-group">
         <button type="submit" class="btn btn-primary span">Save Changes</button>
-        @Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
+        @Html.ActionLink("Back", "Index", null, new {@class = "btn span"})
     </div>
+    <br/>
 }

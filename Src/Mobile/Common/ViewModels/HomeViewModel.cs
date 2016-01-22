@@ -85,7 +85,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			AddressPicker = AddChild<AddressPickerViewModel>();
 			BookingStatus = AddChild<BookingStatusViewModel>();
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
-
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
@@ -760,6 +759,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			_lastHashedMarket = marketSettings.HashedMarket;
+
+			BookingStatus.BottomBar.CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair;
 
             if (BottomBar != null)
             {

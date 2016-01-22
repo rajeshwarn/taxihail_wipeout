@@ -303,7 +303,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     EnableDriverBonus = marketSettings.EnableDriverBonus,
                     ReceiptFooter = marketSettings.ReceiptFooter,
                     EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
-                    MarketTariff = marketSettings.MarketTariff
+                    MarketTariff = marketSettings.MarketTariff,
                     EnableFutureBooking = marketSettings.EnableFutureBooking,
                     CancelOrderOnUnpair = marketSettings.CancelOrderOnUnpair
                 }

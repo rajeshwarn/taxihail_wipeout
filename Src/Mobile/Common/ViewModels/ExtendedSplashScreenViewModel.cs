@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewStarted(firstTime);
 
-            Task.Run(GetCurrentOrderAsync).FireAndForget();
+            //Task.Run(GetCurrentOrderAsync).FireAndForget();
         }
 
 

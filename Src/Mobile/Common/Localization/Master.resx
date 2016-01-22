@@ -1398,6 +1398,9 @@
   <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
   </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
+  </data>
   <data name="CmtRideLinqCancelChanges" xml:space="preserve">
     <value>Cancel</value>
   </data>

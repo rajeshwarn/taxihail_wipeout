@@ -129,9 +129,6 @@
   <data name="StatusEta" xml:space="preserve">
     <value>is {0} {1} away</value>
   </data>
-  <data name="UnpairPayInCar" xml:space="preserve">
-    <value>Cancel Order</value>
-  </data>
   <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>No</value>
   </data>
