@@ -1,24 +1,24 @@
 using System;
-using apcurium.MK.Common.Configuration;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public abstract class BaseDeviceCollectorService : IDeviceCollectorService
 	{
-	    private readonly IAppSettings _settings;
+		protected readonly IPaymentService PaymentService;
 		protected string SessionId = null;
 
-	    protected BaseDeviceCollectorService(IAppSettings settings)
+		protected BaseDeviceCollectorService(IPaymentService paymentService)
 	    {
-	        _settings = settings;
+			PaymentService = paymentService;
 	    }
 
 	    private const string SandboxDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-		private const string SandboxMerchantId = "160700";
-		private const string ProductionDeviceCollectorUrl = "https://tst.kaptcha.com/logo.htm";
-		private const string ProductionMerchantId = "160700";
+		private const string ProductionDeviceCollectorUrl = "https://ssl.kaptcha.com/logo.htm";
+		protected const string MerchantId = "160700";
 
-		public abstract void GenerateNewSessionIdAndCollect();
+		public abstract Task GenerateNewSessionIdAndCollect();
 
 		public string GetSessionId()
 		{
@@ -30,34 +30,23 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			SessionId = Guid.NewGuid().ToString("N");
 		}
 
-	    protected string DeviceCollectorUrl()
+		protected string DeviceCollectorUrl(bool isSandbox)
 	    {
-	        if (_settings.Data.Kount.UseSandbox)
-	        {
-	            return SandboxDeviceCollectorUrl;
-	        }
-
-	        return ProductionDeviceCollectorUrl;
+			return isSandbox
+				? SandboxDeviceCollectorUrl
+				: ProductionDeviceCollectorUrl;
 	    }
-
-	    protected string MerchantId()
-	    {
-            if (_settings.Data.Kount.UseSandbox)
-            {
-                return SandboxMerchantId;
-            }
-
-            return ProductionMerchantId;
-        }
 	}
 
 	public interface IDeviceCollectorService
 	{
 		/// <summary>
 		/// Generates a new Kount session id for the possible next call in the future
-		/// Kount can take up to 15sec to collect the data, so we need to call it way before we need it
+		/// Kount can take up to 15sec to collect the data, so we need to call it way before we need it.
+		/// NOTE: Should only be used with CMT Payment since collecting is only one step of the Kount process, 
+		/// there needs to be a server-side call (done by CMT) to verify the data
 		/// </summary>
-		void GenerateNewSessionIdAndCollect();
+		Task GenerateNewSessionIdAndCollect();
 
 		/// <summary>
 		/// Gets the last generated Kount session id

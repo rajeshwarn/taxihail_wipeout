@@ -1,8 +1,10 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Configuration;
 using DeviceCollectorBindingsAndroid;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
+using apcurium.MK.Booking.Mobile.AppServices;
+using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -10,23 +12,30 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         private DeviceCollector _deviceCollector;
 
-        public DeviceCollectorService(IAppSettings settings)
-            : base(settings)
+        public DeviceCollectorService(IPaymentService paymentService)
+            : base(paymentService)
         {
         }
 
-        public override void GenerateNewSessionIdAndCollect()
+        public override async Task GenerateNewSessionIdAndCollect()
         {     
             #if !DEBUG
 
-            var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
+            var paymentSettings = await PaymentService.GetPaymentSettings();
+            if(paymentSettings.PaymentMode == PaymentMethod.Cmt
+                || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+            {
+                // Kount is only enabled for CMT
 
-            GenerateSessionId();
+                var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
 
-            _deviceCollector = new DeviceCollector(topActivity.Activity);
-            _deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
-            _deviceCollector.SetMerchantId(MerchantId()); 
-            _deviceCollector.Collect(GetSessionId());
+                GenerateSessionId();
+
+                _deviceCollector = new DeviceCollector(topActivity.Activity);
+                _deviceCollector.SetCollectorUrl(DeviceCollectorUrl(paymentSettings.CmtPaymentSettings.IsSandbox));
+                _deviceCollector.SetMerchantId(MerchantId); 
+                _deviceCollector.Collect(GetSessionId());
+            }
 
             #endif
         }
