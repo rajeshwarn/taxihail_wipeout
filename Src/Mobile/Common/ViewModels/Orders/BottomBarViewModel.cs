@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     MarketSettings = marketSettings
 		        });
 
-            Observe(observeValidationResultAndMarkertSettings, mergedResult => OrderValidated(mergedResult.OrderValidationResult, mergedResult.MarketSettings));
+            Observe(observeValidationResultAndMarkertSettings, mergedResult => HandleOrderValidatedtAndMarketSettingsChanged(mergedResult.OrderValidationResult, mergedResult.MarketSettings));
 			Observe(_orderWorkflowService.GetAndObserveCanExecuteBookingOperation(), canExecuteBookOperation => CanExecuteBookOperation = canExecuteBookOperation);
         }
         
@@ -275,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		#endregion
 
-        private void OrderValidated(OrderValidationResult orderValidationResult, MarketSettings marketSettings)
+        private void HandleOrderValidatedtAndMarketSettingsChanged(OrderValidationResult orderValidationResult, MarketSettings marketSettings)
         {
             _orderValidationResult = orderValidationResult;
 
