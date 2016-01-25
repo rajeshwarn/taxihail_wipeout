@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private const string MasterCard = "MasterCard";
 		private const string Amex = "Amex";
 		private const string CreditCardGeneric = "Credit Card Generic";
+	    private const string Paypal = "Paypal";
 		private const string VisaElectron = "Visa Electron";
 		private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
 		private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
@@ -106,7 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					new ListItem {Display = MasterCard, Id = 1},
 					new ListItem {Display = Amex, Id = 2},
 					new ListItem {Display = VisaElectron, Id = 3},
-					new ListItem {Display = CreditCardGeneric, Id = 4}
+                    new ListItem {Display = Paypal, Id = 4},
+                    new ListItem {Display = CreditCardGeneric, Id = 5},
 				};
 
                 ExpirationYears = new List<ListItem>();
@@ -155,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     Data.Label = CreditCardLabelConstants.Personal;
 
                     var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-                    CreditCardType = (int)id;
+                    CreditCardType = id??-1;
 
 #if DEBUG
                     if (PaymentSettings.PaymentMode == PaymentMethod.Braintree)
@@ -188,7 +190,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
                     ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
 
-                    var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
+                    var id = CreditCardCompanies
+                            .Where(x => x.Display == creditCard.CreditCardCompany)
+                            .Select(x => x.Id)
+                            .FirstOrDefault();
+
                     if (id != null)
                     {
                         CreditCardType = (int)id;
