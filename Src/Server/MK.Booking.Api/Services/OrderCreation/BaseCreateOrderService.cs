@@ -121,8 +121,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude,
+                request.PickupAddress.Longitude);
+            
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
 
@@ -145,14 +147,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
 
-            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
-            {
-                // No companies available that are desserving this region for the company
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-            }
-            
             if (market.HasValue())
             {
+                if (!bestAvailableCompany.CompanyKey.HasValue())
+                {
+                    // No companies available that are desserving this region for the company
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+                }
+
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
@@ -160,6 +162,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 {
                     // Only companies configured for CMT payment can support CoF orders outside of home market
                     request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                }
+
+                if (marketSettings.DisableOutOfAppPayment && request.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                {
+                    // No payment method available since we can't pay in car
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_NoChargeType, _resources.Get("CannotCreateOrder_NoChargeType", request.ClientLanguageCode));
                 }
             }
 
@@ -259,7 +267,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.BookingFees = orderCommand.BookingFees;
 
             // Promo code validation
-            var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, request.Settings.ChargeTypeId, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
+            var usingPaymentInApp = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id ||
+                                     request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id) &&
+                                    marketSettings.DisableOutOfAppPayment;
+            var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, usingPaymentInApp, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
 
             // Charge account validation
             var accountValidationResult = ValidateChargeAccountIfNecessary(bestAvailableCompany.CompanyKey, request, orderCommand.OrderId, account, isFutureBooking, isFromWebApp, orderCommand.BookingFees, createReportOrder);
@@ -620,15 +631,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
         }
 
-        private Guid? ValidatePromotion(string companyKey, string promoCode, int? chargeTypeId, Guid accountId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode, CreateReportOrder createReportOrder)
+        private Guid? ValidatePromotion(string companyKey, string promoCode, bool usingPaymentInApp, Guid accountId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode, CreateReportOrder createReportOrder)
         {
             if (!promoCode.HasValue())
             {
                 // No promo code entered
                 return null;
             }
-
-            var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
+            
             if (!usingPaymentInApp)
             {
                 var payPalIsEnabled = _serverSettings.GetPaymentSettings(companyKey).PayPalClientSettings.IsEnabled;

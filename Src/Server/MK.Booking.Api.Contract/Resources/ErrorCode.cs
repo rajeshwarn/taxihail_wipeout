@@ -14,6 +14,7 @@
         CreateOrder_PendingOrder,
         CreateOrder_CardOnFileButNoCreditCard,
         CreateOrder_CardOnFileDeactivated,
+        CreateOrder_NoChargeType,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,

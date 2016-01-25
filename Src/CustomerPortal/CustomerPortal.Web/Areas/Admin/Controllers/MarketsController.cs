@@ -50,8 +50,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DispatcherSettings = marketModel.DispatcherSettings,
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
-                ReceiptFooter = marketModel.ReceiptFooter,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
+                DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
+                ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
                 MarketTariff = marketModel.MarketTariff,
             });
@@ -230,11 +231,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(
-            bool enableFutureBooking,
+        public ActionResult SaveSettings (
             string market, 
             bool enableDriverBonus, 
-            string receiptFooter, 
+            string receiptFooter,
+            bool enableFutureBooking,
+            bool disableOutOfAppPayment,
             bool enableAppFareEstimates, 
             Tariff marketTariff)
         {
@@ -250,8 +252,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
+                marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
-
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
 
                 marketTariff.Type = (int) TariffType.Market;

@@ -13,11 +13,13 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string HashedMarket { get; set; }
 
         public bool EnableDriverBonus { get; set; }
+        
+        public bool EnableFutureBooking { get; set; }
+
+        public bool DisableOutOfAppPayment { get; set; }
 
         public bool OverrideEnableAppFareEstimates { get; set; }
 
-        public bool EnableFutureBooking { get; set; }
-        
         public Tariff MarketTariff { get; set; }
         
         public bool IsLocalMarket 

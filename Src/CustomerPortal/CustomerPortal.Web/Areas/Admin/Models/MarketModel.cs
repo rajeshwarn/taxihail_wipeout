@@ -22,6 +22,9 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Future Booking Enabled")]
         public bool EnableFutureBooking { get; set; }
 
+        [Display(Name = "Disable Out Of App Payment")]
+        public bool DisableOutOfAppPayment { get; set; }
+
         [Display(Name = "Receipt Footer")]
         public string ReceiptFooter { get; set; }
 

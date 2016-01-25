@@ -179,17 +179,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+
+		private bool _disableOutOfAppPayment;
+
+		public bool DisableOutOfAppPayment
+		{
+			get { return _disableOutOfAppPayment; }
+			set
+			{
+				_disableOutOfAppPayment = value;
+				RaisePropertyChanged("UnpairButtonText");
+			}
+		}
+
 		public ICommand Unpair
 		{
 			get
 			{
 				return this.GetCommand(() =>
 				{
+					var cancelOrPayInCarMessage = DisableOutOfAppPayment ? "UnpairCancel" : "UnpairPayInCar";
+
 					var message = ParentViewModel.Order.PromoCode.HasValue()
-						? this.Services().Localize["UnpairWarningMessageWithPromo"]
-						: this.Services().Localize["UnpairWarningMessage"];
-
-
+						? this.Services().Localize[cancelOrPayInCarMessage + "WarningMessageWithPromo"]
+						: this.Services().Localize[cancelOrPayInCarMessage + "WarningMessage"];
+						
 					this.Services().Message.ShowMessage(
 						this.Services().Localize["WarningTitle"],
 						message,
@@ -207,8 +221,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                         _orderWasUnpaired = true;
 								        IsUnpairButtonVisible = false;
 
-									    var paymentSettings = await _paymentService.GetPaymentSettings();
-									    if (paymentSettings.CancelOrderOnUnpair)
+									    //var paymentSettings = await _paymentService.GetPaymentSettings();
+										if (DisableOutOfAppPayment)
 									    {
 										    // Cancel order
                                             var isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
@@ -251,6 +265,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return _isCmtRideLinq ? this.Services().Localize["StatusEditAutoPaymentButton"] : this.Services().Localize["StatusEditAutoTipButton"];
+			}
+		}
+
+		public string UnpairButtonText
+		{
+			get
+			{ 
+				return DisableOutOfAppPayment ? this.Services().Localize["UnpairCancelOrder"] : this.Services().Localize["UnpairPayInCar"];
 			}
 		}
 
