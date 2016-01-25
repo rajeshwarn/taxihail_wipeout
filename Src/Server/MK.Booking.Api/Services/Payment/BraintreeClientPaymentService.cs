@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var userId = Guid.Parse(this.GetSession().UserAuthId);
             var account = _accountDao.FindById(userId);
 
-            var creditCardId = Guid.NewGuid();
+            var creditCardId = request.CreditCardId??Guid.NewGuid();
 
             if (request.PaymentMethod == PaymentMethods.CreditCard)
             {
@@ -133,7 +133,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Token = paymentMethod.Token
                 });
             }
-            
 
             return new TokenizedCreditCardResponse
             {

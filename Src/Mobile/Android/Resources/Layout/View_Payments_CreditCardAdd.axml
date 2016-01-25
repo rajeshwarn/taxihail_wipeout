@@ -90,6 +90,12 @@
                     android:layout_height="fill_parent"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
+                  <!-- Credit Card -->
+                  <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    local:MvxBind="Visibility DisplayPaypalView, Converter=InvertedVisibility"
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -266,6 +272,26 @@
                         local:MvxBind="Text Data.ZipCode"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/CreditCardZipCode" />
+                  </LinearLayout>
+                  <!-- PayPal -->
+                  <LinearLayout android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                local:MvxBind="Visibility DisplayPaypalView, Converter=Visibility"
+                                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/PaypalAccount"
+                        style="@style/BlackTextLabel"
+                        android:layout_marginBottom="4dp" />
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        local:MvxBind="Text Data.NameOnCard"
+                        android:enabled="false"
+                        android:layout_marginBottom="8dp"/>
+                    
+                  </LinearLayout>
                     <Button
                         style="@style/ButtonActionGrayStyle"
                         android:id="@+id/SetAsDefaultCreditCardButton"
@@ -308,8 +334,7 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        android:text="@string/UsePayPal"
-                        local:MvxBind="Click UsePaypalCommand; Visibility IsPaypalEnabled, Converter=Visibility"
+                        local:MvxBind="Click UsePaypalCommand; Visibility IsPaypalEnabled, Converter=Visibility; Text UsePaypalText"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button

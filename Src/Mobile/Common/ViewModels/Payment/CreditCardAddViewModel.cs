@@ -181,7 +181,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     IsEditing = true;
 
                     Data.CreditCardId = creditCard.CreditCardId;
+
                     Data.CardNumber = "************" + creditCard.Last4Digits;
+
                     Data.NameOnCard = creditCard.NameOnCard;
                     Data.CreditCardCompany = creditCard.CreditCardCompany;
                     Data.Label = creditCard.Label;
@@ -203,7 +205,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     _originalLabel = creditCard.Label;
                 }
 
+                DisplayPaypalView = Data.CreditCardCompany == Paypal;
+                
                 RaisePropertyChanged(() => Data);
+                RaisePropertyChanged(() => UsePaypalText);
                 RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
                 RaisePropertyChanged(() => IsPaypalEnabled);
@@ -400,8 +405,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private int _selectedLabel;
-		public int SelectedLabel
+	    public bool DisplayPaypalView
+	    {
+	        get { return _displayPaypalView; }
+	        set
+	        {
+	            _displayPaypalView = value;
+	            RaisePropertyChanged();
+	        }
+	    }
+
+	    private int _selectedLabel;
+	    private bool _displayPaypalView;
+
+	    public int SelectedLabel
 		{
 			get
 			{
@@ -438,12 +455,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					});
 			}
 		}
+        
 
 		public ICommand SaveCreditCardCommand 
 		{ 
 			get
 			{
-				return this.GetCommand(() => SaveCreditCard());
+				return this.GetCommand(() => SaveCreditCard() );
 			} 
 		}
 
@@ -482,9 +500,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
+	    public string UsePaypalText
+	    {
+	        get
+	        {
+	            if (Data == null)
+	            {
+	                return string.Empty;
+	            }
+
+	            return Data.CreditCardCompany == Paypal
+	                ? this.Services().Localize["UnlinkPayPal"]
+	                : this.Services().Localize["LinkPayPal"];
+	        }
+	    }
+
 	    public bool HidePaypalButton
 	    {
-	        get { return PaymentSettings.PaymentMode == PaymentMethod.Braintree; }
+	        get { return PaymentSettings.PaymentMode != PaymentMethod.Braintree; }
 	    }
 
 	    public ICommand UsePaypalCommand
@@ -503,7 +536,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 							var paymentNonce = await _paymentProviderClientService.GetPayPalNonce(clientToken.ClientToken);
 
-							await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.Paypal);
+                            var creditCardId = Data.CreditCardId == Guid.Empty
+                                ? (Guid?)null
+                                : Data.CreditCardId;
+
+                            await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.Paypal, creditCardId);
 						}
 						CloseView();
 					}
@@ -616,7 +653,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     Data.ZipCode
                 );
 
-	        await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.CreditCard, Data.NameOnCard);
+	        var creditCardId = Data.CreditCardId == Guid.Empty
+	            ? (Guid?)null
+	            : Data.CreditCardId;
+
+	        await _paymentService.AddPaymentMethod(paymentNonce, PaymentMethods.CreditCard, creditCardId, Data.NameOnCard);
 
             CloseView();
         }

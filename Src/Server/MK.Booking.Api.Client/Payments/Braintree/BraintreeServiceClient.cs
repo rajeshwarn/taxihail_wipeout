@@ -103,13 +103,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 			return Client.GetAsync(new GenerateClientTokenBraintreeRequest());
 		}
 
-		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, string cardholderName = null)
+		public Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, Guid? creditCardId, string cardholderName = null)
 		{
 			return Client.PostAsync(new AddPaymentMethodRequest()
 			{
 				Nonce = nonce,
                 CardholderName = cardholderName,
-                PaymentMethod = method
+                PaymentMethod = method,
+                CreditCardId = creditCardId
 			});
 		}
     }

@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 	    public string CardholderName { get; set; }
 	    public PaymentMethods PaymentMethod { get; set; }
         public string CreditCardCompany { get; set; }
+
+        public Guid? CreditCardId { get; set; }
 	}
 }
 

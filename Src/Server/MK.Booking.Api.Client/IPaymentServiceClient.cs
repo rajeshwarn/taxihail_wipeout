@@ -20,6 +20,6 @@ namespace apcurium.MK.Booking.Api.Client
 
 		Task<GenerateClientTokenResponse> GenerateClientTokenResponse();
 
-		Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, string cardholderName = null);
+		Task<TokenizedCreditCardResponse> AddPaymentMethod(string nonce, PaymentMethods method, Guid? creditCardId, string cardholderName = null);
     }
 }
