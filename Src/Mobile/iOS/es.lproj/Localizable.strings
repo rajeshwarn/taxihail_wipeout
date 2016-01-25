@@ -757,3 +757,4 @@
 "InvalidCreditCardUpdateCardButton"="Update Card";
 "UsePayPal"="Use PayPal";
 "PaypalErrorMessage"="An error occurred while attempting to contact paypal";
+"PaypalAccount"="Paypal account";

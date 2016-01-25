@@ -3005,4 +3005,7 @@
   <data name="PaypalErrorMessage" xml:space="preserve">
   	<value>An error occurred while attempting to contact paypal</value>
   </data>
+  <data name="PaypalAccount" xml:space="preserve">
+    <value>Paypal account</value>
+  </data>
 </root>

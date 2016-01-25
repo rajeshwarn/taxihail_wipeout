@@ -2402,4 +2402,7 @@
   <data name="PaypalErrorMessage" xml:space="preserve">
   	<value>Une erreur est arrivée lors de la communication avec Paypal.</value>
   </data>
+  <data name="PaypalAccount" xml:space="preserve">
+    <value>Compte Paypal</value>
+  </data>
 </root>

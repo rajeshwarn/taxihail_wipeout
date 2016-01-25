@@ -741,3 +741,4 @@
 "UsePayPal"="Use PayPal";
 "InvalidCreditCardUpdateCardButton"="Update Card";
 "PaypalErrorMessage"="An error occurred while attempting to contact paypal";
+"PaypalAccount"="Paypal account";

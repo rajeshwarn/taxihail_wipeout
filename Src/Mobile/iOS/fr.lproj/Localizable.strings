@@ -758,3 +758,4 @@
 "InvalidCreditCardUpdateCardButton"="Changer Carte";
 "UsePayPal"="Utiliser PayPal";
 "PaypalErrorMessage"="Une erreur est arrivée lors de la communication avec Paypal.";
+"PaypalAccount"="Compte Paypal";

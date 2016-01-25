@@ -556,7 +556,6 @@
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "PromoProgress"="Progress :";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
-"UsePayPal"="Use PayPal";
 "LinkPayPal"="Link PayPal";
 "UnlinkPayPal"="Unlink PayPal";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
@@ -758,5 +757,6 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "PaypalErrorMessage"="An error occurred while attempting to contact paypal";
 "PaypalError_Title"="Paypal error";
+"PaypalAccount"="Paypal account";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
 "InvalidCreditCardUpdateCardButton"="Update Card";

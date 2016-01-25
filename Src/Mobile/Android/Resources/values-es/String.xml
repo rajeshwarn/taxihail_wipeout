@@ -759,4 +759,5 @@
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
   <string name="UsePayPal">Use PayPal</string>
   <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
+  <string name="PaypalAccount">Paypal account</string>
 </resources>

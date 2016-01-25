@@ -787,4 +787,5 @@
   <string name="UsePayPal">Use PayPal</string>
   <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
   <string name="PaypalError_Title">Paypal error</string>
+  <string name="PaypalAccount">Paypal account</string>
 </resources>
