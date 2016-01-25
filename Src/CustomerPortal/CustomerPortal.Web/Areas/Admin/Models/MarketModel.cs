@@ -22,7 +22,7 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Future Booking Enabled")]
         public bool EnableFutureBooking { get; set; }
 
-        [Display(Name = "Cancel Order On Unpair")]
+        [Display(Name = "Disable Out Of App Payment")]
         public bool DisableOutOfAppPayment { get; set; }
 
         [Display(Name = "Receipt Footer")]

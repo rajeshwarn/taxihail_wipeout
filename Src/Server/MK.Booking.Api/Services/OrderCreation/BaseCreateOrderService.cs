@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
-            var aaaaaaaaaa = referenceData.PaymentsList;
+
             request.PickupDate = pickupDate;
 
             request.Settings.Passengers = request.Settings.Passengers <= 0

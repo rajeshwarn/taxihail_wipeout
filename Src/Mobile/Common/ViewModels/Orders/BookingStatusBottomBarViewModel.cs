@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			try
 			{
+
 				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
 					&& ParentViewModel.OrderStatusDetail != null
 					&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
