@@ -605,9 +605,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                     + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
-            var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
+                var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
 
-            var marketSpecificNote = GetMarketReceiptFooter(pickupAddress.Latitude, pickupAddress.Longitude);
+                var marketSpecificNote = GetMarketReceiptFooter(pickupAddress.Latitude, pickupAddress.Longitude);
 
                 var templateData = new
                 {
@@ -619,7 +619,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ShowMinimalDriverInfo = showMinimalDriverInfo,
                     HasDriverInfo = hasDriverInfo,
                     HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
-                    HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
+                    HasDriverPhoto = hasDriverInfo && driverInfos.DriverPhotoUrl.HasValue(),
                     DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
                     HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
                     VehicleNumber = vehicleNumber,
@@ -649,7 +649,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tip = _resources.FormatPrice(tip),
                     TipIncentive = _resources.FormatPrice(tipIncentive),
                     TotalFare = _resources.FormatPrice(totalAmount),
-                Note = _serverSettings.ServerData.Receipt.Note + marketSpecificNote,
+                    Note = _serverSettings.ServerData.Receipt.Note + marketSpecificNote,
                     Tax = _resources.FormatPrice(tax),
                     ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                     RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
