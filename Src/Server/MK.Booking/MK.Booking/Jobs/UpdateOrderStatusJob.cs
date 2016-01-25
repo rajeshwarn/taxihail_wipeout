@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Jobs
         public bool CheckStatus(string updaterUniqueId, int pollingValue)
         {
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
-            bool hasOrdersWaitingForPayment = false;
+            var hasOrdersWaitingForPayment = false;
             
             Log.DebugFormat("Attempting to CheckStatus with {0}", updaterUniqueId);
 
@@ -120,19 +120,17 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 finally
                 {
+                    Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                     timer.Dispose();
                 }
             }
             else
             {
-                Log.DebugFormat("CheckStatus was blocked for {0}", updaterUniqueId);
+                Log.DebugFormat("CheckStatus was blocked for {0} by {1}", updaterUniqueId, lastUpdate.UpdaterUniqueId);
             }
 
             return hasOrdersWaitingForPayment;
         }
-
-
-        
 
         private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
@@ -145,8 +143,7 @@ namespace apcurium.MK.Booking.Jobs
                 new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
                 orderStatusDetail =>
             {
-                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
-                    orderStatusDetail.OrderId);
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             });
 
