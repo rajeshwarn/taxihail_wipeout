@@ -116,6 +116,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     BraintreeAccountId = account.BraintreeAccountId,
                     CreditCardCompany = "Paypal",
                     NameOnCard = paypalResult.Email,
+                    Label = CreditCardLabelConstants.Personal.ToString(),
                     Token = paymentMethod.Token
                 });
             }
@@ -128,6 +129,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     BraintreeAccountId = account.BraintreeAccountId,
                     CreditCardCompany = request.PaymentMethod.ToString(),
                     NameOnCard = request.CardholderName??account.Name,
+                    Label = CreditCardLabelConstants.Personal.ToString(),
                     Token = paymentMethod.Token
                 });
             }
