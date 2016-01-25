@@ -761,7 +761,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_lastHashedMarket = marketSettings.HashedMarket;
 
-			BookingStatus.BottomBar.DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment;
+			if (BookingStatus != null && BookingStatus.BottomBar != null) 
+			{
+				BookingStatus.BottomBar.DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment;
+			}
 
             if (BottomBar != null)
             {
