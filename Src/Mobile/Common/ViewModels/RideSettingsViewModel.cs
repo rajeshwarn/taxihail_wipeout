@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
 				{
-					ChargeTypeId == null;
+					ChargeTypeId = null;
 				}
 			}
 
