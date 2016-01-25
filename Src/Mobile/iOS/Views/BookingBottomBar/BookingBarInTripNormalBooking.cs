@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible)
                 .WithConversion("BoolInverter");
 			set.Bind (buttonUnpair)
-				.For (v => v.Text)
+				.For ("Title")
 				.To (vm => vm.BookingStatus.BottomBar.ButtonUnpairText);
 			
 			set.Bind(buttonCancel)
