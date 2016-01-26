@@ -188,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_disableOutOfAppPayment = value;
-				RaisePropertyChanged("UnpairButtonText");
+				RaisePropertyChanged(() => UnpairButtonText);
 			}
 		}
 
