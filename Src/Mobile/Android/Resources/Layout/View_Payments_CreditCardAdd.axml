@@ -94,7 +94,7 @@
                   <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    local:MvxBind="Visibility DisplayPaypalView, Converter=InvertedVisibility"
+                    local:MvxBind="Visibility IsShowPaypalView, Converter=InvertedVisibility"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="fill_parent"
@@ -276,7 +276,7 @@
                   <!-- PayPal -->
                   <LinearLayout android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                local:MvxBind="Visibility DisplayPaypalView, Converter=Visibility"
+                                local:MvxBind="Visibility IsShowPaypalView, Converter=Visibility"
                                 android:orientation="vertical">
                     <TextView
                         android:layout_width="fill_parent"
@@ -321,7 +321,18 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
+                        local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand; Visibility IsShowPaypalView, Converter=InvertedVisibility"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
+                  <Button
+                        style="@style/ButtonActionGreenStyle"
+                        android:id="@+id/SaveSettingsButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightButton"
+                        android:singleLine="true"
+                        android:lines="1"
+                        android:text="@string/UnlinkPayPal"
+                        local:MvxBind="Click ShowCreditCardView; Visibility IsShowUseCreditCardButton, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button
@@ -334,7 +345,19 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        local:MvxBind="Click UsePaypalCommand; Visibility IsPaypalEnabled, Converter=Visibility; Text UsePaypalText"
+                        android:text="@string/LinkPayPal"
+                        local:MvxBind="Click UsePaypalCommand; Visibility IsPaypalEnabled, Converter=Visibility"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
+                  <Button
+                        style="@style/ButtonActionRedStyle"
+                        android:id="@+id/CancelNewCreditCard"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightButton"
+                        android:singleLine="true"
+                        android:lines="1"
+                        android:text="@string/Cancel"
+                        local:MvxBind="Click CancelCommand; Visibility IsShowingCancel, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button

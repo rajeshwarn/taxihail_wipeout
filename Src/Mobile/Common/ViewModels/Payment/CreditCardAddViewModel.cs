@@ -50,8 +50,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private int _numberOfCreditCards;
 		private string _kountSessionId;
 
-		#region Const and ReadOnly
-		private const string Visa = "Visa";
+        private int _selectedLabel;
+        private bool _isShowPaypalView;
+
+        #region Const and ReadOnly
+        private const string Visa = "Visa";
 		private const string MasterCard = "MasterCard";
 		private const string Amex = "Amex";
 		private const string CreditCardGeneric = "Credit Card Generic";
@@ -97,8 +100,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
+        CreditCardDetails _currentlyDisplayedCreditCard = null;
+
         public override async void BaseStart()
         {
+            
             using (this.Services().Message.ShowProgress())
             {
                 CreditCardCompanies = new List<ListItem>
@@ -134,14 +140,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     };
 
                 Data = new CreditCardInfos();
-                CreditCardDetails creditCard = null;
 
                 try
                 {
                     var creditCards = (await _accountService.GetCreditCards()).ToList();
                     _numberOfCreditCards = creditCards.Count;
 
-                    creditCard = _creditCardId == default(Guid)
+                    _currentlyDisplayedCreditCard = _creditCardId == default(Guid)
                         ? await _accountService.GetDefaultCreditCard()
                         : creditCards.First(c => c.CreditCardId == _creditCardId);
                 }
@@ -151,64 +156,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
                 }
 
-                if (creditCard == null || _isAddingNew)
+                if (_currentlyDisplayedCreditCard == null || _isAddingNew)
                 {
-                    Data.NameOnCard = _accountService.CurrentAccount.Name;
-                    Data.Label = CreditCardLabelConstants.Personal;
-
-                    var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-                    CreditCardType = id??-1;
-
-#if DEBUG
-                    if (PaymentSettings.PaymentMode == PaymentMethod.Braintree)
-                    {
-                        CreditCardNumber = DummyVisa.BraintreeNumber;
-                    }
-                    else
-                    {
-                        CreditCardNumber = DummyVisa.CmtNumber;
-                    }
-
-                    Data.CCV = DummyVisa.AvcCvvCvv2 + "";
-                    Data.ZipCode = DummyVisa.ZipCode;
-
-                    ExpirationMonth = DummyVisa.ExpirationDate.Month;
-                    ExpirationYear = DummyVisa.ExpirationDate.Year;
-#endif
+                    AddNewCreditCard();
                 }
                 else
                 {
                     IsEditing = true;
 
-                    Data.CreditCardId = creditCard.CreditCardId;
-
-                    Data.CardNumber = "************" + creditCard.Last4Digits;
-
-                    Data.NameOnCard = creditCard.NameOnCard;
-                    Data.CreditCardCompany = creditCard.CreditCardCompany;
-                    Data.Label = creditCard.Label;
-                    Data.ZipCode = creditCard.ZipCode;
-
-                    ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
-                    ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
-
-                    var id = CreditCardCompanies
-                            .Where(x => x.Display == creditCard.CreditCardCompany)
-                            .Select(x => x.Id)
-                            .FirstOrDefault();
-
-                    if (id != null)
-                    {
-                        CreditCardType = (int)id;
-                    }
-
-                    _originalLabel = creditCard.Label;
+                    EditCurrentPaymentMethod(_currentlyDisplayedCreditCard);
                 }
 
-                DisplayPaypalView = Data.CreditCardCompany == Paypal;
+                IsShowPaypalView = Data.CreditCardCompany == Paypal;
                 
                 RaisePropertyChanged(() => Data);
-                RaisePropertyChanged(() => UsePaypalText);
                 RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
                 RaisePropertyChanged(() => IsPaypalEnabled);
@@ -225,6 +186,59 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 }
             }
         }
+
+	    private void EditCurrentPaymentMethod(CreditCardDetails creditCard)
+	    {
+	        Data.CreditCardId = creditCard.CreditCardId;
+
+	        Data.CardNumber = "************" + creditCard.Last4Digits;
+
+	        Data.NameOnCard = creditCard.NameOnCard;
+	        Data.CreditCardCompany = creditCard.CreditCardCompany;
+	        Data.Label = creditCard.Label;
+	        Data.ZipCode = creditCard.ZipCode;
+
+	        ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?) null;
+	        ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?) null;
+
+	        var id = CreditCardCompanies
+	            .Where(x => x.Display == creditCard.CreditCardCompany)
+	            .Select(x => x.Id)
+	            .FirstOrDefault();
+
+	        if (id != null)
+	        {
+	            CreditCardType = (int) id;
+	        }
+
+	        _originalLabel = creditCard.Label;
+	    }
+
+	    private void AddNewCreditCard()
+	    {
+	        Data.NameOnCard = _accountService.CurrentAccount.Name;
+	        Data.Label = CreditCardLabelConstants.Personal;
+
+	        var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+	        CreditCardType = id ?? -1;
+
+#if DEBUG
+	        if (PaymentSettings.PaymentMode == PaymentMethod.Braintree)
+	        {
+	            CreditCardNumber = DummyVisa.BraintreeNumber;
+	        }
+	        else
+	        {
+	            CreditCardNumber = DummyVisa.CmtNumber;
+	        }
+
+	        Data.CCV = DummyVisa.AvcCvvCvv2 + "";
+	        Data.ZipCode = DummyVisa.ZipCode;
+
+	        ExpirationMonth = DummyVisa.ExpirationDate.Month;
+	        ExpirationYear = DummyVisa.ExpirationDate.Year;
+#endif
+	    }
 
 	    public bool IsPaypalEnabled
 	    {
@@ -257,7 +271,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public string CreditCardTypeName 
+	    public bool IsShowingCancel
+	    {
+	        get { return _isShowingCancel; }
+	        set
+	        {
+	            _isShowingCancel = value;
+	            RaisePropertyChanged();
+	        }
+	    }
+
+	    public string CreditCardTypeName 
 		{ 
 			get 
 			{
@@ -346,7 +370,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private bool _isEditing;
-		public bool IsEditing
+	    private bool _isShowingCancel;
+
+	    public bool IsEditing
 		{
 			get { return _isEditing; }
 			set
@@ -362,7 +388,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+			get { return IsEditing && !IsShowingCancel &&(!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public string CreditCardSaveButtonDisplay
@@ -405,18 +431,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-	    public bool DisplayPaypalView
+	    public bool IsShowPaypalView
 	    {
-	        get { return _displayPaypalView; }
+	        get { return _isShowPaypalView; }
 	        set
 	        {
-	            _displayPaypalView = value;
+	            _isShowPaypalView = value;
 	            RaisePropertyChanged();
+                RaisePropertyChanged(() => IsShowUseCreditCardButton);
 	        }
 	    }
 
-	    private int _selectedLabel;
-	    private bool _displayPaypalView;
+	    public bool IsShowUseCreditCardButton
+	    {
+	        get { return IsShowPaypalView && Settings.MaxNumberOfCardsOnFile == 1; }
+	    }
 
 	    public int SelectedLabel
 		{
@@ -465,6 +494,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			} 
 		}
 
+	    public ICommand CancelCommand
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+                    IsShowPaypalView = true;
+
+	                IsShowingCancel = false;
+                    
+                    EditCurrentPaymentMethod(_currentlyDisplayedCreditCard);
+
+                    RaisePropertyChanged(() => Data);
+                });
+	        }
+	    }
+
 		public ICommand DeleteCreditCardCommand
 		{
 			get
@@ -500,24 +546,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-	    public string UsePaypalText
-	    {
-	        get
-	        {
-	            if (Data == null)
-	            {
-	                return string.Empty;
-	            }
-
-	            return Data.CreditCardCompany == Paypal
-	                ? this.Services().Localize["UnlinkPayPal"]
-	                : this.Services().Localize["LinkPayPal"];
-	        }
-	    }
-
 	    public bool HidePaypalButton
 	    {
 	        get { return PaymentSettings.PaymentMode != PaymentMethod.Braintree; }
+	    }
+
+	    public ICommand ShowCreditCardView
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+	                IsShowPaypalView = false;
+
+                    IsShowingCancel = true;
+
+                    AddNewCreditCard();
+
+                    RaisePropertyChanged(() => Data);
+                    RaisePropertyChanged(() => CanDeleteCreditCard);
+                });
+	        }
 	    }
 
 	    public ICommand UsePaypalCommand
