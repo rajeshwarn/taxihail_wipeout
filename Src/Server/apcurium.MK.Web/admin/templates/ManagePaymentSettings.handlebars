@@ -74,6 +74,14 @@
     <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
   </div>
 
+  <div id="cancelOrderOnUnpairDiv">
+    <label class="control-label settingsLabel">{{{localize "Cancel Order on Unpairing"}}}</label>
+    <select name="cancelOrderOnUnpair" class="settingsBox">
+      <option value="{{cancelOrderOnUnpair}}" selected="">{{localizeBool cancelOrderOnUnpair true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cancelOrderOnUnpair}}">{{localizeBool cancelOrderOnUnpair true="No" false="Yes"}}</option>
+    </select>
+  </div>
+
   <div id="preAuthAmountEnabledDiv">
     <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
     <select name="isPreAuthEnabled" class="settingsBox">

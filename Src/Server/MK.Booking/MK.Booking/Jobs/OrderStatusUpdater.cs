@@ -1,11 +1,8 @@
 ﻿using System;
-using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel;
@@ -20,13 +17,10 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceClient.Web;
-using Order = PayPal.Api.Order;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -151,17 +145,15 @@ namespace apcurium.MK.Booking.Jobs
             });
         }
 
-        void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
+        private void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
         {
-
             if (orderStatusDetail.IsPrepaid
                 || orderDetail.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
             {
                 return;
             }
 
-            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(orderDetail.PickupAddress.Latitude,
-                orderDetail.PickupAddress.Longitude);
+            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude);
             
             if (orderStatusDetail.UnpairingTimeOut != null && !marketSettings.DisableOutOfAppPayment && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
@@ -183,7 +175,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        public void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
+        private void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
         {
             var paymentMode = paymentSettings.PaymentMode;
             if (paymentMode != PaymentMethod.RideLinqCmt)

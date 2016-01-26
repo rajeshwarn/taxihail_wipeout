@@ -221,7 +221,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                         _orderWasUnpaired = true;
 								        IsUnpairButtonVisible = false;
 
-									    //var paymentSettings = await _paymentService.GetPaymentSettings();
 										if (DisableOutOfAppPayment)
 									    {
 										    // Cancel order

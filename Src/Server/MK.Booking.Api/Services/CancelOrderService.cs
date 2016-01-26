@@ -74,8 +74,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
                 var orderStatus = _orderDao.FindOrderStatusById(order.Id);
 
-                var marketSettings = _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude,
-                order.PickupAddress.Longitude);
+                var marketSettings = _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
             
                 var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
                     && marketSettings.DisableOutOfAppPayment;
