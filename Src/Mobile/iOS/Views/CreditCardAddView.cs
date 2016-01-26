@@ -102,6 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else
             {
                 viewPayPal.RemoveFromSuperview();
+				viewPayPalDetails.RemoveFromSuperview();
             }
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
@@ -131,10 +132,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanSetCreditCardAsDefault)
                 .WithConversion("BoolInverter");
+
+			set.Bind(viewCreditCard)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsShowPaypalView);
             
+			set.Bind(viewPayPalDetails)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsShowPaypalView)
+				.WithConversion("BoolInverter");
+
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
+
+			set.Bind(txtPayPalAccountName)
+				.For(v => v.Text)
+				.To(vm => vm.Data.NameOnCard);
+
+			set.Bind(btnUseCreditCard)
+				.For(v => v.Command)
+				.To(vm => vm.ShowCreditCardViewCommand);
+
+			set.Bind(btnUseCreditCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsShowUseCreditCardButton)
+				.WithConversion("BoolInverter");
+
+			set.Bind(btnCancel)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsShowingCancel)
+				.WithConversion("BoolInverter");
+
+			set.Bind(btnCancel)
+				.For(v => v.Command)
+				.To(vm => vm.CancelCommand);
 
             set.Bind(txtZipCode)
                 .For(v => v.Text)
@@ -183,11 +215,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
 			btnLinkPayPal.SetLeftImage("paypal_icon.png");
-			btnLinkPayPal.SetTitle(Localize.GetValue("UsePayPal"), UIControlState.Normal);
+			btnLinkPayPal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
 			btnLinkPayPal.TouchUpInside += (s, e) =>
 			{
 				ViewModel.UsePaypalCommand.ExecuteIfPossible();
 			};
+
+			FlatButtonStyle.Green.ApplyTo(btnUseCreditCard);
+			FlatButtonStyle.Red.ApplyTo(btnCancel);
+			lblPayPalAccountName.Text = Localize.GetValue("PaypalAccount");
+			btnUseCreditCard.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
 		}
 
         private void ConfigureTipSection()
@@ -261,7 +298,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "amex.png";
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+			ViewModel.CreditCardCompanies[4].Image = "paypal_icon.png";
+            ViewModel.CreditCardCompanies[5].Image = "credit_card_generic.png";
 
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);

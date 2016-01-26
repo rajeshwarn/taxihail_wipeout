@@ -1,19 +1,20 @@
 // WARNING
 //
-// This file has been generated automatically by Xamarin Studio from the outlets and
-// actions declared in your storyboard file.
-// Manual changes to this file will not be maintained.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
+// Manual changes to this file may not be handled correctly.
 //
 using Foundation;
-using System;
 using System.CodeDom.Compiler;
-using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("CreditCardAddView")]
 	partial class CreditCardAddView
 	{
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
+
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCardDefault { get; set; }
 
@@ -31,6 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnlinkPayPal { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUseCreditCard { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblCardNumber { get; set; }
@@ -52,6 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblNameOnCard { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblPayPalAccountName { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblPayPalLinkedInfo { get; set; }
@@ -81,13 +88,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNameOnCard { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPayPalAccountName { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtZipCode { get; set; }
 
 		[Outlet]
-		UIKit.UIView viewCreditCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewCreditCard { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewLabel { get; set; }
@@ -96,121 +106,181 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UIView viewPayPal { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewPayPalDetails { get; set; }
+
+		[Outlet]
 		UIKit.UIView viewPayPalIsLinkedInfo { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewTip { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
 			if (btnCardDefault != null) {
 				btnCardDefault.Dispose ();
 				btnCardDefault = null;
 			}
+
 			if (btnDeleteCard != null) {
 				btnDeleteCard.Dispose ();
 				btnDeleteCard = null;
 			}
+
 			if (btnLinkPayPal != null) {
 				btnLinkPayPal.Dispose ();
 				btnLinkPayPal = null;
 			}
+
 			if (btnSaveCard != null) {
 				btnSaveCard.Dispose ();
 				btnSaveCard = null;
 			}
+
 			if (btnScanCard != null) {
 				btnScanCard.Dispose ();
 				btnScanCard = null;
 			}
+
 			if (btnUnlinkPayPal != null) {
 				btnUnlinkPayPal.Dispose ();
 				btnUnlinkPayPal = null;
 			}
+
+			if (btnUseCreditCard != null) {
+				btnUseCreditCard.Dispose ();
+				btnUseCreditCard = null;
+			}
+
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
+			}
+
 			if (lblCardNumber != null) {
 				lblCardNumber.Dispose ();
 				lblCardNumber = null;
 			}
+
 			if (lblCvv != null) {
 				lblCvv.Dispose ();
 				lblCvv = null;
 			}
+
 			if (lblExpMonth != null) {
 				lblExpMonth.Dispose ();
 				lblExpMonth = null;
 			}
+
 			if (lblExpYear != null) {
 				lblExpYear.Dispose ();
 				lblExpYear = null;
 			}
+
 			if (lblInstructions != null) {
 				lblInstructions.Dispose ();
 				lblInstructions = null;
 			}
+
 			if (lblLabel != null) {
 				lblLabel.Dispose ();
 				lblLabel = null;
 			}
+
 			if (lblNameOnCard != null) {
 				lblNameOnCard.Dispose ();
 				lblNameOnCard = null;
 			}
+
+			if (lblPayPalAccountName != null) {
+				lblPayPalAccountName.Dispose ();
+				lblPayPalAccountName = null;
+			}
+
+			if (lblPayPalLinkedInfo != null) {
+				lblPayPalLinkedInfo.Dispose ();
+				lblPayPalLinkedInfo = null;
+			}
+
 			if (lblTip != null) {
 				lblTip.Dispose ();
 				lblTip = null;
 			}
+
 			if (lblZipCode != null) {
 				lblZipCode.Dispose ();
 				lblZipCode = null;
 			}
+
 			if (segmentedLabel != null) {
 				segmentedLabel.Dispose ();
 				segmentedLabel = null;
 			}
+
 			if (txtCardNumber != null) {
 				txtCardNumber.Dispose ();
 				txtCardNumber = null;
 			}
+
 			if (txtCvv != null) {
 				txtCvv.Dispose ();
 				txtCvv = null;
 			}
+
 			if (txtExpMonth != null) {
 				txtExpMonth.Dispose ();
 				txtExpMonth = null;
 			}
+
 			if (txtExpYear != null) {
 				txtExpYear.Dispose ();
 				txtExpYear = null;
 			}
+
 			if (txtNameOnCard != null) {
 				txtNameOnCard.Dispose ();
 				txtNameOnCard = null;
 			}
+
+			if (txtPayPalAccountName != null) {
+				txtPayPalAccountName.Dispose ();
+				txtPayPalAccountName = null;
+			}
+
 			if (txtTip != null) {
 				txtTip.Dispose ();
 				txtTip = null;
 			}
+
 			if (txtZipCode != null) {
 				txtZipCode.Dispose ();
 				txtZipCode = null;
 			}
+
 			if (viewCreditCard != null) {
 				viewCreditCard.Dispose ();
 				viewCreditCard = null;
 			}
+
 			if (viewLabel != null) {
 				viewLabel.Dispose ();
 				viewLabel = null;
 			}
+
 			if (viewPayPal != null) {
 				viewPayPal.Dispose ();
 				viewPayPal = null;
 			}
+
+			if (viewPayPalDetails != null) {
+				viewPayPalDetails.Dispose ();
+				viewPayPalDetails = null;
+			}
+
 			if (viewPayPalIsLinkedInfo != null) {
 				viewPayPalIsLinkedInfo.Dispose ();
 				viewPayPalIsLinkedInfo = null;
 			}
+
 			if (viewTip != null) {
 				viewTip.Dispose ();
 				viewTip = null;
