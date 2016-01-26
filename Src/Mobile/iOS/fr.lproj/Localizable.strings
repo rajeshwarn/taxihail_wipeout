@@ -756,6 +756,5 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
 "InvalidCreditCardMessage"="Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l'existante.";
 "InvalidCreditCardUpdateCardButton"="Changer Carte";
-"UsePayPal"="Utiliser PayPal";
 "PaypalErrorMessage"="Une erreur est arrivée lors de la communication avec Paypal.";
 "PaypalAccount"="Compte Paypal";

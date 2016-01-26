@@ -2338,9 +2338,6 @@
   <data name="InvalidCreditCardMessage" xml:space="preserve">
   	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
   </data>
-  <data name="UsePayPal" xml:space="preserve">
-    <value>Use PayPal</value>
-  </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Update Card</value>
   </data>
