@@ -48,8 +48,9 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\ios-unified\ModernHttpClient.dll</HintPath>
+    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
@@ -81,12 +82,6 @@
     <Compile Include="Tokenize\BasePaymentValidationRequest.cs" />
     <Compile Include="Utilities\OAuthUtils.cs" />
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamarinComponentReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
