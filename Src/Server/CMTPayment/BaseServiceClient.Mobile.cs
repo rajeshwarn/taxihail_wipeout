@@ -25,7 +25,7 @@ namespace CMTPayment
 			var cookieHandler = new NativeCookieHandler();
 
 			// CustomSSLVerification must be set to true to enable certificate pinning.
-            var nativeHandler = new CustomNativeMessageHandler(_connectivityService, throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
+            var nativeHandler = new CustomNativeMessageHandler(_connectivityService, throwOnCaptiveNetwork: false, customSSLVerification: true, enableRc4Compatibility: true, cookieHandler: cookieHandler);
 
 			var client = new HttpClient(nativeHandler)
 				{
