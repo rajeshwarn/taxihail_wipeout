@@ -1804,7 +1804,7 @@
     <value>Link PayPal</value>
   </data>
   <data name="UnlinkPayPal" xml:space="preserve">
-    <value>Unlink PayPal</value>
+    <value>Use credit card</value>
   </data>
   <data name="LinkPayPalCCWarning" xml:space="preserve">
     <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>

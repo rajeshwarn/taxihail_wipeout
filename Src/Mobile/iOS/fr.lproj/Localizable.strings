@@ -535,8 +535,8 @@
 "PromoMustUseCardOnFileWarningMessage"="Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l'application";
 "WarningPromoCodeDontShow"="Ne pas signaler";
 "PanelMenuViewPromotionsText"="Promotions";
-"UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
-"UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
+"UnpairPayInCarWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
+"UnpairPayInCarWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
 "UnpairWarningOkButton"="Payer dans le taxi";
 "UnpairWarningCancelButton"="Annuler";
 "View_Promotions"="Promotions";
@@ -551,7 +551,7 @@
 "PromoProgress"="Progression :";
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "LinkPayPal"="Associer PayPal";
-"UnlinkPayPal"="Dissocier PayPal";
+"UnlinkPayPal"="Utiliser une carte de credit";
 "LinkPayPalCCWarning"="Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?";
 "AddCoFPayPalWarning"="Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?";
 "PayPalErrorTitle"="Erreur PayPal";

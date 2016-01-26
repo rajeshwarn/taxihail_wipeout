@@ -2280,8 +2280,8 @@
     <comment>Link PayPal</comment>
   </data>
   <data name="UnlinkPayPal" xml:space="preserve">
-    <value>Desvincular PayPal</value>
-    <comment>Unlink PayPal</comment>
+    <value>Utilice la tarjeta de crédito</value>
+    <comment>Use credit card</comment>
   </data>
   <data name="LinkPayPalCCWarning" xml:space="preserve">
     <value>Vincular su cuenta PayPal eliminará su tarjeta de crédito en el perfil y PayPal será establecido como el método de pago predeterminado. Desea Proceder?</value>

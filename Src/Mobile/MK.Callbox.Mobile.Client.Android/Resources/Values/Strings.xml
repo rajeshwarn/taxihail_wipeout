@@ -586,7 +586,7 @@
   <string name="PromoProgress">Progress :</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="LinkPayPal">Link PayPal</string>
-  <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="UnlinkPayPal">Use credit card</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
   <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
   <string name="PayPalErrorTitle">PayPal Error</string>
@@ -788,4 +788,9 @@
   <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
   <string name="PaypalError_Title">Paypal error</string>
   <string name="PaypalAccount">Paypal account</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
+  <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
 </resources>

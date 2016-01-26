@@ -1778,7 +1778,7 @@
     <value>Associer PayPal</value>
   </data>
   <data name="UnlinkPayPal" xml:space="preserve">
-    <value>Dissocier PayPal</value>
+    <value>Utiliser une carte de credit</value>
   </data>
   <data name="LinkPayPalCCWarning" xml:space="preserve">
     <value>Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</value>

@@ -787,4 +787,6 @@
   <string name="UsePayPal">Use PayPal</string>
   <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
   <string name="PaypalAccount">Paypal account</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
 </resources>

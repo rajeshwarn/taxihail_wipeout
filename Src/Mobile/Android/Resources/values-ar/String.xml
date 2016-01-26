@@ -520,8 +520,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
-  <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="UnpairWarningOkButton">Pay in car</string>
   <string name="UnpairWarningCancelButton">Cancel</string>
   <string name="View_Promotions">Promotions</string>

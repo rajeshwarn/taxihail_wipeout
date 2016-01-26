@@ -528,8 +528,8 @@
 "PromoMustUseCardOnFileWarningMessage"="Tenga en cuenta que sólo se aplicará el descuento si el pago se realiza mediante la aplicación.";
 "WarningPromoCodeDontShow"="No avisar";
 "PanelMenuViewPromotionsText"="Promotions";
-"UnpairWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
-"UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
+"UnpairPayInCarWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
+"UnpairPayInCarWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
 "UnpairWarningOkButton"="Pago en carro";
 "View_Promotions"="Promociones";
 "UnpairWarningCancelButton"="Cancelar";
@@ -544,7 +544,7 @@
 "PromoProgress"="Progreso:";
 "ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";
 "LinkPayPal"="Vincular cuenta de PayPal";
-"UnlinkPayPal"="Desvincular PayPal";
+"UnlinkPayPal"="Utilice la tarjeta de crédito";
 "LinkPayPalCCWarning"="Vincular su cuenta PayPal eliminará su tarjeta de crédito en el perfil y PayPal será establecido como el método de pago predeterminado. Desea Proceder?";
 "AddCoFPayPalWarning"="Agregar una tarjeta de crédito va a desvincular su cuenta PayPal y la tarjeta en el perfil se configurará como el método de pago predeterminado. Desea Proceder?";
 "PayPalErrorTitle"="Error de PayPal";

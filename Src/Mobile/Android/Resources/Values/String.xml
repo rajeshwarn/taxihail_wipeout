@@ -427,6 +427,7 @@
   <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
   <string name="CmtConfirmPayment">Confirm</string>
   <string name="UnpairPayInCar">Pay in Car</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="CmtRideLinqSaveChanges">Save</string>
   <string name="CmtRideLinqErrorTitle">Error</string>
@@ -543,8 +544,10 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">Don\'t warn</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
-  <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
+  <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
   <string name="UnpairWarningOkButton">Pay in car</string>
   <string name="UnpairWarningCancelButton">Cancel</string>
   <string name="View_Promotions">Promotions</string>
@@ -559,7 +562,7 @@
   <string name="PromoProgress">Progress :</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="LinkPayPal">Link PayPal</string>
-  <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="UnlinkPayPal">Use credit card</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
   <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
   <string name="PayPalErrorTitle">PayPal Error</string>

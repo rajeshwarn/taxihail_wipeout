@@ -518,8 +518,8 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "WarningPromoCodeDontShow"="لا تحذر";
 "PanelMenuViewPromotionsText"="Promotions";
-"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
-"UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"UnpairPayInCarWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"UnpairPayInCarWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "UnpairWarningOkButton"="Pay in car";
 "UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";

@@ -537,8 +537,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
-  <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="UnpairWarningOkButton">Payer dans le taxi</string>
   <string name="UnpairWarningCancelButton">Annuler</string>
   <string name="View_Promotions">Promotions</string>
@@ -553,7 +553,7 @@
   <string name="PromoProgress">Progression :</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="LinkPayPal">Associer PayPal</string>
-  <string name="UnlinkPayPal">Dissocier PayPal</string>
+  <string name="UnlinkPayPal">Utiliser une carte de credit</string>
   <string name="LinkPayPalCCWarning">Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</string>
   <string name="AddCoFPayPalWarning">Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</string>
   <string name="PayPalErrorTitle">Erreur PayPal</string>

@@ -530,8 +530,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Tenga en cuenta que sólo se aplicará el descuento si el pago se realiza mediante la aplicación.</string>
   <string name="WarningPromoCodeDontShow">No avisar</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
-  <string name="UnpairWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
+  <string name="UnpairPayInCarWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
   <string name="UnpairWarningOkButton">Pago en carro</string>
   <string name="View_Promotions">Promociones</string>
   <string name="UnpairWarningCancelButton">Cancelar</string>
@@ -546,7 +546,7 @@
   <string name="PromoProgress">Progreso:</string>
   <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
   <string name="LinkPayPal">Vincular cuenta de PayPal</string>
-  <string name="UnlinkPayPal">Desvincular PayPal</string>
+  <string name="UnlinkPayPal">Utilice la tarjeta de crédito</string>
   <string name="LinkPayPalCCWarning">Vincular su cuenta PayPal eliminará su tarjeta de crédito en el perfil y PayPal será establecido como el método de pago predeterminado. Desea Proceder?</string>
   <string name="AddCoFPayPalWarning">Agregar una tarjeta de crédito va a desvincular su cuenta PayPal y la tarjeta en el perfil se configurará como el método de pago predeterminado. Desea Proceder?</string>
   <string name="PayPalErrorTitle">Error de PayPal</string>
