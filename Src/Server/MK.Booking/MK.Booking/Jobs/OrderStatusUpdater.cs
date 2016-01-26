@@ -126,11 +126,11 @@ namespace apcurium.MK.Booking.Jobs
 
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
-                _logger.LogMessage("Skipping order update");
+                _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
             }
 
-            _logger.LogMessage("Running order update" );
+            _logger.LogMessage("Running order update (Id: {0})", orderStatusDetail.OrderId);
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
 
