@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Jobs
         public bool CheckStatus(string updaterUniqueId, int pollingValue)
         {
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
-            bool hasOrdersWaitingForPayment = false;
+            var hasOrdersWaitingForPayment = false;
             
             Log.DebugFormat("Attempting to CheckStatus with {0}", updaterUniqueId);
 
@@ -143,8 +143,7 @@ namespace apcurium.MK.Booking.Jobs
                 new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
                 orderStatusDetail =>
             {
-                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
-                    orderStatusDetail.OrderId);
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             });
 
@@ -163,8 +162,7 @@ namespace apcurium.MK.Booking.Jobs
                         return;
                     }
 
-                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId,
-                        order.IBSOrderId);
+                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);
                 });
         }
@@ -184,14 +182,12 @@ namespace apcurium.MK.Booking.Jobs
                         var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
 
                         // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                        var honeyBadgerVehicleStatuses =
-                            GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
 
                         foreach (var orderStatus in orderStatuses)
                         {
                             // Update vehicle position with matching data available data from HoneyBadger
-                            var honeyBadgerVehicleStatus =
-                                honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
 
                             if (honeyBadgerVehicleStatus != null)
                             {
