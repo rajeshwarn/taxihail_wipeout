@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
+            Handles<IbsOrderInfoAddedToOrder>(NoAction);
             Handles<IbsOrderInfoAddedToOrder_V2>(NoAction);
             Handles<OrderCancelledBecauseOfError>(OnOrderCancelledBecauseOfError);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
