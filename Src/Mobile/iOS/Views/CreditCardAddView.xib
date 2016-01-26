@@ -6,11 +6,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditCardAddView">
             <connections>
+                <outlet property="btnCancel" destination="1Ey-Gi-eTJ" id="udm-ER-dOO"/>
                 <outlet property="btnCardDefault" destination="QOQ-sL-Vm6" id="RT7-IT-UFA"/>
                 <outlet property="btnDeleteCard" destination="IeH-q4-qcf" id="bwh-yM-SxR"/>
                 <outlet property="btnLinkPayPal" destination="btW-1V-APs" id="oUy-Fg-3DF"/>
                 <outlet property="btnSaveCard" destination="sNz-rV-N8y" id="ydn-h0-qyW"/>
                 <outlet property="btnScanCard" destination="WJg-Rj-tzy" id="T5p-kp-a1L"/>
+                <outlet property="btnUseCreditCard" destination="GNJ-eb-yaN" id="iU4-9x-zIj"/>
                 <outlet property="lblCardNumber" destination="DfD-Yo-WvS" id="8a2-VX-TKW"/>
                 <outlet property="lblCvv" destination="Tz3-UC-Wg8" id="RsN-3z-3Io"/>
                 <outlet property="lblExpMonth" destination="Ipi-wL-ffn" id="fr8-gg-fIQ"/>
@@ -18,6 +20,7 @@
                 <outlet property="lblInstructions" destination="GXd-K4-4cG" id="eIt-Hr-Fwb"/>
                 <outlet property="lblLabel" destination="Gfr-Na-E9J" id="3qN-nX-Zzp"/>
                 <outlet property="lblNameOnCard" destination="ngX-Wq-laP" id="KNw-eF-txU"/>
+                <outlet property="lblPayPalAccountName" destination="Fur-Ls-dsF" id="P18-dy-aLo"/>
                 <outlet property="lblTip" destination="goZ-Y8-TKn" id="HR4-fQ-Bub"/>
                 <outlet property="lblZipCode" destination="FJb-TD-Vwd" id="aMv-a7-yht"/>
                 <outlet property="segmentedLabel" destination="8Wv-hw-fTP" id="LZF-3z-k1h"/>
@@ -26,12 +29,14 @@
                 <outlet property="txtExpMonth" destination="At1-rh-wQX" id="DfR-sk-8i1"/>
                 <outlet property="txtExpYear" destination="CKf-21-NCh" id="App-ZB-c8h"/>
                 <outlet property="txtNameOnCard" destination="3fV-2N-0Oy" id="GQq-Sy-pai"/>
+                <outlet property="txtPayPalAccountName" destination="iEf-ho-zJm" id="Jnh-3g-871"/>
                 <outlet property="txtTip" destination="hXa-WX-Ipf" id="43b-r1-BgF"/>
                 <outlet property="txtZipCode" destination="K9H-24-O0F" id="sgj-iL-CZF"/>
                 <outlet property="view" destination="1" id="9sP-Xk-7VA"/>
-                <outlet property="viewCreditCard" destination="hLR-a7-OyV" id="Jpd-Ur-EDi"/>
+                <outlet property="viewCreditCard" destination="hLR-a7-OyV" id="YrW-Xw-c8W"/>
                 <outlet property="viewLabel" destination="agx-4W-Kx5" id="57P-eT-f1A"/>
                 <outlet property="viewPayPal" destination="pfD-TX-kyS" id="1za-Jl-ynx"/>
+                <outlet property="viewPayPalDetails" destination="CQ0-KB-zhX" id="Iyz-JK-wJ8"/>
                 <outlet property="viewTip" destination="jyp-DI-ki8" id="6aT-Wz-Llh"/>
             </connections>
         </placeholder>
@@ -78,7 +83,7 @@
                             <rect key="frame" x="0.0" y="92" width="320" height="60"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfr-Na-E9J">
-                                    <rect key="frame" x="8" y="0.0" width="32" height="17"/>
+                                    <rect key="frame" x="8" y="0.0" width="31.5" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="Ztc-rY-eRL"/>
                                     </constraints>
@@ -105,19 +110,62 @@
                             </constraints>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
-                            <rect key="frame" x="8" y="164" width="304" height="41"/>
+                            <rect key="frame" x="8" y="164" width="304" height="40.5"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard">
-                            <rect key="frame" x="0.0" y="220" width="320" height="470"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQ0-KB-zhX" userLabel="PayPalDetails" customClass="HideableView">
+                            <rect key="frame" x="0.0" y="219.5" width="320" height="145"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paypal account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fur-Ls-dsF">
+                                    <rect key="frame" x="8" y="10" width="96" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="5fh-u3-vyt"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iEf-ho-zJm" userLabel="Txt Pay Pal Account Name" customClass="FlatTextField">
+                                    <rect key="frame" x="8" y="33" width="306" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="306" id="qts-uw-VS4"/>
+                                        <constraint firstAttribute="height" constant="41" id="zuM-wB-iB1"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNJ-eb-yaN" customClass="FlatButton">
+                                    <rect key="frame" x="8" y="94" width="304" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="304" id="N9v-mn-GrH"/>
+                                        <constraint firstAttribute="height" constant="41" id="kZR-3V-Wzx"/>
+                                    </constraints>
+                                    <state key="normal" title="Btn CreditCard">
+                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="iEf-ho-zJm" firstAttribute="top" secondItem="Fur-Ls-dsF" secondAttribute="bottom" constant="6" id="8DK-eY-8ti"/>
+                                <constraint firstItem="iEf-ho-zJm" firstAttribute="leading" secondItem="CQ0-KB-zhX" secondAttribute="leading" constant="8" id="FXu-Jm-pSQ"/>
+                                <constraint firstItem="GNJ-eb-yaN" firstAttribute="top" secondItem="iEf-ho-zJm" secondAttribute="bottom" constant="20" id="Nrz-at-2hV"/>
+                                <constraint firstItem="GNJ-eb-yaN" firstAttribute="centerX" secondItem="CQ0-KB-zhX" secondAttribute="centerX" id="Sxy-Qr-FJk"/>
+                                <constraint firstItem="Fur-Ls-dsF" firstAttribute="top" secondItem="CQ0-KB-zhX" secondAttribute="top" constant="10" id="XRW-az-xvk"/>
+                                <constraint firstItem="Fur-Ls-dsF" firstAttribute="leading" secondItem="CQ0-KB-zhX" secondAttribute="leading" constant="8" id="k7d-uJ-6pb"/>
+                                <constraint firstAttribute="bottom" secondItem="GNJ-eb-yaN" secondAttribute="bottom" constant="10" id="oEW-e2-C6c"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard" customClass="HideableView">
+                            <rect key="frame" x="0.0" y="219.5" width="320" height="470"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
-                                    <rect key="frame" x="8" y="10" width="185" height="17"/>
+                                    <rect key="frame" x="8" y="10" width="198" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="W6I-q4-2OZ"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -263,6 +311,17 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ey-Gi-eTJ" userLabel="Btn Cancel" customClass="FlatButton">
+                                    <rect key="frame" x="8" y="414" width="304" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="304" id="JHb-P3-aje"/>
+                                        <constraint firstAttribute="height" constant="41" id="Nfh-th-T4c"/>
+                                    </constraints>
+                                    <state key="normal" title="Cancel">
+                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="CKf-21-NCh" firstAttribute="leading" secondItem="WEq-Dm-0h1" secondAttribute="leading" id="02E-vh-Y2g"/>
@@ -284,6 +343,8 @@
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="trailing" constant="12" id="VMN-vP-nWz"/>
                                 <constraint firstItem="Tz3-UC-Wg8" firstAttribute="centerY" secondItem="DfD-Yo-WvS" secondAttribute="centerY" id="WV7-CP-2es"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
+                                <constraint firstItem="1Ey-Gi-eTJ" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="Y8C-dE-0Q7"/>
+                                <constraint firstItem="1Ey-Gi-eTJ" firstAttribute="centerX" secondItem="hLR-a7-OyV" secondAttribute="centerX" id="Z3X-1x-xd0"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
                                 <constraint firstAttribute="centerX" secondItem="QOQ-sL-Vm6" secondAttribute="centerX" id="a5z-pL-AjY"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
@@ -291,6 +352,7 @@
                                 <constraint firstAttribute="bottom" secondItem="IeH-q4-qcf" secondAttribute="bottom" constant="15" id="c11-py-ZLk"/>
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
                                 <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
+                                <constraint firstAttribute="bottom" secondItem="1Ey-Gi-eTJ" secondAttribute="bottom" constant="15" id="gE8-k8-JMd"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="10" id="gqs-sv-Jo0"/>
                                 <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="iG0-nP-46y"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="QOQ-sL-Vm6" secondAttribute="bottom" constant="5" id="ig1-D0-dEt"/>
@@ -310,7 +372,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="690" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="689.5" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>
@@ -333,10 +395,15 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="CQ0-KB-zhX" secondAttribute="trailing" id="2JS-1Q-uWK"/>
                         <constraint firstAttribute="width" secondItem="hLR-a7-OyV" secondAttribute="width" id="2kQ-8T-V4Z"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="7lZ-HG-b4b"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="8LO-yC-1Q5"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="width" secondItem="4" secondAttribute="width" id="Aek-MD-7jU"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="AkP-Kp-PJg"/>
                         <constraint firstAttribute="trailing" secondItem="hLR-a7-OyV" secondAttribute="trailing" id="B4L-MU-mqx"/>
                         <constraint firstAttribute="trailing" secondItem="agx-4W-Kx5" secondAttribute="trailing" id="BWb-2P-2aI"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="bottom" secondItem="pfD-TX-kyS" secondAttribute="top" priority="750" constant="15" id="C9f-sB-xv2"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="DFQ-Go-g9x"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="leading" secondItem="4" secondAttribute="leading" constant="8" id="E68-3I-Duw"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" constant="15" id="HT2-JA-Lq3"/>
@@ -349,10 +416,12 @@
                         <constraint firstItem="jyp-DI-ki8" firstAttribute="top" secondItem="4" secondAttribute="top" constant="14" id="UAY-yj-sDZ"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="950" constant="15" id="Wrb-T3-Ila"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="bottom" id="ai8-o9-D45"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="c1e-jI-puu"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="cqP-sV-7Zx"/>
                         <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="ejy-cD-B95"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="hXH-xw-tA2"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="iLt-45-ujv"/>
                         <constraint firstAttribute="trailing" secondItem="jyp-DI-ki8" secondAttribute="trailing" id="iRH-Ta-pNC"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="900" constant="14" id="jAc-JL-gWL"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="k9b-2N-pCq"/>
@@ -361,6 +430,7 @@
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" priority="500" constant="15" id="s3f-ae-rb2"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" constant="14" id="uPX-LT-RK2"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="15" id="uVf-eb-ftL"/>
+                        <constraint firstItem="CQ0-KB-zhX" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" constant="15" id="yqw-iw-6ur"/>
                     </constraints>
                 </scrollView>
             </subviews>
