@@ -161,7 +161,7 @@ namespace apcurium.MK.Web
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
             if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.AppOnly &&
-                !referenceData.PaymentsList.Any(p => p.Id == ChargeTypes.PaymentInCar.Id))
+                referenceData.PaymentsList.None(p => p.Id == ChargeTypes.PaymentInCar.Id))
             {
                 referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
             }

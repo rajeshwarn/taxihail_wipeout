@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Jobs
         public bool CheckStatus(string updaterUniqueId, int pollingValue)
         {
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
-            bool hasOrdersWaitingForPayment = false;
+            var hasOrdersWaitingForPayment = false;
             
             Log.DebugFormat("Attempting to CheckStatus with {0}", updaterUniqueId);
 
@@ -120,19 +120,17 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 finally
                 {
+                    Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                     timer.Dispose();
                 }
             }
             else
             {
-                Log.DebugFormat("CheckStatus was blocked for {0}", updaterUniqueId);
+                Log.DebugFormat("CheckStatus was blocked for {0} by {1}", updaterUniqueId, lastUpdate.UpdaterUniqueId);
             }
 
             return hasOrdersWaitingForPayment;
         }
-
-
-        
 
         private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
@@ -145,8 +143,7 @@ namespace apcurium.MK.Booking.Jobs
                 new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
                 orderStatusDetail =>
             {
-                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).",
-                    orderStatusDetail.OrderId);
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             });
 
@@ -165,46 +162,73 @@ namespace apcurium.MK.Booking.Jobs
                         return;
                     }
 
-                    Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId,
-                        order.IBSOrderId);
+                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);
                 });
         }
 
-        public BlockingCollection<IBSOrderInformation> GetOrderStatuses(List<int> ibsOrdersIds, string companyKey, string market)
+        private BlockingCollection<IBSOrderInformation> GetOrderStatuses(List<int> ibsOrdersIds, string companyKey, string market)
         {
             var result = new BlockingCollection<IBSOrderInformation>();
 
             Task.Factory.StartNew(() =>
             {
-                const int take = 10;
-                for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
+                try
                 {
-                    var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                    var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
-
-                    // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                    var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
-
-                    foreach (var orderStatus in orderStatuses)
+                    const int take = 10;
+                    for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
                     {
-                        // Update vehicle position with matching data available data from HoneyBadger
-                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+                        var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
+                        var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
 
-                        if (honeyBadgerVehicleStatus != null)
+                        // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+
+                        foreach (var orderStatus in orderStatuses)
                         {
-                            orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
-                            orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
-                        }
+                            // Update vehicle position with matching data available data from HoneyBadger
+                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
 
-                        result.Add(orderStatus);
+                            if (honeyBadgerVehicleStatus != null)
+                            {
+                                orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                                orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                            }
+
+                            result.Add(orderStatus);
+                        }
                     }
                 }
-
-                result.CompleteAdding();
+                catch (Exception ex)
+                {
+                    Log.ErrorFormat("An error occured in UpdateOrderStatusJob.GetOrderStatuses()");
+                    LogError(ex);
+                }
+                finally
+                {
+                    result.CompleteAdding();
+                }
             });
-          
+
             return result;
+        }
+
+        private void LogError(Exception ex)
+        {
+            LogError(ex, null, -1);
+        }
+
+        private void LogError(Exception ex, string method, int lineNumber)
+        {
+            var errorLocation = method.HasValueTrimmed() && lineNumber > -1
+                ? " at {0}:{1}".InvariantCultureFormat(method, lineNumber)
+                : string.Empty;
+
+            Log.Error(ex.Message + errorLocation + " " + ex.StackTrace);
+            if (ex.InnerException != null)
+            {
+                LogError(ex.InnerException);
+            }
         }
 
         private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)

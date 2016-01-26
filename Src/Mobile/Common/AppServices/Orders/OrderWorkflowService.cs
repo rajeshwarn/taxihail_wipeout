@@ -222,6 +222,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    public async Task<bool> ValidateChargeType()
 	    {
             var chargeTypes = await _accountService.GetPaymentsList();
+
+			if (_marketSettings.DisableOutOfAppPayment)
+			{
+				chargeTypes.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+			}
+
 	        if (!chargeTypes.Any())
 	        {
 	            return false;
@@ -351,6 +357,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
+			var paymentList = await _accountService.GetPaymentsList();
+
+			if (_marketSettings.DisableOutOfAppPayment)
+			{
+				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+			}
+
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
@@ -368,7 +381,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             // If no booking settings matches the available payment types, take PayInCar
             // or the first one by default if PayInCar was deactivated. It will attempt to avoid ChargeAccount if possible.
-            var paymentList = await _accountService.GetPaymentsList();
             if (paymentList.None(x => x.Id == bookingSettings.ChargeTypeId))
             {
                 var matchingPaymentType = paymentList.FirstOrDefault(p => p.Id == ChargeTypes.PaymentInCar.Id)

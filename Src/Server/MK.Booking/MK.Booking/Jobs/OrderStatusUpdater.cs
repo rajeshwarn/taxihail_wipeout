@@ -22,6 +22,7 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Pair;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
@@ -51,6 +52,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IFeeService _feeService;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
+        private readonly ITaxiHailNetworkServiceClient _networkServiceClient;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Jobs
             IFeeService feeService,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
+            ITaxiHailNetworkServiceClient networkServiceClient,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -91,6 +94,7 @@ namespace apcurium.MK.Booking.Jobs
             _paymentDao = paymentDao;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
+            _networkServiceClient = networkServiceClient;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -98,7 +102,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-
+            
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail, orderDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail, paymentSettings);
@@ -126,11 +130,11 @@ namespace apcurium.MK.Booking.Jobs
 
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
-                _logger.LogMessage("Skipping order update");
+                _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
             }
 
-            _logger.LogMessage("Running order update" );
+            _logger.LogMessage("Running order update (Id: {0})", orderStatusDetail.OrderId);
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
 
@@ -156,7 +160,10 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
+            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(orderDetail.PickupAddress.Latitude,
+                orderDetail.PickupAddress.Longitude);
+            
+            if (orderStatusDetail.UnpairingTimeOut != null && !marketSettings.DisableOutOfAppPayment && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(TimeBetweenPaymentChangeAndSaveInDb))
                 {

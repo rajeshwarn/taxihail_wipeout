@@ -2216,11 +2216,11 @@
     <value>Promotions</value>
     <comment>Promotions</comment>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</value>
     <comment>Are you sure you don’t want to pay with your credit card on file?</comment>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>Si usted decide pagar en el carro, usted no podrá utilizar la promoción</value>
     <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
   </data>

@@ -19,8 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             bookingView.buttonCall.SetTitle(Localize.GetValue("CallButton"), UIControlState.Normal);
             bookingView.buttonCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
-            bookingView.buttonUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
-
+            
             FlatButtonStyle.Red.ApplyTo(bookingView.buttonCancel);
             FlatButtonStyle.Red.ApplyTo(bookingView.buttonUnpair);
             FlatButtonStyle.Silver.ApplyTo(bookingView.buttonCall);
@@ -59,7 +58,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible)
                 .WithConversion("BoolInverter");
-
+			set.Bind (buttonUnpair)
+				.For ("Title")
+				.To (vm => vm.BookingStatus.BottomBar.UnpairButtonText);
+			
 			set.Bind(buttonCancel)
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CancelOrder);

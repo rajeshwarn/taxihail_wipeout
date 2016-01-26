@@ -64,8 +64,6 @@ namespace MK.Common.Configuration
                 PlayLink = "http://www.mobile-knowledge.com/"
 			};
 
-            Kount = new KountSettingsContainer();
-
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
@@ -140,7 +138,6 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
 		public FlightStatsSettingsContainer FlightStats { get; set; }
 		public StoreSettingContainer Store { get; protected set; }
-        public KountSettingsContainer Kount { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -533,7 +530,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
         public bool HideTHNetworkAppMenu { get; protected set; }
 
-        [Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
+		[Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }

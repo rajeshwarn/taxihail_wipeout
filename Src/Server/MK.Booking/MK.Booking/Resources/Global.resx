@@ -543,6 +543,9 @@
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No Credit Card On File.</value>
   </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>No Payment Method Available.</value>
+  </data>
   <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
     <value>No PayPal account linked</value>
   </data>

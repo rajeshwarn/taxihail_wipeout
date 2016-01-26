@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -17,14 +18,11 @@ using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
 using Microsoft.Web.Administration;
-using MK.DeploymentService.Properties;
 using MK.DeploymentService.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ServiceStack.Text;
 
 #endregion
-
 
 namespace MK.DeploymentService
 {
@@ -81,7 +79,7 @@ namespace MK.DeploymentService
 
                 Log("Source Folder = " + sourceDirectory);
 
-                var taxiRepo = new TaxiRepository(Settings.Default.GitExePath, sourceDirectory, Settings.Default.IsGitHubSourceControl);
+                var taxiRepo = new TaxiRepository(sourceDirectory, bool.Parse(ConfigurationManager.AppSettings["IsGitHubSourceControl"]));
                 if (_job.Server.Role == EnvironmentRole.BuildServer)
                 {
                     taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
@@ -94,7 +92,7 @@ namespace MK.DeploymentService
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
                     if (_job.Server.Role != EnvironmentRole.BuildServer)
                     {
-                        packagesDirectory = Settings.Default.DeployFolder;
+                        packagesDirectory = ConfigurationManager.AppSettings["DeployFolder"];
                     }
                     var packagesLocation = CleanAndUnZip(packagesDirectory);
                     DeployTaxiHail(packagesLocation);
@@ -114,7 +112,7 @@ namespace MK.DeploymentService
             Log("Get the binaries and unzip it");
 
 
-            var packageFile = Path.Combine(Settings.Default.DropFolder, GetZipFileName(_job));
+            var packageFile = Path.Combine(ConfigurationManager.AppSettings["DropFolder"], GetZipFileName(_job));
             if (File.Exists(packageFile))
             {
                 Log("Delete existing local package");
@@ -126,7 +124,7 @@ namespace MK.DeploymentService
             client.GetPackage(GetZipFileName(_job), packageFile);
             Log("Done getting the binaries from server");
 
-            var unzipDirectory = Path.Combine(Settings.Default.DropFolder + @"\Decompressed\" , MakeValidFileName(_job.Revision.Tag));
+            var unzipDirectory = Path.Combine(ConfigurationManager.AppSettings["DropFolder"] + @"\Decompressed\" , MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
             {
@@ -267,7 +265,7 @@ namespace MK.DeploymentService
         {
             Log(String.Format("Deploying"));
             var companyName = _job.Company.CompanyKey;
-            var appPoolName = string.Format(Settings.Default.AppPoolFormat, _job.Company.CompanyKey);
+            var appPoolName = string.Format(ConfigurationManager.AppSettings["AppPoolFormat"], _job.Company.CompanyKey);
 
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
@@ -281,9 +279,9 @@ namespace MK.DeploymentService
                 Thread.Sleep(2000);
             }
 
-            if (!string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["SecondWebServerName"]))
             {
-                using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                using (var remoteServerManager = ServerManager.OpenRemote(ConfigurationManager.AppSettings["SecondWebServerName"]))
                 {
                     var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
                     if (remoteAppPool == null)
@@ -298,7 +296,6 @@ namespace MK.DeploymentService
                 }
             }
             
-
             if (_job.Database)
             {
                 Log("Deploying Database");
@@ -326,12 +323,12 @@ namespace MK.DeploymentService
                 Console.WriteLine("App Pool started.");
             }
 
-            if (!string.IsNullOrWhiteSpace(Settings.Default.SecondWebServerName))
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["SecondWebServerName"]))
             {
                 try
                 {
                     Console.WriteLine("Start Secondary App Pool ...");
-                    using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                    using (var remoteServerManager = ServerManager.OpenRemote(ConfigurationManager.AppSettings["SecondWebServerName"]))
                     {
                         var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == poolname);
 
@@ -342,13 +339,13 @@ namespace MK.DeploymentService
                         }
                         else if (remoteAppPool == null)
                         {
-                            Console.WriteLine("No AppPool named {0} found at {1}", Settings.Default.SecondWebServerName, poolname);
+                            Console.WriteLine("No AppPool named {0} found at {1}", ConfigurationManager.AppSettings["SecondWebServerName"], poolname);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Failed to connect to remote server {0}", Settings.Default.SecondWebServerName);
+                    Console.WriteLine("Failed to connect to remote server {0}", ConfigurationManager.AppSettings["SecondWebServerName"]);
                     Console.WriteLine(ex.Message);
                 }
             }
@@ -388,18 +385,18 @@ namespace MK.DeploymentService
 	        var p = new DatabaseInitializerParams
             {
                 CompanyName = companyName,
-                BackupFolder = Settings.Default.BackupFolder,
+                BackupFolder = ConfigurationManager.AppSettings["BackupFolder"],
                 SqlInstanceName = _job.Server.SqlServerInstance,
-                MkWebConnectionString = string.Format(Settings.Default.ToolSqlConnectionString, companyName),
-                MasterConnectionString = Settings.Default.SqlConnectionStringMaster,
-                MirroringSharedFolder = Settings.Default.MirroringSharedFolder,
-                MirroringMirrorPartner = Settings.Default.MirroringMirrorPartner,
-                MirroringWitness = Settings.Default.MirroringWitness,
-                MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
-                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
-				IsStaging = Settings.Default.ServerName.Equals("Staging"),
+                MkWebConnectionString = string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName),
+                MasterConnectionString = ConfigurationManager.ConnectionStrings["SqlConnectionStringMaster"].ConnectionString,
+                MirroringSharedFolder = ConfigurationManager.AppSettings["MirroringSharedFolder"],
+                MirroringMirrorPartner = ConfigurationManager.AppSettings["MirroringMirrorPartner"],
+                MirroringWitness = ConfigurationManager.AppSettings["MirroringWitness"],
+                MirroringPrincipalPartner = ConfigurationManager.AppSettings["MirroringPrincipalPartner"],
+                MirrorMasterConnectionString = ConfigurationManager.AppSettings["MirrorMasterConnectionString"],
+				IsStaging = ConfigurationManager.AppSettings["ServerName"].Equals("Staging"),
                 AppPoolName = appPoolName,
-                SecondWebServerName = Settings.Default.SecondWebServerName
+                SecondWebServerName = ConfigurationManager.AppSettings["SecondWebServerName"]
             };
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";
@@ -457,7 +454,7 @@ namespace MK.DeploymentService
 
             
 
-            connSting.Value =string.Format(Settings.Default.SiteSqlConnectionString, companyName );                    
+            connSting.Value =string.Format(ConfigurationManager.AppSettings["SiteSqlConnectionString"], companyName );                    
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");
@@ -484,23 +481,22 @@ namespace MK.DeploymentService
 
             Log("Deploying IIS Finished");
 
-            if (!string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["SecondWebServerName"]))
             {
                 Log("Deploying on mirror server");
                 ReplicateSite(companyName, targetWeDirectory, subFolder);
 
-                using (var remoteServer = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                using (var remoteServer = ServerManager.OpenRemote(ConfigurationManager.AppSettings["SecondWebServerName"]))
                 {
                     SetupWebApplication(companyName, appPoolName, remoteServer, targetWeDirectory);
                 }
             }
-
         }
 
         private static Application SetupWebApplication(string companyName, string appPoolName, ServerManager iisManager,
             string targetWeDirectory)
         {
-            var website = iisManager.Sites[Settings.Default.SiteName];
+            var website = iisManager.Sites[ConfigurationManager.AppSettings["SiteName"]];
             var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
             if (webApp != null)
             {
@@ -568,10 +564,10 @@ namespace MK.DeploymentService
 
         private void ReplicateSite(string companyName, string targetWeDirectory, string subFolder)
         {
-            if (!string.IsNullOrEmpty(Settings.Default.ReplicatedWebSitesFolder))
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ReplicatedWebSitesFolder"]))
             {
-                Log("Replicated IIS Site set to : " + Settings.Default.ReplicatedWebSitesFolder);
-                var replicatedTargetWeDirectory = Path.Combine(Settings.Default.ReplicatedWebSitesFolder, companyName, subFolder);
+                Log("Replicated IIS Site set to : " + ConfigurationManager.AppSettings["ReplicatedWebSitesFolder"]);
+                var replicatedTargetWeDirectory = Path.Combine(ConfigurationManager.AppSettings["ReplicatedWebSitesFolder"], companyName, subFolder);
 
                 Log("Replicated IIS Site set to : " + replicatedTargetWeDirectory);
                 CopyFiles(targetWeDirectory, replicatedTargetWeDirectory);

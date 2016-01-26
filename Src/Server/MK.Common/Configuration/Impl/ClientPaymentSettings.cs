@@ -46,6 +46,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool AskForCVVAtBooking { get; set; }
 
+		[Obsolete("CancelOrderOnUnpair is obsolete. It is only kept to support older versions. Use DisableOutOfAppPayment in Market settings of the Customer Portal")]
         public bool CancelOrderOnUnpair { get; set; }
 
         public bool CreditCardIsMandatory { get; set; }
