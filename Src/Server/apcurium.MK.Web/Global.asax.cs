@@ -55,7 +55,7 @@ namespace apcurium.MK.Web
         {
             Log.Info("Queue OrderStatusJob " + DateTime.Now.ToString("HH:MM:ss"));
 
-            bool hasOrdersWaitingForPayment = false;
+            var hasOrdersWaitingForPayment = false;
 
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>

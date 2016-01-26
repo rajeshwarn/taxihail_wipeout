@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,6 +53,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IDispatcherService _dispatcherService;
         private readonly IVehicleTypeDao _vehicleTypeDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -103,6 +103,7 @@ namespace apcurium.MK.Booking.Jobs
             _dispatcherService = dispatcherService;
             _vehicleTypeDao = vehicleTypeDao;
             _ibsServiceProvider = ibsServiceProvider;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
 
             _resources = new Resources.Resources(serverSettings);
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
@@ -112,7 +113,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-
+            
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail, orderDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail, paymentSettings);
@@ -140,11 +141,11 @@ namespace apcurium.MK.Booking.Jobs
 
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
-                _logger.LogMessage("Skipping order update");
+                _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
             }
 
-            _logger.LogMessage("Running order update" );
+            _logger.LogMessage("Running order update (Id: {0})", orderStatusDetail.OrderId);
 
             var hasDriverBailed = HasDriverBailed(orderStatusDetail, orderFromIbs);
 
@@ -182,16 +183,17 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
+        private void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
         {
-
             if (orderStatusDetail.IsPrepaid
                 || orderDetail.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
             {
                 return;
             }
 
-            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude);
+            
+            if (orderStatusDetail.UnpairingTimeOut != null && !marketSettings.DisableOutOfAppPayment && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(TimeBetweenPaymentChangeAndSaveInDb))
                 {
@@ -211,7 +213,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        public void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
+        private void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
         {
             var paymentMode = paymentSettings.PaymentMode;
             if (paymentMode != PaymentMethod.RideLinqCmt)

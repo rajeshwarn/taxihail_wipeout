@@ -45,12 +45,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly ILogger _logger;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IFeesDao _feesDao;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IOrderDao _orderDao;
-        private readonly IDispatcherService _dispatcherService;
 
         private readonly Resources.Resources _resources;
 
@@ -72,8 +72,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IRuleCalculator ruleCalculator,
             IFeesDao feesDao,
             ReferenceDataService referenceDataService,
-            IOrderDao orderDao,
-            IDispatcherService dispatcherService)
+            IOrderDao orderDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -84,11 +83,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
             _logger = logger;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _ruleCalculator = ruleCalculator;
             _feesDao = feesDao;
             _referenceDataService = referenceDataService;
             _orderDao = orderDao;
-            _dispatcherService = dispatcherService;
 
             _resources = new Resources.Resources(_serverSettings);
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
@@ -121,7 +120,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _dispatcherService.GetSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude).Market;
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
 
@@ -145,14 +145,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
             createReportOrder.CompanyFleetId = bestAvailableCompany.FleetId;
 
-            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
-            {
-                // No companies available that are desserving this region for the company
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-            }
-            
             if (market.HasValue())
             {
+                if (!bestAvailableCompany.CompanyKey.HasValue())
+                {
+                    // No companies available that are desserving this region for the company
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+                }
+
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.IsConfiguredForCmtPayment(bestAvailableCompany.CompanyKey);
 
@@ -160,6 +160,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 {
                     // Only companies configured for CMT payment can support CoF orders outside of home market
                     request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                }
+
+                if (marketSettings.DisableOutOfAppPayment && request.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                {
+                    // No payment method available since we can't pay in car
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_NoChargeType, _resources.Get("CannotCreateOrder_NoChargeType", request.ClientLanguageCode));
                 }
             }
 

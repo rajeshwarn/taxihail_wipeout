@@ -70,6 +70,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var orderPaymentDao = new OrderPaymentDao(() => new BookingDbContext(DbName));
 
             var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose);
+            var taxihailNetworkServiceClient = new TaxiHailNetworkServiceClient(ConfigurationManager);
 
             Sut = new Jobs.OrderStatusUpdater(ConfigurationManager,
                 bus.Object,
@@ -86,10 +87,10 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
                 notificationDetailsDaoMock.Object,
                 new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object),
-                new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, new TaxiHailNetworkServiceClient(ConfigurationManager)), ConfigurationManager, bus.Object, new TaxiHailNetworkServiceClient(ConfigurationManager), accountDao),
+                new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, taxihailNetworkServiceClient), ConfigurationManager, bus.Object, taxihailNetworkServiceClient, accountDao),
                 new VehicleTypeDao(() => new BookingDbContext(DbName)), 
-                new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, new TaxiHailNetworkServiceClient(ConfigurationManager)),
-                new TaxiHailNetworkServiceClient(ConfigurationManager),
+                new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, taxihailNetworkServiceClient),
+                taxihailNetworkServiceClient,
                 LoggerMock.Object);
         }
         

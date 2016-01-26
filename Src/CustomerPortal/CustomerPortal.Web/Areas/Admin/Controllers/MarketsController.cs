@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
@@ -50,7 +51,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
-                ReceiptFooter = marketModel.ReceiptFooter
+                DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
+                ReceiptFooter = marketModel.ReceiptFooter,
+                EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
+                MarketTariff = marketModel.MarketTariff,
             });
         }
 
@@ -227,7 +231,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult SaveSettings(string market, bool enableDriverBonus, string receiptFooter, bool enableFutureBooking)
+        public ActionResult SaveSettings (
+            string market, 
+            bool enableDriverBonus, 
+            string receiptFooter,
+            bool enableFutureBooking,
+            bool disableOutOfAppPayment,
+            bool enableAppFareEstimates, 
+            Tariff marketTariff)
         {
             try
             {
@@ -241,7 +252,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
+                marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
+                marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+
+                marketTariff.Type = (int) TariffType.Market;
+                marketToEdit.MarketTariff = marketTariff;
 
                 Repository.Update(marketToEdit);
             }

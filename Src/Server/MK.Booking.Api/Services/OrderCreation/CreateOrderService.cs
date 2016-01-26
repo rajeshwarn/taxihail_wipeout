@@ -58,12 +58,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IOrderPaymentDao orderPaymentDao,
             IFeesDao feesDao, 
             ILogger logger,
-            IIbsCreateOrderService ibsCreateOrderService,
-            IDispatcherService dispatcherService)
+            IIbsCreateOrderService ibsCreateOrderService)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                    ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                    payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
-                   feesDao, referenceDataService, orderDao, dispatcherService)
+                   feesDao, referenceDataService, orderDao)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;

@@ -37,7 +37,10 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
                         EnableDriverBonus = marketSettings.EnableDriverBonus,
-                        EnableFutureBooking = !marketSettings.Market.HasValue() ? !_serverSettings.ServerData.DisableFutureBooking : marketSettings.EnableFutureBooking,
+                        OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
+                        EnableFutureBooking = marketSettings.EnableFutureBooking,
+                        MarketTariff = marketSettings.MarketTariff,
+                        DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
                     }
                 : new MarketSettings();
         }

@@ -8,8 +8,8 @@ namespace apcurium.MK.Common
     {
         private readonly IConnectivityService _connectivityService;
 
-        public CustomNativeMessageHandler(IConnectivityService connectivityService, bool throwOnCaptiveNetwork, bool customSSLVerification, NativeCookieHandler cookieHandler = null)
-            : base(throwOnCaptiveNetwork, customSSLVerification, cookieHandler)
+        public CustomNativeMessageHandler(IConnectivityService connectivityService, bool throwOnCaptiveNetwork, bool customSSLVerification, bool enableRc4Compatibility, NativeCookieHandler cookieHandler = null)
+            : base(throwOnCaptiveNetwork, customSSLVerification, enableRc4Compatibility, cookieHandler)
         {
             _connectivityService = connectivityService;
         }
