@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 var settings = await _paymentService.GetPaymentSettings();
 
-                IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
+				IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled;
 
                 BookButtonHidden = Settings.DisableImmediateBooking && !Settings.UseSingleButtonForNowAndLaterBooking;
@@ -165,6 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 RaisePropertyChanged();
                 RaisePropertyChanged(() => BookButtonText);
+				RaisePropertyChanged(() => HideBookLater);
             }
         }
 
@@ -201,6 +202,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
+
+		public bool HideBookLater
+		{
+			get 
+			{ 
+				return Settings.UseSingleButtonForNowAndLaterBooking 
+					|| IsManualRidelinqEnabled
+					|| Settings.HideDestination;
+			}
+		}
 
 		#region iOS Bindings
 		private bool _hideManualRideLinqButtons;
@@ -279,10 +290,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             _orderValidationResult = orderValidationResult;
 
-            IsFutureBookingDisabled = (!marketSettings.IsLocalMarket && Settings.DisableFutureBooking)
-                || (!marketSettings.IsLocalMarket && !marketSettings.EnableFutureBooking)
-				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
-                || Settings.UseSingleButtonForNowAndLaterBooking;
+            IsFutureBookingDisabled = !marketSettings.EnableFutureBooking
+				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking);
 
 			Book.RaiseCanExecuteChangedIfPossible();
 			BookLater.RaiseCanExecuteChangedIfPossible();
@@ -391,6 +400,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_canExecuteBookOperation = value;
 				Book.RaiseCanExecuteChangedIfPossible();
+				BookLater.RaiseCanExecuteChangedIfPossible();
 			}
 		}
 
@@ -741,7 +751,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
 					Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 					await PrevalidatePickupAndDestinationRequired(onValidated);
-                }, CanProceedToBook);
+				}, () => CanProceedToBook() && !IsFutureBookingDisabled);
             }
         }
 			
@@ -959,9 +969,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						CreateOrder.ExecuteIfPossible();
 					}
-					// future booking
-					else if (IsFutureBookingDisabled)
+					else 
 					{
+						// future booking
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
 					}
