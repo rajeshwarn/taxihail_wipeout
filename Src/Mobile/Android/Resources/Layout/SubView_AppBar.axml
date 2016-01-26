@@ -71,7 +71,7 @@
                 android:layout_gravity="end|center"
                 local:ImgSrc="@drawable/button_booklater_image_selector"
                 local:LabelText="@string/BookItLaterButton"
-                local:MvxBind="Visibility IsFutureBookingDisabled, Converter=InvertedVisibility; Click BookLater" />
+                local:MvxBind="Visibility HideBookLater, Converter=InvertedVisibility; Click BookLater" />
             <LinearLayout
                 android:layout_width="15dp"
                 android:layout_height="55dip"
