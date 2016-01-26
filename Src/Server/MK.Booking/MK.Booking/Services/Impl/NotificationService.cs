@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success, string errorMessageKey = "")
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 
                 var alert = success
                     ? successMessage
-                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
+                    : string.Format(_resources.Get(errorMessageKey, order.ClientLanguageCode), order.IBSOrderId);
 
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 

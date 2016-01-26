@@ -88,6 +88,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
+                    if (response.ErrorCode.HasValue)
+                    {
+                        return new PairingResponse
+                        {
+                            IsSuccessful = false,
+                            ErrorCode = response.ErrorCode
+                        };
+                    }
+
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
                     {
@@ -126,10 +135,12 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception e)
             {
                 _logger.LogError(e);
+
                 return new PairingResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = e.Message,
+                    ErrorCode = CmtErrorCodes.UnableToPair
                 };
             }
         }
@@ -458,11 +469,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // Wait for trip to be updated to check if pairing was successful
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
-                
-                if (trip.HttpStatusCode != (int) HttpStatusCode.OK)
-                {
-                    throw new Exception("Card could not be paired with vehicle.");
-                }
+
+                response.ErrorCode = (trip != null) ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
 
                 return response;
             }
