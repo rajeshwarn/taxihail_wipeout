@@ -33,12 +33,18 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
+    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
-    <Reference Include="OkHttp">
-      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
+    <Reference Include="Square.OkHttp, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -93,12 +99,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <XamarinComponentReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CMTPayment\CMTPayment.Android.csproj">
       <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>

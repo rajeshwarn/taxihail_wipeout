@@ -211,6 +211,9 @@
             }
         },
 
+            var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
+                cancelOrderOnUnpairDiv.hide();
+                cancelOrderOnUnpairDiv.show();
         onPaymentModeChanged: function () {
             
             this.$("[name = acceptChange]").removeAttr("checked");
@@ -226,7 +229,8 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
-            
+            var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
+
             var currentPaymentMode = this.updatedModel.paymentMode;
 
             if (newPaymentMode != currentPaymentMode) {
@@ -275,11 +279,13 @@
                 preAuthAmountDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
+                cancelOrderOnUnpairDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
+                cancelOrderOnUnpairDiv.show();
             }
         }
     });

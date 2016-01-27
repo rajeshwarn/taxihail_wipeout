@@ -9,5 +9,6 @@
         public int DriverId { get; set; }
         public long TimeoutSeconds { get; set; }
 	    public string DeviceName { get; set; }
+        public int? ErrorCode { get; set; }
     }
 }

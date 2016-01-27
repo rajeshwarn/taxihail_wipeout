@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -90,7 +91,19 @@ namespace apcurium.MK.Booking.Jobs
             {
                 // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                                .Subscribe(_ =>_orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
+                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
+
+                // If this timer elapses, it will dispose the first timer which would allow another process to start
+                var deadlockTimer = Observable.Timer(TimeSpan.FromMinutes(15))
+                                .Subscribe(_ =>
+                                {
+                                    timer.Dispose();
+                                    Log.FatalFormat("Deadlock Timer has elapsed on {0}\n" +
+                                                    "LastUpdate timer will now stop and allow another process to continue processing orders.\n" +
+                                                    "This could mean OrderStatusUpdater has encountered an unhandled error that should be investigated ASAP." +
+                                                    "The website should be able to recover because an attempt to restart it has been made.", updaterUniqueId);
+                                    HttpRuntime.UnloadAppDomain();
+                                });
 
                 Log.DebugFormat("CheckStatus was allowed for {0}", updaterUniqueId);
 
@@ -120,8 +133,9 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 finally
                 {
-                    Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
+                    deadlockTimer.Dispose();
                     timer.Dispose();
+                    Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                 }
             }
             else
@@ -142,10 +156,10 @@ namespace apcurium.MK.Booking.Jobs
             Parallel.ForEach(manualRideLinqOrders, 
                 new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
                 orderStatusDetail =>
-            {
-                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
-                _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
-            });
+                {
+                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
+                    _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
+                });
 
             var ibsOrdersIds = orderStatusDetails
                 .Where(order => !order.IsManualRideLinq)

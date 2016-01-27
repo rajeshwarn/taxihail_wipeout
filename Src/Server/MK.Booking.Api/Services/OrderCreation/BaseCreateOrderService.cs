@@ -121,8 +121,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude,
-                request.PickupAddress.Longitude);
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             
             var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
@@ -267,10 +266,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.BookingFees = orderCommand.BookingFees;
 
             // Promo code validation
-            var usingPaymentInApp = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id ||
-                                     request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id) &&
-                                    marketSettings.DisableOutOfAppPayment;
-            var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, usingPaymentInApp, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
+            var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, request.Settings.ChargeTypeId, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
 
             // Charge account validation
             var accountValidationResult = ValidateChargeAccountIfNecessary(bestAvailableCompany.CompanyKey, request, orderCommand.OrderId, account, isFutureBooking, isFromWebApp, orderCommand.BookingFees, createReportOrder);
@@ -609,14 +605,15 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
         }
 
-        private Guid? ValidatePromotion(string companyKey, string promoCode, bool usingPaymentInApp, Guid accountId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode, CreateReportOrder createReportOrder)
+        private Guid? ValidatePromotion(string companyKey, string promoCode, int? chargeTypeId, Guid accountId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode, CreateReportOrder createReportOrder)
         {
             if (!promoCode.HasValue())
             {
                 // No promo code entered
                 return null;
             }
-            
+
+            var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
             if (!usingPaymentInApp)
             {
                 var promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFile";
