@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Fixups\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +49,8 @@
     <Compile Include="libDeviceCollectorLibrary.linkwith.cs">
       <DependentUpon>libDeviceCollectorLibrary.a</DependentUpon>
     </Compile>
+    <Compile Include="Fixups\BTPayPalDriver.FixUp.cs" />
+    <Compile Include="Fixups\BTCardClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
