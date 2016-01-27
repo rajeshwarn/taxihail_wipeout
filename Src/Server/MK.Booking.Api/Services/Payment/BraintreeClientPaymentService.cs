@@ -40,19 +40,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
 
-        public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
-        {
-            var userId = Guid.Parse(this.GetSession().UserAuthId);
-            var account = _accountDao.FindById(userId);
-
-            return TokenizedCreditCard(BraintreeGateway,
-                account,
-                tokenizeRequest.EncryptedCreditCardNumber,
-                tokenizeRequest.EncryptedExpirationDate,
-                tokenizeRequest.EncryptedCvv,
-                tokenizeRequest.PaymentMethodNonce);
-        }
-
         public object Post(AddPaymentMethodRequest request)
         {
             var userId = Guid.Parse(this.GetSession().UserAuthId);
@@ -239,8 +226,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + "")
                 ).IsSuccessful;
         }
-        
-        //TODO MKTAXI-3005: Validate if we still need this after vZero is implemented.
+
+        [Obsolete("This method is kept to support TestClient functionality from PaymentsSettings admin panel. To add a new creditcard use Braintree vZero API.")]
         private static TokenizedCreditCardResponse TokenizedCreditCard(
             BraintreeGateway client,
             AccountDetail account,

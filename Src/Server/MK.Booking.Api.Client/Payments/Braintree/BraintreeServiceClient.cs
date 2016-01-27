@@ -10,8 +10,11 @@ using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
+using CreditCardDetails = apcurium.MK.Booking.Api.Contract.Resources.CreditCardDetails;
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
@@ -44,35 +47,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             };
         }
 
-
-        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+	    public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-            try
-            {
-                var encryptedCreditCard = EncryptCreditCard(creditCardNumber, expiryDate, cvv);
-                var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
-                {
-                    EncryptedCreditCardNumber = encryptedCreditCard[0],
-                    EncryptedExpirationDate = encryptedCreditCard[1],
-                    EncryptedCvv = encryptedCreditCard[2],
-                });
-                return result;
-            }
-            catch (Exception e)
-            {
-                var message = e.Message;
-                var exception = e as AggregateException;
-                if (exception != null)
-                {
-                    message = exception.InnerException.Message;
-                }
-
-                return new TokenizedCreditCardResponse
-                {
-                    IsSuccessful = false,
-                    Message = message
-                };
-            }
+            throw new NotSupportedException("This method is not supported for Braintree vZero. Use AddPaymentMethod instead");
         }
         
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)

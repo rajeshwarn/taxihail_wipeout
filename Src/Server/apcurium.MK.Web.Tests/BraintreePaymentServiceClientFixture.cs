@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Linq;
-using apcurium.MK.Booking.Api.Services.Payment;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.IoC;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
@@ -20,7 +17,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Braintree;
-using CreditCard = apcurium.MK.Common.CreditCard;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
@@ -37,9 +33,6 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             var paymentService = GetPaymentService();
             UnityServiceLocator.Instance.RegisterInstance<IPaymentService>(paymentService);
-            
-
-
         }
 
         protected override IPaymentServiceClient GetPaymentClient()
@@ -64,98 +57,179 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_tokenizing_a_credit_card_visa_with_existing_credit_card()
+        public override async void when_settling_an_overdue_payment()
         {
-            string customerId;
+            var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
+            var pickUpDate = DateTime.Now;
+
+            var client = GetPaymentClient();
 
             using (var context = ContextFactory.Invoke())
             {
+                context.RemoveAll<OrderDetail>();
+                context.RemoveAll<OverduePaymentDetail>();
+                context.SaveChanges();
+
                 var braintreeGateway = BraintreePaymentService.GetBraintreeGateway(new BraintreeServerSettings());
 
-                var encryptedCard = ((BraintreeServiceClient) GetPaymentClient()).EncryptCreditCard(TestCreditCards.Visa.Number,
-                        TestCreditCards.Visa.ExpirationDate, 
-                        TestCreditCards.Visa.AvcCvvCvv2.ToString());
+                var encryptedCard = ((BraintreeServiceClient)client).EncryptCreditCard(TestCreditCards.Visa.Number,
+                    TestCreditCards.Visa.ExpirationDate,
+                    TestCreditCards.Visa.AvcCvvCvv2.ToString());
 
+                var customerResult = braintreeGateway.Customer.Create(new CustomerRequest());
 
-                var result = braintreeGateway.Customer.Create(new CustomerRequest()
+                var creditCard = braintreeGateway.CreditCard.Create(new CreditCardRequest
                 {
-                    CreditCard = new CreditCardRequest
+                    Number = encryptedCard[0],
+                    ExpirationDate = encryptedCard[1],
+                    CVV = encryptedCard[2],
+                    CustomerId = customerResult.Target.Id,
+                    Options = new CreditCardOptionsRequest
                     {
-                        Number = encryptedCard[0],
-                        ExpirationDate = encryptedCard[1],
-                        CVV = encryptedCard[2],
-                        Options = new CreditCardOptionsRequest
-                        {
-                            VerifyCard = true
-                        }
+                        VerifyCard = true
                     }
                 });
 
-                if (result.Errors != null)
-                {
-                    Assert.Fail(result.Message);
-                }
+                var token = creditCard.Target.Token;
 
-                var customer = result.Target;
-                customerId = customer.Id;
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
-                
-                var creditCardToken = customer.CreditCards.First();
-                
-                var creditCardId = Guid.NewGuid();
+                testAccount.DefaultCreditCard = creditCardId;
 
-                context.Set<CreditCardDetails>().Add(new CreditCardDetails()
+                context.RemoveAll<CreditCardDetails>();
+                context.SaveChanges();
+
+                context.Set<CreditCardDetails>().Add(new CreditCardDetails
                 {
-                    Token = creditCardToken.Token,
+                    CreditCardId = creditCardId,
                     AccountId = TestAccount.Id,
-                    CreditCardId = creditCardId
+                    CreditCardCompany = "Visa",
+                    Token = token
                 });
 
-                testAccount.BraintreeAccountId = customerId;
-                testAccount.DefaultCreditCard = creditCardId;
-                
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    AccountId = TestAccount.Id,
+                    BookingFees = 15m,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = pickUpDate,
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    ClientLanguageCode = SupportedLanguages.en.ToString()
+                });
+
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    IBSOrderId = 12345,
+                    VehicleNumber = "9001",
+                    Status = OrderStatus.Canceled,
+                    AccountId = TestAccount.Id,
+                    PickupDate = pickUpDate
+                });
+
+                context.Set<OrderPairingDetail>().Add(new OrderPairingDetail
+                {
+                    OrderId = orderId,
+                    AutoTipPercentage = 15
+                });
+
+                context.Set<OverduePaymentDetail>().Add(new OverduePaymentDetail
+                {
+                    AccountId = TestAccount.Id,
+                    IBSOrderId = 12345,
+                    OrderId = orderId,
+                    TransactionDate = DateTime.Now,
+                    TransactionId = "TransId",
+                    OverdueAmount = 52.34m,
+                    ContainBookingFees = false,
+                    ContainStandaloneFees = false,
+                    IsPaid = false
+                });
+
                 context.SaveChanges();
             }
 
-            var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
-            Assert.True(response.IsSuccessful, response.Message);
-            Assert.NotNull(response.BraintreeAccountId);
-            Assert.AreEqual(customerId, response.BraintreeAccountId);
+            var result = await client.SettleOverduePayment();
+            Assert.AreEqual(true, result.IsSuccessful);
+
+            var overduePayment = await client.GetOverduePayment();
+            Assert.IsNull(overduePayment);
         }
 
-
-
         [Test]
-        public async void when_tokenizing_a_credit_card_visa_with_existing_customer_id()
+        public override async void when_deleting_a_tokenized_credit_card()
         {
+            var client = GetPaymentClient();
+
+            string token;
             using (var context = ContextFactory.Invoke())
             {
                 var braintreeGateway = BraintreePaymentService.GetBraintreeGateway(new BraintreeServerSettings());
 
+                var encryptedCard = ((BraintreeServiceClient)client).EncryptCreditCard(TestCreditCards.Visa.Number,
+                    TestCreditCards.Visa.ExpirationDate,
+                    TestCreditCards.Visa.AvcCvvCvv2.ToString());
+
+                var creditCardId = Guid.NewGuid();
+
+                var customerResult = braintreeGateway.Customer.Create(new CustomerRequest());
+
+                var creditCard = braintreeGateway.CreditCard.Create(new CreditCardRequest
+                {
+                    Number = encryptedCard[0],
+                    ExpirationDate = encryptedCard[1],
+                    CVV = encryptedCard[2],
+                    CustomerId = customerResult.Target.Id,
+                    Options = new CreditCardOptionsRequest
+                    {
+                        VerifyCard = true
+                    }
+                });
+
+                token = creditCard.Target.Token;
+
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
+                testAccount.DefaultCreditCard = creditCardId;
 
-                var result = braintreeGateway.Customer.Create();
-
-                var customer = result.Target;
-
-                testAccount.BraintreeAccountId = customer.Id;
-
+                context.RemoveAll<CreditCardDetails>();
                 context.SaveChanges();
 
-                var client = GetPaymentClient();
-                var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
-                Assert.True(response.IsSuccessful, response.Message);
-                Assert.NotNull(response.BraintreeAccountId);
-                Assert.AreEqual(customer.Id, response.BraintreeAccountId);
+                context.Set<CreditCardDetails>().Add(new CreditCardDetails
+                {
+                    CreditCardId = creditCardId,
+                    AccountId = TestAccount.Id,
+                    CreditCardCompany = "Visa",
+                    Token = token
+                });
             }
+
+            var response = await client.ForgetTokenizedCard(token);
+            Assert.True(response.IsSuccessful, response.Message);
+        }
+
+        [Test]
+        public async void when_providing_paypal_nounce()
+        {
+            var client = GetPaymentClient();
+            var response = await client.AddPaymentMethod("fake-paypal-future-nonce", PaymentMethods.Paypal, null);
+            Assert.True(response.IsSuccessful, response.Message);
+            Assert.NotNull(response.BraintreeAccountId);
+        }
+
+        [Test]
+        public async void when_fetching_client_token()
+        {
+            var client = GetPaymentClient();
+            var response = await client.GenerateClientTokenResponse();
+            Assert.NotNull(response.ClientToken);
         }
 
         [Test]
         public override async void when_tokenizing_a_credit_card_amex()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2 + "");
+            var response = await client.AddPaymentMethod("fake-valid-amex-nonce", PaymentMethods.CreditCard, null);
             Assert.True(response.IsSuccessful, response.Message);
             Assert.NotNull(response.BraintreeAccountId);
         }
@@ -164,7 +238,7 @@ namespace apcurium.MK.Web.Tests
         public override async void when_tokenizing_a_credit_card_discover()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
+            var response = await client.AddPaymentMethod("fake-valid-discover-nonce", PaymentMethods.CreditCard, null);
             Assert.True(response.IsSuccessful, response.Message);
             Assert.NotNull(response.BraintreeAccountId);
         }
@@ -173,7 +247,7 @@ namespace apcurium.MK.Web.Tests
         public override async void when_tokenizing_a_credit_card_mastercard()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
+            var response = await client.AddPaymentMethod("fake-valid-mastercard-nonce", PaymentMethods.CreditCard, null);
             Assert.True(response.IsSuccessful, response.Message);
             Assert.NotNull(response.BraintreeAccountId);
         }
@@ -182,7 +256,7 @@ namespace apcurium.MK.Web.Tests
         public override async void when_tokenizing_a_credit_card_visa()
         {
             var client = GetPaymentClient();
-            var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
+            var response = await client.AddPaymentMethod("fake-valid-visa-nonce", PaymentMethods.CreditCard, null);
             Assert.True(response.IsSuccessful, response.Message);
             Assert.NotNull(response.BraintreeAccountId);
         }
