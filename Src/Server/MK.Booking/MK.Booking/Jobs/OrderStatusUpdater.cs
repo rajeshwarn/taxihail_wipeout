@@ -1,11 +1,8 @@
 ﻿using System;
-using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel;
@@ -20,12 +17,9 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceClient.Web;
-using Order = PayPal.Api.Order;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -213,7 +207,7 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            if (rideLinqDetails.EndTime.HasValue)
+            if (rideLinqDetails.EndTime.HasValue || rideLinqDetails.PairingError.HasValueTrimmed())
             {
                 // Trip ended. Nothing do to has end of trip errors are handled by the event handler.
                 return;
@@ -241,8 +235,7 @@ namespace apcurium.MK.Booking.Jobs
             }
 
             string pairingError = null;
-
-            if (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired)
+            if (tripInfo.ErrorCode.HasValue && tripInfo.ErrorCode.Value != CmtErrorCodes.TripNotFound)
             {
                 pairingError = tripInfo.ErrorCode.ToString();
             }
