@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
-                        var errorMessageKey = "TripUnableToPairErrorText";
+                        var errorMessageKey = string.Empty;
                        
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
