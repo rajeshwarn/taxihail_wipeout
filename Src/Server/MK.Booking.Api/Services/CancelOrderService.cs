@@ -14,6 +14,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using CustomerPortal.Client;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -26,6 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
         private readonly IServerSettings _serverSettings;
+        private readonly ITaxiHailNetworkServiceClient _networkServiceClient;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly ILogger _logger;
 
@@ -35,6 +37,7 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountDao accountDao,
             IUpdateOrderStatusJob updateOrderStatusJob, 
             IServerSettings serverSettings,
+            ITaxiHailNetworkServiceClient networkServiceClient,
             IIbsCreateOrderService ibsCreateOrderService,
             ILogger logger)
         {
@@ -44,6 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
             _serverSettings = serverSettings;
+            _networkServiceClient = networkServiceClient;
             _ibsCreateOrderService = ibsCreateOrderService;
             _logger = logger;
 
@@ -70,8 +74,10 @@ namespace apcurium.MK.Booking.Api.Services
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
                 var orderStatus = _orderDao.FindOrderStatusById(order.Id);
 
+                var marketSettings = _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+            
                 var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-                    && _serverSettings.GetPaymentSettings(orderStatus.CompanyKey).CancelOrderOnUnpair;
+                    && marketSettings.DisableOutOfAppPayment;
 
                 if (currentIbsAccountId.HasValue
                     && (!orderStatus.IBSStatusId.HasValue()

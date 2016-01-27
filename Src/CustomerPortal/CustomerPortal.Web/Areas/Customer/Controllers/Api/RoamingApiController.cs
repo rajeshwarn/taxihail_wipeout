@@ -304,7 +304,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     ReceiptFooter = marketSettings.ReceiptFooter,
                     EnableFutureBooking = marketSettings.EnableFutureBooking,
                     EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
-                    MarketTariff = marketSettings.MarketTariff
+                    MarketTariff = marketSettings.MarketTariff,
+                    DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
                 }
                 : new CompanyMarketSettingsResponse();
         }

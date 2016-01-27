@@ -69,6 +69,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 
+			if (marketSettings.DisableOutOfAppPayment)
+			{
+				paymentList.Remove (x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+			}
+
 			ChargeTypes = paymentList
 				.Select(x => new ListItem
 					{

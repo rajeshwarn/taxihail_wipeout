@@ -73,6 +73,15 @@
     <Debugger>Xamarin</Debugger>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkHttp">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -179,12 +188,6 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
-    </Reference>
-    <Reference Include="OkHttp">
-      <HintPath>..\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
-    </Reference>
     <Reference Include="DeviceCollectorBindingsAndroid">
       <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
     </Reference>
@@ -221,10 +224,6 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

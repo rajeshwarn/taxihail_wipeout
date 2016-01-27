@@ -29,35 +29,34 @@
     </div>
 </div>
 
-<div class='row'>
-    <div class='span12'>
-        <h4>Vehicle types</h4>
-        <p>
-            <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
-        </p>
-    </div>
-    <div class="span12">
-        <h5>Vehicle Types</h5>
-        <table class="table table-striped">
-            @foreach (var vehicleType in Model.Vehicles)
-            {
-                <tr>
-                    <td>
-                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
 
-                    </td>
-                    <td>
-                        @Html.ActionLink(
-                            "Delete",
-                            "DeleteVehicle",
-                            new {id = vehicleType.Id, market = Model.Market},
-                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+<div>
+    <h4>Vehicle types</h4>
+    <p>
+        <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
+    </p>
 </div>
+<div>
+    <table class="table table-striped">
+        @foreach (var vehicleType in Model.Vehicles)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
+
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Delete",
+                        "DeleteVehicle",
+                        new {id = vehicleType.Id, market = Model.Market},
+                        new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 
 @using (Html.BeginForm("SaveSettings", "Markets", FormMethod.Post))
 {
@@ -77,8 +76,9 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableDriverBonus }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
 
-            <h5>Enable Future Booking</h5>
+            <h4>Enable Future Booking</h4>
 
             @Html.DropDownList(
             "EnableFutureBooking",
@@ -88,12 +88,30 @@
                 new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableFutureBooking }
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
 
-            <h5>Receipt Footer</h5>
+            <h4>Disable Out Of App Payment</h4>
+
+            <span>If true, unpairing during a ride will cancel the order</span>
+
+            @Html.DropDownList(
+            "DisableOutOfAppPayment",
+            new[]
+            {
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.DisableOutOfAppPayment},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.DisableOutOfAppPayment }
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
+
+            <h4>Receipt Footer</h4>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
-
+            <br/>
 
             <h4>Ride Estimates</h4>
+            <span> This section will control the app fare estimates when a app connect to this market during roaming (Arro connects to Chicago for instance).</span> 
+            <br/>
+            <span> This override will be ignored when in local markets. </span>
 
             <h5>Override app fare estimates</h5>
             @Html.DropDownList(
@@ -130,4 +148,5 @@
         <button type="submit" class="btn btn-primary span">Save Changes</button>
         @Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
     </div>
+    <br/>
 }

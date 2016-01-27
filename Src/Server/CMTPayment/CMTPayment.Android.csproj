@@ -34,13 +34,19 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\ModernHttpClient.dll</HintPath>
+    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OkHttp">
-      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\android\OkHttp.dll</HintPath>
+    <Reference Include="Square.OkHttp, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,11 +91,5 @@
   -->
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamarinComponentReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
   </ItemGroup>
 </Project>
