@@ -99,7 +99,6 @@
 			</dict>
       </dict> -->
     </dict>
-  </dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.paypal.ppclient.touch.v1</string>
