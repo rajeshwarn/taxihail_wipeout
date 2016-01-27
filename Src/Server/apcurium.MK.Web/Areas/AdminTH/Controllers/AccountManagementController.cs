@@ -282,8 +282,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var accountNoteEntry = new AccountNoteEntry
             {
-                AccountId = new Guid(AuthSession.UserAuthId),
-                AccountEmail = AuthSession.UserAuthName,
+                AccountId = accountManagementModel.Id,
+                WriterAccountId = new Guid(AuthSession.UserAuthId),
+                WriterAccountEmail = AuthSession.UserAuthName,
                 Type = noteType,
                 CreationDate = DateTime.Now,
                 Note = noteContent
@@ -342,7 +343,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 })
                 .ToList();
 
-            model.Notes = _accountNoteService.FindByAccountId(new Guid(AuthSession.UserAuthId))
+            model.Notes = _accountNoteService.FindByAccountId(accountId)
                 .OrderByDescending(c => c.CreationDate)
                 .Select(x => new NoteModel(x))
                 .ToList();

@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            if (rideLinqDetails.EndTime.HasValue)
+            if (rideLinqDetails.EndTime.HasValue || rideLinqDetails.PairingError.HasValueTrimmed())
             {
                 // Trip ended. Nothing do to has end of trip errors are handled by the event handler.
                 return;
@@ -278,8 +278,7 @@ namespace apcurium.MK.Booking.Jobs
             }
 
             string pairingError = null;
-
-            if (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired)
+            if (tripInfo.ErrorCode.HasValue && tripInfo.ErrorCode.Value != CmtErrorCodes.TripNotFound)
             {
                 pairingError = tripInfo.ErrorCode.ToString();
             }
