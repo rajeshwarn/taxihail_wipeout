@@ -284,7 +284,11 @@ namespace apcurium.MK.Booking.Services.Impl
                         creditCard != null ? creditCard.Last4Digits : "",
                         autoTipPercentage);
                 }
-                
+
+                errorMessageKey = errorMessageKey.IsNullOrEmpty()
+                    ? "PushNotification_OrderPairingFailed"
+                    : errorMessageKey;
+
                 var alert = success
                     ? successMessage
                     : string.Format(_resources.Get(errorMessageKey, order.ClientLanguageCode), order.IBSOrderId);
