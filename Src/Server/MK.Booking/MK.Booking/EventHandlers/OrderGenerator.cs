@@ -661,7 +661,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        order.Status = (int) OrderStatus.TimedOut;
+                        order.Status = (int) OrderStatus.Canceled;
                     }
 
                     order.Fare = @event.Fare;
@@ -680,7 +680,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        orderStatusDetails.Status = OrderStatus.TimedOut;
+                        orderStatusDetails.Status = OrderStatus.Canceled;
                     }
 
                     context.Save(orderStatusDetails);
