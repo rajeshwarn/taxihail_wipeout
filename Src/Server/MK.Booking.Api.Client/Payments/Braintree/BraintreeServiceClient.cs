@@ -7,16 +7,16 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
-using BraintreeEncryption.Library;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using CreditCardDetails = apcurium.MK.Booking.Api.Contract.Resources.CreditCardDetails;
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.ReadModel;
+using BraintreeEncryption.Library;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         protected string ClientKey { get; set; }
 
-
+#if !CLIENT
         public string[] EncryptCreditCard(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             var braintree = new BraintreeEncrypter(ClientKey);
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 encryptedCvv
             };
         }
-
+#endif
 	    public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             throw new NotSupportedException("This method is not supported for Braintree vZero. Use AddPaymentMethod instead");

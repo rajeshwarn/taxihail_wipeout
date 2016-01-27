@@ -58,9 +58,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="BrainTreeEncryption.Library">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\BrainTreeEncryption.Library.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

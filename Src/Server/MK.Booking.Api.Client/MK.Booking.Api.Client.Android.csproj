@@ -48,9 +48,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="BraintreeEncryption.Library.Android">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAccountServiceClient.cs" />
