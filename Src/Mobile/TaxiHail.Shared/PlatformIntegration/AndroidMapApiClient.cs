@@ -34,20 +34,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			_settings = settings;
 		}
 
-		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
+		public GeoAddress[] GeocodeAddress (string query, string currentLanguage)
 		{
-			return GeocodeAddressAsync(address, currentLanguage).Result;
+            return GeocodeAddressAsync(query, currentLanguage).Result;
 		}
 
-	    public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+        public async Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage)
 	    {
             // Do nothing with currentLanguage parameter since Android Geocoder
             // automatically gets the results using the system language
             var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
 
 	        var locationsTask = SettingsForGeocodingRegionAreSet 
-                ? geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100,_settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value,_settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value)
-                : geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100);
+                ? geocoder.GetFromLocationNameAsync(query.Replace("+", " "), 100,_settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value,_settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value)
+                : geocoder.GetFromLocationNameAsync(query.Replace("+", " "), 100);
 	        try
 	        {
                 var locations = await locationsTask;

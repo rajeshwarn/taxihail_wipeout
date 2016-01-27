@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using Newtonsoft.Json;
+using MapKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -18,11 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
         }
 
-        public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
+        public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
         {
             try
             {
-                return GeocodeAddressAsync(address, currentLanguage).Result;
+                return GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters).Result;
             }
             catch (Exception ex)
             {
@@ -35,17 +37,52 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+        public async Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
         {
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
-            var geocoder = new CLGeocoder();
+            var placemarks = await SearchAsync(query, pickupLatitude, pickupLongitude, searchRadiusInMeters);
 
-            var placemarks = await geocoder.GeocodeAddressAsync(address.Replace("+"," ")).ConfigureAwait(false);
-
-            return placemarks
+            var geoAddresses = placemarks
                 .Select(ConvertPlacemarkToAddress)
                 .ToArray();
+
+            Console.WriteLine("ios results: " + JsonConvert.SerializeObject(geoAddresses, Formatting.Indented));
+
+            return geoAddresses;
+        }
+
+        private Task<MKPlacemark[]> SearchAsync(string query, double lat, double lng, double radiusInMeters)
+        {
+            var tcs = new TaskCompletionSource<MKPlacemark[]>();
+            var result = new MKPlacemark[0];
+
+            var o = new NSObject ();
+            o.InvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    var region = MKCoordinateRegion.FromDistance(new CLLocationCoordinate2D(lat, lng), radiusInMeters * 2, radiusInMeters * 2);
+                    var search = new MKLocalSearch(new MKLocalSearchRequest 
+                    { 
+                        NaturalLanguageQuery = query.Replace("+", " "), 
+                        Region = region
+                    });
+
+                    var searchResult = await search.StartAsync();
+                    result = searchResult.MapItems.Select(x => x.Placemark).ToArray();
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    tcs.TrySetResult(result);
+                }
+            });
+
+            return tcs.Task;
         }
 
         public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)

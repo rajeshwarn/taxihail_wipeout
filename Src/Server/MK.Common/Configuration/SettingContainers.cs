@@ -104,7 +104,10 @@ namespace apcurium.MK.Common.Configuration
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Search Filter", Description = "Filter for geolocation search")]
-        public string SearchFilter { get; protected internal set; }
+        public string SearchFilter
+        {
+            get { return "{0},on,canada"; }
+        }
     }
 
     public class AvailableVehiclesSettingContainer

@@ -435,19 +435,28 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
-		public double? LowerLeftLatitude { get; protected set; }
+        public double? LowerLeftLatitude
+        {
+            get{ return 42.980767; }
+        }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
-		public double? LowerLeftLongitude { get; protected set; }
+        public double? LowerLeftLongitude {
+            get{ return -80.367309; }
+        }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Upper Right Latitude", Description="Upper Right Latitude limit to be used when searching for an address")]
-		public double? UpperRightLatitude { get; protected set; }
+        public double? UpperRightLatitude {
+            get{ return 43.552429; }
+        }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
-		public double? UpperRightLongitude { get; protected set; }
+        public double? UpperRightLongitude {
+            get{ return -79.431323; }
+        }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Map - Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]

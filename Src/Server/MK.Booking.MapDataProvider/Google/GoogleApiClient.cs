@@ -194,18 +194,18 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return result;
         }
 
-		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)
+        public GeoAddress[] GeocodeAddress(string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
 		{
-		    var paremeters = GenerateGeocodeRequestParameters(address, currentLanguage);
+            var paremeters = GenerateGeocodeRequestParameters(query, currentLanguage);
 
-		    return Geocode(paremeters, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
+            return Geocode(paremeters, () => _fallbackGeocoder.GeocodeAddress (query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
 		}
 
-	    private string GenerateGeocodeRequestParameters(string address, string currentLanguage)
+        private string GenerateGeocodeRequestParameters(string query, string currentLanguage)
 	    {
 	        var @params = new Dictionary<string, string>
 	        {
-	            {"address", address.ToString(CultureInfo.InvariantCulture)},
+                {"address", query.ToString(CultureInfo.InvariantCulture)},
 	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
 	            {"sensor", true.ToString().ToLower()}
 	        };
@@ -214,11 +214,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	        return resource;
 	    }
 
-	    public Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+        public Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
 	    {
-            var parameters = GenerateGeocodeRequestParameters(address, currentLanguage);
+            var parameters = GenerateGeocodeRequestParameters(query, currentLanguage);
 
-	        return GeocodeAsync(parameters, () => _fallbackGeocoder.GeocodeAddressAsync(address, currentLanguage));
+            return GeocodeAsync(parameters, () => _fallbackGeocoder.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
 	    }
 
 	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
