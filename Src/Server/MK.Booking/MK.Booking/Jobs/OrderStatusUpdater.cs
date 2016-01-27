@@ -17,6 +17,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
