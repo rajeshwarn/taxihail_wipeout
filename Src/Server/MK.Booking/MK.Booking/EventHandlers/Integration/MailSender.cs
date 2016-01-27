@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
                                     Tolls = tolls.ToArray(),
-                                    TipIncentive = (order.TipIncentive.HasValue) ? order.TipIncentive.Value : 0
+                                    TipIncentive = order.TipIncentive ?? 0
                                 });
                         }
                     }

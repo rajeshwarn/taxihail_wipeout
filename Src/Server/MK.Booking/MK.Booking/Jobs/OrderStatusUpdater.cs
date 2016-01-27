@@ -17,6 +17,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
@@ -120,7 +121,7 @@ namespace apcurium.MK.Booking.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
-            CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
+            var trip = CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
 
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
@@ -132,7 +133,7 @@ namespace apcurium.MK.Booking.Jobs
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
 
-            CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail);
+            CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
 
             _commandBus.Send(new ChangeOrderStatus
             {
@@ -175,20 +176,26 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        private void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
+        /// <summary>
+        /// Return value is only set if we succesfully got a trip from RideLinq
+        /// </summary>
+        /// <param name="orderStatusDetail"></param>
+        /// <param name="paymentSettings"></param>
+        /// <returns></returns>
+        private Trip CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
         {
             var paymentMode = paymentSettings.PaymentMode;
             if (paymentMode != PaymentMethod.RideLinqCmt)
             {
                 // Only for CMT RideLinQ
-                return;
+                return null;
             }
 
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
                 // Order not paired
-                return;
+                return null;
             }
 
             InitializeCmtServiceClient(paymentSettings);
@@ -201,6 +208,8 @@ namespace apcurium.MK.Booking.Jobs
                 orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
                 orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
             }
+
+            return tripInfo;
         }
 
         public virtual void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
@@ -499,18 +508,85 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        private void HandlePairingForRideLinqCmt(OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
+        private void HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
-            // in the case of RideLinq CMT, we only want to calculate the tip to fill information on our side
-            if (pairingInfo.AutoTipPercentage.HasValue)
+            HandleOrderCompletionWithNoFare(orderStatusDetail,
+                () =>
+                {
+                    if (trip == null)
+                    {
+                        InitializeCmtServiceClient(paymentSettings);
+                        trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                    }
+                    return !trip.EndTime.HasValue;
+                },
+                () => { },
+                () =>
+                {
+                    // in the case of RideLinq CMT, we want to change the values of ibsOrderInfo since trip 
+                    // could have more reliable info than ibs (sometimes ibs returns 0 but the trip has completed with full info)
+                    if (trip == null)
+                    {
+                        InitializeCmtServiceClient(paymentSettings);
+                        trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                    }
+
+                    // this check is only for consistency but it should not happen here since we already made sure that we have an endtime
+                    if (trip != null && !trip.ErrorCode.HasValue && trip.EndTime.HasValue)
+                    {
+                        var tollHistory = trip.TollHistory != null
+                            ? trip.TollHistory.Sum(p => p.TollAmount)
+                            : 0;
+
+                        ibsOrderInfo.Fare = Math.Round((trip.Fare + trip.FareAtAlternateRate) / 100d, 2);
+                        ibsOrderInfo.Tip = Math.Round(trip.Tip / 100d, 2);
+                        ibsOrderInfo.Toll = Math.Round(tollHistory / 100d, 2);
+                        ibsOrderInfo.VAT = Math.Round(trip.Tax / 100d, 2);
+                        ibsOrderInfo.Surcharge = Math.Round((trip.Surcharge + trip.Extra + trip.AccessFee) / 100d, 2);
+                    }
+                });
+        }
+
+        private bool HandleOrderCompletionWithNoFare(OrderStatusDetail orderStatusDetail, Func<bool> hasNoFareInfo, Action doOnTimeOut, Action doOnCompletionWithFare)
+        {
+            if (orderStatusDetail.Status == OrderStatus.Completed
+                || orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                ibsOrderInfo.Tip = FareHelper.CalculateTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
-                _logger.LogMessage("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}", ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
+                // status is now Completed or WaitingForPayment, check if we have received fare info
+                if (hasNoFareInfo())
+                {
+                    // no fare info yet
+
+                    if (orderStatusDetail.Status == OrderStatus.Completed)
+                    {
+                        // no fare received but order is completed, change status to increase polling speed and to trigger a completion on clientside
+                        orderStatusDetail.Status = OrderStatus.WaitingForPayment;
+                        orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
+                        _logger.LogMessage("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                        return true;
+                    }
+
+                    if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+                        && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
+                    {
+                        // 30 minutes passed and still no fare info, just complete the ride
+                        orderStatusDetail.Status = OrderStatus.Completed;
+                        orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
+                        _logger.LogMessage("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
+
+                        doOnTimeOut();
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    orderStatusDetail.Status = OrderStatus.Completed;
+                    doOnCompletionWithFare();
+                }
             }
-            else
-            {
-                _logger.LogMessage("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
-            }
+
+            return false;
         }
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, OrderDetail orderDetail)
@@ -528,28 +604,11 @@ namespace apcurium.MK.Booking.Jobs
                 SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, orderStatusDetail.CompanyKey);
             }
 
-            if (ibsOrderInfo.Fare <= 0)
+            if (HandleOrderCompletionWithNoFare(orderStatusDetail, 
+                () => ibsOrderInfo.Fare <= 0, 
+                () => _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId),
+                () => { }))
             {
-                // fare was not returned by ibs
-                // check if status is completed
-                if (orderStatusDetail.Status == OrderStatus.Completed)
-                {
-                    // no fare received but order is completed, change status to increase polling speed
-                    orderStatusDetail.Status = OrderStatus.WaitingForPayment;
-                    orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
-                    _logger.LogMessage("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
-                }
-
-                if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
-                    && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
-                {
-                    orderStatusDetail.Status = OrderStatus.Completed;
-                    _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
-
-                    orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
-                    _logger.LogMessage("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
-                }
-
                 return;
             }
 
@@ -876,7 +935,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        private void CheckForPairingAndHandleIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)
+        private void CheckForPairingAndHandleIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, OrderDetail orderDetail, Trip trip)
         {
             if (orderStatusDetail.IsPrepaid)
             {
@@ -896,7 +955,7 @@ namespace apcurium.MK.Booking.Jobs
             
             if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
             {
-                HandlePairingForRideLinqCmt(pairingInfo, ibsOrderInfo);
+                HandlePairingForRideLinqCmt(orderStatusDetail, pairingInfo, ibsOrderInfo, paymentSettings, trip);
                 return;
             }
 
