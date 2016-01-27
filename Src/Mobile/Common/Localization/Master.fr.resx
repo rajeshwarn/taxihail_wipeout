@@ -2393,9 +2393,6 @@
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Changer Carte</value>
   </data>
-  <data name="UsePayPal" xml:space="preserve">
-    <value>Utiliser PayPal</value>
-  </data>
   <data name="PaypalErrorTitle" xml:space="preserve">
   	<value>Erreur Paypal</value>
   </data>

@@ -332,7 +332,7 @@
                         android:singleLine="true"
                         android:lines="1"
                         android:text="@string/UnlinkPayPal"
-                        local:MvxBind="Click ShowCreditCardView; Visibility IsShowUseCreditCardButton, Converter=Visibility"
+                        local:MvxBind="Click ShowCreditCardViewCommand; Visibility IsShowUseCreditCardButton, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button

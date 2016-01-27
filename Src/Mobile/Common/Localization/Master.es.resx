@@ -2996,9 +2996,6 @@
   	<value>Update Card</value>
   	<comment>Update Card</comment>
   </data>
-  <data name="UsePayPal" xml:space="preserve">
-    <value>Use PayPal</value>
-  </data>
   <data name="PaypalErrorTitle" xml:space="preserve">
   	<value>Paypal error</value>
   </data>
