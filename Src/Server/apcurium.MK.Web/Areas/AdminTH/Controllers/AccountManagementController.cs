@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using PagedList;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -37,6 +38,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly ConfirmAccountService _confirmAccountService;
         private readonly ExportDataService _exportDataService;
         private readonly Resources _resources;
+
+        private readonly int _pageListSize;
 
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
@@ -62,18 +65,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _confirmAccountService = confirmAccountService;
             _exportDataService = exportDataService;
 
+            _pageListSize = 10;
+
             _resources = new Resources(serverSettings);
         }
 
-        public ActionResult Index(Guid id)
+        public ActionResult Index(Guid id, int page = 1, int pageSize = 2)
         {
-            AccountManagementModel accountManagementModel = InitializeModel(id);
+            AccountManagementModel accountManagementModel = InitializeModel(id, page, pageSize);
             return View(accountManagementModel);
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Save(AccountManagementModel accountManagementModel)
+        public ActionResult Save(AccountManagementModel accountManagementModel, int page = 1, int pageSize = 2)
         {
             if (ModelState.IsValid)
             {
@@ -298,7 +303,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             accountManagementModel.Notes.Insert(0, new NoteModel(accountNoteEntry));
         }
 
-        private AccountManagementModel InitializeModel(Guid accountId)
+        private AccountManagementModel InitializeModel(Guid accountId, int page, int pageSize)
         {
             var accountDetail = _accountDao.FindById(accountId);
             var model = new AccountManagementModel
@@ -325,7 +330,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 model.CreditCardLast4Digits = defaultCreditCard.Last4Digits;
             }
 
-            model.Orders = _orderDao.FindByAccountId(accountId)
+            List<OrderModel> orders = _orderDao.FindByAccountId(accountId)
                 .OrderByDescending(c => c.CreatedDate)
                 .Select(x =>
                 {
@@ -343,10 +348,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 })
                 .ToList();
 
+            model.OrdersPaged = new PagedList<OrderModel>(orders, page, pageSize);
+
             model.Notes = _accountNoteService.FindByAccountId(accountId)
                 .OrderByDescending(c => c.CreationDate)
                 .Select(x => new NoteModel(x))
                 .ToList();
+
+            //model.PagingMetaData = new StaticPagedList<AccountManagementModel>(model, page, pageSize, orders.Count()).GetMetaData();
 
             return model;
         }

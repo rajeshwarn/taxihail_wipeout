@@ -1,6 +1,7 @@
 ﻿@using apcurium.MK.Web.Areas.AdminTH.Models
 @using apcurium.MK.Common.Entity
 @using apcurium.MK.Web.helpers
+@using PagedList.Mvc
 @model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
 
 
@@ -16,7 +17,7 @@
 
       @Html.AntiForgeryToken()
       @Html.HiddenFor(x => x.Id)
-      @Html.HiddenForEnumerable(x => x.Orders)
+      @Html.HiddenForEnumerable(x => x.OrdersPaged)
       @Html.HiddenForEnumerable(x => x.Notes)
 
       <div class="div-account-block">
@@ -197,7 +198,7 @@
     <div class="well clearfix form-horizontal" style="width:1250px;">
         <h4 class="table-title">Orders <small><input type="submit" formaction='@Url.Action("ExportOrders")' class="btn-link" value="Export to csv" /></small></h4>
 
-        @if (Model.Orders != null && Model.Orders.Any())
+        @if (Model.OrdersPaged != null && Model.OrdersPaged.Any())
         {
             <div class="control-group">
                 <table class="table-accountslist">
@@ -217,7 +218,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var order in Model.Orders)
+                        @foreach (var order in Model.OrdersPaged)
                         {
                             <tr>
                                 <td style="width:100px;"><div>@order.CreatedDate.ToShortDateString()</div><div>@order.CreatedDate.ToShortTimeString()</div></td>
@@ -254,6 +255,13 @@
                 </table>
             </div>
         }
+
+        <div class="col-sm-10">
+            <div class="center">
+                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { page}))
+                
+            </div>
+        </div>
     </div>
 
 
