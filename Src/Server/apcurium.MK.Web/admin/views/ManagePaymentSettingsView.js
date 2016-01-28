@@ -211,9 +211,6 @@
             }
         },
 
-            var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
-                cancelOrderOnUnpairDiv.hide();
-                cancelOrderOnUnpairDiv.show();
         onPaymentModeChanged: function () {
             
             this.$("[name = acceptChange]").removeAttr("checked");
