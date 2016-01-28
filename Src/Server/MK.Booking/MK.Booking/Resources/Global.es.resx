@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,766 +59,781 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string"/>
+							<xsd:attribute name="type" type="xsd:string"/>
+							<xsd:attribute name="mimetype" type="xsd:string"/>
+							<xsd:attribute ref="xml:space"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string"/>
+							<xsd:attribute name="name" type="xsd:string"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+							<xsd:attribute ref="xml:space"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Su código de verificación para {0} es {1}</value>
     <comment>Your verification code for {0} is {1}</comment>
   </data>
-  <data name="CardOnFile" xml:space="preserve">
+	<data name="CardOnFile" xml:space="preserve">
     <value>Tarjeta en Archivo</value>
     <comment>Card on File</comment>
   </data>
-  <data name="ChargeAccount" xml:space="preserve">
+	<data name="ChargeAccount" xml:space="preserve">
     <value>Cuenta de cargo</value>
     <comment>Charge Account</comment>
   </data>
-  <data name="CurrencyPriceFormat" xml:space="preserve">
+	<data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0:c}</value>
     <comment>{0:c}</comment>
   </data>
-  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+	<data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
     <value>Para confirmar su email, por favor visite este vínculo:</value>
     <comment>To confirm your email address, please visit this link:</comment>
   </data>
-  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+	<data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
     <value>Su dirección de correo ha sido confirmada exitosamente.</value>
     <comment>Your email address has been confirmed successfully.</comment>
   </data>
-  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+	<data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
     <value>Usted puede ahora ingresar en la aplicación</value>
     <comment>You can now sign into the application.</comment>
   </data>
-  <data name="Email_Body_AptNumber" xml:space="preserve">
+	<data name="Email_Body_AptNumber" xml:space="preserve">
     <value>Dept&amp;nbsp;No.</value>
     <comment>Apt&amp;nbsp;No.</comment>
   </data>
-  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+	<data name="Email_Body_AuthorizationNumber" xml:space="preserve">
     <value>Número de autorización: </value>
     <comment>Authorization number :</comment>
   </data>
-  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+	<data name="Email_Body_BookingConfirmation" xml:space="preserve">
     <value>Confirmación de reservación</value>
     <comment>Booking confirmation</comment>
   </data>
-  <data name="Email_Body_ChargeType" xml:space="preserve">
+	<data name="Email_Body_ChargeType" xml:space="preserve">
     <value>Tipo&amp;nbsp;de&amp;nbsp;Cargo</value>
     <comment>Charge&amp;nbsp;Type</comment>
   </data>
-  <data name="Email_Body_Date" xml:space="preserve">
+	<data name="Email_Body_Date" xml:space="preserve">
     <value>Fecha</value>
     <comment>Date</comment>
   </data>
-  <data name="Email_Body_Destination" xml:space="preserve">
+	<data name="Email_Body_Destination" xml:space="preserve">
     <value>Destino</value>
     <comment>Destination</comment>
   </data>
-  <data name="Email_Body_Driver" xml:space="preserve">
+	<data name="Email_Body_Driver" xml:space="preserve">
     <value>Conductor</value>
     <comment>Driver</comment>
   </data>
-  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+	<data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
     <value>Se requiere confirmación de email</value>
     <comment>Email confirmation required</comment>
   </data>
-  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+	<data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
     <value>Confirmación de email satisfactoria</value>
     <comment>Email address confirmation successful</comment>
   </data>
-  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+	<data name="Email_Body_EstimatedFare" xml:space="preserve">
     <value>Costo&amp;nbsp;Estimado</value>
     <comment>Estimated&amp;nbsp;Fare</comment>
   </data>
-  <data name="Email_Body_Fare" xml:space="preserve">
+	<data name="Email_Body_Fare" xml:space="preserve">
     <value>Costo</value>
     <comment>Fare</comment>
   </data>
-  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+	<data name="Email_Body_FareBreakDown" xml:space="preserve">
     <value>Desgloce del costo</value>
     <comment>Fare breakdown</comment>
   </data>
-  <data name="Email_Body_LargeBags" xml:space="preserve">
+	<data name="Email_Body_LargeBags" xml:space="preserve">
     <value>Equipaje&amp;nbsp;grande</value>
     <comment>Large&amp;nbsp;bags</comment>
   </data>
-  <data name="Email_Body_Name" xml:space="preserve">
+	<data name="Email_Body_Name" xml:space="preserve">
     <value>Nombre</value>
     <comment>Name</comment>
   </data>
-  <data name="Email_Body_Note" xml:space="preserve">
+	<data name="Email_Body_Note" xml:space="preserve">
     <value>Nota</value>
     <comment>Note</comment>
   </data>
-  <data name="Email_Body_OrderNo" xml:space="preserve">
+	<data name="Email_Body_OrderNo" xml:space="preserve">
     <value>Reservación&amp;nbsp;#</value>
     <comment>Order&amp;nbsp;#</comment>
   </data>
-  <data name="Email_Body_TripId" xml:space="preserve">
+	<data name="Email_Body_TripId" xml:space="preserve">
     <value>Servicio #</value>
     <comment>Trip #</comment>
   </data>
-  <data name="Email_Body_PaidWith" xml:space="preserve">
+	<data name="Email_Body_PaidWith" xml:space="preserve">
     <value>Pagado con</value>
     <comment>Paid With</comment>
   </data>
-  <data name="Email_Body_Passengers" xml:space="preserve">
+	<data name="Email_Body_Passengers" xml:space="preserve">
     <value>Pasajeros</value>
     <comment>Passengers</comment>
   </data>
-  <data name="Email_Body_PasswordReset" xml:space="preserve">
+	<data name="Email_Body_PasswordReset" xml:space="preserve">
     <value>Restablecer contraseña</value>
     <comment>Password reset</comment>
   </data>
-  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+	<data name="Email_Body_PasswordResetLine1" xml:space="preserve">
     <value>Su contraseña ha sido restablecida</value>
     <comment>Your password has been reset.</comment>
   </data>
-  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+	<data name="Email_Body_PasswordResetLine2" xml:space="preserve">
     <value>Nueva contraseña:</value>
     <comment>New password:</comment>
   </data>
-  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+	<data name="Email_Body_PaymentInformation" xml:space="preserve">
     <value>Información del pago</value>
     <comment>Payment Information</comment>
   </data>
-  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+	<data name="Email_Body_PhoneNumber" xml:space="preserve">
     <value>Número&amp;nbsp;Telefónico</value>
     <comment>Phone&amp;nbsp;Number</comment>
   </data>
-  <data name="Email_Body_PickupLocation" xml:space="preserve">
+	<data name="Email_Body_PickupLocation" xml:space="preserve">
     <value>Lugar&amp;nbsp;del&amp;nbsp;Servicio</value>
     <comment>Pickup&amp;nbsp;Location</comment>
   </data>
-  <data name="Email_Body_PickupTime" xml:space="preserve">
+	<data name="Email_Body_PickupTime" xml:space="preserve">
     <value>Hora&amp;nbsp;del&amp;nbsp;Servicio</value>
     <comment>Pickup&amp;nbsp;Time</comment>
   </data>
-  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+	<data name="Email_Body_PickupTimeValue" xml:space="preserve">
     <value>{{PickupDate}} a las {{PickupTime}}</value>
     <comment>{{PickupDate}} at {{PickupTime}}</comment>
   </data>
-  <data name="Email_Body_Receipt" xml:space="preserve">
+	<data name="Email_Body_Receipt" xml:space="preserve">
     <value>Recibo de pago</value>
     <comment>Receipt</comment>
   </data>
-  <data name="Email_Body_RingCode" xml:space="preserve">
+	<data name="Email_Body_RingCode" xml:space="preserve">
     <value>Código&amp;nbsp;de&amp;nbsp;Llamada</value>
     <comment>Ring&amp;nbsp;Code</comment>
   </data>
-  <data name="Email_Body_Route" xml:space="preserve">
+	<data name="Email_Body_Route" xml:space="preserve">
     <value>Ruta</value>
     <comment>Route</comment>
   </data>
-  <data name="Email_Body_SubTotal" xml:space="preserve">
+	<data name="Email_Body_SubTotal" xml:space="preserve">
     <value>Subtotal</value>
     <comment>Subtotal</comment>
   </data>
-  <data name="Email_Body_Tax" xml:space="preserve">
+	<data name="Email_Body_Tax" xml:space="preserve">
     <value>Impuesto</value>
     <comment>Tax</comment>
   </data>
-  <data name="Email_Body_ThankYou" xml:space="preserve">
+	<data name="Email_Body_ThankYou" xml:space="preserve">
     <value>Gracias!</value>
     <comment>Thank you!</comment>
   </data>
-  <data name="Email_Body_TheTeam" xml:space="preserve">
+	<data name="Email_Body_TheTeam" xml:space="preserve">
     <value>El Equipo de {{ ApplicationName }}</value>
     <comment>The {{ ApplicationName }} Team</comment>
   </data>
-  <data name="Email_Body_Tip" xml:space="preserve">
+	<data name="Email_Body_Tip" xml:space="preserve">
     <value>Propina</value>
     <comment>Tip</comment>
   </data>
-  <data name="Email_Body_TipIncentive" xml:space="preserve">
-    <value>Driver Bonus</value>
+	<data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Incentivo al Conductor</value>
+	<comment>Driver Bonus</comment>
   </data>
-  <data name="Email_Body_Promo" xml:space="preserve">
-    <value>Promo Code</value>
+	<data name="Email_Body_Promo" xml:space="preserve">
+    <value>Código de Promociòn</value>
     <comment>Promo Code</comment>
   </data>
-  <data name="Email_Body_Toll" xml:space="preserve">
+	<data name="Email_Body_Toll" xml:space="preserve">
     <value>Peaje</value>
     <comment>Toll</comment>
   </data>
-  <data name="Email_Body_TotalAmount" xml:space="preserve">
+	<data name="Email_Body_TotalAmount" xml:space="preserve">
     <value>Monto Total</value>
     <comment>Total Amount</comment>
   </data>
-  <data name="Email_Body_TotalFare" xml:space="preserve">
+	<data name="Email_Body_TotalFare" xml:space="preserve">
     <value>Costo&amp;nbsp;Total</value>
     <comment>Total&amp;nbsp;Fare</comment>
   </data>
-  <data name="Email_Body_TransactionId" xml:space="preserve">
+	<data name="Email_Body_TransactionId" xml:space="preserve">
     <value>ID de transacción</value>
     <comment>Transaction Id :</comment>
   </data>
-  <data name="Email_Body_TransactionTime" xml:space="preserve">
+	<data name="Email_Body_TransactionTime" xml:space="preserve">
     <value>Hora&amp;nbsp;de&amp;nbsp;la&amp;nbsp;Transacción</value>
     <comment>Transaction&amp;nbsp;Time</comment>
   </data>
-  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+	<data name="Email_Body_TransactionTimeValue" xml:space="preserve">
     <value>{{TransactionDate}} a las {{TransactionTime}}</value>
     <comment>{{TransactionDate}} at {{TransactionTime}}</comment>
   </data>
-  <data name="Email_Body_VAT" xml:space="preserve">
+	<data name="Email_Body_VAT" xml:space="preserve">
     <value>IVA</value>
     <comment>VAT</comment>
   </data>
-  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+	<data name="Email_Body_VehicleNumber" xml:space="preserve">
     <value>Unidad #</value>
     <comment>Vehicle #</comment>
   </data>
-  <data name="Email_Body_VehicleType" xml:space="preserve">
+	<data name="Email_Body_VehicleType" xml:space="preserve">
     <value>Tipo&amp;nbsp;de&amp;nbsp;Vehículo</value>
     <comment>Vehicle&amp;nbsp;Type</comment>
   </data>
-  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+	<data name="Email_Subject_AccountConfirmation" xml:space="preserve">
     <value>Bienvenido a {{ ApplicationName }}</value>
     <comment>Welcome to {{ ApplicationName }}</comment>
   </data>
-  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+	<data name="Email_Subject_BookingConfirmation" xml:space="preserve">
     <value>{{ ApplicationName }} - Confirmación de reserva</value>
     <comment>{{ ApplicationName }} - Booking confirmation</comment>
   </data>
-  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+	<data name="Email_Subject_PasswordReset" xml:space="preserve">
     <value>{{ ApplicationName }} - Su contraseña ha sido restabledida</value>
     <comment>{{ ApplicationName }} - Your password has been reset</comment>
   </data>
-  <data name="Email_Subject_Receipt" xml:space="preserve">
+	<data name="Email_Subject_Receipt" xml:space="preserve">
     <value>{{ ApplicationName }} - Recibo</value>
     <comment>{{ ApplicationName }} - Receipt</comment>
   </data>
-  <data name="EtaMessageToDriver" xml:space="preserve">
+	<data name="EtaMessageToDriver" xml:space="preserve">
     <value>El TEA mostrado al cliente es {0} y {1} min</value>
     <comment>ETA displayed to client is {0} and {1} min</comment>
   </data>
-  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
+	<data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Procesando Pago…</value>
     <comment>Payment being processed by the app...</comment>
   </data>
-  <data name="OrderStatus_CabDriverETA" xml:space="preserve">
+	<data name="OrderStatus_CabDriverETA" xml:space="preserve">
     <value>TEA: {0}</value>
     <comment>ETA: {0}</comment>
   </data>
-  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+	<data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
     <value>El Vehículo {0} le ha sido asignado</value>
     <comment>Cab {0} is assigned to you</comment>
   </data>
-  <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
+	<data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>Completado ({0})</value>
     <comment>Completed ({0})</comment>
   </data>
-  <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
+	<data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
     <value>Esta dirección no es válida</value>
     <comment>The address is not valid</comment>
   </data>
-  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
+	<data name="OrderStatus_wosARRIVED" xml:space="preserve">
     <value>Su Taxi esta en la dirección de abordaje</value>
     <comment>Taxi is at pickup location</comment>
   </data>
-  <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
+	<data name="OrderStatus_wosASSIGNED" xml:space="preserve">
     <value>Chofer asignado</value>
     <comment>Driver assigned</comment>
   </data>
-  <data name="OrderStatus_wosCANCELLED" xml:space="preserve">
+	<data name="OrderStatus_wosCANCELLED" xml:space="preserve">
     <value>Cancelado</value>
     <comment>Cancelled</comment>
   </data>
-  <data name="OrderStatus_wosCANCELLED_DONE" xml:space="preserve">
+	<data name="OrderStatus_wosCANCELLED_DONE" xml:space="preserve">
     <value>Cancelado</value>
     <comment>Cancelled</comment>
   </data>
-  <data name="OrderStatus_wosDONE" xml:space="preserve">
+	<data name="OrderStatus_wosDONE" xml:space="preserve">
     <value>Completado</value>
     <comment>Completed</comment>
   </data>
-  <data name="OrderStatus_wosLOADED" xml:space="preserve">
+	<data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Pasajero(s) a bordo</value>
     <comment>Passengers are in the taxi</comment>
   </data>
-  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+	<data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>El costo de servicio sera pagado por el método de pago seleccionado</value>
     <comment>Fare will be paid using the selected payment method</comment>
   </data>
-  <data name="OrderStatus_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+	<data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>FIANZA FIANZA FIANZA !</value>
+	<comment>BAIL BAIL BAIL !</comment>
   </data>
-  <data name="OrderStatus_wosNone" xml:space="preserve">
+	<data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Confirmación inválida, por favor llame nuestro centro de despacho</value>
     <comment>Invalid order, please call dispatch center</comment>
   </data>
-  <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
+	<data name="OrderStatus_wosNOSHOW" xml:space="preserve">
     <value>Pasajero no presentado</value>
     <comment>No show</comment>
   </data>
-  <data name="OrderStatus_wosSCHED" xml:space="preserve">
+	<data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Programado</value>
     <comment>Scheduled</comment>
   </data>
-  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
-    <value>Lo sentimos, no hay taxis disponibles dado una alta demanda, por favor intente nuevamente más tarde</value>
+	<data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Lo sentimos, no hay unidades disponibles dado una alta demanda, por favor intente nuevamente más tarde</value>
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
-  <data name="OrderStatus_wosWAITING" xml:space="preserve">
+	<data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>Espere mientras se le asigna un vehículo</value>
     <comment>Waiting for driver to be assigned</comment>
   </data>
-  <data name="PairingConfirmationToDriver" xml:space="preserve">
+	<data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>El costo será pagado a través de la aplicación</value>
     <comment>Fare will be paid by the app</comment>
   </data>
-  <data name="PayInCarMessageToDriver" xml:space="preserve">
+	<data name="PayInCarMessageToDriver" xml:space="preserve">
     <value>El pago está siendo procesado a través de la aplicación</value>
     <comment>Payment being processed by the app...</comment>
   </data>
-  <data name="PaymentConfirmationToDriver1" xml:space="preserve">
+	<data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>El pasajero ha pagado</value>
     <comment>The passenger has paid</comment>
   </data>
-  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+	<data name="PaymentConfirmationToDriver2" xml:space="preserve">
     <value>Costo: {0}   Propina: {1}</value>
     <comment>Fare: {0}   Tip: {1}</comment>
   </data>
-  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+	<data name="PaymentConfirmationToDriver3" xml:space="preserve">
     <value>Total: {0}</value>
     <comment>Total: {0}</comment>
   </data>
-  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+	<data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Autorización #{0}</value>
     <comment>Auth #{0}</comment>
   </data>
-  <data name="PaymentFailedToDriver" xml:space="preserve">
+	<data name="PaymentFailedToDriver" xml:space="preserve">
     <value>El pago por aplicación ha fallado!</value>
     <comment>Payment by the app has Failed!</comment>
   </data>
-  <data name="PaymentItemDescription" xml:space="preserve">
-    <value>Order #{0} Original amount: {1}</value>
+	<data name="PaymentItemDescription" xml:space="preserve">
+    <value>Orden #{0} Monto original: {1}</value>
+	<comment>Order #{0} Original amount: {1}</comment>
   </data>
-  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
-    <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
+	<data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>La orden no puede ser generada utilizando esta versión de la app. Por favor actualice la app para poder solicitar una unidad.</value>
+	<comment>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</comment>
   </data>
-  <data name="PaymentInCar" xml:space="preserve">
+	<data name="PaymentInCar" xml:space="preserve">
     <value>Pago en vehículo</value>
     <comment>Payment in Car</comment>
   </data>
-  <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
-    <value>The order cannot be created because your credit card failed the preauthorization check.</value>
+	<data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
+    <value>La orden no puede ser generada debido a que su tarjeta de crédito no paso el chequeo de preautorización.</value>
+	<comment>The order cannot be created because your credit card failed the preauthorization check.</comment>
   </data>
-  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
-    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+	<data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>La orden no puede ser generada devbido que su cuenta de PayPal falló el chequeo de preautorización.</value>
+	<comment>The order cannot be created because your PayPal account failed the preauthorization check.</comment>
   </data>
-  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
-    <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
+	<data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Debido a alta demanda, no hay unidades disponibles en este momento. Desea solicitar con {0} en su lugar?</value>
+	<comment>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</comment>
   </data>
-  <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
-    <value>Waiting for driver from {0} to be assigned</value>
+	<data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
+    <value>Esperando a conductor de {0} a ser asignado</value>
+	<comment>Waiting for driver from {0} to be assigned</comment>
   </data>
-  <data name="Network_CannotCreateOrder" xml:space="preserve">
-    <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
+	<data name="Network_CannotCreateOrder" xml:space="preserve">
+    <value>Hubo un problema al tratar de agendar con {0}. Su orden se mantendrà activa.</value>
+	<comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
   </data>
-  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
-    <value>Su taxi casi ha llegado a su ubicación</value>
+	<data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Su unidad casi ha llegado a su ubicación</value>
     <comment>Your vehicle is almost at pickup location</comment>
   </data>
-  <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
-    <value>Pairing failed. Pay to driver.</value>
-    <comment>The ride #{0} could not be automatically paired</comment>
+	<data name="PushNotification_OrderPairingFailed" xml:space="preserve">
+    <value>Emparejado fallido. Pague al conductor.</value>
+    <comment>El viaje #{0} no pudo ser emparejado automáticamente</comment>
   </data>
-  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
-    <value>Su reservación#{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1} y usando su propina especificada por defecto de {2}%</value>
+	<data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>Su reservación #{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1} y usando su propina especificada por defecto de {2}%</value>
     <comment>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</comment>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+	<data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>Su reservación #{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1}. Si se encuentra en el carro equivocado, seleccione la opcion de pagar en el carro para asegurar que no le sea cargado el viaje.</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%</value>
+	<data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>su reservación #{0} sera cargada automáticamente al final del servicio usando su cuenta PayPal ligada y usando su propina especificada por defecto de {1}%</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+	<data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>su reservación #{0} sera cargada automáticamente al final del servicio usando su cuenta PayPal. Si se encuentra en el carro equivocado, seleccione la opcion de pagar en el carro para asegurar que no le sea cargado el viaje.</value>
   </data>
-  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+	<data name="PushNotification_PaymentReceived" xml:space="preserve">
     <value>Su tarjeta de crédito ha sido cargada por un total de {0}. Este monto incluye tanto su servicio como su propina.</value>
     <comment>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</comment>
   </data>
-  <data name="PushNotification_wosARRIVED" xml:space="preserve">
-    <value>Su Taxi (#{0}) ha llegado</value>
+	<data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Su Unidad (#{0}) ha llegado</value>
     <comment>Your Taxi (#{0}) has arrived</comment>
   </data>
-  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
-    <value>El Taxi #{0} le ha sido asignado</value>
+	<data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>La Unidad #{0} le ha sido asignada</value>
     <comment>Taxi #{0} has been assigned to you</comment>
   </data>
-  <data name="PushNotification_wosLOADED" xml:space="preserve">
+	<data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Por favor confirme el vehículo para pagar con su tarjeta registrada en archivo.</value>
     <comment>Please confirm vehicle to pay with card on file.</comment>
   </data>
-  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
-    <value>Lo sentimos, no hay taxis disponibles dado a una alta demanda, por favor intente nuevamente más tarde</value>
+	<data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Lo sentimos, no hay unidades disponibles dado a una alta demanda, por favor intente nuevamente más tarde</value>
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
-  <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+	<data name="PushNotification_BAILED" xml:space="preserve">
+    <value>FIANZA FIANZA FIANZA !</value>
   </data>
-  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
-    <value>The customer will be paying in the car at the end of the ride</value>
+	<data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>El cliente pagará en el carro al final del viaje.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
-    <value>This account is not supported in a different market.</value>
+	<data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
+    <value>Esta cuenta no es soportada en un mercado diferente.</value>
     <comment>This account is not supported in a different market.</comment>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
-    <value>This account is not supported by the web site.</value>
+	<data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
+    <value>Esta cuenta no esta soportada en el sitio web.</value>
   </data>
-  <data name="Email_Body_VehicleModel" xml:space="preserve">
+	<data name="Email_Body_VehicleModel" xml:space="preserve">
     <value>Vehículo</value>
     <comment>Vehicle</comment>
   </data>
-  <data name="Email_Body_YourDriver" xml:space="preserve">
+	<data name="Email_Body_YourDriver" xml:space="preserve">
     <value>CONDUCTOR / VEHICULO</value>
     <comment>Your Driver</comment>
   </data>
-  <data name="Email_Body_Distance" xml:space="preserve">
-    <value>Distance</value>
+	<data name="Email_Body_Distance" xml:space="preserve">
+    <value>Distancia</value>
   </data>
-  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>No existe promoción asociada a este código</value>
     <comment>There is no promotion associated to this code</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>
     <comment>You must select Card On File to use a promotion.</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
     <value>Debe seleccionar la tarjeta de Pago o PayPal para utilizar una promoción.</value>
     <comment>You must select Card On File or PayPal to use a promotion.</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
     <value>Seleccionar PayPal para utilizar una promoción..</value>
     <comment>You must select PayPal to use a promotion.</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
     <value>Promoción no está activo</value>
     <comment>This promotion is not active</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
     <value>Se elimina Esta promoción</value>
   </data>
-  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
     <value>Se ha rebasado el máximo número de usos para esta promoción</value>
     <comment>Maximum number of uses has been reached for this promotion</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
-    <value>This promotion applies to current booking only</value>
+	<data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>Esta promoción aplica solamente a viajes activos</value>
     <comment>This promotion applies to current booking only</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
-    <value>This promotion applies to future booking only</value>
+	<data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>Esta promoción aplica solamente a viajes reservados</value>
     <comment>This promotion applies to future booking only</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
-    <value>This promotion is not available for this day of the week</value>
+	<data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>Esta promoción no esta disponible para este día de la semana</value>
     <comment>This promotion is not available for this day of the week</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
-    <value>This promotion has not started yet</value>
+	<data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>Esta promoción aún no inicia</value>
     <comment>This promotion has not started yet</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
     <value>Esta promoción ha expirado</value>
     <comment>This promotion has expired</comment>
   </data>
-  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
     <value>Esta promoción no está disponible en este momento</value>
     <comment>This promotion is not available at this time</comment>
   </data>
-  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+	<data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>No hay empresa que sirve esta región</value>
   </data>
-  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+	<data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
     <value>No se le permite utilizar esta promoción</value>
   </data>
-  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
-    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+	<data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Felicidades! Ya eres elegible para utlizar la promoción "{{ PromotionName }}". Usa el código &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; cuando reserves tu próximo viaje para canjearlo.</value>
   </data>
-  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
-    <value>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+	<data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>Esta promoción es válida hasta {{ ExpirationDate }} {{ ExpirationTime }}.</value>
   </data>
-  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
-    <value>{{ ApplicationName }} - New Promotion Available!</value>
+	<data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - Nueva promoción disponible!</value>
   </data>
-  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
-    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+	<data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Felicidades! Ya eres elegible para utilizar la promoción "{0}". Usa el código {1} cuando reserves tu próximo viaje para canjearlo.</value>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
     <value>Su reservación no se pudo crear, por favor trate de nuevo o llámenos</value>
     <comment>Order cannot be created. Please try again or call us.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
     <value>Su reservación no pudo ser creada. La dirección especificada está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
     <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
     <value>Su reservación no pudo ser creada. La dirección de destino está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
     <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
     <value>Su cuenta ha sido deshabilitada</value>
     <comment>Order cannot be created. Your account has been disabled.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
     <comment>Order cannot be created. Your account is currently inactive.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+	<data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
     <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
     <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
   </data>
-  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+	<data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>Lo sentimos pero desafortunadamente no tenemos reservaciones disponibles para ese periodo de tiempo.</value>
     <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
   </data>
-  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+	<data name="CreateOrder_WaitingForIbs" xml:space="preserve">
     <value>Procesando su pedido...</value>
     <comment>Processing your order...</comment>
   </data>
-  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+	<data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
     <value>Número de cuenta inválido</value>
     <comment>Invalid account number</comment>
   </data>
-  <data name="ServiceErrorCallTitle" xml:space="preserve">
+	<data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Mensaje</value>
     <comment>Message</comment>
   </data>
-  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+	<data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Este email está registrado y en uso en nuestro sistema</value>
     <comment>This email is already in use.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
     <comment>No Credit Card On File.</comment>
   </data>
-  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
-    <value>No PayPal account linked</value>
+	<data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>No hay cuenta de PayPal ligada</value>
   </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>Su reservación no se pudo crear, proveedor inválido. Por favor contacte {0} al  {1} para asistencia</value>
     <comment>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
     <value>Su reservación no se pudo crear, proveedor inválido</value>
     <comment>Order cannot be created, invalid provider.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
     <value>No podemos proveer costo estimado de viaje, por favor contacte {0} al {1} para asistencia</value>
     <comment>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
     <value>No podemos proveer costo estimado para su viaje</value>
     <comment>No fare estimate available for the ride.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
     <value>Su reservación no se pudo crear, no se especificó proveedor, por favor trate de nuevo o llámenos</value>
     <comment>Order cannot be created, no provider specified. Please try again or call us.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+	<data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
     <value>Su reservación no se pudo crear, tipo de vehículo inválido. Por favor inténtelo nuevamente o llámenos</value>
     <comment>Order cannot be created, invalid vehicle type. Please try again or call us.</comment>
   </data>
-  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+	<data name="ServiceErrorDefaultMessage" xml:space="preserve">
     <value>Un error ha ocurrido, por favor inténtelo nuevamente</value>
     <comment>An error occurred. Please try again.</comment>
   </data>
-  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+	<data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>Su sesión ha expirado, por favor re-inicie sesión para continuar</value>
     <comment>Your session has expired, please login to continue.</comment>
   </data>
-  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
-    <value>Su contraseña no es válida</value>
+	<data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Su contraseña y confirmación no concuerdan</value>
     <comment>The current password is not valid.</comment>
   </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+	<data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
     <value>Por favor contacte a {0} al {1} para asistencia</value>
     <comment>Please contact {0} at {1} for further assistance.</comment>
   </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+	<data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Su reservación no puede ser creada</value>
     <comment>The order cannot be created.</comment>
   </data>
-  <data name="PayPalWebFareItemDescription" xml:space="preserve">
-    <value>Taxi booking</value>
+	<data name="PayPalWebFareItemDescription" xml:space="preserve">
+    <value>Solicitud de unidad</value>
   </data>
-  <data name="PayPalWebPaymentDescription" xml:space="preserve">
-    <value>Taxi ride of amount {0}</value>
+	<data name="PayPalWebPaymentDescription" xml:space="preserve">
+    <value>Viaje en unidad de un monto de {0}</value>
   </data>
-  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
-    <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+	<data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Recuerda: Si estas en el auto equivocado, Selecciona la opción "Pagar en la unidad" para evitar cargos.</value>
   </data>
-  <data name="PayPal" xml:space="preserve">
+	<data name="PayPal" xml:space="preserve">
     <value>PayPal</value>
     <comment>PayPal</comment>
   </data>
-  <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
-    <value>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+	<data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
+    <value>SU tarjeta almacenada fue desactivada porque el pago de su último servicio fue declinado. Para poder utilizarla nuevamente, vaya a la pantalla de Pago para ponerse al corriente con sus pagos</value>
   </data>
-  <data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
-    <value>Your card on file has expired. Please update your payment information to continue using it.</value>
+	<data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
+    <value>Su tarjeta almacenada ha expirado. Por favor actualice su información de pago para continuar utilizandola.</value>
   </data>
-  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+	<data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
     <value>Su tarjeta de crédito &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; con termiación en &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; ha sido desactivada debido a que el pago de su ultimo servicio fue declinado. Para poder utilizarla nuevamente, abra la aplicación {{ ApplicationName }} en su teléfono y acceda a la pantalla de Pago para efectuar el pago adeudado.</value>
     <comment>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</comment>
   </data>
-  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+	<data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Su tarjeta de crédito se ha desactivado como forma de pago</value>
     <comment>{{ ApplicationName }} - Your credit card has been deactivated</comment>
   </data>
-  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
+	<data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>Necesita un estimado de costo para prepagar su viaje. Por favor seleccione un destino para obtenerlo.</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
-    <value>PayPal payment was cancelled</value>
+	<data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
+    <value>El pago PayPal fue cancelado</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
-    <value>Payment is not enabled on the website. Please select another charge type.</value>
+	<data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Pago no esta habilitado en el sitio web. por favor seleccione otra forma de pago.</value>
   </data>
-  <data name="PayPalWebTipItemDescription" xml:space="preserve">
-    <value>Tip ({0}%)</value>
+	<data name="PayPalWebTipItemDescription" xml:space="preserve">
+    <value>Propina ({0}%)</value>
   </data>
-  <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
-    <value>You need to have a card on file to pair with RideLinQ</value>
+	<data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
+    <value>Necesita una tarjeta almacenada para empatar con RideLinQ</value>
   </data>
-  <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
-    <value>If your browser does not automatically redirect you after 10 seconds,</value>
+	<data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
+    <value>Si su browser no le redirecciona automáticamente en 10 segundos,</value>
   </data>
-  <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
-    <value>click here.</value>
+	<data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
+    <value>click aquí.</value>
   </data>
-  <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
-    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+	<data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
+    <value>Su tarjeta almacenada tiene un pago pendiente de un viaje anterior. Este pago pendiente no le permite realizar el empate con RideLinQ</value>
   </data>
-  <data name="Email_Body_Surcharge" xml:space="preserve">
-    <value>Surcharge</value>
+	<data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Recargo</value>
   </data>
-  <data name="Email_Body_Extra" xml:space="preserve">
+	<data name="Email_Body_Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
-  <data name="Email_Body_DriverId" xml:space="preserve">
-    <value>Driver #</value>
+	<data name="Email_Body_DriverId" xml:space="preserve">
+    <value>Conductor #</value>
   </data>
-  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
-    <value>Booking Fees</value>
+	<data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Cargos de reserva</value>
   </data>
-  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
-    <value>{{ ApplicationName }} - Cancellation Fees</value>
+	<data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Cargos de cancelación</value>
   </data>
-  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
-    <value>{{ ApplicationName }} - No Show Fees</value>
+	<data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Cargos por no presentarse</value>
   </data>
-  <data name="Email_Body_CancellationFee" xml:space="preserve">
-    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled.</value>
+	<data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>Le ha sido cargado un monto de {{FeeAmount}} por el viaje #{{IbsOrderId}} porque fue cancelado.</value>
   </data>
-  <data name="Email_Body_NoShowFee" xml:space="preserve">
-    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because you were absent when the driver tried to pick you up at {{PickUpAddress}}.</value>
+	<data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>Le ha sido cargado un monto de {{FeeAmount}} por el viaje #{{IbsOrderId}} porque se encontraba ausente cuando el conductor llego a recogerlo a {{PickUpAddress}}.</value>
   </data>
-  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
-    <value>This amount will be automatically debited from your credit card ending with {{Last4Digits}}.</value>
+	<data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>Este monto será automáticamente cargado de su tarjeta con terminación {{Last4Digits}}.</value>
   </data>
-  <data name="Email_Body_BookingFees" xml:space="preserve">
-    <value>Booking Fees</value>
+	<data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Tarifas de Reservación</value>
   </data>
-  <data name="Email_Body_RateClass" xml:space="preserve">
-    <value>Rate Code</value>
+	<data name="Email_Body_RateClass" xml:space="preserve">
+    <value>Código de tarifa</value>
   </data>
-  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
-    <value>Credit Card was declined</value>
+	<data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>Tarjeta de crédito declinada</value>
   </data>
-  <data name="OrderStatus_PairingFailed" xml:space="preserve">
-    <value>Unable to pair. Please pay to your driver at the end of the ride</value>
+	<data name="OrderStatus_PairingFailed" xml:space="preserve">
+    <value>No fue posible empatar. Por favor pague al conductor al final del viaje.</value>
   </data>
-  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
-    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK esta verificado. EL pago será automático al final del viaje.</value>
   </data>
-  <data name="PhoneNumberFormat" xml:space="preserve">
-    <value>The phone number is invalid. It must have format {0}</value>
+	<data name="PhoneNumberFormat" xml:space="preserve">
+    <value>El número de teléfono es inválido. El format debe ser {0}</value>
   </data>
-  <data name="EmailUsedMessage" xml:space="preserve">
-    <value>This email is already used by another account</value>
+	<data name="PhoneBlackListed" xml:space="preserve">
+    <value>El número de teléfono esta vetado</value>
   </data>
-  <data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
-    <value>Cannot change the email of an account linked with Facebook</value>
+	<data name="EmailUsedMessage" xml:space="preserve">
+    <value>Este email ya se encuentra en uso en otra cuenta</value>
   </data>
-  <data name="CancelOrdeError" xml:space="preserve">
-    <value>It is too late to cancel this order</value>
+	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+    <value>No se puede cambiar el email de una cuenta ligada a Facebook</value>
   </data>
-  <data name="Email_Body_DriverPhoto" xml:space="preserve">
-    <value>Driver Photo</value>
+	<data name="CancelOrderError" xml:space="preserve">
+    <value>Es muy tarde para cancelar la órden</value>
   </data>
-  <data name="Email_Body_VehicleRegistration" xml:space="preserve">
-    <value>Vehicle Licence Plate</value>
+	<data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>No se puede cancelar la órden porque no se cuenta con el IBSOrderID</value>
   </data>
-  <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Sorry, there was a problem, please pay in the taxi</value>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Foto del Conductor</value>
   </data>
-  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Placa de la Unidad</value>
   </data>
-  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
-    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+	<data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Lo sentimos, hubo un problema, por favor pague en la unidad</value>
+  </data>
+	<data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Lo sentimos su tarjeta no pudo ser autorizada. Por favor pague en la unidad</value>
+  </data>
+	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+    <value>Lo sentimos, hubo un error procesando su tarjeta. Por favor pague en la unidad</value>
   </data>
 </root>
