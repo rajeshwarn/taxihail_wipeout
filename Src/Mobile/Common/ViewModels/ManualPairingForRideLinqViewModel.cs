@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceClient.Web;
 using System.Net;
 using CMTPayment;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -84,22 +85,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.ReturnResult(orderManualRideLinqDetail);
                         }
                     }
-                    catch (WebServiceException ex)
-                    {
-                        Logger.LogError(ex);
-                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).FireAndForget();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError(ex);
+					catch (ManualPairingException ex)
+					{
+						Logger.LogError(ex);
 
-						var errorCode = 0;
-						if (ex.Data != null && ex.Data.Contains("ErrorCode") && int.Parse(ex.Data["ErrorCode"].ToSafeString()) > 0)
-						{
-							int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
-						}
-
-						switch (errorCode)
+						switch (ex.ErrorCode)
 						{
 							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
 								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
@@ -114,6 +104,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
 								break;
 						}
+					}
+                    catch (Exception ex)
+                    {
+						Logger.LogError(ex);
+						this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
                     } 
                 });
             }
