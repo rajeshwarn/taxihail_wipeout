@@ -1,4 +1,3 @@
-using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.PresentationHints

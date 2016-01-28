@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -31,8 +30,8 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -540,7 +539,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         // Animate Annotation on the map between retrieving positions
-        private void AnimateAnnotationOnMap(MKAnnotation annotationToUpdate, apcurium.MK.Booking.Maps.Geo.Position newPosition)
+        private void AnimateAnnotationOnMap(MKAnnotation annotationToUpdate, Position newPosition)
         {
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
             if (annotationToUpdateView == null)
@@ -571,7 +570,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                           : 0;
             annotationToUpdate.AddressType = annotationType;
 
-            AnimateAnnotationOnMap(annotationToUpdate, new apcurium.MK.Booking.Maps.Geo.Position(vehicle.Latitude, vehicle.Longitude));
+            AnimateAnnotationOnMap(annotationToUpdate, new Position { Latitude = vehicle.Latitude, Longitude = vehicle.Longitude });
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -760,10 +759,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var taxiLocationPin = (AddressAnnotation)_taxiLocationPin;
 
 				taxiLocationPin.Degrees = value.CompassCourse ?? 0;
-
+                
 	            taxiLocationPin.ShowOrientation = showOrientedPins;
 
-                AnimateAnnotationOnMap(taxiLocationPin, new apcurium.MK.Booking.Maps.Geo.Position(value.Latitude.Value, value.Longitude.Value));
+                AnimateAnnotationOnMap(taxiLocationPin, new Position { Latitude = value.Latitude.Value, Longitude = value.Longitude.Value });
 
 	            return;
             }
