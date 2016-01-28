@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
 
         private static readonly Dictionary<Guid, List<Tuple<string, string>>> LegacyVehicleIdMapping = new Dictionary<Guid, List<Tuple<string, string>>>();
-        private static readonly Dictionary<string, DispatcherSettingsResponse> DispatcherSettings = new Dictionary<string, DispatcherSettingsResponse>();
 
         public DispatcherService(
             ILogger logger,
@@ -405,48 +404,27 @@ namespace apcurium.MK.Booking.Services.Impl
             });
         }
 
-        public DispatcherSettingsResponse GetSettings(string market, double? latitude = null, double? longitude = null, bool isHailRequest = false)
+        public DispatcherSettingsResponse GetSettings(string market, double latitude, double longitude, bool isHailRequest = false)
         {
             if (isHailRequest)
             {
                 return GetHailDispatcherSettings(market);
             }
 
-            market = market ?? string.Empty;
-
-            if (!DispatcherSettings.ContainsKey(market))
-            {
-                if (latitude.HasValue && longitude.HasValue)
-                {
-                    return GetSettings(latitude.Value, longitude.Value);
-                }
-
-                return null;
-            }
-
-            return DispatcherSettings[market];
+            return GetSettings(latitude, longitude);
         }
 
-        public DispatcherSettingsResponse GetSettings(double latitude, double longitude, bool isHailRequest = false)
+        private DispatcherSettingsResponse GetSettings(double latitude, double longitude)
         {
             var response = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
-            if (isHailRequest)
-            {
-                return GetHailDispatcherSettings(response.Market);
-            }
-
-            var dispatcherSettings = new DispatcherSettingsResponse
+            return new DispatcherSettingsResponse
             {
                 Market = response.Market,
                 DurationOfOfferInSeconds = response.DispatcherSettings.DurationOfOfferInSeconds,
                 NumberOfCycles = response.DispatcherSettings.NumberOfCycles,
                 NumberOfOffersPerCycle = response.DispatcherSettings.NumberOfOffersPerCycle
             };
-
-            DispatcherSettings[response.Market ?? string.Empty] = dispatcherSettings;
-
-            return dispatcherSettings;
         }
 
         private DispatcherSettingsResponse GetHailDispatcherSettings(string market)

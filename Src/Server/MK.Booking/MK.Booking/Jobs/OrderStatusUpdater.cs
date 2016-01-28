@@ -374,15 +374,15 @@ namespace apcurium.MK.Booking.Jobs
 
         private IBSOrderResult DispatchAgainIfDriverBailed(Guid orderId, string market, string driverIdWhoBailed)
         {
-            var dispatcherSettings = _dispatcherService.GetSettings(market);
+            var orderDetail = _orderDao.FindById(orderId);
+
+            var dispatcherSettings = _dispatcherService.GetSettings(market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude);
 
             if (dispatcherSettings.NumberOfOffersPerCycle <= 0)
             {
                 return null;
             }
             
-            var orderDetail = _orderDao.FindById(orderId);
-
             // Prepare order for re-dispatch
             var ibsAccountIdForOrderToCancel = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
             if (ibsAccountIdForOrderToCancel.HasValue)

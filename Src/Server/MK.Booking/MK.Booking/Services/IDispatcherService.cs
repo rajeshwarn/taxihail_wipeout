@@ -16,10 +16,8 @@ namespace apcurium.MK.Booking.Services
 
         void AssignJobToVehicle(string companyKey, IbsOrderKey ibsOrderKey, IbsVehicleCandidate ibsVehicleCandidate);
 
-        DispatcherSettingsResponse GetSettings(string market, double? latitude = null, double? longitude = null, bool isHailRequest = false);
-
-        DispatcherSettingsResponse GetSettings(double latitude, double longitude, bool isHailRequest = false);
-
+        DispatcherSettingsResponse GetSettings(string market, double latitude, double longitude, bool isHailRequest = false);
+        
         void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId);
     }
 }

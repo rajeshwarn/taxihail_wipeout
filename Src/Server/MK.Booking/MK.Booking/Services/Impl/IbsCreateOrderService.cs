@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
@@ -14,7 +13,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -71,7 +69,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var ibsOrderParams = IbsHelper.PrepareForIbsOrder(_serverSettings.ServerData.IBS, defaultVehicleType, chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
                 customerNumberString, referenceDataCompanyList, market, requestProviderId, companyKey);
  
-            var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
+            var dispatcherSettings = _dispatcherService.GetSettings(market, pickupAddress.Latitude, pickupAddress.Longitude, isHailRequest);
 
             if (dispatcherSettings.NumberOfOffersPerCycle == 0)
             {
