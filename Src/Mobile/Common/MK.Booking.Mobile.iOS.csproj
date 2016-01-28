@@ -134,6 +134,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
+    <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
