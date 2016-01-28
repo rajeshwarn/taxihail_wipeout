@@ -2988,4 +2988,7 @@
     <value>Código de confirmación inválido</value>
     <comment>The confirmation code is incorrect.</comment>
   </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
+  </data>
 </root>

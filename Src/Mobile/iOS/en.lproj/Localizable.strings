@@ -625,6 +625,7 @@
 "AddPaymentMethod_PayPal"="Link PayPal account";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
 "CvvRequiredTitle"="CVV Required";
 "CvvRequiredMessage"="Please enter the CVV associated with your card on file ending with {0} to continue";
 "Error_InvalidCvvTitle"="Invalid CVV";

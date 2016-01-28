@@ -2387,4 +2387,7 @@
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Le code de confirmation est incorrect.</value>
   </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</value>
+  </data>
 </root>

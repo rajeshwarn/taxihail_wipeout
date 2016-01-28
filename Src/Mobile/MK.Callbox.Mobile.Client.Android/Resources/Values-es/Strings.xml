@@ -370,7 +370,7 @@
   <string name="PaymentDetails.LabelName">Label</string>
   <string name="PaymentDetails.InvalidTipAmount">Cantidad de propina inválida</string>
   <string name="PaymentDetails.InvalidDataTitle">Información de pago inválida</string>
-  <string name="CreditCardZipCode">Zip/Postal</string>
+  <string name="CreditCardZipCode">Codigo Postal</string>
   <string name="View_CreditCard">Pago</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardRemoveErrorTitle">No puede eliminar la tarjeta de crédito</string>
@@ -775,4 +775,12 @@
   <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ErrorChangeDropOff_Message">Sorry, we couldn’t update your destination.</string>
+  <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
+  <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
+  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
+  <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
 </resources>

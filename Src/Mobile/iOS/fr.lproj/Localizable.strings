@@ -754,3 +754,4 @@
 "Callbox.ApplicationName"="TaxiHail Callbox";
 "ServiceErrorResetPassword_AccountNotFound"="Aucun compte n'a été trouvé pour cet email";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
+"ManualRideLinqDeactivatedCardOnFile"="Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.";

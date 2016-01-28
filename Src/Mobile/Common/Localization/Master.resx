@@ -1998,6 +1998,9 @@
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
+  </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
     <value>CVV Required</value>
   </data>
