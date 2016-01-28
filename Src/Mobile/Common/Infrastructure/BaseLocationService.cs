@@ -97,8 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				return false;
 			}
 
-			// ReSharper disable once LocalizableElement
-			Console.WriteLine("IsBetterThan current error {0}, other error {1}", trueIfBetter.Error, falseIfBetter.Error);
 			return trueIfBetter.Error < falseIfBetter.Error;
 		}
 	}

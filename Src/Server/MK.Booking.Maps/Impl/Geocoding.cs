@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address[] Search(string query, double pickupLatitude, double pickupLongitude, string currentLanguage, GeoResult geoResult = null)
+        public Address[] Search(string query, double? pickupLatitude, double? pickupLongitude, string currentLanguage, GeoResult geoResult = null)
         {
             var popularPlaces = new Address[0];
 
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
         }
 
-        public async Task<Address[]> SearchAsync(string query, double pickupLatitude, double pickupLongitude, string currentLanguage, GeoResult geoResult = null)
+        public async Task<Address[]> SearchAsync(string query, double? pickupLatitude, double? pickupLongitude, string currentLanguage, GeoResult geoResult = null)
         {
             var popularPlaces = new Address[0];
 
@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return new GeoObjToAddressMapper().ConvertToAddress(geoAddress, null, false);
         }
 
-        private GeoAddress[] SearchUsingName(string searchQuery, bool useFilter, string currentLanguage, double pickupLatitude, double pickupLongitude)
+        private GeoAddress[] SearchUsingName(string searchQuery, bool useFilter, string currentLanguage, double? pickupLatitude, double? pickupLongitude)
         {
             if (searchQuery == null)
             {
@@ -144,12 +144,13 @@ namespace apcurium.MK.Booking.Maps.Impl
                 ? string.Format(filter, searchQuery.Split(' ').JoinBy("+"))
                 : searchQuery.Split(' ').JoinBy("+");
 		    
-            var results = _mapApi.GeocodeAddress(query, currentLanguage, pickupLatitude, pickupLongitude, _appSettings.Data.NearbyPlacesService.DefaultRadius);
+            var searchRadius = _appSettings.Data.GeoLoc.SearchRadius <= 0 ? 45000 : _appSettings.Data.GeoLoc.SearchRadius;
+            var results = _mapApi.GeocodeAddress(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadius);
 
 		    return FilterGeoCodingResults(results);
         }
 
-        private async Task<GeoAddress[]> SearchUsingNameAsync(string searchQuery, bool useFilter, string currentLanguage, double pickupLatitude, double pickupLongitude)
+        private async Task<GeoAddress[]> SearchUsingNameAsync(string searchQuery, bool useFilter, string currentLanguage, double? pickupLatitude, double? pickupLongitude)
         {
             if (searchQuery == null)
             {
@@ -162,7 +163,13 @@ namespace apcurium.MK.Booking.Maps.Impl
                 ? string.Format(filter, searchQuery.Split(' ').JoinBy("+"))
                 : searchQuery.Split(' ').JoinBy("+");
             
-            var addresses = await _mapApi.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, _appSettings.Data.NearbyPlacesService.DefaultRadius);
+            var searchRadius = _appSettings.Data.GeoLoc.SearchRadius <= 0 ? 45000 : _appSettings.Data.GeoLoc.SearchRadius;
+
+            #if DEBUG
+            Console.WriteLine(string.Format("Geocoding.SearchUsingNameAsync with query: {0} radius: {1}", query, searchRadius));
+            #endif
+
+            var addresses = await _mapApi.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadius);
 
             return FilterGeoCodingResults(addresses);
         }

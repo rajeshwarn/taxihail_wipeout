@@ -44,7 +44,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		    _logger = logger;
 		}
 
-		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
+		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
 		{
             if (maximumNumberOfPlaces == 0)
             {
@@ -112,7 +112,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			return allVenues.Select(ToPlace).ToArray();
 		}
 
-		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, int radius, string countryCode)
 		{
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 

@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
 using Position = apcurium.MK.Booking.Mobile.Infrastructure.Position;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

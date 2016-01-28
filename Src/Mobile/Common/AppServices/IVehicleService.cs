@@ -6,6 +6,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {

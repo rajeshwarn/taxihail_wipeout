@@ -33,6 +33,7 @@ using Android.Animation;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -98,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
-        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double? compassCourse, apcurium.MK.Booking.Mobile.Infrastructure.Position oldPosition)
         {
             markerToUpdate.SetIcon(icon);
             markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse.HasValue ? .5f : 1f);
@@ -135,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 						? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new apcurium.MK.Booking.Mobile.Infrastructure.Position
                         {
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
@@ -339,7 +340,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                var position = new Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+                var position = new apcurium.MK.Booking.Mobile.Infrastructure.Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 
                 _destinationPin.Visible = false;
                 _pickupOverlay.Visibility = ViewStates.Invisible;
@@ -363,7 +364,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (DestinationAddress.HasValidCoordinate())
                 {
-                    var position = new Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+                    var position = new apcurium.MK.Booking.Mobile.Infrastructure.Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
                     _destinationPin.Visible = true;
                     _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
                 }
@@ -380,7 +381,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 	            if (PickupAddress.HasValidCoordinate())
 	            {
-					var position = new Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+					var position = new apcurium.MK.Booking.Mobile.Infrastructure.Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 					_pickupPin.Visible = true;
 					_pickupPin.Position = new LatLng(position.Latitude, position.Longitude);  
 	            }
@@ -391,7 +392,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 	            if (DestinationAddress.HasValidCoordinate())
 	            {
-					var position = new Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+					var position = new apcurium.MK.Booking.Mobile.Infrastructure.Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
 					_destinationPin.Visible = true;
 					_destinationPin.Position = new LatLng(position.Latitude, position.Longitude); 
 	            }
@@ -469,7 +470,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         // Update Marker and Animate it to see it move on the map
-        private void UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, Position oldPosition)
+        private void UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, apcurium.MK.Booking.Mobile.Infrastructure.Position oldPosition)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -517,7 +518,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         continue;
                     }
 
-                    var oldPosition = new Position()
+                    var oldPosition = new apcurium.MK.Booking.Mobile.Infrastructure.Position()
                     {
                         Latitude = existingMarkerForVehicle.Position.Latitude,
                         Longitude = existingMarkerForVehicle.Position.Longitude,

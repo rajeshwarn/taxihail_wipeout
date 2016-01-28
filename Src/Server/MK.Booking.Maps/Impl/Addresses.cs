@@ -59,13 +59,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-            var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
+            var allResults = geoCodingService.Search(name, latitude, longitude, currentLanguage, geoResult);
 
             return ProcessAddresses(name, allResults, latitude, longitude, currentLanguage, geoResult);
         }
 
-
-        private Address[] ProcessAddresses(string name, IEnumerable<Address> allResults, double? latitude, double? longitude,string currentLanguage, GeoResult geoResult = null)
+        private Address[] ProcessAddresses(string name, IEnumerable<Address> allResults, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
         {
             IEnumerable<Address> addressesGeocode;
             IEnumerable<Address> addressesPlaces = new Address[0];
@@ -88,24 +87,21 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
 
-                addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
+                addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, currentLanguage);
             }
-
-            //TODO not sure what this code is doing
 
             return addressesGeocode
                 .Take(20)
                 .Concat(addressesPlaces.Take(20))
                 .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
-                .ToArray(); //todo Take 20!? api's consern 
+                .ToArray();
         }
-
 
         public async Task<Address[]> SearchAsync(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
         {
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-            var allResults = await geoCodingService.SearchAsync(name, currentLanguage, geoResult);
+            var allResults = await geoCodingService.SearchAsync(name, latitude, longitude, currentLanguage, geoResult);
 
             return ProcessAddresses(name, allResults, latitude, longitude, currentLanguage, geoResult);
         }

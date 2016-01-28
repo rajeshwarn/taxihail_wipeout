@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using Newtonsoft.Json;
 using MapKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
@@ -20,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
         }
 
-        public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
+        public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
         {
             try
             {
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public async Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double pickupLatitude, double pickupLongitude, double searchRadiusInMeters)
+        public async Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
         {
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
@@ -46,13 +45,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var geoAddresses = placemarks
                 .Select(ConvertPlacemarkToAddress)
                 .ToArray();
-
-            Console.WriteLine("ios results: " + JsonConvert.SerializeObject(geoAddresses, Formatting.Indented));
-
+            
             return geoAddresses;
         }
 
-        private Task<MKPlacemark[]> SearchAsync(string query, double lat, double lng, double radiusInMeters)
+        private Task<MKPlacemark[]> SearchAsync(string query, double? lat, double? lng, double radiusInMeters)
         {
             var tcs = new TaskCompletionSource<MKPlacemark[]>();
             var result = new MKPlacemark[0];
@@ -62,12 +59,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 try
                 {
-                    var region = MKCoordinateRegion.FromDistance(new CLLocationCoordinate2D(lat, lng), radiusInMeters * 2, radiusInMeters * 2);
-                    var search = new MKLocalSearch(new MKLocalSearchRequest 
-                    { 
-                        NaturalLanguageQuery = query.Replace("+", " "), 
-                        Region = region
-                    });
+                    var searchRequest = new MKLocalSearchRequest { NaturalLanguageQuery = query };
+
+                    if(lat.HasValue && lng.HasValue 
+                        && lat.Value != 0 && lng.Value != 0)
+                    {
+                        // You can use this parameter to narrow the list of search results to those inside or close to the specified region. 
+                        // Specifying a region does not guarantee that the results will all be inside the region. It is merely a hint to the search engine. 
+
+                        var region = MKCoordinateRegion.FromDistance(new CLLocationCoordinate2D(lat.Value, lng.Value), radiusInMeters * 2, radiusInMeters * 2);
+                        searchRequest.Region = region;
+                    }
+
+                    var search = new MKLocalSearch(searchRequest);
 
                     var searchResult = await search.StartAsync();
                     result = searchResult.MapItems.Select(x => x.Placemark).ToArray();
@@ -87,8 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
         {
-            // Do nothing with currentLanguage parameter since Apple Geocoder
-            // automatically gets the results using the system language
             try
             {
                 return GeocodeLocationAsync(latitude, longitude, currentLanguage).Result;
