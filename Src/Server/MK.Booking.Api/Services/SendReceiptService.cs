@@ -15,6 +15,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using CMTPayment.Pair;
 using ServiceStack.Common.Utils;
 
@@ -125,6 +126,33 @@ namespace apcurium.MK.Booking.Api.Services
                 creditCard = orderPayment.CardToken.HasValue()
                     ? _creditCardDao.FindByToken(orderPayment.CardToken)
                     : null;
+            } else if (pairingInfo == null && order.IsManualRideLinq)
+            {
+                var manualRideLinqDetail = _orderDao.GetManualRideLinqById(order.Id);
+                fareAmount = manualRideLinqDetail.Fare;
+                ibsOrderId = manualRideLinqDetail.TripId;
+                tollAmount = manualRideLinqDetail.Toll;
+                extraAmount = manualRideLinqDetail.Extra;
+                tipAmount = manualRideLinqDetail.Tip;
+                taxAmount = manualRideLinqDetail.Tax;
+                surcharge = manualRideLinqDetail.Surcharge;
+                orderStatus.DriverInfos.DriverId = manualRideLinqDetail.DriverId.ToString();
+                cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
+                {
+                    TripId = manualRideLinqDetail.TripId,
+                    DriverId = manualRideLinqDetail.DriverId.ToString(),
+                    Distance = manualRideLinqDetail.Distance,
+                    AccessFee = manualRideLinqDetail.AccessFee,
+                    PickUpDateTime = manualRideLinqDetail.StartTime,
+                    DropOffDateTime = manualRideLinqDetail.EndTime,
+                    LastFour = manualRideLinqDetail.LastFour,
+                    FareAtAlternateRate = manualRideLinqDetail.FareAtAlternateRate,
+                    RateAtTripEnd = (int) (manualRideLinqDetail.RateAtTripEnd.GetValueOrDefault()),
+                    RateAtTripStart = (int) (manualRideLinqDetail.RateAtTripStart.GetValueOrDefault()),
+                    TipIncentive = order.TipIncentive ?? 0
+                };
+
+                
             }
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
@@ -133,16 +161,16 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    fareAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                    fareAmount = Math.Round(((double) tripInfo.Fare/100), 2);
                     var tollHistory = tripInfo.TollHistory != null
-                           ? tripInfo.TollHistory.Sum(p => p.TollAmount)
-                           : 0;
+                        ? tripInfo.TollHistory.Sum(p => p.TollAmount)
+                        : 0;
 
-                    tollAmount = Math.Round(((double)tollHistory / 100), 2);
-                    extraAmount = Math.Round(((double) tripInfo.Extra / 100), 2);
-                    tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
-                    taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
-                    surcharge = Math.Round(((double) tripInfo.Surcharge / 100), 2);
+                    tollAmount = Math.Round(((double) tollHistory/100), 2);
+                    extraAmount = Math.Round(((double) tripInfo.Extra/100), 2);
+                    tipAmount = Math.Round(((double) tripInfo.Tip/100), 2);
+                    taxAmount = Math.Round(((double) tripInfo.Tax/100), 2);
+                    surcharge = Math.Round(((double) tripInfo.Surcharge/100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
 
                     cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
@@ -150,11 +178,11 @@ namespace apcurium.MK.Booking.Api.Services
                         TripId = tripInfo.TripId,
                         DriverId = tripInfo.DriverId.ToString(),
                         Distance = tripInfo.Distance,
-                        AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
-						PickUpDateTime = tripInfo.StartTime,
+                        AccessFee = Math.Round(((double) tripInfo.AccessFee/100), 2),
+                        PickUpDateTime = tripInfo.StartTime,
                         DropOffDateTime = tripInfo.EndTime,
                         LastFour = tripInfo.LastFour,
-                        FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
+                        FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate/100), 2),
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
                         RateAtTripStart = tripInfo.RateAtTripStart,
                         Tolls = tripInfo.TollHistory,
@@ -165,7 +193,8 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     fareAmount = ibsOrder.Fare;
                     tollAmount = ibsOrder.Toll;
-                    tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
+                    tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0),
+                        pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
                     surcharge = order.Surcharge;
                 }
@@ -185,8 +214,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                 orderPayment = null;
             }
-			
-			var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
+
+            var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
 
             var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order, 
