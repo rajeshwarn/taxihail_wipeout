@@ -138,19 +138,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{
-					var serializedOverduePayment = _overduePayment.ToJson();
 					if(_appSettings.Data.MaxNumberOfCardsOnFile > 1)
 					{
 						ShowViewModel<CreditCardMultipleViewModel>(new 
-						{ 
-							paymentToSettle = serializedOverduePayment 
+						{
+                            hasPaymentToSettle = true 
 						});
 					}
 					else
 					{
 						ShowViewModel<CreditCardAddViewModel>(new 
-						{ 
-							paymentToSettle = serializedOverduePayment 
+						{
+                            hasPaymentToSettle = true 
 						});
 					}
 				});
