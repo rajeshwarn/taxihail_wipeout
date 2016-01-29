@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             var popularPlaces = new Address[0];
 
-            if (query.HasValue())
+            if (query.HasValueTrimmed())
             {
                 popularPlaces = SearchPopularAddresses(query);
             }
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private GeoAddress[] SearchUsingName(string searchQuery, bool useFilter, string currentLanguage, double? pickupLatitude, double? pickupLongitude)
         {
-            if (searchQuery == null)
+            if (searchQuery == null || !searchQuery.HasValueTrimmed())
             {
                 return null;
             }
