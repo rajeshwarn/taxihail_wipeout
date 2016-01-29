@@ -757,4 +757,8 @@
   <string name="ServiceErrorResetPassword_AccountNotFound">Aucun compte n\'a été trouvé pour cet email</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
   <string name="ManualRideLinqDeactivatedCardOnFile">Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</string>
+  <string name="LastFour">4 dernier chiffres:  </string>
+  <string name="CreditCompany">Compagnie de crédit: </string>
+  <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
+  <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
 </resources>

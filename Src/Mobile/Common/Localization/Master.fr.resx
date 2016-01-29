@@ -2390,4 +2390,16 @@
   <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
     <value>Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</value>
   </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>4 dernier chiffres:  </value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Compagnie de crédit: </value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Carte de crédit sélectionnée: </value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>Aucune carte de crédit sélectionnée</value>
+  </data>
 </root>

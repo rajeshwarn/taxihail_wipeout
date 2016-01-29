@@ -75,11 +75,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				CreditCards = creditCardsDetails
 					.Select( cc => 
 						{
-							var creditCardInfos =  new CreditCardInfos()
-								{
-									CreditCardId = cc.CreditCardId,
-									CreditCardCompany = cc.CreditCardCompany
-								};
+							var creditCardInfos =  new CreditCardInfos
+							{
+								CreditCardId = cc.CreditCardId,
+								CreditCardCompany = cc.CreditCardCompany
+							};
 							var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
 							if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)

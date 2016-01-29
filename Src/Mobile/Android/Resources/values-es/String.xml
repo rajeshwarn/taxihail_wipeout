@@ -756,4 +756,8 @@
   <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
   <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
+  <string name="LastFour">Last 4 numbers:  </string>
+  <string name="CreditCompany">Credit company: </string>
+  <string name="SelectedCreditCard">Currently selected credit card</string>
+  <string name="NoCreditCard">No credit card selected</string>
 </resources>

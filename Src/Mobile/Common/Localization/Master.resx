@@ -2391,4 +2391,16 @@
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
   </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>Last 4 numbers:  </value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Credit company: </value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Currently selected credit card</value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>No credit card selected</value>
+  </data>
 </root>
