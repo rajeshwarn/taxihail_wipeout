@@ -370,7 +370,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
         {
-            List<OrderModel> orders = _orderDao.FindByAccountId(accountId)
+            var orders = _orderDao.FindByAccountId(accountId)
                .OrderByDescending(c => c.CreatedDate)
                .Select(x =>
                {
