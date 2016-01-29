@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using UIKit;
+using ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -69,6 +71,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(async () =>
                 {
                     var localize = this.Services().Localize;
+
+					// hide the keyboard when command is pressed
+					UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
 
                     if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
