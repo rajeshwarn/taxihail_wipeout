@@ -113,7 +113,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     null,
                     _currentAddress != null ? _currentAddress.Latitude : (double?)null,
                     _currentAddress != null ? _currentAddress.Longitude : (double?)null,
-                    null,
                     _currentLanguage
 				), cancellationToken);
             
@@ -421,8 +420,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{           
 			var fullAddresses = _placesService.SearchPlaces(criteria, 
 				_currentAddress != null ? _currentAddress.Latitude : (double?)null, 
-				_currentAddress != null ? _currentAddress.Longitude : (double?)null, 
-				null, _currentLanguage);
+				_currentAddress != null ? _currentAddress.Longitude : (double?)null,
+				_currentLanguage);
 
 			var addresses = fullAddresses.ToList();
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
@@ -467,7 +466,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
             
 	    }
-
 
 		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{

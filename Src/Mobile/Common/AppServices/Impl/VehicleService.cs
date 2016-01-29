@@ -14,8 +14,7 @@ using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.ServiceClient.Web;
-using System.Net;
-using Cirrious.CrossCore;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

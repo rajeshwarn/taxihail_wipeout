@@ -115,6 +115,8 @@
     <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
     <Compile Include="Google\Resources\GoogleResult.cs" />
     <Compile Include="Extensions\ResourcesExtensions.cs" />
+    <Compile Include="Resources\MapBounds.cs" />
+    <Compile Include="Resources\Position.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

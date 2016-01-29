@@ -162,6 +162,7 @@
     <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
