@@ -7,11 +7,21 @@ using System.Web;
 using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using PagedList;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
     public class AccountManagementModel
     {
+        public AccountManagementModel()
+        {
+            OrdersPaged = new PagedList<OrderModel>(new List<OrderModel>(), 1, OrdersPageSize);
+        }
+
+        public int OrdersPageIndex { get; set; }
+
+        public int OrdersPageSize { get { return 10; } }
+
         [Display(Name = "Id")]
         public Guid Id { get; set; }
 
@@ -57,7 +67,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Display(Name = "Credit card last 4 digits")]
         public string CreditCardLast4Digits { get; set; }
 
-        public List<OrderModel> Orders { get; set; }
+        public PagedList<OrderModel> OrdersPaged { get; set; }
 
         public string NotePopupContent { get; set; }
 
