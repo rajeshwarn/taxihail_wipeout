@@ -8,15 +8,12 @@ using System.Net;
 using CMTPayment;
 using MK.Common.Exceptions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using UIKit;
-using ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ManualPairingForRideLinqViewModel: PageViewModel, ISubViewModel<OrderManualRideLinqDetail>
+    public partial class ManualPairingForRideLinqViewModel: PageViewModel, ISubViewModel<OrderManualRideLinqDetail>
     {
         private readonly IBookingService _bookingService;
         private readonly IOrderWorkflowService _orderWorkflowService;
@@ -25,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
 		private string _kountSessionId;
+
+		partial void HideIOSKeyboard();
 
 		public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService, IDeviceCollectorService deviceCollectorService)
         {
@@ -72,9 +71,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var localize = this.Services().Localize;
 
-					// hide the keyboard when command is pressed
-					UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
-
+					HideIOSKeyboard();
+					
                     if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
                         await this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]);
