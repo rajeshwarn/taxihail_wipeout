@@ -19,6 +19,7 @@
       @Html.HiddenFor(x => x.Id)
       @Html.HiddenForEnumerable(x => x.OrdersPaged)
       @Html.HiddenForEnumerable(x => x.Notes)
+      @Html.HiddenFor(x => x.OrdersPageIndex)
 
       <div class="div-account-block">
          <div class="left-column">
@@ -258,7 +259,7 @@
 
         <div class="col-sm-10">
             <div class="center">
-                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { page}))
+                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { Model.Id, page}))
                 
             </div>
         </div>

@@ -13,13 +13,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
     public class AccountManagementModel
     {
+        public int OrdersPageSize { get { return 10; } }
+
         public AccountManagementModel()
         {
-            OrdersPaged = new PagedList<OrderModel>(new List<OrderModel>(), 1, 2);
-           
+            OrdersPaged = new PagedList<OrderModel>(new List<OrderModel>(), 1, OrdersPageSize);
         }
 
-        public int? Page { get; set; }
+        public int OrdersPageIndex { get; set; }
 
         [Display(Name = "Id")]
         public Guid Id { get; set; }
