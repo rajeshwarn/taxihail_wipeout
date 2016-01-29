@@ -518,8 +518,8 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "WarningPromoCodeDontShow"="لا تحذر";
 "PanelMenuViewPromotionsText"="Promotions";
-"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
-"UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"UnpairPayInCarWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"UnpairPayInCarWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "UnpairWarningOkButton"="Pay in car";
 "UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
@@ -739,3 +739,8 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
 "InvalidCreditCardUpdateCardButton"="Update Card";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
+"LastFour"="Last 4 numbers:  ";
+"CreditCompany"="Credit company: ";
+"SelectedCreditCard"="Currently selected credit card";
+"NoCreditCard"="No credit card selected";

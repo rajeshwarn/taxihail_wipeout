@@ -537,8 +537,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
-  <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="UnpairWarningOkButton">Payer dans le taxi</string>
   <string name="UnpairWarningCancelButton">Annuler</string>
   <string name="View_Promotions">Promotions</string>
@@ -750,7 +750,7 @@
   <string name="ServiceErrorUnauthorized">Votre session est expirée. Veuillez vous authentifier à nouveau.</string>
   <string name="ServiceErrorCallTitle">Erreur serveur</string>
   <string name="PairingProcessingErrorTitle">Problème de paiement</string>
-  <string name="TripUnableToPairErrorText">Désolé, une erreur de paiement avec la carte de crédit est survenue, s\'il vous plaît payez dans le taxi</string>
+  <string name="TripUnableToPairErrorText">Désolé, une erreur est survenue, s\'il vous plaît payez dans le taxi</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Désolé, votre carte de crédit n\'a pas pu être autorisée. S\'il vous plaît payez dans le taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Désolé, une erreur est survenue pendant le traitement de votre carte de crédit. S\'il vous plaît payez dans le taxi</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
@@ -758,4 +758,9 @@
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
   <string name="InvalidCreditCardMessage">Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l\'existante.</string>
   <string name="InvalidCreditCardUpdateCardButton">Changer Carte</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</string>
+  <string name="LastFour">4 dernier chiffres:  </string>
+  <string name="CreditCompany">Compagnie de crédit: </string>
+  <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
+  <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
 </resources>
