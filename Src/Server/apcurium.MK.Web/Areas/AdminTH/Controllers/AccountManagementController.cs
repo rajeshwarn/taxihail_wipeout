@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using PagedList;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -65,9 +66,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _resources = new Resources(serverSettings);
         }
 
-        public ActionResult Index(Guid id)
+        public ActionResult Index(Guid id, int page = 1)
         {
             AccountManagementModel accountManagementModel = InitializeModel(id);
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(id, page, accountManagementModel.OrdersPageSize);
+            accountManagementModel.OrdersPageIndex = page;
+
             return View(accountManagementModel);
         }
 
@@ -117,6 +123,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 TempData["UserMessage"] = "Model state is not valid";
             }
 
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -143,6 +152,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _commandBus.Send(emailCommand);
 
             TempData["UserMessage"] = "Operation done successfully, new password: " + newPassword;
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -174,6 +187,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 TempData["UserMessage"] = "Please provide correct country code, email and phone number";
             }
 
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -202,6 +218,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 TempData["UserMessage"] = "Model state is not valid";
             }
 
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -210,6 +229,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             _commandBus.Send(new UnlinkAccountFromIbs { AccountId = accountManagementModel.Id });
             TempData["UserMessage"] = "Operation done successfully";
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -228,6 +251,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             });
 
             TempData["UserMessage"] = "Operation done successfully";
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return View("Index", accountManagementModel);
         }
 
@@ -257,6 +284,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 csvFlattened.Append("\n");
             }
 
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
             return File(new ASCIIEncoding().GetBytes(csvFlattened.ToString()), "text/csv", "Export.csv");
         }
 
@@ -274,6 +304,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 TempData["UserMessage"] = "Model state is not valid";
             }
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
 
             return View("Index", accountManagementModel);
         }
@@ -325,24 +358,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 model.CreditCardLast4Digits = defaultCreditCard.Last4Digits;
             }
 
-            model.Orders = _orderDao.FindByAccountId(accountId)
-                .OrderByDescending(c => c.CreatedDate)
-                .Select(x =>
-                {
-                    var promo = _promoDao.FindByOrderId(x.Id);
-                    return new OrderModel(x)
-                    {
-                        PromoCode = promo != null ? promo.Code : string.Empty,
-                        FareString = _resources.FormatPrice(x.Fare),
-                        TaxString = _resources.FormatPrice(x.Tax),
-                        TollString = _resources.FormatPrice(x.Toll),
-                        TipString = _resources.FormatPrice(x.Tip),
-                        SurchargeString = _resources.FormatPrice(x.Surcharge),
-                        TotalAmountString = _resources.FormatPrice(x.TotalAmount())
-                    };
-                })
-                .ToList();
-
             model.Notes = _accountNoteService.FindByAccountId(accountId)
                 .OrderByDescending(c => c.CreationDate)
                 .Select(x => new NoteModel(x))
@@ -351,5 +366,27 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return model;
         }
 
+        private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
+        {
+            var orders = _orderDao.FindByAccountId(accountId)
+               .OrderByDescending(c => c.CreatedDate)
+               .Select(x =>
+               {
+                   var promo = _promoDao.FindByOrderId(x.Id);
+                   return new OrderModel(x)
+                   {
+                       PromoCode = promo != null ? promo.Code : string.Empty,
+                       FareString = _resources.FormatPrice(x.Fare),
+                       TaxString = _resources.FormatPrice(x.Tax),
+                       TollString = _resources.FormatPrice(x.Toll),
+                       TipString = _resources.FormatPrice(x.Tip),
+                       SurchargeString = _resources.FormatPrice(x.Surcharge),
+                       TotalAmountString = _resources.FormatPrice(x.TotalAmount())
+                   };
+               })
+               .ToList();
+
+            return new PagedList<OrderModel>(orders, page, ordersPageSize);
+        }
     }
 }
