@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -21,25 +22,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
-		private readonly IVehicleTypeService _vehicleTypeService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, IVehicleTypeService vehicleTypeService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, INetworkRoamingService networkRoamingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
-			_vehicleTypeService = vehicleTypeService;
+			_networkRoamingService = networkRoamingService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
 		{
-			Vehicles = (await _vehicleTypeService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
@@ -48,11 +48,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
-	    private async Task MarketUpdated(string hashedMarket)
+	    private async Task MarketChanged(MarketSettings marketSettings)
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (hashedMarket.HasValue())
+			if (!marketSettings.IsLocalMarket)
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
@@ -67,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					// Only Pay in Car payment available in external markets for other payment providers
 					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id);
 				}
+			}
+
+			if (marketSettings.DisableOutOfAppPayment)
+			{
+				paymentList.Remove (x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
 			}
 
 			ChargeTypes = paymentList
@@ -122,8 +127,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_bookingSettings = value;
 					RaisePropertyChanged();
-					RaisePropertyChanged(() => VehicleTypeId);
-					RaisePropertyChanged(() => VehicleTypeName);
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
                     RaisePropertyChanged(() => SelectedCountryCode);
@@ -214,22 +217,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private IEnumerable<ListItem> _vehicles;
-		public IEnumerable<ListItem> Vehicles
-		{
-			get
-			{
-				return _vehicles;
-			}
-			set
-			{
-				_vehicles = value ?? new List<ListItem>();
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => VehicleTypeId);
-				RaisePropertyChanged(() => VehicleTypeName);
-			}
-		}
-
 		private IEnumerable<ListItem> _chargeTypes;
 		public IEnumerable<ListItem> ChargeTypes
 		{
@@ -243,46 +230,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ChargeTypeId);
 				RaisePropertyChanged(() => ChargeTypeName);
-			}
-		}
-
-		public int? VehicleTypeId
-		{
-			get
-			{
-				return _bookingSettings == null 
-					? null 
-					: _bookingSettings.VehicleTypeId;
-			}
-			set
-			{
-				if (value != _bookingSettings.VehicleTypeId)
-				{
-					_bookingSettings.VehicleTypeId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => VehicleTypeName);
-				}
-			}
-		}
-
-		public string VehicleTypeName
-		{
-			get
-			{
-				if (!VehicleTypeId.HasValue)
-				{
-					return this.Services().Localize["NoPreference"];
-				}
-
-				if (Vehicles == null)
-				{
-					return null;
-				}
-
-				var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
-			    return vehicle == null 
-                    ? null 
-                    : vehicle.Display;
 			}
 		}
 

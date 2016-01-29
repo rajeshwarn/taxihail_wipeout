@@ -11,6 +11,7 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MK.Common.Exceptions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile
         private readonly ILocalization _localize;
         private readonly IMessageService _messageService;
         private readonly ILogger _logger;
+		private readonly IConnectivityService _connectivityService;
 
         public static DateTime LastConnectError = DateTime.MinValue;
         public static DateTime LastGeneralError = DateTime.MinValue;
@@ -27,12 +29,13 @@ namespace apcurium.MK.Booking.Mobile
 
 		private static bool IsErrorMessageDisplayed;
 
-        public ErrorHandler(IMvxViewDispatcher dispatcher, ILocalization localize, IMessageService messageService, ILogger logger)
+        public ErrorHandler(IMvxViewDispatcher dispatcher, ILocalization localize, IMessageService messageService, ILogger logger, IConnectivityService connectivityService)
         {
             _dispatcher = dispatcher;
             _localize = localize;
             _messageService = messageService;
-            _logger = logger;
+			_logger = logger;
+			_connectivityService = connectivityService;
         }
 
         public bool HandleError (Exception ex)
@@ -83,15 +86,7 @@ namespace apcurium.MK.Booking.Mobile
 
             LastConnectError = DateTime.Now;
 
-            if (!IsErrorMessageDisplayed)
-            {
-                IsErrorMessageDisplayed = true;
-                
-                _messageService.ShowMessage(
-                    _localize["NoConnectionTitle"], 
-                    _localize["NoConnectionMessage"], 
-                    () => IsErrorMessageDisplayed = false);
-            }
+			_connectivityService.ShowToast();
 
             _logger.LogError(ex);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -12,6 +13,8 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
+using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
-	    private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -32,14 +36,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IVehicleTypeService vehicleTypeService,
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
-			IOrderWorkflowService orderWorkflowService)
+			IOrderWorkflowService orderWorkflowService,
+			INetworkRoamingService networkRoamingService)
 		{
 			this._vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
-		    _accountService = accountService;
+			_accountService = accountService;
+			_networkRoamingService = networkRoamingService;
+
             PhoneNumber = new PhoneNumberModel();
+
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 		}
 
 		public async void Init()
@@ -55,9 +64,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					PhoneNumber.Country = _bookingSettings.Country;
                     PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 
-                    var p = await _accountService.GetPaymentsList();
+					var paymentList = await _accountService.GetPaymentsList();
 
-					_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+					_payments = paymentList == null ? 
+						new ListItem[0] : 
+						paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 
                     RaisePropertyChanged(() => Payments);
                     RaisePropertyChanged(() => ChargeTypeId);
@@ -70,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
-					var v = await _vehicleTypeService.GetVehiclesList();
+					var v = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
                     _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
@@ -78,10 +89,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    catch (Exception ex)
 			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
 			    }
 			}
+		}
+
+		public async Task MarketChanged(MarketSettings marketSettings)
+		{
+			var paymentList = await _accountService.GetPaymentsList();
+
+			if (marketSettings.DisableOutOfAppPayment)
+			{
+				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+
+				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
+				{
+					ChargeTypeId = null;
+				}
+			}
+
+			_payments = paymentList == null ? 
+				new ListItem[0] : 
+				paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+
+			RaisePropertyChanged(() => Payments);
 		}
 
 	    public bool IsChargeTypesEnabled

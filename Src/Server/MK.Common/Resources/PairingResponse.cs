@@ -7,5 +7,6 @@
         public string Medallion { get; set; }
         public int TripId { get; set; }
         public int DriverId { get; set; }
+        public int? ErrorCode { get; set; }
     }
 }

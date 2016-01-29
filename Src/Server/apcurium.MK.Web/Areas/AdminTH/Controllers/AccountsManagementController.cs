@@ -47,6 +47,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 .Concat(_accountDao.FindByPhoneNumberPattern(accountsManagement.SearchCriteria))
                 .Concat(_accountDao.FindByEmailPattern(accountsManagement.SearchCriteria))
                 .Distinct(new AccountDetailComparer())
+                .OrderBy(x => x.Name)
                 .ToArray();
 
             accountsManagement.CountryDialCode = new string[accountsManagement.Accounts.Length];

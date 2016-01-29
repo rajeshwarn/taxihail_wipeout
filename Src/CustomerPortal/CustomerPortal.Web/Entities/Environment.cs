@@ -1,5 +1,6 @@
 ﻿#region
 
+using apcurium.MK.Common.Extensions;
 using MongoRepository;
 
 #endregion
@@ -17,11 +18,21 @@ namespace CustomerPortal.Web.Entities
     {
         public string Name { get; set; }
         public string Url { get; set; }
+        public string IP { get; set; }
 
         public EnvironmentRole Role { get; set; }
         public string SqlServerInstance { get; set; }
         public string WebSitesFolder { get; set; }
         public bool IsProduction { get; set; }
         public string Id { get; set; }
+
+        public string GetDisplay()
+        {
+            var ipString = IP.HasValue()
+                ? string.Format(" ({0})", IP)
+                : string.Empty;
+
+            return Name + ipString;
+        }
     }
 }

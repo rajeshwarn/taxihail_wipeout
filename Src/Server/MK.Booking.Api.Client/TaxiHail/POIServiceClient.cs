@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Text;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -12,8 +13,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class POIServiceClient : BaseServiceClient
     {
-	    public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

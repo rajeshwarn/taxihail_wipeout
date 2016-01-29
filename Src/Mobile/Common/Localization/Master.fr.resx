@@ -1729,10 +1729,10 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</value>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
@@ -2358,10 +2358,10 @@
     <value>Le lien est absent</value>
   </data>
   <data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
-    <value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
+    <value>Le lien pour naviguer vers la page l'application n'a pas été configuré</value>
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>Votre session est expirée. Veuillez vous authentifier a nouveau.</value>
+    <value>Votre session est expirée. Veuillez vous authentifier à nouveau.</value>
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Erreur serveur</value>
@@ -2370,13 +2370,13 @@
     <value>Problème de paiement</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
+    <value>Désolé, une erreur est survenue, s'il vous plaît payez dans le taxi</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
+    <value>Désolé, votre carte de crédit n'a pas pu être autorisée. S'il vous plaît payez dans le taxi</value>
   </data>
   <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
-    <value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
+    <value>Désolé, une erreur est survenue pendant le traitement de votre carte de crédit. S'il vous plaît payez dans le taxi</value>
   </data>
   <data name="Callbox.ApplicationName" xml:space="preserve">
     <value>TaxiHail Callbox</value>
@@ -2386,6 +2386,12 @@
   </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Le code de confirmation est incorrect.</value>
+  </data>
+  <data name="InvalidCreditCardMessage" xml:space="preserve">
+  	<value>Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l'existante.</value>
+  </data>
+  <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+  	<value>Changer Carte</value>
   </data>
   <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
     <value>Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</value>

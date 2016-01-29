@@ -370,7 +370,11 @@
     <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
+    <Compile Include="AppServices\Orders\ManualPairingException.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
+    <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
+    <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
+    <Compile Include="ViewModels\DebugViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

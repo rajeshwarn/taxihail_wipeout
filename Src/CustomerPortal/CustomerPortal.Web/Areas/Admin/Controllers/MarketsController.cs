@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
@@ -34,16 +35,26 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
-        public ActionResult MarketIndex(MarketModel marketModel)
+        public ActionResult MarketIndex(string market)
         {
             // Find all vehicle type for this market
-            var market = Repository.GetMarket(marketModel.Market);
-            
+            var marketModel = Repository.GetMarket(market);
+            if (marketModel == null)
+            {
+                return View(new MarketModel());
+            }
+
             return View(new MarketModel
             {
-                Market = marketModel.Market,
-                DispatcherSettings = market.DispatcherSettings,
-                Vehicles = market.Vehicles
+                Market = market,
+                DispatcherSettings = marketModel.DispatcherSettings,
+                Vehicles = marketModel.Vehicles,
+                EnableDriverBonus = marketModel.EnableDriverBonus,
+                EnableFutureBooking = marketModel.EnableFutureBooking,
+                DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
+                ReceiptFooter = marketModel.ReceiptFooter,
+                EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
+                MarketTariff = marketModel.MarketTariff,
             });
         }
 
@@ -217,6 +228,45 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("MarketIndex", new MarketModel { Market = market });
+        }
+
+        [ValidateInput(false)]
+        public ActionResult SaveSettings (
+            string market, 
+            bool enableDriverBonus, 
+            string receiptFooter,
+            bool enableFutureBooking,
+            bool disableOutOfAppPayment,
+            bool enableAppFareEstimates, 
+            Tariff marketTariff)
+        {
+            try
+            {
+                var marketToEdit = Repository.GetMarket(market);
+                if (marketToEdit == null)
+                {
+                    ViewBag.Error = "An error occured. Market is null.";
+
+                    return RedirectToAction("Index");
+                }
+
+                marketToEdit.EnableDriverBonus = enableDriverBonus;
+                marketToEdit.EnableFutureBooking = enableFutureBooking;
+                marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
+                marketToEdit.ReceiptFooter = receiptFooter;
+                marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+
+                marketTariff.Type = (int) TariffType.Market;
+                marketToEdit.MarketTariff = marketTariff;
+
+                Repository.Update(marketToEdit);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to save the settings.";
+            }
+
+            return RedirectToAction("Index");
         }
 
         private int GenerateNextSequentialNetworkVehicleId()

@@ -60,7 +60,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 .Select(e => new SelectListItem
                 {
                     Value = e.Id,
-                    Text = e.Name
+                    Text = e.GetDisplay()
                 });
 
             var revisions = new MongoRepository<Revision>();
@@ -274,8 +274,22 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeployClient(AddDeploymentJobModel model)
+        public ActionResult DeployClient(AddDeploymentJobModel model, FormCollection form)
         {
+            foreach (var key in form.AllKeys)
+            {
+                if (key.StartsWith("checkbox_"))
+                {
+                    // FormCollection will have "true,false" value for checked checkbox
+                    var isCompanySelected = form[key].Contains("true");
+
+                    if (isCompanySelected)
+                    {
+                        var companyId = key.Replace("checkbox_", string.Empty);
+                        model.SelectedCompaniesId.Add(companyId);
+                    }
+                }
+            }
             AddDeploymentJob(model);
             return RedirectToAction("Index");
         }
@@ -329,7 +343,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 environments.ToArray().Where(predicate).OrderBy(e => e.Name).Select(e => new SelectListItem
                 {
                     Value = e.Id,
-                    Text = e.Name
+                    Text = e.GetDisplay()
                 });
 
             var revisions = new MongoRepository<Revision>();

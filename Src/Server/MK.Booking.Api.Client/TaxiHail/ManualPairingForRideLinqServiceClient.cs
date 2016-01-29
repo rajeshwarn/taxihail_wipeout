@@ -4,13 +4,14 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ManualPairingForRideLinqServiceClient : BaseServiceClient
     {
-        public ManualPairingForRideLinqServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public ManualPairingForRideLinqServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

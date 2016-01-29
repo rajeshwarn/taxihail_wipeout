@@ -54,6 +54,10 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -192,6 +196,9 @@
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
     <Compile Include="Serializer\TolerantEnumConverter.cs" />
+    <Compile Include="IIPAddressManager.cs" />
+    <Compile Include="IConnectivityService.cs" />
+    <Compile Include="CustomNativeMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

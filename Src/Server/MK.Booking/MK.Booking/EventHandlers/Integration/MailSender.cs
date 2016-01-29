@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
                                     Tolls = tolls.ToArray(),
-                                    TipIncentive = (order.TipIncentive.HasValue) ? order.TipIncentive.Value : 0
+                                    TipIncentive = order.TipIncentive ?? 0
                                 });
                         }
                     }
@@ -357,7 +357,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private void InitializeCmtServiceClient(string companyKey)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

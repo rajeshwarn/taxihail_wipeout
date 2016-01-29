@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.MapDataProvider
             container.RegisterInstance<IGeocoder>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
             container.RegisterInstance<IPlaceDataProvider>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
 
-            container.RegisterInstance<IPostalCodeService>(new CraftyClicksService(settings));
+            container.RegisterInstance<IPostalCodeService>(new CraftyClicksService(settings, null));
 
             container.RegisterType<IDirectionDataProvider>(
                 new TransientLifetimeManager(),
@@ -31,9 +31,9 @@ namespace apcurium.MK.Booking.MapDataProvider
                     switch (settings.Data.DirectionDataProvider)
                     {
                         case MapProvider.TomTom:
-                            return new TomTomProvider(settings, container.Resolve<ILogger>());
+                            return new TomTomProvider(settings, container.Resolve<ILogger>(), null);
                         default:
-                            return new GoogleApiClient(settings, container.Resolve<ILogger>());
+                            return new GoogleApiClient(settings, container.Resolve<ILogger>(), null);
                     }
                 }));
         }

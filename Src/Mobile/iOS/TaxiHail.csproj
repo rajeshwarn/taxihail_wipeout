@@ -184,8 +184,9 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\Components\modernhttpclient-2.4.2\lib\ios-unified\ModernHttpClient.dll</HintPath>
+    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\ModernHttpClient\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
@@ -273,6 +274,15 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsIOS">
+      <HintPath>..\Libraries\Monotouch\DeviceCollectorBindingsIOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -298,6 +308,7 @@
     <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
     <None Include="CustomLinker.xml" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarDropOffSelection.xib" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -718,6 +729,14 @@
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">
       <DependentUpon>BookingBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\DeviceCollectorService.cs" />
+    <Compile Include="PlatformIntegration\IPAddressManager.cs" />
+    <Compile Include="PlatformIntegration\ConnectivityService.cs" />
+    <Compile Include="Helper\ToastHelper.cs" />
+    <Compile Include="Controls\ToastView.cs" />
+    <BundleResource Include="Resources\cancel.png" />
+    <BundleResource Include="Resources\cancel%402x.png" />
+    <Compile Include="Views\DebugView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -753,9 +772,7 @@
     <InterfaceDefinition Include="Views\Order\OrderReviewView.xib">
       <SubType>Designer</SubType>
     </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\Order\OrderReviewView_Thriev.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
-    <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />
     <InterfaceDefinition Include="Views\UpdatedTermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
@@ -997,10 +1014,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <XamarinComponentReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
       <Visible>False</Visible>

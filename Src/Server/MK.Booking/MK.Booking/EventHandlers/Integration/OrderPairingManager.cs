@@ -12,6 +12,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using CMTPayment;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -51,7 +52,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-
             _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
             
             switch (@event.Status.IBSStatusId)
@@ -87,15 +87,26 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
+                        var errorMessageKey = string.Empty;
+                       
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
-                        var pairingResultMessagKey = response.IsSuccessful
-                            ? "OrderStatus_PairingSuccess"
-                            : "OrderStatus_PairingFailed";
+                        switch (response.ErrorCode)
+                        {
+                            case CmtErrorCodes.CardDeclined:
+                                errorMessageKey = "CreditCardDeclinedOnPreauthorizationErrorText";
+                                break;
 
-                        UpdateIBSStatusDescription(order.Id, account.Language, pairingResultMessagKey);
+                            case CmtErrorCodes.UnablePreauthorizeCreditCard:
+                                errorMessageKey = "CreditCardUnableToPreathorizeErrorText";
+                                break;
+                        }    
+                        
+                        var ibsStatusDescription = response.IsSuccessful ? "OrderStatus_PairingSuccess" : errorMessageKey;
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
+                        UpdateIBSStatusDescription(order.Id, account.Language, ibsStatusDescription);
+
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful, errorMessageKey);
                     } 
                 }
                 break;

@@ -627,7 +627,6 @@
   <string name="AddPaymentMethod_PayPal">Link PayPal account</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
-  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
   <string name="CvvRequiredTitle">CVV Required</string>
   <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file ending with {0} to continue</string>
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
@@ -758,8 +757,6 @@
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
-  <string name="LastFour">Last 4 numbers:  </string>
-  <string name="CreditCompany">Credit company: </string>
-  <string name="SelectedCreditCard">Currently selected credit card</string>
-  <string name="NoCreditCard">No credit card selected</string>
+  <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
 </resources>

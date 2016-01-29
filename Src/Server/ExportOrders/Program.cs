@@ -35,7 +35,7 @@ namespace ExportTool
 
             try
             {
-                var auth = new AuthServiceClient(_url, null, null);
+                var auth = new AuthServiceClient(_url, null, null, null);
                 var response = auth.Authenticate(Settings.Default.Username, Settings.Default.Password);
                 response.Wait();
                 _token = response.Result;
@@ -58,7 +58,7 @@ namespace ExportTool
                 var accountsFile = path + "account_" + timestamp + ".csv";
                 var ordersFile = path + "orders_" + timestamp + ".csv";
 
-                var client = new ExportDataServiceClient(_url, _token.SessionId, null);
+                var client = new ExportDataServiceClient(_url, _token.SessionId, null, null);
 
                 var orders = Export(client, DataType.Orders);
                 var accounts = Export(client, DataType.Accounts);

@@ -18,7 +18,6 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using apcurium.MK.Booking.Services;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -53,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
 			_notificationService = notificationService;
 
             // Since CMT will handle the payment on their ends. We do not need to know the actual company of the cab from wich we do the manual pairing.
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
 
             _resources = new Resources.Resources(_serverSettings);
@@ -119,7 +118,11 @@ namespace apcurium.MK.Booking.Api.Services
 			        AutoCompletePayment = true,
                     CardOnFileId = creditCard.Token,
                     LastFour = creditCard.Last4Digits,
-                    ZipCode = creditCard.ZipCode
+                    ZipCode = creditCard.ZipCode,
+                    Email = account.Email,
+                    CustomerIpAddress = RequestContext.IpAddress,
+                    BillingFullName = creditCard.NameOnCard,
+                    SessionId = request.KountSessionId
 		        };
 
 		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
@@ -162,8 +165,10 @@ namespace apcurium.MK.Booking.Api.Services
 						TripId = trip.TripId,
 						DriverId = trip.DriverId,
 						LastFour = trip.LastFour,
-						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2)
-					};
+						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2),
+                        OriginatingIpAddress = request.CustomerIpAddress,
+                        KountSessionId = request.KountSessionId
+                    };
 
 					_commandBus.Send(command);
 
@@ -215,7 +220,7 @@ namespace apcurium.MK.Booking.Api.Services
 								break;
 
 							case CmtErrorCodes.UnablePreauthorizeCreditCard:
-								_notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardUnanbleToPreathorizeErrorText", request.ClientLanguageCode));
+                                _notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardUnableToPreathorizeErrorText", request.ClientLanguageCode));
 								break;
 
 							case CmtErrorCodes.UnableToPair:

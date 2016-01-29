@@ -1398,6 +1398,9 @@
   <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
   </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
+  </data>
   <data name="CmtRideLinqCancelChanges" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -1746,11 +1749,17 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>Are you sure you don’t want to pay with your credit card on file?</value>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="UnpairCancelWarningMessage" xml:space="preserve">
+    <value>Are you sure you want to cancel this order?</value>
+  </data>
+  <data name="UnpairCancelWarningMessageWithPromo" xml:space="preserve">
+    <value>If you decide to cancel, you will not be able to use the promotion.</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pay in car</value>
@@ -2394,8 +2403,14 @@
   <data name="LastFour" xml:space="preserve">
     <value>Last 4 numbers:  </value>
   </data>
+  <data name="InvalidCreditCardMessage" xml:space="preserve">
+  	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
+  </data>
   <data name="CreditCompany" xml:space="preserve">
     <value>Credit company: </value>
+  </data>
+  <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+  	<value>Update Card</value>
   </data>
   <data name="SelectedCreditCard" xml:space="preserve">
     <value>Currently selected credit card</value>

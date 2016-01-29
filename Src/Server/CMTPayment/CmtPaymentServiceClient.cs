@@ -5,6 +5,10 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using CMTPayment.Authorization;
+
+
 #if CLIENT
 using System.Linq;
 using System.Net.Http;
@@ -19,10 +23,11 @@ namespace CMTPayment
     public partial class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger)
+
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
-                : cmtSettings.BaseUrl, sessionId, packageInfo)
+                : cmtSettings.BaseUrl, sessionId, packageInfo, connectivityService)
         {
             _logger = logger;
 
@@ -81,6 +86,7 @@ namespace CMTPayment
 
         private async void LogSuccess(HttpResponseMessage response)
         {
+        #if DEBUG
             try
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -89,16 +95,17 @@ namespace CMTPayment
             }
             catch (Exception ex)
             {
-				if (_logger != null)
-				{
-					_logger.LogError(ex);
-				}
+                if (_logger != null)
+                {
+                    _logger.LogError(ex);
+                }
             }
-            
+        #endif 
         }
 
         private async void LogError(HttpResponseMessage response)
         {
+        #if DEBUG
             try
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -112,6 +119,7 @@ namespace CMTPayment
 					_logger.LogError(ex);
 				}
             }
+        #endif 
         }
 #else   
         public Task<T> GetAsync<T>(IReturn<T> request)

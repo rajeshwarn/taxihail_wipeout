@@ -121,8 +121,9 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
 
@@ -145,14 +146,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
 
-            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
-            {
-                // No companies available that are desserving this region for the company
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-            }
-            
             if (market.HasValue())
             {
+                if (!bestAvailableCompany.CompanyKey.HasValue())
+                {
+                    // No companies available that are desserving this region for the company
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+                }
+
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
@@ -160,6 +161,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 {
                     // Only companies configured for CMT payment can support CoF orders outside of home market
                     request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                }
+
+                if (marketSettings.DisableOutOfAppPayment && request.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                {
+                    // No payment method available since we can't pay in car
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_NoChargeType, _resources.Get("CannotCreateOrder_NoChargeType", request.ClientLanguageCode));
                 }
             }
 
@@ -325,6 +332,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.PromptsLength = accountValidationResult.PromptsLength;
             orderCommand.PromotionId = promotionId;
             orderCommand.ChargeTypeEmail = chargeTypeEmail;
+            orderCommand.OriginatingIpAddress = createReportOrder.OriginatingIpAddress = request.CustomerIpAddress;
+            orderCommand.KountSessionId = createReportOrder.OriginatingIpAddress = request.KountSessionId;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 

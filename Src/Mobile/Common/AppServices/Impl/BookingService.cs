@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -19,6 +18,7 @@ using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 using MK.Common.Exceptions;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -29,18 +29,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private readonly IAppSettings _appSettings;
         private readonly IGeolocService _geolocService;
         private readonly IMessageService _messageService;
+		private readonly IIPAddressManager _ipAddressManager;
 
         public BookingService(IAccountService accountService,
             ILocalization localize,
             IAppSettings appSettings,
             IGeolocService geolocService,
-	    IMessageService messageService)
+	    	IMessageService messageService,
+			IIPAddressManager ipAddressManager)
         {
             _geolocService = geolocService;
             _messageService = messageService;
             _appSettings = appSettings;
             _localize = localize;
             _accountService = accountService;
+			_ipAddressManager = ipAddressManager;
         }
 
         public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order)
@@ -57,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public async Task<OrderStatusDetail> CreateOrder(CreateOrderRequest order)
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
+			order.CustomerIpAddress = _ipAddressManager.GetIPAddress();
 
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
@@ -367,17 +371,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<OrderServiceClient>(service => service.RateOrder(request));
         }
 
-        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, string kountSessionId)
         {
             var request = new ManualRideLinqPairingRequest
             {
                 PairingCode = pairingCode,
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
+				KountSessionId = kountSessionId,
+				CustomerIpAddress = _ipAddressManager.GetIPAddress()
             };
+
             try
             {
-
                 var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(
                     service => RunWithRetryAsync(() => service.Pair(request), TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, 30));
 
@@ -388,10 +394,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     return response.Data;
                 }
 
-				var pairWithManualRideLinqException = new Exception();
-				pairWithManualRideLinqException.Data.Add("TripInfoHttpStatusCode", response.TripInfoHttpStatusCode);
-				pairWithManualRideLinqException.Data.Add("ErrorCode", response.ErrorCode);
-				throw pairWithManualRideLinqException;
+                int errorCode = 0;
+				int.TryParse(response.ErrorCode, out errorCode);
+
+				throw new ManualPairingException(errorCode);
             }
             catch (AggregateException ex)
             {
@@ -407,7 +413,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 _messageService.ShowMessage(_localize["ManualPairing_TimeOut_Title"], _localize["ManualPairing_TimeOut_Message"]).FireAndForget();
 
-                throw new Exception();
+                throw new ManualPairingException();
             }
         }
 

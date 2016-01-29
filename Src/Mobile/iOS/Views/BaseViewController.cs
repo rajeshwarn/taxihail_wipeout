@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using Cirrious.CrossCore;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewDidAppear(bool animated)
         {
+            Mvx.Resolve<IConnectivityService>().HandleToastInNewView();
             base.ViewDidAppear(animated);
             if (ViewModel != null)
             {

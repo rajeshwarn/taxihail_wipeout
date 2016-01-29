@@ -57,7 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
             IMetricsService metricsService,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			INetworkRoamingService networkRoamingService)
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -84,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Observe(networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -745,18 +746,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string hashedMarket)
+        private void MarketChanged(MarketSettings marketSettings)
         {
-            // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket
-                && hashedMarket.HasValue()
-                && !Settings.Network.HideMarketChangeWarning)
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
-                    this.Services().Localize["MarketChangedMessage"]);
-            }
+			// Market changed and not home market
+			if (_lastHashedMarket != marketSettings.HashedMarket
+				&& !marketSettings.IsLocalMarket
+				&& !Settings.Network.HideMarketChangeWarning)
+			{
+				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+					this.Services().Localize["MarketChangedMessage"]);
+			}
 
-            _lastHashedMarket = hashedMarket;
+			_lastHashedMarket = marketSettings.HashedMarket;
+
+			if (BookingStatus != null && BookingStatus.BottomBar != null) 
+			{
+				BookingStatus.BottomBar.DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment;
+			}
 
             if (BottomBar != null)
             {

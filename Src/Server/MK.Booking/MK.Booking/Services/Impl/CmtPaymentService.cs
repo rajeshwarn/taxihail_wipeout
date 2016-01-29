@@ -88,6 +88,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
+                    if (response.ErrorCode.HasValue)
+                    {
+                        return new PairingResponse
+                        {
+                            IsSuccessful = false,
+                            ErrorCode = response.ErrorCode
+                        };
+                    }
+
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
                     {
@@ -126,10 +135,12 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception e)
             {
                 _logger.LogError(e);
+
                 return new PairingResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = e.Message,
+                    ErrorCode = CmtErrorCodes.UnableToPair
                 };
             }
         }
@@ -418,7 +429,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // send pairing request                                
                 var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
-                var pairingRequest = new PairingRequest
+                var pairingRequest = new ManualRideLinqCoFPairingRequest
                 {
                     AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
@@ -433,7 +444,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
                     LastFour = creditCardDetail.Last4Digits,
                     TipIncentive = orderDetail.TipIncentive,
-                    ZipCode = creditCardDetail.ZipCode
+                    ZipCode = creditCardDetail.ZipCode,
+                    Email = accountDetail.Email,
+                    CustomerIpAddress = orderDetail.OriginatingIpAddress,
+                    BillingFullName = creditCardDetail.NameOnCard,
+                    SessionId = orderDetail.KountSessionId
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
@@ -454,11 +469,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // Wait for trip to be updated to check if pairing was successful
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
-                
-                if (trip.HttpStatusCode != (int) HttpStatusCode.OK)
-                {
-                    throw new Exception("Card could not be paired with vehicle.");
-                }
+
+                response.ErrorCode = (trip != null) ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
 
                 return response;
             }
@@ -592,8 +604,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void InitializeServiceClient()
         {
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null, _logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null);
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null, _logger, null);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }

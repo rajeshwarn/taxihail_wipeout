@@ -625,7 +625,6 @@
 "AddPaymentMethod_PayPal"="Link PayPal account";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
-"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
 "CvvRequiredTitle"="CVV Required";
 "CvvRequiredMessage"="Please enter the CVV associated with your card on file ending with {0} to continue";
 "Error_InvalidCvvTitle"="Invalid CVV";
@@ -756,7 +755,5 @@
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
-"LastFour"="Last 4 numbers:  ";
-"CreditCompany"="Credit company: ";
-"SelectedCreditCard"="Currently selected credit card";
-"NoCreditCard"="No credit card selected";
+"InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
+"InvalidCreditCardUpdateCardButton"="Update Card";

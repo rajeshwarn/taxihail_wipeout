@@ -120,7 +120,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyName = @event.CompanyName,
                     Market = @event.Market,
                     BookingFees = @event.BookingFees,
-                    TipIncentive = @event.TipIncentive
+                    TipIncentive = @event.TipIncentive,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
                 };
 
                 if (@event.IsPrepaid)
@@ -152,6 +154,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
                         order.TipIncentive = @event.TipIncentive;
+                        order.OriginatingIpAddress = @event.OriginatingIpAddress;
+                        order.KountSessionId = @event.KountSessionId;
 
                         context.SaveChanges();
                     }
@@ -533,7 +537,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
-                    IsManualRideLinq = true
+                    IsManualRideLinq = true,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
                 });
 
                 // Create an empty OrderStatusDetail row
@@ -642,7 +648,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        order.Status = (int) OrderStatus.TimedOut;
+                        order.Status = (int) OrderStatus.Canceled;
                     }
 
                     order.Fare = @event.Fare;
@@ -661,7 +667,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        orderStatusDetails.Status = OrderStatus.TimedOut;
+                        orderStatusDetails.Status = OrderStatus.Canceled;
                     }
 
                     context.Save(orderStatusDetails);

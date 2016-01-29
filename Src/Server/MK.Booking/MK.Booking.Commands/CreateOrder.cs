@@ -94,5 +94,9 @@ namespace apcurium.MK.Booking.Commands
         public int? IbsOrderId { get; set; }
 
         public string ChargeTypeEmail { get; set; }
+
+        public string OriginatingIpAddress { get; set; }
+
+        public string KountSessionId { get; set; }
     }
 }

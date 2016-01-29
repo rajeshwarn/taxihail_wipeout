@@ -58,7 +58,7 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
-			Store = new StoreSettingContainer()
+			Store = new StoreSettingContainer
 			{
 				AppleLink = "http://www.mobile-knowledge.com/",
                 PlayLink = "http://www.mobile-knowledge.com/"
@@ -74,7 +74,9 @@ namespace MK.Common.Configuration
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+            DebugViewEnabled = true;
 #endif
+
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -528,6 +530,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
         public bool HideTHNetworkAppMenu { get; protected set; }
 
+		[Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
@@ -572,5 +575,10 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Unload Timeout", Description = "Time (in seconds) waiting for Charge Amounts from Driver")]
         public double ChargeAmountsTimeOut { get; set; }
+
+        [PropertyEncrypt]
+        [SendToClient]
+        [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
+        public bool DebugViewEnabled { get; protected set; }
     }
 }

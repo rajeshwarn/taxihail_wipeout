@@ -42,8 +42,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			if (logFile != null)
 			{
+                var fileProviderAuthorities = string.Format("{0}.fileprovider", Context.PackageName);
+
                 emailIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                emailIntent.PutExtra(Intent.ExtraStream, Android.Support.V4.Content.FileProvider.GetUriForFile(Context, "com.apcurium.fileprovider", new Java.IO.File(logFile)));
+                emailIntent.PutExtra(Intent.ExtraStream, Android.Support.V4.Content.FileProvider.GetUriForFile(Context, fileProviderAuthorities, new Java.IO.File(logFile)));
 			}
 
 			try
@@ -109,12 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 logger.LogError(e);
             }
         }
-
-        public bool CanUseCalendarAPI()
-        {
-            return (int) Build.VERSION.SdkInt > 8;
-        }
-
+            
         private long GetDateTimeMS(DateTime date)
         {
             var c = Calendar.GetInstance(TimeZone.Default);
