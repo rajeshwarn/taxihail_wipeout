@@ -17,7 +17,7 @@
 
       @Html.AntiForgeryToken()
       @Html.HiddenFor(x => x.Id)
-      @Html.HiddenForEnumerable(x => x.OrdersPaged)
+      @* @Html.HiddenForEnumerable(x => x.OrdersPaged) *@
       @Html.HiddenForEnumerable(x => x.Notes)
       @Html.HiddenFor(x => x.OrdersPageIndex)
 
