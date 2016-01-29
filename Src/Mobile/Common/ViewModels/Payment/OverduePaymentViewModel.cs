@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountService _accountService;
 		private readonly IAppSettings _appSettings;
+		private readonly bool _isFromLogin;
 
 		public OverduePaymentViewModel(IPaymentService accountService, 
 			IAccountService accountService1,
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		    _accountService = accountService1;
 		}
 
-	    public void Init(string overduePayment)
+		public void Init(string overduePayment)
 	    {
 			OverduePayment = overduePayment.FromJson<OverduePayment>();
         }
@@ -115,7 +116,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                                 await this.Services().Message.ShowMessage(localize["Overdue_Succeed_Title"], message);
 
-                                Close(this);
+								if(_isFromLogin)
+								{
+									ShowViewModel<HomeViewModel>(new { locateUser = true });
+								}
+								else
+								{
+									Close(this);
+								}
+                                
                             }
                             else
                             {

@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverduePaymentView">
             <connections>
                 <outlet property="AmountDue" destination="7Oc-RR-yxa" id="hwJ-Pj-nYg"/>
+                <outlet property="Company" destination="16W-JW-0mB" id="7Oi-Kh-Iar"/>
                 <outlet property="DateOfTransaction" destination="o91-o0-rgs" id="xX5-M1-hcA"/>
                 <outlet property="IbsOrder" destination="d4N-F0-Lwo" id="BqM-yt-utc"/>
+                <outlet property="Last4" destination="g3c-jI-biG" id="HuW-JR-zO5"/>
                 <outlet property="TransactionId" destination="vOh-F1-i8X" id="Rik-R9-DPV"/>
                 <outlet property="btnAddNewCard" destination="lTp-MB-rfG" id="nZ3-5y-GI1"/>
                 <outlet property="btnRetry" destination="k3L-Hg-fEU" id="9EJ-8u-FpF"/>
                 <outlet property="lblAmountDue" destination="RDI-Py-cRU" id="qyY-wG-6LH"/>
+                <outlet property="lblCompany" destination="oyn-ne-4wv" id="EKN-Xt-9x8"/>
                 <outlet property="lblDate" destination="3fb-DF-0mX" id="vgn-Dj-wfD"/>
                 <outlet property="lblInstructions" destination="Fmj-7w-as9" id="ftf-Sw-LID"/>
+                <outlet property="lblLast4" destination="FxP-7y-uKx" id="sfk-Mn-bhn"/>
+                <outlet property="lblNoCreditCard" destination="pBV-ji-urn" id="PNp-n5-lNf"/>
                 <outlet property="lblOrderId" destination="QC6-Kw-5V5" id="SRR-8J-kel"/>
+                <outlet property="lblSelectedCreditCard" destination="Xdn-96-78B" id="XNv-WE-Ood"/>
                 <outlet property="lblTransactionId" destination="ojW-w8-dIt" id="65a-gI-xLe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="oXA-Fy-8RB"/>
             </connections>
@@ -85,8 +92,41 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected credit card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdn-96-78B" userLabel="lblSelectedCreditCard">
+                            <rect key="frame" x="83" y="221" width="155" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No credit card found." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBV-ji-urn" userLabel="lblNoCreditCard">
+                            <rect key="frame" x="98" y="250" width="124" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyn-ne-4wv" userLabel="lblCompany">
+                            <rect key="frame" x="91" y="249" width="61" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="16W-JW-0mB" userLabel="Company">
+                            <rect key="frame" x="160" y="249" width="32" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last 4 numbers:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxP-7y-uKx" userLabel="lblLast4">
+                            <rect key="frame" x="56" y="274" width="96" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g3c-jI-biG" userLabel="Last4">
+                            <rect key="frame" x="160" y="274" width="32" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3L-Hg-fEU" userLabel="btnRetry" customClass="FlatButton">
-                            <rect key="frame" x="8" y="262" width="304" height="41"/>
+                            <rect key="frame" x="8" y="301" width="304" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="41" id="PY2-0q-8u1"/>
                                 <constraint firstAttribute="width" constant="304" id="yz2-Hw-ABN"/>
@@ -99,7 +139,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTp-MB-rfG" userLabel="btnAddNewCard" customClass="FlatButton">
-                            <rect key="frame" x="8" y="311" width="304" height="41"/>
+                            <rect key="frame" x="8" y="350" width="304" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="41" id="71p-Rj-JTb"/>
                                 <constraint firstAttribute="width" constant="304" id="TzM-4q-sCK"/>
@@ -115,30 +155,45 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="lTp-MB-rfG" secondAttribute="bottom" constant="15" id="2yZ-YQ-grr"/>
+                        <constraint firstItem="16W-JW-0mB" firstAttribute="leading" secondItem="1SN-EP-ZDo" secondAttribute="centerX" id="4gH-dg-nZw"/>
                         <constraint firstItem="d4N-F0-Lwo" firstAttribute="baseline" secondItem="QC6-Kw-5V5" secondAttribute="baseline" id="6sZ-Cx-GCs"/>
+                        <constraint firstItem="g3c-jI-biG" firstAttribute="top" secondItem="16W-JW-0mB" secondAttribute="bottom" constant="8" id="7fe-Gb-dbR"/>
                         <constraint firstItem="d4N-F0-Lwo" firstAttribute="leading" secondItem="QC6-Kw-5V5" secondAttribute="trailing" constant="8" id="7pu-cW-sPH"/>
+                        <constraint firstItem="16W-JW-0mB" firstAttribute="leading" secondItem="oyn-ne-4wv" secondAttribute="trailing" constant="8" id="8Cw-YK-VTc"/>
+                        <constraint firstItem="g3c-jI-biG" firstAttribute="leading" secondItem="1SN-EP-ZDo" secondAttribute="centerX" id="8er-gc-tCu"/>
                         <constraint firstAttribute="centerX" secondItem="7Oc-RR-yxa" secondAttribute="leading" id="B1b-nM-fRC"/>
+                        <constraint firstItem="16W-JW-0mB" firstAttribute="baseline" secondItem="oyn-ne-4wv" secondAttribute="baseline" id="Bxj-XK-hb9"/>
                         <constraint firstItem="QC6-Kw-5V5" firstAttribute="top" secondItem="Fmj-7w-as9" secondAttribute="bottom" constant="9" id="Cx7-fx-pl9"/>
+                        <constraint firstItem="oyn-ne-4wv" firstAttribute="top" secondItem="Xdn-96-78B" secondAttribute="bottom" constant="8" id="FyR-rg-svv"/>
+                        <constraint firstItem="Xdn-96-78B" firstAttribute="centerX" secondItem="1SN-EP-ZDo" secondAttribute="centerX" id="GTy-a1-CwK"/>
                         <constraint firstAttribute="centerX" secondItem="d4N-F0-Lwo" secondAttribute="leading" id="IwR-nk-Jez"/>
                         <constraint firstItem="RDI-Py-cRU" firstAttribute="baseline" secondItem="7Oc-RR-yxa" secondAttribute="baseline" id="Jzq-cT-Qhm"/>
                         <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="QC6-Kw-5V5" secondAttribute="bottom" constant="8" id="KXG-Ue-XTE"/>
-                        <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="49" id="L4r-Kj-YeA"/>
+                        <constraint firstItem="Xdn-96-78B" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="8" id="Kxj-Wa-9bd"/>
                         <constraint firstAttribute="trailing" secondItem="Fmj-7w-as9" secondAttribute="trailing" constant="8" id="LDW-WH-0Qz"/>
+                        <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="FxP-7y-uKx" secondAttribute="bottom" constant="10" id="LFs-eK-OHn"/>
                         <constraint firstItem="Fmj-7w-as9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1SN-EP-ZDo" secondAttribute="top" constant="10" id="LzL-39-yZ1"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="baseline" secondItem="3fb-DF-0mX" secondAttribute="baseline" id="VVB-kN-x37"/>
+                        <constraint firstItem="pBV-ji-urn" firstAttribute="centerX" secondItem="1SN-EP-ZDo" secondAttribute="centerX" id="Vha-4G-BPD"/>
                         <constraint firstItem="RDI-Py-cRU" firstAttribute="top" secondItem="3fb-DF-0mX" secondAttribute="bottom" constant="8" id="WhL-4s-sK0"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="leading" secondItem="3fb-DF-0mX" secondAttribute="trailing" constant="8" id="alL-2V-Mu8"/>
+                        <constraint firstItem="g3c-jI-biG" firstAttribute="baseline" secondItem="FxP-7y-uKx" secondAttribute="baseline" id="cxB-Cg-wUv"/>
                         <constraint firstAttribute="centerX" secondItem="o91-o0-rgs" secondAttribute="leading" id="eDd-qG-6CH"/>
-                        <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="49" id="i2D-MT-FJD"/>
                         <constraint firstItem="lTp-MB-rfG" firstAttribute="top" secondItem="k3L-Hg-fEU" secondAttribute="bottom" constant="8" id="iE3-mh-2Ng"/>
                         <constraint firstItem="Fmj-7w-as9" firstAttribute="leading" secondItem="1SN-EP-ZDo" secondAttribute="leading" constant="8" id="ibv-1F-JGJ"/>
                         <constraint firstAttribute="centerX" secondItem="Fmj-7w-as9" secondAttribute="centerX" id="jKd-hk-nI7"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="leading" secondItem="ojW-w8-dIt" secondAttribute="trailing" constant="8" id="jlF-nZ-wqP"/>
                         <constraint firstAttribute="centerX" secondItem="lTp-MB-rfG" secondAttribute="centerX" id="o0d-cv-58q"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="baseline" secondItem="ojW-w8-dIt" secondAttribute="baseline" id="pvy-xz-cwl"/>
+                        <constraint firstItem="16W-JW-0mB" firstAttribute="top" secondItem="Xdn-96-78B" secondAttribute="bottom" constant="8" id="q0K-vU-p7R"/>
+                        <constraint firstItem="pBV-ji-urn" firstAttribute="baseline" secondItem="oyn-ne-4wv" secondAttribute="baseline" id="r5K-ML-JL1"/>
                         <constraint firstAttribute="centerX" secondItem="vOh-F1-i8X" secondAttribute="leading" id="rMT-yT-OJ7"/>
+                        <constraint firstItem="Xdn-96-78B" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="8" id="rWw-jl-aiI"/>
+                        <constraint firstItem="g3c-jI-biG" firstAttribute="leading" secondItem="FxP-7y-uKx" secondAttribute="trailing" constant="8" id="tCB-7F-AzB"/>
+                        <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="g3c-jI-biG" secondAttribute="bottom" constant="10" id="tLM-V4-vTq"/>
                         <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="Fmj-7w-as9" secondAttribute="bottom" priority="750" constant="9" id="u52-L5-SJG"/>
                         <constraint firstItem="Fmj-7w-as9" firstAttribute="top" secondItem="1SN-EP-ZDo" secondAttribute="top" constant="10" id="u5z-yM-8Re"/>
+                        <constraint firstItem="FxP-7y-uKx" firstAttribute="top" secondItem="oyn-ne-4wv" secondAttribute="bottom" constant="8" id="yJD-1P-Ot9"/>
                         <constraint firstAttribute="centerX" secondItem="k3L-Hg-fEU" secondAttribute="centerX" id="yOl-G2-rzW"/>
                         <constraint firstItem="7Oc-RR-yxa" firstAttribute="leading" secondItem="RDI-Py-cRU" secondAttribute="trailing" constant="8" id="yvl-JJ-DEb"/>
                         <constraint firstItem="3fb-DF-0mX" firstAttribute="top" secondItem="ojW-w8-dIt" secondAttribute="bottom" constant="8" id="zj6-Nc-7WG"/>
@@ -157,9 +212,4 @@
             <point key="canvasLocation" x="273" y="350"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
