@@ -871,6 +871,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 return;
             }
+				
+			_automatedMapChanged = true;
 
             if (annotations.Length == 1)
             {
