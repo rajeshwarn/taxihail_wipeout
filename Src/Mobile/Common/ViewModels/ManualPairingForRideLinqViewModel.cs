@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public partial class ManualPairingForRideLinqViewModel: PageViewModel, ISubViewModel<OrderManualRideLinqDetail>
+    public class ManualPairingForRideLinqViewModel: PageViewModel, ISubViewModel<OrderManualRideLinqDetail>
     {
         private readonly IBookingService _bookingService;
         private readonly IOrderWorkflowService _orderWorkflowService;
@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
 		private string _kountSessionId;
-
-		partial void HideIOSKeyboard();
 
 		public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService, IDeviceCollectorService deviceCollectorService)
         {
@@ -70,9 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(async () =>
                 {
                     var localize = this.Services().Localize;
-
-					HideIOSKeyboard();
-					
+											
                     if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
                         await this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]);

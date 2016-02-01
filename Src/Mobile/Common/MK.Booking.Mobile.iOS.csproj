@@ -374,7 +374,6 @@
     <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
     <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
-    <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
