@@ -153,7 +153,7 @@
     <value>Correo electrónico existente</value>
   </data>
   <data name="FacebookLoginErrorMessage" xml:space="preserve">
-    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
+    <value>Este correo electrónico ya está inscrito a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
@@ -892,7 +892,7 @@
     <comment>View Status</comment>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
-    <value>Historia</value>
+    <value>Historial</value>
     <comment>History</comment>
   </data>
   <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
@@ -1195,7 +1195,7 @@
     <value>Confirmar el Incentivo del Conductor</value>
   </data>
   <data name="DriverBonusWarningMessage" xml:space="preserve">
-    <value>Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</value>
+    <value>El monto de incenctivo es adicional a la propina. Será cargado automaticamente al final del viaje. Continuar?</value>
   </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Confirmación de reservación (email)</value>
@@ -1214,7 +1214,7 @@
     <comment>Driver Assigned</comment>
   </data>
   <data name="Notification_DriverBailedPush" xml:space="preserve">
-    <value>Driver bailed</value>
+    <value>EL conductor activo reasignación</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notificiaciones</value>
@@ -1285,7 +1285,7 @@
     <comment>(approx. address)</comment>
   </data>
   <data name="OrderNumber" xml:space="preserve">
-    <value>Reservación#</value>
+    <value>Reservación #</value>
     <comment>Order #</comment>
   </data>
   <data name="PanelMenuViewAboutUsText" xml:space="preserve">
@@ -1682,7 +1682,7 @@
     <comment>Sign In</comment>
   </data>
   <data name="StatusActionBookButton" xml:space="preserve">
-    <value>Reservar otro taxi</value>
+    <value>Reservar otra unidad</value>
     <comment>Book another taxi</comment>
   </data>
   <data name="StatusActionButton" xml:space="preserve">
@@ -1714,7 +1714,7 @@
     <comment>The order cannot be canceled, please call to cancel this order.</comment>
   </data>
   <data name="StatusConfirmCancelRideErrorTitle" xml:space="preserve">
-    <value>No de puede cancelar</value>
+    <value>No se puede cancelar</value>
     <comment>Cannot cancel</comment>
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
@@ -1798,11 +1798,11 @@
     <comment>Search</comment>
   </data>
   <data name="TAXI" xml:space="preserve">
-    <value>TAXI</value>
+    <value>UNIDAD</value>
     <comment>TAXI</comment>
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
-    <value>Su Taxi</value>
+    <value>Su Unidad</value>
     <comment>Your Taxi</comment>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
@@ -2213,7 +2213,7 @@
     <comment>Don't warn</comment>
   </data>
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
-    <value>Promotions</value>
+    <value>Promociones</value>
     <comment>Promotions</comment>
   </data>
   <data name="UnpairWarningMessage" xml:space="preserve">
@@ -2491,7 +2491,7 @@
     <comment>Total cost:</comment>
   </data>
   <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
-    <value>Desemparejar</value>
+    <value>Desincronizar</value>
     <comment>Unpair</comment>
   </data>
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
@@ -2499,7 +2499,7 @@
     <comment>Done</comment>
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
-    <value>Se produjo un error al intentar desemparejar. Por favor, vuelva a intentarlo.</value>
+    <value>Se produjo un error al intentar desincronizar. Por favor, vuelva a intentarlo.</value>
     <comment>An error occured when trying to unpair. Please try again.</comment>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
@@ -2543,7 +2543,7 @@
     <comment>Current Booking Disabled</comment>
   </data>
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
-    <value>Usted necesita tener una tarjeta en el perfil para emparejarse con RideLinQ</value>
+    <value>Usted necesita tener una tarjeta en el perfil para sincronizarse con RideLinQ</value>
     <comment>You need to have a card on file to pair with RideLinQ</comment>
   </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
@@ -2756,7 +2756,7 @@
     <value>Tutorial</value>
   </data>
   <data name="HomeActivityName" xml:space="preserve">
-    <value>Home</value>
+    <value>Inicio</value>
   </data>
   <data name="PasswordRecoveryActivityName" xml:space="preserve">
     <value>Recuperación de contraseña</value>
@@ -2765,7 +2765,7 @@
     <value>Detalles de locación</value>
   </data>
   <data name="LoginActivityName" xml:space="preserve">
-    <value>Login</value>
+    <value>Ingreso</value>
   </data>
   <data name="LocationsActivityName" xml:space="preserve">
     <value>Locaciones favoritas</value>
