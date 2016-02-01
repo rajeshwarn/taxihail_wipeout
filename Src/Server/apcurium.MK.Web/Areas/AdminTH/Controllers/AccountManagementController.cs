@@ -39,6 +39,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly ExportDataService _exportDataService;
         private readonly Resources _resources;
 
+        
+
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
            IAccountDao accountDao,
@@ -262,7 +264,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
         {
             var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
-            if(csv.IsEmpty())
+            if (csv.IsEmpty())
             {
                 return View("Index", accountManagementModel);
             }
