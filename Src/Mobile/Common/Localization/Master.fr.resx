@@ -1729,10 +1729,10 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</value>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
@@ -2370,7 +2370,7 @@
     <value>Problème de paiement</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Désolé, une erreur de paiement avec la carte de crédit est survenue, s'il vous plaît payez dans le taxi</value>
+    <value>Désolé, une erreur est survenue, s'il vous plaît payez dans le taxi</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
     <value>Désolé, votre carte de crédit n'a pas pu être autorisée. S'il vous plaît payez dans le taxi</value>

@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
 			}
 
-			_kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
 		public override async void BaseStart()
@@ -666,6 +666,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if (success)
 					{
+						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+
 						UnlinkPayPalAccount(true);
 
 						this.Services().Analytics.LogEvent("AddCOF");

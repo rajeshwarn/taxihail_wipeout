@@ -232,6 +232,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand PromptChangeServerUrl
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{
+					try
+					{            
+						var serviceUrl = await this.Services().Message.ShowPromptDialog(
+							"Server Url",
+							string.Empty,
+							() => { return; },
+							false,
+							this.Services().Settings.ServiceUrl);
+
+						if(serviceUrl != null)
+						{
+							SetServerUrl(serviceUrl);
+						}
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				});
+			}
+		}
+
         private async Task SignIn()
         {
             using(this.Services().Message.ShowProgress())
@@ -459,51 +487,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService.ClearReferenceData();
 		}
 
+        private async Task ShowNextView()
+        {
+            if (await NeedsToNavigateToAddCreditCard ())
+            {
+                if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
+                {
+                    ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
+                }
+                else
+                {
+                    ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
+                }
+                return;
+            }
+
+            ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
+            if (LoginSucceeded != null) 
+            {
+                LoginSucceeded (this, EventArgs.Empty);
+            }
+        }
+
 		private async Task OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Func<Task> showNextView = async () => 
-            {
-				if (await NeedsToNavigateToAddCreditCard ())
-                {
-					if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
-					{
-						ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
-					}
-					else
-					{
-						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
-					}
-					return;
-				}
-
-				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
-				if (LoginSucceeded != null) 
-				{
-					LoginSucceeded (this, EventArgs.Empty);
-				}
-			};
-
             // Load and cache company notification settings/payment settings
             // Resolve because the accountService injected in the constructor is not authorized here
 		    var accountService = Mvx.Resolve<IAccountService>();
-            
-            await accountService.GetNotificationSettings(true, true);
-		    await accountService.GetUserTaxiHailNetworkSettings(true);
-            await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+            await Task.WhenAll(
+                accountService.GetNotificationSettings(true, true).HandleErrors(),
+                accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
+                Mvx.Resolve<IPaymentService>().GetPaymentSettings(true).HandleErrors()
+            );
+
+            // Don't include it in the previous Task.WhenAll since we need to make sure PaymentSettings are refreshed before calling this
+            await Mvx.Resolve<IDeviceCollectorService>().GenerateNewSessionIdAndCollect().HandleErrors();
 
             // Log user session start
 			Mvx.Resolve<IMetricsService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{
-				await showNextView();
+                await ShowNextView();
 			}
 			else 
 			{
-				_executeOnStart = () => showNextView().FireAndForget();
+                _executeOnStart = () => ShowNextView().FireAndForget();
 			}
         }
 

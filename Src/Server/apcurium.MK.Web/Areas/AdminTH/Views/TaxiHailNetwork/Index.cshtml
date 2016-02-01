@@ -3,49 +3,89 @@
 <div class="well clearfix form-horizontal">
     <div id="validationPanel" class="alert-success alert" style="display: none"> </div>
 
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
 
-    @using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
+    @if (Model == null)
     {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+        <h4>Your company has not been configured for the network. Please login to the CustomerPortal and do so before continuing.</h4>
+    }
+    else
+    {
+        var hasLocalCompanies = Model.ContainsKey("Local") && Model["Local"].Any();
+        var hasRoamingCompanies = Model.Any(m => m.Key != "Local");
 
-        if (Model == null)
+        if (hasLocalCompanies || hasRoamingCompanies)
         {
-            <h4>Your company has not been configured for the network. Please login to the CustomerPortal and do so before continuing.</h4>
+            <table class="table table-striped">
+                <tr>
+                    <th>Company Name</th>
+                    <th class="company-preference-order-table">Accept Orders From</th>
+                    <th class="company-preference-order-table">Dispatch Orders To</th>
+                </tr>
+            </table>
         }
-        else
-        {
-            var hasLocalCompanies = Model.ContainsKey("Local") && Model["Local"].Any();
-            var hasRoamingCompanies = Model.Any(m => m.Key != "Local");
 
-            if (hasLocalCompanies || hasRoamingCompanies)
+        <legend>
+            @Html.DisplayName("Local")
+        </legend>
+
+        if (!hasLocalCompanies)
+        {
+            <h4>You don't have any companies within your Local Network</h4>
+        }
+
+        <ul class="sortable">
+            @foreach (var company in Model["Local"])
             {
-                <table class="table table-striped">
-                    <tr>
-                        <th>Company Name</th>
-                        <th class="company-preference-order-table">Accept Orders From</th>
-                        <th class="company-preference-order-table">Dispatch Orders To</th>
-                    </tr>
-                </table>
+                <li>
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
+                    @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
+                    <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
+                    <div class="company-preference-order-checkbox">
+                        @if (company.CanDispatchTo)
+                        {
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                        }
+                        else
+                        {
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
+                        }
+                    </div>
+                    @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
+                </li>
+            }
+        </ul>
+
+        <legend>
+            <br />
+            @Html.DisplayName("Roaming")
+        </legend>
+
+        if (!hasRoamingCompanies)
+        {
+            <h4>There is no other company that is part of the Network.</h4>
+        }
+
+        foreach (var market in Model.Keys)
+        {
+            if (market == "Local")
+            {
+                continue;
             }
 
             <legend>
-                @Html.DisplayName("Local")
+                <h5>@market</h5>
             </legend>
 
-            if (!hasLocalCompanies)
-            {
-                <h4>You don't have any companies within your Local Network</h4>
-            }
-
-            <ul class="sortable">
-                @foreach (var company in Model["Local"])
+            <ul class="static-table">
+                @foreach (var company in Model[market])
                 {
                     <li>
-                        <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
+                        <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
                         @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                         <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                        <div class="company-preference-order-checkbox">
+                        <div class="company-preference-order-checkbox ">
                             @if (company.CanDispatchTo)
                             {
                                 @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
@@ -55,61 +95,18 @@
                                 @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                             }
                         </div>
-                        @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
                     </li>
                 }
             </ul>
+        }
 
-            <legend>
-                <br />
-                @Html.DisplayName("Roaming")
-            </legend>
-
-            if (!hasRoamingCompanies)
-            {
-                <h4>There is no other company that is part of the Network.</h4>
-            }
-
-            foreach (var market in Model.Keys)
-            {
-                if (market == "Local")
-                {
-                    continue;
-                }
-
-                <legend>
-                    <h5>@market</h5>
-                </legend>
-
-                <ul class="static-table">
-                    @foreach (var company in Model[market])
-                    {
-                        <li>
-                            <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
-                            @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
-                            <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                            <div class="company-preference-order-checkbox ">
-                                @if (company.CanDispatchTo)
-                                {
-                                    @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
-                                }
-                                else
-                                {
-                                    @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
-                                }
-                            </div>
-                        </li>
-                    }
-                </ul>
-            }
-
-            if (hasLocalCompanies || hasRoamingCompanies)
-            {
-                <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save() ">Save</a>
-            }
+        if (hasLocalCompanies || hasRoamingCompanies)
+        {
+            <br/>
+            <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
         }
     }
-
+    
     <script type="text/javascript">
 
         function displayValidationMessage(control, message, valid) {
@@ -132,7 +129,7 @@
         }
 
         function save() {
-            var form = $('#taxiHailNetworkForm');
+            var form = $('#containerForm');
             var panel = $('#validationPanel');
 
             $.ajax({

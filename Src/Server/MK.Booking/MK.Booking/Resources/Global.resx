@@ -543,6 +543,9 @@
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No Credit Card On File.</value>
   </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>No Payment Method Available.</value>
+  </data>
   <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
     <value>No PayPal account linked</value>
   </data>
@@ -693,7 +696,7 @@
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
     <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
   </data>
-  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+  <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
     <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
   </data>
 </root>

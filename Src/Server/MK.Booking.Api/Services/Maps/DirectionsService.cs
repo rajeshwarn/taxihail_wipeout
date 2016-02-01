@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -16,6 +17,11 @@ using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
 using Infrastructure.Messaging;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using CustomerPortal.Client;
+using ServiceStack.Common.Web;
+using Tariff = apcurium.MK.Common.Entity.Tariff;
 
 #endregion
 
@@ -29,8 +35,9 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         private readonly VehicleService _vehicleService;
         private readonly ILogger _logger;
         private readonly ICommandBus _commandBus;
+        private readonly ITaxiHailNetworkServiceClient _networkServiceClient;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus, ITaxiHailNetworkServiceClient networkServiceClient)
         {
             _client = client;
             _serverSettings = serverSettings;
@@ -38,12 +45,20 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             _vehicleService = vehicleService;
             _logger = logger;
             _commandBus = commandBus;
+            _networkServiceClient = networkServiceClient;
         }
 
         public object Get(DirectionsRequest request)
         {
+            if (!request.OriginLat.HasValue || !request.OriginLng.HasValue)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, "MissingPosition", "An original longitude and latitude is required");
+            }
+
+            var marketTariff = GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);
+
             var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
-                request.DestinationLng, request.VehicleTypeId, request.Date);
+                request.DestinationLng, request.VehicleTypeId, request.Date,false, marketTariff);
 
             var directionInfo = new DirectionInfo
             {
@@ -93,6 +108,18 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             }
 
             return directionInfo;
+        }
+
+        private Tariff GetMarketTariff(double latitude, double longitude)
+        {
+            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(latitude, longitude);
+
+            if (!marketSettings.Market.HasValueTrimmed() || !marketSettings.EnableAppFareEstimates)
+            {
+                return null;
+            }
+
+            return marketSettings.MarketTariff;
         }
 
         public Direction Get(AssignedEtaRequest request)

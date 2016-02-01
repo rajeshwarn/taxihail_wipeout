@@ -1,30 +1,43 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Configuration;
 using DeviceCollectorBindingsAndroid;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Configuration.Impl;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class DeviceCollectorService : BaseDeviceCollectorService
     {
-        public DeviceCollectorService(IAppSettings settings)
-            : base(settings)
+        private DeviceCollector _deviceCollector;
+
+        public DeviceCollectorService(IPaymentService paymentService)
+            : base(paymentService)
         {
         }
 
-        public override string CollectAndReturnSessionId()
+        public override async Task GenerateNewSessionIdAndCollect()
         {     
-            var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
+            #if !DEBUG
 
-            var sessionId = GenerateSessionId();
+            var paymentSettings = await PaymentService.GetPaymentSettings();
+            if(paymentSettings.PaymentMode == PaymentMethod.Cmt
+                || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+            {
+                // Kount is only enabled for CMT
 
-            var deviceCollector = new DeviceCollector(topActivity.Activity);
-            deviceCollector.SetCollectorUrl(DeviceCollectorUrl());
-            deviceCollector.SetMerchantId(MerchantId()); 
-            deviceCollector.Collect(sessionId);
+                var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
 
-            return sessionId;
+                GenerateSessionId();
+
+                _deviceCollector = new DeviceCollector(topActivity.Activity);
+                _deviceCollector.SetCollectorUrl(DeviceCollectorUrl(paymentSettings.CmtPaymentSettings.IsSandbox));
+                _deviceCollector.SetMerchantId(MerchantId); 
+                _deviceCollector.Collect(GetSessionId());
+            }
+
+            #endif
         }
     }
 }

@@ -49,20 +49,29 @@ namespace apcurium.MK.Booking.Api.Services
                         ratingScoresCleanedUpForDuplicates.Add(rating);
                     }
                 }
+
                 request.RatingScores = ratingScoresCleanedUpForDuplicates;
+
+                if (HasNoValidExistingRating(request.OrderId) && request.RatingScores.Any())
+                {
+                    var command = new RateOrder
+                    {
+                        AccountId = accountId,
+                        Note = request.Note,
+                        OrderId = request.OrderId,
+                        RatingScores = request.RatingScores
+                    };
+
+                    _commandBus.Send(command);
+                }
             }
-            
-            var command = new RateOrder
-            {
-				AccountId = accountId,
-                Note = request.Note,
-                OrderId = request.OrderId,
-                RatingScores = request.RatingScores
-            };
+            return string.Empty;
+        }
 
-            _commandBus.Send(command);
-
-            return String.Empty;
+        private bool HasNoValidExistingRating(Guid orderId)
+        {
+            var ratings = Dao.GetOrderRatingsByOrderId(orderId);
+            return ratings.OrderId.IsNullOrEmpty() || ratings.RatingScores.None();
         }
     }
 }

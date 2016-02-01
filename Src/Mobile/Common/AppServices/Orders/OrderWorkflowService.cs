@@ -58,23 +58,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
-        readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
         readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
         readonly ISubject<double?> _tipIncentiveSubject = new BehaviorSubject<double?>(null);
-
-		private readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
+		readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
 
         private bool _isOrderRebooked;
-
-	    private Position _lastMarketPosition = new Position();
-	    private string _lastHashedMarketValue;
         private string _kountSessionId;
-
-		private const int LastMarketDistanceThresholdInMeters = 1000;
+		private MarketSettings _marketSettings = new MarketSettings();
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -115,8 +108,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _poiProvider = poiProvider;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		
+			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => _marketSettings = marketSettings);
+			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 		}
-			
+
 		public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
@@ -201,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
 		{
 			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
-			var vehicleTypes = await _vehicleTypeService.GetVehiclesList();
+			var vehicleTypes = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
 			var data = await _accountService.GetReferenceData();
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
@@ -226,6 +222,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    public async Task<bool> ValidateChargeType()
 	    {
             var chargeTypes = await _accountService.GetPaymentsList();
+
+			if (_marketSettings.DisableOutOfAppPayment)
+			{
+				chargeTypes.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+			}
+
 	        if (!chargeTypes.Any())
 	        {
 	            return false;
@@ -276,7 +278,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			try
 			{
-				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, _kountSessionId);
+				await ValidateTokenizedCardIfNecessary(false, order.Settings.ChargeTypeId, order.KountSessionId);
 
 				var orderStatus = await _bookingService.CreateOrder(order);
 
@@ -297,6 +299,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
+
+				_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}
@@ -353,11 +357,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
+			var paymentList = await _accountService.GetPaymentsList();
+
+			if (_marketSettings.DisableOutOfAppPayment)
+			{
+				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+			}
+
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-                var marketSettings = await _marketSettingsSubject.Take(1).ToTask();
-		        if (marketSettings.HashedMarket.HasValue())
+				if (!_marketSettings.IsLocalMarket)
 		        {
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 
@@ -371,7 +381,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             // If no booking settings matches the available payment types, take PayInCar
             // or the first one by default if PayInCar was deactivated. It will attempt to avoid ChargeAccount if possible.
-            var paymentList = await _accountService.GetPaymentsList();
             if (paymentList.None(x => x.Id == bookingSettings.ChargeTypeId))
             {
                 var matchingPaymentType = paymentList.FirstOrDefault(p => p.Id == ChargeTypes.PaymentInCar.Id)
@@ -568,25 +577,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _dropOffSelectionModeSubject;
 		}
 
-		public IObservable<MarketSettings> GetAndObserveMarketSettings()
-		{
-			return _marketSettingsSubject;
-		}
-
 		public IObservable<bool> GetAndObserveIsUsingGeo()
 		{
-			return _marketSettingsSubject
-                .Select(marketSettings => marketSettings.HashedMarket.HasValue()
+			return _networkRoamingService.GetAndObserveMarketSettings()
+				.Select(marketSettings => !marketSettings.IsLocalMarket
 					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
 					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
 				);
 		}
 
-	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
-	    {
-	        return _networkVehiclesSubject;
-	    }
-		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			_loadingAddressSubject.OnNext(true);
@@ -615,18 +614,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			// Needs to run in a background thread to prevent a potential deadlock issue.
 			await Task.Run(async () =>
+			{
+				var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
+				if (selectionMode == AddressSelectionMode.PickupSelection)
 				{
-					var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
-					if (selectionMode == AddressSelectionMode.PickupSelection)
-					{
-						_pickupAddressSubject.OnNext (address);
-						await SetMarketSettings(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
-					} 
-					else 
-					{
-						_destinationAddressSubject.OnNext (address);
-					}
-				}, token);
+					_pickupAddressSubject.OnNext (address);
+					await _networkRoamingService.UpdateMarketSettingsIfNecessary(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
+				} 
+				else 
+				{
+					_destinationAddressSubject.OnNext (address);
+				}
+			}, token);
 
 			// Do NOT await this
 			CalculateEstimatedFare(token).FireAndForget();
@@ -847,7 +846,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null)
 		{
-            _kountSessionId = _deviceCollectorService.CollectAndReturnSessionId();
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
@@ -1000,76 +999,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-	    private async Task SetMarketSettings(Position currentPosition)
-	    {
-            if (ShouldUpdateMarket(currentPosition))
-	        {
-	            var marketSettings = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+		private async Task PreselectDefaultVehicleType(IList<VehicleType> vehicleList)
+		{
+			int? selectedVehicleId = null;
 
-				if (marketSettings == null)
+			if (vehicleList.Any())
+			{
+				if (_marketSettings.IsLocalMarket)
 				{
-					// in case of no network we get null, init object with a non-null default value
-					marketSettings = new MarketSettings();
+					// Try to match with account vehicle type preference if no match, we use the first vehicle
+					var matchingVehicle = vehicleList.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
+					selectedVehicleId = matchingVehicle != null
+						? matchingVehicle.ReferenceDataVehicleId
+						: vehicleList.First().ReferenceDataVehicleId;
 				}
+				else
+				{
+					selectedVehicleId = vehicleList.First().ReferenceDataVehicleId;
+				}
+			}
 
-                _lastMarketPosition = currentPosition;
-
-                _marketSettingsSubject.OnNext(marketSettings);
-
-                // If we changed market
-	            if (marketSettings.HashedMarket != _lastHashedMarketValue)
-	            {
-                    if (marketSettings.HashedMarket.HasValue())
-                    {
-                        // Set vehicles list with data from external market
-                        await SetMarketVehicleTypes(currentPosition);
-                    }
-                    else
-                    {
-                        // Load and cache local vehicle types
-                        await SetLocalVehicleTypes();
-                    }
-	            }
-
-                _lastHashedMarketValue = marketSettings.HashedMarket;
-	        }
-	    }
-
-	    private async Task SetMarketVehicleTypes(Position currentPosition)
-	    {
-            var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
-			_vehicleTypeService.SetMarketVehiclesList(networkVehicles);
-            _networkVehiclesSubject.OnNext(networkVehicles);
-
-	        int? selectedVehicleId = null;
-
-	        if (networkVehicles.Any())
-	        {
-	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
-	        }
-
-            await SetVehicleType(selectedVehicleId);
-	    }
-
-	    private async Task SetLocalVehicleTypes()
-	    {
-			await _vehicleTypeService.ResetLocalVehiclesList();
-            _networkVehiclesSubject.OnNext(new List<VehicleType>());
-
-	        int? selectedVehicleId = null;
-
-			var localVehicles = await _vehicleTypeService.GetVehiclesList();
-            if (localVehicles.Any())
-            {
-                // Try to match with account vehicle type preference if no match, we use the first vehicle
-                var matchingVehicle = localVehicles.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
-                selectedVehicleId = matchingVehicle != null
-                    ? matchingVehicle.ReferenceDataVehicleId
-                    : localVehicles.First().ReferenceDataVehicleId;
-            }
-
-	        await SetVehicleType(selectedVehicleId);
-	    }
+			await SetVehicleType(selectedVehicleId);
+		}
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
@@ -1081,15 +1032,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _isDestinationModeOpenedSubject;
 		}
-
-        private bool ShouldUpdateMarket(Position currentPosition)
-	    {
-            var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
-                currentPosition.Latitude, currentPosition.Longitude,
-                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
-
-            return distanceFromLastMarketRequest > LastMarketDistanceThresholdInMeters;
-	    }
 
 		public async Task<bool> ShouldPromptForCvv()
 		{

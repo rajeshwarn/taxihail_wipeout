@@ -17,6 +17,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTServices;
+using CustomerPortal.Client.Impl;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -84,6 +85,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
                 notificationDetailsDaoMock.Object,
                 new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object), 
+                new TaxiHailNetworkServiceClient(new DummyServerSettings()), 
                 LoggerMock.Object);
         }
         
