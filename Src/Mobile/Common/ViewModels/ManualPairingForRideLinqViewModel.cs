@@ -8,7 +8,6 @@ using System.Net;
 using CMTPayment;
 using MK.Common.Exceptions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
@@ -69,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(async () =>
                 {
                     var localize = this.Services().Localize;
-
+											
                     if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
                         await this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]);
