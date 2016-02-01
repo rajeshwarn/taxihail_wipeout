@@ -77,8 +77,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+
                 // Deactivate credit card was declined
-                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId);
+                var creditCardDetails = @event.CreditCardId.HasValue 
+                    ? context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId)
+                    : context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
+
                 if (creditCardDetails != null)
                 {
                     creditCardDetails.IsDeactivated = true;
@@ -92,7 +96,10 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 // Re-activate credit card
-                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId);
+                var creditCardDetails = @event.CreditCardId.HasValue
+                    ? context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId)
+                    : context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
+
                 if (creditCardDetails != null)
                 {
                     creditCardDetails.IsDeactivated = false;
