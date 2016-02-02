@@ -113,11 +113,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 
-            Payments = paymentList
-                .Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
-                .ToArray();
+            var localize = this.Services().Localize;
 
-            
+            Payments = paymentList
+                .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                .ToArray();
 
             if (isCmt)
             {

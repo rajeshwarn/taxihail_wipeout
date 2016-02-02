@@ -73,11 +73,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        _marketSettings = marketSettings;
 
+	        var localize = this.Services().Localize;
+
             ChargeTypes = paymentList
 				.Select(x => new ListItem
 				{
 					Id = x.Id,
-					Display = this.Services().Localize[x.Display]
+					Display = localize[x.Display]
 				})
                 .ToArray();
             
