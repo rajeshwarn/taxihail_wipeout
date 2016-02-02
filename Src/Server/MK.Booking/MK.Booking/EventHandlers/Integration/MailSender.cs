@@ -231,7 +231,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
 
-                // needed to support old event version
                 var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId.GetValueOrDefault());
 
                 _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
