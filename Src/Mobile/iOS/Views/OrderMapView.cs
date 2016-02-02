@@ -757,8 +757,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             var showOrientedPins = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue;
-            
-	        // Update Marker and Animate it to see it move on the map
+
+            _automatedMapChanged = true;
+
+            // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null && value.Longitude.HasValue && value.Latitude.HasValue)
             {
                 var taxiLocationPin = (AddressAnnotation)_taxiLocationPin;
