@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
+using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
 using MongoDB.Bson;
@@ -44,6 +45,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(new MarketModel());
             }
 
+            // get companies in this market that are network enabled to be used as the future booking company
+            var companiesInNetworkWithThisMarket = new MongoRepository<TaxiHailNetworkSettings>()
+                .Where(x => x.IsInNetwork && x.Market == market)
+                .Select(x => new SelectListItem {Text = x.Id, Value = x.Id })
+                .ToList();
+            // add an empty default value
+            companiesInNetworkWithThisMarket.Insert(0, new SelectListItem { Text = "No company (will cause error if using future booking)", Value = string.Empty });
+            
             return View(new MarketModel
             {
                 Market = market,
@@ -51,10 +60,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Vehicles = marketModel.Vehicles,
                 EnableDriverBonus = marketModel.EnableDriverBonus,
                 EnableFutureBooking = marketModel.EnableFutureBooking,
+                FutureBookingReservationProvider = marketModel.FutureBookingReservationProvider,
+                FutureBookingTimeThresholdInMinutes = marketModel.FutureBookingTimeThresholdInMinutes,
+                CompanyKeysOfMarket = companiesInNetworkWithThisMarket,
                 DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
-                MarketTariff = marketModel.MarketTariff,
+                MarketTariff = marketModel.MarketTariff
             });
         }
 
@@ -236,6 +248,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             bool enableDriverBonus, 
             string receiptFooter,
             bool enableFutureBooking,
+            string futureBookingReservationProvider,
+            int futureBookingTimeThresholdInMinutes,
             bool disableOutOfAppPayment,
             bool enableAppFareEstimates, 
             Tariff marketTariff)
@@ -252,6 +266,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 marketToEdit.EnableFutureBooking = enableFutureBooking;
+                marketToEdit.FutureBookingReservationProvider = futureBookingReservationProvider;
+                marketToEdit.FutureBookingTimeThresholdInMinutes = futureBookingTimeThresholdInMinutes;
                 marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
