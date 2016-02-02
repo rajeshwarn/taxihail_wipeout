@@ -33,14 +33,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
-		public async Task Init()
+		public void Init()
 		{
-			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
@@ -52,43 +51,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (!marketSettings.IsLocalMarket)
-			{
-				var paymentSettings = await _paymentService.GetPaymentSettings();
-				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
-					|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-				{
-					// CoF payment option in external markets is only available with CMT payment
-					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id
-						&& i.Id != Common.Enumeration.ChargeTypes.CardOnFile.Id);
-				}
-				else
-				{
-					// Only Pay in Car payment available in external markets for other payment providers
-					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id);
-				}
-			}
-
+	        paymentList = paymentList ?? new ListItem[0];
+            
 			if (marketSettings.DisableOutOfAppPayment)
 			{
 				paymentList.Remove (x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
-			}
 
-			ChargeTypes = paymentList
+                if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+                {
+                    ChargeTypeId = null;
+                }
+            }
+
+            ChargeTypes = paymentList
 				.Select(x => new ListItem
-					{
-						Id = x.Id,
-						Display = this.Services().Localize[x.Display]
-					}).ToArray();
+				{
+					Id = x.Id,
+					Display = this.Services().Localize[x.Display]
+				})
+                .ToArray();
 	    }
 
 	    public bool IsChargeTypesEnabled
         {
-            get
-            {
-				// this is in cache and set correctly when we add/update/delete credit card
-				return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
-            }
+            get { return ChargeTypes.Length > 1; }
         }
 
 		public PhoneNumberModel PhoneNumber { get; set; }
@@ -217,8 +203,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private IEnumerable<ListItem> _chargeTypes;
-		public IEnumerable<ListItem> ChargeTypes
+		private ListItem[] _chargeTypes;
+		public ListItem[] ChargeTypes
 		{
 			get
 			{
@@ -226,10 +212,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				_chargeTypes = value ?? new List<ListItem>();
+				_chargeTypes = value ?? new ListItem[0];
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ChargeTypeId);
 				RaisePropertyChanged(() => ChargeTypeName);
+                RaisePropertyChanged(() => IsChargeTypesEnabled);
 			}
 		}
 
