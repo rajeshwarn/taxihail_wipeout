@@ -752,11 +752,8 @@
 "CreditCardUnanbleToPreathorizeErrorText"="Lo sentimos, hubo un error al procesar su tarjeta. Por favor pague en la unidad";
 "Callbox.ApplicationName"="TaxiHail Callbox";
 "ServiceErrorResetPassword_AccountNotFound"="No se ha encontrado cuenta con este email";
+"ServiceErrorResetPassword_FacebookAccount"="This email matches a Facebook account. Please login via Facebook.";
+"ServiceErrorResetPassword_TwitterAccount"="This email matches a Twitter account. Please login via Twitter.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Código de confirmación inválido";
 "InvalidCreditCardMessage"="Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.";
 "InvalidCreditCardUpdateCardButton"="Actualizar Tarjeta";
-"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
-"LastFour"="Last 4 numbers:  ";
-"CreditCompany"="Credit company: ";
-"SelectedCreditCard"="Currently selected credit card";
-"NoCreditCard"="No credit card selected";

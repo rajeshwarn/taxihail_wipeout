@@ -43,6 +43,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnPair.SetTitle(Localize.GetValue("ManualPairingForRideLinQ_Pair"), UIControlState.Normal);
             FlatButtonStyle.Green.ApplyTo(btnPair);
 
+			// to hide keyboard when touch
+			btnPair.TouchUpInside += (object sender, EventArgs e) => { 
+				PairingCode1.ResignFirstResponder(); 
+				PairingCode2.ResignFirstResponder();
+			};
+
 			var bindingSet = this.CreateBindingSet<ManualPairingForRideLinqView, ManualPairingForRideLinqViewModel>();
 
 			bindingSet.Bind(PairingCode1)
