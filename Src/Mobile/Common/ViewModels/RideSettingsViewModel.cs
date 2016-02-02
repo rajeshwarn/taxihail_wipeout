@@ -121,8 +121,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (!isCmt)
             {
-                IsChargeTypesEnabled = _accountService.CurrentAccount.DefaultCreditCard == null ||
-                                       !Settings.DisableChargeTypeWhenCardOnFile;
+                var isChargeTypeUnlocked = _accountService.CurrentAccount.DefaultCreditCard == null ||
+                    !Settings.DisableChargeTypeWhenCardOnFile;
+
+                IsChargeTypesEnabled = isChargeTypeUnlocked && Payments.Length > 1;
 
                 return;
             }
