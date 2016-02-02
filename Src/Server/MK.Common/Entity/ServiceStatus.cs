@@ -8,6 +8,8 @@
         public string GeoUrl { get; set; }
         public bool? IsHoneyBadgerAvailable { get; set; }
         public string HoneyBadgerUrl { get; set; }
+        public bool? IsMapiAvailable { get; set; }
+        public string MapiUrl { get; set; }
         public bool IsSqlAvailable { get; set; }
         public bool IsCustomerPortalAvailable { get; set; }
         public string LastOrderUpdateId { get; set; }

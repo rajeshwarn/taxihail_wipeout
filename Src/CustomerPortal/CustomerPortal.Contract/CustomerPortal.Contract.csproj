@@ -36,7 +36,6 @@
     <Compile Include="Resources\CompanyPaymentSettings.cs" />
     <Compile Include="Resources\DispatcherSettings.cs" />
     <Compile Include="Resources\Payment\BraintreePaymentSettings.cs" />
-    <Compile Include="Resources\ServiceStatus.cs" />
     <Compile Include="Response\CompanyMarketSettingsResponse.cs" />
     <Compile Include="Response\NetworkVehicleResponse.cs" />
     <Reference Include="System" />
