@@ -40,9 +40,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             PhoneNumber = new PhoneNumberModel();
 		}
 
-		public void Init()
+		public async Task Init()
 		{
-			PhoneNumber.Country = _bookingSettings.Country;
+            var paymentList = await _accountService.GetPaymentsList();
+
+            var localize = this.Services().Localize;
+
+            ChargeTypes = (paymentList ?? new ListItem[0])
+                .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                .ToArray();
+
+            PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
             RaisePropertyChanged(() => PhoneNumber);
             RaisePropertyChanged(() => SelectedCountryCode);
@@ -58,8 +66,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             var paymentSettings = await _paymentService.GetPaymentSettings();
 
-            var isCmt = paymentSettings.PaymentMode != PaymentMethod.Cmt &&
-                        paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt;
+            var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
+                        paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
             if (marketSettings.DisableOutOfAppPayment && isCmt)
 			{
