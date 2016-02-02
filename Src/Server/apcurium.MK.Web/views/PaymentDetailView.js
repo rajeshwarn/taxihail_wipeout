@@ -79,7 +79,10 @@
 
             var displayTipSelection = (TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
-                || TaxiHail.parameters.isBraintreePrepaidEnabled) && TaxiHail.parameters.maxNumberOfCreditCards < 2;
+                || TaxiHail.parameters.isBraintreePrepaidEnabled
+                || TaxiHail.parameters.isCMTPrepaidEnabled
+                || TaxiHail.parameters.isRideLinqCMTPrepaidEnabled
+                ) && TaxiHail.parameters.maxNumberOfCreditCards < 2;
 
             _.extend(creditCard,
             {

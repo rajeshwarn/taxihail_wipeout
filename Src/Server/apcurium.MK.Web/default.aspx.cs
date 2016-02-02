@@ -60,6 +60,8 @@ namespace apcurium.MK.Web
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
+        protected bool IsRideLinqCMTPrepaidEnabled { get; private set; }
+        protected bool IsCMTPrepaidEnabled { get; private set; }
         protected int MaxNumberOfCreditCards { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
@@ -141,6 +143,8 @@ namespace apcurium.MK.Web
 
             MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
+            IsCMTPrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt;
+            IsRideLinqCMTPrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;
@@ -172,7 +176,7 @@ namespace apcurium.MK.Web
                 referenceData.PaymentsList.Add(ChargeTypes.PaymentInCar);
             }
 
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList);
 
             ReferenceData = referenceData.ToString();
 
@@ -198,16 +202,16 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled, bool payPalPrepaidEnabled)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList)
         {
             var paymentTypesToHide = new List<int?>();
 
-            if (!creditCardPrepaidEnabled)
+            if (!(IsBraintreePrepaidEnabled || IsCMTPrepaidEnabled || IsRideLinqCMTPrepaidEnabled))
             {
                 paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
             }
 
-            if (!payPalPrepaidEnabled)
+            if (!IsPayPalEnabled)
             {
                 paymentTypesToHide.Add(ChargeTypes.PayPal.Id);
             }
