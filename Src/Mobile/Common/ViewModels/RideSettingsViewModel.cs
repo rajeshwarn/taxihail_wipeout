@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
                 .ToArray();
 
-            if (isCmt)
+            if (!isCmt)
             {
                 IsChargeTypesEnabled = _accountService.CurrentAccount.DefaultCreditCard == null ||
                                        !Settings.DisableChargeTypeWhenCardOnFile;

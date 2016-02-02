@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .ToArray();
             
 
-	        if (isCmt)
+	        if (!isCmt)
 	        {
 	            IsChargeTypesEnabled = _accountService.CurrentAccount.DefaultCreditCard == null ||
 	                                   !Settings.DisableChargeTypeWhenCardOnFile;
