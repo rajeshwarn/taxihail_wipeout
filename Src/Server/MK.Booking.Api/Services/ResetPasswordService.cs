@@ -36,7 +36,17 @@ namespace apcurium.MK.Booking.Api.Services
             throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
          }
 
-         var currentSession = this.GetSession();
+         if (!string.IsNullOrEmpty(user.FacebookId))
+         {
+            throw new HttpError(ErrorCode.ResetPassword_FacebookAccount.ToString());
+         }
+
+         if (!string.IsNullOrEmpty(user.TwitterId))
+         {
+            throw new HttpError(ErrorCode.ResetPassword_TwitterAccount.ToString());
+         }
+
+            var currentSession = this.GetSession();
 
          var currentUserId = currentSession.UserAuthId.HasValueTrimmed()
              ? new Guid(currentSession.UserAuthId)

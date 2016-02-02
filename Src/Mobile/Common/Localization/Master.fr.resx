@@ -424,7 +424,7 @@
     <value>Carte de paiement</value>
   </data>
   <data name="CreditCardCCV" xml:space="preserve">
-    <value>Code sécurité</value>
+    <value>CVV</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cette carte ne peut être sauvegardée</value>
@@ -2383,6 +2383,12 @@
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>Aucun compte n'a été trouvé pour cet email</value>
+  </data>
+  <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>Cet email correspond à un compte Facebook. S'il vous plaît connectez vous via Facebook.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>Cet email correspond à un compte Twitter. S'il vous plaît connectez vous via Twitter.</value>
   </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Le code de confirmation est incorrect.</value>
