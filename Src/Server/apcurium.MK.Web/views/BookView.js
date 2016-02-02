@@ -218,7 +218,10 @@
                     dataType: "json",
                     success: _.bind(function (data) {
                         var market = data.hashedMarket;
-                        
+                        if (market === null) {
+                            market = "";
+                        }
+
                         this.model.set('market', market);
 
                         if (market !== "") {
