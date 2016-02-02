@@ -376,7 +376,7 @@
     <value>Votre demande ne peut être validée, merci de remplir les champs obligatoires</value>
   </data>
   <data name="CreateAccountErrorMessage" xml:space="preserve">
-    <value>Le compte de peut malheureusement pas être créé</value>
+    <value>Le compte ne peut malheureusement pas être créé</value>
   </data>
   <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
     <value>Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci d'essayer de créer le compte depuis le site web. </value>
