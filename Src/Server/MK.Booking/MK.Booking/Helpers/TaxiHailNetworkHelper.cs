@@ -14,6 +14,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTServices;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Helpers
@@ -158,11 +159,11 @@ namespace apcurium.MK.Booking.Helpers
                 throw createOrderException;
             }
 
-            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var fleets = market.HasValue()
-                ? _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray()
-                : _taxiHailNetworkServiceClient.GetNetworkFleet(companyKey, latitude, longitude).ToArray();
+                ? _taxiHailNetworkServiceClient.GetMarketFleets(homeCompanyKey, market).ToArray()
+                : _taxiHailNetworkServiceClient.GetNetworkFleet(homeCompanyKey, latitude, longitude).ToArray();
 
             if (orderCompanyKey.HasValue())
             {
@@ -196,14 +197,46 @@ namespace apcurium.MK.Booking.Helpers
             return new BestAvailableCompany();
         }
 
-        public BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude, List<string> driverIdsToExclude = null)
+        public BestAvailableCompany FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking, List<string> driverIdsToExclude = null)
         {
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
+
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
                 // Do nothing if in home market or if we don't have position
                 _logger.LogMessage("FindBestAvailableCompany - We are in local market (or lat/lng is null), skip honeybadger/geo and call local ibs first");
                 return new BestAvailableCompany();
             }
+
+            // we are in external market
+
+            if (isFutureBooking)
+            {
+                if (marketSettings.FutureBookingReservationProvider.HasValueTrimmed())
+                {
+                    // future booking detected, we find the specified future booking company and return it
+                    var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                    var fleets = _taxiHailNetworkServiceClient.GetMarketFleets(homeCompanyKey, market).ToArray();
+
+                    var match = fleets.FirstOrDefault(f => f.CompanyKey == marketSettings.FutureBookingReservationProvider);
+                    if (match != null)
+                    {
+                        _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: {0}", match.CompanyKey);
+                        return new BestAvailableCompany
+                        {
+                            CompanyKey = match.CompanyKey,
+                            CompanyName = match.CompanyName,
+                            FleetId = match.FleetId
+                        };
+                    }
+
+                    _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: No company found with setting {0}", marketSettings.FutureBookingReservationProvider);
+                }
+
+                _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: FutureBookingReservationProvider has no value, searching for best company");
+            }
+
+            // we have to find the best available company
 
             int? bestFleetId = null;
             const int searchExpendLimit = 10;
