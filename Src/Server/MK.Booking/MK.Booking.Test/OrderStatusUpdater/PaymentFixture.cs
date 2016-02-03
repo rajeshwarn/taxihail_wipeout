@@ -25,19 +25,22 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             string companyKey = null;
             var orderAmount = 100m;
 
+            var creditCardId = Guid.NewGuid();
+
             using (var context = new BookingDbContext(DbName))
             {
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -87,19 +90,22 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             string companyKey = null;
             var orderAmount = 100.55m;
 
+            var creditCardId = Guid.NewGuid();
+
             using (var context = new BookingDbContext(DbName))
             {
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -147,19 +153,22 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             string companyKey = null;
             var orderAmount = 100.85m;
 
+            var creditCardId = Guid.NewGuid();
+
             using (var context = new BookingDbContext(DbName))
             {
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -209,19 +218,22 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var orderAmount = 100m;
             var preAuthAmount = 50m;
 
+            var creditCardId = Guid.NewGuid();
+
             using (var context = new BookingDbContext(DbName))
             {
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -277,6 +289,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             // Prepare
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
             string companyKey = null;
             var orderAmount = 100.55m;
             var preAuthAmount = 50m;
@@ -287,13 +300,14 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId,
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -350,6 +364,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             // Prepare
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
             string companyKey = null;
             var orderAmount = 100.85m;
             var preAuthAmount = 50m;
@@ -360,13 +375,14 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -424,6 +440,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             // Prepare
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
             string companyKey = null;
             var orderAmount = 100m;
             var bookingFees = 40m;
@@ -434,13 +451,14 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
@@ -488,6 +506,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             // Prepare
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
             string companyKey = "ext";
             var orderAmount = 100m;
             var bookingFees = 40m;
@@ -501,20 +520,21 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 {
                     Id = accountId,
                     CreationDate = DateTime.Now,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
                 });
 
                 context.Save(new AccountIbsDetail
                 {
                     CompanyKey = companyKey,
                     AccountId = accountId,
-                    IBSAccountId = 123
+                    IBSAccountId = 123,
                 });
 
                 context.Save(new CreditCardDetails
                 {
                     AccountId = accountId,
-                    CreditCardId = Guid.NewGuid(),
+                    CreditCardId = creditCardId,
                     Token = "token"
                 });
 
