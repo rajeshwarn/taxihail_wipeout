@@ -336,6 +336,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private AccountManagementModel InitializeModel(Guid accountId)
         {
             var accountDetail = _accountDao.FindById(accountId);
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            
             var model = new AccountManagementModel
             {
                 Id = accountId,
@@ -351,7 +354,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PhoneNumber = accountDetail.Settings.Phone,
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
-                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
+                IsRideLinqCMTPaymentMode = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
             };
 
             if (accountDetail.DefaultCreditCard != null)
@@ -366,6 +370,28 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 .ToList();
 
             return model;
+        }
+
+        public ActionResult RefundOrder(AccountManagementModel accountManagementModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
+
+                _paym
+
+                TempData["UserMessage"] = "order refund, note added";
+                ModelState.Clear();
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
+            }
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
+            return View("Index", accountManagementModel);
         }
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)

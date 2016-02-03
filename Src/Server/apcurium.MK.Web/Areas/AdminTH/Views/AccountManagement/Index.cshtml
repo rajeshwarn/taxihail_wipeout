@@ -215,6 +215,10 @@
                             <th>Promo Code</th>
                             <th>Is Manual RideLinQ</th>
                             <th>Is Removed from History</th>
+                            @if (Model.IsRideLinqCMTPaymentMode)
+                            {
+                                <th>Refund</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -250,6 +254,17 @@
                                 {
                                     <td style="width:110px;">No</td>
                                 }
+                                @if (Model.IsRideLinqCMTPaymentMode)
+                                {
+                                    if (order.IsRefunded)
+                                    {
+                                        <td>refunded</td> 
+                                    }
+                                    else
+                                    {
+                                        <td><input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addRefundOrderNoteModalDialog" value="refund" onclick="refundOnClick('@order.Id')" /></td>
+                                    }
+                                }
                             </tr>
                         }
                     </tbody>
@@ -265,7 +280,18 @@
         </div>
     </div>
 
+<script>
+    var refundValue;
+    function refundOnClick(value) {
+        refundValue = value;
+    }
 
+    function refundNoteOnClick() {
+        var attributeContent = document.getElementById("addRefundOrderNoteInput").getAttribute("formaction");
+        attributeContent += "?RefundOrderId=" + refundValue;
+        document.getElementById("addRefundOrderNoteInput").setAttribute("formaction", attributeContent);
+    }
+</script>
 
 @section ModalDialogSection{
 
@@ -286,7 +312,6 @@
                 <input type="submit" formaction='@Url.Action("AddStandardNote")' class="btn btn-primary span" value="Add"  />
             </div>
         </div>
-
     </div>
 </div>
 
@@ -296,7 +321,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add disable account note</h4>
+                <h4 class="modal-title">Add refund order note</h4>
             </div>
             <div class="modal-body">
                 @{
@@ -306,6 +331,26 @@
             </div>
             <div class="modal-footer">
                 <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn btn-primary span" value="Add" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addRefundOrderNoteModalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add refund order note</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.RefundOrderNotePopupContent = string.Empty;
+                }
+                @Html.TextArea("RefundOrderNotePopupContent", Model.RefundOrderNotePopupContent, new { @class = "input-block-level", @rows = 5 })
+            </div>
+            <div class="modal-footer">
+                <input type="submit" id="addRefundOrderNoteInput" formaction='@Url.Action("RefundOrder")' class="btn btn-primary span" onclick="refundNoteOnClick()" value="Add" />
             </div>
         </div>
 

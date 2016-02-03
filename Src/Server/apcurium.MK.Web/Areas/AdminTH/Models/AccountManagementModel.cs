@@ -22,6 +22,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public int OrdersPageIndex { get; set; }
 
+        public Guid RefundOrderId { get; set; }
+
+        public bool IsRideLinqCMTPaymentMode { get; set; }
+
         [Display(Name = "Id")]
         public Guid Id { get; set; }
 
@@ -72,6 +76,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string NotePopupContent { get; set; }
 
         public string DisableAccountNotePopupContent { get; set; }
+
+        public string RefundOrderNotePopupContent { get; set; }
 
         public List<NoteModel> Notes { get; set; }
     }
