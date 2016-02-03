@@ -587,7 +587,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var vehicleRegistration = orderStatusDetail.DriverInfos.VehicleRegistration;
 
-            if (!vehicleRegistration.HasValue())
+            if (!vehicleRegistration.HasValue() || vehicleRegistration != ibsOrderInfo.VehicleRegistration))
             {
                 var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
                 vehicleRegistration = vehicleMapping != null
