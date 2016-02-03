@@ -2,9 +2,12 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -58,6 +61,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
+            var useCmtPapi = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
+                             paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
             // Setup tests
             var ibsTest = RunTest(() => Task.Run(() => _ibsProvider.Booking().GetOrdersStatus(new[] { 0 })), "IBS");
 
@@ -74,18 +80,22 @@ namespace apcurium.MK.Booking.Api.Services
             var sqlTest = RunTest(async () => await orderStatusUpdateDetailTest, "SQL");
 
             var mapiTest = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                ? RunTest(() => Task.Run(() => RunMapiTest()), "MAPI")
+                ? RunTest(() => Task.Run(() => RunMapiTest()), "CMT MAPI")
+                : Task.FromResult(false);
+
+            var papiTest = useCmtPapi
+                ? RunTest(() => Task.Run(() => RunPapiTest(paymentSettings.CmtPaymentSettings)), "CMT PAPI")
                 : Task.FromResult(false);
 
             var customerPortalTest = RunTest(() => Task.Run(() => _networkService.GetCompanyMarketSettings(_serverSettings.ServerData.GeoLoc.DefaultLatitude, _serverSettings.ServerData.GeoLoc.DefaultLongitude)), "Customer Portal");
 
             // We use ConfigureAwait false here to ensure we are not deadlocking ourselves.
-            await Task.WhenAll(ibsTest, geoTest, honeyBadger, sqlTest, mapiTest, customerPortalTest).ConfigureAwait(false);
+            await Task.WhenAll(ibsTest, geoTest, honeyBadger, sqlTest, mapiTest, papiTest, customerPortalTest).ConfigureAwait(false);
 
             var orderStatusUpdateDetails = orderStatusUpdateDetailTest.Result;
 
             var isUpdaterDeadlocked = orderStatusUpdateDetails.CycleStartDate.HasValue &&
-                                      orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) > DateTime.UtcNow;
+                                      orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) < DateTime.UtcNow;
 
             return new ServiceStatus
             {
@@ -98,6 +108,8 @@ namespace apcurium.MK.Booking.Api.Services
                 IsSqlAvailable = sqlTest.Result,
                 IsMapiAvailable = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt ? mapiTest.Result : (bool?) null,
                 MapiUrl = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt ? GetMapiUrl() : null,
+                IsPapiAvailable = useCmtPapi ? papiTest.Result : (bool?) null,
+                PapiUrl = useCmtPapi ? GetPapiUrl () :null,
                 IsCustomerPortalAvailable = customerPortalTest.Result,
                 LastOrderUpdateDate = orderStatusUpdateDetails.LastUpdateDate,
                 CycleStartDate = orderStatusUpdateDetails.CycleStartDate,
@@ -105,6 +117,15 @@ namespace apcurium.MK.Booking.Api.Services
                 LastOrderUpdateServer = orderStatusUpdateDetails.UpdaterUniqueId,
                 IsUpdaterDeadlocked = isUpdaterDeadlocked
             };
+        }
+
+        private string GetPapiUrl()
+        {
+            var settings = _serverSettings.GetPaymentSettings();
+
+            return settings.CmtPaymentSettings.IsSandbox
+                ? settings.CmtPaymentSettings.SandboxBaseUrl
+                : settings.CmtPaymentSettings.BaseUrl;
         }
 
         private string GetMapiUrl()
@@ -116,6 +137,18 @@ namespace apcurium.MK.Booking.Api.Services
                 : settings.CmtPaymentSettings.MobileBaseUrl;
         }
 
+        private void RunPapiTest(CmtPaymentSettings settings)
+        {
+            var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
+            var result = CmtPaymentClient.TestClient(settings, cc.Number, cc.ExpirationDate, _logger);
+            if (result)
+            {
+                return;
+            }
+
+            throw new Exception("Papi connection failed");
+
+        }
 
         private void RunMapiTest()
         {
