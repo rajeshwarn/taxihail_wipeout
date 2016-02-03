@@ -170,12 +170,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 }
             }
 
-            var isPaypal = isFromWebApp && (request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
-            var isBraintree = isFromWebApp && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree);
-            var isCMT = isFromWebApp && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Cmt);
-            var isRideLinqCMT = isFromWebApp && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt);
+            var isPaypal = request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+            var isBraintree = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree);
+            var isCMT = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Cmt);
+            var isRideLinqCMT = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt);
 
-            var isPrepaid = isPaypal || isBraintree;
+            var isPrepaid = isFromWebApp && (isPaypal || isBraintree);
 
             createReportOrder.IsPrepaid = isPrepaid;
 
