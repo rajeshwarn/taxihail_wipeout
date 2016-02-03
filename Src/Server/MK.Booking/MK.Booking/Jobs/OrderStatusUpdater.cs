@@ -587,7 +587,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var vehicleRegistration = orderStatusDetail.DriverInfos.VehicleRegistration;
 
-            if (!vehicleRegistration.HasValue() || vehicleRegistration != ibsOrderInfo.VehicleRegistration))
+            if (!vehicleRegistration.HasValue() || vehicleRegistration != ibsOrderInfo.VehicleRegistration)
             {
                 var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
                 vehicleRegistration = vehicleMapping != null
@@ -627,8 +627,8 @@ namespace apcurium.MK.Booking.Jobs
                 }
             }
 
-            if (orderStatus.VehicleLatitude != vehicleLatitude
-                 || orderStatus.VehicleLongitude != vehicleLongitude)
+            if ((orderStatus.VehicleLatitude != vehicleLatitude || orderStatus.VehicleLongitude != vehicleLongitude) 
+                 || (ibsOrderInfo.VehicleNumber != "0" && orderStatus.VehicleNumber != ibsOrderInfo.VehicleNumber))
             {
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, vehicleLatitude, vehicleLongitude);
                 _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, vehicleLatitude, vehicleLongitude);

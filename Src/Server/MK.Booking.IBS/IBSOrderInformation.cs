@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.IBS
             VehicleMake = orderInfoFromIBS.VehicleMake.GetValue(VehicleMake);
             VehicleModel = orderInfoFromIBS.VehicleModel.GetValue(VehicleModel);
             VehicleRegistration = orderInfoFromIBS.VehicleRegistration.GetValue(VehicleRegistration);
+            VehicleRegistration = orderInfoFromIBS.VehicleRegistration ?? VehicleRegistration;
 
             VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? orderInfoFromIBS.VehicleCoordinateLat : VehicleLatitude;
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
