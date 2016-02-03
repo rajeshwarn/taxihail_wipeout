@@ -1635,7 +1635,7 @@
     <comment>Scan Credit Card</comment>
   </data>
   <data name="SetAsDefaultCreditCard" xml:space="preserve">
-    <value>Set As Default</value>
+    <value>Poner por Defecto</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Buscar</value>
@@ -1706,7 +1706,7 @@
     <comment>Cannot get status. Please call provider.</comment>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Are you sure you want to cancel?</value>
+    <value>Estás seguro que deseas cancelar?</value>
     <comment>Are you sure you want to cancel?</comment>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
@@ -2129,7 +2129,7 @@
     <comment>We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</comment>
   </data>
   <data name="WarningPushServiceTitle" xml:space="preserve">
-    <value>Notificaciones lanzadas</value>
+    <value>Notificaciones enviadas</value>
     <comment>Push Notifications</comment>
   </data>
   <data name="WarningTitle" xml:space="preserve">
@@ -2173,15 +2173,15 @@
     <comment>New service area detected</comment>
   </data>
   <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
-    <value>TaxiHail Network</value>
+    <value>Red TaxiHail</value>
     <comment>TaxiHail Network</comment>
   </data>
   <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
-    <value>TaxiHail Network</value>
+    <value>Red TaxiHail</value>
     <comment>TaxiHail Network</comment>
   </data>
   <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
-    <value>TaxiHail Network</value>
+    <value>Red TaxiHail</value>
     <comment>TaxiHail Network</comment>
   </data>
   <data name="PromoCodeLabel" xml:space="preserve">
@@ -2388,8 +2388,8 @@
     <comment>Apply</comment>
   </data>
   <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
-    <value>PayBack</value>
-    <comment>PayBack</comment>
+    <value>PayBack (Opcional)</value>
+    <comment>PayBack (Optional)</comment>
   </data>
   <data name="PromotionButton" xml:space="preserve">
     <value>Pulse para entrar o Ver Código de promoción</value>
@@ -2447,7 +2447,7 @@
     <comment>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</comment>
   </data>
   <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
-    <value>El código de emparejamiento es inválido.</value>
+    <value>El código de sincronización es inválido.</value>
     <comment>The pairing code is invalid.</comment>
   </data>
   <data name="ManualPairingForRideLinQ_InvalidCode_Title" xml:space="preserve">
@@ -2563,7 +2563,7 @@
     <comment>The CVV must be a number between 3 and 4 digits</comment>
   </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
-    <value>Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ</value>
+    <value>Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el sincronización con RideLinQ</value>
     <comment>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</comment>
   </data>
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
@@ -2633,7 +2633,7 @@
     <value>Lo sentimos, no fue posible crear un email. No hay un cliente de email configurado en éste dispositivo.</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
-    <value>Medallón:</value>
+    <value>Unidad:</value>
   </data>
   <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
     <value>Reenviar código de confirmación</value>
@@ -2684,7 +2684,7 @@
     <value>Enviar Mensaje al Conductor</value>
   </data>
   <data name="LocateMeButton" xml:space="preserve">
-    <value>Localízame</value>
+    <value>Ubícame</value>
   </data>
   <data name="AirportsButton" xml:space="preserve">
     <value>Aeropuertos</value>
@@ -2750,7 +2750,7 @@
     <value>, (Tarifa de abordaje: {0})</value>
   </data>
   <data name="ManualRideLinqStatus_Cancelled" xml:space="preserve">
-    <value>Has sido desligado de RideLinQ. Por favor ingresa el código de emparejamiento nuevamente.</value>
+    <value>Has sido desligado de RideLinQ. Por favor ingresa el código de sincronización nuevamente.</value>
   </data>
   <data name="TutorialActivityName" xml:space="preserve">
     <value>Tutorial</value>
@@ -2819,7 +2819,7 @@
     <value>Ajustes de configuración de red del TaxiHail de Usuario</value>
   </data>
   <data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
-    <value>Emparejamiento manual de RideLinq</value>
+    <value>sincronización manual de RideLinq</value>
   </data>
   <data name="ManualRideLinqStatusActivityName" xml:space="preserve">
     <value>Estatus Manual de RideLinq</value>
@@ -2867,7 +2867,7 @@
     <value>Cambiar compañia?</value>
   </data>
   <data name="OrderStatus_Medallion" xml:space="preserve">
-    <value>Medallón</value>
+    <value>Unidad</value>
   </data>
   <data name="OrderStatus_AddDestination" xml:space="preserve">
     <value>Agregar destino</value>
@@ -2966,7 +2966,7 @@
     <value>Error de servidor</value>
   </data>
   <data name="PairingProcessingErrorTitle" xml:space="preserve">
-    <value>Problema al realizar pago empatado</value>
+    <value>Problema al realizar pago sincronizado</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
     <value>Lo sentimos, hubo un problema, por favor pague en la unidad</value>
