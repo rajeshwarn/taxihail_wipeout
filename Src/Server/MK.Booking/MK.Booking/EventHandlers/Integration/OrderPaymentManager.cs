@@ -201,6 +201,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var order = _orderDao.FindById(@event.SourceId);
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
+                var account = _accountDao.FindById(order.AccountId);
 
                 if (pairingInfo != null
                     && _serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
@@ -217,6 +218,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = order.AccountId,
                             OrderId = order.Id,
                             IBSOrderId = order.IBSOrderId,
+                            CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
@@ -247,6 +249,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (@event.EndTime.HasValue)
             {
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                var account = _accountDao.FindById(orderStatus.AccountId);
+
                 if (orderStatus != null)
                 {
                     // Check if card declined
@@ -261,6 +265,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = orderStatus.AccountId,
                             OrderId = orderStatus.OrderId,
                             IBSOrderId = orderStatus.IBSOrderId,
+                            CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate

@@ -7,7 +7,7 @@
 "AccountNotActivated"="Su cuenta no ha sido activada. Otro email de activación le ha sido enviado";
 "AccountNotActivatedCodeBySMS"="Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado";
 "FacebookLoginErrorTitle"="Correo electrónico existente";
-"FacebookLoginErrorMessage"="Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
+"FacebookLoginErrorMessage"="Este correo electrónico ya está inscrito a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
 "AccountPaymentNumberRequiredMessage"="Por favor introduzca un número de cuenta válido.";
 "AccountPaymentCustomerNumberRequiredMessage"="Por favor introduzca un número de cliente válido.";
 "AccountPaymentNumberRequiredTitle"="Número de cuenta caducado.";
@@ -193,7 +193,7 @@
 "HistoryViewSendReceiptButton"="Enviar comprobante";
 "HistoryViewSendReceiptError"="Error al enviar comprobante para esta reservación";
 "HistoryViewStatusButton"="Ver estado";
-"HistoryViewTitle"="Historia";
+"HistoryViewTitle"="Historial";
 "InvalidAccountOnActivatedMessage"="Su cuenta no se pudo validar, usted debe iniciar seción antes de usar esta aplicación";
 "InvalidAccountOnActivatedTitle"="Cuenta inválida";
 "InvalidAddressMessage"="La dirección que ha proporcionado es inválida. Por favor vefíquela";
@@ -270,12 +270,12 @@
 "DriverBonusTitle"="Incentivo al Conductor:";
 "DriverBonusDescription"="Ofertar un incentivo garantizado a los conductores puede incrementar las probabilidades de que lo atienda una unidad.";
 "DriverBonusWarningTitle"="Confirmar el Incentivo del Conductor";
-"DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
+"DriverBonusWarningMessage"="El monto de incenctivo es adicional a la propina. Será cargado automaticamente al final del viaje. Continuar?";
 "Notification_BookingConfirmationEmail"="Confirmación de reservación (email)";
 "Notification_ConfirmPairingPush"="Confirmar sincronización";
 "Notification_DriverAssignedEmail"="Chofer asignado (email)";
 "Notification_DriverAssignedPush"="Chofer asignado";
-"Notification_DriverBailedPush"="Driver bailed";
+"Notification_DriverBailedPush"="EL conductor activo reasignación";
 "Notification_Enabled"="Notificiaciones";
 "Notification_NearbyTaxiPush"="Taxis cercanos";
 "Toggle_Off"="Apagado";
@@ -293,7 +293,7 @@
 "OrderNote"="Reservado por Móvil";
 "OrderNoteGPS"="Usando su GPS";
 "OrderNoteGPSApproximate"="(Dirección aproximada)";
-"OrderNumber"="Reservación#";
+"OrderNumber"="Reservación #";
 "PanelMenuViewAboutUsText"="Acerca de nosotros";
 "PanelMenuViewCallDispatchText"="Llamar";
 "PanelMenuViewLocationsText"="Ubicaciones";
@@ -394,7 +394,7 @@
 "SettingViewLoginInfo"="Usted ha iniciado sesion como: {0}";
 "SettingViewNotSignedIn"="No se ha encontrado cuenta con este email";
 "SignIn"="Entrar";
-"StatusActionBookButton"="Reservar otro taxi";
+"StatusActionBookButton"="Reservar otra unidad";
 "StatusActionButton"="Llamar / Reservar / Cancelar";
 "StatusActionCancelButton"="Cancelar reservación";
 "StatusCallButton"="Llamar";
@@ -402,7 +402,7 @@
 "StatusCannotBeDisplayed"="No podemos obtener estato, por favor llame proveedor";
 "StatusConfirmCancelRide"="Are you sure you want to cancel?";
 "StatusConfirmCancelRideError"="Esta reservación no puede ser cancelada, por favor llame para cancelar esta esta reservación.";
-"StatusConfirmCancelRideErrorTitle"="No de puede cancelar";
+"StatusConfirmCancelRideErrorTitle"="No se puede cancelar";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
 "StatusDescription"="Reservación #{0}";
 "StatusEta"="y está a {0} {1} de distancia";
@@ -423,8 +423,8 @@
 "TabLocations"="Ubicaciones";
 "TabPlaces"="Lugares";
 "TabSearch"="Buscar";
-"TAXI"="TAXI";
-"TaxiMapTitle"="Su Taxi";
+"TAXI"="UNIDAD";
+"TaxiMapTitle"="Su Unidad";
 "TaxiServerDownMessage"="No se pudo enviar el mensaje al taxi";
 "TechSupportEmailTitle"="Soporte de applicion móvil";
 "TermsAndConditionsAcknowledgment"="Yo reconozco que he leído y entendido los Términos y condiciones";
@@ -527,9 +527,9 @@
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.";
 "PromoMustUseCardOnFileWarningMessage"="Tenga en cuenta que sólo se aplicará el descuento si el pago se realiza mediante la aplicación.";
 "WarningPromoCodeDontShow"="No avisar";
-"PanelMenuViewPromotionsText"="Promotions";
-"UnpairPayInCarWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
-"UnpairPayInCarWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
+"PanelMenuViewPromotionsText"="Promociones";
+"UnpairWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
+"UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
 "UnpairWarningOkButton"="Pago en carro";
 "View_Promotions"="Promociones";
 "UnpairWarningCancelButton"="Cancelar";
@@ -597,9 +597,9 @@
 "ManualRideLinqStatus_Tax"="Impuesto:";
 "ManualRideLinqStatus_Tip"="Propina:";
 "ManualRideLinqStatus_Total"="Costo Total:";
-"ManualRideLinqStatus_Unpair"="Desemparejar";
+"ManualRideLinqStatus_Unpair"="Desincronizar";
 "ManualRideLinqSummary_Done"="Listo";
-"ManualUnPairingForRideLinQ_Error_Message"="Se produjo un error al intentar desemparejar. Por favor, vuelva a intentarlo.";
+"ManualUnPairingForRideLinQ_Error_Message"="Se produjo un error al intentar desincronizar. Por favor, vuelva a intentarlo.";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Estas seguro que quieres cancelar? Un vehículo está en camino para pasar por usted. {0} se reserva el derecho a cobrar a los clientes un cargo por cancelación si consideramos que el usuario está abusando del servicio.";
 "CreditCardRemoveErrorScheduledOrderMessage"="No se puede eliminar tu tarjeta de crédito cuando una reservación está programada o en curso.";
 "HomeView_BookTaxi"="Reservar Unidad";
@@ -610,7 +610,7 @@
 "AddPaymentMethod_CreditCard"="Agregar tarjeta de crédito";
 "AddPaymentMethod_PayPal"="Enlazar cuenta de Paypal";
 "CurrentBookingDisabledTitle"="Reservación deshabilitada.";
-"ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para emparejarse con RideLinQ";
+"ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para sincronizarse con RideLinQ";
 "CvvRequiredTitle"="Se requiere CVV";
 "CvvRequiredMessage"="Por favor introduzca el CVV asociado a su tarjeta registrada con terminación {0} para continuar";
 "Error_InvalidCvvTitle"="CVV Inválido";
@@ -676,10 +676,10 @@
 "BookingAirportDetailsFee"=", (Tarifa de abordaje: {0})";
 "ManualRideLinqStatus_Cancelled"="Has sido desligado de RideLinQ. Por favor ingresa el código de emparejamiento nuevamente.";
 "TutorialActivityName"="Tutorial";
-"HomeActivityName"="Home";
+"HomeActivityName"="Inicio";
 "PasswordRecoveryActivityName"="Recuperación de contraseña";
 "LocationDetailsActivityName"="Detalles de locación";
-"LoginActivityName"="Login";
+"LoginActivityName"="Ingreso";
 "LocationsActivityName"="Locaciones favoritas";
 "PromotionActivityName"="Promoción";
 "BookingRateActivityName"="Tasa de reserva";
@@ -757,3 +757,8 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Código de confirmación inválido";
 "InvalidCreditCardMessage"="Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.";
 "InvalidCreditCardUpdateCardButton"="Actualizar Tarjeta";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
+"LastFour"="Last 4 numbers:  ";
+"CreditCompany"="Credit company: ";
+"SelectedCreditCard"="Currently selected credit card";
+"NoCreditCard"="No credit card selected";

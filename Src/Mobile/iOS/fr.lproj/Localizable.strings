@@ -84,7 +84,7 @@
 "Create"="Créer";
 "CreateAccountEmailPlaceHolder"="Email (adresse électronique)";
 "CreateAccountEmptyField"="Votre demande ne peut être validée, merci de remplir les champs obligatoires";
-"CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
+"CreateAccountErrorMessage"="Le compte ne peut malheureusement pas être créé";
 "CreateAccountErrorNotSpecified"="Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci d'essayer de créer le compte depuis le site web. ";
 "CreateAccountErrorTitle"="Erreur";
 "CreateAccountFullNamePlaceHolder"="Nom complet";
@@ -100,7 +100,7 @@
 "CreateAccountTitleMrs"="Mme";
 "CreateAccount_AccountAlreadyExist"="Email déjà utilisé!";
 "CreditCard"="Carte de paiement";
-"CreditCardCCV"="Code sécurité";
+"CreditCardCCV"="CVV";
 "CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";
 "CreditCardError_Label"="Le label de cette carte n'a pas pu être sauvergardée. S'il vous plait réessayer";
 "CreditCardExpMonth"="Date d'expiration (mois)";
@@ -758,3 +758,8 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
 "InvalidCreditCardMessage"="Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l'existante.";
 "InvalidCreditCardUpdateCardButton"="Changer Carte";
+"ManualRideLinqDeactivatedCardOnFile"="Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.";
+"LastFour"="4 dernier chiffres:  ";
+"CreditCompany"="Compagnie de crédit: ";
+"SelectedCreditCard"="Carte de crédit sélectionnée: ";
+"NoCreditCard"="Aucune carte de crédit sélectionnée";

@@ -40,6 +40,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			lblOrderId.Text = Localize.GetValue("Overdue_IBSOrderId");
 			lblInstructions.Text = Localize.GetValue("Overdue_Instructions");
 
+			lblSelectedCreditCard.Text = Localize.GetValue("SelectedCreditCard");
+			lblNoCreditCard.Text = Localize.GetValue("NoCreditCard");
+			lblCompany.Text = Localize.GetValue("CreditCompany");
+			lblLast4.Text = Localize.GetValue("LastFour");
+
 			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
 			FlatButtonStyle.Green.ApplyTo(btnRetry);
 
@@ -64,6 +69,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			set.Bind(AmountDue)
 				.To(vm => vm.AmountDue)
 				.WithConversion("CurrencyFormat");
+
+			set.Bind(lblNoCreditCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasCreditCard);
+
+			set.Bind(lblCompany)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasCreditCard)
+				.WithConversion("BoolInverter");
+
+			set.Bind(lblLast4)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasCreditCard)
+				.WithConversion("BoolInverter");
+
+			set.Bind(Company)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasCreditCard)
+				.WithConversion("BoolInverter");
+
+			set.Bind(Company)
+				.For(v => v.Text)
+				.To(vm => vm.Company);
+
+			set.Bind(Last4)
+				.For(v => v.Text)
+				.To(vm => vm.Last4Digits);
 
 			set.Bind(btnRetry)
 				.For(v => v.Command)

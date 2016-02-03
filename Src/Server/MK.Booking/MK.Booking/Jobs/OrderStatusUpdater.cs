@@ -555,6 +555,7 @@ namespace apcurium.MK.Booking.Jobs
                     AccountId = orderDetail.AccountId,
                     OrderId = orderId,
                     IBSOrderId = orderDetail.IBSOrderId,
+                    CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                     OverdueAmount = amount,
                     TransactionId = result.TransactionId,
                     TransactionDate = result.TransactionDate
@@ -953,8 +954,8 @@ namespace apcurium.MK.Booking.Jobs
                     }
                     else
                     {
-                        var card = _creditCardDao.FindByAccountId(orderDetail.AccountId).First();
-                        cardToken = card.Token;
+                        var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+                        cardToken = creditCard.Token;
                     }
 
                     _ibs.ConfirmExternalPayment(orderDetail.Id,
@@ -1049,6 +1050,7 @@ namespace apcurium.MK.Booking.Jobs
                             AccountId = account.Id,
                             OrderId = orderId,
                             IBSOrderId = orderDetail.IBSOrderId,
+                            CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             OverdueAmount = totalOrderAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
                             TransactionDate = paymentProviderServiceResponse.TransactionDate

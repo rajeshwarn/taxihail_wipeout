@@ -86,7 +86,7 @@
   <string name="Create">Créer</string>
   <string name="CreateAccountEmailPlaceHolder">Email (adresse électronique)</string>
   <string name="CreateAccountEmptyField">Votre demande ne peut être validée, merci de remplir les champs obligatoires</string>
-  <string name="CreateAccountErrorMessage">Le compte de peut malheureusement pas être créé</string>
+  <string name="CreateAccountErrorMessage">Le compte ne peut malheureusement pas être créé</string>
   <string name="CreateAccountErrorNotSpecified">Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l\'erreur persiste merci d\'essayer de créer le compte depuis le site web. </string>
   <string name="CreateAccountErrorTitle">Erreur</string>
   <string name="CreateAccountFullNamePlaceHolder">Nom complet</string>
@@ -102,7 +102,7 @@
   <string name="CreateAccountTitleMrs">Mme</string>
   <string name="CreateAccount_AccountAlreadyExist">Email déjà utilisé!</string>
   <string name="CreditCard">Carte de paiement</string>
-  <string name="CreditCardCCV">Code sécurité</string>
+  <string name="CreditCardCCV">CVV</string>
   <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="CreditCardError_Label">Le label de cette carte n\'a pas pu être sauvergardée. S\'il vous plait réessayer</string>
   <string name="CreditCardExpMonth">Date d\'expiration (mois)</string>
@@ -537,8 +537,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
-  <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="UnpairWarningOkButton">Payer dans le taxi</string>
   <string name="UnpairWarningCancelButton">Annuler</string>
   <string name="View_Promotions">Promotions</string>
@@ -719,6 +719,7 @@
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="OrderStatus_AddDestination">Ajouter votre destination</string>
   <string name="OrderStatus_RemoveDestination">Enlever votre destination</string>
+  <string name="ErrorChangeDropOff_Message">Désolé, votre destination n\'a pas pu être modifiée</string>
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
@@ -745,11 +746,23 @@
   <string name="RateMobileApplicationLater">Plus tard</string>
   <string name="RateMobileApplicationNever">Ne plus demander</string>
   <string name="LinkForApplicationStoreAbsentTitle">Le lien est absent</string>
-  <string name="LinkForApplicationStoreAbsentText">Le lien pour naviger vers la page l\'application n\'a pas été configuré</string>
-  <string name="ServiceErrorUnauthorized">Votre session est expirée. Veuillez vous authentifier a nouveau.</string>
+  <string name="LinkForApplicationStoreAbsentText">Le lien pour naviguer vers la page l\'application n\'a pas été configuré</string>
+  <string name="ServiceErrorUnauthorized">Votre session est expirée. Veuillez vous authentifier à nouveau.</string>
   <string name="ServiceErrorCallTitle">Erreur serveur</string>
   <string name="PairingProcessingErrorTitle">Problème de paiement</string>
-  <string name="TripUnableToPairErrorText">Désolé, une erreur de paiement avec la carte de credit est survenue, s\'il vous plaît payez dans taxi</string>
-  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Désolé, votre carte de credit n\'a pas pu être autorisée. S\'il vous plaît payez dans taxi</string>
-  <string name="CreditCardUnanbleToPreathorizeErrorText">Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S\'il vous plaît payez dans taxi</string>
+  <string name="TripUnableToPairErrorText">Désolé, une erreur est survenue, s\'il vous plaît payez dans le taxi</string>
+  <string name="CreditCardDeclinedOnPreauthorizationErrorText">Désolé, votre carte de crédit n\'a pas pu être autorisée. S\'il vous plaît payez dans le taxi</string>
+  <string name="CreditCardUnanbleToPreathorizeErrorText">Désolé, une erreur est survenue pendant le traitement de votre carte de crédit. S\'il vous plaît payez dans le taxi</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">Aucun compte n\'a été trouvé pour cet email</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">Cet email correspond à un compte Facebook. S\'il vous plaît connectez vous via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">Cet email correspond à un compte Twitter. S\'il vous plaît connectez vous via Twitter.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Le code de confirmation est incorrect.</string>
+  <string name="InvalidCreditCardMessage">Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l\'existante.</string>
+  <string name="InvalidCreditCardUpdateCardButton">Changer Carte</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</string>
+  <string name="LastFour">4 dernier chiffres:  </string>
+  <string name="CreditCompany">Compagnie de crédit: </string>
+  <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
+  <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
 </resources>

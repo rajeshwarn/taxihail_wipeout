@@ -188,7 +188,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 bool isSuccessful;
                 var isCardDeclined = false;
                 var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
-                var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+                var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
                 if (amountToPreAuthorize > 0)
                 {

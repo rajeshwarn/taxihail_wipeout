@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Events
 
         public int? IBSOrderId { get; set; }
 
+        public Guid? CreditCardId { get; set; }
+
         public decimal Amount { get; set; }
 
         public string TransactionId { get; set; }
