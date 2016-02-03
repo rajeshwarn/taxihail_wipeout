@@ -14,5 +14,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string UpdaterUniqueId { get; set; }
         public DateTime LastUpdateDate { get; set; }
+
+        public DateTime CycleStartDate { get; set; }
     }
 }
