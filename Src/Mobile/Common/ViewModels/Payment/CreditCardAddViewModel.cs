@@ -584,7 +584,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						}
 						CloseView();
 					}
-					catch (Exception ex)
+                    catch (TaskCanceledException)
+                    {
+                        // Suppressing, user probably cancelled out of Braintree flow
+                    }
+                    catch (Exception ex)
 					{
 						var localize = this.Services().Localize;
 						messageService.ShowMessage(localize["PaypalError_Title"], localize["PaypalErrorMessage"]);
@@ -632,7 +636,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         }
                         else
                         {
-                            await this.Services().Message.ShowMessage(null, this.Services().Localize["CreditCardError_Label"]);
+                            await
+                                this.Services()
+                                    .Message.ShowMessage(null, this.Services().Localize["CreditCardError_Label"]);
                         }
                     }
                     return;
@@ -646,13 +652,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     Data.CCV,
                     Data.ZipCode).Any(x => x.IsNullOrEmpty()))
                 {
-                    await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+                    await
+                        this.Services()
+                            .Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
+                                this.Services().Localize["CreditCardRequiredFields"]);
                     return;
                 }
 
                 if (!IsValid(Data.CardNumber))
                 {
-                    await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+                    await
+                        this.Services()
+                            .Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
+                                this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
                     return;
                 }
 

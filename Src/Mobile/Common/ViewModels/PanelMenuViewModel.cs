@@ -334,25 +334,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{
-				    try
-				    {
-                        CloseMenu();
+                    CloseMenu();
 
-                        if (Settings.MaxNumberOfCardsOnFile > 1)
-                        {
-                            ShowViewModel<CreditCardMultipleViewModel>();
-                        }
-                        else
-                        {
-                            ShowViewModel<CreditCardAddViewModel>();
-                        }
+                    if (Settings.MaxNumberOfCardsOnFile > 1)
+                    {
+                        ShowViewModel<CreditCardMultipleViewModel>();
                     }
-				    catch (TaskCanceledException)
-				    {
-				        // Ignore this exception since it's probably caused by user backed out of DropInView.
-				    }
-                    
-				});
+                    else
+                    {
+                        ShowViewModel<CreditCardAddViewModel>();
+                    }
+
+                });
 			}
 		}
 

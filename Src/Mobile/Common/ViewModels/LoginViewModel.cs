@@ -344,10 +344,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             break;
                     }
                 }
-                catch (TaskCanceledException)
-                {
-                    // Supressing Operation canceled exception since it was probably cancelled by the user (user backed out of dropin view).
-                }
                 catch (Exception e)
                 {
                     var localize = this.Services().Localize;
