@@ -627,8 +627,7 @@ namespace apcurium.MK.Booking.Jobs
                 }
             }
 
-            if ((orderStatus.VehicleLatitude != vehicleLatitude || orderStatus.VehicleLongitude != vehicleLongitude) 
-                 || (ibsOrderInfo.VehicleNumber != "0" && orderStatus.VehicleNumber != ibsOrderInfo.VehicleNumber))
+            if (orderStatus.VehicleLatitude != vehicleLatitude || orderStatus.VehicleLongitude != vehicleLongitude) 
             {
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, vehicleLatitude, vehicleLongitude);
                 _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, vehicleLatitude, vehicleLongitude);
