@@ -71,6 +71,12 @@ namespace apcurium.MK.Common.Entity
                 {
                     address = BuildingName + " - " + address;
                 }
+
+                if (!string.IsNullOrWhiteSpace(FullAddress) && !FullAddress.Contains(City))
+                {
+                    FullAddress = address;
+                }
+
                 return address;
             }
             return FullAddress;
