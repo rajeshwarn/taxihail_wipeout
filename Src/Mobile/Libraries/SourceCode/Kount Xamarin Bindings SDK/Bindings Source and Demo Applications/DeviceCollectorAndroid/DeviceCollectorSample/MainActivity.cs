@@ -3,12 +3,12 @@ using Android.App;
 using Android.Widget;
 using Android.OS;
 using Android.Text.Method;
-using DeviceCollectorBindingsAndroid;
+using Braintree.Device_Collector;
 
 namespace DeviceCollectorSample
 {
 	[Activity (Label = "DeviceCollectorSample", MainLauncher = true, Icon = "@mipmap/icon")]
-	public class MainActivity : Activity, DeviceCollector.IDeviceCollectorSDKDelegate
+	public class MainActivity : Activity, Braintree.Device_Collector.DeviceCollector.IStatusListener
 	{
 		// Below are the test URL and Merchant ID provided for CMT
 		const string deviceCollectorURL = "https://tst.kaptcha.com/logo.htm";

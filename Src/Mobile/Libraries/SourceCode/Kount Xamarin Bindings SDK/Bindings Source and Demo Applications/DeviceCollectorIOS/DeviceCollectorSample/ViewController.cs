@@ -1,10 +1,10 @@
 ﻿using System;
-using DeviceCollectorBindingsIOS;
 using UIKit;
+using Braintree;
 
 namespace DeviceCollectorSample
 {
-	public partial class ViewController : UIViewController, IDeviceCollectorSDKDelegate
+    public partial class ViewController : UIViewController
 	{
 		// Default Constructor
 		public ViewController (IntPtr handle) : base (handle) {}
@@ -55,8 +55,8 @@ namespace DeviceCollectorSample
 				WriteLine ("Created New DeviceCollector");
 				deviceCollector = new DeviceCollectorSDK(true);
 
-				WriteLine ("Setting listeners to this activity");
-				deviceCollector.SetDelegate(this);
+//				WriteLine ("Setting listeners to this activity");
+//				deviceCollector.SetDelegate(this);
 
 				WriteLine("Setting Collector URL : " + collectURL.Text);
 				deviceCollector.SetCollectorUrl (collectURL.Text);
@@ -78,31 +78,6 @@ namespace DeviceCollectorSample
 			String generatedGuid = Guid.NewGuid ().ToString ("N");
 			WriteLine("Created guid to use as session ID : " + generatedGuid);
 			session_id.Text = generatedGuid;
-		}
-
-		[Foundation.Export ("onCollectorError:withError:")]
-		public void OnCollectorError (int errorCode, Foundation.NSError error)
-		{
-			String errorReason = String.Empty;
-			String errorCodeName = errorCode.ToString();
-			WriteLine (errorCodeName + " - " + errorReason);
-			ProcessNSError (error);
-			InvokeOnMainThread (() => sendDeviceInformation.Enabled = true);
-			InvokeOnMainThread (() => generateSessionButton.Enabled = true);
-		}
-
-		[Foundation.Export ("onCollectorStart")]
-		public void OnCollectorStart ()
-		{
-			WriteLine ("Device Collector Process Started");
-		}
-
-		[Foundation.Export ("onCollectorSuccess")]
-		public void OnCollectorSuccess ()
-		{
-			InvokeOnMainThread (() => sendDeviceInformation.Enabled = true);
-			InvokeOnMainThread (() => generateSessionButton.Enabled = true);
-			WriteLine ("Collector Success");
 		}
 
 		public void ProcessNSError (Foundation.NSError error)

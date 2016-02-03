@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Braintree.Api.Droid">
+      <HintPath>..\..\..\..\..\Monodroid\Braintree.Api.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -72,10 +75,4 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\DeviceCollectorBindings\DeviceCollectorBindingsAndroid.csproj">
-      <Project>{13BC0031-477B-4DF6-B53C-CFF6AD103F03}</Project>
-      <Name>DeviceCollectorBindingsAndroid</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

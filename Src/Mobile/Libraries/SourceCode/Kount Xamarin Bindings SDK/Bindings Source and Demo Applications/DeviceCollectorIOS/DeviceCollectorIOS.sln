@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceCollectorBindingsIOS", "DeviceCollectorBindings\DeviceCollectorBindingsIOS.csproj", "{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kount API Demo", "DeviceCollectorSample\Kount API Demo.csproj", "{9468BB97-244D-4287-9104-97346973AF06}"
 EndProject
 Global
@@ -27,18 +25,6 @@ Global
 		{9468BB97-244D-4287-9104-97346973AF06}.Release|iPhone.Build.0 = Release|iPhone
 		{9468BB97-244D-4287-9104-97346973AF06}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{9468BB97-244D-4287-9104-97346973AF06}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|iPhone.Build.0 = Release|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		description = Xamarin Android Kount SDK

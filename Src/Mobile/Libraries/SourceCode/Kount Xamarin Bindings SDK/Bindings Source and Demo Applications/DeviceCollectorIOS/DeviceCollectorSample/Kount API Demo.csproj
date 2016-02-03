@@ -89,6 +89,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Braintree.iOS">
+      <HintPath>..\..\..\..\..\Monotouch\Braintree.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
@@ -142,11 +145,5 @@
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DeviceCollectorBindings\DeviceCollectorBindingsIOS.csproj">
-      <Project>{E6409D2E-71D0-43E1-8F14-5070D0BB2E0D}</Project>
-      <Name>DeviceCollectorBindingsIOS</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>
