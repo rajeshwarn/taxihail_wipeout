@@ -207,10 +207,6 @@
     <value>TaxiHail</value>
     <comment>TaxiHail</comment>
   </data>
-  <data name="app_id" xml:space="preserve">
-    <value>134284363380764</value>
-    <comment>134284363380764</comment>
-  </data>
   <data name="April" xml:space="preserve">
     <value>Abr (04)</value>
     <comment>Apr (04)</comment>
@@ -2291,10 +2287,6 @@
     <value>Agregar una tarjeta de crédito va a desvincular su cuenta PayPal y la tarjeta en el perfil se configurará como el método de pago predeterminado. Desea Proceder?</value>
     <comment>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</comment>
   </data>
-  <data name="PayPalErrorTitle" xml:space="preserve">
-    <value>Error de PayPal</value>
-    <comment>PayPal Error</comment>
-  </data>
   <data name="PayPalLinkError" xml:space="preserve">
     <value>No se puede vincular la cuenta de PayPal</value>
     <comment>Unable to link your PayPal account</comment>
@@ -2535,7 +2527,7 @@
     <comment>Add credit card</comment>
   </data>
   <data name="AddPaymentMethod_PayPal" xml:space="preserve">
-    <value>Enlazar cuenta de Paypal</value>
+    <value>Enlazar cuenta de PayPal</value>
     <comment>Link PayPal account</comment>
   </data>
   <data name="CurrentBookingDisabledTitle" xml:space="preserve">
@@ -3002,20 +2994,17 @@
   	<value>Actualizar Tarjeta</value>
   	<comment>Update Card</comment>
   </data>
-  <data name="PaypalErrorTitle" xml:space="preserve">
-  	<value>Paypal error</value>
-  </data>
   <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
     <value>You need to have an active credit card set as your default payment method</value>
   </data>
   <data name="PaypalErrorMessage" xml:space="preserve">
-  	<value>An error occurred while attempting to contact paypal</value>
+  	<value>An error occurred while attempting to contact PayPal</value>
   </data>
   <data name="LastFour" xml:space="preserve">
     <value>Last 4 numbers:  </value>
   </data>
   <data name="PaypalAccount" xml:space="preserve">
-    <value>Paypal account</value>
+    <value>PayPal account</value>
   </data>
   <data name="CreditCompany" xml:space="preserve">
     <value>Credit company: </value>
@@ -3025,5 +3014,14 @@
   </data>
   <data name="NoCreditCard" xml:space="preserve">
     <value>No credit card selected</value>
+  </data>
+  <data name="PaypalError_Title" xml:space="preserve">
+  	<value>Error de PayPal</value>
+  </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Edit Tip</value>
+  </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
   </data>
 </root>

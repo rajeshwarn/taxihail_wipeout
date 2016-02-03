@@ -58,7 +58,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IPromotionService promotionService,
             IMetricsService metricsService,
 			IBookingService bookingService, 
-			IPaymentProviderClientService paymentProviderClientService,
 			INetworkRoamingService networkRoamingService)
 		{
 		    _locationService = locationService;
@@ -73,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _accountService = accountService;
 			_paymentService = paymentService;
 
-            Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService, paymentProviderClientService);
+            Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
 			Map = AddChild<MapViewModel>();
 			OrderOptions = AddChild<OrderOptionsViewModel>();

@@ -589,7 +589,6 @@
   <string name="UnlinkPayPal">Utilice la tarjeta de crédito</string>
   <string name="LinkPayPalCCWarning">Vincular su cuenta PayPal eliminará su tarjeta de crédito en el perfil y PayPal será establecido como el método de pago predeterminado. Desea Proceder?</string>
   <string name="AddCoFPayPalWarning">Agregar una tarjeta de crédito va a desvincular su cuenta PayPal y la tarjeta en el perfil se configurará como el método de pago predeterminado. Desea Proceder?</string>
-  <string name="PayPalErrorTitle">Error de PayPal</string>
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="LinkPayPalConfirmation">Vincular</string>
@@ -651,7 +650,7 @@
   <string name="InvalidChargeTypeTitle">Tipo de cargo inválido</string>
   <string name="AddPaymentMethod_Multiple">Agregar método de pago</string>
   <string name="AddPaymentMethod_CreditCard">Agregar tarjeta de crédito</string>
-  <string name="AddPaymentMethod_PayPal">Enlazar cuenta de Paypal</string>
+  <string name="AddPaymentMethod_PayPal">Enlazar cuenta de PayPal</string>
   <string name="CurrentBookingDisabledTitle">Reservación deshabilitada.</string>
   <string name="ManualRideLinqNoCardOnFile">Usted necesita tener una tarjeta en el perfil para emparejarse con RideLinQ</string>
   <string name="CvvRequiredTitle">Se requiere CVV</string>
@@ -785,8 +784,8 @@
   <string name="InvalidCreditCardMessage">Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</string>
   <string name="InvalidCreditCardUpdateCardButton">Actualizar Tarjeta</string>
   <string name="UsePayPal">Use PayPal</string>
-  <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
-  <string name="PaypalAccount">Paypal account</string>
+  <string name="PaypalErrorMessage">An error occurred while attempting to contact PayPal</string>
+  <string name="PaypalAccount">PayPal account</string>
   <string name="UnpairPayInCarWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
   <string name="UnpairPayInCarWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
@@ -796,4 +795,6 @@
   <string name="CreditCompany">Credit company: </string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="PaypalError_Title">Error de PayPal</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
 </resources>

@@ -1755,12 +1755,6 @@
   <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
   </data>
-  <data name="UnpairCancelWarningMessage" xml:space="preserve">
-    <value>Are you sure you want to cancel this order?</value>
-  </data>
-  <data name="UnpairCancelWarningMessageWithPromo" xml:space="preserve">
-    <value>If you decide to cancel, you will not be able to use the promotion.</value>
-  </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pay in car</value>
   </data>
@@ -1811,9 +1805,6 @@
   </data>
   <data name="AddCoFPayPalWarning" xml:space="preserve">
     <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
-  </data>
-  <data name="PayPalErrorTitle" xml:space="preserve">
-    <value>PayPal Error</value>
   </data>
   <data name="PayPalLinkError" xml:space="preserve">
     <value>Unable to link your PayPal account</value>
@@ -2407,13 +2398,13 @@
     <value>The confirmation code is incorrect.</value>
   </data>
   <data name="PaypalErrorMessage" xml:space="preserve">
-  	<value>An error occurred while attempting to contact paypal</value>
+  	<value>An error occurred while attempting to contact PayPal</value>
   </data>
   <data name="PaypalError_Title" xml:space="preserve">
-  	<value>Paypal error</value>
+  	<value>PayPal error</value>
   </data>
   <data name="PaypalAccount" xml:space="preserve">
-    <value>Paypal account</value>
+    <value>PayPal account</value>
   </data>
   <data name="LastFour" xml:space="preserve">
     <value>Last 4 numbers:  </value>

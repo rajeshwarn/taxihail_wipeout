@@ -589,7 +589,6 @@
   <string name="UnlinkPayPal">Use credit card</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
   <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
-  <string name="PayPalErrorTitle">PayPal Error</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="LinkPayPalConfirmation">Link</string>
@@ -785,14 +784,12 @@
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
   <string name="UsePayPal">Use PayPal</string>
-  <string name="PaypalErrorMessage">An error occurred while attempting to contact paypal</string>
-  <string name="PaypalError_Title">Paypal error</string>
-  <string name="PaypalAccount">Paypal account</string>
+  <string name="PaypalErrorMessage">An error occurred while attempting to contact PayPal</string>
+  <string name="PaypalError_Title">PayPal error</string>
+  <string name="PaypalAccount">PayPal account</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
-  <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
-  <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
   <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
   <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>

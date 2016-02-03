@@ -544,8 +544,6 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairPayInCarWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "UnpairPayInCarWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
-"UnpairCancelWarningMessage"="Are you sure you want to cancel this order?";
-"UnpairCancelWarningMessageWithPromo"="If you decide to cancel, you will not be able to use the promotion.";
 "UnpairWarningOkButton"="Pay in car";
 "UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
@@ -563,7 +561,6 @@
 "UnlinkPayPal"="Use credit card";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
-"PayPalErrorTitle"="PayPal Error";
 "PayPalLinkError"="Unable to link your PayPal account";
 "PayPalUnlinkError"="Unable to unlink your PayPal account";
 "LinkPayPalConfirmation"="Link";
@@ -761,9 +758,9 @@
 "ServiceErrorResetPassword_FacebookAccount"="This email matches a Facebook account. Please login via Facebook.";
 "ServiceErrorResetPassword_TwitterAccount"="This email matches a Twitter account. Please login via Twitter.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
-"PaypalErrorMessage"="An error occurred while attempting to contact paypal";
-"PaypalError_Title"="Paypal error";
-"PaypalAccount"="Paypal account";
+"PaypalErrorMessage"="An error occurred while attempting to contact PayPal";
+"PaypalError_Title"="PayPal error";
+"PaypalAccount"="PayPal account";
 "LastFour"="Last 4 numbers:  ";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
 "CreditCompany"="Credit company: ";

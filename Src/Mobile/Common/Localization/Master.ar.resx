@@ -1735,9 +1735,6 @@
   <data name="AddCoFPayPalWarning" xml:space="preserve">
     <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
   </data>
-  <data name="PayPalErrorTitle" xml:space="preserve">
-    <value>PayPal Error</value>
-  </data>
   <data name="PayPalLinkError" xml:space="preserve">
     <value>Unable to link your PayPal account</value>
   </data>
@@ -2362,13 +2359,58 @@
   <data name="NoCreditCard" xml:space="preserve">
     <value>No credit card selected</value>
   </data>
-  <data name="PaypalErrorTitle" xml:space="preserve">
-  	<value>Paypal error</value>
-  </data>
   <data name="PaypalErrorMessage" xml:space="preserve">
-  	<value>An error occurred while attempting to contact paypal</value>
+  	<value>An error occurred while attempting to contact PayPal</value>
   </data>
   <data name="PaypalAccount" xml:space="preserve">
     <value>Paypal account</value>
+  </data>
+  <data name="PaypalError_Title" xml:space="preserve">
+  	<value>PayPal error</value>
+  </data>
+  <data name="EtaNotAvailable" xml:space="preserve">
+    <value>No vehicle available</value>
+  </data>
+  <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
+    <value>Cannot confirm account</value>
+  </data>
+  <data name="WarningPushServiceAction" xml:space="preserve">
+    <value>Thanks for letting me know</value>
+  </data>
+  <data name="WarningPushServiceMessage" xml:space="preserve">
+    <value>We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</value>
+  </data>
+  <data name="WarningPushServiceTitle" xml:space="preserve">
+    <value>Push Notifications</value>
+  </data>
+  <data name="TAXI" xml:space="preserve">
+    <value>TAXI</value>
+  </data>
+  <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
+    <value>{0} characters maximum</value>
+  </data>
+  <data name="AccountPaymentQuestionsRequired" xml:space="preserve">
+    <value>(required)</value>
+  </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
+  </data>
+  <data name="EmptyString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreateAccountTitleArray" xml:space="preserve">
+    <value>MrMrs</value>
+  </data>
+  <data name="DeleteBookItButtonImageNamePressed" xml:space="preserve">
+    <value>Assets/Button/btnBookIt-Pressed_en.png</value>
+  </data>
+  <data name="BookItButtonImageName" xml:space="preserve">
+    <value>Assets/Button/btnBookIt_en.png</value>
+  </data>
+  <data name="Modify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="GenericTitle" xml:space="preserve">
+    <value />
   </data>
 </root>

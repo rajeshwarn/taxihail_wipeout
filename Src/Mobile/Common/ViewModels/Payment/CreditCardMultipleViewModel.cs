@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -16,8 +15,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
-		private readonly IPaymentProviderClientService _dropInService;
-		private readonly IPaymentService _paymentService;
 
 		private bool _hasPaymentToSettle;
 
@@ -25,12 +22,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService,
-			IPaymentProviderClientService dropInService,
 			IAppSettings appSettings)
 			:base(locationService, paymentService, accountService)
         {
-			_paymentService = paymentService;
-			_dropInService = dropInService;
 			_appSettings = appSettings;
             _accountService = accountService;
         }

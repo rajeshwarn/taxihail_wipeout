@@ -8959,10 +8959,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f080214
 			public const int PayNow = 2131231252;
-			
-			// aapt resource value: 0x7f0802c9
-			public const int PayPalErrorTitle = 2131231433;
-			
+
 			// aapt resource value: 0x7f0802ca
 			public const int PayPalLinkError = 2131231434;
 			
@@ -9592,12 +9589,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f08023f
 			public const int UnpairCancelOrder = 2131231295;
-			
-			// aapt resource value: 0x7f0802b6
-			public const int UnpairCancelWarningMessage = 2131231414;
-			
-			// aapt resource value: 0x7f0802b7
-			public const int UnpairCancelWarningMessageWithPromo = 2131231415;
 			
 			// aapt resource value: 0x7f080244
 			public const int UnpairErrorMessage = 2131231300;

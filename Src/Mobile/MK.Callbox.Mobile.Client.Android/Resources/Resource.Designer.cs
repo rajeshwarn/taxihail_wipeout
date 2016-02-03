@@ -2077,10 +2077,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05019c
 			public const int PayNow = 2131034524;
-			
-			// aapt resource value: 0x7f05024e
-			public const int PayPalErrorTitle = 2131034702;
-			
+
 			// aapt resource value: 0x7f05024f
 			public const int PayPalLinkError = 2131034703;
 			
@@ -2728,12 +2725,6 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050315
 			public const int UnpairCancelOrder = 2131034901;
-			
-			// aapt resource value: 0x7f050318
-			public const int UnpairCancelWarningMessage = 2131034904;
-			
-			// aapt resource value: 0x7f050319
-			public const int UnpairCancelWarningMessageWithPromo = 2131034905;
 			
 			// aapt resource value: 0x7f0501cb
 			public const int UnpairErrorMessage = 2131034571;

@@ -21,7 +21,6 @@
 "ApartmentLabel"="Departamento";
 "apcuriumUrl"="http://www.apcurium.com/";
 "ApplicationName"="TaxiHail";
-"app_id"="134284363380764";
 "April"="Abr (04)";
 "AptNumber"="Abr (04)";
 "August"="Ago (08)";
@@ -547,7 +546,6 @@
 "UnlinkPayPal"="Utilice la tarjeta de crédito";
 "LinkPayPalCCWarning"="Vincular su cuenta PayPal eliminará su tarjeta de crédito en el perfil y PayPal será establecido como el método de pago predeterminado. Desea Proceder?";
 "AddCoFPayPalWarning"="Agregar una tarjeta de crédito va a desvincular su cuenta PayPal y la tarjeta en el perfil se configurará como el método de pago predeterminado. Desea Proceder?";
-"PayPalErrorTitle"="Error de PayPal";
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
 "LinkPayPalConfirmation"="Vincular";
@@ -608,7 +606,7 @@
 "InvalidChargeTypeTitle"="Tipo de cargo inválido";
 "AddPaymentMethod_Multiple"="Agregar método de pago";
 "AddPaymentMethod_CreditCard"="Agregar tarjeta de crédito";
-"AddPaymentMethod_PayPal"="Enlazar cuenta de Paypal";
+"AddPaymentMethod_PayPal"="Enlazar cuenta de PayPal";
 "CurrentBookingDisabledTitle"="Reservación deshabilitada.";
 "ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para emparejarse con RideLinQ";
 "CvvRequiredTitle"="Se requiere CVV";
@@ -758,9 +756,12 @@
 "InvalidCreditCardMessage"="Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.";
 "InvalidCreditCardUpdateCardButton"="Actualizar Tarjeta";
 "ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
-"PaypalErrorMessage"="An error occurred while attempting to contact paypal";
+"PaypalErrorMessage"="An error occurred while attempting to contact PayPal";
 "LastFour"="Last 4 numbers:  ";
-"PaypalAccount"="Paypal account";
+"PaypalAccount"="PayPal account";
 "CreditCompany"="Credit company: ";
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
+"PaypalError_Title"="Error de PayPal";
+"View_EditAutoTip"="Edit Tip";
+"UnpairCancelOrder"="Cancel Order";

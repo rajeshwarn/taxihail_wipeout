@@ -174,9 +174,6 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
   </data>
-  <data name="app_id" xml:space="preserve">
-    <value>134284363380764</value>
-  </data>
   <data name="April" xml:space="preserve">
     <value>Avril (04)</value>
   </data>
@@ -1778,16 +1775,13 @@
     <value>Associer PayPal</value>
   </data>
   <data name="UnlinkPayPal" xml:space="preserve">
-    <value>Utiliser une carte de credit</value>
+    <value>Utiliser une carte de crédit</value>
   </data>
   <data name="LinkPayPalCCWarning" xml:space="preserve">
     <value>Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</value>
   </data>
   <data name="AddCoFPayPalWarning" xml:space="preserve">
     <value>Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</value>
-  </data>
-  <data name="PayPalErrorTitle" xml:space="preserve">
-    <value>Erreur PayPal</value>
   </data>
   <data name="PayPalLinkError" xml:space="preserve">
     <value>Impossible d'associer votre compte PayPal</value>
@@ -2292,7 +2286,7 @@
     <value>, \nTerminal: {0}</value>
   </data>
   <data name="UpdateNoticeTitle" xml:space="preserve">
-    <value>Update Notice</value>
+    <value>Nouvelle version disponible</value>
   </data>
   <data name="BookingAirportNoFlights_Title" xml:space="preserve">
     <value>Aucun vol</value>
@@ -2399,20 +2393,17 @@
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Changer Carte</value>
   </data>
-  <data name="PaypalErrorTitle" xml:space="preserve">
-  	<value>Erreur Paypal</value>
-  </data>
   <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
     <value>Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</value>
   </data>
   <data name="PaypalErrorMessage" xml:space="preserve">
-  	<value>Une erreur est arrivée lors de la communication avec Paypal.</value>
+  	<value>Une erreur est arrivée lors de la communication avec PayPal.</value>
   </data>
   <data name="LastFour" xml:space="preserve">
     <value>4 dernier chiffres:  </value>
   </data>
   <data name="PaypalAccount" xml:space="preserve">
-    <value>Compte Paypal</value>
+    <value>Compte PayPal</value>
   </data>
   <data name="CreditCompany" xml:space="preserve">
     <value>Compagnie de crédit: </value>
@@ -2422,5 +2413,11 @@
   </data>
   <data name="NoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit sélectionnée</value>
+  </data>
+  <data name="PaypalError_Title" xml:space="preserve">
+  	<value>Erreur PayPal</value>
+  </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
   </data>
 </root>

@@ -586,10 +586,9 @@
   <string name="PromoProgress">Progression :</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="LinkPayPal">Associer PayPal</string>
-  <string name="UnlinkPayPal">Utiliser une carte de credit</string>
+  <string name="UnlinkPayPal">Utiliser une carte de crédit</string>
   <string name="LinkPayPalCCWarning">Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</string>
   <string name="AddCoFPayPalWarning">Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</string>
-  <string name="PayPalErrorTitle">Erreur PayPal</string>
   <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="LinkPayPalConfirmation">Associer</string>
@@ -759,7 +758,7 @@
   <string name="OrderAirportView_BAD_AIRPORT_CODE">Une erreur est survenue avec le fournisseur d\'informations de vol.</string>
   <string name="OrderAirportView_DATE_OUT_OF_RANGE">La date fournis est à l\'extérieur des limites du fournisseur.</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">Une erreur est survenue avec le fournisseur d\'information de vol.</string>
-  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="UpdateNoticeTitle">Nouvelle version disponible</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
   <string name="AccountLinkedWithFacebook">Ce compte est associé avec un compte Facebook</string>
   <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
@@ -785,8 +784,8 @@
   <string name="InvalidCreditCardMessage">Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l\'existante.</string>
   <string name="InvalidCreditCardUpdateCardButton">Changer Carte</string>
   <string name="UsePayPal">Utiliser PayPal</string>
-  <string name="PaypalErrorMessage">Une erreur est arrivée lors de la communication avec Paypal.</string>
-  <string name="PaypalAccount">Compte Paypal</string>
+  <string name="PaypalErrorMessage">Une erreur est arrivée lors de la communication avec PayPal.</string>
+  <string name="PaypalAccount">Compte PayPal</string>
   <string name="UnpairPayInCarWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="UnpairPayInCarWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">Cet email correspond à un compte Facebook. S\'il vous plaît connectez vous via Facebook.</string>
@@ -796,4 +795,6 @@
   <string name="CreditCompany">Compagnie de crédit: </string>
   <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
   <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
+  <string name="PaypalError_Title">Erreur PayPal</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
 </resources>

@@ -19,7 +19,6 @@
   <string name="ApartmentLabel">Appartement</string>
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="ApplicationName">TaxiHail</string>
-  <string name="app_id">134284363380764</string>
   <string name="April">Avril (04)</string>
   <string name="AptNumber">Appartement n°</string>
   <string name="August">Août (08)</string>
@@ -553,10 +552,9 @@
   <string name="PromoProgress">Progression :</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="LinkPayPal">Associer PayPal</string>
-  <string name="UnlinkPayPal">Utiliser une carte de credit</string>
+  <string name="UnlinkPayPal">Utiliser une carte de crédit</string>
   <string name="LinkPayPalCCWarning">Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</string>
   <string name="AddCoFPayPalWarning">Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</string>
-  <string name="PayPalErrorTitle">Erreur PayPal</string>
   <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="LinkPayPalConfirmation">Associer</string>
@@ -724,7 +722,7 @@
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
   <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
-  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="UpdateNoticeTitle">Nouvelle version disponible</string>
   <string name="BookingAirportNoFlights_Title">Aucun vol</string>
   <string name="BookingAirportNoFlights_Message">Nous n\'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
@@ -761,10 +759,12 @@
   <string name="InvalidCreditCardMessage">Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l\'existante.</string>
   <string name="InvalidCreditCardUpdateCardButton">Changer Carte</string>
   <string name="ManualRideLinqDeactivatedCardOnFile">Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</string>
-  <string name="PaypalErrorMessage">Une erreur est arrivée lors de la communication avec Paypal.</string>
+  <string name="PaypalErrorMessage">Une erreur est arrivée lors de la communication avec PayPal.</string>
   <string name="LastFour">4 dernier chiffres:  </string>
-  <string name="PaypalAccount">Compte Paypal</string>
+  <string name="PaypalAccount">Compte PayPal</string>
   <string name="CreditCompany">Compagnie de crédit: </string>
   <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
   <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
+  <string name="PaypalError_Title">Erreur PayPal</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
 </resources>

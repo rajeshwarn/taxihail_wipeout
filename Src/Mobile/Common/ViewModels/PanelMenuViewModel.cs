@@ -8,20 +8,17 @@ using Cirrious.MvvmCross.Plugins.WebBrowser;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public partial class PanelMenuViewModel : BaseViewModel
     {
 	    private readonly IMvxWebBrowserTask _browserTask;
-
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 		private readonly IPromotionService _promotionService;
-	    private IPaymentProviderClientService _paymentProviderClientService;
 
 		private bool _isCreatingMenu;
 
@@ -30,8 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IPaymentService paymentService,
-			IPromotionService promotionService, 
-            IPaymentProviderClientService paymentProviderClientService)
+			IPromotionService promotionService)
         {
 		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
@@ -39,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_paymentService = paymentService;
 			_promotionService = promotionService;
-		    _paymentProviderClientService = paymentProviderClientService;
 		    PartialConstructor();
         }
 

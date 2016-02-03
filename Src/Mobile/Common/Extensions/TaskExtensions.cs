@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
@@ -28,21 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
             return task;
         }
-
-        public static async Task<TValue> HideProgressDuringTaskIfNeeded<TValue>(this Task<TValue> task)
-        {
-            var service = Mvx.Resolve<IMessageService>();
-
-            if (!service.IsProgressShown)
-            {
-                return await task;
-            }
-
-            service.ShowProgress(false);
-            var result = await task;
-            service.ShowProgress(true);
-            return result;
-        } 
 
 	    public static async Task<TValue> ShowProgress<TValue>(this Task<TValue> task)
 	    {

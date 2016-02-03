@@ -47,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void ShowProgress(bool show)
 		{
-		    IsProgressShown = show;
             if(show)
             {
                 UIApplication.SharedApplication.InvokeOnMainThread (() => {               
@@ -89,8 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             ShowProgressNonModal (true);
             return Disposable.Create (() => ShowProgressNonModal(false));
         }
-
-        public bool IsProgressShown { get; private set; }
 
         public void ShowDialog(Type type)
         {

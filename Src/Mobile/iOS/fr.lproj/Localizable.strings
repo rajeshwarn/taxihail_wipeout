@@ -17,7 +17,6 @@
 "ApartmentLabel"="Appartement";
 "apcuriumUrl"="http://www.apcurium.com/";
 "ApplicationName"="TaxiHail";
-"app_id"="134284363380764";
 "April"="Avril (04)";
 "AptNumber"="Appartement n°";
 "August"="Août (08)";
@@ -551,10 +550,9 @@
 "PromoProgress"="Progression :";
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "LinkPayPal"="Associer PayPal";
-"UnlinkPayPal"="Utiliser une carte de credit";
+"UnlinkPayPal"="Utiliser une carte de crédit";
 "LinkPayPalCCWarning"="Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?";
 "AddCoFPayPalWarning"="Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?";
-"PayPalErrorTitle"="Erreur PayPal";
 "PayPalLinkError"="Impossible d'associer votre compte PayPal";
 "PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
 "LinkPayPalConfirmation"="Associer";
@@ -722,7 +720,7 @@
 "WaitingCarLandscapeViewCarNumber"="Numéro de voiture";
 "WaitingCarLandscapeActivityName"="Numéro de voiture";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
-"UpdateNoticeTitle"="Update Notice";
+"UpdateNoticeTitle"="Nouvelle version disponible";
 "BookingAirportNoFlights_Title"="Aucun vol";
 "BookingAirportNoFlights_Message"="Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}";
 "UpdateNoticeText"="Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît";
@@ -759,9 +757,11 @@
 "InvalidCreditCardMessage"="Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l'existante.";
 "InvalidCreditCardUpdateCardButton"="Changer Carte";
 "ManualRideLinqDeactivatedCardOnFile"="Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.";
-"PaypalErrorMessage"="Une erreur est arrivée lors de la communication avec Paypal.";
+"PaypalErrorMessage"="Une erreur est arrivée lors de la communication avec PayPal.";
 "LastFour"="4 dernier chiffres:  ";
-"PaypalAccount"="Compte Paypal";
+"PaypalAccount"="Compte PayPal";
 "CreditCompany"="Compagnie de crédit: ";
 "SelectedCreditCard"="Carte de crédit sélectionnée: ";
 "NoCreditCard"="Aucune carte de crédit sélectionnée";
+"PaypalError_Title"="Erreur PayPal";
+"UnpairCancelOrder"="Cancel Order";
