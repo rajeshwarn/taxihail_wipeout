@@ -89,9 +89,11 @@ namespace apcurium.MK.Booking.Jobs
                 (lastUpdate.UpdaterUniqueId == updaterUniqueId) ||
                 (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
             {
+                var cycleStartDateTime = DateTime.UtcNow;
+
                 // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
+                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow, cycleStartDateTime));
 
                 // If this timer elapses, it will dispose the first timer which would allow another process to start
                 var deadlockTimer = Observable.Timer(TimeSpan.FromMinutes(15))
