@@ -49,8 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private async Task<ServiceStatus> GetServiceStatus()
         {
-            var ibsTest = RunTest(() => Task.Run(() => _ibsProvider.Booking().GetOrdersStatus(new[] { 0 })), "IBS");
-
+            // Setup tests variable
             var useGeo = _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo ||
                 _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
 
@@ -58,7 +57,9 @@ namespace apcurium.MK.Booking.Api.Services
                 _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.HoneyBadger;
 
             var paymentSettings = _serverSettings.GetPaymentSettings();
-            var useMapi = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+            // Setup tests
+            var ibsTest = RunTest(() => Task.Run(() => _ibsProvider.Booking().GetOrdersStatus(new[] { 0 })), "IBS");
 
             var geoTest = useGeo
                 ? RunTest(() => Task.Run(() => RunGeoTest()), "GEO")
@@ -72,12 +73,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             var sqlTest = RunTest(async () => await orderStatusUpdateDetailTest, "SQL");
 
-            var mapiTest = useMapi 
+            var mapiTest = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
                 ? RunTest(() => Task.Run(() => RunMapiTest()), "MAPI")
                 : Task.FromResult(false);
 
             var customerPortalTest = RunTest(() => Task.Run(() => _networkService.GetCompanyMarketSettings(_serverSettings.ServerData.GeoLoc.DefaultLatitude, _serverSettings.ServerData.GeoLoc.DefaultLongitude)), "Customer Portal");
 
+            // We use ConfigureAwait false here to ensure we are not deadlocking ourselves.
             await Task.WhenAll(ibsTest, geoTest, honeyBadger, sqlTest, mapiTest, customerPortalTest).ConfigureAwait(false);
 
             var orderStatusUpdateDetails = orderStatusUpdateDetailTest.Result;
@@ -85,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
             var isUpdaterDeadlocked = orderStatusUpdateDetails.CycleStartDate.HasValue &&
                                       orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) > DateTime.UtcNow;
 
-            return new ServiceStatus()
+            return new ServiceStatus
             {
                 IsIbsAvailable = ibsTest.Result,
                 IbsUrl = _serverSettings.ServerData.IBS.WebServicesUrl,
@@ -94,8 +96,8 @@ namespace apcurium.MK.Booking.Api.Services
                 IsHoneyBadgerAvailable = useHoneyBadger ? honeyBadger.Result : (bool?)null,
                 HoneyBadgerUrl = _serverSettings.ServerData.HoneyBadger.ServiceUrl,
                 IsSqlAvailable = sqlTest.Result,
-                IsMapiAvailable = useMapi ? mapiTest.Result : (bool?) null,
-                MapiUrl = useMapi ? GetMapiUrl() : null,
+                IsMapiAvailable = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt ? mapiTest.Result : (bool?) null,
+                MapiUrl = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt ? GetMapiUrl() : null,
                 IsCustomerPortalAvailable = customerPortalTest.Result,
                 LastOrderUpdateDate = orderStatusUpdateDetails.LastUpdateDate,
                 CycleStartDate = orderStatusUpdateDetails.CycleStartDate,
