@@ -234,7 +234,7 @@
   <string name="CreateAccountLanguageFrench">Français</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="CreateAccountErrorTitle">Erreur</string>
-  <string name="CreateAccountErrorMessage">Le compte de peut malheureusement pas être créé</string>
+  <string name="CreateAccountErrorMessage">Le compte ne peut malheureusement pas être créé</string>
   <string name="CreateAccountErrorNotSpecified">Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l\'erreur persiste merci d\'essayer de créer le compte depuis le site web. </string>
   <string name="WarningEstimate">Veuillez noter que le prix fournit par cette application n\'est seulement qu\'un estimé. Le tarif calculé par le compteur, incluant tout frais minimum et extras, seront facturés à la fin du trajet.</string>
   <string name="WarningEstimateTitle">Signaler</string>
@@ -382,7 +382,7 @@
   <string name="CreditCardType">Type de la carte</string>
   <string name="CreditCardExpMonth">Date d\'expiration (mois)</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
-  <string name="CreditCardCCV">Code sécurité</string>
+  <string name="CreditCardCCV">CVV</string>
   <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="CreditCardError_Label">Le label de cette carte n\'a pas pu être sauvergardée. S\'il vous plait réessayer</string>
   <string name="CreditCardRequiredFields">Tous les champs obligatoires doivent être remplis</string>
@@ -789,4 +789,11 @@
   <string name="PaypalAccount">Compte Paypal</string>
   <string name="UnpairPayInCarWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="UnpairPayInCarWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">Cet email correspond à un compte Facebook. S\'il vous plaît connectez vous via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">Cet email correspond à un compte Twitter. S\'il vous plaît connectez vous via Twitter.</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</string>
+  <string name="LastFour">4 dernier chiffres:  </string>
+  <string name="CreditCompany">Compagnie de crédit: </string>
+  <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
+  <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
 </resources>

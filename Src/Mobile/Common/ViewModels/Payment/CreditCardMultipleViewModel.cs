@@ -19,9 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentProviderClientService _dropInService;
 		private readonly IPaymentService _paymentService;
 
-		private string _paymentToSettle;
-
-        private const int TipMaxPercent = 100;
+		private bool _hasPaymentToSettle;
 
         public CreditCardMultipleViewModel(
             ILocationService locationService,
@@ -37,13 +35,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             _accountService = accountService;
         }
 
-		public void Init(string paymentToSettle = null)
-		{
-			if (paymentToSettle != null)
-			{
-				_paymentToSettle = paymentToSettle;
-			}
-		}
+	    public void Init(bool hasPaymentToSettle)
+	    {
+	        _hasPaymentToSettle = hasPaymentToSettle;
+	    }
 
 		public override async void BaseOnViewStarted(bool firstTime)
         {
@@ -64,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public override async void BaseStart()
 		{
 
-			if (_paymentToSettle != null)
+			if (_hasPaymentToSettle)
 			{
 				return;
 			}
@@ -81,11 +76,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				CreditCards = creditCardsDetails
 					.Select( cc => 
 						{
-							var creditCardInfos =  new CreditCardInfos()
-								{
-									CreditCardId = cc.CreditCardId,
-									CreditCardCompany = cc.CreditCardCompany
-								};
+							var creditCardInfos =  new CreditCardInfos
+							{
+								CreditCardId = cc.CreditCardId,
+								CreditCardCompany = cc.CreditCardCompany
+							};
 							var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
 							if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
@@ -142,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand<CreditCardInfos>( cci =>
 					{
-						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
+						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle});
 					});
 			}
 		}
@@ -153,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                 {
-                    ShowViewModel<CreditCardAddViewModel>(new { isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle });
+                    ShowViewModel<CreditCardAddViewModel>(new { isAddingNew = true, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
                 });
             }
         }

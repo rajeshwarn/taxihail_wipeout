@@ -46,6 +46,14 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public bool IsPayPalAccountLinked { get; set; }
 
+		public bool HasPaymentMethod
+		{
+			get
+			{
+				return IsPayPalAccountLinked || DefaultCreditCard != null;
+			}
+		}
+
         public bool HasValidPaymentInformation
         {
             get

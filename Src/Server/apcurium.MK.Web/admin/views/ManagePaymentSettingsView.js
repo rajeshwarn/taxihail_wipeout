@@ -32,6 +32,7 @@
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
 
             this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode + "]").attr("selected", "selected");
+            this.$("[name=isPaymentOutOfAppDisabled] option[value=" + data.serverPaymentSettings.isPaymentOutOfAppDisabled + "]").attr("selected", "selected");
             this.$("[id=landingPageType] option[value=" + data.serverPaymentSettings.payPalServerSettings.landingPageType + "]").attr("selected", "selected");
 
             this.warningDiv = this.$("#warning");

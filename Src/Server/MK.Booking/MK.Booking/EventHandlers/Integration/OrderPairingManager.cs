@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         }
                         
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                        var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
                         
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;

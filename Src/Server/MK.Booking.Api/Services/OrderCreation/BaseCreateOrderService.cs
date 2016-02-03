@@ -588,7 +588,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+
             if (creditCard.IsExpired())
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));

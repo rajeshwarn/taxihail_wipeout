@@ -736,8 +736,15 @@
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "Callbox.ApplicationName"="TaxiHail Callbox";
 "ServiceErrorResetPassword_AccountNotFound"="لا يوجد حساب خاص بهذا العنوان الإلكتروني.";
+"ServiceErrorResetPassword_FacebookAccount"="This email matches a Facebook account. Please login via Facebook.";
+"ServiceErrorResetPassword_TwitterAccount"="This email matches a Twitter account. Please login via Twitter.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
 "InvalidCreditCardUpdateCardButton"="Update Card";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
+"LastFour"="Last 4 numbers:  ";
+"CreditCompany"="Credit company: ";
+"SelectedCreditCard"="Currently selected credit card";
+"NoCreditCard"="No credit card selected";
 "PaypalErrorMessage"="An error occurred while attempting to contact paypal";
 "PaypalAccount"="Paypal account";

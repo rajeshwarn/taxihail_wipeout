@@ -13,7 +13,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Extensions;
 
 
@@ -26,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    private readonly IPaymentProviderClientService _paymentProviderClientService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
 
-		private OverduePayment _paymentToSettle;
+		private bool _hasPaymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
 
 		public CreditCardAddViewModel(
@@ -78,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public void Init(bool showInstructions = false, 
 			bool isMandatory = false, 
-			string paymentToSettle = null, 
+			bool hasPaymentToSettle = false, 
 			bool isFromPromotionsView = false, 
 			bool isFromCreditCardListView = false, 
 			bool isAddingNew = false, 
@@ -92,11 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_isAddingNew = isAddingNew;
 			_creditCardId = creditCardId;
 
-			if (paymentToSettle != null)
-			{
-			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
-			}
-
+		    _hasPaymentToSettle = hasPaymentToSettle;
 			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
@@ -470,10 +465,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 							var updated = await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
 							if(updated)
 							{
-								if (_paymentToSettle != null)
-								{
-									await SettleOverduePayment();
-								}
 								Close(this);
 							}
 							else
@@ -715,27 +706,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    {
 	        Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 
-
 	        if (!IsEditing)
 	        {
 	            Data.CreditCardId = Guid.NewGuid();
 	        }
 
-					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
+	        var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
 
 	        if (success)
 	        {
-						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+	            _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 	            this.Services().Analytics.LogEvent("AddCOF");
 	            Data.CardNumber = null;
 	            Data.CCV = null;
-
-	            if (_paymentToSettle != null)
-	            {
-	                await SettleOverduePayment();
-	            }
-	            else if (IsMandatory)
+                        
+	            if(IsMandatory && !_hasPaymentToSettle)
 	            {
 	                await this.Services().Message.ShowMessage(string.Empty,
 	                    PaymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None
@@ -743,14 +729,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                        : this.Services().Localize["CreditCardAdded"]);
 	            }
 
-	            CloseView();
+	            if(_isFromPromotionsView || _isFromCreditCardListView || _hasPaymentToSettle)
+	            {
+	                // We are from the promotion or mutliple credit card pages, we should return to it.
+	                Close(this);
+	            }
+	            else
+	            {
+	                ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+	            }
 	        }
 	        else
 	        {
-	            await
-	                this.Services()
-	                    .Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
-	                        this.Services().Localize["CreditCardErrorInvalid"]);
+	            await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
 	        }
 	    }
 
@@ -766,21 +757,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            ShowViewModelAndClearHistory<HomeViewModel>(new {locateUser = bool.TrueString});
 	        }
 	    }
-
-	    private async Task SettleOverduePayment()
-		{
-			var settleOverduePayment = await _paymentService.SettleOverduePayment();
-
-			if (settleOverduePayment.IsSuccessful)
-			{
-				var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _paymentToSettle.OverdueAmount);
-				await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
-			}
-			else
-			{
-				await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Failed_Title"], this.Services().Localize["Overdue_Failed_Message"]);
-			}
-		}
 
 		private bool IsValid(string cardNumber)
 		{

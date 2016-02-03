@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
+		private readonly IPaymentService _paymentService;
 
 	    public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IRegisterWorkflowService registrationService,
+			IPaymentService paymentService,
 			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
@@ -43,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
+			_paymentService = paymentService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -564,7 +567,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        return false;
 		    }
 
-		    return !_accountService.CurrentAccount.HasValidPaymentInformation;
+			// Do not use HasValidPaymentInfo here, we only must detect if we have a valid payment method.
+			return !_accountService.CurrentAccount.HasPaymentMethod;
 		}
 
         private async Task CheckFacebookAccount()
