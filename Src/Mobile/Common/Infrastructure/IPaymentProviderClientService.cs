@@ -1,6 +1,4 @@
-﻿using System;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -8,7 +6,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	{
 	    Task<string> GetPayPalNonce(string clientToken);
 	    Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth, string expirationYear, string firstName, string lastName, string zipCode);
-	    Task<string> GetPlatformPayNone(string clientToken);
+	    Task<string> GetPlatformPayNonce(string clientToken);
 	}
 }
 

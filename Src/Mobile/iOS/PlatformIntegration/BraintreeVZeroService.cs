@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Braintree;
 using apcurium.MK.Booking.Mobile.Extensions;
 using UIKit;
 using Cirrious.CrossCore;
 using Foundation;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class BraintreeVZeroService : IPaymentProviderClientService
     {
-
         public Task<string> GetPayPalNonce(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);
@@ -76,12 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return tcs.Task;
         }
 
-        public Task<string> GetPlatformPayNone(string clientToken)
+        public Task<string> GetPlatformPayNonce(string clientToken)
         {
             throw new NotImplementedException("Apple pay is not currently implemented. This will be implemented in a future release.");
         }
-
-
+        
 		private class PresentingDelegate: BTViewControllerPresentingDelegate
 		{
 			private UINavigationController _navController;
@@ -101,13 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				_navController.PresentViewControllerAsync(viewController, true).FireAndForget();
 			}
 			#endregion
-			
 		}
-
-
-
     }
-
-
-
 }

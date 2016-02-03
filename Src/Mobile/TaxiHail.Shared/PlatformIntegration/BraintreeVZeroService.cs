@@ -64,7 +64,7 @@ namespace TaxiHail.Shared.PlatformIntegration
             return result.Nonce;
 	    }
 
-	    public Task<string> GetPlatformPayNone(string clientToken)
+	    public Task<string> GetPlatformPayNonce(string clientToken)
 	    {
 	        throw new NotImplementedException("Android pay is not currently implemented.");
 	    }
@@ -75,7 +75,6 @@ namespace TaxiHail.Shared.PlatformIntegration
 
             return BraintreeFragment.NewInstance(activity, clientToken);
         }
-
     }
 }
 
