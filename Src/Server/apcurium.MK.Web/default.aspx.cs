@@ -60,8 +60,8 @@ namespace apcurium.MK.Web
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
-        protected bool IsRideLinqCMTPrepaidEnabled { get; private set; }
-        protected bool IsCMTPrepaidEnabled { get; private set; }
+        protected bool IsRideLinqCMTEnabled { get; private set; }
+        protected bool IsCMTEnabled { get; private set; }
         protected int MaxNumberOfCreditCards { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
@@ -143,8 +143,8 @@ namespace apcurium.MK.Web
 
             MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
-            IsCMTPrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt;
-            IsRideLinqCMTPrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+            IsCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt;
+            IsRideLinqCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;
@@ -206,7 +206,7 @@ namespace apcurium.MK.Web
         {
             var paymentTypesToHide = new List<int?>();
 
-            if (!(IsBraintreePrepaidEnabled || IsCMTPrepaidEnabled || IsRideLinqCMTPrepaidEnabled))
+            if (!(IsBraintreePrepaidEnabled || IsCMTEnabled || IsRideLinqCMTEnabled))
             {
                 paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
             }
