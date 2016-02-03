@@ -1130,6 +1130,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050173
 			public const int CreditCardZipCode = 2131034483;
 			
+			// aapt resource value: 0x7f05031e
+			public const int CreditCompany = 2131034910;
+			
 			// aapt resource value: 0x7f0500d8
 			public const int CurrencyPriceFormat = 2131034328;
 			
@@ -1550,6 +1553,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05019a
 			public const int LargeBagsLabel = 2131034522;
 			
+			// aapt resource value: 0x7f05031d
+			public const int LastFour = 2131034909;
+			
 			// aapt resource value: 0x7f050306
 			public const int LinkForApplicationStoreAbsentText = 2131034886;
 			
@@ -1676,6 +1682,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050293
 			public const int ManualRideLinqCreditCardDisabled = 2131034771;
 			
+			// aapt resource value: 0x7f05031a
+			public const int ManualRideLinqDeactivatedCardOnFile = 2131034906;
+			
 			// aapt resource value: 0x7f05028e
 			public const int ManualRideLinqNoCardOnFile = 2131034766;
 			
@@ -1798,6 +1807,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050033
 			public const int NoConnectionTitle = 2131034163;
+			
+			// aapt resource value: 0x7f050320
+			public const int NoCreditCard = 2131034912;
 			
 			// aapt resource value: 0x7f05018a
 			public const int NoCreditCardSelected = 2131034506;
@@ -2129,6 +2141,15 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0501d1
 			public const int PaymentViewTotalText = 2131034577;
 			
+			// aapt resource value: 0x7f050314
+			public const int PaypalAccount = 2131034900;
+			
+			// aapt resource value: 0x7f050312
+			public const int PaypalErrorMessage = 2131034898;
+			
+			// aapt resource value: 0x7f050313
+			public const int PaypalError_Title = 2131034899;
+			
 			// aapt resource value: 0x7f0501f8
 			public const int PendingOrderCancel = 2131034616;
 			
@@ -2399,6 +2420,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0501dc
 			public const int ScanCreditCard = 2131034588;
 			
+			// aapt resource value: 0x7f05031f
+			public const int SelectedCreditCard = 2131034911;
+			
 			// aapt resource value: 0x7f050113
 			public const int SendEmail = 2131034387;
 			
@@ -2434,6 +2458,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05030d
 			public const int ServiceErrorResetPassword_AccountNotFound = 2131034893;
+			
+			// aapt resource value: 0x7f05031b
+			public const int ServiceErrorResetPassword_FacebookAccount = 2131034907;
+			
+			// aapt resource value: 0x7f05031c
+			public const int ServiceErrorResetPassword_TwitterAccount = 2131034908;
 			
 			// aapt resource value: 0x7f050025
 			public const int ServiceErrorUnauthorized = 2131034149;
@@ -2696,11 +2726,26 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05024b
 			public const int UnlinkPayPal = 2131034699;
 			
+			// aapt resource value: 0x7f050315
+			public const int UnpairCancelOrder = 2131034901;
+			
+			// aapt resource value: 0x7f050318
+			public const int UnpairCancelWarningMessage = 2131034904;
+			
+			// aapt resource value: 0x7f050319
+			public const int UnpairCancelWarningMessageWithPromo = 2131034905;
+			
 			// aapt resource value: 0x7f0501cb
 			public const int UnpairErrorMessage = 2131034571;
 			
 			// aapt resource value: 0x7f0501c6
 			public const int UnpairPayInCar = 2131034566;
+			
+			// aapt resource value: 0x7f050316
+			public const int UnpairPayInCarWarningMessage = 2131034902;
+			
+			// aapt resource value: 0x7f050317
+			public const int UnpairPayInCarWarningMessageWithPromo = 2131034903;
 			
 			// aapt resource value: 0x7f05023e
 			public const int UnpairWarningCancelButton = 2131034686;
@@ -2752,6 +2797,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050041
 			public const int UpdatedTermsAndConditionsAcceptButton = 2131034177;
+			
+			// aapt resource value: 0x7f050311
+			public const int UsePayPal = 2131034897;
 			
 			// aapt resource value: 0x7f0502e9
 			public const int UserTaxiHailNetworkSettingsActivityName = 2131034857;

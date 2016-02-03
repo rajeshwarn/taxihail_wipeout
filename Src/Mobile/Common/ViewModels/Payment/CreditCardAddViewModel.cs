@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 RaisePropertyChanged(() => IsPaypalEnabled);
                 RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 
-                if (_paymentToSettle != null)
+                if (_hasPaymentToSettle)
                 {
                     return;
                 }
