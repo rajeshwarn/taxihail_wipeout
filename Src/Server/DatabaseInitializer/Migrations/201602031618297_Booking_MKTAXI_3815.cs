@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.OrderStatusUpdateDetail", "CycleStartDate", c => c.DateTime(nullable: false));
+            AddColumn("Booking.OrderStatusUpdateDetail", "CycleStartDate", c => c.DateTime());
         }
         
         public override void Down()

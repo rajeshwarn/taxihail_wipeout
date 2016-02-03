@@ -82,6 +82,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             await Task.WhenAll(ibsTest, geoTest, honeyBadger, sqlTest, mapiTest, customerPortalTest).ConfigureAwait(false);
 
+            var orderStatusUpdateDetails = orderStatusUpdateDetailTest.Result;
+
+            var isUpdaterDeadlocked = orderStatusUpdateDetails.CycleStartDate.HasValue &&
+                                      orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) > DateTime.UtcNow;
+
             return new ServiceStatus()
             {
                 IsIbsAvailable = ibsTest.Result,
@@ -94,9 +99,10 @@ namespace apcurium.MK.Booking.Api.Services
                 IsMapiAvailable = useMapi ? mapiTest.Result : (bool?) null,
                 MapiUrl = useMapi ? GetMapiUrl() : null,
                 IsCustomerPortalAvailable = customerPortalTest.Result,
-                LastOrderUpdateDate = orderStatusUpdateDetailTest.Result.LastUpdateDate.ToString("U"),
-                LastOrderUpdateId = orderStatusUpdateDetailTest.Result.Id.ToString(),
-                LastOrderUpdateServer = orderStatusUpdateDetailTest.Result.UpdaterUniqueId
+                LastOrderUpdateDate = orderStatusUpdateDetails.LastUpdateDate.ToString("U"),
+                LastOrderUpdateId = orderStatusUpdateDetails.Id.ToString(),
+                LastOrderUpdateServer = orderStatusUpdateDetails.UpdaterUniqueId,
+                IsUpdaterDeadlocked = isUpdaterDeadlocked
             };
         }
 

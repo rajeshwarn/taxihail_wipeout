@@ -15,5 +15,7 @@
         public string LastOrderUpdateId { get; set; }
         public string LastOrderUpdateServer { get; set; }
         public string LastOrderUpdateDate { get; set; }
+
+        public bool IsUpdaterDeadlocked { get; set; }
     }
 }
