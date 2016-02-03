@@ -142,12 +142,12 @@ namespace apcurium.MK.Booking.Maps.Impl
                 }
             }
 
-            address.FullAddress = ConcatAddressComponents(address);
+            address.FullAddress = AddExtraFieldsToFullAddress(address);
 
             return address;
         }
 
-        private string ConcatAddressComponents(Address address)
+        private string AddExtraFieldsToFullAddress(Address address)
         {
             var components =
                 new[] {address.FullAddress, address.City, address.State, address.ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
