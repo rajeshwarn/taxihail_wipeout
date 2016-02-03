@@ -260,12 +260,16 @@
 
             var hasCreditCardSet = TaxiHail.auth.account.get('defaultCreditCard') != null;
 
+            // in CMTPayment or RideLinqCMT Payment we are not prepaid
+            var isPrepaid = TaxiHail.parameters.isBraintreePrepaidEnabled;
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
 
             } else if (TaxiHail.parameters.alwaysDisplayCoFOption
                 && !hasCreditCardSet
+                && isPrepaid
                 && this.model.isPayingWithCoF()
                 && !this.model.get('market')) {
 
@@ -282,8 +286,7 @@
             }
             else if (TaxiHail.parameters.askForCVVAtBooking
                 && hasCreditCardSet
-                && this.model.isPayingWithCoF()
-                && !this.model.get('market')) {
+                && this.model.isPayingWithCoF()) {
                 // navigate to CVV screen
                 TaxiHail.app.navigate('confirmcvv', { trigger: true });
             }
