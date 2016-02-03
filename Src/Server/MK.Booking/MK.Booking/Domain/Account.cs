@@ -383,13 +383,18 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, Guid creditCardId)
         {
-            Update(new CreditCardDeactivated());
+            Update(new CreditCardDeactivated()
+            {
+                CreditCardId = creditCardId
+            });
+
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,
                 IBSOrderId = ibsOrderId,
+                CreditCardId = creditCardId,
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate,
@@ -397,11 +402,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SettleOverduePayment(Guid orderId)
+        public void SettleOverduePayment(Guid orderId, Guid creditCardId)
         {
             Update(new OverduePaymentSettled
             {
-                OrderId = orderId
+                OrderId = orderId,
+                CreditCardId = creditCardId
             });
         }
 

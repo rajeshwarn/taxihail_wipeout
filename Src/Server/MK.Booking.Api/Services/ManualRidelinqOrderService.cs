@@ -88,8 +88,11 @@ namespace apcurium.MK.Booking.Api.Services
 			        };
 		        }
 
-		        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
-		        if (creditCard == null)
+                var creditCard = account.DefaultCreditCard.HasValue
+                ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
+                : null;
+
+                if (creditCard == null)
 		        {
 			        throw new HttpError(HttpStatusCode.BadRequest,
 				        ErrorCode.ManualRideLinq_NoCardOnFile.ToString(),

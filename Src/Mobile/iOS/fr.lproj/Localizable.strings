@@ -758,3 +758,8 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Le code de confirmation est incorrect.";
 "InvalidCreditCardMessage"="Désolé, une erreur est survenue avec la carte de crédit. Veuillez en ajouter une nouvelle ou modifier l'existante.";
 "InvalidCreditCardUpdateCardButton"="Changer Carte";
+"ManualRideLinqDeactivatedCardOnFile"="Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.";
+"LastFour"="4 dernier chiffres:  ";
+"CreditCompany"="Compagnie de crédit: ";
+"SelectedCreditCard"="Carte de crédit sélectionnée: ";
+"NoCreditCard"="Aucune carte de crédit sélectionnée";

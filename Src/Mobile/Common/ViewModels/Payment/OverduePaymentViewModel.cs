@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		    _accountService = accountService1;
 		}
 
-	    public void Init(string overduePayment)
+		public void Init(string overduePayment)
 	    {
 			OverduePayment = overduePayment.FromJson<OverduePayment>();
         }
@@ -46,7 +46,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public decimal AmountDue
+	    public override void OnViewStarted(bool firstTime)
+	    {
+	        base.OnViewStarted(firstTime);
+
+	        if (!firstTime)
+	        {
+	            RaisePropertyChanged(() => HasCreditCard);
+                RaisePropertyChanged(() => Last4Digits);
+                RaisePropertyChanged(() => Company);
+	        }
+	    }
+
+	    public decimal AmountDue
 		{
 			get
 			{
@@ -56,7 +68,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public bool CanShowOrderNumber
+	    public bool HasCreditCard
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard != null; }
+	    }
+
+	    public string Last4Digits
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard.SelectOrDefault(defaultCreditCard => defaultCreditCard.Last4Digits); }
+	    }
+
+	    public string Company
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard.SelectOrDefault(defaultCreditCard => defaultCreditCard.CreditCardCompany); }
+	    }
+
+	    public bool CanShowOrderNumber
 		{
 			get
 			{
@@ -111,20 +138,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{
-					var serializedOverduePayment = _overduePayment.ToJson();
 					if(_appSettings.Data.MaxNumberOfCardsOnFile > 1)
 					{
 						ShowViewModel<CreditCardMultipleViewModel>(new 
-							{ 
-								paymentToSettle = serializedOverduePayment 
-							});
+						{
+                            hasPaymentToSettle = true 
+						});
 					}
 					else
 					{
 						ShowViewModel<CreditCardAddViewModel>(new 
-							{ 
-								paymentToSettle = serializedOverduePayment 
-							});
+						{
+                            hasPaymentToSettle = true 
+						});
 					}
 				});
 			}

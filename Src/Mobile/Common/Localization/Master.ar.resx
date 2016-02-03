@@ -2347,4 +2347,19 @@
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Update Card</value>
   </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
+  </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>Last 4 numbers:  </value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Credit company: </value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Currently selected credit card</value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>No credit card selected</value>
+  </data>
 </root>
