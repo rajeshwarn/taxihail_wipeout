@@ -1,4 +1,6 @@
-﻿namespace CustomerPortal.Contract.Resources
+﻿using System;
+
+namespace CustomerPortal.Contract.Resources
 {
     public class ServiceStatus
     {
@@ -14,7 +16,9 @@
         public bool IsCustomerPortalAvailable { get; set; }
         public string LastOrderUpdateId { get; set; }
         public string LastOrderUpdateServer { get; set; }
-        public string LastOrderUpdateDate { get; set; }
+        public DateTime LastOrderUpdateDate { get; set; }
+
+        public DateTime? CycleStartDate { get; set; }
 
         public bool IsUpdaterDeadlocked { get; set; }
     }

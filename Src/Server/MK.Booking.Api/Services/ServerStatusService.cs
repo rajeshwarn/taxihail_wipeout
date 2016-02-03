@@ -58,9 +58,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.HoneyBadger;
 
             var paymentSettings = _serverSettings.GetPaymentSettings();
-            var useMapi = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
-                          paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-
+            var useMapi = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
             var geoTest = useGeo
                 ? RunTest(() => Task.Run(() => RunGeoTest()), "GEO")
@@ -99,7 +97,8 @@ namespace apcurium.MK.Booking.Api.Services
                 IsMapiAvailable = useMapi ? mapiTest.Result : (bool?) null,
                 MapiUrl = useMapi ? GetMapiUrl() : null,
                 IsCustomerPortalAvailable = customerPortalTest.Result,
-                LastOrderUpdateDate = orderStatusUpdateDetails.LastUpdateDate.ToString("U"),
+                LastOrderUpdateDate = orderStatusUpdateDetails.LastUpdateDate,
+                CycleStartDate = orderStatusUpdateDetails.CycleStartDate,
                 LastOrderUpdateId = orderStatusUpdateDetails.Id.ToString(),
                 LastOrderUpdateServer = orderStatusUpdateDetails.UpdaterUniqueId,
                 IsUpdaterDeadlocked = isUpdaterDeadlocked
