@@ -229,10 +229,10 @@
       <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="cardioandroid">
       <Version>5.3.0.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
