@@ -90,15 +90,17 @@
             }
 
             // Remove CoF option since there's no card in the user profile
-            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard') && !TaxiHail.parameters.alwaysDisplayCoFOption) {
-                var chargeTypesClone = chargeTypes.slice();
-                for (var i = 0; i < chargeTypesClone.length; i++) {
-                    var chargeType = chargeTypesClone[i];
-                    if (chargeType.id == 3) {
-                        chargeTypesClone.splice(i, 1);
-                        chargeTypes = chargeTypesClone;
+            if ((TaxiHail.parameters.isBraintreePrepaidEnabled || TaxiHail.parameters.isCMTEnabled || TaxiHail.parameters.isRideLinqCMTEnabled)
+                && !TaxiHail.auth.account.get('defaultCreditCard')
+                && !TaxiHail.parameters.alwaysDisplayCoFOption) {
+                    var chargeTypesClone = chargeTypes.slice();
+                    for (var i = 0; i < chargeTypesClone.length; i++) {
+                        var chargeType = chargeTypesClone[i];
+                        if (chargeType.id == 3) {
+                            chargeTypesClone.splice(i, 1);
+                            chargeTypes = chargeTypesClone;
+                        }
                     }
-                }
             }
 
             // Validates that the paymentsList contains the currently set chargeTypeId (in booking settings). If not, use the first item in the list.
@@ -257,12 +259,16 @@
 
             var hasCreditCardSet = TaxiHail.auth.account.get('defaultCreditCard') != null;
 
+            // in CMTPayment or RideLinqCMT Payment we are not prepaid
+            var isPrepaid = TaxiHail.parameters.isBraintreePrepaidEnabled;
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
 
             } else if (TaxiHail.parameters.alwaysDisplayCoFOption
                 && !hasCreditCardSet
+                && isPrepaid
                 && this.model.isPayingWithCoF()
                 && !this.model.get('market')) {
 
@@ -279,8 +285,7 @@
             }
             else if (TaxiHail.parameters.askForCVVAtBooking
                 && hasCreditCardSet
-                && this.model.isPayingWithCoF()
-                && !this.model.get('market')) {
+                && this.model.isPayingWithCoF()) {
                 // navigate to CVV screen
                 TaxiHail.app.navigate('confirmcvv', { trigger: true });
             }

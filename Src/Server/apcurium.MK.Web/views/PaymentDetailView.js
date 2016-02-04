@@ -86,7 +86,10 @@
             }
 
             var displayTipSelection = (TaxiHail.parameters.isChargeAccountPaymentEnabled
-                || TaxiHail.parameters.isBraintreePrepaidEnabled) && TaxiHail.parameters.maxNumberOfCreditCards < 2;
+                || TaxiHail.parameters.isBraintreePrepaidEnabled
+                || TaxiHail.parameters.isCMTEnabled
+                || TaxiHail.parameters.isRideLinqCMTEnabled
+                ) && TaxiHail.parameters.maxNumberOfCreditCards < 2;
 
             _.extend(creditCard,
             {

@@ -60,6 +60,8 @@ namespace apcurium.MK.Web
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
+        protected bool IsRideLinqCMTEnabled { get; private set; }
+        protected bool IsCMTEnabled { get; private set; }
         protected int MaxNumberOfCreditCards { get; private set; }
         protected bool EnablePayPal { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
@@ -140,6 +142,12 @@ namespace apcurium.MK.Web
 
             MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
+            IsCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsRideLinqCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;
@@ -196,7 +204,7 @@ namespace apcurium.MK.Web
         {
             var paymentTypesToHide = new List<int?>();
 
-            if (!creditCardPrepaidEnabled)
+            if (!(IsBraintreePrepaidEnabled || IsCMTEnabled || IsRideLinqCMTEnabled))
             {
                 paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
             }
