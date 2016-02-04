@@ -90,7 +90,7 @@ namespace CustomerPortal.Web.Controllers.API
 
                 if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && _sourceControl.IsVersionNumber(deployment.Revision))
                 {
-                    _emailSender.SendEmail(deployment.Details, deployment.Revision.Tag, deployment.Company.CompanyName, deployment.UserName,deployment.UserEmail, deployment.Server.Name);
+                    _emailSender.SendDeploymentWarningEmail(deployment.Details, deployment.Revision.Tag, deployment.Company.CompanyName, deployment.UserName,deployment.UserEmail, deployment.Server.Name);
                 }
 
                 _repository.Update(deployment);
