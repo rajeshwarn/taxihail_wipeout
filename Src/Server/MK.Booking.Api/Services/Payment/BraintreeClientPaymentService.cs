@@ -327,7 +327,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                return customer.CreditCardVerification.Status == VerificationStatus.VERIFIED;
+                if (customer.CreditCardVerification != null)
+                {
+                    return customer.CreditCardVerification.Status == VerificationStatus.VERIFIED;
+                }
+
+                return customer.Target != null;
             }
             catch (Exception)
             {
