@@ -21,6 +21,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
+using apcurium.MK.Booking.Services;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -37,6 +38,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly BookingSettingsService _bookingSettingsService;
         private readonly ConfirmAccountService _confirmAccountService;
         private readonly ExportDataService _exportDataService;
+        private readonly IPaymentService _paymentService;
         private readonly Resources _resources;
 
         
@@ -49,6 +51,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            ICommandBus commandBus,
            IOrderDao orderDao,
            IPromotionDao promoDao,
+           IPaymentService paymentService,
            BookingSettingsService bookingSettingsService,
            ConfirmAccountService confirmAccountService,
            ExportDataService exportDataService)
@@ -64,6 +67,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _promoDao = promoDao;
             _confirmAccountService = confirmAccountService;
             _exportDataService = exportDataService;
+            _paymentService = paymentService;
 
             _resources = new Resources(serverSettings);
         }
@@ -336,8 +340,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private AccountManagementModel InitializeModel(Guid accountId)
         {
             var accountDetail = _accountDao.FindById(accountId);
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-
             
             var model = new AccountManagementModel
             {
@@ -355,7 +357,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
                 IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
-                IsRideLinqCMTPaymentMode = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
             };
 
             if (accountDetail.DefaultCreditCard != null)
@@ -376,11 +377,19 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
-                AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
+                var paymentResponse = _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
 
-                _paym
-
-                TempData["UserMessage"] = "order refund, note added";
+                if(paymentResponse.IsSuccessful)
+                {
+                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
+                    AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
+                    TempData["UserMessage"] = "order refund, note added";
+                }
+                else
+                {
+                    TempData["UserMessage"] = "an error occurs: " + paymentResponse.Message;
+                }
+               
                 ModelState.Clear();
             }
             else
@@ -396,6 +405,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
         {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
             var orders = _orderDao.FindByAccountId(accountId)
                .OrderByDescending(c => c.CreatedDate)
                .Select(x =>
@@ -409,7 +420,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        TollString = _resources.FormatPrice(x.Toll),
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
-                       TotalAmountString = _resources.FormatPrice(x.TotalAmount())
+                       TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
+                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
                    };
                })
                .ToList();

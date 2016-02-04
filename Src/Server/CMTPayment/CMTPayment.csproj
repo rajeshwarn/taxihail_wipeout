@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\CmtRideLinqRefundRequest.cs" />
     <Compile Include="Authorization\AuthorizationRequest.cs" />
     <Compile Include="Authorization\AuthorizationResponse.cs" />
     <Compile Include="Authorization\MerchantAuthorizationRequest.cs" />

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
@@ -23,8 +24,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public int OrdersPageIndex { get; set; }
 
         public Guid RefundOrderId { get; set; }
-
-        public bool IsRideLinqCMTPaymentMode { get; set; }
 
         [Display(Name = "Id")]
         public Guid Id { get; set; }
@@ -105,6 +104,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TipString { get; set; }
         public string SurchargeString { get; set; }
         public string TotalAmountString { get; set; }
+
+        public bool IsRideLinqCMTPaymentMode { get; set; }
     }
 
     public class NoteModel : AccountNoteEntry
