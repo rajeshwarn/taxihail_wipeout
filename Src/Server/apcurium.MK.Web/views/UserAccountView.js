@@ -10,9 +10,7 @@
             
             var data = this.model.toJSON();
             _.extend(data, {
-                isBraintreePrepaidEnabled: TaxiHail.parameters.isBraintreePrepaidEnabled,
-                isCMTEnabled: TaxiHail.parameters.isCMTEnabled,
-                isRideLinqCMTEnabled: TaxiHail.parameters.isRideLinqCMTEnabled
+                isPaymentEnabled: TaxiHail.parameters.isBraintreePrepaidEnabled || TaxiHail.parameters.isCMTEnabled || TaxiHail.parameters.isRideLinqCMTEnabled
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -29,38 +27,54 @@
 
             payment: function () {
 
-                var creditCards = new TaxiHail.CreditCardCollection();
-                creditCards.fetch({
-                    url: 'api/account/creditcards',
-                    success: _.bind(function (collection) {
+                if (TaxiHail.parameters.isBraintreePrepaidEnabled) {
 
-                        var container = this.$("#user-account-container");
-                        TaxiHail.showSpinner(container);
+                    var creditCards = new TaxiHail.CreditCardCollection();
+                    creditCards.fetch({
+                        url: 'api/account/creditcards',
+                        success: _.bind(function (collection) {
 
-                        if (TaxiHail.parameters.maxNumberOfCreditCards < 2) {
+                            var container = this.$("#user-account-container");
+                            TaxiHail.showSpinner(container);
 
-                            var creditCardInfo = collection.models.length && collection.models.length > 0 ? collection.models[0] : new TaxiHail.CreditCard();
+                            if (TaxiHail.parameters.maxNumberOfCreditCards < 2) {
 
-                            creditCardInfo.set("settings", this.model.get('settings'));
-                            creditCardInfo.set("defaultTipPercent", this.model.get('defaultTipPercent'));
-                            this._tabView = new TaxiHail.PaymentDetailView({
-                                model: creditCardInfo,
-                                parent: this
-                            });
-                      
+                                var creditCardInfo = collection.models.length && collection.models.length > 0 ? collection.models[0] : new TaxiHail.CreditCard();
+
+                                creditCardInfo.set("settings", this.model.get('settings'));
+                                creditCardInfo.set("defaultTipPercent", this.model.get('defaultTipPercent'));
+                                this._tabView = new TaxiHail.PaymentDetailView({
+                                    model: creditCardInfo,
+                                    parent: this
+                                });
+
                             } else {
                                 this._tabView = new TaxiHail.PaymentView({
                                     collection: collection,
-                                    model : this.model,
+                                    model: this.model,
                                     parent: this
                                 });
-                        }
-                       
-                        this._tabView.render();
-                        this.$("#user-account-container").html(this._tabView.el);
-                    }, this)
+                            }
 
-                });
+                            this._tabView.render();
+                            this.$("#user-account-container").html(this._tabView.el);
+
+                        }, this)
+
+                    });
+
+                } else {
+                    
+                    this._tabView = new TaxiHail.PaymentMinimalView({
+                        model: this.model,
+                        parent: this
+                    });
+
+                    this._tabView.render();
+                    this.$("#user-account-container").html(this._tabView.el);
+
+                }
+
             },
 
             favorites: function(){

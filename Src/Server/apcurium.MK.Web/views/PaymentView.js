@@ -66,7 +66,7 @@
                 this.collection.each(this.renderItem, this);
                
             } else {
-                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('order.no-result')));
+                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('creditcard.no-result')));
             }
 
             return this;

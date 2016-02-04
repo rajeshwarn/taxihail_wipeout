@@ -93,14 +93,14 @@
             if ((TaxiHail.parameters.isBraintreePrepaidEnabled || TaxiHail.parameters.isCMTEnabled || TaxiHail.parameters.isRideLinqCMTEnabled)
                 && !TaxiHail.auth.account.get('defaultCreditCard')
                 && !TaxiHail.parameters.alwaysDisplayCoFOption) {
-                var chargeTypesClone = chargeTypes.slice();
-                for (var i = 0; i < chargeTypesClone.length; i++) {
-                    var chargeType = chargeTypesClone[i];
-                    if (chargeType.id == 3) {
-                        chargeTypesClone.splice(i, 1);
-                        chargeTypes = chargeTypesClone;
+                    var chargeTypesClone = chargeTypes.slice();
+                    for (var i = 0; i < chargeTypesClone.length; i++) {
+                        var chargeType = chargeTypesClone[i];
+                        if (chargeType.id == 3) {
+                            chargeTypesClone.splice(i, 1);
+                            chargeTypes = chargeTypesClone;
+                        }
                     }
-                }
             }
 
             // Validates that the paymentsList contains the currently set chargeTypeId (in booking settings). If not, use the first item in the list.
