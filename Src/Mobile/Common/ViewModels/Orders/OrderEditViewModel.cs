@@ -69,15 +69,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
                         paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
-            if (marketSettings.DisableOutOfAppPayment && isCmt)
-			{
-				paymentList.Remove (x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
-
-                if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
-                {
-                    ChargeTypeId = null;
-                }
-            }
+	        paymentList = isCmt
+	            ? RemovePaymentInCarIfNeededForCmt(paymentList, marketSettings)
+	            : RemovePaymentInCarIfNeeded(paymentList, marketSettings);
 
 	        _marketSettings = marketSettings;
 
@@ -92,14 +86,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .ToArray();
             
 
+	        HandleChargeTypeSelectionAccess(isCmt);
+	    }
+
+        private IList<ListItem> RemovePaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+        {
+            return !market.IsLocalMarket
+                ? RemovePaymentInCar(paymentList)
+                : paymentList;
+        }
+
+        private IList<ListItem> RemovePaymentInCarIfNeededForCmt(IList<ListItem> paymentList, MarketSettings market)
+	    {
+	        return market.DisableOutOfAppPayment
+	            ? RemovePaymentInCar(paymentList)
+	            : paymentList;
+	    }
+
+	    private IList<ListItem> RemovePaymentInCar(IList<ListItem> paymentList)
+	    {
+            paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+
+            if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+            {
+                ChargeTypeId = null;
+            }
+
+	        return paymentList;
+	    }
+
+	    private void HandleChargeTypeSelectionAccess(bool isCmt)
+	    {
 	        if (!isCmt)
 	        {
-                var isChargeTypeUnlocked = _accountService.CurrentAccount.DefaultCreditCard == null ||
-                    !Settings.DisableChargeTypeWhenCardOnFile;
+	            var isChargeTypeUnlocked = _accountService.CurrentAccount.DefaultCreditCard == null ||
+	                                       !Settings.DisableChargeTypeWhenCardOnFile;
 
 	            IsChargeTypesEnabled = isChargeTypeUnlocked && ChargeTypes.Length > 1;
 
-                return;
+	            return;
 	        }
 
 	        IsChargeTypesEnabled = ChargeTypes.Length > 1;
