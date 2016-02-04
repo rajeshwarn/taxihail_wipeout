@@ -3,7 +3,15 @@
         <ul class="nav nav-tabs" data-role='profile-tabs'>
             <li class="li-tabs active" data-tab='profile'><a href="#useraccount/profile">{{localize "Profile"}}</a></li>
 
-            {{#if isBraintreePrepaidEnabled}}
+            {{#if isBraintreePrepaidEnabled }}
+            <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
+            {{/if}}
+
+            {{#if isCMTEnabled }}
+            <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
+            {{/if}}
+
+            {{#if isRideLinqCMTEnabled }}
             <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
             {{/if}}
             
