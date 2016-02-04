@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -13,10 +16,12 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Services;
 using CustomerPortal.Web.Services.Impl;
 using log4net.Config;
 using MongoRepository;
@@ -83,6 +88,50 @@ namespace CustomerPortal.Web
 
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
+
+            StartStatusUpdater();
+        }
+
+        private static bool _statusUpdaterRunning;
+        private static readonly ILogger Logger = new Logger();
+        private static readonly IServiceStatusUpdater UpdaterService = new ServiceStatusUpdater(Logger);
+        private static readonly SerialDisposable Subscriptions = new SerialDisposable();
+
+        private static void StartStatusUpdater()
+        {
+            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(1))
+                .Where(_ => !_statusUpdaterRunning)
+                .Do(_ =>
+                {
+                    _statusUpdaterRunning = true;
+                    Logger.LogMessage("Company status updater started");
+                })
+                .SelectMany(async _ =>
+                {
+                    try
+                    {
+                        await UpdaterService.UpdateServiceStatus();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
+
+                    return Unit.Default;
+                })
+                .Do(_ =>
+                {
+                    Logger.LogMessage("Company status updater ended");
+                    _statusUpdaterRunning = false;
+                })
+                .Subscribe();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            Subscriptions.Disposable = null;
         }
 
         private static void MigrateNetworkVehiclesToMarketRepresentation()

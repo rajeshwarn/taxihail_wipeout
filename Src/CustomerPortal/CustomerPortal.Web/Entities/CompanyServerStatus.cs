@@ -13,5 +13,9 @@ namespace CustomerPortal.Web.Entities
 
         public bool HasNoStatusApi { get; set; }
         public string Id { get; set; }
+
+        public bool IsServerNotFound { get; set; }
+
+        public bool IsEmailSentForCurrentError { get; set; }
     }
 }

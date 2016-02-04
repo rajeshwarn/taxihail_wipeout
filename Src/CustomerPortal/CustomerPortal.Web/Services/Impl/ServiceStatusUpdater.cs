@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities;
@@ -16,19 +18,21 @@ namespace CustomerPortal.Web.Services.Impl
     {
         private readonly IEmailSender _emailSender;
         private readonly IRepository<Company> _companyRepository;
-        private readonly IRepository<CompanyServerStatus> _serviceStatusRepository; 
+        private readonly IRepository<CompanyServerStatus> _serviceStatusRepository;
+        private readonly ILogger _logger;
 
         private readonly HttpClient _client;
 
-        public ServiceStatusUpdater() : this(new EmailSender(), new MongoRepository<Company>(), new MongoRepository<CompanyServerStatus>())
+        public ServiceStatusUpdater(ILogger logger) : this(new EmailSender(), new MongoRepository<Company>(), new MongoRepository<CompanyServerStatus>(), logger)
         {
         }
 
-        public ServiceStatusUpdater(IEmailSender emailSender, IRepository<Company> companyRepository, IRepository<CompanyServerStatus> serviceStatusRepository)
+        public ServiceStatusUpdater(IEmailSender emailSender, IRepository<Company> companyRepository, IRepository<CompanyServerStatus> serviceStatusRepository, ILogger logger)
         {
             _emailSender = emailSender;
             _companyRepository = companyRepository;
             _serviceStatusRepository = serviceStatusRepository;
+            _logger = logger;
 
             _client = new HttpClient();
 
@@ -44,22 +48,27 @@ namespace CustomerPortal.Web.Services.Impl
             var companies = _companyRepository
                 // We only get the companies that have active websites.
                 .Where(company => company.Status == AppStatus.Production ||
-                    company.Status == AppStatus.DemoSystem || 
-                    company.Status == AppStatus.Test ||
-                    company.Status == AppStatus.TestingNewVersion
+                   company.Status == AppStatus.Test ||
+                   company.Status == AppStatus.TestingNewVersion ||
+                   company.CompanyKey.StartsWith("Arro") ||
+                   company.CompanyKey.Equals("Apcurium")
                 )
-                .Select(async company => await UpdateCompanyStatus(company.CompanyKey, company.CompanyName).ConfigureAwait(false))
+                .AsEnumerable()
+                .Select(async company => await UpdateCompanyStatus(company).ConfigureAwait(false))
                 .ToArray();
 
             var companyServerStatus = await Task.WhenAll(companies).ConfigureAwait(false);
 
             var groupedCompanyServerStatus = companyServerStatus
-                .SelectMany(status => status)
-                .GroupBy(status => status.Id == null);
+                .GroupBy(status => status.Id.HasValueTrimmed());
 
             foreach (var groupedStatus in groupedCompanyServerStatus)
             {
                 if (groupedStatus.Key)
+                {
+                    _serviceStatusRepository.Update(groupedStatus);
+                }
+                else
                 {
                     _serviceStatusRepository.Add(groupedStatus.Select(status =>
                     {
@@ -67,35 +76,34 @@ namespace CustomerPortal.Web.Services.Impl
                         return status;
                     }));
                 }
-                else
-                {
-                    _serviceStatusRepository.Update(groupedStatus);
-                }
             }
         }
 
-
-        private async Task<CompanyServerStatus[]> UpdateCompanyStatus(string companyKey, string companyName)
+        private string GetUrlFromCompany(Company company)
         {
-            var productionUrl = companyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase)
-                ? "https://api.goarro.com/Arro/api/"
-                : "https://api.taxihail.com/{0}/api/".InvariantCultureFormat(companyKey);
+            if (company.CompanyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return "http://localhost/apcurium.mk.web/";
+                //return "http://api.goarro.com/Arro/";
+            }
 
-            var stagingUrl = companyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase)
-                ? string.Empty
-                : "https://staging.taxihail.com/{0}/api/".InvariantCultureFormat(companyKey);
 
-            var responses = await Task.WhenAll(CheckServer(productionUrl, true), CheckServer(stagingUrl, false)).ConfigureAwait(false);
+            return "http://test.taxihail.biz:8181/{0}/".InvariantCultureFormat(company.CompanyKey);
 
-            return responses
-                .Where(serverStatus => serverStatus != null)
-                .Select(serviceStatusResponse =>
-                {
-                    var url = serviceStatusResponse.IsProduction ? productionUrl : stagingUrl;
+            //return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
+            //    ? "http://test.taxihail.biz:8181/Apcurium/"
+            //    : "http://api.taxihail.com/{0}/".InvariantCultureFormat(company.CompanyKey);
 
-                    return HandleServiceStatusResponse(companyKey, companyName, serviceStatusResponse, url);
-                })
-                .ToArray();
+        }
+
+        private async Task<CompanyServerStatus> UpdateCompanyStatus(Company company)
+        {
+            var url = GetUrlFromCompany(company);
+
+            var response = await Task.Run(() => CheckServer(url, true)).ConfigureAwait(false);
+
+
+            return HandleServiceStatusResponse(company.CompanyKey, company.CompanyName, response, url);
         }
 
         private CompanyServerStatus HandleServiceStatusResponse(string companyKey, string companyName, ServiceStatusResponse serviceStatusResponse, string url)
@@ -103,41 +111,49 @@ namespace CustomerPortal.Web.Services.Impl
             var companyServerStatus = _serviceStatusRepository
                 .FirstOrDefault(status => status.CompanyKey == companyKey && status.IsProduction == serviceStatusResponse.IsProduction);
 
-            SendEmailIfNeeded(serviceStatusResponse, companyName, url, companyServerStatus);
+            var emailSentForCurrentError = SendEmailIfNeeded(serviceStatusResponse, companyName, url, companyServerStatus);
 
             if (companyServerStatus == null)
             {
-                return new CompanyServerStatus
+                companyServerStatus =  new CompanyServerStatus
                 {
-                    ServiceStatus = serviceStatusResponse.ServiceStatus,
                     IsProduction = serviceStatusResponse.IsProduction,
                     CompanyName = companyName,
-                    CompanyKey = companyKey,
-                    HasNoStatusApi = serviceStatusResponse.HasNoStatusApi
+                    CompanyKey = companyKey
                 };
             }
 
             companyServerStatus.ServiceStatus = serviceStatusResponse.ServiceStatus;
             companyServerStatus.HasNoStatusApi = serviceStatusResponse.HasNoStatusApi;
+            companyServerStatus.IsServerNotFound = serviceStatusResponse.IsServerNotFound;
+            companyServerStatus.IsEmailSentForCurrentError = emailSentForCurrentError;
 
             return companyServerStatus;
         }
 
-        private void SendEmailIfNeeded(ServiceStatusResponse serviceStatus, string companyName, string url, CompanyServerStatus previousStatus)
+        private bool SendEmailIfNeeded(ServiceStatusResponse serviceStatus, string companyName, string url, CompanyServerStatus previousStatus)
         {
             if (serviceStatus.StatusCode == HttpStatusCode.OK ||
                         serviceStatus.ServiceStatus.SelectOrDefault(response => response.IsServerHealthy(), serviceStatus.HasNoStatusApi))
             {
-                return;
+                return false;
             }
 
-            if (previousStatus != null && !previousStatus.ServiceStatus.IsServerHealthy())
+            if (!previousStatus.SelectOrDefault(status => status.IsEmailSentForCurrentError))
             {
-                // We sent the email already.
-                return;
+                try
+                {
+                    //_emailSender.SendServiceStatusEmail(companyName, url, serviceStatus.ServiceStatus, serviceStatus.StatusCode);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex);
+                    return false;
+                }
+                
+                
             }
-
-            _emailSender.SendServiceStatusEmail(companyName, url, serviceStatus.ServiceStatus, serviceStatus.StatusCode); 
+            return true;
         }
         
         private async Task<ServiceStatusResponse> CheckServer(string url, bool isProduction)
@@ -147,48 +163,79 @@ namespace CustomerPortal.Web.Services.Impl
                 return null;
             }
 
-            var authenticationReslt = await _client.PostAsJsonAsync(url + "/auth/credentials", new
+            try
             {
-                UserName = "taxihail@apcurium.com",
-                Password = "1l1k3B4n4n@",
-            });
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
-            if (!authenticationReslt.IsSuccessStatusCode)
-            {
-                return new ServiceStatusResponse
+                var hostPresenceResult = await _client.GetAsync(url, cts.Token);
+
+                if (!hostPresenceResult.IsSuccessStatusCode)
                 {
-                    IsProduction = isProduction,
-                    StatusCode = authenticationReslt.StatusCode
-                };
-            }
+                    return new ServiceStatusResponse
+                    {
+                        IsProduction = isProduction,
+                        StatusCode = hostPresenceResult.StatusCode,
+                        IsServerNotFound = hostPresenceResult.StatusCode == HttpStatusCode.NotFound
+                    };
+                }
 
-            var authData = await FromJson<AuthResponse>(authenticationReslt.Content);
+                cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
-            var request = new HttpRequestMessage(HttpMethod.Get, url + "status");
+                var authenticationResult = await _client.PostAsJsonAsync(url + "api/auth/credentials", new
+                {
+                    UserName = "taxihail@apcurium.com",
+                    Password = "1l1k3B4n4n@",
+                }, cts.Token);
 
-            request.Headers.Add("Cookie", "ss-opt=perm; ss-pid=" + authData.SessionId);
+                if (!authenticationResult.IsSuccessStatusCode)
+                {
+                    return new ServiceStatusResponse
+                    {
+                        IsProduction = isProduction,
+                        StatusCode = authenticationResult.StatusCode
+                    };
+                }
 
-            var serviceStatusResult = await _client.SendAsync(request);
+                var authData = await FromJson<AuthResponse>(authenticationResult.Content);
 
+                var request = new HttpRequestMessage(HttpMethod.Get, url + "api/status");
 
-            if (!serviceStatusResult.IsSuccessStatusCode)
-            {
+                request.Headers.Add("Cookie", "ss-opt=perm; ss-pid=" + authData.SessionId);
+
+                cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+
+                var serviceStatusResult = await _client.SendAsync(request, cts.Token).ConfigureAwait(false);
+
+                if (!serviceStatusResult.IsSuccessStatusCode)
+                {
+                    return new ServiceStatusResponse
+                    {
+                        IsProduction = isProduction,
+                        StatusCode = serviceStatusResult.StatusCode,
+                        HasNoStatusApi = authenticationResult.StatusCode == HttpStatusCode.NotFound
+                    };
+                }
+
+                var status = await FromJson<ServiceStatus>(serviceStatusResult.Content);
+
                 return new ServiceStatusResponse
                 {
                     IsProduction = isProduction,
                     StatusCode = serviceStatusResult.StatusCode,
-                    HasNoStatusApi = authenticationReslt.StatusCode == HttpStatusCode.NotFound
+                    ServiceStatus = status
                 };
             }
-
-            var status = await FromJson<ServiceStatus>(serviceStatusResult.Content);
-
-            return new ServiceStatusResponse
+            catch (Exception ex)
             {
-                IsProduction = isProduction,
-                StatusCode = serviceStatusResult.StatusCode,
-                ServiceStatus = status
-            };
+                _logger.LogError(ex);
+
+                return new ServiceStatusResponse
+                {
+                    IsProduction = isProduction,
+                    StatusCode = HttpStatusCode.RequestTimeout
+                };
+            }
+            
         }
 
         private async Task<TValue> FromJson<TValue>(HttpContent httpContent)
@@ -210,6 +257,8 @@ namespace CustomerPortal.Web.Services.Impl
             public bool IsProduction { get; set; }
 
             public bool HasNoStatusApi { get; set; }
+
+            public bool IsServerNotFound { get; set; }
         }
     }
 }

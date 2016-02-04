@@ -29,7 +29,7 @@ namespace CustomerPortal.Web.Services.Impl
     </body>
 </html>";
 
-        private const string ServiceStatusToEmail = "";
+        private const string ServiceStatusToEmail = "dominique.savoie@apcurium.com";
         private const string ServiceStatusSubjectTemplate = "There is a problem accessing {0}'s server";
         private const string ServiceStatusFromEmail = "taxihail@apcurium.com";
 

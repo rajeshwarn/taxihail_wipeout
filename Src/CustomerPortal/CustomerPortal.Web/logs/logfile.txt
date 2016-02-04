@@ -1,0 +1,258 @@
+2016-02-04 09:41:24,031 [61] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - An error occurred while sending the request.    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<CheckServer>d__10.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 150
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 88
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 54
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 09:41:24,076 [61] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - The underlying connection was closed: The connection was closed unexpectedly.    at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+2016-02-04 09:45:58,687 [49] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - The parameter 'addresses' cannot be an empty string.
+Parameter name: addresses    at System.Net.Mail.MailAddressCollection.Add(String addresses)
+   at CustomerPortal.Web.Services.Impl.EmailSender.SendServiceStatusEmail(String companyName, String url, ServiceStatus status, HttpStatusCode httpStatusCode) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\EmailSender.cs:line 75
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.SendEmailIfNeeded(ServiceStatusResponse serviceStatus, String companyName, String url, CompanyServerStatus previousStatus) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 140
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.HandleServiceStatusResponse(String companyKey, String companyName, ServiceStatusResponse serviceStatusResponse, String url) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 106
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<>c__DisplayClass7_0.<UpdateCompanyStatus>b__1(ServiceStatusResponse serviceStatusResponse) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 96
+   at System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 90
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 54
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 09:48:56,877 [27] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - The parameter 'addresses' cannot be an empty string.
+Parameter name: addresses    at System.Net.Mail.MailAddressCollection.Add(String addresses)
+   at CustomerPortal.Web.Services.Impl.EmailSender.SendServiceStatusEmail(String companyName, String url, ServiceStatus status, HttpStatusCode httpStatusCode) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\EmailSender.cs:line 75
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.SendEmailIfNeeded(ServiceStatusResponse serviceStatus, String companyName, String url, CompanyServerStatus previousStatus) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 141
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.HandleServiceStatusResponse(String companyKey, String companyName, ServiceStatusResponse serviceStatusResponse, String url) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 107
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<>c__DisplayClass7_0.<UpdateCompanyStatus>b__1(ServiceStatusResponse serviceStatusResponse) in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 97
+   at System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 91
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<<UpdateServiceStatus>b__6_0>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 55
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 09:56:43,944 [20] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - An error occurred while sending the request.    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<CheckServer>d__10.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 151
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 89
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<<UpdateServiceStatus>b__6_0>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 55
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 09:56:43,972 [20] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - The underlying connection was closed: The connection was closed unexpectedly.    at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+2016-02-04 09:58:48,598 [45] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - An error occurred while sending the request.    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<CheckServer>d__10.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 151
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 89
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<<UpdateServiceStatus>b__6_0>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 55
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 09:58:48,599 [45] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - The underlying connection was closed: The connection was closed unexpectedly.    at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+2016-02-04 10:04:54,614 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - An error occurred while sending the request.    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<CheckServer>d__10.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 151
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 89
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<<UpdateServiceStatus>b__6_0>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 55
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:04:54,657 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unable to connect to the remote server    at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+2016-02-04 10:04:54,658 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 52.30.144.146:443    at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+2016-02-04 10:05:55,596 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - An error occurred while sending the request.    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<CheckServer>d__10.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 151
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateCompanyStatus>d__7.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 89
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<<UpdateServiceStatus>b__6_0>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 55
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:05:55,598 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unable to connect to the remote server    at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+2016-02-04 10:05:55,599 [60] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - No connection could be made because the target machine actively refused it 52.30.144.146:443    at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+2016-02-04 10:08:48,140 [71] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:09:47,873 [78] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:10:47,825 [69] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:11:47,828 [62] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:12:47,829 [9] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:13:47,837 [69] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
+2016-02-04 10:14:47,851 [8] ERROR apcurium.MK.Common.Diagnostic.Logger [(null)] - Unsupported where clause: ServiceStatusUpdater.IsCompanyActive(company).    at MongoDB.Driver.Linq.PredicateTranslator.BuildQuery(Expression expression)
+   at MongoDB.Driver.Linq.SelectQuery.Execute()
+   at MongoDB.Driver.Linq.MongoQueryable`1.GetEnumerator()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at CustomerPortal.Web.Services.Impl.ServiceStatusUpdater.<UpdateServiceStatus>d__6.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Services\Impl\ServiceStatusUpdater.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   at CustomerPortal.Web.MvcApplication.<>c.<<StartStatusUpdater>b__4_1>d.MoveNext() in C:\Sources\taxihail\Src\CustomerPortal\CustomerPortal.Web\Global.asax.cs:line 108
