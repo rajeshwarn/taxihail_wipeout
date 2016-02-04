@@ -40,6 +40,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
 
+        [Obsolete("This method is kept for backwards compatibility purposes.")]
+        public object Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
+        {
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+
+            return TokenizedCreditCard(BraintreeGateway,
+                account,
+                tokenizeRequest.EncryptedCreditCardNumber,
+                tokenizeRequest.EncryptedExpirationDate,
+                tokenizeRequest.EncryptedCvv,
+                tokenizeRequest.PaymentMethodNonce);
+        }
+
         public object Post(AddPaymentMethodRequest request)
         {
             var userId = Guid.Parse(this.GetSession().UserAuthId);
@@ -54,6 +68,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     CustomerId = account.BraintreeAccountId,
                     PaymentMethodNonce = request.Nonce,
                 });
+
+                var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(creditCardResult);
+
+                if (!creditCardResult.IsSuccess() || !creditCardCvvSuccess)
+                {
+                    return new TokenizedCreditCardResponse
+                    {
+                        IsSuccessful = false,
+                        Message = creditCardResult.Message
+                    };
+                }
 
                 var creditCard = creditCardResult.Target;
                 
@@ -263,9 +288,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     ? client.Customer.Update(account.BraintreeAccountId, request)
                     : client.Customer.Create(request);
 
-                var customer = result.Target;
-
-                var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(customer);
+                var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(result);
 
                 if (!result.IsSuccess() || !creditCardCvvSuccess)
                 {
@@ -275,6 +298,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Message = result.Message
                     };
                 }
+
+                var customer = result.Target;
 
                 var creditCard = customer.CreditCards.OrderByDescending(card => card.CreatedAt).First();
 
@@ -298,14 +323,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        private static bool CheckCvvResponseCodeForSuccess(Customer customer)
+        private static bool CheckCvvResponseCodeForSuccess<TValue>(Result<TValue> customer)
         {
             try
             {
-                // "M" = matches, "N" = does not match, "U" = not verified, "S" = bank doesn't participate, "I" = not provided
-                return customer.CreditCards.OrderByDescending(card => card.CreatedAt)
-                    .Select(card => card.Verification.CvvResponseCode != "N")
-                    .FirstOrDefault();
+                return customer.CreditCardVerification.Status == VerificationStatus.VERIFIED;
             }
             catch (Exception)
             {
