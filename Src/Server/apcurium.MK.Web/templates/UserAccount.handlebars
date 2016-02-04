@@ -3,18 +3,9 @@
         <ul class="nav nav-tabs" data-role='profile-tabs'>
             <li class="li-tabs active" data-tab='profile'><a href="#useraccount/profile">{{localize "Profile"}}</a></li>
 
-            {{#if isBraintreePrepaidEnabled }}
+            {{#if isPaymentEnabled}}
             <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
             {{/if}}
-
-            {{#if isCMTEnabled }}
-            <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
-            {{/if}}
-
-            {{#if isRideLinqCMTEnabled }}
-            <li class="li-tabs" data-tab='payment'><a href="#useraccount/payment">{{localize "Payment"}}</a></li>
-            {{/if}}
-            
             <li class="li-tabs" data-tab='favorites'><a href="#useraccount/favorites">{{localize "Favorites"}}</a></li>
             <li class="li-tabs" data-tab='history'><a href="#useraccount/history">{{localize "History"}}</a></li>
             <li class="li-tabs" data-tab='password'><a href="#useraccount/password">{{localize "Password"}}</a></li>

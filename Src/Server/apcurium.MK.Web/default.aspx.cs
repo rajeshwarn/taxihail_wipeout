@@ -143,8 +143,12 @@ namespace apcurium.MK.Web
 
             MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
-            IsCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt;
-            IsRideLinqCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+            IsCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.Cmt
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsRideLinqCMTEnabled = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled
                 && paymentSettings.IsPrepaidEnabled;

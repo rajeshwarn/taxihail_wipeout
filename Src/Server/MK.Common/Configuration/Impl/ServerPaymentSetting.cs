@@ -46,6 +46,9 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public int UnpairingTimeOut { get; protected set; }
 
+        /// <summary>
+        /// This setting is more a "IsWebPaymentEnabled", Braintree is prepaid, CMT is normal payment
+        /// </summary>
         public bool IsPrepaidEnabled { get; set; }
         
         public bool AlwaysDisplayCoFOption { get; set; }
