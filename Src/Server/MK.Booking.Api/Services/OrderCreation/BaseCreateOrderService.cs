@@ -31,6 +31,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -169,9 +170,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 }
             }
 
-            var isPrepaid = isFromWebApp
-                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
+            var isPaypal = request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+            var isBraintree = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree);
+            var isCMT = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Cmt);
+            var isRideLinqCMT = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt);
+
+            var isPrepaid = isFromWebApp && (isPaypal || isBraintree);
 
             createReportOrder.IsPrepaid = isPrepaid;
 

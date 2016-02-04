@@ -45,7 +45,9 @@
 
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
-                || TaxiHail.parameters.isBraintreePrepaidEnabled;
+                || TaxiHail.parameters.isBraintreePrepaidEnabled
+                || TaxiHail.parameters.isCMTEnabled
+                || TaxiHail.parameters.isRideLinqCMTEnabled;
 
             _.extend(data,
             {

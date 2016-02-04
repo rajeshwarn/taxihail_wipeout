@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             get 
             { 
                 // CardIOToken is only used to know if the company wants it or not
-                return CardIOUtilities.CanReadCardWithCamera()
+                return Utilities.CanReadCardWithCamera()
                     && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
         }
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (CardIOIsEnabled)
             {
-                CardIOUtilities.Preload();
+                Utilities.Preload();
             }
         }
 
@@ -374,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             PresentViewController(_cardScanner, true, null);
         }
 
-		private void PopulateCreditCardName(CardIOCreditCardInfo info)
+		private void PopulateCreditCardName(CreditCardInfo info)
         {
             txtCardNumber.Text = info.CardNumber;
             ViewModel.CreditCardNumber = info.CardNumber;
@@ -383,19 +383,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private class CardScannerDelegate : CardIOPaymentViewControllerDelegate
         {
-            private Action<CardIOCreditCardInfo> _cardScanned;
+            private Action<CreditCardInfo> _cardScanned;
 
-            public CardScannerDelegate (Action<CardIOCreditCardInfo> cardScanned)
+            public CardScannerDelegate (Action<CreditCardInfo> cardScanned)
             {
                 _cardScanned = cardScanned;
-            }
+            } 
 
-            public override void UserDidCancel(CardIOPaymentViewController paymentViewController)
+            public override void UserDidCancelPaymentViewController(CardIOPaymentViewController paymentViewController)
             {
                 paymentViewController.DismissViewController(true, null);
             }
 
-            public override void UserDidProvideCreditCardInfo(CardIOCreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
+            public override void UserDidProvideCreditCardInfo(CreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
             {
                 _cardScanned(cardInfo);
                 paymentViewController.DismissViewController(true, null);

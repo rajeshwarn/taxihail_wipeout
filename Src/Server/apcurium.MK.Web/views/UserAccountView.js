@@ -10,7 +10,9 @@
             
             var data = this.model.toJSON();
             _.extend(data, {
-                isBraintreePrepaidEnabled: TaxiHail.parameters.isBraintreePrepaidEnabled
+                isBraintreePrepaidEnabled: TaxiHail.parameters.isBraintreePrepaidEnabled,
+                isCMTEnabled: TaxiHail.parameters.isCMTEnabled,
+                isRideLinqCMTEnabled: TaxiHail.parameters.isRideLinqCMTEnabled
             });
 
             this.$el.html(this.renderTemplate(data));
