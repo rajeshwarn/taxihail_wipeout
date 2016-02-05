@@ -34,6 +34,18 @@ namespace apcurium.MK.Common.Extensions
                 ? GetJsonConverter().DeserializeObject<TResult>(source) 
                 : default(TResult);
         }
+
+        public static TResult FromJsonSafe<TResult>(this string source)
+        {
+            try
+            {
+                return FromJson<TResult>(source);
+            }
+            catch
+            {
+                return default(TResult);
+            }
+        }
     }
 
     public class CustomCamelCasePropertyNamesContractResolver : CamelCasePropertyNamesContractResolver
