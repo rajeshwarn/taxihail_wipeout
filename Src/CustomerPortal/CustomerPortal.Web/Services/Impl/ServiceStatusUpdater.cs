@@ -83,16 +83,12 @@ namespace CustomerPortal.Web.Services.Impl
         {
             if (company.CompanyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase))
             {
-                return "http://localhost/apcurium.mk.web/";
-                //return "http://api.goarro.com/Arro/";
+                return "http://api.goarro.com/Arro/";
             }
 
-
-            return "http://test.taxihail.biz:8181/{0}/".InvariantCultureFormat(company.CompanyKey);
-
-            //return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
-            //    ? "http://test.taxihail.biz:8181/Apcurium/"
-            //    : "http://api.taxihail.com/{0}/".InvariantCultureFormat(company.CompanyKey);
+            return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
+                ? "http://test.taxihail.biz:8181/Apcurium/"
+                : "http://api.taxihail.com/{0}/".InvariantCultureFormat(company.CompanyKey);
 
         }
 
@@ -143,7 +139,7 @@ namespace CustomerPortal.Web.Services.Impl
             {
                 try
                 {
-                    //_emailSender.SendServiceStatusEmail(companyName, url, serviceStatus.ServiceStatus, serviceStatus.StatusCode);
+                    _emailSender.SendServiceStatusEmail(companyName, url, serviceStatus.ServiceStatus, serviceStatus.StatusCode);
                 }
                 catch (Exception ex)
                 {
