@@ -180,13 +180,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
                     context.Save(payment);
                 }
-
-                var order = context.Set<OrderDetail>().FirstOrDefault(o => o.Id == @event.SourceId);
-                if(order != null)
-                {
-                    order.IsRefunded = @event.IsSuccessful;
-                    context.Save(order);
-                }
             }
         }
     }
