@@ -104,8 +104,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             paymentList = paymentList ?? new ListItem[0];
 
-            var paymentSettings = await _paymentService.GetPaymentSettings();
-
             if (marketSettings.DisableOutOfAppPayment)
 			{
 				paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
