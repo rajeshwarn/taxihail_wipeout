@@ -729,8 +729,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                 return isConsideredFutureBooking;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogMessage("Error occured while determining if order is future booking. Assuming true. " +
+                                   "(Hint: MarketSettings.FutureBookingReservationProvider: {0})", marketSettings.FutureBookingReservationProvider);
+                _logger.LogError(ex);
                 return true;
             }
         }
