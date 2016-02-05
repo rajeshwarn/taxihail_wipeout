@@ -9,6 +9,6 @@ namespace CMTPayment.Actions
 
         public string LastFourDigits { get; set; }
 
-        public int AuthAmount { get; set; }
+        public int AuthorizedAmount { get; set; }
     }
 }
