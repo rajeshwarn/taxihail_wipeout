@@ -5,10 +5,10 @@ namespace CMTPayment.Actions
     [Route("payment/{PairingToken}/credit")]
     public class CmtRideLinqRefundRequest : IReturn<PaymentResponse>
     {
-        public string CardOfFileToken { get; set; }
+        public string CofToken { get; set; }
 
-        public string LastFourDigits { get; set; }
+        public string LastFour { get; set; }
 
-        public int AuthorizedAmount { get; set; }
+        public int AuthAmount { get; set; }
     }
 }

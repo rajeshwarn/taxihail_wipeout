@@ -379,9 +379,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var request = new CmtRideLinqRefundRequest
                 {
-                    CardOfFileToken = orderPairing.TokenOfCardToBeUsedForPayment,
-                    LastFourDigits = creditCardDetail.Last4Digits
-                    // AuthorizedAmount is not provided because we want to refund payment entirely
+                    CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
+                    LastFour = creditCardDetail.Last4Digits
+                    //AuthAmount is not provided because we want to refund payment entirely
                 };
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
