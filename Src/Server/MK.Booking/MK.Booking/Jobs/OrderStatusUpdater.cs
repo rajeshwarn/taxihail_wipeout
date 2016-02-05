@@ -24,6 +24,7 @@ using CMTPayment;
 using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 
@@ -408,7 +409,7 @@ namespace apcurium.MK.Booking.Jobs
                 var driverIdsToExclude = new List<string> {driverIdWhoBailed};
 
                 // Determine best available company now based on available vehicles
-                var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, driverIdsToExclude);
+                var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(new CompanyMarketSettingsResponse { Market = market }, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, false, driverIdsToExclude);
 
                 _logger.LogMessage("Driver {0} bailed, trying to dispatch again to new found best avail company: {1} (fleetid: {2})", driverIdWhoBailed, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
 

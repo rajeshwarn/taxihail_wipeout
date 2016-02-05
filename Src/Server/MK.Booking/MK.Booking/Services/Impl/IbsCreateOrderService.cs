@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Services.Impl
  
             var dispatcherSettings = _dispatcherService.GetSettings(market, pickupAddress.Latitude, pickupAddress.Longitude, isHailRequest);
 
-            if (dispatcherSettings.NumberOfOffersPerCycle == 0)
+            if (isFutureBooking || dispatcherSettings.NumberOfOffersPerCycle == 0)
             {
                 // IBS is handling the dispatch
                 var orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(

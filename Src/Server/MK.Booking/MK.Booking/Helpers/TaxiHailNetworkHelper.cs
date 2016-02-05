@@ -14,6 +14,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTServices;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Helpers
@@ -196,7 +197,7 @@ namespace apcurium.MK.Booking.Helpers
             return new BestAvailableCompany();
         }
 
-        public BestAvailableCompany FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking)
+        public BestAvailableCompany FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking, List<string> driverIdsToExclude = null)
         {
             var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
