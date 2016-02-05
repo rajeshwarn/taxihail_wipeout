@@ -363,7 +363,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
             {
@@ -397,14 +397,15 @@ namespace apcurium.MK.Booking.Services.Impl
                         IsSuccessful = true
                     });
 
-                    return new BasePaymentResponse
+                    return new RefundPaymentResponse
                     {
+                        Last4Digits = creditCardDetail.Last4Digits,
                         IsSuccessful = true
                     };
                 }
                 else
                 {
-                    return new BasePaymentResponse
+                    return new RefundPaymentResponse
                     {
                         IsSuccessful = false,
                         Message = response.ResponseMessage
@@ -416,7 +417,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
                 _logger.LogError(ex);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
                     Message = ex.Message

@@ -795,6 +795,41 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
+        public void SendOrderRefundEmail(DateTime refundDate, string last4Digits, string totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
+                    ? SupportedLanguages.en.ToString()
+                    : clientLanguageCode);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                RefundDate = refundDate.ToString("D", dateFormat),
+                RefundTime = refundDate.ToString("t" /* Short time pattern */),
+                Last4Digits = last4Digits,
+                TotalAmount = totalAmount,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.OrderRefund, EmailConstant.Subject.OrderRefund, templateData, clientLanguageCode, ccEmailAddress);
+        }
+
         public void SendCreditCardDeactivatedPush(AccountDetail account)
         {
             var alert = _resources.Get("PushNotification_CreditCardDeclined", account.Language);
@@ -1069,6 +1104,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
                 public const string CancellationFeesReceipt = "Email_Subject_CancellationFeesReceipt";
                 public const string NoShowFeesReceipt = "Email_Subject_NoShowFeesReceipt";
+                public const string OrderRefund = "Email_Subject_OrderRefund";
             }
 
             public static class Template
@@ -1081,6 +1117,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string CreditCardDeactivated = "CreditCardDeactivated";
                 public const string CancellationFeesReceipt = "CancellationFeesReceipt";
                 public const string NoShowFeesReceipt = "NoShowFeesReceipt";
+                public const string OrderRefund = "OrderRefund";
             }
         }
 

@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
                 _logger.LogMessage(message);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
                     Message = message
@@ -363,7 +363,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var message = string.Empty;
                 Void(paymentDetail.TransactionId, ref message);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = true
                 };
@@ -372,7 +372,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 _logger.LogMessage(string.Format("Braintree refund for transaction {0} failed. {1}", paymentDetail.TransactionId, ex.Message));
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
                     Message = ex.Message

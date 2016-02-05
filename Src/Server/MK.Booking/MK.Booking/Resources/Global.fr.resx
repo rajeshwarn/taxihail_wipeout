@@ -702,4 +702,10 @@
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Désolé, les commandes futures ne sont pas disponibles.</value>
   </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total remboursé</value>
+  </data>
+  <data name="Email_Title_Refund" xml:space="preserve">
+    <value>Remboursé</value>
+  </data>
 </root>

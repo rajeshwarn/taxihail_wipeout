@@ -463,6 +463,7 @@
     <Content Include="Email\Templates\NoShowFeesReceipt.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\OrderRefund.html" />
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -702,4 +702,10 @@
   <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
     <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
   </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total Refund</value>
+  </data>
+  <data name="Email_Title_Refund" xml:space="preserve">
+    <value>Refund</value>
+  </data>
 </root>

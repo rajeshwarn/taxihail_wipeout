@@ -988,6 +988,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Refund.
+        /// </summary>
+        public static string Email_Body_TotalRefund {
+            get {
+                return ResourceManager.GetString("Email_Body_TotalRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transaction Id :.
         /// </summary>
         public static string Email_Body_TransactionId {
@@ -1146,6 +1155,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_Receipt {
             get {
                 return ResourceManager.GetString("Email_Subject_Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refund.
+        /// </summary>
+        public static string Email_Title_Refund {
+            get {
+                return ResourceManager.GetString("Email_Title_Refund", resourceCulture);
             }
         }
         
