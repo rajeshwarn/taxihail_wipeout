@@ -84,5 +84,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string OriginatingIpAddress { get; set; }
 
         public string KountSessionId { get; set; }
+
+        public bool IsRefunded { get; set; }
     }
 }

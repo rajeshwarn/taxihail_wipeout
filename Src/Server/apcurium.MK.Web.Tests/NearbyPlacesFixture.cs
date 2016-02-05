@@ -52,7 +52,6 @@ namespace apcurium.MK.Web.Tests
             await sut.CreateOrder(new CreateOrderRequest
                 {
                     Id = orderId,
-                    PickupDate = DateTime.Now,
                     PickupAddress = address,
                     Settings =
                         new BookingSettings
