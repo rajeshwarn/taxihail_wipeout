@@ -20,6 +20,7 @@ using Infrastructure.Messaging;
 using Newtonsoft.Json;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
+using CMTPayment.Actions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -364,7 +365,63 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
-            throw new NotImplementedException();
+            if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                throw new Exception("This method can only be used with CMTRideLinQ as a payment provider.");
+            }
+
+            InitializeServiceClient();
+
+            try
+            {
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
+                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
+
+                var request = new CmtRideLinqRefundRequest
+                {
+                    CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
+                    LastFour = creditCardDetail.Last4Digits
+                    //AuthAmount is not provided because we want to refund payment entirely
+                };
+
+                _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
+
+                var response = _cmtMobileServiceClient.Put(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+
+                if(response.ResponseCode == 200)
+                {
+                    // send a command to update refund status of Order
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = orderId,
+                        IsSuccessful = true
+                    });
+
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = true
+                    };
+                }
+                else
+                {
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = false,
+                        Message = response.ResponseMessage
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
+                _logger.LogError(ex);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
