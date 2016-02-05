@@ -56,20 +56,26 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardDeactivated @event)
         {
-            // Deactivate every cards of the account
-            _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card =>
+            if (@event.CreditCardId.HasValue)
             {
-                card.IsDeactivated = true;
-            });
+                _creditCardProjectionSet.Update(x => x.CreditCardId == @event.CreditCardId, card => card.IsDeactivated = true);
+            }
+            else
+            {
+                _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card => card.IsDeactivated = true);
+            }
         }
 
         public void Handle(OverduePaymentSettled @event)
         {
-            // Reactivate every cards of the account
-            _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card =>
+            if (@event.CreditCardId.HasValue)
             {
-                card.IsDeactivated = false;
-            });
+                _creditCardProjectionSet.Update(x => x.CreditCardId == @event.CreditCardId, card => card.IsDeactivated = false);
+            }
+            else
+            {
+                _creditCardProjectionSet.Update(x => x.AccountId == @event.SourceId, card => card.IsDeactivated = false);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>  
 
-  <label class="control-label settingsLabel">{{{localize "Enable Prepaid / Web Payment"}}}</label>
+  <label class="control-label settingsLabel" title="Braintree: Prepaid, CMT/RideLinQ: Normal, Others: No web payment">{{{localize "Enable Prepaid / Web Payment"}}}</label>
   <select name="isPrepaidEnabled" class="settingsBox">
     <option value="{{isPrepaidEnabled}}" selected="">{{localizeBool isPrepaidEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPrepaidEnabled}}">{{localizeBool isPrepaidEnabled true="No" false="Yes"}}</option>
@@ -74,13 +74,13 @@
     <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
   </div>
 
-    <div id="cancelOrderOnUnpairDiv">
-        <label class="control-label settingsLabel">{{{localize "Cancel Order on Unpairing"}}}</label>
-        <select name="cancelOrderOnUnpair" class="settingsBox">
-            <option value="{{cancelOrderOnUnpair}}" selected="">{{localizeBool cancelOrderOnUnpair true="Yes" false="No"}}</option>
-            <option value="{{invertedBool cancelOrderOnUnpair}}">{{localizeBool cancelOrderOnUnpair true="No" false="Yes"}}</option>
-        </select>
-    </div>
+  <div id="cancelOrderOnUnpairDiv">
+    <label class="control-label settingsLabel">{{{localize "Cancel Order on Unpairing"}}}</label>
+    <select name="cancelOrderOnUnpair" class="settingsBox">
+      <option value="{{cancelOrderOnUnpair}}" selected="">{{localizeBool cancelOrderOnUnpair true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cancelOrderOnUnpair}}">{{localizeBool cancelOrderOnUnpair true="No" false="Yes"}}</option>
+    </select>
+  </div>
 
   <div id="preAuthAmountEnabledDiv">
     <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>

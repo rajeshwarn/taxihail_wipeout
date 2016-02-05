@@ -1,0 +1,19 @@
+﻿<h4 class="table-title">{{localize "Payment"}}</h4>
+
+{{#if displayTipSelection}}
+<div id="tipPercentageDiv" class="control-group">
+    <label class="control-label" for="inputTipPercentage">{{localize "Tip"}}</label>
+    <div class="controls">
+        <select id="inputTipPercentage" name="defaultTipPercent" style="margin-bottom:0;">
+            {{#each tipPercentages}}
+            {{#ifCond this.id ../defaultTipPercent}}
+            <option value="{{this.id}}" selected>{{localize this.display}}</option>
+            {{else}}
+            <option value="{{this.id}}">{{localize this.display}}</option>
+            {{/ifCond}}
+            {{/each}}
+        </select>
+        <a href='#useraccount/payment' class='btn btn-primary ' data-action='save'>{{localize 'save'}}</a>
+    </div>
+</div>
+{{/if}}

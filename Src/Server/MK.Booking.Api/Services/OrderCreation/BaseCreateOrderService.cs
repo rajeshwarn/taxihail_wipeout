@@ -30,6 +30,8 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps.Geo;
+using CustomerPortal.Contract.Response;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -121,13 +123,19 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
 
-            BestAvailableCompany bestAvailableCompany;
+            var isFutureBooking = IsFutureBooking(request.PickupDate, marketSettings);
+            if (!marketSettings.EnableFutureBooking && isFutureBooking)
+            {
+                // future booking not allowed
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_FutureBookingNotAllowed", request.ClientLanguageCode));
+            }
 
+            BestAvailableCompany bestAvailableCompany;
             if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
             {
                 // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
@@ -135,7 +143,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
             else
             {
-                bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(marketSettings, request.PickupAddress.Latitude, request.PickupAddress.Longitude, isFutureBooking);
             }
 
             _logger.LogMessage("Best available company determined: {0}, in {1}",
@@ -145,14 +153,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
 
-            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
-            {
-                // No companies available that are desserving this region for the company
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-            }
-            
             if (market.HasValue())
             {
+                if (!bestAvailableCompany.CompanyKey.HasValue())
+                {
+                    // No companies available that are desserving this region for the company
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+                }
+
                 _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
@@ -161,17 +169,23 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     // Only companies configured for CMT payment can support CoF orders outside of home market
                     request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 }
+
+                if (marketSettings.DisableOutOfAppPayment && request.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                {
+                    // No payment method available since we can't pay in car
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_NoChargeType, _resources.Get("CannotCreateOrder_NoChargeType", request.ClientLanguageCode));
+                }
             }
 
-            var isPrepaid = isFromWebApp
-                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
+            var isPaypal = request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+            var isBraintree = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree);
+
+            var isPrepaid = isFromWebApp && (isPaypal || isBraintree);
 
             createReportOrder.IsPrepaid = isPrepaid;
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
 
-            var isFutureBooking = request.PickupDate.HasValue;
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
             createReportOrder.PickupDate = pickupDate;
@@ -253,7 +267,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
-
+            
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
             createReportOrder.BookingFees = orderCommand.BookingFees;
@@ -327,6 +341,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.ChargeTypeEmail = chargeTypeEmail;
             orderCommand.OriginatingIpAddress = createReportOrder.OriginatingIpAddress = request.CustomerIpAddress;
             orderCommand.KountSessionId = createReportOrder.OriginatingIpAddress = request.KountSessionId;
+            orderCommand.IsFutureBooking = createReportOrder.IsFutureBooking = isFutureBooking;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
@@ -348,7 +363,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected DateTime GetCurrentOffsetedTime(string companyKey)
         {
-            //TODO MKTAXI-2296: need to check ibs setup for shortesst time
+            //TODO MKTAXI-2296: need to check ibs setup for shortest time
 
             var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
@@ -588,7 +603,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+
             if (creditCard.IsExpired())
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
@@ -686,6 +702,40 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             return null;
+        }
+
+        private bool IsFutureBooking(DateTime? pickupDate, CompanyMarketSettingsResponse marketSettings)
+        {
+            if (!pickupDate.HasValue)
+            {
+                return false;
+            }
+
+            try
+            {
+                if (marketSettings.FutureBookingTimeThresholdInMinutes <= 0)
+                {
+                    // market settings 
+                    return true;
+                }
+
+                var pickupInUserTimeZone = pickupDate.Value;
+                var currentOffsettedTime = GetCurrentOffsetedTime(marketSettings.FutureBookingReservationProvider);
+
+                var isConsideredFutureBooking = pickupInUserTimeZone - currentOffsettedTime >
+                                                TimeSpan.FromMinutes(marketSettings.FutureBookingTimeThresholdInMinutes);
+
+                _logger.LogMessage("Order is considered future booking? {0}", isConsideredFutureBooking);
+
+                return isConsideredFutureBooking;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Error occured while determining if order is future booking. Assuming true. " +
+                                   "(Hint: MarketSettings.FutureBookingReservationProvider: {0})", marketSettings.FutureBookingReservationProvider);
+                _logger.LogError(ex);
+                return true;
+            }
         }
 
         private void ThrowAndLogException(CreateReportOrder createReportOrder, ErrorCode errorCodeType, string errorMessage = null)

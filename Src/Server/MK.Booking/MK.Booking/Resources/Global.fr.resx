@@ -693,7 +693,13 @@
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
     <value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
   </data>
-  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+  <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
     <value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>No Payment Method Available.</value>
+  </data>
+  <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
+    <value>Désolé, les commandes futures ne sont pas disponibles.</value>
   </data>
 </root>

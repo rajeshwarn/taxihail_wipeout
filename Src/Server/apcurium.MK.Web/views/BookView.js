@@ -213,13 +213,18 @@
 
             if (distance > 1000) {
                 $.ajax({
-                    url: "api/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                    url: "api/roaming/marketsettings?latitude=" + position.latitude + "&longitude=" + position.longitude,
                     type: "GET",
-                    dataType: "text",
-                    success: _.bind(function(data) {
-                        this.model.set('market', data);
+                    dataType: "json",
+                    success: _.bind(function (data) {
+                        var market = data.hashedMarket;
+                        if (market === null) {
+                            market = "";
+                        }
 
-                        if (data !== "") {
+                        this.model.set('market', market);
+
+                        if (market !== "") {
                             if (this.model.get('lastMarket') !== this.model.get('market') && this.model.get('market') !== "") {
 
                                 // Load external market vehicle types
@@ -236,8 +241,14 @@
                             }
                         }
 
-                        this.model.set('lastMarket', data);
+                        this.model.set('lastMarket', market);
                         this.model.set('lastMarketPosition', { Latitude: position.latitude, Longitude: position.longitude });
+                        if (data.enableFutureBooking) {
+                            this.$('#bookLaterButton').removeClass('hidden');
+                        } else {
+                            this.$('#bookLaterButton').addClass('hidden');
+                        }
+
                     }, this)
                 });
             } else {
@@ -301,7 +312,7 @@
                             result = JSON.parse(result.responseText).responseStatus;
                         }
 
-                        if (TaxiHail.parameters.disableFutureBooking || result.disableFutureBooking) {
+                        if (result.disableFutureBooking) {
                             this.$('#bookLaterButton').addClass('hidden');
                         } else {
                             this.$('#bookLaterButton').removeClass('hidden');

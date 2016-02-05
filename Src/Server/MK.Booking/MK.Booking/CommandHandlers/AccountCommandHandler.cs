@@ -331,7 +331,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
 
             account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, 
-                command.TransactionDate, command.FeeType, _serverSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled);
+                command.TransactionDate, command.FeeType, command.CreditCardId, _serverSettings.GetPaymentSettings().IsPaymentOutOfAppDisabled);
 
             _repository.Save(account, command.Id.ToString());
         }
@@ -340,7 +340,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.SettleOverduePayment(command.OrderId, _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled);
+            account.SettleOverduePayment(command.OrderId, command.CreditCardId, _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled);
 
             _repository.Save(account, command.Id.ToString());
         }

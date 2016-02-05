@@ -16,7 +16,9 @@ namespace apcurium.MK.Booking.ReadModel
 
         public Guid AccountId { get; set; }
 
-        public string AccountEmail { get; set; }
+        public Guid WriterAccountId { get; set; }
+
+        public string WriterAccountEmail { get; set; }
 
         public string Note { get; set; }
 

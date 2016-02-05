@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
-		private readonly INetworkRoamingService _networkRoamingService;
 		private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
@@ -72,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService = bookingService;
 			_accountService = accountService;
 			_paymentService = paymentService;
-			_networkRoamingService = networkRoamingService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
@@ -87,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+			Observe(networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -760,6 +758,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			_lastHashedMarket = marketSettings.HashedMarket;
+
+			if (BookingStatus != null && BookingStatus.BottomBar != null) 
+			{
+				BookingStatus.BottomBar.DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment;
+			}
 
             if (BottomBar != null)
             {

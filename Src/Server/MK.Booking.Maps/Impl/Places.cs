@@ -142,7 +142,26 @@ namespace apcurium.MK.Booking.Maps.Impl
                 }
             }
 
+            address.FullAddress = AddExtraFieldsToFullAddress(address);
+
             return address;
+        }
+
+        private string AddExtraFieldsToFullAddress(Address address)
+        {
+            var components =
+                new[] {address.FullAddress, address.City, address.State, address.ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            if ((components.Length > 1) && (address.FullAddress.HasValue()))
+            {
+                // Street, City, State ZipCode
+                return string.Join(", ", new[]
+                    {
+                        address.FullAddress,
+                        address.City,
+                        string.Join(" ", new[] {address.State, address.ZipCode})
+                    });
+            }
+            return address.FullAddress;
         }
     }
 }

@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.BookLater);
 			set.Bind(viewReservationBooking)
 				.For(v => v.Hidden)
-				.To(vm => vm.IsFutureBookingDisabled);
+                .To(vm => vm.HideBookLater);
 
 			set.Bind(imagePromotion)
 				.For(v => v.Hidden)

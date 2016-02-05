@@ -272,7 +272,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OverduePaymentSettled @event)
         {
-            if (@event.IsPayInTaxiEnabled.Value)
+            if (@event.IsPayInTaxiEnabled.HasValue && @event.IsPayInTaxiEnabled.Value)
             {
                 _projections.Update(@event.SourceId, account =>
                 {
@@ -281,8 +281,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
         }
-
-        
     }
  
 }

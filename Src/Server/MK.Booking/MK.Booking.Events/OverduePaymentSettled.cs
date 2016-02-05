@@ -7,5 +7,6 @@ namespace apcurium.MK.Booking.Events
     {
         public Guid OrderId { get; set; }
         public bool? IsPayInTaxiEnabled { get; set; }
+        public Guid? CreditCardId { get; set; }
     }
 }

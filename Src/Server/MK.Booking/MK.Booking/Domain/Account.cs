@@ -385,16 +385,19 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, OutOfAppPaymentDisabled isOutOfAppPaymentDisabled)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, Guid creditCardId, OutOfAppPaymentDisabled isOutOfAppPaymentDisabled)
         {
             Update(new CreditCardDeactivated
             {
-                IsOutOfAppPaymentDisabled = isOutOfAppPaymentDisabled
+                IsOutOfAppPaymentDisabled = isOutOfAppPaymentDisabled,
+                CreditCardId = creditCardId
             });
+
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,
                 IBSOrderId = ibsOrderId,
+                CreditCardId = creditCardId,
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate,
@@ -402,11 +405,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SettleOverduePayment(Guid orderId, bool isPayInTaxiEnabled)
+        public void SettleOverduePayment(Guid orderId, Guid creditCardId, bool isPayInTaxiEnabled)
         {
             Update(new OverduePaymentSettled
             {
                 OrderId = orderId,
+                CreditCardId = creditCardId,
                 IsPayInTaxiEnabled = isPayInTaxiEnabled
             });
         }

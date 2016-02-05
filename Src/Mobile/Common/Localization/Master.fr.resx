@@ -376,7 +376,7 @@
     <value>Votre demande ne peut être validée, merci de remplir les champs obligatoires</value>
   </data>
   <data name="CreateAccountErrorMessage" xml:space="preserve">
-    <value>Le compte de peut malheureusement pas être créé</value>
+    <value>Le compte ne peut malheureusement pas être créé</value>
   </data>
   <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
     <value>Le serveur ne précise pas pourquoi le compte ne peut pas se créer, si l'erreur persiste merci d'essayer de créer le compte depuis le site web. </value>
@@ -424,7 +424,7 @@
     <value>Carte de paiement</value>
   </data>
   <data name="CreditCardCCV" xml:space="preserve">
-    <value>Code sécurité</value>
+    <value>CVV</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cette carte ne peut être sauvegardée</value>
@@ -1729,10 +1729,10 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</value>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
@@ -2384,6 +2384,12 @@
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>Aucun compte n'a été trouvé pour cet email</value>
   </data>
+  <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>Cet email correspond à un compte Facebook. S'il vous plaît connectez vous via Facebook.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>Cet email correspond à un compte Twitter. S'il vous plaît connectez vous via Twitter.</value>
+  </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Le code de confirmation est incorrect.</value>
   </data>
@@ -2392,5 +2398,20 @@
   </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Changer Carte</value>
+  </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>Vous devez avoir une carte de crédit active comme méthode de paiement par défaut.</value>
+  </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>4 dernier chiffres:  </value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Compagnie de crédit: </value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Carte de crédit sélectionnée: </value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>Aucune carte de crédit sélectionnée</value>
   </data>
 </root>

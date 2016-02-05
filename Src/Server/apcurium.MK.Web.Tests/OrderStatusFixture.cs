@@ -37,10 +37,9 @@ namespace apcurium.MK.Web.Tests
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
                 DropOffAddress = TestAddresses.GetAddress2(),
-                PickupDate = DateTime.Now,
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = ChargeTypes.CardOnFile.Id,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",

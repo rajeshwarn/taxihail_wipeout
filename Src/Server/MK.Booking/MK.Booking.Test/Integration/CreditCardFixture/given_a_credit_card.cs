@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             _accountId = Guid.NewGuid();
             const string creditCardComapny = "visa";
-            const string nameOnCard = "Bob";
+            const string nameOnCard = "Bob";           
             _creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string expirationMonth = "5";
@@ -80,7 +80,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             Sut.Handle(new CreditCardDeactivated
             {
                 SourceId = _accountId,
-                IsOutOfAppPaymentDisabled = OutOfAppPaymentDisabled.All
+                IsOutOfAppPaymentDisabled = OutOfAppPaymentDisabled.All,
+                CreditCardId = _creditCardId
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             {
                 SourceId = _accountId,
                 IsPayInTaxiEnabled = true,
+                CreditCardId = _creditCardId
             });
 
             using (var context = new BookingDbContext(DbName))

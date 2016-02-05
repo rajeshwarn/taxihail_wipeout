@@ -548,6 +548,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.OrderStatus.OrderIsCompleted = true;
                     orderReport.OrderStatus.Status = OrderStatus.Completed;
                 }
+
+                if (@event.PairingError.HasValueTrimmed())
+                {
+                    orderReport.OrderStatus.OrderIsCancelled = true;
+                    orderReport.OrderStatus.Status = OrderStatus.Canceled;
+                }
             });
         }
 

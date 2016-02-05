@@ -122,11 +122,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             var orderId = Guid.NewGuid();
             _testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled = true;
-
+            var creditCardId = Guid.NewGuid();
 
             _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
+                CreditCardId = creditCardId,
                 OrderId = orderId,
                 OverdueAmount = 12.56m
             });

@@ -18,6 +18,7 @@ using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 using MK.Common.Exceptions;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -393,10 +394,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     return response.Data;
                 }
 
-				var pairWithManualRideLinqException = new Exception();
-				pairWithManualRideLinqException.Data.Add("TripInfoHttpStatusCode", response.TripInfoHttpStatusCode);
-				pairWithManualRideLinqException.Data.Add("ErrorCode", response.ErrorCode);
-				throw pairWithManualRideLinqException;
+                int errorCode = 0;
+				int.TryParse(response.ErrorCode, out errorCode);
+
+				throw new ManualPairingException(errorCode);
             }
             catch (AggregateException ex)
             {
@@ -412,7 +413,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 _messageService.ShowMessage(_localize["ManualPairing_TimeOut_Title"], _localize["ManualPairing_TimeOut_Message"]).FireAndForget();
 
-                throw new Exception();
+                throw new ManualPairingException();
             }
         }
 

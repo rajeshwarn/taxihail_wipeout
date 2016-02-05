@@ -32,7 +32,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderUpdatedInTrip>
+        IEventHandler<OrderUpdatedInTrip>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
@@ -624,7 +625,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        order.Status = (int)OrderStatus.TimedOut;
+                        order.Status = (int) OrderStatus.Canceled;
                     }
 
                     order.Fare = @event.Fare;
@@ -644,7 +645,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        orderStatusDetails.Status = OrderStatus.TimedOut;
+                        orderStatusDetails.Status = OrderStatus.Canceled;
                     }
                 });
             }
@@ -745,6 +746,16 @@ namespace apcurium.MK.Booking.EventHandlers
             }
 
             _orderDetailProjectionSet.Update(@event.SourceId, order => order.DropOffAddress = @event.DropOffAddress);
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            if (!_orderDetailProjectionSet.Exists(@event.SourceId))
+            {
+                return;
+            }
+
+            _orderDetailProjectionSet.Update(@event.SourceId, order => order.IsRefunded = @event.IsSuccessful);
         }
     }
 }

@@ -425,6 +425,7 @@
 "CmtRideLinqConfirmPairView"="Confirm Payment Information";
 "CmtConfirmPayment"="Confirm";
 "UnpairPayInCar"="Pay in Car";
+"UnpairCancelOrder"="Cancel Order";
 "CmtRideLinqCancelChanges"="Cancel";
 "CmtRideLinqSaveChanges"="Save";
 "CmtRideLinqErrorTitle"="Error";
@@ -541,8 +542,10 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "WarningPromoCodeDontShow"="Don't warn";
 "PanelMenuViewPromotionsText"="Promotions";
-"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
-"UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"UnpairPayInCarWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"UnpairPayInCarWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"UnpairCancelWarningMessage"="Are you sure you want to cancel this order?";
+"UnpairCancelWarningMessageWithPromo"="If you decide to cancel, you will not be able to use the promotion.";
 "UnpairWarningOkButton"="Pay in car";
 "UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
@@ -625,6 +628,7 @@
 "AddPaymentMethod_PayPal"="Link PayPal account";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
 "CvvRequiredTitle"="CVV Required";
 "CvvRequiredMessage"="Please enter the CVV associated with your card on file ending with {0} to continue";
 "Error_InvalidCvvTitle"="Invalid CVV";
@@ -754,6 +758,12 @@
 "CreditCardDeclinedOnPreauthorizationErrorText"="Sorry, your card could not be authorized. Please pay in the taxi";
 "CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
+"ServiceErrorResetPassword_FacebookAccount"="This email matches a Facebook account. Please login via Facebook.";
+"ServiceErrorResetPassword_TwitterAccount"="This email matches a Twitter account. Please login via Twitter.";
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
+"LastFour"="Last 4 numbers:  ";
 "InvalidCreditCardMessage"="There was a problem with your current Payment Method. Please add a different card or update the information.";
+"CreditCompany"="Credit company: ";
 "InvalidCreditCardUpdateCardButton"="Update Card";
+"SelectedCreditCard"="Currently selected credit card";
+"NoCreditCard"="No credit card selected";

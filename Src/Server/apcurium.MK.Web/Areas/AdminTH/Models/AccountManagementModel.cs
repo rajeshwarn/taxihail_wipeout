@@ -7,11 +7,24 @@ using System.Web;
 using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using PagedList;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
     public class AccountManagementModel
     {
+        public int OrdersPageSize { get { return 10; } }
+
+        public AccountManagementModel()
+        {
+            OrdersPaged = new PagedList<OrderModel>(new List<OrderModel>(), 1, OrdersPageSize);
+        }
+
+        public int OrdersPageIndex { get; set; }
+
+        public Guid RefundOrderId { get; set; }
+
         [Display(Name = "Id")]
         public Guid Id { get; set; }
 
@@ -57,11 +70,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Display(Name = "Credit card last 4 digits")]
         public string CreditCardLast4Digits { get; set; }
 
-        public List<OrderModel> Orders { get; set; }
+        public PagedList<OrderModel> OrdersPaged { get; set; }
 
         public string NotePopupContent { get; set; }
 
         public string DisableAccountNotePopupContent { get; set; }
+
+        public string RefundOrderNotePopupContent { get; set; }
 
         public List<NoteModel> Notes { get; set; }
     }
@@ -89,6 +104,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TipString { get; set; }
         public string SurchargeString { get; set; }
         public string TotalAmountString { get; set; }
+
+        public bool IsRideLinqCMTPaymentMode { get; set; }
     }
 
     public class NoteModel : AccountNoteEntry

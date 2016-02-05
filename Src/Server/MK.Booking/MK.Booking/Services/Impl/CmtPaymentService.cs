@@ -20,6 +20,7 @@ using Infrastructure.Messaging;
 using Newtonsoft.Json;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
+using CMTPayment.Actions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -88,6 +89,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
+                    if (response.ErrorCode.HasValue)
+                    {
+                        return new PairingResponse
+                        {
+                            IsSuccessful = false,
+                            ErrorCode = response.ErrorCode
+                        };
+                    }
+
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
                     {
@@ -126,10 +136,12 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception e)
             {
                 _logger.LogError(e);
+
                 return new PairingResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = e.Message,
+                    ErrorCode = CmtErrorCodes.UnableToPair
                 };
             }
         }
@@ -234,7 +246,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var paymentId = Guid.NewGuid();
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
             _commandBus.Send(new InitiateCreditCardPayment
             {
@@ -353,7 +365,63 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
-            throw new NotImplementedException();
+            if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                throw new Exception("This method can only be used with CMTRideLinQ as a payment provider.");
+            }
+
+            InitializeServiceClient();
+
+            try
+            {
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
+                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
+
+                var request = new CmtRideLinqRefundRequest
+                {
+                    CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
+                    LastFour = creditCardDetail.Last4Digits
+                    //AuthAmount is not provided because we want to refund payment entirely
+                };
+
+                _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
+
+                var response = _cmtMobileServiceClient.Put(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+
+                if(response.ResponseCode == 200)
+                {
+                    // send a command to update refund status of Order
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = orderId,
+                        IsSuccessful = true
+                    });
+
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = true
+                    };
+                }
+                else
+                {
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = false,
+                        Message = response.ResponseMessage
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
+                _logger.LogError(ex);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
@@ -458,11 +526,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // Wait for trip to be updated to check if pairing was successful
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
-                
-                if (trip.HttpStatusCode != (int) HttpStatusCode.OK)
-                {
-                    throw new Exception("Card could not be paired with vehicle.");
-                }
+
+                response.ErrorCode = (trip != null) ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
 
                 return response;
             }

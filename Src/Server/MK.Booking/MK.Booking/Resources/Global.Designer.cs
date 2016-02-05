@@ -115,6 +115,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, future booking is not available.
+        /// </summary>
+        public static string CannotCreateOrder_FutureBookingNotAllowed {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_FutureBookingNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Payment Method Available..
+        /// </summary>
+        public static string CannotCreateOrder_NoChargeType {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_NoChargeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no company serving this region.
         /// </summary>
         public static string CannotCreateOrder_NoCompanies {
@@ -423,9 +441,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sorry, there was an error processing your card. Please pay in the taxi.
         /// </summary>
-        public static string CreditCardUnanbleToPreathorizeErrorText {
+        public static string CreditCardUnableToPreathorizeErrorText {
             get {
-                return ResourceManager.GetString("CreditCardUnanbleToPreathorizeErrorText", resourceCulture);
+                return ResourceManager.GetString("CreditCardUnableToPreathorizeErrorText", resourceCulture);
             }
         }
         

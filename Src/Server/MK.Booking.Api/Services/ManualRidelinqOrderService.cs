@@ -88,8 +88,11 @@ namespace apcurium.MK.Booking.Api.Services
 			        };
 		        }
 
-		        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
-		        if (creditCard == null)
+                var creditCard = account.DefaultCreditCard.HasValue
+                ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
+                : null;
+
+                if (creditCard == null)
 		        {
 			        throw new HttpError(HttpStatusCode.BadRequest,
 				        ErrorCode.ManualRideLinq_NoCardOnFile.ToString(),
@@ -217,7 +220,7 @@ namespace apcurium.MK.Booking.Api.Services
 								break;
 
 							case CmtErrorCodes.UnablePreauthorizeCreditCard:
-								_notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardUnanbleToPreathorizeErrorText", request.ClientLanguageCode));
+                                _notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardUnableToPreathorizeErrorText", request.ClientLanguageCode));
 								break;
 
 							case CmtErrorCodes.UnableToPair:
