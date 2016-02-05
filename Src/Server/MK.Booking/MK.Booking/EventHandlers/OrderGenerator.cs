@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderUpdatedInTrip>
+        IEventHandler<OrderUpdatedInTrip>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -786,6 +787,19 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
             context.SaveChanges();
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+                if (orderDetail != null)
+                {
+                    orderDetail.IsRefunded = @event.IsSuccessful;
+                    context.Save(orderDetail);
+                }
+            }
         }
     }
 }
