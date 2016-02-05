@@ -62,7 +62,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 EnableFutureBooking = marketModel.EnableFutureBooking,
                 FutureBookingReservationProvider = marketModel.FutureBookingReservationProvider,
                 FutureBookingTimeThresholdInMinutes = marketModel.FutureBookingTimeThresholdInMinutes,
-                CompanyKeysOfMarket = companiesInNetworkWithThisMarket,
+                CompaniesOrMarket = companiesInNetworkWithThisMarket,
                 DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,

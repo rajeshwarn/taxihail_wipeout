@@ -45,7 +45,9 @@
 
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
-                || TaxiHail.parameters.isBraintreePrepaidEnabled;
+                || TaxiHail.parameters.isBraintreePrepaidEnabled
+                || TaxiHail.parameters.isCMTEnabled
+                || TaxiHail.parameters.isRideLinqCMTEnabled;
 
             _.extend(data,
             {
@@ -64,7 +66,7 @@
                 this.collection.each(this.renderItem, this);
                
             } else {
-                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('order.no-result')));
+                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('creditcard.no-result')));
             }
 
             return this;

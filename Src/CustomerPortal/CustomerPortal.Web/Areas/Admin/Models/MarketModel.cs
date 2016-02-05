@@ -11,7 +11,7 @@ namespace CustomerPortal.Web.Areas.Admin.Models
     {
         public MarketModel()
         {
-            CompanyKeysOfMarket = new List<SelectListItem>();
+            CompaniesOrMarket = new List<SelectListItem>();
         }
 
         [Required]
@@ -45,7 +45,7 @@ namespace CustomerPortal.Web.Areas.Admin.Models
 
         public Tariff MarketTariff { get; set; }
 
-        public IEnumerable<SelectListItem> CompanyKeysOfMarket { get; set; }
+        public IEnumerable<SelectListItem> CompaniesOrMarket { get; set; }
     }
 
     public class VehicleModel : Vehicle

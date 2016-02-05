@@ -114,7 +114,7 @@
   <string name="CreditCardRemoveErrorTitle">لا يمكن إزالة البطاقة الائتمانية.</string>
   <string name="CreditCardRequiredFields">كافة الخانات مطلوبة</string>
   <string name="CreditCardType">نوع البطاقة</string>
-  <string name="CreditCardZipCode">Zip/Postal</string>
+  <string name="CreditCardZipCode">الرمز البريدي</string>
   <string name="Date">التاريخ</string>
   <string name="DateTimePickerPickDate">اختر تاريخ الإلتقاء:</string>
   <string name="DateTimePickerPickInvalidDateMessage">يجب أن يكون تاريخ الإلتقاء في المستقبل</string>
@@ -520,8 +520,8 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
-  <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="UnpairWarningOkButton">Pay in car</string>
   <string name="UnpairWarningCancelButton">Cancel</string>
   <string name="View_Promotions">Promotions</string>
@@ -702,6 +702,7 @@
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="OrderStatus_AddDestination">Add your destination</string>
   <string name="OrderStatus_RemoveDestination">Remove your destination</string>
+  <string name="ErrorChangeDropOff_Message">Sorry, we couldn’t update your destination.</string>
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
@@ -735,4 +736,16 @@
   <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">لا يوجد حساب خاص بهذا العنوان الإلكتروني.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
+  <string name="LastFour">Last 4 numbers:  </string>
+  <string name="CreditCompany">Credit company: </string>
+  <string name="SelectedCreditCard">Currently selected credit card</string>
+  <string name="NoCreditCard">No credit card selected</string>
 </resources>

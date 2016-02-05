@@ -91,7 +91,7 @@
             <h6 title="Company to dispatch to in case of future booking">Reservation Provider</h6>
             @Html.DropDownListFor(
                 x => x.FutureBookingReservationProvider,
-                Model.CompanyKeysOfMarket,
+                Model.CompaniesOrMarket,
                 new { @class = "input-block-level", @style = "width:380px; margin-right:15px" })
 
             <h6 title="Time after it's considered a future booking'">Time Threshold (minutes)</h6>

@@ -32,6 +32,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps.Geo;
 using CustomerPortal.Contract.Response;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -176,9 +177,9 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 }
             }
 
-            var isPrepaid = isFromWebApp
-                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
+            var isPaypal = request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+            var isBraintree = (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) && (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree);
+            var isPrepaid = isFromWebApp && (isPaypal || isBraintree);
 
             createReportOrder.IsPrepaid = isPrepaid;
 
@@ -576,7 +577,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+
             if (creditCard.IsExpired())
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
@@ -701,8 +703,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                 return isConsideredFutureBooking;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogMessage("Error occured while determining if order is future booking. Assuming true. " +
+                                   "(Hint: MarketSettings.FutureBookingReservationProvider: {0})", marketSettings.FutureBookingReservationProvider);
+                _logger.LogError(ex);
                 return true;
             }
         }

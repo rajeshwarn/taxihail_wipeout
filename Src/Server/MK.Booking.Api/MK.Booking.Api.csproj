@@ -173,6 +173,7 @@
     <Compile Include="Services\NotificationAdministrationService.cs" />
     <Compile Include="Services\PrivacyPolicyService.cs" />
     <Compile Include="Services\PromotionService.cs" />
+    <Compile Include="Services\ServerStatusService.cs" />
     <Compile Include="Services\TermsAndConditionsService.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />

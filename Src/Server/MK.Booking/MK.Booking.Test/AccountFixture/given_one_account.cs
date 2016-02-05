@@ -272,12 +272,14 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             var orderId = Guid.NewGuid();
             var transactionDate = DateTime.UtcNow;
+            var creditCardId = Guid.NewGuid();
 
             _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
                 OrderId = orderId,
                 IBSOrderId = 5544,
+                CreditCardId = creditCardId,
                 OverdueAmount = 42.25m,
                 TransactionDate = transactionDate,
                 TransactionId = "1337",
@@ -302,13 +304,20 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_settling_overdue_payment()
         {
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
 
-            _sut.When(new SettleOverduePayment { AccountId = _accountId, OrderId = orderId });
+            _sut.When(new SettleOverduePayment
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                CreditCardId = creditCardId
+            });
 
             var @event = _sut.ThenHasSingle<OverduePaymentSettled>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(creditCardId, @event.CreditCardId);
         }
     }
 }

@@ -245,7 +245,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var paymentId = Guid.NewGuid();
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
             _commandBus.Send(new InitiateCreditCardPayment
             {
