@@ -22,13 +22,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRetry { get; set; }
 
 		[Outlet]
+		UIKit.UILabel Company { get; set; }
+
+		[Outlet]
 		UIKit.UILabel DateOfTransaction { get; set; }
 
 		[Outlet]
 		UIKit.UILabel IbsOrder { get; set; }
 
 		[Outlet]
+		UIKit.UILabel Last4 { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblAmountDue { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblCompany { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblDate { get; set; }
@@ -37,7 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		UIKit.UILabel lblInstructions { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblLast4 { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblNoCreditCard { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblOrderId { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblSelectedCreditCard { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblTransactionId { get; set; }
@@ -62,24 +80,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				btnRetry = null;
 			}
 
-			if (lblOrderId != null) {
-				lblOrderId.Dispose ();
-				lblOrderId = null;
+			if (DateOfTransaction != null) {
+				DateOfTransaction.Dispose ();
+				DateOfTransaction = null;
 			}
 
 			if (IbsOrder != null) {
 				IbsOrder.Dispose ();
 				IbsOrder = null;
-			}
-
-			if (lblInstructions != null) {
-				lblInstructions.Dispose ();
-				lblInstructions = null;
-			}
-
-			if (DateOfTransaction != null) {
-				DateOfTransaction.Dispose ();
-				DateOfTransaction = null;
 			}
 
 			if (lblAmountDue != null) {
@@ -92,6 +100,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblDate = null;
 			}
 
+			if (lblInstructions != null) {
+				lblInstructions.Dispose ();
+				lblInstructions = null;
+			}
+
+			if (lblOrderId != null) {
+				lblOrderId.Dispose ();
+				lblOrderId = null;
+			}
+
 			if (lblTransactionId != null) {
 				lblTransactionId.Dispose ();
 				lblTransactionId = null;
@@ -100,6 +118,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (TransactionId != null) {
 				TransactionId.Dispose ();
 				TransactionId = null;
+			}
+
+			if (lblSelectedCreditCard != null) {
+				lblSelectedCreditCard.Dispose ();
+				lblSelectedCreditCard = null;
+			}
+
+			if (lblNoCreditCard != null) {
+				lblNoCreditCard.Dispose ();
+				lblNoCreditCard = null;
+			}
+
+			if (lblCompany != null) {
+				lblCompany.Dispose ();
+				lblCompany = null;
+			}
+
+			if (Company != null) {
+				Company.Dispose ();
+				Company = null;
+			}
+
+			if (lblLast4 != null) {
+				lblLast4.Dispose ();
+				lblLast4 = null;
+			}
+
+			if (Last4 != null) {
+				Last4.Dispose ();
+				Last4 = null;
 			}
 		}
 	}

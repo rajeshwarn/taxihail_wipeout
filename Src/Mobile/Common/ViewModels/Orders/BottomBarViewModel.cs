@@ -979,45 +979,78 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+
+        private async Task HandleCardDeactivated()
+        {
+            var localize = this.Services().Localize;
+
+            var navigateToPaymentMethodManagement = await this.Services().Message
+                .ShowConfirmMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqDeactivatedCardOnFile"]);
+
+            if (!navigateToPaymentMethodManagement)
+            {
+                return;
+            }
+
+            if (Settings.MaxNumberOfCardsOnFile > 1)
+            {
+                ShowViewModel<CreditCardMultipleViewModel>();
+            }
+            else
+            {
+                ShowViewModel<CreditCardAddViewModel>();
+            }
+        }
+
+        private async Task HandleOverduePayment(OverduePayment overduePayment)
+        {
+            var localize = this.Services().Localize;
+
+            var navigateToOverduePayment = await this.Services().Message
+                .ShowConfirmMessage(localize["View_Overdue"], localize["Overdue_OutstandingPaymentExists"]);
+
+            if (!navigateToOverduePayment)
+            {
+                return;
+            }
+
+            ShowViewModel<OverduePaymentViewModel>(new
+            {
+                overduePayment = overduePayment.ToJson()
+            });
+        }
+
         public ICommand ManualPairingRideLinq
         {
             get
             {
                 return this.GetCommand(async () =>
                 {
-                    var localize = this.Services().Localize;
-
                     if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
-                        this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
+                        var localize = this.Services().Localize;
+                        await this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
                         return;
                     }
 
+                    //We need to verify if we have an overdue payment.
+                    var overduePayment = await _paymentService.GetOverduePayment().ShowProgress();
+
+                    if (overduePayment != null)
+                    {
+                        await HandleOverduePayment(overduePayment);
+
+                        return;
+                    }
+
+                    // We need to ensure that the currently selected default credit card is not deactivated. (needed when in multiple credit card scenarios).
                     if (_accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
-                        this.Services().Message.ShowMessage(
-                            this.Services().Localize["View_Overdue"],
-                            this.Services().Localize["Overdue_OutstandingPaymentExists"],
-                            this.Services().Localize["OkButtonText"], async () =>
-                            {
-                                OverduePayment overduePayment;
-
-                                using (this.Services().Message.ShowProgress())
-                                {
-                                    overduePayment = await _paymentService.GetOverduePayment();
-                                }
-
-                                ShowViewModel<OverduePaymentViewModel>(new
-                                {
-                                    overduePayment = overduePayment.ToJson()
-                                });
-                            },
-                            this.Services().Localize["Cancel"],
-                            () => {});
+                        await HandleCardDeactivated();
 
                         return;
                     }
-
+                    
 	                var homeViewModel = (HomeViewModel) Parent;
 					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });
