@@ -78,8 +78,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public string RefundOrderNotePopupContent { get; set; }
 
-        public string Language { get; set; }
-
         public List<NoteModel> Notes { get; set; }
     }
 

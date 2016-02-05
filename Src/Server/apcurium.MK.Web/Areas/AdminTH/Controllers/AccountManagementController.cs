@@ -327,12 +327,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 if (refundPaymentResponse.IsSuccessful)
                 {
-                    var totalAmountString = accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).TotalAmountString;
+                    var order = _orderDao.FindByAccountId(accountManagementModel.Id).FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId);
+                    var orderModel = new OrderModel(order);
 
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
-                        refundPaymentResponse.Last4Digits, 
-                        totalAmountString, 
+                        refundPaymentResponse.Last4Digits,
+                        orderModel.TotalAmountString, 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName, 
                         accountManagementModel.Language);
