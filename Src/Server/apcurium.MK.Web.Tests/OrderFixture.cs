@@ -49,7 +49,6 @@ namespace apcurium.MK.Web.Tests
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
-                    PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Estimate = new RideEstimate
                         {
@@ -116,7 +115,6 @@ namespace apcurium.MK.Web.Tests
                 Id = Guid.NewGuid(),
                 FromWebApp = true,
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
@@ -166,7 +164,6 @@ namespace apcurium.MK.Web.Tests
                 UserLatitude = 46.50643,
                 UserLongitude = -74.554052,
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
@@ -206,7 +203,6 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
@@ -233,7 +229,6 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
@@ -300,7 +295,6 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
