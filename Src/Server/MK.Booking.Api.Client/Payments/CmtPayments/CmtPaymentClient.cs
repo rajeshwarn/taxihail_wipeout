@@ -158,10 +158,22 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
             catch(Exception e)
             {
-                _logger.Maybe(x => x.LogMessage("Error during tokenization"));
+                _logger.Maybe(x => x.LogMessage("Error during CMT tokenization"));
+
+                var message = GetTokenizationErrorMessageFromCMT(e);
+                if (message.HasValueTrimmed())
+                {
+                    return new TokenizedCreditCardResponse
+                    {
+                        IsSuccessful = false,
+                        Message = message
+                    };
+                }
+
+                // the exception is not a cmt error, log the exception
                 _logger.Maybe(x => x.LogError(e));
 
-                var message = e.Message;
+                message = e.Message;
                 var exception = e as AggregateException;
                 if (exception != null)
                 {
@@ -174,6 +186,23 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     Message = message
                 };
             }
+        }
+
+        private string GetTokenizationErrorMessageFromCMT(Exception e)
+        {
+            string message = null;
+
+            var webServiceException = e as WebServiceException;
+            if (webServiceException != null)
+            {
+                var cmtResponse = webServiceException.ResponseBody.FromJsonSafe<TokenizeResponse>();
+                if (cmtResponse != null)
+                {
+                    message = cmtResponse.ResponseMessage;
+                }
+            }
+
+            return message;
         }
 
         private static TokenizedCreditCardResponse TokenizeSyncForSettingsTest(CmtPaymentServiceClient cmtPaymentServiceClient, string accountNumber, DateTime expiryDate)
