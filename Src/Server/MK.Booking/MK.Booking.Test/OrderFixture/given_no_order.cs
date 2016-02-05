@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var order = new CreateOrder
             {
                 AccountId = _accountId,
-                PickupDate = pickupDate,
                 PickupAddress =
                     new Address
                     {
@@ -131,7 +130,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var order = new CreateOrder
             {
                 AccountId = _accountId,
-                PickupDate = pickupDate,
                 PickupAddress =
                     new Address
                     {
@@ -179,7 +177,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var order = new CreateOrder
             {
                 AccountId = _accountId,
-                PickupDate = pickupDate,
                 PickupAddress =
                     new Address
                     {
