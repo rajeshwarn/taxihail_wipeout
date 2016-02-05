@@ -120,8 +120,8 @@ namespace CustomerPortal.Web.Services.Impl
             }
 
             companyServerStatus.ServiceStatus = serviceStatusResponse.ServiceStatus;
-            companyServerStatus.HasNoStatusApi = serviceStatusResponse.HasNoStatusApi;
-            companyServerStatus.IsServerNotFound = serviceStatusResponse.IsServerNotFound;
+            companyServerStatus.IsApiAvailable = serviceStatusResponse.IsApiAvailable;
+            companyServerStatus.IsServerAvailable = serviceStatusResponse.IsServerAvailable;
             companyServerStatus.IsEmailSentForCurrentError = emailSentForCurrentError;
 
             return companyServerStatus;
@@ -161,7 +161,7 @@ namespace CustomerPortal.Web.Services.Impl
 
             try
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
 
                 var hostPresenceResult = await _client.GetAsync(url, cts.Token);
 
@@ -171,11 +171,11 @@ namespace CustomerPortal.Web.Services.Impl
                     {
                         IsProduction = isProduction,
                         StatusCode = hostPresenceResult.StatusCode,
-                        IsServerNotFound = hostPresenceResult.StatusCode == HttpStatusCode.NotFound
+                        IsServerAvailable = hostPresenceResult.StatusCode != HttpStatusCode.NotFound
                     };
                 }
 
-                cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                cts = new CancellationTokenSource();
 
                 var authenticationResult = await _client.PostAsJsonAsync(url + "api/auth/credentials", new
                 {
@@ -208,7 +208,7 @@ namespace CustomerPortal.Web.Services.Impl
                     {
                         IsProduction = isProduction,
                         StatusCode = serviceStatusResult.StatusCode,
-                        HasNoStatusApi = authenticationResult.StatusCode == HttpStatusCode.NotFound
+                        IsApiAvailable = serviceStatusResult.StatusCode != HttpStatusCode.NotFound
                     };
                 }
 
@@ -252,9 +252,9 @@ namespace CustomerPortal.Web.Services.Impl
             public ServiceStatus ServiceStatus { get; set; }
             public bool IsProduction { get; set; }
 
-            public bool HasNoStatusApi { get; set; }
+            public bool IsApiAvailable { get; set; }
 
-            public bool IsServerNotFound { get; set; }
+            public bool IsServerAvailable { get; set; }
         }
     }
 }
