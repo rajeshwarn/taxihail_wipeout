@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        paymentList = isCmt
 	            ? RemovePaymentInCarIfNeededForCmt(paymentList, marketSettings)
-	            : RemovePaymentInCarIfNeeded(paymentList, marketSettings);
+	            : EnforceExternalMarketPaymentInCarIfNeeded(paymentList, marketSettings);
 
 	        _marketSettings = marketSettings;
 
@@ -86,25 +86,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .ToArray();
             
 
-	        HandleChargeTypeSelectionAccess(isCmt);
+	        HandleChargeTypeSelectionAccess(marketSettings.IsLocalMarket);
 	    }
 
-        private IList<ListItem> RemovePaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+        private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
         {
-            return !market.IsLocalMarket
-                ? RemovePaymentInCar(paymentList)
-                : paymentList;
+            if (market.IsLocalMarket)
+            {
+                return paymentList;
+            }
+
+            return paymentList
+                .Where(paymentMethod => paymentMethod.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+                .ToArray();
         }
 
         private IList<ListItem> RemovePaymentInCarIfNeededForCmt(IList<ListItem> paymentList, MarketSettings market)
 	    {
-	        return market.DisableOutOfAppPayment
-	            ? RemovePaymentInCar(paymentList)
-	            : paymentList;
-	    }
+            if (!market.DisableOutOfAppPayment)
+            {
+                return paymentList;
+            }
 
-	    private IList<ListItem> RemovePaymentInCar(IList<ListItem> paymentList)
-	    {
             paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
 
             if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
@@ -112,23 +115,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 ChargeTypeId = null;
             }
 
-	        return paymentList;
-	    }
+            return paymentList;
+        }
 
-	    private void HandleChargeTypeSelectionAccess(bool isCmt)
+	    private void HandleChargeTypeSelectionAccess(bool isLocalMarket)
 	    {
-	        if (!isCmt)
+            // We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
+	        if (!isLocalMarket)
 	        {
-	            var isChargeTypeUnlocked = _accountService.CurrentAccount.DefaultCreditCard == null ||
-	                                       !Settings.DisableChargeTypeWhenCardOnFile;
-
-	            IsChargeTypesEnabled = isChargeTypeUnlocked && ChargeTypes.Length > 1;
-
-	            return;
+                IsChargeTypesEnabled = ChargeTypes.Length > 1;
+                return;
 	        }
+            
+            // If the setting DisableChargeTypeWhenCardOnFile is true, prevent changing the chargetype to something else then credit card.
+            var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && Settings.DisableChargeTypeWhenCardOnFile;
 
-	        IsChargeTypesEnabled = ChargeTypes.Length > 1;
-	    }
+            IsChargeTypesEnabled = !isChargeTypeLocked && ChargeTypes.Length > 1;
+        }
 
 	    public bool IsChargeTypesEnabled
 	    {

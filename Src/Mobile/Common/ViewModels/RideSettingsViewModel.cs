@@ -106,13 +106,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var paymentSettings = await _paymentService.GetPaymentSettings();
 
-		    var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
-                        paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-
-            // We can only disable OutOfAppPayment selection with Cmt.
-            if (marketSettings.DisableOutOfAppPayment && isCmt)
+            if (marketSettings.DisableOutOfAppPayment)
 			{
-				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+				paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
 
 				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
 				{
@@ -126,17 +122,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
                 .ToArray();
 
-            if (!isCmt)
-            {
-                var isChargeTypeUnlocked = _accountService.CurrentAccount.DefaultCreditCard == null ||
-                    !Settings.DisableChargeTypeWhenCardOnFile;
+            // We ignore the DisableChargeTypeWhenCardOnFile when in external market to ensure that DisableOutOfAppPayment works correctly when out of local market.
+		    if (!marketSettings.IsLocalMarket)
+		    {
+		        IsChargeTypesEnabled = Payments.Length > 1;
 
-                IsChargeTypesEnabled = isChargeTypeUnlocked && Payments.Length > 1;
+		        return;
+		    }
+            
+            var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && 
+                Settings.DisableChargeTypeWhenCardOnFile;
 
-                return;
-            }
-
-            IsChargeTypesEnabled = Payments.Length > 1;
+            IsChargeTypesEnabled = !isChargeTypeLocked && Payments.Length > 1;
         }
 
 	    public bool IsChargeTypesEnabled
