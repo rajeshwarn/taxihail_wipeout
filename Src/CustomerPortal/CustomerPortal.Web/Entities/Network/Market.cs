@@ -12,6 +12,7 @@ namespace CustomerPortal.Web.Entities.Network
         {
             Vehicles = new List<Vehicle>();
             DispatcherSettings = new DispatcherSettings();
+            MarketTariff = new Tariff();
         }
 
         public string Id { get; set; }
@@ -26,6 +27,10 @@ namespace CustomerPortal.Web.Entities.Network
         public bool EnableDriverBonus { get; set; }
 
         public bool EnableFutureBooking { get; set; }
+
+        public string FutureBookingReservationProvider { get; set; }
+
+        public int FutureBookingTimeThresholdInMinutes { get; set; }
 
         public bool DisableOutOfAppPayment { get; set; }
 
