@@ -8,6 +8,7 @@ using apcurium.MK.Common;
 using MK.Common.Exceptions;
 #else
 using apcurium.MK.Booking.Api.Client.Extensions;
+using ServiceStack.ServiceClient.Web;
 #endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
