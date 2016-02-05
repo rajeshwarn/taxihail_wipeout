@@ -39,12 +39,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IOrderWorkflowService orderWorkflowService,
 			INetworkRoamingService networkRoamingService)
 		{
-			this._vehicleTypeService = vehicleTypeService;
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
+
+            _payments = new ListItem[0];
 
             PhoneNumber = new PhoneNumberModel();
 
@@ -64,13 +66,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					PhoneNumber.Country = _bookingSettings.Country;
                     PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 
-					var paymentList = await _accountService.GetPaymentsList();
+                    var paymentList = await _accountService.GetPaymentsList();
 
-					_payments = paymentList == null ? 
-						new ListItem[0] : 
-						paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+                    var localize = this.Services().Localize;
 
-                    RaisePropertyChanged(() => Payments);
+                    Payments = (paymentList ?? new ListItem[0])
+                        .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                        .ToArray();
+
                     RaisePropertyChanged(() => ChargeTypeId);
                     RaisePropertyChanged(() => ChargeTypeName);
                     RaisePropertyChanged(() => IsChargeTypesEnabled);
@@ -99,9 +102,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (marketSettings.DisableOutOfAppPayment)
+            paymentList = paymentList ?? new ListItem[0];
+
+            if (marketSettings.DisableOutOfAppPayment)
 			{
-				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
+				paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
 
 				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
 				{
@@ -109,19 +114,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 
-			_payments = paymentList == null ? 
-				new ListItem[0] : 
-				paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+            var localize = this.Services().Localize;
 
-			RaisePropertyChanged(() => Payments);
-		}
+            Payments = paymentList
+                .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                .ToArray();
+
+            // We ignore the DisableChargeTypeWhenCardOnFile when in external market to ensure that DisableOutOfAppPayment works correctly when out of local market.
+		    if (!marketSettings.IsLocalMarket)
+		    {
+		        IsChargeTypesEnabled = Payments.Length > 1;
+
+		        return;
+		    }
+            
+            var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && 
+                Settings.DisableChargeTypeWhenCardOnFile;
+
+            IsChargeTypesEnabled = !isChargeTypeLocked && Payments.Length > 1;
+        }
 
 	    public bool IsChargeTypesEnabled
 	    {
-	        get
+	        get { return _isChargeTypesEnabled; }
+	        set
 	        {
-                return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
-            }
+	            _isChargeTypesEnabled = value;
+	            RaisePropertyChanged();
+	        }
 	    }
 
 	    public bool IsChargeAccountPaymentEnabled
@@ -172,15 +192,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		private ListItem[] _payments;
-        public ListItem[] Payments
+	    private bool _isChargeTypesEnabled;
+
+	    public ListItem[] Payments
         {
             get
             {
 				return _payments;
             }
+            set
+            {
+                _payments = value ?? new ListItem[0];
+
+                RaisePropertyChanged();
+                RaisePropertyChanged(() => IsChargeTypesEnabled);
+            }
         }
 
-        public int? VehicleTypeId
+	    public int? VehicleTypeId
         {
             get
             {
