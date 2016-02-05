@@ -99,7 +99,7 @@ namespace CustomerPortal.Web
 
         private static void StartStatusUpdater()
         {
-            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(1))
+            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(3))
                 .Where(_ => !_statusUpdaterRunning)
                 .Do(_ =>
                 {
