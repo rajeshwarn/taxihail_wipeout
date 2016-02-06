@@ -1020,9 +1020,19 @@ namespace DatabaseInitializer
                 serverSettingsNeedsUpdate = true;
             }
 
+            if (paymentSettings.CmtPaymentSettings.PairingMethod == RideLinqPairingMethod.NotSet)
+            {
+                paymentSettings.CmtPaymentSettings.PairingMethod = paymentSettings.CmtPaymentSettings.UsePairingCode
+                    ? RideLinqPairingMethod.PairingCode
+                    : RideLinqPairingMethod.VehicleMedallion;
+                paymentSettingsNeedsUpdate = true;
+            }
+
             if (paymentSettings.IsPaymentOutOfAppDisabled == OutOfAppPaymentDisabled.NotSet)
             {
-                paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled ? OutOfAppPaymentDisabled.All : OutOfAppPaymentDisabled.None;
+                paymentSettings.IsPaymentOutOfAppDisabled = paymentSettings.IsOutOfAppPaymentDisabled 
+                    ? OutOfAppPaymentDisabled.All 
+                    : OutOfAppPaymentDisabled.None;
                 paymentSettingsNeedsUpdate = true;
             }
 
