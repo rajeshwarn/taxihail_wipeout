@@ -19,6 +19,7 @@ using AutoMapper.Internal;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceModel.Extensions;
+using System.IO;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -77,6 +78,48 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 ConfigurationChangeType.CompanySettings, 
                 new Guid(AuthSession.UserAuthId), 
                 AuthSession.UserAuthName);
+        }
+
+        // POST: AdminTH/CompanySettings/Update
+        [HttpPost]
+        [ValidateInput(false)]
+        public async Task<ActionResult> ExportToFile(FormCollection form)
+        {
+            var appSettings = form.ToDictionary();
+            appSettings.Remove("__RequestVerificationToken");
+
+            if (!ValidateSettingsValue(appSettings))
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (appSettings.Any())
+            {
+                string datas = appSettings.ToJson();
+                DateTime date = DateTime.Now;
+                return File(new ASCIIEncoding().GetBytes(datas), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".txt");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public async Task<ActionResult> ImportFromFile(FormCollection form)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    file.SaveAs(path);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         // POST: AdminTH/CompanySettings/Update
