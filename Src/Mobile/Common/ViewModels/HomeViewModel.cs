@@ -738,6 +738,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void MarketChanged(string hashedMarket)
         {
             var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+			_bookingService.SetServiceTypeForProgressAnimation (serviceType);
+
             // Market changed and not home market
             if (_lastHashedMarket != hashedMarket
                 && hashedMarket.HasValue()

@@ -295,7 +295,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 PayBack = settings.PayBack
             };
 
-            await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
+			UserCache.Set("ServiceTypeForProgressAnimation", settings.ServiceType.ToString());
+
+			await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
 
 			// Update cached account
             var account = CurrentAccount;

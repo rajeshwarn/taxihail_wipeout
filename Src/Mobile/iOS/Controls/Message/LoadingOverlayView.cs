@@ -17,15 +17,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static bool _isLoading;
         private UIWindow _modalWindow;
 
-        public LoadingOverlayView()
+		public LoadingOverlayView(bool isLuxury)
         {
-            BackgroundColor = UIColor.Black.ColorWithAlpha(0.75f);
+			BackgroundColor = UIColor.Black.ColorWithAlpha(0.75f);
             Frame = UIScreen.MainScreen.Bounds;
 
             _dialogView = new UIView();
             _dialogView.BackgroundColor = UIColor.White;
 
-            _imageView = new UIImageView (ImageHelper.ApplyThemeColorToImage("taxi_progress.png", true, new CGSize(52, 20), UIColor.FromRGBA (0, 122, 255, 255), new CGPoint (25, 10)));
+			_imageView = new UIImageView (ImageHelper.ApplyThemeColorToImage(isLuxury ? "luxury_progress.png" : "taxi_progress.png", true, new CGSize(52, 20), UIColor.FromRGBA (0, 122, 255, 255), new CGPoint (25, 10)));
                 
             _imageView.SizeToFit();
             _imageView.Hidden = true;

@@ -282,6 +282,7 @@
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
+    <None Include="Resources\luxury_progress.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />

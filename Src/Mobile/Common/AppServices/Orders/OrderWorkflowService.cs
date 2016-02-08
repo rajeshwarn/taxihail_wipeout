@@ -419,7 +419,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
                 bookingSettings.ChargeTypeId = matchingPaymentType != null ? matchingPaymentType.Id : null;
             }
-            
+
+			_cacheService.Set ("ServiceTypeForProgressAnimation", serviceType.ToString());
+
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 

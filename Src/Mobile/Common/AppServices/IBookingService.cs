@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Guid GetUnratedLastOrder();
 
+		void SetServiceTypeForProgressAnimation (ServiceType serviceType);
+
         void SetLastUnratedOrderId(Guid orderId, bool needToSelectGratuity);
 
         void ClearLastOrder();

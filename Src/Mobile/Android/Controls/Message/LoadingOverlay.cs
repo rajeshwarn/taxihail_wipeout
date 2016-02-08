@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
     public class LoadingOverlay
     {
         private static bool _isLoading;
+		private static bool _isLuxury;
         private static Activity _activity;
         private static float Progress;
         private static Size _windowSize;
@@ -24,8 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static LinearLayout _layoutImage;
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
-        public static void StartAnimatingLoading()
+		public static void StartAnimatingLoading(bool isLuxury)
         {            
+			var serviceTypeChanged = isLuxury != _isLuxury;
+			_isLuxury = isLuxury;
+
             _activity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
             var rootView = _activity.Window.DecorView.RootView as ViewGroup;
 
@@ -46,10 +50,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 _activity.Intent.AddCategory("Progress");
             }
 
-			Initialize((FrameLayout)rootView);
+			Initialize((FrameLayout)rootView, serviceTypeChanged);
         }
 
-		private static void Initialize(FrameLayout rootView)
+		private static void Initialize(FrameLayout rootView, bool serviceTypeChanged)
 		{
             var layoutParent = new LinearLayout(_activity.ApplicationContext);
 			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
@@ -82,10 +86,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-			if (_car == null) 
+			if (_car == null || serviceTypeChanged) 
             {
                 _colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
-                _car = DrawHelper.ApplyThemeColorToImage (Resource.Drawable.taxi_progress, true, new SizeF(52, 20), Android.Graphics.Color.Argb (255, 0, 122, 255), new System.Drawing.Point (25, 10));
+				_car = DrawHelper.ApplyThemeColorToImage (_isLuxury ? Resource.Drawable.luxury_progress : Resource.Drawable.taxi_progress, true, new SizeF(52, 20), Android.Graphics.Color.Argb (255, 0, 122, 255), new System.Drawing.Point (25, 10));
 			}
 
             var displaySize = _activity.Resources.DisplayMetrics;

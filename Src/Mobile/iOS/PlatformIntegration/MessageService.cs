@@ -20,9 +20,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         readonly IMvxTouchViewPresenter _viewPresenter;
 
-        public MessageService(IMvxTouchViewPresenter viewPresenter)
+		readonly ICacheService _cacheService;
+
+        public MessageService(IMvxTouchViewPresenter viewPresenter, ICacheService cacheService)
         {
             _viewPresenter = viewPresenter;
+			_cacheService = cacheService;
         }
 
 		public Task ShowMessage(string title, string message)
@@ -48,8 +51,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
             if(show)
             {
+				var cachedServiceType = _cacheService.Get<string> ("ServiceTypeForProgressAnimation");
+				var isLuxury = cachedServiceType != null && cachedServiceType == "Luxury";
                 UIApplication.SharedApplication.InvokeOnMainThread (() => {               
-                    LoadingOverlay.StartAnimatingLoading();
+					LoadingOverlay.StartAnimatingLoading(isLuxury);
                 });
             }
             else

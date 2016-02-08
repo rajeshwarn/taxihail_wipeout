@@ -377,6 +377,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ClientLanguageCode = _localize.CurrentLanguage,
 				ServiceType = serviceType
             };
+
+			SetServiceTypeForProgressAnimation (serviceType);
+
             try
             {
 
@@ -409,6 +412,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 throw new Exception();
             }
         }
+
+		public void SetServiceTypeForProgressAnimation(ServiceType serviceType)
+		{
+			UserCache.Set("ServiceTypeForProgressAnimation", serviceType.ToString());
+		}
 
         private bool IsExceptionStatusCodeBadRequest(Exception ex)
         {

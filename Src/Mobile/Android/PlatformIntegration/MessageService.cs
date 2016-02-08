@@ -18,14 +18,18 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-        public MessageService(IMvxAndroidCurrentTopActivity context)
+		readonly ICacheService _cacheService;
+
+		public MessageService(IMvxAndroidCurrentTopActivity context, ICacheService cacheService)
         {
             Context = context;
+			_cacheService = cacheService;
         }
 
         public IMvxAndroidCurrentTopActivity Context { get; set; }
@@ -141,7 +145,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if (show)
                 {            
-                    LoadingOverlay.StartAnimatingLoading();
+					var cachedServiceType = _cacheService.Get<string>("ServiceTypeForProgressAnimation");
+					var isLuxury = cachedServiceType != null && cachedServiceType == "Luxury";
+					LoadingOverlay.StartAnimatingLoading(isLuxury);
                 }
                 else
                 {
@@ -191,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public IDisposable ShowProgress()
         {
-            ShowProgress(true);
+			ShowProgress(true);
             return Disposable.Create(() => ShowProgress(false));
         }
 

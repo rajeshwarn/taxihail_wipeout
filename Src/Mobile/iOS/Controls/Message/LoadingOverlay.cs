@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static int count = 0;
         private static LoadingOverlayView _modalBackgroundView;
 
-        public static UIView StartAnimatingLoading()
+		public static UIView StartAnimatingLoading(bool isLuxury)
         {
             lock (_lock)
             {
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 if (count == 1)
                 {
-                    _modalBackgroundView = new LoadingOverlayView();
+					_modalBackgroundView = new LoadingOverlayView(isLuxury);
                     _modalBackgroundView.Show();
 
                 }
