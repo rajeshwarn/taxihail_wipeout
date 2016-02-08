@@ -47,10 +47,11 @@ namespace apcurium.MK.Web.Tests
             var commandBus = UnityServiceLocator.Instance.Resolve<ICommandBus>();
             var logger = UnityServiceLocator.Instance.Resolve<ILogger>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
+            var orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
             var creditCardDao = UnityServiceLocator.Instance.Resolve<ICreditCardDao>();
-            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, serverSettings.GetPaymentSettings(), pairingService, creditCardDao);
+            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, orderDao, serverSettings, serverSettings.GetPaymentSettings(), pairingService, creditCardDao);
         }
     }
 }

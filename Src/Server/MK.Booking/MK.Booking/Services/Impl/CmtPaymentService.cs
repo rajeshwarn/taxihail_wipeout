@@ -375,12 +375,12 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var orderPairing = _orderDao.FindOrderPairingById(orderId);
-                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
+                var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
 
                 var request = new CmtRideLinqRefundRequest
                 {
                     CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
-                    LastFour = creditCardDetail.Last4Digits
+                    LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     //AuthAmount is not provided because we want to refund payment entirely
                 };
 
@@ -399,8 +399,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     return new RefundPaymentResponse
                     {
-                        Last4Digits = creditCardDetail.Last4Digits,
-                        IsSuccessful = true
+                        IsSuccessful = true,
+                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     };
                 }
                 else
@@ -408,6 +408,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new RefundPaymentResponse
                     {
                         IsSuccessful = false,
+                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                         Message = response.ResponseMessage
                     };
                 }
@@ -420,6 +421,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = ex.Message
                 };
             }

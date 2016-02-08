@@ -340,11 +340,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                     accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
-                    TempData["UserMessage"] = "order refund, note added, email sent";
+                    TempData["UserMessage"] = "order refunded, note added, email sent";
                 }
                 else
                 {
-                    TempData["UserMessage"] = "an error occurs: " + refundPaymentResponse.Message;
+                    TempData["UserMessage"] = "an error occured: " + refundPaymentResponse.Message;
                 }
 
                 ModelState.Clear();

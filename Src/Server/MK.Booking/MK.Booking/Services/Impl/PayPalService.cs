@@ -384,6 +384,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = message
                 };
             }
@@ -407,7 +408,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 return new RefundPaymentResponse
                 {
-                    IsSuccessful = true
+                    IsSuccessful = true,
+                    Last4Digits = string.Empty
                 };
             }
             catch (Exception ex)
@@ -425,6 +427,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = exceptionMessage
                 };
             }
