@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public BraintreePaymentService(ICommandBus commandBus,
             ILogger logger,
             IOrderPaymentDao paymentDao,
+            IOrderDao orderDao,
             IServerSettings serverSettings,
             ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
@@ -37,6 +39,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _commandBus = commandBus;
             _logger = logger;
             _paymentDao = paymentDao;
+            _orderDao = orderDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
@@ -342,18 +345,21 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
+            var orderPairing = _orderDao.FindOrderPairingById(orderId);
+            var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
             if (paymentDetail == null)
             {
                 // No payment to refund
                 var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
                 _logger.LogMessage(message);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits: string.Empty,
                     Message = message
                 };
             }
@@ -363,18 +369,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 var message = string.Empty;
                 Void(paymentDetail.TransactionId, ref message);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
-                    IsSuccessful = true
+                    IsSuccessful = true,
+                    Last4Digits = string.Empty
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogMessage(string.Format("Braintree refund for transaction {0} failed. {1}", paymentDetail.TransactionId, ex.Message));
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = ex.Message
                 };
             }

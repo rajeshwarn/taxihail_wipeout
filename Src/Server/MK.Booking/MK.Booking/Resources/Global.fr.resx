@@ -702,4 +702,13 @@
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Désolé, les commandes futures ne sont pas disponibles.</value>
   </data>
+  <data name="Email_Subject_OrderRefund" xml:space="preserve">
+    <value>{{ ApplicationName }} - Commande Remboursée</value>
+  </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total remboursé</value>
+  </data>
+  <data name="Email_Title_OrderRefund" xml:space="preserve">
+    <value>Commande Remboursée</value>
+  </data>
 </root>
