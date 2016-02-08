@@ -75,16 +75,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // CMT RideLinq flow
-
+                   
                     var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
                     if (orderStatusDetail == null)
                     {
                         throw new Exception("Order not found");
-                    }
-
-                    if (orderStatusDetail.IBSOrderId == null)
-                    {
-                        throw new Exception("Order has no IBSOrderId");
                     }
 
                     if (_serverPaymentSettings.CmtPaymentSettings.PairingMethod == RideLinqPairingMethod.PairingCode
@@ -93,6 +88,13 @@ namespace apcurium.MK.Booking.Services.Impl
                         // We haven't received the pairing code from IBS yet, set the ignore response false
                         // so that the caller can exit without interpreting the response as a failure
                         return new PairingResponse { IgnoreResponse = true };
+                    }
+
+                    _logger.LogMessage("Starting pairing with RideLinq for Order {0}", orderId);
+
+                    if (orderStatusDetail.IBSOrderId == null)
+                    {
+                        throw new Exception("Order has no IBSOrderId");
                     }
 
                     var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
