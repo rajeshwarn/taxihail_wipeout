@@ -173,14 +173,22 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var honeyBadgerService = new HoneyBadgerServiceClient(_serverSettings, _logger);
 
-            honeyBadgerService.GetAvailableVehicles(null, _serverSettings.ServerData.GeoLoc.DefaultLatitude, _serverSettings.ServerData.GeoLoc.DefaultLongitude);
+            honeyBadgerService.GetAvailableVehicles(
+                null, 
+                _serverSettings.ServerData.GeoLoc.DefaultLatitude, 
+                _serverSettings.ServerData.GeoLoc.DefaultLongitude,
+                throwError: true);
         }
 
         private void RunGeoTest()
         {
             var geoService = new CmtGeoServiceClient(_serverSettings, _logger);
 
-            geoService.GetAvailableVehicles(_serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, _serverSettings.ServerData.GeoLoc.DefaultLatitude, _serverSettings.ServerData.GeoLoc.DefaultLongitude);
+            geoService.GetAvailableVehicles(
+                _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket,
+                _serverSettings.ServerData.GeoLoc.DefaultLatitude,
+                _serverSettings.ServerData.GeoLoc.DefaultLongitude,
+                throwError:true);
         } 
 
         private async Task<bool> RunTest(Func<Task> testToRun, string targetService)
