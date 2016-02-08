@@ -3,7 +3,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -18,11 +18,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class IbsFareServiceClient : BaseServiceClient, IIbsFareClient
     {
-        public IbsFareServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public IbsFareServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
-
 
         public Task<DirectionInfo> GetDirectionInfoFromIbs(double pickupLatitude, double pickupLongitude,
             double dropoffLatitude, double dropoffLongitude, 
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, 
 				pickupZipCode, dropoffZipCode,
 				accountNumber.ToSafeString(), 0, tripDurationInSeconds.HasValue ? tripDurationInSeconds.ToString() : "", vehicleType);
-            var result = Client.GetAsync<DirectionInfo>(req);
+            var result = Client.GetAsync<DirectionInfo>(req, logger: Logger);
             return result;
         }
 
@@ -68,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, 
                 accountNumber, customerNumber.Value,
                 vehicleType.Value, tripTime.Value);
-            var result = Client.GetAsync<DirectionInfo>(req);
+            var result = Client.GetAsync<DirectionInfo>(req, logger: Logger);
             return result;
         }
     }

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -15,8 +15,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class NetworkRoamingServiceClient : BaseServiceClient
     {
-        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<string>("/roaming/market" + queryString);
+            return Client.GetAsync<string>("/roaming/market" + queryString, logger: Logger);
         }
 
         public Task<MarketSettings> GetCompanyMarketSettings(double latitude, double longitude)
@@ -43,12 +43,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<MarketSettings>("/roaming/marketsettings" + queryString);
+            return Client.GetAsync<MarketSettings>("/roaming/marketsettings" + queryString, logger: Logger);
         }
 
         public Task<List<NetworkFleet>> GetNetworkFleets()
         {
-            return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets");
+            return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets", logger: Logger);
         }
 
         public Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<List<VehicleType>>("/roaming/externalMarketVehicleTypes" + queryString);
+            return Client.GetAsync<List<VehicleType>>("/roaming/externalMarketVehicleTypes" + queryString, logger: Logger);
         }
     }
 }

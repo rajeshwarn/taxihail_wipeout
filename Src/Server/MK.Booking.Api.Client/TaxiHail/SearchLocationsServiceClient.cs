@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -19,11 +19,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class SearchLocationsServiceClient : BaseServiceClient
     {
-        public SearchLocationsServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public SearchLocationsServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
-
 
         public async Task<Address[]> Search(string name, double latitude, double longitude)
         {
@@ -32,15 +31,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 var resource = string.Format(CultureInfo.InvariantCulture, "/searchlocation?Name={0}&Lat={1}&Lng={2}", name,
                 latitude, longitude);
 
-                var result = await Client.PostAsync<Address[]>(resource, new object());
+                var result = await Client.PostAsync<Address[]>(resource, new object(), logger: Logger);
                 return result;
             }
             catch (Exception ex)
             {
-                
                 throw;
             }
-            
         }
     }
 }
