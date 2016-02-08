@@ -204,6 +204,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 || status.IBSStatusId == VehicleStatuses.Common.Waiting
                 || status.IBSStatusId == VehicleStatuses.Common.Arrived
                 || status.IBSStatusId == VehicleStatuses.Common.Scheduled
+                || status.IBSStatusId == VehicleStatuses.Common.Bailed
                 || !status.IBSStatusId.HasValue();
         }
 
