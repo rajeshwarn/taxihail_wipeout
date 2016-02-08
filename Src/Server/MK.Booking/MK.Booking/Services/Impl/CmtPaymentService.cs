@@ -373,7 +373,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
             {
@@ -385,12 +385,12 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var orderPairing = _orderDao.FindOrderPairingById(orderId);
-                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
+                var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
 
                 var request = new CmtRideLinqRefundRequest
                 {
                     CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
-                    LastFour = creditCardDetail.Last4Digits
+                    LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     //AuthAmount is not provided because we want to refund payment entirely
                 };
 
@@ -407,16 +407,18 @@ namespace apcurium.MK.Booking.Services.Impl
                         IsSuccessful = true
                     });
 
-                    return new BasePaymentResponse
+                    return new RefundPaymentResponse
                     {
-                        IsSuccessful = true
+                        IsSuccessful = true,
+                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     };
                 }
                 else
                 {
-                    return new BasePaymentResponse
+                    return new RefundPaymentResponse
                     {
                         IsSuccessful = false,
+                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                         Message = response.ResponseMessage
                     };
                 }
@@ -426,9 +428,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
                 _logger.LogError(ex);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = ex.Message
                 };
             }

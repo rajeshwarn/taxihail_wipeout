@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Services
             return GetInstance(companyKey).CommitPayment(companyKey, orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId);
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             if (IsPayPal(orderId: orderId))
             {
@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Services
             switch (paymentSettings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return new BraintreePaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), _serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                    return new BraintreePaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), _container.Resolve<IOrderDao>(), _serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
                     return new CmtPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>(), _container.Resolve<IAccountDao>(), _container.Resolve<IOrderPaymentDao>(), paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());

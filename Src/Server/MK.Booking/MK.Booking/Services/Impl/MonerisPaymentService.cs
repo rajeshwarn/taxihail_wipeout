@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             throw new NotImplementedException();
         }

@@ -35,13 +35,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly IPromotionDao _promoDao;
+        private readonly INotificationService _notificationService;
         private readonly BookingSettingsService _bookingSettingsService;
         private readonly ConfirmAccountService _confirmAccountService;
         private readonly ExportDataService _exportDataService;
         private readonly IPaymentService _paymentService;
         private readonly Resources _resources;
-
-        
 
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
@@ -52,7 +51,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            IOrderDao orderDao,
            IPromotionDao promoDao,
            IPaymentService paymentService,
-           BookingSettingsService bookingSettingsService,
+           INotificationService notificationService,
+        BookingSettingsService bookingSettingsService,
            ConfirmAccountService confirmAccountService,
            ExportDataService exportDataService)
            : base(cache, serverSettings)
@@ -68,6 +68,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _confirmAccountService = confirmAccountService;
             _exportDataService = exportDataService;
             _paymentService = paymentService;
+            _notificationService = notificationService;
 
             _resources = new Resources(serverSettings);
         }
@@ -317,6 +318,48 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return View("Index", accountManagementModel);
         }
 
+        [HttpPost]
+        public ActionResult RefundOrder(AccountManagementModel accountManagementModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var refundPaymentResponse = _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
+
+                if (refundPaymentResponse.IsSuccessful)
+                {
+                    var order = _orderDao.FindByAccountId(accountManagementModel.Id).FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId);
+                    var orderModel = new OrderModel(order);
+
+                    _notificationService.SendOrderRefundEmail(
+                        DateTime.Now, 
+                        refundPaymentResponse.Last4Digits,
+                        orderModel.TotalAmountString, 
+                        accountManagementModel.Email, 
+                        AuthSession.UserAuthName,
+                        order.ClientLanguageCode);
+
+                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
+                    AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
+                    TempData["UserMessage"] = "order refunded, note added, email sent";
+                }
+                else
+                {
+                    TempData["UserMessage"] = "an error occured: " + refundPaymentResponse.Message;
+                }
+
+                ModelState.Clear();
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
+            }
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
+            return View("Index", accountManagementModel);
+        }
+
         private void AddNote(AccountManagementModel accountManagementModel, NoteType noteType, string noteContent)
         {
             var accountNoteEntry = new AccountNoteEntry
@@ -340,7 +383,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private AccountManagementModel InitializeModel(Guid accountId)
         {
             var accountDetail = _accountDao.FindById(accountId);
-            
+
             var model = new AccountManagementModel
             {
                 Id = accountId,
@@ -356,7 +399,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PhoneNumber = accountDetail.Settings.Phone,
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
-                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
             };
 
             if (accountDetail.DefaultCreditCard != null)
@@ -371,36 +414,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 .ToList();
 
             return model;
-        }
-
-        public ActionResult RefundOrder(AccountManagementModel accountManagementModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var paymentResponse = _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
-
-                if(paymentResponse.IsSuccessful)
-                {
-                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
-                    AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
-                    TempData["UserMessage"] = "order refund, note added";
-                }
-                else
-                {
-                    TempData["UserMessage"] = "an error occurs: " + paymentResponse.Message;
-                }
-               
-                ModelState.Clear();
-            }
-            else
-            {
-                TempData["UserMessage"] = "Model state is not valid";
-            }
-
-            // needed to feed orders list
-            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
-
-            return View("Index", accountManagementModel);
         }
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)

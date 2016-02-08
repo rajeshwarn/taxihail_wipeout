@@ -372,7 +372,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundWebPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundWebPayment(string companyKey, Guid orderId)
         {
             var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
@@ -381,9 +381,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
                 _logger.LogMessage(message);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = message
                 };
             }
@@ -405,9 +406,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 var sale = new Sale { id = payment.transactions[0].related_resources[0].sale.id };
                 sale.Refund(GetAPIContext(GetAccessToken()), refund);
 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
-                    IsSuccessful = true
+                    IsSuccessful = true,
+                    Last4Digits = string.Empty
                 };
             }
             catch (Exception ex)
@@ -422,9 +424,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage(string.Format("PayPal refund for transaction {0} failed. {1}", paymentDetail.TransactionId, exceptionMessage));
                 
-                return new BasePaymentResponse
+                return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
+                    Last4Digits = string.Empty,
                     Message = exceptionMessage
                 };
             }

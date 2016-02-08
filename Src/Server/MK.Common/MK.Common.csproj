@@ -251,6 +251,7 @@
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\RefundPaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
