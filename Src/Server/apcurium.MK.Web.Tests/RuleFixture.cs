@@ -104,7 +104,7 @@ namespace apcurium.MK.Web.Tests
 
         private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrderRequest> update, string testZone = null)
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -134,7 +134,7 @@ namespace apcurium.MK.Web.Tests
 
         private async Task<string> CreateOrder(Action<CreateOrderRequest> update)
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -355,7 +355,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -643,7 +643,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -696,7 +696,7 @@ namespace apcurium.MK.Web.Tests
                 ZoneList = " "
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
@@ -732,7 +732,7 @@ namespace apcurium.MK.Web.Tests
             rule.IsActive = true;
             rules.UpdateRule(rule);
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
@@ -765,7 +765,7 @@ namespace apcurium.MK.Web.Tests
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rules.DeactivateRule(rule.Id);
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
