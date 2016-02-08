@@ -440,7 +440,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				await _orderWorkflowService.ResetOrderSettings();
 				shouldContinue = shouldContinue && await PreValidateOrder();
-				//shouldContinue = shouldContinue && await ValidateCardOnFile();
+				shouldContinue = shouldContinue && await ValidateCardOnFile();
 				if (shouldContinue)
 				{
 					await ShowFareEstimateAlertDialogIfNecessary();
