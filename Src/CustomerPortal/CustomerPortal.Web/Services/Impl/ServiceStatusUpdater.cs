@@ -20,6 +20,7 @@ namespace CustomerPortal.Web.Services.Impl
         private readonly IRepository<Company> _companyRepository;
         private readonly IRepository<CompanyServerStatus> _serviceStatusRepository;
         private readonly ILogger _logger;
+        public int MaxParallelism = 16;
 
         private readonly HttpClient _client;
 
@@ -43,52 +44,45 @@ namespace CustomerPortal.Web.Services.Impl
             _client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("deflate");
         }
 
-        public async Task UpdateServiceStatus()
+        public void UpdateServiceStatus()
         {
             var companies = _companyRepository
                 // We only get the companies that have active websites.
                 .Where(company => company.Status == AppStatus.Production ||
-                   company.Status == AppStatus.Test ||
-                   company.Status == AppStatus.TestingNewVersion ||
-                   company.CompanyKey.StartsWith("Arro") ||
-                   company.CompanyKey.Equals("Apcurium")
+                                  company.Status == AppStatus.TestingNewVersion ||
+                                  company.CompanyKey.Equals("ArroDemo") ||
+                                  company.CompanyKey.Equals("ArroNT") ||
+                                  company.CompanyKey.Equals("Apcurium")
                 )
-                .AsEnumerable()
-                .Select(async company => await UpdateCompanyStatus(company).ConfigureAwait(false))
                 .ToArray();
 
-            var companyServerStatus = await Task.WhenAll(companies).ConfigureAwait(false);
-
-            var groupedCompanyServerStatus = companyServerStatus
-                .GroupBy(status => status.Id.HasValueTrimmed());
-
-            foreach (var groupedStatus in groupedCompanyServerStatus)
-            {
-                if (groupedStatus.Key)
+            Parallel.ForEach(companies,
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism },
+                async company =>
                 {
-                    _serviceStatusRepository.Update(groupedStatus);
-                }
-                else
-                {
-                    _serviceStatusRepository.Add(groupedStatus.Select(status =>
+                    var updateCompanyStatus = await UpdateCompanyStatus(company);
+
+                    if (updateCompanyStatus.Id.HasValueTrimmed())
                     {
-                        status.Id = Guid.NewGuid().ToString();
-                        return status;
-                    }));
-                }
-            }
+                        _serviceStatusRepository.Update(updateCompanyStatus);
+                    }
+                    else
+                    {
+                        updateCompanyStatus.Id = Guid.NewGuid().ToString();
+                        _serviceStatusRepository.Add(updateCompanyStatus);
+                    }
+
+                });
         }
 
         private string GetUrlFromCompany(Company company)
         {
-            if (company.CompanyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return "http://api.goarro.com/Arro/";
-            }
+            var isArro = company.CompanyKey.Equals("Arro", StringComparison.InvariantCultureIgnoreCase) ||
+                         company.CompanyKey.Equals("ArroKiosk", StringComparison.InvariantCultureIgnoreCase);
 
             return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
                 ? "http://test.taxihail.biz:8181/Apcurium/"
-                : "http://api.taxihail.com/{0}/".InvariantCultureFormat(company.CompanyKey);
+                : "https://api.{0}.com/{1}/".InvariantCultureFormat(isArro ? "goarro" : "taxihail", company.CompanyKey);
 
         }
 
@@ -97,7 +91,6 @@ namespace CustomerPortal.Web.Services.Impl
             var url = GetUrlFromCompany(company);
 
             var response = await Task.Run(() => CheckServer(url, true)).ConfigureAwait(false);
-
 
             return HandleServiceStatusResponse(company.CompanyKey, company.CompanyName, response, url);
         }
@@ -123,14 +116,14 @@ namespace CustomerPortal.Web.Services.Impl
             companyServerStatus.IsApiAvailable = serviceStatusResponse.IsApiAvailable;
             companyServerStatus.IsServerAvailable = serviceStatusResponse.IsServerAvailable;
             companyServerStatus.IsEmailSentForCurrentError = emailSentForCurrentError;
+            companyServerStatus.HasAuthenticationError = serviceStatusResponse.HasAuthenticationError;
 
             return companyServerStatus;
         }
 
         private bool SendEmailIfNeeded(ServiceStatusResponse serviceStatus, string companyName, string url, CompanyServerStatus previousStatus)
         {
-            if (serviceStatus.StatusCode == HttpStatusCode.OK ||
-                        serviceStatus.ServiceStatus.SelectOrDefault(response => response.IsServerHealthy(), serviceStatus.HasNoStatusApi))
+            if (serviceStatus.ServiceStatus.SelectOrDefault(response => response.IsServerHealthy(), !serviceStatus.IsApiAvailable))
             {
                 return false;
             }
@@ -146,8 +139,8 @@ namespace CustomerPortal.Web.Services.Impl
                     _logger.LogError(ex);
                     return false;
                 }
-                
-                
+
+
             }
             return true;
         }
@@ -161,9 +154,12 @@ namespace CustomerPortal.Web.Services.Impl
 
             try
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+                var timeout = TimeSpan.FromMinutes(4);
 
-                var hostPresenceResult = await _client.GetAsync(url, cts.Token);
+
+                var cts = new CancellationTokenSource(timeout);
+
+                var hostPresenceResult = await _client.GetAsync(url+ "api/popularaddresses", cts.Token);
 
                 if (!hostPresenceResult.IsSuccessStatusCode)
                 {
@@ -175,7 +171,7 @@ namespace CustomerPortal.Web.Services.Impl
                     };
                 }
 
-                cts = new CancellationTokenSource();
+                cts.CancelAfter(timeout);
 
                 var authenticationResult = await _client.PostAsJsonAsync(url + "api/auth/credentials", new
                 {
@@ -188,7 +184,9 @@ namespace CustomerPortal.Web.Services.Impl
                     return new ServiceStatusResponse
                     {
                         IsProduction = isProduction,
-                        StatusCode = authenticationResult.StatusCode
+                        StatusCode = authenticationResult.StatusCode,
+                        HasAuthenticationError = true,
+                        IsServerAvailable = true
                     };
                 }
 
@@ -198,7 +196,7 @@ namespace CustomerPortal.Web.Services.Impl
 
                 request.Headers.Add("Cookie", "ss-opt=perm; ss-pid=" + authData.SessionId);
 
-                cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                cts.CancelAfter(timeout);
 
                 var serviceStatusResult = await _client.SendAsync(request, cts.Token).ConfigureAwait(false);
 
@@ -208,7 +206,8 @@ namespace CustomerPortal.Web.Services.Impl
                     {
                         IsProduction = isProduction,
                         StatusCode = serviceStatusResult.StatusCode,
-                        IsApiAvailable = serviceStatusResult.StatusCode != HttpStatusCode.NotFound
+                        IsApiAvailable = serviceStatusResult.StatusCode != HttpStatusCode.NotFound,
+                        IsServerAvailable = true
                     };
                 }
 
@@ -218,7 +217,9 @@ namespace CustomerPortal.Web.Services.Impl
                 {
                     IsProduction = isProduction,
                     StatusCode = serviceStatusResult.StatusCode,
-                    ServiceStatus = status
+                    ServiceStatus = status,
+                    IsServerAvailable = true,
+                    IsApiAvailable = true
                 };
             }
             catch (Exception ex)
@@ -255,6 +256,8 @@ namespace CustomerPortal.Web.Services.Impl
             public bool IsApiAvailable { get; set; }
 
             public bool IsServerAvailable { get; set; }
+
+            public bool HasAuthenticationError { get; set; }
         }
     }
 }

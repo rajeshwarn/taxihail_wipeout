@@ -1,0 +1,35 @@
+﻿@using GridMvc.Html
+@model  IEnumerable<CustomerPortal.Web.Areas.Admin.Models.CompanyStatusModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+
+<div style="width: 870px;">
+    <div class='row'>
+        <div id="companiesServiceStatus" style="white-space: normal;">
+            @Html.Grid(Model).Named("companyServiceStatusGrid").Columns(columns =>
+            {
+                columns.Add(c => c.CompanyName)
+                    .Titled("Company")
+                    .Filterable(true)
+                    .Sortable(true)
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .RenderValueAs(c => Html.ActionLink(c.CompanyName, "../Home/Manage/" + c.CompanyKey));
+
+                columns.Add(c => c.ServiceStatus)
+                    .Titled("Status")
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .RenderValueAs(c => Html.EditorFor(_ => c.ServiceState, "CompanyStatusTemplate"));
+
+                columns.Add(c => c.CompanyKey)
+                    .Titled("Action")
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .RenderValueAs(c => Html.ActionLink("Details","Details", new {  c.CompanyKey}));
+            })
+        </div>
+    </div>
+</div>

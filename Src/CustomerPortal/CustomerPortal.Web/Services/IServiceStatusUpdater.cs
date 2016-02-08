@@ -8,6 +8,6 @@ namespace CustomerPortal.Web.Services
 {
     public interface IServiceStatusUpdater
     {
-        Task UpdateServiceStatus();
+        void UpdateServiceStatus();
     }
 }

@@ -17,5 +17,8 @@ namespace CustomerPortal.Web.Entities
         public bool IsServerAvailable { get; set; }
 
         public bool IsEmailSentForCurrentError { get; set; }
+
+        public bool HasAuthenticationError { get; set; }
+
     }
 }

@@ -99,25 +99,23 @@ namespace CustomerPortal.Web
 
         private static void StartStatusUpdater()
         {
-            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(3))
+            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromMinutes(3))
                 .Where(_ => !_statusUpdaterRunning)
                 .Do(_ =>
                 {
                     _statusUpdaterRunning = true;
                     Logger.LogMessage("Company status updater started");
                 })
-                .SelectMany(async _ =>
+                .Do( _ =>
                 {
                     try
                     {
-                        await UpdaterService.UpdateServiceStatus();
+                        UpdaterService.UpdateServiceStatus();
                     }
                     catch (Exception ex)
                     {
                         Logger.LogError(ex);
                     }
-
-                    return Unit.Default;
                 })
                 .Do(_ =>
                 {
