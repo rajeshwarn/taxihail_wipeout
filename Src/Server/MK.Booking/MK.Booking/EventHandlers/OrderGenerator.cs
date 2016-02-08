@@ -245,6 +245,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
                 {
                     Id = Guid.NewGuid(),
+                    AccountId = @event.AccountId,
                     OrderId = @event.SourceId,
                     Note = @event.Note,
                 });
@@ -254,7 +255,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
                         Id = Guid.NewGuid(),
-						AccountId = @event.AccountId,
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
                         RatingTypeId = ratingScore.RatingTypeId,

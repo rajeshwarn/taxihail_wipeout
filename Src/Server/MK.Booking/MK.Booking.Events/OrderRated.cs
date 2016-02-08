@@ -11,8 +11,7 @@ namespace apcurium.MK.Booking.Events
 {
     public class OrderRated : VersionedEvent
     {
-		public Guid AccountId { get; set; }
-
+		public Guid? AccountId { get; set; }
         public string Note { get; set; }
         public List<RatingScore> RatingScores { get; set; }
     }
