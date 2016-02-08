@@ -27,7 +27,7 @@
 
             $ul.first().append($('<li>').append($add));
 
-            if (this.collection.length > 4) {
+            if (this.collection.length > 8) {
                 this.renderTooManyTypesErrorMessage();
             }
 

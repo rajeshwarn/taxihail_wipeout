@@ -18,10 +18,6 @@
         },
 
         add: function () {
-            if (this.vehicleTypes.length >= 4) {
-                alert(TaxiHail.localize('error.vehicleTypesLimitReached'));
-                TaxiHail.app.navigate('vehicleTypes', { trigger: true });
-            }
 
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles([], {});
             

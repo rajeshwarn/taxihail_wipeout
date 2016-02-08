@@ -3,6 +3,13 @@
 
     <div class="errors" style="margin-top: 10px;"></div>
 
+    {{#ifCond taxiMaximumReached true}}
+    <div>{{localize "Note that you reached the maximum amount of vehicles for Taxi service"}}</div><br />
+    {{/ifCond}}
+    {{#ifCond luxuryMaximumReached true}}
+    <div>{{localize "Note that you reached the maximum amount of vehicles for Luxury service"}}</div><br />
+    {{/ifCond}}
+
     <form class="form-horizontal clearfix" >
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>

@@ -14,12 +14,32 @@
         },
         
         render: function () {
+
+            var availableVehicles = this.options.availableVehicles.toJSON();
+
+            var taxiMaximumReached = this.collection.where({ serviceType: 'Taxi' }).length === 4;
+            if (taxiMaximumReached) {
+                availableVehicles = availableVehicles.filter(function (vehicle) {
+                    return vehicle.serviceType !== "Taxi";
+                });
+            }
+
+            var luxuryMaximumReached = this.collection.where({ serviceType: 'Luxury' }).length === 4;
+            
+            if (luxuryMaximumReached) {
+                availableVehicles = availableVehicles.filter(function (vehicle) {
+                    return vehicle.serviceType !== "Luxury";
+                });
+            }
+            
             var data = _.extend(this.model.toJSON(), {
-                availableVehicles: this.options.availableVehicles.toJSON(),
+                availableVehicles: availableVehicles,
                 networkVehicleTypes: this.options.networkVehicleTypes.toJSON(),
                 serviceTypes: JSON.parse(this.options.serviceTypes),
                 isNetworkEnabled: TaxiHail.parameters.isNetworkEnabled,
-                isNew: this.model.isNew()
+                isNew: this.model.isNew(),
+                taxiMaximumReached: taxiMaximumReached,
+                luxuryMaximumReached: luxuryMaximumReached
             });
 
             var html = this.renderTemplate(data);
