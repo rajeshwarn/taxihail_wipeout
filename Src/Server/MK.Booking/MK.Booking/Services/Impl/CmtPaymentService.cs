@@ -75,12 +75,22 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // CMT RideLinq flow
-
+                   
                     var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
                     if (orderStatusDetail == null)
                     {
                         throw new Exception("Order not found");
                     }
+
+                    if (_serverPaymentSettings.CmtPaymentSettings.PairingMethod == RideLinqPairingMethod.PairingCode
+                        && !orderStatusDetail.RideLinqPairingCode.HasValue())
+                    {
+                        // We haven't received the pairing code from IBS yet, set the ignore response false
+                        // so that the caller can exit without interpreting the response as a failure
+                        return new PairingResponse { IgnoreResponse = true };
+                    }
+
+                    _logger.LogMessage("Starting pairing with RideLinq for Order {0}", orderId);
 
                     if (orderStatusDetail.IBSOrderId == null)
                     {
@@ -508,13 +518,20 @@ namespace apcurium.MK.Booking.Services.Impl
                     SessionId = orderDetail.KountSessionId
                 };
 
-                if (orderStatusDetail.RideLinqPairingCode.HasValue())
+                switch (_serverPaymentSettings.CmtPaymentSettings.PairingMethod)
                 {
-                    pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
-                }
-                else
-                {
-                    pairingRequest.Medallion = orderStatusDetail.VehicleNumber;
+                    case RideLinqPairingMethod.VehicleMedallion:
+                        _logger.LogMessage("OrderPairingManager RideLinq with VehicleMedallion : " + (orderStatusDetail.VehicleNumber.HasValue() ? orderStatusDetail.VehicleNumber : "No vehicle number"));
+                        pairingRequest.Medallion = orderStatusDetail.VehicleNumber;
+                        break;
+                    case RideLinqPairingMethod.PairingCode:
+                        _logger.LogMessage("OrderPairingManager RideLinq with PairingCode : " + (orderStatusDetail.RideLinqPairingCode.HasValue() ? orderStatusDetail.RideLinqPairingCode : "No code"));
+                        pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
+                        break;
+                    case RideLinqPairingMethod.DeviceName:
+                        throw new Exception("RideLinq PairingMethod DeviceName not supported on non Arro Servers.  Since we do not do the dispatcher, we have no idea of the device name and can't pair using this.");
+                    default:
+                        throw new Exception("CmtPaymentSetting.PairingMethod not set and trying to use RideLinq pairing.");
                 }
 
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
@@ -527,7 +544,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Wait for trip to be updated to check if pairing was successful
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
-                response.ErrorCode = (trip != null) ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
+                response.ErrorCode = trip != null ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
 
                 return response;
             }
@@ -547,7 +564,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
 
-                _logger.LogMessage(string.Format("Error when trying to pair using DriveLinQ. Code: {0} - {1}"), response.ResponseCode, response.ResponseMessage); 
+                _logger.LogMessage(string.Format("Error when trying to pair using RideLinQ. Code: {0} - {1}"), response.ResponseCode, response.ResponseMessage);
 
                 throw;
             }
