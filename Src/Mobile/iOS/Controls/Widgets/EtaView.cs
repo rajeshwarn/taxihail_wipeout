@@ -62,6 +62,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+		private VehicleType _vehicleType;
+		public VehicleType VehicleType 
+		{
+			get
+			{ 
+				return _vehicleType;
+			}
+			set
+			{ 
+				if (_vehicleType != value) 
+				{
+					_vehicleType = value;
+					if (BaseRate != null) 
+					{
+						BaseRate.VehicleType = value;
+					}
+				}
+			}
+		}
+
         public bool UserInputDisabled
         {
             get { return !_fixedLowerBarView.UserInteractionEnabled; }
@@ -150,6 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
                     BaseRate.BaseRate = value.BaseRate;
+
                     if (value.BaseRate == null && BaseRateToggled)
                     {
                         ToggleBaseRate();
@@ -173,6 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void InitializeRateBox()
         {
             BaseRate = new BaseRateControl ();
+
             AddSubview(BaseRate);
 
             _rateBoxHeightConstraint = NSLayoutConstraint.Create(BaseRate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 0f);
@@ -183,6 +205,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Right, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Right, 1f, 0f),
                 NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Top, 1f, 0f)
             });
+
+			BaseRate.VehicleType = VehicleType;
         }
 
         private void InitializeFixedBar()

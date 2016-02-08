@@ -2375,6 +2375,12 @@
   	<data name="BaseRate_PerMinute" xml:space="preserve">
 		<value>{0} per minute</value>
 	</data>
+  	<data name="BaseRate_PerQuarterMile" xml:space="preserve">
+		<value>{0} ({1} per 0.25 miles)</value>
+	</data>
+  	<data name="BaseRate_PerEightySeconds" xml:space="preserve">
+		<value>{0} per 80 seconds</value>
+	</data>
  	<data name="BaseRate_RateStructure" xml:space="preserve">
     	<value>RATE STRUCTURE</value>
   	</data>

@@ -274,8 +274,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.WithConversion("Visibility");
 
 			set.Bind(_baseRateControl)
-                .For(v => v.BaseRate)
-                .To(vm => vm.SelectedVehicleType.BaseRate)
+                .For(v => v.VehicleType)
+                .To(vm => vm.SelectedVehicleType)
 				.OneWay();
 
 			set.Bind(this)

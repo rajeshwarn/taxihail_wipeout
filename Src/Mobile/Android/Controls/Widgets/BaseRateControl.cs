@@ -7,6 +7,8 @@ using Android.Views;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using System;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -67,36 +69,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public bool BaseRateToggled { get; set; }	
 
-        private BaseRateInfo _baseRate;
-        public BaseRateInfo BaseRate
-		{
-            get { return _baseRate; }
-			set
-			{
-                _baseRate = value;
-				var descriptionsText = value != null 
-                    ? new [] { 
-    					ToCurrency (value.MinimumFare),
-    					ToCurrency (value.BaseRateNoMiles), 
-    					string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (value.PerMileRate), ToCurrency (value.PerMileRate / 10)),
-    					string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (value.WaitTime))
-				    } 
-                    : new string[5];
-
-				for (int i = 0; i < descriptionsText.Length; i++)
-				{
-					_descriptions [i].Text = descriptionsText [i];
-				}
-					
-				if (value == null)
-				{
-					BaseRateToggled = false;
-					LayoutParameters.Height = 0;
-        			RequestLayout();
-				}
-        	}
-        }
-
 		string ToCurrency(decimal amount)
         {
 			return CultureProvider.FormatCurrency((float) amount);
@@ -124,6 +96,70 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             animation.Start();
         }
+
+		private void Initialize()
+		{
+			var mileageRateText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerQuarterMile") : Localize ("BaseRate_PerTenthMile");
+			var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency (BaseRate.PerMileRate / 4): ToCurrency (BaseRate.PerMileRate / 10);
+
+			var waitTimeText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerEightySeconds") : Localize ("BaseRate_PerMinute");
+			var waitTimeAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate.WaitTime * 1.3333333333m) : ToCurrency (BaseRate.WaitTime);
+
+			var descriptionsText = BaseRate != null 
+				? new [] { 
+				ToCurrency (BaseRate.MinimumFare),
+				ToCurrency (BaseRate.BaseRateNoMiles), 
+				string.Format (mileageRateText, ToCurrency (BaseRate.PerMileRate), mileageRateAmount),
+				string.Format (waitTimeText, waitTimeAmount)
+			} : new string[5];
+
+			for (int i = 0; i < descriptionsText.Length; i++)
+			{
+				_descriptions [i].Text = descriptionsText [i];
+			}
+
+			if (BaseRate == null)
+			{
+				BaseRateToggled = false;
+				LayoutParameters.Height = 0;
+				RequestLayout();
+			}
+		}
+
+		private VehicleType _vehicleType;
+		public VehicleType VehicleType 
+		{ 
+			get
+			{ 
+				return _vehicleType;	
+			}
+
+			set
+			{ 
+				_vehicleType = value;
+
+				if (value != null) 
+				{
+					Initialize ();
+				}
+			}
+		}
+
+		public BaseRateInfo BaseRate
+		{
+			get
+			{ 
+				return VehicleType != null ? VehicleType.BaseRate : null;
+			}
+		}
+
+		public ServiceType ServiceType
+		{
+			get
+			{ 
+				return VehicleType != null ? VehicleType.ServiceType : default(ServiceType);
+			}
+		}
     }
 }
 

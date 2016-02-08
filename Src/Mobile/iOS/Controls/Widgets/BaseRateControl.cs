@@ -3,6 +3,7 @@ using Foundation;
 using UIKit;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
-        void Initialize ()
+        private void Initialize ()
 		{
 			_labels = new UILabel[NumberOfItems];
 			_descriptions = new UILabel[NumberOfItems];
@@ -47,12 +48,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				this.Services ().Localize ["BaseRate_WaitTime"]
 			};
 
-			var descriptionsText = new [] { 
+			var mileageRateText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerQuarterMile") : Localize ("BaseRate_PerTenthMile");
+			var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency (BaseRate.PerMileRate / 4): ToCurrency (BaseRate.WaitTime);
+
+			var waitTimeText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerEightySeconds") : Localize ("BaseRate_PerMinute");
+			var waitTimeAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate * 1.3333333333m) : ToCurrency (BaseRate.WaitTime);
+
+			var descriptionsText = BaseRate != null 
+				? new [] { 
 				ToCurrency (BaseRate.MinimumFare),
 				ToCurrency (BaseRate.BaseRateNoMiles), 
-				string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (BaseRate.PerMileRate), ToCurrency (BaseRate.PerMileRate / 10)),
-				string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (BaseRate.WaitTime))
-			};
+				string.Format (mileageRateText, ToCurrency (BaseRate.PerMileRate), mileageRateAmount),
+				string.Format (waitTimeText, waitTimeAmount)
+			} : new string[5];
 
 			for (int i = NumberOfItems - 1; i > -1; i--)
 			{	
@@ -123,17 +131,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public string CurrencySymbol { get; set; }
 
-		private BaseRateInfo _baseRate;
+		private VehicleType _vehicleType;
+		public VehicleType VehicleType 
+		{ 
+			get
+			{ 
+				return _vehicleType;	
+			}
+
+			set
+			{ 
+				_vehicleType = value;
+
+				if (value != null) 
+				{
+					Initialize ();
+				}
+			}
+		}
+
 		public BaseRateInfo BaseRate
 		{
 			get
-			{
-				return _baseRate; 
-			}
-			set
 			{ 
-				_baseRate = value;
-				Initialize();
+				return VehicleType != null ? VehicleType.BaseRate : null;
+			}
+		}
+
+		public ServiceType ServiceType
+		{
+			get
+			{ 
+				return VehicleType != null ? VehicleType.ServiceType : null;
 			}
 		}
     }
