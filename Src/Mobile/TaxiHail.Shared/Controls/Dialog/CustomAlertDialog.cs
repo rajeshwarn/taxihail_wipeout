@@ -170,6 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             //Prevent click on ContentView
             _dialogOpacityView.Touch += (sender, e) => {
                 e.Handled = true;
+                ToogleKeyboard(true, owner);
             };
 
             // add the view to the rootview 
