@@ -527,7 +527,14 @@ namespace apcurium.MK.Booking.Services.Impl
                         pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
                         break;
                     case RideLinqPairingMethod.DeviceName:
-                        throw new Exception("RideLinq PairingMethod DeviceName not supported on non Arro Servers.  Since we do not do the dispatcher, we have no idea of the device name and can't pair using this.");
+                        var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
+                        if (vehicleMapping != null && vehicleMapping.DeviceName.HasValueTrimmed())
+                        {
+                            _logger.LogMessage("OrderPairingManager RideLinq with DeviceName : {0}", vehicleMapping.DeviceName);
+                            pairingRequest.DeviceName = vehicleMapping.DeviceName;
+                            break;
+                        }
+                        throw new Exception("OrderPairingManager RideLinq with DeviceName : No device name found in VehicleIdMappingDetail with orderId " + orderStatusDetail.OrderId);
                     default:
                         throw new Exception("CmtPaymentSetting.PairingMethod not set and trying to use RideLinq pairing.");
                 }
