@@ -2393,4 +2393,22 @@
 	<data name="Gratuity_Pay" xml:space="preserve">
 		<value>Give Gratuity</value>
 	</data>
+	<data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Server error</value>
+	</data>
+	<data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Your session has expired, please login again.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+		<value>No account with this email has been found.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+		<value>This email matches a Facebook account. Please login via Facebook.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+		<value>This email matches a Twitter account. Please login via Twitter.</value>
+	</data>
+	<data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+		<value>The confirmation code is incorrect.</value>
+	</data>
 </root>
