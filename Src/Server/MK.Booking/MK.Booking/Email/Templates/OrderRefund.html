@@ -406,7 +406,7 @@
                                         <td class="receipt_date"><p style="color:{{ AccentColor }};margin:0 auto">{{ RefundDate }} - {{ RefundTime }}</p></td>
                                     </tr>
                                     <tr>
-                                        <td class="receipt_date"><h3 style="color:{{ AccentColor }};margin:0 auto">{{ localize "Email_Title_Refund" }}</h3></td>
+                                        <td class="receipt_date"><h3 style="color:{{ AccentColor }};margin:0 auto">{{ localize "Email_Title_OrderRefund" }}</h3></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -416,7 +416,7 @@
                                                         <td valign="top">
                                                             <p>
                                                                 {{ localize "Email_Body_TotalRefund" }} {{ TotalAmount }}<br />
-                                                                {{ localize "Email_Body_RideLinqLastFour" }} {{ LastForDigits }}<br />
+                                                                {{ localize "Email_Body_RideLinqLastFour" }} {{ Last4Digits }}<br />
                                                             </p>
                                                             <p>{{ localize "Email_Body_TheTeam" }}</p>
                                                         </td>

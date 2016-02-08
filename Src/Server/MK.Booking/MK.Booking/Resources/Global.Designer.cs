@@ -1132,6 +1132,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Order Refund.
+        /// </summary>
+        public static string Email_Subject_OrderRefund {
+            get {
+                return ResourceManager.GetString("Email_Subject_OrderRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
         /// </summary>
         public static string Email_Subject_PasswordReset {
@@ -1159,11 +1168,11 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refund.
+        ///   Looks up a localized string similar to Order Refund.
         /// </summary>
-        public static string Email_Title_Refund {
+        public static string Email_Title_OrderRefund {
             get {
-                return ResourceManager.GetString("Email_Title_Refund", resourceCulture);
+                return ResourceManager.GetString("Email_Title_OrderRefund", resourceCulture);
             }
         }
         

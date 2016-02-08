@@ -335,8 +335,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         refundPaymentResponse.Last4Digits,
                         orderModel.TotalAmountString, 
                         accountManagementModel.Email, 
-                        AuthSession.UserAuthName, 
-                        accountManagementModel.Language);
+                        AuthSession.UserAuthName,
+                        order.ClientLanguageCode);
 
                     accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
@@ -399,8 +399,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PhoneNumber = accountDetail.Settings.Phone,
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
-                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
-                Language = accountDetail.Language
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
             };
 
             if (accountDetail.DefaultCreditCard != null)
