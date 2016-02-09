@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             catch(WebException e)
             {
                 // Happen when device is not connected
-                throw new AuthException("Network error", AuthFailure.NetworkError, e);
+                _connectivityService.ShowToast();
             }
             catch(WebServiceException e)
             {
@@ -369,11 +369,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 if(e.Message == AuthenticationErrorCode.AccountDisabled)
                 {
                     throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
-                }
-
-                if (e is HttpRequestException && e.Message.Contains("unexpected end of stream"))
-                {
-                    _connectivityService.ShowToast();
                 }
 
                 if (Mvx.Resolve<IErrorHandler>().HandleError(e))
