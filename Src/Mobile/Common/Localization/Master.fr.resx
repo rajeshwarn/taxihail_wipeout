@@ -142,7 +142,7 @@
     <value>Courriel existant</value>
   </data>
   <data name="FacebookLoginErrorMessage" xml:space="preserve">
-    <value>Cet courriel est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre courriel.</value>
+    <value>Ce courriel est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre courriel.</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
@@ -1907,13 +1907,13 @@
     <value>Code invalide</value>
   </data>
   <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
-    <value>ENREGOISTREMENT</value>
+    <value>ENREGISTREMENT</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
     <value>Dans un Taxi</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
-    <value>Enrregistrement</value>
+    <value>Enregistrement</value>
   </data>
   <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
     <value>Distance:</value>
