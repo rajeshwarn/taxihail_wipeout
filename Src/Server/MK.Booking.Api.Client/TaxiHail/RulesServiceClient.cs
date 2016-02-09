@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     public class RulesServiceClient : BaseServiceClient
     {
         public RulesServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService, null)
         {
         }
 

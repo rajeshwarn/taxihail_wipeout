@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         {
             try
             {
-                var refService = new SearchLocationsServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+                var refService = new SearchLocationsServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
                 var addresses = await refService.Search("yul", 45.4982111, -73.6565887);
                 
                 if (!addresses.Any())
@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.Tests
                 var a1 = addresses.ElementAt(0);
                 Assert.IsNotNullOrEmpty(a1.PlaceId);
 
-                var sut = new PlaceDetailServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+                var sut = new PlaceDetailServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
                 var address = await sut.GetPlaceDetail(a1.PlaceId, a1.FriendlyName);
                 Assert.AreNotEqual(0, address.Latitude);
                 Assert.AreNotEqual(0, address.Longitude);

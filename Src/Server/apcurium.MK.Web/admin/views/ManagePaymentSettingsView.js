@@ -33,6 +33,7 @@
 
             this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode + "]").attr("selected", "selected");
             this.$("[name=isPaymentOutOfAppDisabled] option[value=" + data.serverPaymentSettings.isPaymentOutOfAppDisabled + "]").attr("selected", "selected");
+            this.$("[id=cmtPaymentSettings_pairingMethod] option[value=" + data.serverPaymentSettings.cmtPaymentSettings.pairingMethod + "]").attr("selected", "selected");
             this.$("[id=landingPageType] option[value=" + data.serverPaymentSettings.payPalServerSettings.landingPageType + "]").attr("selected", "selected");
 
             this.warningDiv = this.$("#warning");

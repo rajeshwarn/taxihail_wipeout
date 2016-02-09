@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using CreditCardDetails = apcurium.MK.Booking.Api.Contract.Resources.CreditCardDetails;
 #if !CLIENT
@@ -23,8 +24,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
 	public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
-        public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public BraintreeServiceClient(string url, string sessionId, string clientKey, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
             ClientKey = clientKey;
         }
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
             {
                 CardToken = cardToken
-            });
+            }, Logger);
         }
 
         public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
@@ -67,12 +68,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public Task<OverduePayment> GetOverduePayment()
         {
-            return Client.GetAsync<OverduePayment>("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: Logger);
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Client.PostAsync(new SettleOverduePaymentRequest());
+            return Client.PostAsync(new SettleOverduePaymentRequest(), Logger);
         }
 
 		public Task<GenerateClientTokenResponse> GenerateClientTokenResponse()

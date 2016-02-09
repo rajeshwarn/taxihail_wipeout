@@ -10,6 +10,8 @@ namespace CMTPayment.Pair
 
         public string Medallion { get; set; }
 
+        public string DeviceName { get; set; }
+
         public string DriverId { get; set; }
 
         public string CustomerId { get; set; }

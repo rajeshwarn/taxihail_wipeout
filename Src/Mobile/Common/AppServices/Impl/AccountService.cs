@@ -578,6 +578,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var usRegex = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
 			var zipCode = usRegex.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
 
+			Logger.LogMessage("Tokenizing card ending with: {0}", creditCard.CardNumber.Substring(creditCard.CardNumber.Length - 4));
+
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
                 creditCard.NameOnCard,
@@ -586,6 +588,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				kountSessionId,
 				zipCode,
 				CurrentAccount));
+
+			Logger.LogMessage("Response from tokenization: Success: {0} Message: {1}", response.IsSuccessful, response.Message);
 
 		    if (!response.IsSuccessful)
 		    {

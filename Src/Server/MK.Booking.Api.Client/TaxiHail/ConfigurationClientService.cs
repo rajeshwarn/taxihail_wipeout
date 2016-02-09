@@ -20,19 +20,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient
 	{
-	    private readonly ILogger _logger;
-
-        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
 		{
-		    _logger = logger;
 		}
 
         public async Task<IDictionary<string, string>> GetSettings(bool shouldThrowExceptionIfError = false)
 		{
 			try
 			{
-                return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings");
+				return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings", logger: Logger);
 			}
 			catch (Exception ex)
 			{
@@ -52,14 +49,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			var paymentSettings = new ClientPaymentSettings();
 			try
 			{
-				var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments");
+                var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments", logger: Logger);
 
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
-				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
+				SettingsLoader.InitializeDataObjects(paymentSettings, result, Logger);
 			}
 			catch (Exception ex)
 			{
-                _logger.LogError(ex);
+                Logger.LogError(ex);
 			}	
 			return paymentSettings;
 		}

@@ -23,8 +23,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-        public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
 		{
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
 			{
 				CardToken = cardToken
-			});
+			}, Logger);
 		}
 
         public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
@@ -49,12 +49,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
         public Task<OverduePayment> GetOverduePayment()
         {
-            return Client.GetAsync<OverduePayment>("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: Logger);
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Client.PostAsync(new SettleOverduePaymentRequest());
+            return Client.PostAsync(new SettleOverduePaymentRequest(), Logger);
         }
 
         public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger, string zipCode)

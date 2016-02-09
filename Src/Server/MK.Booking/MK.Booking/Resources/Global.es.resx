@@ -839,4 +839,7 @@
   <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
     <value>No Payment Method Available.</value>
   </data>
+  <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
+    <value>Sorry, future booking is not available</value>
+  </data>
 </root>
