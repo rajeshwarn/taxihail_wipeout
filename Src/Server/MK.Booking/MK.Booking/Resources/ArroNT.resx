@@ -168,4 +168,7 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>Meter is on. Checking you in now...</value>
   </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  </data>
 </root>
