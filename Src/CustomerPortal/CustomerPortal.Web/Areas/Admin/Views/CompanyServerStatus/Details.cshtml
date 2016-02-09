@@ -1,0 +1,172 @@
+﻿@using apcurium.MK.Common.Extensions
+@model  CustomerPortal.Web.Areas.Admin.Models.CompanyStatusModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+
+<div id="statusDetails" class='span12' style="width: 870px;">
+    <br/>
+    <h2>@ViewBag.Title @Model.CompanyName</h2>
+    <br/>
+    @if (!Model.IsServerAvailable)
+    {
+        <h3>Server Unavailable</h3>
+    }
+    <br />
+    @if (Model.HasAuthenticationError)
+    {
+        <h3>Issues with authentication</h3>
+    }
+
+    @if (!Model.IsApiAvailable)
+    {
+        <h3>Status API not available</h3>
+    }
+    <br/>
+    @if (Model.IsServerAvailable && !Model.HasAuthenticationError && Model.IsApiAvailable)
+    { 
+        <table>
+            <tr>
+                <td style="width: 150px">
+                    Service
+                </td>
+                <td style="width: 50px; text-align: center;">
+                    Status
+                </td>
+                <td>
+                    <span style="margin-left: 30px">Information</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    Ibs
+                </td>
+                <td style="width: 50px;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsIbsAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td>
+                    <span style="margin-left: 30px">@Model.ServiceStatus.SelectOrDefault(model => "Service url: " + model.IbsUrl)</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    Customer portal
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsCustomerPortalAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td/>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    Cmt Geo
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsGeoAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td style="margin-left: 30px">
+                    <span style="margin-left: 30px">
+                        @if (Model.ServiceStatus.IsGeoAvailable.HasValue)
+                        {
+                            @Model.ServiceStatus.SelectOrDefault(model => "Service url: " + model.GeoUrl)
+                        }
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    HoneyBadger
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsHoneyBadgerAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td style="margin-left: 30px">
+                    <span style="margin-left: 30px">
+                        @if (Model.ServiceStatus.IsHoneyBadgerAvailable.HasValue)
+                        {
+                            @Model.ServiceStatus.SelectOrDefault(model => "Service url: " + model.HoneyBadgerUrl)
+                        }
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    CMT Mobile API
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsMapiAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td style="margin-left: 30px">
+                    <span style="margin-left: 30px">
+                        @if (Model.ServiceStatus.IsMapiAvailable.HasValue)
+                        {
+                            @Model.ServiceStatus.SelectOrDefault(model => "Service url: " + model.MapiUrl)
+                        }
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    CMT Payment API
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsPapiAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td style="margin-left: 30px">
+                    <span style="margin-left: 30px">
+                        @if (Model.ServiceStatus.IsPapiAvailable.HasValue)
+                        {
+                            @Model.ServiceStatus.SelectOrDefault(model => "Service url: " + model.PapiUrl)
+                        }
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    Database
+                </td>
+                <td style="width: 50px; align-content: center;">
+                    @Html.EditorFor(model => model.ServiceStatus.IsSqlAvailable, "BooleanGraphicDisplayTemplate")
+                </td>
+                <td/>
+            </tr>
+            <tr>
+                <td style="width: 150px">
+                    Order status updater
+                </td>
+                <td style="width: 50px;">
+                    @if (Model.ServiceStatus.IsUpdaterDeadlocked)
+                    {
+                        <div style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>
+                    }
+                    else
+                    {
+                        <div style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: green">&nbsp;</div>;
+                    }
+                </td>
+                <td style="margin-left: 30px">
+                    <span style="margin-left: 30px">
+                        @if (Model.ServiceStatus.IsUpdaterDeadlocked)
+                        {
+                            <span>A potential deadlock was detected, the webserver will be restarted soon.</span>
+                        }
+                    </span>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+        function refresh() {
+            $.get('Details?CompanyKey=@Model.CompanyKey', function(result) {
+                $("#statusDetails").html(result);
+            });
+        }
+        // Auto-refresh set to every minutes.
+        setInterval(refresh, 60000);
+    </script>
+}

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Security
                 var authResponse = (AuthResponse) base.Authenticate(authService, session, request);
                 return authResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var account = Dao.FindByEmail(request.UserName);
 

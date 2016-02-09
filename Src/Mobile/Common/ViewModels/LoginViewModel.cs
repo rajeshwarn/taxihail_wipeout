@@ -284,13 +284,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     switch (e.Failure)
                     {
                         case AuthFailure.InvalidServiceUrl:
-                        case AuthFailure.NetworkError:
-                        {
-                            var title = localize["NoConnectionTitle"];
-                            var msg = localize["NoConnectionMessage"];
-                            this.Services().Message.ShowMessage(title, msg);
-                        }
-                            break;
                         case AuthFailure.InvalidUsernameOrPassword:
                         {
                             var title = localize["InvalidLoginMessageTitle"];
