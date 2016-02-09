@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
-    <value>Pour confirmer votre email, utilisez le lien suivant</value>
+    <value>Pour confirmer votre courriel, utilisez le lien suivant</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
-    <value>Votre adresse email est bien enregistré</value>
+    <value>Votre adresse courriel est bien enregistrée</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
     <value>Vous pouvez dès à présent vous connecter à l'application</value>
@@ -151,7 +151,7 @@
     <value>Votre chauffeur est en chemin</value>
   </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
-    <value>Adresse email à confirmer</value>
+    <value>Adresse courriel à confirmer</value>
   </data>
   <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
     <value>Votre adresse mail a bien été prise en compte</value>
@@ -211,7 +211,7 @@
     <value>Reçu</value>
   </data>
   <data name="Email_Body_RingCode" xml:space="preserve">
-    <value>?</value>
+    <value>Code de porte</value>
   </data>
   <data name="Email_Body_ThankYou" xml:space="preserve">
     <value>Merci!</value>
@@ -295,7 +295,7 @@
     <value>Annulé</value>
   </data>
   <data name="OrderStatus_wosDONE" xml:space="preserve">
-    <value>Réalisé</value>
+    <value>Complété</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Passager à bord</value>
@@ -337,7 +337,7 @@
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
@@ -361,7 +361,7 @@
     <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
-    <value>Éched de l'association. Payez au chauffeur.</value>
+    <value>Échec de l'association. Payez au chauffeur.</value>
   </data>
   <data name="Email_Body_FareBreakDown" xml:space="preserve">
     <value>Prix de la course</value>
@@ -373,13 +373,13 @@
     <value>La course sera payée en utilisant le mode de paiement choisi</value>
   </data>
   <data name="OrderStatus_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
-    <value>Paiement In App</value>
+    <value>Paiement par l'application</value>
   </data>
   <data name="ChargeAccount" xml:space="preserve">
     <value>Compte</value>
@@ -406,7 +406,7 @@
     <value>Paiement en cours via l'application du passager...</value>
   </data>
   <data name="PaymentFailedToDriver" xml:space="preserve">
-    <value>Paiement in App a échoué!</value>
+    <value>Paiement par l'application a échoué!</value>
   </data>
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Commande #{0} montant original: {1}</value>
@@ -532,7 +532,7 @@
     <value>Message</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Cette adresse email est déjà utilisée</value>
+    <value>Cette adresse courriel est déjà utilisée</value>
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
@@ -628,7 +628,7 @@
     <value>Extra</value>
   </data>
   <data name="Email_Body_DriverId" xml:space="preserve">
-    <value>Driver #</value>
+    <value>Chauffeur #</value>
   </data>
   <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
     <value>Frais de réservation</value>
@@ -652,7 +652,7 @@
     <value>Frais de réservation</value>
   </data>
   <data name="Email_Body_RateClass" xml:space="preserve">
-    <value>Rate Code</value>
+    <value>Code de tarif</value>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>La carte de crédit a été refusée</value>
@@ -667,7 +667,7 @@
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
   <data name="PhoneBlackListed" xml:space="preserve">
-    <value>The phone number is black listed</value>
+    <value>Le numéro de téléphone est sur une liste noire</value>
   </data>
   <data name="EmailUsedMessage" xml:space="preserve">
     <value>Ce courriel est déjà utilisé par un autre compte</value>
@@ -697,7 +697,7 @@
     <value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
   </data>
   <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
-    <value>No Payment Method Available.</value>
+    <value>Aucun mode de paiement disponible.</value>
   </data>
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Désolé, les commandes futures ne sont pas disponibles.</value>
