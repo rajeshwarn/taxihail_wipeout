@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
+using CustomerPortal.Contract.Resources;
 
 namespace CustomerPortal.Web.Services
 {
     public interface IEmailSender
     {
-        void SendEmail(string details, string tag, string company, string userName, string userEmail, string server);
+        void SendDeploymentWarningEmail(string details, string tag, string company, string userName, string userEmail, string server);
+
+        void SendServiceStatusEmail(string companyName, string url, ServiceStatus status, HttpStatusCode httpStatusCode);
     }
 }

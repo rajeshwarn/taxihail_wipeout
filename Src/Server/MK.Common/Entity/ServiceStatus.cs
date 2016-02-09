@@ -23,5 +23,18 @@ namespace CustomerPortal.Contract.Resources
         public DateTime? CycleStartDate { get; set; }
 
         public bool IsUpdaterDeadlocked { get; set; }
+
+
+        public bool IsServerHealthy()
+        {
+            return IsIbsAvailable &&
+                   (IsGeoAvailable ?? true) &&
+                   (IsHoneyBadgerAvailable ?? true) &&
+                   (IsMapiAvailable ?? true) &&
+                   (IsPapiAvailable ?? true) &&
+                   IsCustomerPortalAvailable &&
+                   IsSqlAvailable &&
+                   !IsUpdaterDeadlocked;
+        }
     }
 }
