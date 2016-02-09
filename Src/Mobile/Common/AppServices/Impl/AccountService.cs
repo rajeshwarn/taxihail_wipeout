@@ -27,7 +27,6 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
 using System.Threading;
-using System.Net.Http;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
