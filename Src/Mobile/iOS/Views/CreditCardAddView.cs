@@ -4,18 +4,11 @@ using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Card.IO;
 using System;
-using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Booking.Mobile.Client.Style;
-using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Extensions;
 using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views

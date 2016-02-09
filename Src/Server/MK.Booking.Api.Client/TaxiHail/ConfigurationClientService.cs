@@ -10,7 +10,6 @@ using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 
-
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -38,7 +37,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     throw;
                 }
 
-                _logger.LogError(ex);
+                Logger.LogError(ex);
 
                 return new Dictionary<string, string>();
 			}
