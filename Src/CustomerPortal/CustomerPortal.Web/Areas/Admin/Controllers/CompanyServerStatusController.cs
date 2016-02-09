@@ -10,16 +10,14 @@ using MongoRepository;
 
 namespace CustomerPortal.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = RoleName.Admin)]
     public class CompanyServerStatusController : Controller
     {
         private readonly IRepository<CompanyServerStatus> _companyServerStatusRepository;
 
-
         public CompanyServerStatusController() : this(new MongoRepository<CompanyServerStatus>())
         {
-
         }
-
 
         public CompanyServerStatusController(IRepository<CompanyServerStatus> companyServerStatusRepository)
         {
@@ -43,7 +41,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             return View(GetModelFromDbObject(status));
         }
-
 
         private CompanyStatusModel GetModelFromDbObject(CompanyServerStatus status)
         {
@@ -83,7 +80,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 .ToArray();
         }
 
-
         private class ServerStatusComparer : IComparer<CompanyStatusModel>
         {
             public int Compare(CompanyStatusModel x, CompanyStatusModel y)
@@ -93,7 +89,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 return weightX - weightY;
             }
-
 
             private int GetWeight(ServiceStatusType type)
             {
@@ -111,8 +106,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     ? 2
                     : 3;
             }
-
         }
-
     }
 }
