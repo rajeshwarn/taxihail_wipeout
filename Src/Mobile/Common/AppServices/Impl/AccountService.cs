@@ -44,16 +44,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
+		private readonly IConnectivityService _connectivityService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize)
+			ILocalization localize,
+			IConnectivityService connectivityService)
 		{
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
+			_connectivityService = connectivityService;
 		}
 
         public async Task<ReferenceData> GetReferenceData()
@@ -326,10 +329,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
-            catch(WebException e)
+            catch(WebException)
             {
                 // Happen when device is not connected
-                throw new AuthException("Network error", AuthFailure.NetworkError, e);
+                _connectivityService.ShowToast();
             }
             catch(WebServiceException e)
             {
