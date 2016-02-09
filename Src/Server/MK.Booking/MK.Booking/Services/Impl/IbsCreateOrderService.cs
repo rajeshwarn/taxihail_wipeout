@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString, string companyKey,
             ServiceType serviceType, int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
-            int? requestProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false)
+            int? requestProviderId, Fare fare, double? tipIncentive, string email, bool isHailRequest = false)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     defaultVehicleTypeId,
                     vehicleCandidates,
                     tipIncentive,
+                    email,
                     fare);
 
                 // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
@@ -160,6 +161,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     promptsLength,
                     defaultVehicleTypeId,
                     tipIncentive,
+                    email,
                     fare);
             }
 

@@ -66,13 +66,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (!ibsOrderId.HasValue)
             {
+                var accountDetail = _accountDao.FindById(@event.AccountId);
+                var email = accountDetail != null ? accountDetail.Email : string.Empty;
+   
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
                 var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                     @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive, @event.IsHailRequest);
+                    @event.TipIncentive, email, @event.IsHailRequest);
 
                 ibsOrderId = result.CreateOrderResult;
             }
@@ -91,13 +94,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(IbsOrderSwitchInitiated @event)
         {
             // Order switched to another company
+            var accountDetail = _accountDao.FindById(@event.AccountId);
+            var email = accountDetail != null ? accountDetail.Email : string.Empty;
 
             var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                @event.TipIncentive);
+                @event.TipIncentive, email);
 
             SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
@@ -108,15 +113,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             var temporaryInfo = _orderDao.GetTemporaryInfo(@event.OrderId);
             var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
-
+            
             DeleteTempOrderData(@event.OrderId);
-
+            
             var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.Settings.ServiceType, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
-                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
+                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, orderInfo.Account.Email);
 
             SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
 

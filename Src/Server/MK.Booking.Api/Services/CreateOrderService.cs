@@ -431,7 +431,7 @@ namespace apcurium.MK.Booking.Api.Services
                     request.Settings.ServiceType, account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                     request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
                     accountValidationResult.PromptsLength, referenceData.CompaniesList, market, request.Settings.ChargeTypeId,
-                    request.Settings.ProviderId, fare, request.TipIncentive, true);
+                    request.Settings.ProviderId, fare, request.TipIncentive, account.Email, true);
 
                 orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
 
