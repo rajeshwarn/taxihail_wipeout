@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             try
             {
-                BraintreeGateway.CreditCard.Delete(cardToken);
+                BraintreeGateway.PaymentMethod.Delete(cardToken);
                 return new DeleteTokenizedCreditcardResponse
                 {
                     IsSuccessful = true,
@@ -367,10 +367,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(commitTransactionId, amount);
+
+                var transactions = settlementResult.Target;
                 
                 var isSuccessful = settlementResult.IsSuccess()
-                    && settlementResult.Target != null
-                    && settlementResult.Target.ProcessorAuthorizationCode.HasValue();
+                    && transactions != null
+                    && (transactions.ProcessorAuthorizationCode.HasValue() || transactions.ProcessorResponseCode == "1000");
+               
+
 
                 var isCardDeclined = IsCardDeclined(settlementResult.Transaction);
                 var transactionDate = isSuccessful ? settlementResult.Target.UpdatedAt : settlementResult.Transaction.UpdatedAt;

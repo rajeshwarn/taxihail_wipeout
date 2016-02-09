@@ -207,10 +207,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var name = account.SelectOrDefault(acc => acc.Name.Split(' '), new string[0]);
 
-            if (account.DefaultCreditCard.HasValue && account.DefaultCreditCard != Guid.Empty)
-            {
-                var creditcard = _creditCardDao.FindById(account.DefaultCreditCard.Value);
+            var creditcard = account.DefaultCreditCard.HasValue && account.DefaultCreditCard != Guid.Empty
+                ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
+                : null;
 
+            if (creditcard != null)
+            {
                 var braintreeCreditCard = BraintreeGateway.CreditCard.Find(creditcard.Token);
 
                 var braintreeCustomerUpdate = new CustomerRequest()
