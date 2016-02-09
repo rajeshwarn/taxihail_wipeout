@@ -90,7 +90,7 @@ namespace CustomerPortal.Web.Services.Impl
                          company.CompanyKey.Equals("ArroKiosk", StringComparison.InvariantCultureIgnoreCase);
 
             return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
-                ? "http://localhost/apcurium.mk.web/"//"http://test.taxihail.biz:8181/Apcurium/"
+                ? "http://test.taxihail.biz:8181/Apcurium/"
                 : "https://api.{0}.com/{1}/".InvariantCultureFormat(isArro ? "goarro" : "taxihail", company.CompanyKey);
 
         }

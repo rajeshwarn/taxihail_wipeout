@@ -90,7 +90,7 @@ namespace CustomerPortal.Web
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
 
-            StartStatusUpdater(TimeSpan.FromSeconds(5));
+            StartStatusUpdater(TimeSpan.FromMilliseconds(100));
         }
 
         private static bool _statusUpdaterRunning;
