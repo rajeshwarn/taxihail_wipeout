@@ -22,16 +22,18 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
     {
         private readonly IMembershipService _membership;
         private readonly MongoSession _session;
+        private readonly IRepository<UserPreference> _preferences; 
 
-        public MembershipController(IRepository<Company> repository, IMembershipService membership)
+        public MembershipController(IRepository<Company> repository, IMembershipService membership, IRepository<UserPreference> preferences)
             : base(repository)
         {
             _membership = membership;
+            _preferences = preferences;
             _session = new MongoSession(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
         }
 
         public MembershipController()
-            : this(new MongoRepository<Company>(), new MembershipService())
+            : this(new MongoRepository<Company>(), new MembershipService(), new MongoRepository<UserPreference>())
         {
         }
 
@@ -85,7 +87,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                         _membership.AddUserToRole(model.EmailAddress, RoleName.Admin);
                     }
 
-                    bool isCompanyCreationWizard = Request.Params["cw"] != null;
+                    var isCompanyCreationWizard = Request.Params["cw"] != null;
                     if (isCompanyCreationWizard)
                     {
                         return RedirectToAction("Index", "Home");
@@ -195,8 +197,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-
+            
             var deleted = _membership.DeleteAccount(user.UserName);
+            if (deleted)
+            {
+                _preferences.Delete(preference => preference.UserIdentity == user.UserName);
+            }
             return RedirectToAction("Index");
         }
 
