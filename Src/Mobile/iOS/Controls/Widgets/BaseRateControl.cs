@@ -6,6 +6,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency (BaseRate.PerMileRate / 4): ToCurrency (BaseRate.WaitTime);
 
 			var waitTimeText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerEightySeconds") : Localize ("BaseRate_PerMinute");
-			var waitTimeAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate * 1.3333333333m) : ToCurrency (BaseRate.WaitTime);
+			var waitTimeAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate.WaitTime * 1.3333333333m) : ToCurrency (BaseRate.WaitTime);
 
 			var descriptionsText = BaseRate != null 
 				? new [] { 
@@ -162,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			get
 			{ 
-				return VehicleType != null ? VehicleType.ServiceType : null;
+				return VehicleType != null ? VehicleType.ServiceType : default(ServiceType);
 			}
 		}
     }

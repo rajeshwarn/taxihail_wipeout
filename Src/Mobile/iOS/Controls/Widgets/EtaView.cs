@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _selectedVehicle = value;
 
                     EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
-                    BaseRate.BaseRate = value.BaseRate;
+                    BaseRate.VehicleType = value;
 
                     if (value.BaseRate == null && BaseRateToggled)
                     {

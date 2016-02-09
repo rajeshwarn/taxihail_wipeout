@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return _vehicles.Select(x => new ListItem<Guid> { Id = x.Id, Display = x.Name }).ToArray();
+                return (_vehicles ?? new VehicleType[0]).Select(x => new ListItem<Guid> { Id = x.Id, Display = x.Name }).ToArray();
             }
         }
 
