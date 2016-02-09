@@ -17,11 +17,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-        private readonly ILogger _logger;
-        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
-			_logger = logger;
         }
 
 		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId)
@@ -31,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					Latitude = latitude,
 					Longitude = longitude,
 					VehicleTypeId = vehicleTypeId
-				});
+				}, Logger);
 
 			return response.ToArray();
 		}
@@ -42,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			{
 				Medallion = medallion,
 				OrderId = orderId
-			});
+            }, Logger);
 		}
 
 	    public Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleRegistration, Guid orderId)
@@ -53,12 +51,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	            Latitude = latitude,
 	            VehicleRegistration = vehicleRegistration,
 	            OrderId = orderId
-	        });
+            }, Logger);
 	    }
 
 		public async Task<VehicleType[]> GetVehicleTypes()
 	    {
-            var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes");
+            var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes", logger: Logger);
 
             return response.ToArray();
 	    }
@@ -73,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	                Message = message,
 	                VehicleNumber = vehicleNumber,
 					OrderId = orderId
-	            });
+                }, logger: Logger);
 	    }
     }
 }

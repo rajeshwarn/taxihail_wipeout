@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -27,8 +28,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private readonly ICacheService _cacheService;
 
-        public CompanyServiceClient(string url, string sessionId, IPackageInfo packageInfo, ICacheService cacheService, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public CompanyServiceClient(string url, string sessionId, IPackageInfo packageInfo, ICacheService cacheService, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
             _cacheService = cacheService;
         }
@@ -156,17 +157,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 #endif
 
             var request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
-            return Client.GetAsync<AccountCharge>(request);
+            return Client.GetAsync<AccountCharge>(request, logger: Logger);
         }
 
         public Task<NotificationSettings> GetNotificationSettings()
         {
-            return Client.GetAsync<NotificationSettings>("/settings/notifications");
+            return Client.GetAsync<NotificationSettings>("/settings/notifications", logger: Logger);
         }
 
         public Task<ActivePromotion[]> GetActivePromotions()
         {
-            return Client.GetAsync(new ActivePromotions());
+            return Client.GetAsync(new ActivePromotions(), Logger);
         }
     }
 }

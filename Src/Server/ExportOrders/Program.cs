@@ -35,7 +35,7 @@ namespace ExportTool
 
             try
             {
-                var auth = new AuthServiceClient(_url, null, null, null);
+                var auth = new AuthServiceClient(_url, null, null, null, null);
                 var response = auth.Authenticate(Settings.Default.Username, Settings.Default.Password);
                 response.Wait();
                 _token = response.Result;

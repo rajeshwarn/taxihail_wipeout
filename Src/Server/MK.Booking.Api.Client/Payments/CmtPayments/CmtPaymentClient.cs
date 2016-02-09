@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<OverduePayment> GetOverduePayment()
         {
-            return Client.GetAsync<OverduePayment>("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: _logger);
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment()
