@@ -113,6 +113,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ibsAccountId,
                     name,
                     phone,
+                    account.Email,
                     passengers,
                     vehicleTypeId,
                     ibsOrderParams.IbsChargeTypeId,

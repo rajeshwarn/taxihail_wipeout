@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
                 var result = _ibsCreateOrderService.CreateIbsOrder(@event.AccountId, @event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                     @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
-                    @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
+                    @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.IsFutureBooking, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                     @event.TipIncentive, account.DefaultTipPercent, companyFleedId: @event.CompanyFleetId);
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             
             var result = _ibsCreateOrderService.CreateIbsOrder(@event.AccountId, @event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
-                @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
+                @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, false, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                 @event.TipIncentive, account.DefaultTipPercent);
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             
             var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.AccountId, orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
-                orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
+                orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, account.Email, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.IsFutureBooking, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, account.DefaultTipPercent);

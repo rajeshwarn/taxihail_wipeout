@@ -61,20 +61,12 @@ namespace MK.Booking.Test.OrderStatusUpdate
         }
 
         #region
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
-            int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
-            string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            double? tipIncentive, int? tipPercent, Fare fare = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public IbsVehicleCandidate[] GetVehicleCandidates(IbsOrderKey orderKey)
         {
             throw new NotImplementedException();
         }
 
-        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone,
+        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, string email,
             int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
             IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength,
             int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, int durationOfOfferInSeconds, Fare fare = null,

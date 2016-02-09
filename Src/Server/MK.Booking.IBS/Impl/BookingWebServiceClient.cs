@@ -488,9 +488,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, int durationOfOfferInSeconds, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
+        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, int durationOfOfferInSeconds, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
         {
-            var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
+            var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, email, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
                 promptsLength, defaultVehiculeTypeId, tipIncentive, tipPercent, orderId, durationOfOfferInSeconds, fare);
 
@@ -635,7 +635,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId,
             int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts,
             int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, Guid taxiHailOrderId, int durationOfOfferInSeconds, Fare fare = default(Fare))
         {
@@ -649,6 +649,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Customer = passengerName,
                 Phone = CleanPhone(phone),
                 AccountNum = accountNumber,
+                EmailBackAdd = email,
                 JobProvider = (int)_serverSettings.ServerData.IBS.JobProviders,
                 JobOfferAcceptTimeout = durationOfOfferInSeconds
             };
