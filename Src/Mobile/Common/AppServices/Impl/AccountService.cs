@@ -330,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
-            catch(WebException e)
+            catch(WebException)
             {
                 // Happen when device is not connected
                 _connectivityService.ShowToast();
