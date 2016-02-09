@@ -553,6 +553,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\CompanyStatusTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\CompanyServerStatus\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\BooleanGraphicDisplayTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\CompanyServerStatus\_StatusList.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

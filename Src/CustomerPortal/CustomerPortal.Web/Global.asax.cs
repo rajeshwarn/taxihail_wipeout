@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -89,7 +90,7 @@ namespace CustomerPortal.Web
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
 
-            StartStatusUpdater();
+            StartStatusUpdater(TimeSpan.FromSeconds(5));
         }
 
         private static bool _statusUpdaterRunning;
@@ -97,20 +98,22 @@ namespace CustomerPortal.Web
         private static readonly IServiceStatusUpdater UpdaterService = new ServiceStatusUpdater(Logger);
         private static readonly SerialDisposable Subscriptions = new SerialDisposable();
 
-        private static void StartStatusUpdater()
+        private static void StartStatusUpdater(TimeSpan startTime)
         {
-            Subscriptions.Disposable = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromMinutes(3))
+            Subscriptions.Disposable = Observable.Timer(startTime, TimeSpan.FromMinutes(3))
                 .Where(_ => !_statusUpdaterRunning)
                 .Do(_ =>
                 {
                     _statusUpdaterRunning = true;
                     Logger.LogMessage("Company status updater started");
                 })
-                .Do( _ =>
+                .Do(_ =>
                 {
+                    var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
                     try
                     {
-                        UpdaterService.UpdateServiceStatus();
+                        UpdaterService.UpdateServiceStatus(cts.Token);
+                        cts.Dispose();
                     }
                     catch (Exception ex)
                     {
@@ -122,14 +125,13 @@ namespace CustomerPortal.Web
                     Logger.LogMessage("Company status updater ended");
                     _statusUpdaterRunning = false;
                 })
-                .Subscribe();
-        }
+                .Subscribe(_ => { }, ex =>
+                {
+                    Logger.LogError(ex);
 
-        public override void Dispose()
-        {
-            base.Dispose();
-
-            Subscriptions.Disposable = null;
+                    //Restarting StatusUpdater in 3 minutes
+                    StartStatusUpdater(TimeSpan.FromMinutes(3));
+                });
         }
 
         private static void MigrateNetworkVehiclesToMarketRepresentation()

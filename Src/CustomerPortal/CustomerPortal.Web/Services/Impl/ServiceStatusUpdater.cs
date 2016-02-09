@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -44,7 +45,7 @@ namespace CustomerPortal.Web.Services.Impl
             _client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("deflate");
         }
 
-        public void UpdateServiceStatus()
+        public void UpdateServiceStatus(CancellationToken token)
         {
             var companies = _companyRepository
                 // We only get the companies that have active websites.
@@ -57,22 +58,30 @@ namespace CustomerPortal.Web.Services.Impl
                 .ToArray();
 
             Parallel.ForEach(companies,
-                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism },
-                async company =>
-                {
-                    var updateCompanyStatus = await UpdateCompanyStatus(company);
-
-                    if (updateCompanyStatus.Id.HasValueTrimmed())
+                    new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism, CancellationToken = token },
+                    // We need to actually block the thread here since Parallel does not have an overload that supports the return of a task.
+                    // To prevent potential deadlocks, we run the underlying call in a lambda and use ConfigureAwait(false) and we also force the Wait to kill itself if cancellationToken is true.
+                    company =>
                     {
-                        _serviceStatusRepository.Update(updateCompanyStatus);
-                    }
-                    else
-                    {
-                        updateCompanyStatus.Id = Guid.NewGuid().ToString();
-                        _serviceStatusRepository.Add(updateCompanyStatus);
-                    }
+                        Func<Task> runTask = async () => await RunUpdateTask(company).ConfigureAwait(false);
 
-                });
+                        runTask().Wait(token);
+                    });
+        }
+
+        private async Task RunUpdateTask(Company company)
+        {
+            var updateCompanyStatus = await UpdateCompanyStatus(company).ConfigureAwait(false);
+
+            if (updateCompanyStatus.Id.HasValueTrimmed())
+            {
+                _serviceStatusRepository.Update(updateCompanyStatus);
+            }
+            else
+            {
+                updateCompanyStatus.Id = Guid.NewGuid().ToString();
+                _serviceStatusRepository.Add(updateCompanyStatus);
+            }
         }
 
         private string GetUrlFromCompany(Company company)
@@ -81,7 +90,7 @@ namespace CustomerPortal.Web.Services.Impl
                          company.CompanyKey.Equals("ArroKiosk", StringComparison.InvariantCultureIgnoreCase);
 
             return company.CompanyKey.Equals("Apcurium", StringComparison.InvariantCultureIgnoreCase)
-                ? "http://test.taxihail.biz:8181/Apcurium/"
+                ? "http://localhost/apcurium.mk.web/"//"http://test.taxihail.biz:8181/Apcurium/"
                 : "https://api.{0}.com/{1}/".InvariantCultureFormat(isArro ? "goarro" : "taxihail", company.CompanyKey);
 
         }

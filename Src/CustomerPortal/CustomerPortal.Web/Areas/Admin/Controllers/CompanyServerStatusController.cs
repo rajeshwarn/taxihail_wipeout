@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
+using CustomerPortal.Web.Attributes;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
 
@@ -24,7 +26,16 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             _companyServerStatusRepository = companyServerStatusRepository;
         }
 
+        [NoCache]
+        public ActionResult StatusDetails(string companyKey)
+        {
+            var status = _companyServerStatusRepository
+                .FirstOrDefault(companyStatus => companyStatus.CompanyKey == companyKey);
 
+            return View("_StatusDetails", GetModelFromDbObject(status));
+        }
+
+        [NoCache]
         public ActionResult Details(string companyKey)
         {
             var status = _companyServerStatusRepository
@@ -47,14 +58,29 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             };
         }
 
+        [NoCache]
+        public ActionResult StatusList()
+        {
+            var companyStatus = GetCompanyStatus();
+
+            return View("_StatusList", companyStatus);
+        }
+
+        [NoCache]
         public ActionResult Index()
         {
-            var companyStatus = _companyServerStatusRepository
-                .Select(GetModelFromDbObject)
-                .OrderBy(model => model, new ServerStatusComparer())
-                .ToArray();
+            var companyStatus = GetCompanyStatus();
 
             return View(companyStatus);
+        }
+
+        private CompanyStatusModel[] GetCompanyStatus()
+        {
+            return _companyServerStatusRepository
+                .Select(GetModelFromDbObject)
+                .OrderBy(model => model, new ServerStatusComparer())
+                .ThenBy(model => model.CompanyName)
+                .ToArray();
         }
 
 

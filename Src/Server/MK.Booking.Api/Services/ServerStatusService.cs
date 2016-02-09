@@ -97,9 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
             var now = DateTime.UtcNow;
 
             var isUpdaterDeadlocked = orderStatusUpdateDetails.CycleStartDate.HasValue &&
-                                      orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) < now &&
-                                      // Ensuring that the updater is currently running.
-                                      orderStatusUpdateDetails.LastUpdateDate + TimeSpan.FromMinutes(1) < now;
+                                      orderStatusUpdateDetails.CycleStartDate + TimeSpan.FromMinutes(10) < now;
 
             return new ServiceStatus
             {

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime cycleStartTime)
+        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime)
         {
             using (var context = _contextFactory.Invoke())
             {
