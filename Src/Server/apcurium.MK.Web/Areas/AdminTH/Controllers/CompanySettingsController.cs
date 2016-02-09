@@ -20,6 +20,7 @@ using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceModel.Extensions;
 using System.IO;
+using System.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -45,41 +46,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return View(GetAvailableSettingsForUser());
         }
 
-        private void SaveConfigurationChanges(Dictionary<string,string> appSettings)
-        {
-            var oldSettings = _serverSettings.ServerData.GetType().GetAllProperties()
-                .ToDictionary(s => s.Key, s => _serverSettings.ServerData.GetNestedPropertyValue(s.Key).ToNullSafeString());
-            var oldValues = new Dictionary<string, string>();
-            var newValues = new Dictionary<string, string>();
-
-            foreach (var oldSetting in oldSettings)
-            {
-                if (appSettings.ContainsKey(oldSetting.Key))
-                {
-                    var newValue = appSettings[oldSetting.Key].ToLowerInvariant();
-                    
-                    //Special case for nullable bool
-                    if (newValue == "null")
-                    {
-                        newValue = string.Empty;
-                    }
-                    var oldValue = oldSetting.Value != null ? oldSetting.Value.ToLowerInvariant() : string.Empty;
-
-                    if (oldValue != newValue)
-                    {
-                        oldValues.Add(oldSetting.Key, oldSetting.Value);
-                        newValues.Add(oldSetting.Key, appSettings[oldSetting.Key]);
-                    }
-                }
-            }
-
-            _configurationChangeService.Add(oldValues,
-                newValues, 
-                ConfigurationChangeType.CompanySettings, 
-                new Guid(AuthSession.UserAuthId), 
-                AuthSession.UserAuthName);
-        }
-
         // POST: AdminTH/CompanySettings/Update
         [HttpPost]
         [ValidateInput(false)]
@@ -95,9 +61,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
-                string datas = appSettings.ToJson();
+                string datas = appSettings.ToJson(false);
                 DateTime date = DateTime.Now;
-                return File(new ASCIIEncoding().GetBytes(datas), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".txt");
+                return File(new ASCIIEncoding().GetBytes(datas), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".csf");
             }
 
             return RedirectToAction("Index");
@@ -105,20 +71,40 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public async Task<ActionResult> ImportFromFile(FormCollection form)
+        public async Task<ActionResult> ImportFromFile(HttpPostedFileBase file)
         {
-            if (Request.Files.Count > 0)
+            if (ModelState.IsValid)
             {
-                var file = Request.Files[0];
-
-                if (file != null && file.ContentLength > 0)
+                if (file == null)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-                    file.SaveAs(path);
+                    TempData["Info"] = "Please select a file to upload";
+                }
+                else if (file.ContentLength > 0)
+                {
+                    string[] AllowedFileExtensions = new string[] { ".csf" };
+
+                    if (!AllowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+                    {
+                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", AllowedFileExtensions);
+                    }
+                    else
+                    {
+                        string fileContent = System.IO.File.ReadAllText(file.FileName);
+                        Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
+                        if (fileSettings.Any())
+                        {
+                            SaveConfigurationChanges(fileSettings);
+                            SetAdminSettings(fileSettings);
+                        }
+
+                        TempData["Info"] = "Settings uploaded from file and updated";
+
+                        // Wait for settings to be updated before reloading the page
+                        await Task.Delay(2000);
+                    }
                 }
             }
-
+  
             return RedirectToAction("Index");
         }
 
@@ -139,28 +125,67 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
 
                 SaveConfigurationChanges(appSettings);
-
-                // Only the superadmin should be able to change the availability option of the settings.
-                var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
-                if (isSuperAdmin)
-                {
-                    SetSettingsAvailableToAdmin(appSettings);
-                }
-
-                var command = new AddOrUpdateAppSettings
-                {
-                    AppSettings = appSettings,
-                    CompanyId = AppConstants.CompanyId
-                };
-                _commandBus.Send(command);
+                SetAdminSettings(appSettings);
             }
 
-            TempData["Info"] = "Settings updated.";
+            TempData["Info"] = "Settings updated";
 
             // Wait for settings to be updated before reloading the page
             await Task.Delay(2000);
 
             return RedirectToAction("Index");
+        }
+
+        private void SaveConfigurationChanges(Dictionary<string, string> appSettings)
+        {
+            var oldSettings = _serverSettings.ServerData.GetType().GetAllProperties()
+                .ToDictionary(s => s.Key, s => _serverSettings.ServerData.GetNestedPropertyValue(s.Key).ToNullSafeString());
+            var oldValues = new Dictionary<string, string>();
+            var newValues = new Dictionary<string, string>();
+
+            foreach (var oldSetting in oldSettings)
+            {
+                if (appSettings.ContainsKey(oldSetting.Key))
+                {
+                    var newValue = appSettings[oldSetting.Key].ToLowerInvariant();
+
+                    //Special case for nullable bool
+                    if (newValue == "null")
+                    {
+                        newValue = string.Empty;
+                    }
+                    var oldValue = oldSetting.Value != null ? oldSetting.Value.ToLowerInvariant() : string.Empty;
+
+                    if (oldValue != newValue)
+                    {
+                        oldValues.Add(oldSetting.Key, oldSetting.Value);
+                        newValues.Add(oldSetting.Key, appSettings[oldSetting.Key]);
+                    }
+                }
+            }
+
+            _configurationChangeService.Add(oldValues,
+                newValues,
+                ConfigurationChangeType.CompanySettings,
+                new Guid(AuthSession.UserAuthId),
+                AuthSession.UserAuthName);
+        }
+
+        private void SetAdminSettings(Dictionary<string, string> appSettings)
+        {
+            // Only the superadmin should be able to change the availability option of the settings.
+            var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
+            if (isSuperAdmin)
+            {
+                SetSettingsAvailableToAdmin(appSettings);
+            }
+
+            var command = new AddOrUpdateAppSettings
+            {
+                AppSettings = appSettings,
+                CompanyId = AppConstants.CompanyId
+            };
+            _commandBus.Send(command);
         }
 
         private bool ValidateSettingsValue(Dictionary<string, string> appSettings)
