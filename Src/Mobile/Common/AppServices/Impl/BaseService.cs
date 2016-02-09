@@ -56,15 +56,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             catch (Exception ex)
             {   
                 Logger.LogError(ex, method, lineNumber);
-				bool handled;
+				var handled = false; 
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 				}
 				else
 				{
-					errorHandler (ex);
-					handled = true;
+					try
+					{
+						errorHandler (ex);
+						handled = true;
+					}
+					catch
+					{
+                        
+					}
 				} 
 				if (!handled)
                 {

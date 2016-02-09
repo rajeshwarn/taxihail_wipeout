@@ -28,7 +28,7 @@ namespace CMTServices
         protected HttpClient Client { get; private set; }
 
 
-        public abstract IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false);
+        public abstract IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false,bool throwError = false);
 
 		protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params, string paramsFromSetting = null)
 		{

@@ -41,7 +41,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
             return null;
         }
 
-        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime cycleStartTime)
+        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime)
         {
         }
     }

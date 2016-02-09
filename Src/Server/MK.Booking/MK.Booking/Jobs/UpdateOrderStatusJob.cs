@@ -137,6 +137,8 @@ namespace apcurium.MK.Booking.Jobs
                 {
                     deadlockTimer.Dispose();
                     timer.Dispose();
+                    // Needed to ensure we do not have a false positive in deadlock detection.
+                    _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow, null);
                     Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                 }
             }
