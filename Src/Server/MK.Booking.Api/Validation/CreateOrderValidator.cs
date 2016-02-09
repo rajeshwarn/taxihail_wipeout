@@ -8,7 +8,7 @@ using ServiceStack.FluentValidation;
 
 namespace apcurium.MK.Booking.Api.Validation
 {
-    public class CreateOrderValidator : AbstractValidator<CreateOrder>
+    public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
     {
         public CreateOrderValidator()
         {

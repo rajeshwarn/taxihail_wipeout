@@ -1,8 +1,11 @@
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Cryptography;
+using System;
 
 namespace MK.Common.Configuration
 {
@@ -55,7 +58,7 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
-			Store = new StoreSettingContainer()
+			Store = new StoreSettingContainer
 			{
 				AppleLink = "http://www.mobile-knowledge.com/",
                 PlayLink = "http://www.mobile-knowledge.com/"
@@ -66,10 +69,14 @@ namespace MK.Common.Configuration
             ShowVehicleInformation = true;
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
+            ChangeDropOffAddressMidTrip = false;
+            ChangeCreditCardMidtrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+            DebugViewEnabled = true;
 #endif
+
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -83,6 +90,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             HideTHNetworkAppMenu = true;
+            ShowOrderNumber = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -96,8 +104,9 @@ namespace MK.Common.Configuration
             AllowSimultaneousAppOrders = false;
 
 		    MaxFareEstimate = 100;
+            MapBoxKey = "pk.eyJ1IjoiZGV2dG9ueSIsImEiOiJjaWZ5OGJ0NXc0eWtxdXBrcXl2czF1eGY5In0.6qUEJWLnvqZ0_0Q6Xh2Gaw";
 
-		    AvailableVehicleRefreshRate = 5;
+            AvailableVehicleRefreshRate = 5;
 
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
@@ -127,7 +136,6 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
-
 		public FlightStatsSettingsContainer FlightStats { get; set; }
 		public StoreSettingContainer Store { get; protected set; }
 
@@ -140,14 +148,16 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - CraftyClicks Api Key", Description = "Enables the UK postcode address lookup using the CraftyClicks Api")]
         public string CraftyClicksApiKey { get; set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Enabled", Description="Enable register/log in with Twitter")]
-		public bool TwitterEnabled{ get; protected set; }
+		public bool TwitterEnabled { get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Consumer Key", Description="Twitter API Consumer Key")]
 		public string TwitterConsumerKey{ get; protected set; }
@@ -164,6 +174,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Available Vehicle - External Mode", Description = "Available Vehicles provider in external market")]
         public ExternalAvailableVehiclesModes ExternalAvailableVehiclesMode { get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Consumer Secret", Description = "Twitter API Consumer Secret")]
         public string TwitterConsumerSecret { get; protected set; }
@@ -172,14 +183,17 @@ namespace MK.Common.Configuration
         [Display(Name = "Twitter - CallBack", Description="Twitter API Callback URL")]
 		public string TwitterCallback{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Token Url", Description="Twitter API Token URL")]
 		public string TwitterRequestTokenUrl{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Access Token Url", Description="Twitter API Access Token URL")]
 		public string TwitterAccessTokenUrl{ get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Twitter - Authorize Url", Description="Twitter API Authorize URL")]
 		public string TwitterAuthorizeUrl { get; protected set; }
@@ -192,6 +206,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Facebook - Enabled", Description="Enable register/log in with Facebook")]
 		public bool FacebookEnabled { get; protected set; }
 
+		[PropertyEncrypt]
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Facebook - App Id", Description="Facebook API settings")]
 		public string FacebookAppId{ get; protected set; }
@@ -223,9 +238,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and won't replace with a cluster icon).")]
 	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
 
+		[PropertyEncrypt]
         [Display(Name = "SMS -Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }
 
+		[PropertyEncrypt]
         [Display(Name = "SMS -Twilio SMS authentication token", Description = "Authentication token for twilio")]
         public string SMSAuthToken { get; protected set; }
 
@@ -373,6 +390,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
+        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
@@ -393,10 +411,12 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Distance Format", Description="Format to display distance ('Km' or 'Mile')")]
 		public DistanceFormat DistanceFormat { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Foursquare Client Id", Description = "Foursquare API credentials Id")]
         public string FoursquareClientId { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Foursquare Client Secret", Description = "Foursquare Client Secret")]
         public string FoursquareClientSecret { get; protected set; }
@@ -405,6 +425,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Search - Foursquare Categories", Description = "Foursquare categories to include in search")]
         public string FoursquarePlacesTypes { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Map - TomTom Map Toolkit API Key", Description = "TomTom Map Toolkit API Key")]
         public string TomTomMapToolkitKey { get; protected set; }
@@ -417,6 +438,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Rebook Order", Description="Hide Rebook button in app history view")]
         public bool HideRebookOrder { get; protected set; }
 
+		[PropertyEncrypt]
         [Hidden]
         [SendToClient]
         [Display(Name = "Card IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
@@ -463,14 +485,17 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Allow Simultaneous Orders", Description = "Allow to have more than one active order")]
         public bool AllowSimultaneousAppOrders { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
+		[PropertyEncrypt]
         [SendToClient]
         [Display(Name = "Configuration - Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
@@ -514,6 +539,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
         public bool HideTHNetworkAppMenu { get; protected set; }
 
+        [Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
@@ -522,16 +548,46 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
-        [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
-		public bool EnableApplicationRating { get; protected set; }
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
+        public bool ChangeDropOffAddressMidTrip { get; protected set; }
+        
+	    [SendToClient, CustomizableByCompany]
+            [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
+	    public bool EnableApplicationRating { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
-		public int MinimumTripsForAppRating { get; protected set; }
+	    [SendToClient, CustomizableByCompany]
+	    [Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+	    public int MinimumTripsForAppRating { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
-		public int MinimumRideRatingScoreForAppRating { get; protected set; }
-	}
+	    [SendToClient, CustomizableByCompany]
+	    [Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
+	    public int MinimumRideRatingScoreForAppRating { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Show Order Number", Description = "Show order number")]
+        public bool ShowOrderNumber { get; protected set; }
+
+		[CustomizableByCompany]
+		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
+		public bool ShowExtraInfoInReceipt { get; protected set; }
+
+		[PropertyEncrypt]
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Map - MapBox Key", Description = "BlackBerry MapBox Key")]
+        public string MapBoxKey { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Change credit card while in trip", Description = "Allow the user to change his credit card while in trip")]
+        public bool ChangeCreditCardMidtrip { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Unload Timeout", Description = "Time (in seconds) waiting for Charge Amounts from Driver")]
+        public double ChargeAmountsTimeOut { get; set; }
+
+        [PropertyEncrypt]
+        [SendToClient]
+        [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
+        public bool DebugViewEnabled { get; protected set; }
+    }
 }

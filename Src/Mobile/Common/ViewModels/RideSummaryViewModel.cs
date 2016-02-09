@@ -243,7 +243,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public async Task CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
 		{
-			Logger.LogMessage("CheckAndSendRatings starting");
 			if (!Settings.RatingEnabled || HasRated)
 			{
 				return;
@@ -251,8 +250,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (RatingList == null)
 			{
-				Logger.LogMessage("RatingList is null");
-
 				// Prevent the user from getting stuck on this screen
 				HasRated = true;
 
@@ -267,8 +264,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
 						this.Services().Localize["BookRatingErrorMessage"]);
 				}
-
-				Logger.LogMessage("RatingRequired and some ratings are not set");
 
 				// We don't send the review since it's not complete. The user will have the
 				// possibility to go back to the order history to rate it later if he so desires
@@ -315,4 +310,3 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 	}
 }
-

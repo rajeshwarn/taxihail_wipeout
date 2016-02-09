@@ -11,11 +11,12 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
+using System.Linq;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
-		IEventHandler<OrderReportCreated>,
+        IEventHandler<OrderReportCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderCancelledBecauseOfError>,
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 using (var context = _contextFactory.Invoke())
                 {
                     var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
-                    var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
+                    var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
 
                     var account = context.Find<AccountDetail>(@event.AccountId);
 
@@ -85,7 +86,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
                         Market = @event.Market,
-                        ServiceType = @event.Settings.ServiceType
+                        ServiceType = @event.Settings.ServiceType,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
                     };
                     orderReport.Client = new OrderReportClient
                     {
@@ -101,58 +104,60 @@ namespace apcurium.MK.Booking.EventHandlers
             WrapWithSqlPrimaryKeyHandling(handling);
         }
 
-		public void Handle(OrderReportCreated @event)
-		{
-		    Action handling = () =>
-		    {
-		        using (var context = _contextFactory.Invoke())
-		        {
-		            var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
-		            var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
+        public void Handle(OrderReportCreated @event)
+        {
+            Action handling = () =>
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+                    var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
 
-		            var account = context.Find<AccountDetail>(@event.AccountId);
+                    var account = context.Find<AccountDetail>(@event.AccountId);
 
-		            orderReport.Account = new OrderReportAccount
-		            {
-		                AccountId = @event.AccountId,
-		                Name = @event.Settings.Name,
-		                Phone = @event.Settings.Phone,
-		                Email = (account != null) ? account.Email : null,
-		                DefaultCardToken = (account != null) ? account.DefaultCreditCard : null,
-		                IBSAccountId = (account != null) ? account.IBSAccountId : null,
-		                PayBack = (account != null) ? account.Settings.PayBack : null
-		            };
-		            orderReport.Order = new OrderReportOrder
-		            {
-		                IBSOrderId = @event.IBSOrderId,
-		                ChargeType = @event.Settings.ChargeType,
-		                IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
-		                IsPrepaid = @event.IsPrepaid,
-		                PickupDateTime = @event.PickupDate,
-		                CreateDateTime = @event.CreatedDate,
-		                PickupAddress = @event.PickupAddress,
-		                DropOffAddress = @event.DropOffAddress,
-		                CompanyName = @event.CompanyName,
-		                CompanyKey = @event.CompanyKey,
-		                Market = @event.Market,
-		                Error = @event.Error,
-		                ServiceType = @event.Settings.ServiceType
-		            };
-		            orderReport.Client = new OrderReportClient
-		            {
-		                OperatingSystem = @event.UserAgent.GetOperatingSystem(),
-		                UserAgent = @event.UserAgent,
-		                Version = @event.ClientVersion
-		            };
+                    orderReport.Account = new OrderReportAccount
+                    {
+                        AccountId = @event.AccountId,
+                        Name = @event.Settings.Name,
+                        Phone = @event.Settings.Phone,
+                        Email = (account != null) ? account.Email : null,
+                        DefaultCardToken = (account != null) ? account.DefaultCreditCard : null,
+                        IBSAccountId = (account != null) ? account.IBSAccountId : null,
+                        PayBack = (account != null) ? account.Settings.PayBack : null
+                    };
+                    orderReport.Order = new OrderReportOrder
+                    {
+                        IBSOrderId = @event.IBSOrderId,
+                        ChargeType = @event.Settings.ChargeType,
+                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                        IsPrepaid = @event.IsPrepaid,
+                        PickupDateTime = @event.PickupDate,
+                        CreateDateTime = @event.CreatedDate,
+                        PickupAddress = @event.PickupAddress,
+                        DropOffAddress = @event.DropOffAddress,
+                        CompanyName = @event.CompanyName,
+                        CompanyKey = @event.CompanyKey,
+                        Market = @event.Market,
+                        Error = @event.Error,
+                        ServiceType = @event.Settings.ServiceType,
+                        OriginatingIpAddress = @event.OriginatingIpAddress,
+                        KountSessionId = @event.KountSessionId
+                    };
+                    orderReport.Client = new OrderReportClient
+                    {
+                        OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+                        UserAgent = @event.UserAgent,
+                        Version = @event.ClientVersion
+                    };
 
-		            context.Save(orderReport);
-		        }
-		    };
+                    context.Save(orderReport);
+                }
+            };
 
             WrapWithSqlPrimaryKeyHandling(handling);
-		}
+        }
 
-		public void Handle(OrderStatusChanged @event)
+        public void Handle(OrderStatusChanged @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -164,6 +169,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (@event.Status != null)
                 {
                     orderReport.Account.AccountId = @event.Status.AccountId;
+                    orderReport.VehicleInfos.DriverId = @event.Status.DriverInfos.DriverId;
                     orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
                     orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
                     orderReport.VehicleInfos.Number = @event.Status.VehicleNumber;
@@ -176,7 +182,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.OrderStatus.Status = @event.Status.Status;
 
                     orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue
-                        ? (DateTime?) @event.Status.PickupDate
+                        ? (DateTime?)@event.Status.PickupDate
                         : null;
                     orderReport.Order.CompanyName = @event.Status.CompanyName;
                 }
@@ -191,7 +197,12 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(x => x.Token == @event.TokenOfCardToBeUsedForPayment);
+
+                orderReport.Payment.DriverId = @event.DriverId;
+                orderReport.Payment.Medallion = @event.Medallion;
                 orderReport.Payment.IsPaired = true;
+                orderReport.Payment.Last4Digits = creditCard != null ? creditCard.Last4Digits : "";
                 context.Save(orderReport);
             }
         }
@@ -217,12 +228,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
                     var orderReport = existingReport ?? new OrderReportDetail { Id = @event.OrderId };
+                    var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(x => x.Token == @event.CardToken);
 
                     orderReport.Payment.PaymentId = @event.SourceId;
                     orderReport.Payment.PreAuthorizedAmount = @event.Amount;
                     orderReport.Payment.FirstPreAuthTransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                     orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                     orderReport.Payment.CardToken = @event.CardToken;
+                    orderReport.Payment.Last4Digits = creditCard != null ? creditCard.Last4Digits : "";
                     orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
                     orderReport.Payment.Provider = @event.Provider;
 
@@ -261,11 +274,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 orderReport.Payment.TotalAmountCharged += @event.Amount;
                 orderReport.Payment.IsCompleted = true;
-                
+
                 orderReport.Payment.WasChargedNoShowFee = @event.FeeType == FeeTypes.NoShow;
                 orderReport.Payment.WasChargedCancellationFee = @event.FeeType == FeeTypes.Cancellation;
                 orderReport.Payment.WasChargedBookingFee = orderReport.Payment.BookingFees > 0;
-                
+
                 context.Save(orderReport);
             }
         }
@@ -357,7 +370,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 if (orderReport != null)
-                { 
+                {
                     orderReport.OrderStatus.OrderIsCancelled = true;
                 }
                 context.Save(orderReport);
@@ -374,7 +387,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     orderReport.OrderStatus.OrderIsCancelled = true;
                 }
-                
+
                 context.Save(orderReport);
             }
         }
@@ -429,6 +442,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                return;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
@@ -513,7 +531,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
                     PickupDateTime = @event.PairingDate,
                     CreateDateTime = @event.PairingDate,
-                    PickupAddress = @event.PickupAddress
+                    PickupAddress = @event.PickupAddress,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
                 };
                 orderReport.Client = new OrderReportClient
                 {
@@ -521,7 +541,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     UserAgent = @event.UserAgent,
                     Version = @event.ClientVersion
                 };
-                
+
                 orderReport.Payment = new OrderReportPayment
                 {
                     PairingToken = @event.PairingToken,
@@ -561,11 +581,17 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.TotalAmountCharged = @event.Total.HasValue
                     ? (decimal?)Math.Round(@event.Total.Value, 2)
                     : null;
-                
+
                 if (@event.EndTime.HasValue)
                 {
                     orderReport.OrderStatus.OrderIsCompleted = true;
                     orderReport.OrderStatus.Status = OrderStatus.Completed;
+                }
+
+                if (@event.PairingError.HasValueTrimmed())
+                {
+                    orderReport.OrderStatus.OrderIsCancelled = true;
+                    orderReport.OrderStatus.Status = OrderStatus.Canceled;
                 }
 
                 context.Save(orderReport);
@@ -579,7 +605,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
 
                 orderReport.Order.OriginalEta = @event.OriginalEta;
-                
+
                 context.Save(orderReport);
             }
         }

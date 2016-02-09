@@ -1,21 +1,26 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
         private readonly ILogger _logger;
-        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
-            : base(url, sessionId, packageInfo)
+        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
 			_logger = logger;
         }
@@ -29,8 +34,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					VehicleTypeId = vehicleTypeId,
 					ServiceType = serviceType
 				});
-
-			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2}", latitude, longitude, response.Count)));
 
 			return response.ToArray();
 		}

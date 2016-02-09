@@ -121,7 +121,6 @@
     <Compile Include="ExportFixture\ReportDetailGenerator.cs" />
     <Compile Include="Infrastructure\AsynchronousMemoryCommandBusFixture.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
-    <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\ServiceTypeSettingsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\UserTaxiHailNetworkSettingsGenerator.cs" />
@@ -146,6 +145,7 @@
     <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\OverduePaymentFixture\OverduePaymentDetailGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
+    <Compile Include="Integration\PhoneFixture\BlackListEntryService.cs" />
     <Compile Include="Integration\PromotionFixture\PromotionDetailGenerator.cs" />
     <Compile Include="Integration\PromotionFixture\PromotionTriggerGenerator.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
@@ -181,6 +181,10 @@
     <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
       <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
       <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>

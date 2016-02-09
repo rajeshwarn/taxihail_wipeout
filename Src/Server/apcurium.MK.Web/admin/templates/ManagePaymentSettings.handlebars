@@ -19,10 +19,17 @@
     <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
 </select>
 
+<label class="control-label settingsLabel">{{{localize "Payment Method Mandatory"}}}</label>
+<select name="creditCardIsMandatory" class="settingsBox">
+    <option value="{{creditCardIsMandatory}}" selected="">{{localizeBool creditCardIsMandatory true="Yes" false="No"}}</option>
+    <option value="{{invertedBool creditCardIsMandatory}}">{{localizeBool creditCardIsMandatory true="No" false="Yes"}}</option>
+</select>
+
 <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
-<select name="isOutOfAppPaymentDisabled" class="settingsBox">
-    <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
-    <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
+<select name="isPaymentOutOfAppDisabled" class="settingsBox">
+    <option value="None">{{localize "None (Out Of App Payment enabled for Web and App)"}}</option>
+    <option value="AppOnly">{{localize "App Only (Out Of App Payment enabled for Web only)"}}</option>
+    <option value="All">{{localize "All (Out Of App Payment disabled for Web and App)"}}</option>
 </select>
 
 <label class="control-label settingsLabel">{{{localize "Charge Account Payment"}}}</label>
@@ -163,6 +170,15 @@
 
     <label class="control-label settingsLabel">{{{localize "Server Mobile Sandbox Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxMobileBaseUrl" value="{{cmtPaymentSettings.sandboxMobileBaseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Consumer Secret Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerSecretKey" value="{{cmtPaymentSettings.consumerSecretKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Consumer Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerKey" value="{{cmtPaymentSettings.consumerKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Fleet Token"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.fleetToken" value="{{cmtPaymentSettings.fleetToken}}" />
 
     <label class="control-label settingsLabel">{{{localize "Market"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.market" value="{{cmtPaymentSettings.market}}" />

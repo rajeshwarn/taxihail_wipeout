@@ -64,7 +64,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             return ProcessAddresses(name, allResults, latitude, longitude, currentLanguage, geoResult);
         }
 
-
         private Address[] ProcessAddresses(string name, IEnumerable<Address> allResults, double? latitude, double? longitude,string currentLanguage, GeoResult geoResult = null)
         {
             IEnumerable<Address> addressesGeocode;
@@ -91,16 +90,13 @@ namespace apcurium.MK.Booking.Maps.Impl
                 addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
             }
 
-            //TODO not sure what this code is doing
-
             return addressesGeocode
                 .Take(20)
                 .Concat(addressesPlaces.Take(20))
                 .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
-                .ToArray(); //todo Take 20!? api's consern 
+                .ToArray();
         }
-
-
+        
         public async Task<Address[]> SearchAsync(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
         {
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);

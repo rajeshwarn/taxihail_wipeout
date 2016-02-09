@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -19,15 +21,17 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CreditCardService : Service
     {
-        private readonly ICommandBus _bus;
         private readonly IOrderDao _orderDao;
+        private readonly IServerSettings _serverSettings;
         private readonly ICreditCardDao _dao;
+        private readonly ICommandBus _commandBus;
 
-        public CreditCardService(ICreditCardDao dao, ICommandBus bus, IOrderDao orderDao)
+        public CreditCardService(ICreditCardDao dao, ICommandBus commandBus, IOrderDao orderDao, IServerSettings serverSettings)
         {
-            _bus = bus;
             _orderDao = orderDao;
+            _serverSettings = serverSettings;
             _dao = dao;
+            _commandBus = commandBus;
         }
 
         public object Get(CreditCardRequest request)
@@ -35,6 +39,11 @@ namespace apcurium.MK.Booking.Api.Services
             var session = this.GetSession();
             return _dao.FindByAccountId(new Guid(session.UserAuthId));
         }
+
+		public object Get(CreditCardInfoRequest request)
+		{
+			return _dao.FindById(request.CreditCardId);
+		}
 
         public object Post(CreditCardRequest request)
         {
@@ -45,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new AddOrUpdateCreditCard {AccountId = new Guid(session.UserAuthId)};
             Mapper.Map(request, command);
 
-            _bus.Send(command);
+            _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
         }
@@ -56,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new UpdateDefaultCreditCard { AccountId = new Guid(session.UserAuthId) };
             command.CreditCardId = request.CreditCardId;
 
-            _bus.Send(command);
+            _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
         }
@@ -79,7 +88,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Label = request.Label
             };
 
-            _bus.Send(command);
+            _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
         }
@@ -111,7 +120,7 @@ namespace apcurium.MK.Booking.Api.Services
                 NextDefaultCreditCardId = defaultCreditCard != null ? defaultCreditCard.CreditCardId : (Guid?)null,
             };
 
-            _bus.Send(command);
+            _commandBus.Send(command);
 
             return defaultCreditCard;
         }
@@ -120,7 +129,16 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			if (_dao.FindByAccountId(request.AccountID).Count > 0)
 			{
-				_bus.Send(new DeleteCreditCardsFromAccounts() { AccountIds = new[] { request.AccountID } });
+			    var paymentSettings = _serverSettings.GetPaymentSettings();
+
+                var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
+                    && paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None;
+
+                _commandBus.Send(new DeleteCreditCardsFromAccounts
+				{
+				    AccountIds = new[] { request.AccountID },
+                    ForceUserDisconnect = forceUserDisconnect
+				});
 
 				return new HttpResult(HttpStatusCode.OK);
 			}

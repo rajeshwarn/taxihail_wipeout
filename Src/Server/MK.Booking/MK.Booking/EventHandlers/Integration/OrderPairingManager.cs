@@ -2,7 +2,6 @@
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
@@ -52,7 +51,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-
             _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
             
             switch (@event.Status.IBSStatusId)
@@ -90,14 +88,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
-                        if (!response.IsSuccessful)
-                        {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingFailed");
-                        }
-                        else
-                        {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingSuccess");
-                         }
+                        var pairingResultMessagKey = response.IsSuccessful
+                            ? "OrderStatus_PairingSuccess"
+                            : "OrderStatus_PairingFailed";
+
+                        UpdateIBSStatusDescription(order.Id, account.Language, pairingResultMessagKey);
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 

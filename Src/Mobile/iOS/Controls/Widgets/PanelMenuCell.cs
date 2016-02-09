@@ -3,7 +3,6 @@ using UIKit;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -44,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             ((CustomCellBackgroundView)BackgroundView).BottomLine.SetWidth (Frame.Width - LeftPadding - RightPadding);
 
             TextLabel.SetX(20);
-            TextLabel.TextAlignment = NaturalLanguageHelper.GetTextAlignment();
+            TextLabel.TextAlignment = UITextAlignment.Natural;
 		}
 
 		public bool HideBottomBar

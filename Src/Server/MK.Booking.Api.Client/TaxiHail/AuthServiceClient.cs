@@ -1,14 +1,17 @@
 #region
 
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-#if !CLIENT
-using ServiceStack.ServiceInterface.Auth;
+using apcurium.MK.Common;
+
+#if CLIENT
+using apcurium.MK.Common.Extensions;
+using MK.Common.DummyServiceStack;
 #else
-using ServiceStack.Common.ServiceClient.Web;
+using apcurium.MK.Booking.Api.Client.Extensions;
+using ServiceStack.ServiceInterface.Auth;
 #endif
 
 #endregion
@@ -17,8 +20,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AuthServiceClient : BaseServiceClient, IAuthServiceClient
     {
-        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

@@ -13,8 +13,8 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.ServiceClient.Web;
-using System.Net;
+using MK.Common.Exceptions;
+using Cirrious.CrossCore;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -27,11 +27,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
-		
 
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
-
 	    private bool _isStarted;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,

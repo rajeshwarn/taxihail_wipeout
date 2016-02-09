@@ -11,11 +11,12 @@ using apcurium.MK.Common.Configuration.Impl;
 using PaypalSdkTouch.Unified;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -33,8 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             { 
                 // CardIOToken is only used to know if the company wants it or not
                 return CardIOUtilities.CanReadCardWithCamera()
-                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken)
-                    && UIHelper.IsOS7orHigher; 
+                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
         }
 
@@ -359,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {           
             if (_cardScanner == null)
             {
-                _cardScannerDelegate = new CardScannerDelegate(cardInfo => PopulateCreditCardName(cardInfo));
+                _cardScannerDelegate = new CardScannerDelegate(PopulateCreditCardName);
                 _cardScanner = new CardIOPaymentViewController(_cardScannerDelegate)
                 {
                     GuideColor = this.View.BackgroundColor,
@@ -426,14 +426,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 try
                 {
                     NSError error;
-                    var contentJSONData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
+                    var contentJsonData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
 
                     if (error != null)
                     {
                         throw new Exception(error.LocalizedDescription + " " + error.LocalizedFailureReason);
                     }
 
-                    var authResponse = JsonSerializer.DeserializeFromString<FuturePaymentAuthorization>(contentJSONData.ToString());
+                    var authResponse = contentJsonData.ToString().FromJson<FuturePaymentAuthorization>();
                     if (authResponse != null)
                     {
                         _futurePaymentAuthorized(authResponse.Response.Code);

@@ -11,8 +11,10 @@
             'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
             'change [id=prodClientId]': 'onPayPalSettingsChanged',
             'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
-            'change [name=isChargeAccountPaymentEnabled]': 'onChargeAccountSettingsChanged',
-            'change [name=paymentMode]': 'onPaymentModeChanged',
+            'change [name=isChargeAccountPaymentEnabled]': 'canPaymentMethodBeMandatory',
+            'change [name=isPaymentOutOfAppDisabled]': 'canPaymentMethodBeMandatory',
+            'change [name=isPayInTaxiEnabled]': 'canPaymentMethodBeMandatory',
+            'change [name=paymentMode]': 'canPaymentMethodBeMandatory',
             'change [name=acceptChange]': 'onAcceptSettingsChanged',
             'change [name=acceptPayPalChange]': 'onAcceptSettingsChanged',
             'change [name=acceptChangeChargeAccount]': 'onAcceptSettingsChanged',
@@ -31,13 +33,13 @@
         updatedModel: {},
         chargeAccountDiv: {},
 
-        render: function () {
+        render: function() {
 
             var data = this.model.toJSON();
             this.updatedModel = data.serverPaymentSettings;
 
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
-            
+
             this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode + "]").attr("selected", "selected");
             this.$("[id=landingPageType] option[value=" + data.serverPaymentSettings.payPalServerSettings.landingPageType + "]").attr("selected", "selected");
 
@@ -46,10 +48,12 @@
             this.saveButton = this.$("#saveButton");
 
             this.chargeAccountDiv = this.$("#warningChargeAccount");
-            
+
             this.onPaymentModeChanged();
             this.onPayPalSettingsChanged();
+
             this.onChargeAccountSettingsChanged();
+            this.canPaymentMethodBeMandatory();
 
             this.validate({
                 rules: {
@@ -65,13 +69,13 @@
             return this;
         },
 
-        testConfig: function (serviceCall, messageZoneSelector) {
+        testConfig: function(serviceCall, messageZoneSelector) {
 
             serviceCall
                 .fail(_.bind(function(response) {
                     this.alert(response.status + ' - ' + response.statusText, 'error');
                 }, this))
-                .done(_.bind(function (response) {
+                .done(_.bind(function(response) {
                     if (response.isSuccessful === true) {
                         this.alert(response.message, 'success', messageZoneSelector);
                     } else {
@@ -79,8 +83,8 @@
                     }
                 }, this));
         },
-        
-        cmtSettingsButtonClick: function () {
+
+        cmtSettingsButtonClick: function() {
 
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testCmt(data, 'Taxi'), this.$("#cmtSettingsMessageZone"));
@@ -92,8 +96,8 @@
             this.testConfig(this.model.testCmt(data, 'Luxury'), this.$("#cmtSettingsMessageZoneLuxury"));
         },
 
-        brainTreeSettingsButtonClick: function () {
-            
+        brainTreeSettingsButtonClick: function() {
+
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testBraintree(data), this.$("#brainTreeSettingsMessageZone"));
         },
@@ -104,35 +108,35 @@
             this.testConfig(this.model.testMoneris(data), this.$("#monerisSettingsMessageZone"));
         },
 
-        payPalProductionSettingsButtonClick: function () {
-            
+        payPalProductionSettingsButtonClick: function() {
+
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testPayPalProduction(data), this.$("#payPalProductionSettingsMessageZone"));
         },
-        
-        testPayPalSandboxSettingsButtonClick:function() {
+
+        testPayPalSandboxSettingsButtonClick: function() {
 
             var data = this.$el.serializeObject();
             this.testConfig(this.model.testPayPalSandbox(data), this.$("#payPalSandboxSettingsMessageZone"));
         },
-       
-        alert: function (message, type, selector) {
-            
+
+        alert: function(message, type, selector) {
+
             if (!selector) {
                 selector = this.$('.message');
             }
 
             message = replaceAll("\n", "<br/>", message);
-            
+
             var alert = new TaxiHail.AlertView({
                 message: this.localize(message),
                 type: type
-                });
+            });
             alert.on('ok', alert.remove, alert);
             selector.html(alert.render().el);
             this.model.fetch();
         },
-        
+
         save: function(form) {
 
             var data = $(form).serializeObject();
@@ -150,35 +154,35 @@
 
             if (data.isPayInTaxiEnabled != "true"
                 && data.isChargeAccountPaymentEnabled != "true"
-                && data.isOutOfAppPaymentDisabled == "true"
+                && data.isPaymentOutOfAppDisabled != "None"
                 && data.payPalClientSettings.isEnabled != "true") {
                 this.alert("Please select a payment method or enable In Car Payment");
 
                 this.$(':submit').button('reset');
                 return;
             }
-            
+
             if (data.paymentMode == "None" || data.paymentMode == "RideLinqCmt") {
                 data.automaticPaymentPairing = false;
             }
 
             this.model.save(data)
-                 .always(_.bind(function() {
-                     this.$(':submit').button('reset');
-                 }, this))
-                 .done(_.bind(function() {
-                     this.updatedModel = data;
-                     this.alert('Settings Saved', 'success');
+                .always(_.bind(function() {
+                    this.$(':submit').button('reset');
+                }, this))
+                .done(_.bind(function() {
+                    this.updatedModel = data;
+                    this.alert('Settings Saved', 'success');
 
-                 }, this))
-                 .fail(_.bind(function(){
+                }, this))
+                .fail(_.bind(function() {
 
-                     this.alert('Error Saving Settings', 'error');
-                     
-                 }, this));
+                    this.alert('Error Saving Settings', 'error');
+
+                }, this));
         },
 
-        validateWarning: function (warning) {
+        validateWarning: function(warning) {
             return warning.is(":visible") && warning.prop("checked") || !warning.is(":visible");
         },
 
@@ -194,7 +198,7 @@
             }
         },
 
-        onChargeAccountSettingsChanged: function() {
+        onChargeAccountSettingsChanged: function () {
             var isChargeAccountPaymentEnabled = this.updatedModel.isChargeAccountPaymentEnabled;
 
             var newIsChargeAccountPaymentEnabled = this.$("[name = isChargeAccountPaymentEnabled]").val() == 'true';
@@ -208,6 +212,35 @@
             }
 
             this.onAcceptSettingsChanged();
+        },
+
+        canPaymentMethodBeMandatory: function (event) {
+
+            if (event) {
+
+                if (event.target.name == 'isChargeAccountPaymentEnabled') {
+                    this.onChargeAccountSettingsChanged();
+                }
+
+                if (event.target.name == 'paymentMode') {
+                    this.onPaymentModeChanged();
+                }
+            }
+
+            var newIsChargeAccountPaymentEnabled = this.$("[name = isChargeAccountPaymentEnabled]").val() == 'true';
+            var newIsPaymentOutOfAppDisabled = this.$("[name = isPaymentOutOfAppDisabled]").val() != 'None';
+            var newIsPayInTaxiEnabled = this.$("[name = isPayInTaxiEnabled]").val() == 'true';
+            var newPaymentMode = this.$("[name = paymentMode]").val();
+
+            var inputCreditCardMandatory = this.$("[name=creditCardIsMandatory]");
+
+            if ((!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsPaymentOutOfAppDisabled) || newPaymentMode == 'None') {
+                inputCreditCardMandatory.val('false');
+                inputCreditCardMandatory.attr('disabled', 'disabled');
+            } else {
+                inputCreditCardMandatory.val(this.updatedModel.creditCardIsMandatory.toString());
+                inputCreditCardMandatory.removeAttr('disabled');
+            }
         },
         
         onPayPalSettingsChanged: function() {

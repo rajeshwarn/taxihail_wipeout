@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -18,16 +19,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 		private bool _isCmtRideLinq;
+	    private bool _isDriverBonusEnabledForMarket;
         
 		public OrderReviewViewModel
 		(
 			IOrderWorkflowService orderWorkflowService,
 			IPaymentService paymentService,
-			IAccountService accountService
+			IAccountService accountService,
+			IVehicleTypeService vehicleTypeService
 		)
 		{
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
@@ -37,15 +42,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
-			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObserveTipIncentive().Throttle(TimeSpan.FromMilliseconds(500)), tipIncentive => DriverBonus = tipIncentive);
+            Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
+		    Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 
 			_driverBonus = 5;
 
-			GetIsCmtRideLinq();
+			GetIsCmtRideLinq().FireAndForget();
 		}
 
-		private async Task GetIsCmtRideLinq()
+	    private void MarketChanged(MarketSettings marketSettings)
+	    {
+			_isDriverBonusEnabledForMarket = marketSettings.EnableDriverBonus;
+
+            RaisePropertyChanged(() => CanShowDriverBonus);
+        }
+
+	    private async Task GetIsCmtRideLinq()
 		{
 			try
 			{
@@ -69,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var chargeTypes = await _accountService.GetPaymentsList();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
-			var vehicle = (await _accountService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
+			var vehicle = (await _vehicleTypeService.GetVehiclesList()).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
 			if (vehicle != null)
 			{
 				VehiculeType = vehicle.Name;
@@ -242,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get 
 			{ 
-				return _isCmtRideLinq && this.Services().Settings.IsDriverBonusEnabled; 
+				return _isCmtRideLinq && _isDriverBonusEnabledForMarket; 
 			}
 		}
 

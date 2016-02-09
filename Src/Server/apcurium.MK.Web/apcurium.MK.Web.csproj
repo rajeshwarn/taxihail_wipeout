@@ -116,6 +116,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PostSharp, Version=3.1.27.9, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\PostSharp.dll</HintPath>
@@ -230,19 +238,17 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="admin\assets\css\PagedList.css" />
     <Content Include="admin\assets\img\blackcar_badge.png" />
-    <Content Include="admin\assets\img\no.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
     <Content Include="admin\assets\img\wheelchair_badge.png" />
-    <Content Include="admin\assets\img\yes.png" />
     <Content Include="admin\collections\RideRatingCollection.js" />
     <Content Include="admin\collections\ServiceTypeCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
-    <Content Include="admin\controllers\AccountsManagementController.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />
@@ -260,8 +266,6 @@
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
     <Content Include="admin\localization\AccountManagement.json" />
-    <Content Include="admin\models\AccountManagementModel.js" />
-    <Content Include="admin\models\AccountsManagementModel.js" />
     <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NetworkVehicleTypes.js" />
     <Content Include="admin\models\NotificationSettings.js" />
@@ -286,14 +290,12 @@
     <Content Include="admin\templates\UpdateServiceType.hbs.js">
       <DependentUpon>UpdateServiceType.handlebars</DependentUpon>
     </Content>
-    <Content Include="admin\views\AccountManagementView.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\UpdateServiceTypeView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ExportPromotionsView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
     <Content Include="admin\views\ManageRideRatingsView.js" />
-    <Content Include="admin\views\AccountsManagementView.js" />
     <Content Include="admin\views\ManageServiceTypesView.js" />
     <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
@@ -335,11 +337,14 @@
     <Content Include="assets\img\email_logo.png" />
     <Content Include="assets\img\email_red_dot.png" />
     <Content Include="assets\img\nearby_cab.png" />
+    <Content Include="assets\img\no.png" />
     <Content Include="assets\img\pin_cluster.png" />
     <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
+    <Content Include="assets\img\tony.jpg" />
     <Content Include="assets\img\wheelchair_badge.png" />
+    <Content Include="assets\img\yes.png" />
     <Content Include="assets\js\additional-methods.js" />
     <Content Include="assets\js\handlebars-v3.0.3.js" />
     <Content Include="assets\js\jquery.cookie.js" />
@@ -460,9 +465,8 @@
     <Content Include="localization\Sherbet-en.json" />
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
-    <Content Include="admin\templates\AccountsManagement.handlebars" />
+    <Content Include="localization\BramCityTaxi-en.json" />
     <Content Include="admin\templates\ExportPromotions.handlebars" />
-    <Content Include="admin\templates\AccountManagement.handlebars" />
     <Content Include="localization\PaymentItem.json" />
     <Content Include="localization\PaymentItem-fr.json" />
     <Content Include="localization\PaymentItem-es.json" />
@@ -472,6 +476,10 @@
     <Content Include="admin\templates\ServiceTypeItem.handlebars" />
     <Content Include="admin\templates\ManageServiceTypes.handlebars" />
     <Content Include="admin\templates\UpdateServiceType.handlebars" />
+    <Content Include="localization\Aeroport Taxi.json" />
+    <Content Include="Areas\AdminTH\Views\AccountsManagement\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\BlackList\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\AccountManagement\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -504,6 +512,8 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\TaxiHail\img\app-stores-itunes.png" />
+    <Content Include="themes\TaxiHail\img\appstores-play.png" />
     <Content Include="themes\TaxiHail\img\email_logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
@@ -687,17 +697,22 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\AccountManagementController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\BlackListController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\AccountsManagementController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\OrderController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
-    <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
-    <Compile Include="Areas\AdminTH\Models\MarketFees.cs" />
-    <Compile Include="Areas\AdminTH\Models\OrderDebug.cs" />
-    <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
-    <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
+    <Compile Include="Areas\AdminTH\Models\AccountManagementModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\AccountsManagementModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\CompanySettingsModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\MarketFeesModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\OrderDebugModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoCodeModel.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoStatsModel.cs" />
     <Compile Include="Areas\BaseController.cs" />
     <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
     <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
@@ -712,6 +727,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="helpers\HiddenExtensions.cs" />
     <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />
     <Compile Include="Module.cs" />

@@ -1,23 +1,19 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-
-#endregion
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -30,9 +26,17 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
         private readonly IServerSettings _serverSettings;
+        private readonly IIbsCreateOrderService _ibsCreateOrderService;
+        private readonly ILogger _logger;
 
-        public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
-            IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings)
+        public CancelOrderService(ICommandBus commandBus, 
+            IIBSServiceProvider ibsServiceProvider, 
+            IOrderDao orderDao, 
+            IAccountDao accountDao,
+            IUpdateOrderStatusJob updateOrderStatusJob, 
+            IServerSettings serverSettings,
+            IIbsCreateOrderService ibsCreateOrderService,
+            ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
@@ -40,6 +44,9 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
             _serverSettings = serverSettings;
+            _ibsCreateOrderService = ibsCreateOrderService;
+            _logger = logger;
+
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -61,47 +68,53 @@ namespace apcurium.MK.Booking.Api.Services
             if (order.IBSOrderId.HasValue)
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey, order.Settings.ServiceType);
-                var orderDetail = _orderDao.FindOrderStatusById(order.Id);
+                var orderStatus = _orderDao.FindOrderStatusById(order.Id);
 
-                var canCancelWhenPaired = orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).CancelOrderOnUnpair;
+                var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+                    && _serverSettings.GetPaymentSettings(orderStatus.CompanyKey).CancelOrderOnUnpair;
 
                 if (currentIbsAccountId.HasValue
-                    && (!orderDetail.IBSStatusId.HasValue()
-                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
-                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
-                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
-                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
+                    && (!orderStatus.IBSStatusId.HasValue()
+                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
+                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
+                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
+                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
                         || canCancelWhenPaired))
                 {
-                    // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
-                    Task.Factory.StartNew(() =>
-                    {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Settings.ServiceType).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
-                        cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-                    });
-
-                    var command = new Commands.CancelOrder { OrderId = request.OrderId };
-                    _commandBus.Send(command);
-
-                    UpdateStatusAsync(command.Id);
-
-                    return new HttpResult(HttpStatusCode.OK);
+                    _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId.Value, order.CompanyKey, order.Settings.Phone, account.Id);
                 }
+                else
+                {
+                    var errorReason = !currentIbsAccountId.HasValue
+                    ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
+                    : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}, state: {1}", orderStatus.IBSStatusId, orderStatus.IBSStatusId);
+                    var errorMessage = string.Format("Could not cancel order because {0}", errorReason);
 
-                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrdeError"));
+                    _logger.LogMessage(errorMessage);
+
+                    throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
+                }
             }
+            else
+            {
+                _logger.LogMessage("We don't have an ibs order id yet, send a CancelOrder command so that when we receive the ibs order info, we can cancel it");
+            }
+            
+            var command = new Commands.CancelOrder { OrderId = request.OrderId };
+            _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.BadRequest);
+            UpdateStatusAsync(command.OrderId);
+
+            return new HttpResult(HttpStatusCode.OK);
         }
 
-        private void UpdateStatusAsync(Guid id)
+        private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>
             {
                 //We have to wait for the order to be completed.
                 Thread.Sleep(750);
-                _updateOrderStatusJob.CheckStatus(id);
+                _updateOrderStatusJob.CheckStatus(orderId);
             });
         }
     }

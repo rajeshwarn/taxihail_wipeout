@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq || state == HomeViewModelState.DropOffAddressSelection)
 			{
 				IsMapDisabled = false;
 			}
@@ -176,7 +176,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool CanExecuteUserMovedMap()
 		{
-			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
+			var currentViewState = ((HomeViewModel)Parent).CurrentViewState;
+			return currentViewState == HomeViewModelState.Initial || currentViewState == HomeViewModelState.DropOffAddressSelection;
 		}
 	
 		public void DisableBooking()

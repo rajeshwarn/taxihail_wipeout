@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 using apcurium.MK.Common;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<ReferenceData> GetReferenceData();
 
         void ClearReferenceData();
+        
 
 	    void ClearVehicleTypesCache();
         
@@ -50,9 +52,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Address> FindInAccountAddresses(double latitude, double longitude);
 
-		Task<Address[]> GetHistoryAddresses();
+		Task<Address[]> GetHistoryAddresses(CancellationToken cancellationToken = default(CancellationToken));
         
-		Task<Address[]> GetFavoriteAddresses();
+		Task<Address[]> GetFavoriteAddresses(CancellationToken cancellationToken = default(CancellationToken));
         
 		Task UpdateAddress(Address address);
         
@@ -62,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<IList<Order>> GetHistoryOrders();
 
-		OrderStatusDetail[] GetActiveOrdersStatus();
+		Task<OrderStatusDetail[]> GetActiveOrdersStatus();
         
 		Task<Order> GetHistoryOrderAsync(Guid id);
 
@@ -74,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<CreditCardDetails> GetDefaultCreditCard ();
 		Task<IEnumerable<CreditCardDetails>> GetCreditCards ();
-		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false);
+		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, string kountSessionId, bool isUpdate = false);
 		Task RemoveCreditCard (Guid creditCardId, bool replacedByPayPal = false);
 		Task<bool> UpdateDefaultCreditCard(Guid creditCardId);
 		Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label);

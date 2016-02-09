@@ -2,13 +2,19 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
+
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
@@ -17,13 +23,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 	{
 		private MonerisTokenizeClient MonerisClient { get; set; }
 
-		public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger)
-            : base(url, sessionId, packageInfo)
+        public MonerisServiceClient(string url, string sessionId, MonerisPaymentSettings monerisSettings, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
 		{
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
-        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
 		{
             return Tokenize(MonerisClient, creditCardNumber, expiryDate);
 		}
@@ -36,6 +42,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
+        public Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
+        {
+            return Task.FromResult(new BasePaymentResponse { IsSuccessful = true });
+        }
+
         public Task<OverduePayment> GetOverduePayment()
         {
             return Client.GetAsync<OverduePayment>("/account/overduepayment");
@@ -46,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
             return Client.PostAsync(new SettleOverduePaymentRequest());
         }
 
-        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger, string zipCode = null)
+        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger, string zipCode)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
             var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));

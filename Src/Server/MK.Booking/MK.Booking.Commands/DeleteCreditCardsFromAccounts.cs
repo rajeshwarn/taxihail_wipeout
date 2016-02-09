@@ -15,6 +15,9 @@ namespace apcurium.MK.Booking.Commands
         }
 
         public Guid[] AccountIds { get; set; }
+
+        public bool ForceUserDisconnect { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

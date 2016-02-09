@@ -113,6 +113,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 rule.Name = @event.Name;
                 rule.Message = @event.Message;
                 rule.ZoneRequired = @event.ZoneRequired;
+				rule.ExcludeCircularZone = @event.ExcludeCircularZone;
+				rule.ExcludedCircularZoneLatitude = @event.ExcludedCircularZoneLatitude;
+				rule.ExcludedCircularZoneLongitude = @event.ExcludedCircularZoneLongitude;
+				rule.ExcludedCircularZoneRadius = @event.ExcludedCircularZoneRadius;
                 rule.ZoneList = @event.ZoneList;
                 rule.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
                 rule.StartTime = @event.StartTime.HasValue

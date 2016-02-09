@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -256,7 +255,8 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, 
+            string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 
@@ -417,7 +417,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // send pairing request                                
                 var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
-                var pairingRequest = new PairingRequest
+                var pairingRequest = new ManualRideLinqCoFPairingRequest
                 {
                     AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
@@ -431,7 +431,12 @@ namespace apcurium.MK.Booking.Services.Impl
                     Market = cmtPaymentSettings.Market,
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
                     LastFour = creditCardDetail.Last4Digits,
-                    TipIncentive = orderDetail.TipIncentive
+                    TipIncentive = orderDetail.TipIncentive,
+                    ZipCode = creditCardDetail.ZipCode,
+                    Email = accountDetail.Email,
+                    CustomerIpAddress = orderDetail.OriginatingIpAddress,
+                    BillingFullName = creditCardDetail.NameOnCard,
+                    SessionId = orderDetail.KountSessionId
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
@@ -450,8 +455,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Pairing response : " + response.ToJson());
 
-                // wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                // Wait for trip to be updated to check if pairing was successful
+                var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                
+                if (trip.HttpStatusCode != (int) HttpStatusCode.OK)
+                {
+                    throw new Exception("Card could not be paired with vehicle.");
+                }
 
                 return response;
             }

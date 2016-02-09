@@ -6,9 +6,14 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using MK.Common.Configuration;
 using System.Linq;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -17,8 +22,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
-            : base(url, sessionId, packageInfo)
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, IPaymentServiceClient tokenizationService = null)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
             _paymentService = tokenizationService;
         }
@@ -167,26 +172,37 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             await Client.PostAsync<string>(req, userTaxiHailNetworkSettingsRequest);
         }
 
-        public async Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId)
+        public async Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId, string creditCardToken)
         {
-            await UnregisterTokenizedCards (creditCardId);
+            await UnregisterTokenizedCards (creditCardId, creditCardToken);
 
-            string req = string.Format("/account/creditcards/{0}", creditCardId);
+            var req = string.Format("/account/creditcards/{0}", creditCardId);
             return await Client.DeleteAsync<CreditCardDetails>(req);
         }
 
-        private async Task UnregisterTokenizedCards(Guid creditCardId, string skipThisToken = null)
+        private async Task UnregisterTokenizedCards(Guid creditCardId, string creditCardToken = null, string skipThisToken = null)
         {
-            var cards = await GetCreditCards ();
-            var card = cards.FirstOrDefault(c => c.CreditCardId == creditCardId);
-           
-            if (card != null)
+            if (!creditCardToken.HasValue())
             {
-                if (card.Token.HasValue() && card.Token != skipThisToken)
+                var cards = await GetCreditCards();
+                var card = cards.FirstOrDefault(c => c.CreditCardId == creditCardId);
+           
+                if (card != null)
                 {
-                    await _paymentService.ForgetTokenizedCard(card.Token);
+                    if (card.Token.HasValue() && card.Token != skipThisToken)
+                    {
+                        await _paymentService.ForgetTokenizedCard(card.Token);
+                    }
                 }
             }
+            else
+            {
+                if (creditCardToken != skipThisToken)
+                {
+                    await _paymentService.ForgetTokenizedCard(creditCardToken);
+                }
+            }
+
         }
 
         public Task<Account> GetTestAccount(int index)

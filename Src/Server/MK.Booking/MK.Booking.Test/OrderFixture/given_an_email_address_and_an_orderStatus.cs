@@ -12,8 +12,10 @@ using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using CustomerPortal.Client;
 using Moq;
 using NUnit.Framework;
 using Infrastructure.Messaging;
@@ -39,6 +41,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Commands = new List<ICommand>();
 
             _geocodingMock = new Mock<IGeocoding>();
+            var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
+
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
                 TemplateServiceMock.Object,
@@ -50,7 +54,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
+                taxihailNetworkServiceClientMock.Object,
+                new Logger(),
                 bus.Object);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
@@ -148,7 +153,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("TotalFare", "$21.00");
             AssertTemplateValueEquals("Tax", "$1.00");
             AssertTemplateValueEquals("ShowTax", "True");
-            AssertTemplateValueEquals("ShowToll", "True");
+            AssertTemplateValueEquals("ShowTollTotal", "True");
             AssertTemplateValueEquals("ShowSurcharge", "True");
             AssertTemplateValueEquals("ShowBookingFees", "True");
             AssertTemplateValueEquals("vatIsEnabled", "False");

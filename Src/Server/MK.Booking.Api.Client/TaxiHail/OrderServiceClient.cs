@@ -3,7 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -11,22 +16,24 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
+
 #endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class OrderServiceClient : BaseServiceClient
     {
-        public OrderServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public OrderServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 
-        public Task<OrderStatusDetail> CreateOrder(CreateOrder order)
+        public Task<OrderStatusDetail> CreateOrder(CreateOrderRequest orderRequest)
         {
-            var req = string.Format("/account/orders");
-            var result = Client.PostAsync<OrderStatusDetail>(req, order);
-            return result;
+            return Client.PostAsync<OrderStatusDetail>("/account/orders", orderRequest);
         }
 
         public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)
@@ -111,17 +118,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<OrderRatings>(req);
         }
 
-		public Task<OrderValidationResult> ValidateOrder(CreateOrder order, string testZone = null, bool forError = false)
+		public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest orderRequest, string testZone = null, bool forError = false)
 		{
             if (testZone.HasValue())
             {
                 var req = string.Format("/account/orders/validate/{0}/{1}", forError, testZone);
-                return Client.PostAsync<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, orderRequest);
             }
             else
             {
                 var req = string.Format("/account/orders/validate/{0}", forError);
-                return Client.PostAsync<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, orderRequest);
             }
         }
 
@@ -132,14 +139,21 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
         public Task<int> GetOrderCountForAppRating()
-		{
+        {
             return Client.GetAsync<int>("/account/ordercountforapprating");
-		}
+        }
 
         public Task PayGratuity(GratuityRequest request)
         {
             var req = string.Format("/account/orders/{0}/gratuity", request.OrderId);
             return Client.PostAsync<string>("/gratuity/", request);
+        }
+        
+        public Task<bool> UpdateDropOff(Guid orderId, Address dropOffAddress)
+        {
+            var req = string.Format("/account/orders/{0}/updateintrip", orderId);
+            var result = Client.PostAsync<bool>(req, new OrderUpdateRequest() { DropOffAddress = dropOffAddress});
+            return result;
         }
     }
 }

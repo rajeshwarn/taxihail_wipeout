@@ -13,7 +13,7 @@
         parse: function (response) {
             var lst = [];
             _.each(response, function (model) {
-                var vehicle = new TaxiHail.AvailableVehicle([],  { latitude: model.latitude, longitude: model.longitude, vehicleNumber: model.vehicleNumber });               
+                var vehicle = new TaxiHail.AvailableVehicle([], { latitude: model.latitude, longitude: model.longitude, vehicleName: model.vehicleName });
                 lst.push(vehicle);
             });                  
             return lst;

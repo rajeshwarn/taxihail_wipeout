@@ -1,14 +1,15 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
+using apcurium.MK.Common.Cryptography;
 
 namespace MK.Common.Configuration
 {
-    public class ServerTaxiHailSetting : TaxiHailSetting
+	public class ServerTaxiHailSetting : TaxiHailSetting
     {
         public ServerTaxiHailSetting()
         {
@@ -17,6 +18,7 @@ namespace MK.Common.Configuration
                 ClientPollingInterval = 10,
                 ServerPollingInterval = 10
             };
+
 
             GCM = new GCMSettingContainer
             {
@@ -40,6 +42,13 @@ namespace MK.Common.Configuration
 
             APNS = new APNSSettingContainer();
 
+            BBNotificationSettings = new BlackberrySettingContainer
+            {
+                AppId = "5477-85B539832ir39I6O1af3803i53aM33255i0",
+                Password = "8E6vv6eC",
+                Url = "https://cp5477.pushapi.eval.blackberry.com"
+            };
+
             DefaultBookingSettings = new DefaultBookingSettingsSettingContainer
             {
                 NbPassenger = 1,
@@ -55,7 +64,7 @@ namespace MK.Common.Configuration
                 OrderPriority = true,
                 TimeDifference = 0,
                 ValidatePickupZone = true,
-                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/", // TODO: Set proper values
+                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/",
                 RestApiUser = @"EUGENE",
                 RestApiSecret = @"T!?_asF",
                 WebServicesPassword = "test",
@@ -107,11 +116,11 @@ namespace MK.Common.Configuration
 				ApplicationKeys = "94705638689d77a3aff2526332969395",
 				ApiUrl = "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/"
 	        };
-
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
         public APNSSettingContainer APNS { get; protected set; }
+        public BlackberrySettingContainer BBNotificationSettings { get; protected set; }
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
 		public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }
@@ -119,11 +128,12 @@ namespace MK.Common.Configuration
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
-        public CmtGeoSettingContainer CmtGeo { get; protected set; }
+		public CmtGeoSettingContainer CmtGeo { get; protected set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
         public bool IsWebSignupHidden { get; protected set; }
 
+		[PropertyEncrypt]
         [Display(Name = "Payment - PayPal Region Info Override", Description = "Secret Paypal Setting (See Mathieu S.)")]
         public string PayPalRegionInfoOverride { get; protected set; }
 
@@ -144,6 +154,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
         public bool DisableNewerVersionPopup { get; private set; }
 
+		[PropertyEncrypt]
 	    [Display(Name = "Configuration - Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
         public string BaseUrl { get; private set; }
 
@@ -154,6 +165,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
         public DriverEtaNotificationModes DriverEtaNotificationMode { get; protected set; }
 
+		[PropertyEncrypt]
         [Hidden]
         [Display(Name = "Configuration - Available to Admin (Hidden)", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
@@ -185,7 +197,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead", false)]
         [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
@@ -201,5 +213,5 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
-    }
+	}
 }

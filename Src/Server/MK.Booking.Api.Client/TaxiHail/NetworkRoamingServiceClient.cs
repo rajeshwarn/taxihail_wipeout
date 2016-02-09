@@ -1,16 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class NetworkRoamingServiceClient : BaseServiceClient
     {
-        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public NetworkRoamingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 
@@ -25,6 +31,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var queryString = BuildQueryString(@params);
 
             return Client.GetAsync<string>("/roaming/market" + queryString);
+        }
+
+        public Task<MarketSettings> GetCompanyMarketSettings(double latitude, double longitude)
+        {
+            var @params = new Dictionary<string, string>
+                {
+                    {"latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                    {"longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+                };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.GetAsync<MarketSettings>("/roaming/marketsettings" + queryString);
         }
 
         public Task<List<NetworkFleet>> GetNetworkFleets()

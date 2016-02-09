@@ -97,6 +97,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind (lblVersion)
                 .For (v => v.Text)
                 .To (vm => vm.Version);
+            set.Bind (lblVersion)
+                .For ("Tap")
+                .To (vm => vm.OpenDebugMenu);
 
 			set.Bind (lblServerVersion)
 				.For (v => v.Text)

@@ -10,19 +10,19 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using MK.Common.Exceptions;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSettingsViewModel: PageViewModel
     {
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
-	    private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrderWorkflowService _orderWorkflowService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -30,14 +30,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string _email;
 
 		public RideSettingsViewModel(IAccountService accountService, 
+			IVehicleTypeService vehicleTypeService,
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
 			IOrderWorkflowService orderWorkflowService)
 		{
+			this._vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
-		    _accountService = accountService;
+			_accountService = accountService;
             PhoneNumber = new PhoneNumberModel();
 		}
 
@@ -77,8 +79,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    catch (Exception ex)
 			    {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
 			    }
 			}
 		}

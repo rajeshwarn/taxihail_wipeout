@@ -10,6 +10,7 @@ using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Impl;
 using log4net;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Maps.Geo;
 
 #endregion
 
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-                                        getPickupZone, getDropoffZone, market);
+                                        getPickupZone, getDropoffZone, market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
@@ -89,7 +90,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-                                        getPickupZone, getDropoffZone, market);
+										getPickupZone, getDropoffZone, market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
 
                 var hasWarning = rule != null;
                 var message = rule != null ? rule.Message : null;

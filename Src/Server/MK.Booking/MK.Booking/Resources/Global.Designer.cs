@@ -72,9 +72,18 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to It is too late to cancel this order.
         /// </summary>
-        public static string CancelOrdeError {
+        public static string CancelOrderError {
             get {
-                return ResourceManager.GetString("CancelOrdeError", resourceCulture);
+                return ResourceManager.GetString("CancelOrderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot cancel order because of we don&apos;t have the IBSOrderID.
+        /// </summary>
+        public static string CancelOrderError_NoIBSOrderId {
+            get {
+                return ResourceManager.GetString("CancelOrderError_NoIBSOrderId", resourceCulture);
             }
         }
         
@@ -403,6 +412,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, your card could not be authorized. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardDeclinedOnPreauthorizationErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardDeclinedOnPreauthorizationErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was an error processing your card. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardUnanbleToPreathorizeErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardUnanbleToPreathorizeErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:c}.
         /// </summary>
         public static string CurrencyPriceFormat {
@@ -561,6 +588,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_DriverId {
             get {
                 return ResourceManager.GetString("Email_Body_DriverId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver Photo.
+        /// </summary>
+        public static string Email_Body_DriverPhoto {
+            get {
+                return ResourceManager.GetString("Email_Body_DriverPhoto", resourceCulture);
             }
         }
         
@@ -993,6 +1029,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_VehicleNumber {
             get {
                 return ResourceManager.GetString("Email_Body_VehicleNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Licence Plate.
+        /// </summary>
+        public static string Email_Body_VehicleRegistration {
+            get {
+                return ResourceManager.GetString("Email_Body_VehicleRegistration", resourceCulture);
             }
         }
         
@@ -1438,6 +1483,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The phone number is black listed.
+        /// </summary>
+        public static string PhoneBlackListed {
+            get {
+                return ResourceManager.GetString("PhoneBlackListed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The phone number is invalid. It must have format {0}.
         /// </summary>
         public static string PhoneNumberFormat {
@@ -1654,15 +1708,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The confirmation code is incorrect..
-        /// </summary>
-        public static string ServiceErrorCreateAccount_InvalidConfirmationToken {
-            get {
-                return ResourceManager.GetString("ServiceErrorCreateAccount_InvalidConfirmationToken", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No Credit Card On File..
         /// </summary>
         public static string ServiceErrorCreateOrder_CardOnFileButNoCreditCard {
@@ -1735,15 +1780,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No account with this email has been found..
-        /// </summary>
-        public static string ServiceErrorResetPassword_AccountNotFound {
-            get {
-                return ResourceManager.GetString("ServiceErrorResetPassword_AccountNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Your session has expired, please login to continue..
         /// </summary>
         public static string ServiceErrorUnauthorized {
@@ -1758,6 +1794,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string ServiceErrorUpdatePassword_NotSame {
             get {
                 return ResourceManager.GetString("ServiceErrorUpdatePassword_NotSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was a problem, please pay in the taxi.
+        /// </summary>
+        public static string TripUnableToPairErrorText {
+            get {
+                return ResourceManager.GetString("TripUnableToPairErrorText", resourceCulture);
             }
         }
         

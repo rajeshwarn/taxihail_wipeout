@@ -77,7 +77,7 @@ namespace CMTServices
         /// If left empty, will return the status from all the vehicles in the market.</param>
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <returns>The vehicle statuses.</returns>
-        public IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
+        public virtual IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
         {
             if (vehicleIds == null)
             {

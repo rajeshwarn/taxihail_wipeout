@@ -34,16 +34,16 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             //Act
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Distance = 3,
                             Price = 10
@@ -64,7 +64,7 @@ namespace apcurium.MK.Web.Tests
             await orderService.CreateOrder(order);
 
             //Assert
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
@@ -82,9 +82,9 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupDate = DateTime.Now,
@@ -125,7 +125,7 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
                 },
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Distance = 3,
                     Price = 10
@@ -161,15 +161,15 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = await CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Distance = 3,
                             Price = 10
@@ -189,7 +189,7 @@ namespace apcurium.MK.Web.Tests
                 };
             await orderService.CreateOrder(order);
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var addresses = await sut.GetHistoryAddresses(newAccount.Id);
 
             //Act

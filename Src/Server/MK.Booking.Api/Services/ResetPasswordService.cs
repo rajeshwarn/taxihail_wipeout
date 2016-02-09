@@ -11,58 +11,61 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using System;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ResetPasswordService : Service
-    {
-        private readonly ICommandBus _commandBus;
-        private readonly IAccountDao _dao;
+   public class ResetPasswordService : Service
+   {
+      private readonly ICommandBus _commandBus;
+      private readonly IAccountDao _dao;
 
-        public ResetPasswordService(ICommandBus commandBus, IAccountDao dao)
-        {
-            _commandBus = commandBus;
-            _dao = dao;
-        }
+      public ResetPasswordService(ICommandBus commandBus, IAccountDao dao)
+      {
+         _commandBus = commandBus;
+         _dao = dao;
+      }
 
-        public object Post(ResetPassword request)
-        {
-            var user = _dao.FindByEmail(request.EmailAddress);
-            if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+      public object Post(ResetPassword request)
+      {
+         var user = _dao.FindByEmail(request.EmailAddress);
+         if (user == null)
+         {
+            throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+         }
 
-            var session = this.GetSession();
+         var currentSession = this.GetSession();
 
-            if (session.IsAuthenticated)
-            {
-                var currentUserId = new Guid(session.UserAuthId);
+         var currentUserId = currentSession.UserAuthId.HasValueTrimmed()
+             ? new Guid(currentSession.UserAuthId)
+             : Guid.Empty;
 
-                if (user.Id == currentUserId)
-                {
-                    // In case user is signed in, sign out user to force him to authenticate again
-                    base.RequestContext.Get<IHttpRequest>().RemoveSession();
-                }    
-            }
-			
-            var newPassword = new PasswordService().GeneratePassword();
-            var resetCommand = new ResetAccountPassword
-            {
-                AccountId = user.Id,
-                Password = newPassword
-            };
+         if (user.Id == currentUserId)
+         {
+            // In case user is signed in, sign out user to force him to authenticate again
+            base.RequestContext.Get<IHttpRequest>().RemoveSession();
+         }
 
-            var emailCommand = new SendPasswordResetEmail
-            {
-                ClientLanguageCode = user.Language,
-                EmailAddress = user.Email,
-                Password = newPassword,
-            };
+         var newPassword = new PasswordService().GeneratePassword();
+         var resetCommand = new ResetAccountPassword
+         {
+            AccountId = user.Id,
+            Password = newPassword
+         };
 
-            _commandBus.Send(resetCommand);
-            _commandBus.Send(emailCommand);
+         var emailCommand = new SendPasswordResetEmail
+         {
+            ClientLanguageCode = user.Language,
+            EmailAddress = user.Email,
+            Password = newPassword,
+         };
 
-            return new HttpResult(newPassword, HttpStatusCode.OK);
-        }
-    }
+         _commandBus.Send(resetCommand);
+         _commandBus.Send(emailCommand);
+
+         return new HttpResult(HttpStatusCode.OK);
+      }
+   }
 }

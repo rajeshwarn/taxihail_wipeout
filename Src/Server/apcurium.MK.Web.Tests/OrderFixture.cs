@@ -44,21 +44,21 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void create_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Price = 10,
                             Distance = 3
                         },
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "5145551212",
@@ -89,7 +89,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_order_with_charge_account_with_card_on_file_payment_from_web_app()
         {
-            var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var accountChargeName = "NAME" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
             var accountChargeNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
             var accountCustomerNumber = "CUSTOMER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
@@ -110,15 +110,15 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo { UserAgent = "FireFox" });
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo { UserAgent = "FireFox" }, null);
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 FromWebApp = true,
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
@@ -159,8 +159,8 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void create_order_with_user_location()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 UserLatitude = 46.50643,
@@ -168,14 +168,14 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
                 },
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",
@@ -201,19 +201,19 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_creating_order_without_passing_settings()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
                 },
-                Settings = new BookingSettings()
+                Settings = new BookingSettings
                 {
                     Phone = "5145551212",
                     Country = new CountryISOCode("CA")
@@ -228,14 +228,14 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_creating_order_with_promotion_but_not_using_card_on_file()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
@@ -290,26 +290,26 @@ namespace apcurium.MK.Web.Tests
             
             _orderId = Guid.NewGuid();
 
-            var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(TestAccount.Email, TestAccountPassword);
+            var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null).Authenticate(TestAccount.Email, TestAccountPassword);
             authTask.Wait();
             var auth = authTask.Result;
             SessionId = auth.SessionId;
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var order = new CreateOrderRequest
             {
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
                 },
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",
@@ -337,7 +337,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void try_to_switch_order_to_next_dispatch_company_when_not_timedout()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = await sut.GetOrderStatus(_orderId);
 
             var orderStatus = await sut.SwitchOrderToNextDispatchCompany(new SwitchOrderToNextDispatchCompanyRequest
@@ -358,7 +358,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void order_dispatch_company_switch_ignored()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             await sut.IgnoreDispatchCompanySwitch(_orderId);
 
@@ -374,7 +374,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void ibs_order_was_created()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var order = await sut.GetOrder(_orderId);
 
             Assert.IsNotNull(order);
@@ -386,7 +386,7 @@ namespace apcurium.MK.Web.Tests
         {
             await CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var ex = Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
             Assert.AreEqual("Can't access another account's order", ex.Message);
         }
@@ -394,7 +394,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void can_cancel_it()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             await sut.CancelOrder(_orderId);
 
             OrderStatusDetail status = null;
@@ -421,7 +421,7 @@ namespace apcurium.MK.Web.Tests
         {
             await CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var ex = Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
             Assert.AreEqual("Can't cancel another account's order", ex.Message);
@@ -430,7 +430,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_remove_it_should_not_be_in_history()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             await sut.RemoveFromHistory(_orderId);
 
@@ -460,7 +460,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_order_rated_ratings_should_not_be_null()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var orderRatingsRequest = new OrderRatingsRequest
             {
@@ -486,7 +486,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetOrderList()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var orders = await sut.GetOrders();
             Assert.NotNull(orders);
@@ -495,7 +495,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void GetOrder()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var order = await sut.GetOrder(_orderId);
             Assert.NotNull(order);
@@ -509,11 +509,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(TestAddresses.GetAddress2().Latitude, order.DropOffAddress.Latitude);
             Assert.AreEqual(TestAddresses.GetAddress2().Longitude, order.DropOffAddress.Longitude);
             Assert.AreNotEqual(OrderStatus.Completed, order.Status);
-
-            //TODO: Check with Mathieu M. for those
-            //Assert.That(order.Fare, Is.EqualTo(10));
-            //Assert.That(order.Tip, Is.EqualTo(0));
-            //Assert.That(order.Toll, Is.EqualTo(0));
         }
     }
 }

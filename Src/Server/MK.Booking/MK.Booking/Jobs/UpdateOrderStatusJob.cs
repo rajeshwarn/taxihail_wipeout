@@ -1,9 +1,11 @@
 ﻿#region
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -31,6 +33,7 @@ namespace apcurium.MK.Booking.Jobs
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
+        public int MaxParallelism = 16;
 
         public UpdateOrderStatusJob(IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
@@ -65,7 +68,7 @@ namespace apcurium.MK.Booking.Jobs
                 if (order != null && order.IBSOrderId.HasValue)
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey, order.Settings.ServiceType).GetOrdersStatus( new [] { order.IBSOrderId.Value });
+                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey).GetOrdersStatus( new [] { order.IBSOrderId.Value });
                  
                     _orderStatusUpdater.Update(status.ElementAt(0), orderStatus);
                 }
@@ -77,7 +80,7 @@ namespace apcurium.MK.Booking.Jobs
         public bool CheckStatus(string updaterUniqueId, int pollingValue)
         {
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
-            bool hasOrdersWaitingForPayment = false;
+            var hasOrdersWaitingForPayment = false;
             
             Log.DebugFormat("Attempting to CheckStatus with {0}", updaterUniqueId);
 
@@ -117,12 +120,13 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 finally
                 {
+                    Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                     timer.Dispose();
                 }
             }
             else
             {
-                Log.DebugFormat("CheckStatus was blocked for {0}", updaterUniqueId);
+                Log.DebugFormat("CheckStatus was blocked for {0} by {1}", updaterUniqueId, lastUpdate.UpdaterUniqueId);
             }
 
             return hasOrdersWaitingForPayment;
@@ -135,61 +139,96 @@ namespace apcurium.MK.Booking.Jobs
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
 
-            foreach (var orderStatusDetail in manualRideLinqOrders)
+            Parallel.ForEach(manualRideLinqOrders, 
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
+                orderStatusDetail =>
             {
                 Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
-            }
+            });
 
-            var ordersByService = orderStatusDetails
+            var ibsOrdersIds = orderStatusDetails
                 .Where(order => !order.IsManualRideLinq)
-                .GroupBy(x => x.ServiceType)
-                .Select(x => new Tuple<ServiceType, IEnumerable<OrderStatusDetail>>(x.FirstOrDefault() != null ? x.FirstOrDefault().ServiceType : ServiceType.Taxi, x))
+                .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
                 .ToList();
 
-            const int take = 10;
-
-            ordersByService.ForEach(orderForServiceType => {
-                
-                var orderIdsForServiceType = orderForServiceType.Item2
-                    .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
-                    .ToList();
-
-                for (var skip = 0; skip < orderIdsForServiceType.Count; skip = skip + take)
+            Parallel.ForEach(GetOrderStatuses(ibsOrdersIds, companyKey, market).GetConsumingEnumerable(), 
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
+                ibsStatus =>
                 {
-                    var nextGroup = orderIdsForServiceType.Skip(skip).Take(take).ToList();
-                    var orderStatuses = _ibsServiceProvider.Booking(companyKey, orderForServiceType.Item1).GetOrdersStatus(nextGroup).ToArray();
-
-                    // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                    var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
-
-                    foreach (var ibsStatus in orderStatuses)
+                    var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
+                    if (order == null)
                     {
-                        if (honeyBadgerVehicleStatuses.Any())
+                        return;
+                    }
+
+                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
+                    _orderStatusUpdater.Update(ibsStatus, order);
+                });
+        }
+
+        private BlockingCollection<IBSOrderInformation> GetOrderStatuses(List<int> ibsOrdersIds, string companyKey, string market)
+        {
+            var result = new BlockingCollection<IBSOrderInformation>();
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    const int take = 10;
+                    for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
+                    {
+                        var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
+                        var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
+
+                        // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+
+                        foreach (var orderStatus in orderStatuses)
                         {
                             // Update vehicle position with matching data available data from HoneyBadger
-                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
+                            var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+
                             if (honeyBadgerVehicleStatus != null)
                             {
-                                ibsStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
-                                ibsStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                                orderStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                                orderStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
                             }
+
+                            result.Add(orderStatus);
                         }
-
-                        var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
-                        if (order == null)
-                        {
-                            continue;
-                        }
-
-                        Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
-
-                        _orderStatusUpdater.Update(ibsStatus, order);
                     }
                 }
-
+                catch (Exception ex)
+                {
+                    Log.ErrorFormat("An error occured in UpdateOrderStatusJob.GetOrderStatuses()");
+                    LogError(ex);
+                }
+                finally
+                {
+                    result.CompleteAdding();
+                }
             });
-            
+          
+            return result;
+        }
+
+        private void LogError(Exception ex)
+        {
+            LogError(ex, null, -1);
+        }
+
+        private void LogError(Exception ex, string method, int lineNumber)
+        {
+            var errorLocation = method.HasValueTrimmed() && lineNumber > -1
+                ? " at {0}:{1}".InvariantCultureFormat(method, lineNumber)
+                : string.Empty;
+
+            Log.Error(ex.Message + errorLocation + " " + ex.StackTrace);
+            if (ex.InnerException != null)
+            {
+                LogError(ex.InnerException);
+            }
         }
 
         private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)

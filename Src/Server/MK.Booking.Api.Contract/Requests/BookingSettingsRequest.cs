@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Common;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;

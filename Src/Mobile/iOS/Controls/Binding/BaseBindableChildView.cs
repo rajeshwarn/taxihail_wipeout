@@ -13,6 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
 
+		public BaseBindableChildView():base()
+		{
+			RegisterForKeyboardNotifications ();
+		}
+
         public BaseBindableChildView(IntPtr handle) : base(handle)
         {
             RegisterForKeyboardNotifications ();

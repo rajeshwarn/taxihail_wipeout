@@ -15,7 +15,10 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
@@ -74,6 +77,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _orderDaoMock = new Mock<IOrderDao>();
             _serverSettings = new TestServerSettings();
             _geocodingMock = new Mock<IGeocoding>();
+            var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
+            taxihailNetworkServiceClientMock
+                .Setup(x => x.GetCompanyMarketSettings(It.IsAny<double>(), It.IsAny<double>()))
+                .Returns(new CompanyMarketSettingsResponse());
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
             Func<BookingDbContext> context = () => new BookingDbContext(DbName);
@@ -90,7 +97,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null,
                 _geocodingMock.Object,
                 null,
-                null);
+                taxihailNetworkServiceClientMock.Object,
+                new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             sut.Setup(new EmailCommandHandler(notificationService));

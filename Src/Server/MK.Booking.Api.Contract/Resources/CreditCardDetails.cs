@@ -1,6 +1,8 @@
 ﻿using System;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
+using MK.Common.Serializer;
+using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
@@ -10,9 +12,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         {
             Label = CreditCardLabelConstants.Personal;
         }
-
+        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid CreditCardId { get; set; }
-
+        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid AccountId { get; set; }
 
         public string NameOnCard { get; set; }

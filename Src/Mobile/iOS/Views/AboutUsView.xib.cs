@@ -35,15 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.ViewWillAppear (animated);
 
+            NavigationItem.Title = Localize.GetValue ("View_AboutUs");
 			NavigationController.NavigationBar.Hidden = false;
-			NavigationItem.Title = Localize.GetValue ("View_AboutUs");
-
-            if (UIHelper.IsOS7orHigher)
-            {
-                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-                    ? UIBarStyle.Black
-                    : UIBarStyle.Default;
-            }
+            NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                ? UIBarStyle.Black
+                : UIBarStyle.Default;
 		}
 	}
 }

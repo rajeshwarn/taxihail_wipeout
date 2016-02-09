@@ -34,4 +34,3 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void SetAvailableVehicle(bool enable);
 	}
 }
-

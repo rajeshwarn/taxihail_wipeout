@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
@@ -39,17 +38,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async void Init(string orderId)
 		{
 			Guid id;
-			if(Guid.TryParse(orderId, out id))
-			{
-				OrderId = id;
-				using (this.Services ().Message.ShowProgress ())
-				{
-					await LoadOrder();
-					await LoadStatus();
-					_clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
-					RaisePropertyChanged(() => StatusDescription); 
-				}
-			}
+		    if (!Guid.TryParse(orderId, out id))
+		    {
+		        return;
+		    }
+
+		    OrderId = id;
+		    using (this.Services ().Message.ShowProgress ())
+		    {
+		        await LoadOrder();
+		        await LoadStatus();
+		        _clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
+		        RaisePropertyChanged(() => StatusDescription); 
+		    }
 		}
 
         private Guid _orderId;
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return (Status != null) 
 						&& Status.Status == OrderStatus.Completed
-						&& Status.FareAvailable 
+						&& ( Status.FareAvailable || Status.IsManualRideLinq )
 						&& Settings.SendReceiptAvailable;
             }
         }
@@ -199,6 +200,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return null;
             }
 		}
+
+        public bool CanShowConfirmationTxt
+        {
+            get
+            {          
+                return Settings.ShowOrderNumber;
+            }
+        }
 
         private string _authorizationNumber;
         public string AuthorizationNumber 
@@ -337,7 +346,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsCompleted = _bookingService.IsStatusCompleted(Status);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
-			CanCancel = _bookingService.IsOrderCancellable (Status);
+			CanCancel = !IsDone && !IsCompleted && _bookingService.IsOrderCancellable (Status);
 		}
 
 		public ICommand NavigateToRatingPage
@@ -349,9 +358,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var canRate = IsDone && !HasRated;
 					ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 						{														
-							orderId = OrderId, 
+							orderId = OrderId.ToString(), 
 							canRate
-						}.ToStringDictionary(),
+						},
 						RefreshOrderStatus);
                	});
             }
@@ -363,20 +372,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>                                        
                 {
-					var orderStatus = new OrderStatusDetail
-					{ 
-						IBSOrderId = Order.IBSOrderId,
-						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-						IBSStatusId = string.Empty,
-						OrderId = OrderId,
-						Status = OrderStatus.Unknown,
-						VehicleLatitude = null,
-						VehicleLongitude = null
-					};
-					ShowViewModel<BookingStatusViewModel>(new {
-						order =  Order.ToJson(),
-						orderStatus = orderStatus.ToJson()
-					});
+					GoBackToOrder();
                 });
             }
         }
@@ -423,6 +419,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private async Task GoBackToOrder ()
+		{
+			if (Order != null)
+			{
+				if (Order.IsManualRideLinq)
+				{
+					var orderManualRideLinqDetail = await Task.Run (() => _bookingService.GetTripInfoFromManualRideLinq (Order.Id));
+
+					ShowViewModel<HomeViewModel> (new
+	                {
+	                    manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson (),
+	                    locateUser = false
+	                });
+
+					return;
+				}
+
+				ShowViewModel<HomeViewModel> (new
+	            {
+	                order = Order.ToJson (),
+	                orderStatusDetail = Status.ToJson (),
+	                locateUser = false
+	            });
+			}
+		}
+
 		public ICommand SendReceipt
         {
             get
@@ -445,14 +467,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var confirmationMessage = Settings.WarnForFeesOnCancel
-                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
-                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
-                        : this.Services().Localize["StatusConfirmCancelRide"]; 
+				var statusConfirmCancelRideAndWarnForCancellationFees = string.Format(this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"], Settings.TaxiHail.ApplicationName);
+				var statusConfirmCancelRide = this.Services().Localize["StatusConfirmCancelRide"];
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
 					string.Empty,
-                    confirmationMessage, 
+					Settings.WarnForFeesOnCancel && VehicleStatuses.CanCancelOrderStatusButCouldBeChargedFees.Contains(Status.IBSStatusId) 
+						? statusConfirmCancelRideAndWarnForCancellationFees 
+						: statusConfirmCancelRide, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{
@@ -472,8 +494,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			                    }
 							}
 		                },
-                    this.Services().Localize["NoButton"], 
-						() => { })); 
+                    this.Services().Localize["NoButton"], () => { })); 
             }
         }
 

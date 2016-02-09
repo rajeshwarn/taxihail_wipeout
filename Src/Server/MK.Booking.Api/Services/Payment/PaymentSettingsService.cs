@@ -16,6 +16,11 @@ using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Resources.Payment;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
+using System.Collections.Generic;
+using System.Linq;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Cryptography;
+using AutoMapper.Internal;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -27,18 +32,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IServerSettings _serverSettings;
         private readonly IPayPalServiceFactory _paylServiceFactory;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly IConfigurationChangeService _configurationChangeService;
 
         public PaymentSettingsService(ICommandBus commandBus,
             IConfigurationDao configurationDao,
             ILogger logger,
             IServerSettings serverSettings,
             IPayPalServiceFactory paylServiceFactory,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            IConfigurationChangeService configurationChangeService)
         {
             _logger = logger;
             _serverSettings = serverSettings;
             _paylServiceFactory = paylServiceFactory;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _configurationChangeService = configurationChangeService;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
         }
@@ -49,6 +57,38 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 ClientPaymentSettings = _configurationDao.GetPaymentSettings()
             };
+        }
+
+		public Dictionary<string, string> Get(EncryptedPaymentSettingsRequest request)
+		{
+			var paymentSettings = _configurationDao.GetPaymentSettings();
+
+		    var type = typeof (ClientPaymentSettings);
+
+		    var settings =type 
+                .GetAllProperties()
+                // Only properties with a get and set should be sent
+                .Where(property => property.Value.CanRead && property.Value.CanWrite)
+                .Select(setting => setting.Key)
+                .Select(propertyName => ExtractPropertyValue(paymentSettings, propertyName))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(type, null, settings, true);
+
+			return settings;
+		}
+
+        private static KeyValuePair<string, string> ExtractPropertyValue(ServerPaymentSettings paymentSettings, string propertyName)
+        {
+            var settingValue = paymentSettings.GetNestedPropertyValue(propertyName);
+            var settingStringValue = settingValue.SelectOrDefault(value => value.ToString(), string.Empty);
+
+
+            settingStringValue = settingStringValue.IsBool()
+                ? settingStringValue.ToLowerInvariant()
+                : settingStringValue;
+
+            return new KeyValuePair<string, string>(propertyName, settingStringValue);
         }
 
         public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
@@ -93,6 +133,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             BaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.BaseUrl,
                             ConsumerKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKey,
                             ConsumerSecretKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
+                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
                             FleetToken = request.ServerPaymentSettings.CmtPaymentSettings.FleetToken,
                             ConsumerKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKeyLuxury,
                             ConsumerSecretKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKeyLuxury,
@@ -108,7 +149,51 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     })
                     .HandleErrors();
 
+            SaveConfigurationChanges(request.ServerPaymentSettings, _serverSettings.GetPaymentSettings());
+
             _commandBus.Send(new UpdatePaymentSettings {ServerPaymentSettings = request.ServerPaymentSettings});
+        }
+
+        private void SaveConfigurationChanges(ServerPaymentSettings newSettings, ServerPaymentSettings oldSettings)
+        {
+            var oldSettingsDictionary = oldSettings.GetType().GetAllProperties()
+                .ToDictionary(s => s.Key, s => oldSettings.GetNestedPropertyValue(s.Key).ToNullSafeString());
+            var newSettingsDictionary = newSettings.GetType().GetAllProperties()
+               .ToDictionary(s => s.Key, s => newSettings.GetNestedPropertyValue(s.Key).ToNullSafeString());
+
+            var oldValues = new Dictionary<string, string>();
+            var newValues = new Dictionary<string, string>();
+
+            foreach (var oldSetting in oldSettingsDictionary)
+            {
+                if (newSettingsDictionary.ContainsKey(oldSetting.Key))
+                {
+                    var newValue = newSettingsDictionary[oldSetting.Key];
+
+                    if (oldSetting.Value != newValue)
+                    {
+                        //Special case for Amounts if not formatted the same way
+                        double oldAmount;
+                        double newAmount;
+                        double.TryParse(oldSetting.Value, out oldAmount);
+                        double.TryParse(newValue, out newAmount);
+                        if ((oldAmount == 0 && newAmount == 0) || Math.Abs(oldAmount - newAmount) > 0)
+                        {
+                            oldValues.Add(oldSetting.Key, oldSetting.Value);
+                            newValues.Add(oldSetting.Key, newSettingsDictionary[oldSetting.Key]);
+                        }
+                    }
+                }
+            }
+            
+            var authSession = this.GetSession();
+
+            _configurationChangeService.Add(oldValues, 
+                newValues, 
+                ConfigurationChangeType.PaymentSetttings, 
+                new Guid(authSession.UserAuthId), 
+                authSession.UserAuthName);
+
         }
 
         public TestServerPaymentSettingsResponse Post(TestPayPalProductionSettingsRequest request)
@@ -230,7 +315,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Moneris).Visa;
-                var result = MonerisServiceClient.TestClient(request.MonerisPaymentSettings, cc.Number, cc.ExpirationDate, _logger);
+                var result = MonerisServiceClient.TestClient(request.MonerisPaymentSettings, cc.Number, cc.ExpirationDate, _logger, cc.ZipCode);
                 if (result)
                 {
                     return new TestServerPaymentSettingsResponse

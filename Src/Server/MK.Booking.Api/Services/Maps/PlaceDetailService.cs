@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         }
 
 
-        public Address Get(PlaceDetailRequest request)
+        public Task<Address> Get(PlaceDetailRequest request)
         {
             return _client.GetPlaceDetail(request.PlaceName, request.PlaceId);
         }

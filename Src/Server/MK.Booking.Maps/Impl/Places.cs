@@ -28,11 +28,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address GetPlaceDetail(string name, string placeId)
+        public async Task<Address> GetPlaceDetail(string name, string placeId)
         {
-            var place = _client.GetPlaceDetail(placeId);
+            var place =  await _client.GetPlaceDetailAsync(placeId);
 
-			var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 
             return result;
         }
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 			//We remove the unspecified places since those will never be used with a filter.
 			return filteredAddress
-                .Where(address => address.AddressLocationType != AddressLocationType.Unspeficied)
+                .Where(address => address.AddressLocationType != AddressLocationType.Unspecified)
                 .ToArray();
         }
 
@@ -119,7 +119,10 @@ namespace apcurium.MK.Booking.Maps.Impl
 				FullAddress = place.Address.FullAddress,
 				Latitude = place.Address.Latitude,
 				Longitude = place.Address.Longitude ,
-                AddressType = "place"
+                AddressType = "place",
+                City = place.Address.City,
+                State = place.Address.State,
+                ZipCode = place.Address.ZipCode
             };
 
             if (address.FullAddress.HasValue() &&

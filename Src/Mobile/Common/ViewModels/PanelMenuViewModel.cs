@@ -5,13 +5,9 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -253,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						await this.Services().Message.ShowMessage(null, 
 							this.Services().Localize["PanelMenuViewSignOutPopupMessage"],
                             this.Services().Localize["PanelMenuViewSignOutPopupLogout"],
-							()=> SignOutAccepted().FireAndForget(),
+							SignOutAccepted,
 							this.Services().Localize["Cancel"],
                             ()=> { } 
 						);
@@ -261,12 +257,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private async Task SignOutAccepted()
+		public ICommand OpenDebugMenu
 		{
-			CloseMenu();
-			new Task(() => _orderWorkflowService.PrepareForNewOrder()).FireAndForget();
-			_accountService.SignOut();         
-			ShowViewModelAndClearHistory<LoginViewModel> ();
+			get
+			{
+				return this.GetCommand(() => 
+				{
+					if(this.Settings.DebugViewEnabled)
+					{
+						CloseMenu();
+						ShowViewModel<DebugViewModel>();
+					}
+				});
+			}
+		}
+
+		private void SignOutAccepted()
+		{
+            _accountService.SignOut();
+            Task.Run(() => _orderWorkflowService.PrepareForNewOrder()).FireAndForget();
+            CloseMenu();
+			ShowViewModelAndClearHistory<LoginViewModel>();
 		}
 
 		public ICommand NavigateToOrderHistory
@@ -417,15 +428,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return this.GetCommand(async () =>
+                return this.GetCommand(() =>
                 {
 					CloseMenu();
-
-					var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
-
-					this.Services().Message.ShowMessage(string.Empty, serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxuryDisplay : Settings.DefaultPhoneNumberDisplay,
-						this.Services().Localize["CallButton"], () => _phoneService.Call(serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber), 
-                        this.Services().Localize["Cancel"], () => {});
+					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumber); };
+                    this.Services().Message.ShowMessage(string.Empty,
+												Settings.DefaultPhoneNumberDisplay,
+                                               this.Services().Localize["CallButton"],
+                                               call, this.Services().Localize["Cancel"], 
+                                               () => {});
                 });
             }
         }

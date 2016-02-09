@@ -2,9 +2,15 @@
 
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -12,8 +18,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class NearbyPlacesClient : BaseServiceClient
     {
-        public NearbyPlacesClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public NearbyPlacesClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

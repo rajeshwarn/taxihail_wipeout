@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using apcurium.MK.Common.Extensions;
+using System.IO;
 
 namespace apcurium.MK.Common.Cryptography
 {
@@ -19,7 +21,7 @@ namespace apcurium.MK.Common.Cryptography
 
         public static string GetHashString(string inputString)
         {
-            if (inputString == null)
+            if (!inputString.HasValue())
             {
                 return null;
             }
@@ -48,5 +50,60 @@ namespace apcurium.MK.Common.Cryptography
 
             return sb.ToString();
         }
+
+		public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] key, byte[] initVector)
+		{
+			byte[] encrypted;
+			using (Aes aesAlg = Aes.Create())
+			{
+				aesAlg.KeySize = 128;
+				aesAlg.IV = initVector;
+				aesAlg.Key = key;
+
+				var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+				using (var msEncrypt = new MemoryStream())
+				{
+					using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+					{
+						using (var swEncrypt = new StreamWriter(csEncrypt))
+						{
+							swEncrypt.Write(plainText);
+						}
+						encrypted = msEncrypt.ToArray();
+					}
+				}
+			}
+
+			return encrypted;
+		}
+
+		public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] key, byte[] initVector)
+		{
+			string plaintext = null;
+
+			using (var aesAlg = Aes.Create())
+			{
+				aesAlg.KeySize = 128;
+				aesAlg.IV = initVector;
+				aesAlg.Key = key;
+
+				var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+				using (var msDecrypt = new MemoryStream(cipherText))
+				{
+					using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+					{
+						using (var srDecrypt = new StreamReader(csDecrypt))
+						{
+							plaintext = srDecrypt.ReadToEnd();
+						}
+					}
+				}
+
+			}
+
+			return plaintext;
+		}
     }
 }

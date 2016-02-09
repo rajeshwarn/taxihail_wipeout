@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
 				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, serviceType, vehicleTypeId, date);
-				return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
+                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price, TripDurationInSeconds = (int?)direction.Duration };
             }
             catch
             {

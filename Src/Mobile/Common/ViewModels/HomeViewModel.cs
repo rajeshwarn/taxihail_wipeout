@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -17,8 +16,9 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using ServiceStack.Text;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -82,9 +82,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
 			BookingStatus = AddChild<BookingStatusViewModel>();
+            DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -97,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (manualRidelinqDetail != null)
 			{
-				var deserializedRidelinqDetails = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(manualRidelinqDetail);
+			    var deserializedRidelinqDetails = manualRidelinqDetail.FromJson<OrderManualRideLinqDetail>();
 
 				CurrentViewState = HomeViewModelState.ManualRidelinq;
 
@@ -108,8 +109,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (order != null && orderStatusDetail != null)
 			{
-				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
-				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
+			    var deserializedOrder = order.FromJson<Order>();
+			    var deserializeOrderStatus = orderStatusDetail.FromJson<OrderStatusDetail>();
 
 				CurrentViewState = HomeViewModelState.BookingStatus;
 
@@ -280,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					(content, actionOnResult) => 
 					{
 						_isShowingTermsAndConditions = true;
-						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool> (content, actionOnResult);
+						ShowSubViewModel<UpdatedTermsAndConditionsViewModel, bool>(content, actionOnResult);
 					},
 					(locateUser, defaultHintZoomLevel) => 
 					{
@@ -321,7 +322,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					var title = this.Services().Localize["CreditCardExpiredTitle"];
 
-					if (paymentSettings.IsOutOfAppPaymentDisabled)
+					if (paymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None)
 					{
 						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
 						this.Services().Message.ShowMessage(title, 
@@ -329,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							() =>
 						{
 							_isShowingCreditCardExpiredPrompt = false;
-							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
+								ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = paymentSettings.CreditCardIsMandatory });
 						});
 					}
 					else
@@ -474,6 +475,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private DropOffSelectionMidTripViewModel _dropOffSelection;
+        public DropOffSelectionMidTripViewModel DropOffSelection
+        { 
+            get { return _dropOffSelection; }
+            private set
+            { 
+                _dropOffSelection = value;
+                RaisePropertyChanged();
+            }
+        }
+
 		private CancellableCommand _automaticLocateMeAtPickup;
 		public CancellableCommand AutomaticLocateMeAtPickup
 		{
@@ -563,7 +575,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AddressSearch:
 						case HomeViewModelState.AirportSearch:
 						case HomeViewModelState.TrainStationSearch:
-						case HomeViewModelState.BookATaxi:
+                        case HomeViewModelState.BookATaxi:
+                            CurrentViewState = HomeViewModelState.Initial;
+                            break;
 						case HomeViewModelState.AirportDetails:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
@@ -573,7 +587,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AirportPickDate:
 							CurrentViewState = HomeViewModelState.AirportDetails;
 							break;
-
 						default:
 							base.CloseCommand.ExecuteIfPossible();
 							break;
@@ -629,6 +642,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_bottomBar.EstimateSelected = false;
 				}
 
+				if (value == HomeViewModelState.DropOffAddressSelection)
+				{
+					if (DropOffSelection.DestinationAddress.Id == Guid.Empty)
+					{
+						LocateMe.ExecuteIfPossible();
+					}
+					_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.DropoffSelection);
+					_orderWorkflowService.SetDropOffSelectionMode(true);
+				}
+
 				_currentViewState = value;
 
 				RaisePropertyChanged();
@@ -651,7 +674,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(_locationService.LastKnownPosition.Latitude, _locationService.LastKnownPosition.Longitude, initialZoom));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
 
 					// do the uber zoom
 					try 
@@ -735,21 +758,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string hashedMarket)
+        private void MarketChanged(MarketSettings marketSettings)
         {
             var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
 			_bookingService.SetServiceTypeForProgressAnimation (serviceType);
 
-            // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket
-                && hashedMarket.HasValue()
-                && !Settings.Network.HideMarketChangeWarning)
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
-                    this.Services().Localize["MarketChangedMessage" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]);
-            }
+			// Market changed and not home market
+			if (_lastHashedMarket != marketSettings.HashedMarket
+				&& marketSettings.HashedMarket.HasValue()
+				&& !Settings.Network.HideMarketChangeWarning)
+	https://media3.giphy.com/media/2uYaAlD8ia2kg/200.gif		{
+				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+					this.Services().Localize["MarketChangedMessage"]);
+			}
 
-            _lastHashedMarket = hashedMarket;
+			_lastHashedMarket = marketSettings.HashedMarket;
 
             if (BottomBar != null)
             {

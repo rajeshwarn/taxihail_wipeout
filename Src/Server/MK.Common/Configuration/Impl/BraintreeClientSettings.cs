@@ -1,4 +1,5 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿using apcurium.MK.Common.Cryptography;
+namespace apcurium.MK.Common.Configuration.Impl
 {
     public class BraintreeClientSettings
     {
@@ -10,6 +11,7 @@
 #endif
         }
 
+		[PropertyEncrypt]
         public string ClientKey { get; set; }
     }
 }

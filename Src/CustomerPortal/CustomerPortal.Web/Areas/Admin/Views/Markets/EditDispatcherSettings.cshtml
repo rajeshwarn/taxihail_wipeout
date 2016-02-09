@@ -1,0 +1,44 @@
+﻿@using CustomerPortal.Web.Areas.Admin.Models
+@model MarketModel
+
+<h2>Edit Dispatcher Settings</h2>
+
+@if (@ViewBag.Error != null)
+{
+    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error</div>
+}
+
+@using (Html.BeginForm("EditDispatcherSettings", "Markets", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.Market)
+    
+    <div class="control-group">
+        @Html.LabelFor(x => x.DispatcherSettings.NumberOfOffersPerCycle, new {@class = "control-label"})
+        [@Html.DisplayDescriptionFor(x => x.DispatcherSettings.NumberOfOffersPerCycle)]
+        <div class="controls">
+            @Html.TextBoxFor(x => x.DispatcherSettings.NumberOfOffersPerCycle, new { @class = "input-block-level", @style = "width: 40%" })
+            @Html.ValidationMessageFor(x => x.DispatcherSettings.NumberOfOffersPerCycle)
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(x => x.DispatcherSettings.NumberOfCycles, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(x => x.DispatcherSettings.NumberOfCycles, new {@class = "input-block-level", @style = "width: 40%"})
+            @Html.ValidationMessageFor(x => x.DispatcherSettings.NumberOfCycles)
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(x => x.DispatcherSettings.DurationOfOfferInSeconds, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(x => x.DispatcherSettings.DurationOfOfferInSeconds, new { @class = "input-block-level", @style = "width: 40%" })
+            @Html.ValidationMessageFor(x => x.DispatcherSettings.DurationOfOfferInSeconds)
+        </div>
+    </div>
+
+    <div class="control-group btn-right-alignment">
+        <button type="submit" class="btn btn-primary span">Save</button>
+        @Html.ActionLink("Cancel", "MarketIndex", new MarketModel { Market = Model.Market }, new { @class = "btn span" })
+    </div>
+}

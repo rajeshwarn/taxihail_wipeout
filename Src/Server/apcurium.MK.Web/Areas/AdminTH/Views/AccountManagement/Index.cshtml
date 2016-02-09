@@ -1,0 +1,315 @@
+﻿@using apcurium.MK.Web.Areas.AdminTH.Models
+@using apcurium.MK.Common.Entity
+@using apcurium.MK.Web.helpers
+@using PagedList.Mvc
+@model apcurium.MK.Web.Areas.AdminTH.Models.AccountManagementModel
+
+
+   <div class="well clearfix form-horizontal">
+      <h4 class="table-title">Account</h4>
+
+      @if (@TempData["UserMessage"] != null)
+      {
+         <div class="alert alert-info" style="margin-top: 10px;">
+            @TempData["UserMessage"]
+         </div>
+      }
+
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(x => x.Id)
+      @* @Html.HiddenForEnumerable(x => x.OrdersPaged) *@
+      @Html.HiddenForEnumerable(x => x.Notes)
+      @Html.HiddenFor(x => x.OrdersPageIndex)
+
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.Name, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.Name)</label>
+            @Html.HiddenFor(x => x.Name)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.Email, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.TextBoxFor(x => x.Email, new { @class = "input-block-level" })
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.CustomerNumber, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.CustomerNumber)</label>
+            @Html.HiddenFor(x => x.CustomerNumber)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.CreationDate, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.CreationDate)</label>
+            @Html.HiddenFor(x => x.CreationDate)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.FacebookAccount, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.Label(string.IsNullOrEmpty(Model.FacebookAccount) ? "No" : "Yes", new { @class = "label-account-item label-account-item-normalcolor" })
+            @Html.HiddenFor(x => x.FacebookAccount)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.IBSAccountId, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.IBSAccountId)</label>
+            @Html.HiddenFor(x => x.IBSAccountId)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.IsConfirmed, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.Label(Model.IsConfirmed ? "Yes" : "No", new { @class = "label-account-item label-account-item-normalcolor" })
+            @Html.HiddenFor(x => x.IsConfirmed)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.IsEnabled, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.Label(Model.IsEnabled ? "Yes" : "No", new { @class = "label-account-item label-account-item-normalcolor" })
+            @Html.HiddenFor(x => x.IsEnabled)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.DropDownListFor(x => x.CountryCode.Code, CountryCodeSelectList.CountryCodeElements())
+            <br />
+            @Html.TextBoxFor(x => x.PhoneNumber, new { @style = "text-align:left; margin-right:20px; white-space:nowrap;" })
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.ChargeType, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.ChargeType)</label>
+            @Html.HiddenFor(x => x.ChargeType)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.DefaultTipPercent, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.DefaultTipPercent)</label>
+            @Html.HiddenFor(x => x.DefaultTipPercent)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.CreditCardLast4Digits, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.CreditCardLast4Digits)</label>
+            @Html.HiddenFor(x => x.CreditCardLast4Digits)
+         </div>
+      </div>
+      <div class="div-account-block">
+         <div class="left-column">
+            @Html.LabelFor(x => x.IsPayPalAccountLinked, new { @class = "control-label-wide" })
+         </div>
+         <div class="right-column">
+            @Html.Label(Model.IsPayPalAccountLinked ? "Yes" : "No", new { @class = "label-account-item label-account-item-normalcolor" })
+            @Html.HiddenFor(x => x.IsPayPalAccountLinked)
+         </div>
+      </div>
+
+      <input type="submit" formaction='@Url.Action("Save")' class="btn btn-primary span" value="Save Account" />
+      <br />
+      <br />
+      <input type="submit" formaction='@Url.Action("SendConfirmationCodeSMS")' class="btn-link" value="Send Account Confirmation Code via SMS" />
+      <br />
+      <input type="submit" formaction='@Url.Action("ResetPassword")' class="btn-link" value="Reset Password" />
+      <br />
+      @if (Model.IsEnabled)
+      {
+         <input type="submit" class="btn-link" data-toggle="modal" data-target="#addDisableAccountNoteModalDialog" value="Disable Account" />
+      }
+      else
+      {
+         <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn-link" value="Enable Account" />
+      }
+      <br />
+      <input type="submit" formaction='@Url.Action("UnlinkIBSAccount")' class="btn-link" value="Unlink IBS Account(s)" />
+      <br />
+      <input type="submit" formaction='@Url.Action("DeleteCreditCardsInfo")' class="btn-link" value="Delete all credit cards information" />
+      <br />
+   </div>
+
+   <div class="well clearfix form-horizontal" style="width:1250px;">
+        <h4 class="table-title">Notes</h4>
+
+        @if (Model.Notes != null && Model.Notes.Any())
+        {
+            <div class="control-group">
+                <table class="table-accountslist">
+                    <thead>
+                        <tr>
+                            <th>Note</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Writer email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var note in Model.Notes)
+                        {
+                            <tr>
+                                <td style="width:760px;">@note.Note</td>
+                                <td style="width:120px;">@note.CreationDate.ToShortDateString() @note.CreationDate.ToShortTimeString()</td>
+                                <td style="width:120px;">@note.TypeString</td>
+                                <td style="width:200px;">@note.WriterAccountEmail</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        <br />
+        <button type="button" class="btn btn-primary span" data-toggle="modal" data-target="#addNoteModalDialog">Add Note</button> 
+        <br />
+    </div>
+
+    <div class="well clearfix form-horizontal" style="width:1250px;">
+        <h4 class="table-title">Orders <small><input type="submit" formaction='@Url.Action("ExportOrders")' class="btn-link" value="Export to csv" /></small></h4>
+
+        @if (Model.OrdersPaged != null && Model.OrdersPaged.Any())
+        {
+            <div class="control-group">
+                <table class="table-accountslist">
+                    <thead>
+                        <tr>
+                            <th>Created Date</th>
+                            <th>Pickup Date</th>
+                            <th>Pickup Address</th>
+                            <th>Drop Off Address</th>
+                            <th>Fare</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                            <th>Promo Code</th>
+                            <th>Is Manual RideLinQ</th>
+                            <th>Is Removed from History</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var order in Model.OrdersPaged)
+                        {
+                            <tr>
+                                <td style="width:100px;"><div>@order.CreatedDate.ToShortDateString()</div><div>@order.CreatedDate.ToShortTimeString()</div></td>
+                                <td style="width:100px;"><div>@order.PickupDate.ToShortDateString()</div><div>@order.PickupDate.ToShortTimeString()</div></td>
+                                <td style="width:200px;"><div>@order.PickupAddress.StreetNumber @order.PickupAddress.Street</div><div>@order.PickupAddress.City @order.PickupAddress.ZipCode @order.PickupAddress.State</div></td>
+                                <td style="width:200px;"><div>@order.DropOffAddress.StreetNumber @order.DropOffAddress.Street</div><div>@order.DropOffAddress.City @order.DropOffAddress.ZipCode @order.DropOffAddress.State</div></td>
+                                <td style="width:150px;">
+                                    <div class="divPayment" title="Fare: @order.FareString&#013;&#010;Tax: @order.TaxString&#013;&#010;Toll: @order.TollString&#013;&#010;Tip: @order.TipString&#013;&#010;Surcharge: @order.SurchargeString">
+                                        <div class="divText">Total:</div><div class="divAmount">@order.TotalAmountString</div>
+                                    </div>
+                                </td>
+                                <td style="width:80px;">@((OrderStatus)order.Status)</td>
+                                <td style="width:120px;">@order.UserNote</td>
+                                <td style="width:80px;">@order.PromoCode</td>
+                                @if (order.IsManualRideLinq)
+                                {
+                                    <td style="width:110px;">Yes</td>
+                                }
+                                else
+                                {
+                                    <td style="width:110px;">No</td>
+                                }
+                                @if (order.IsRemovedFromHistory)
+                                {
+                                    <td style="width:110px;">Yes</td>
+                                }
+                                else
+                                {
+                                    <td style="width:110px;">No</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <div class="col-sm-10">
+            <div class="center">
+                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { Model.Id, page }))
+
+            </div>
+        </div>
+    </div>
+
+
+
+@section ModalDialogSection{
+
+<div class="modal fade" id="addNoteModalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add note</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.NotePopupContent = string.Empty;
+                }
+                @Html.TextArea("NotePopupContent", Model.NotePopupContent, new { @class = "input-block-level", @rows = 5 })
+            </div>
+            <div class="modal-footer">
+                <input type="submit" formaction='@Url.Action("AddStandardNote")' class="btn btn-primary span" value="Add"  />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="addDisableAccountNoteModalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add disable account note</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    Model.DisableAccountNotePopupContent = string.Empty;
+                }
+                @Html.TextArea("DisableAccountNotePopupContent", Model.DisableAccountNotePopupContent, new { @class = "input-block-level", @rows = 5 })
+            </div>
+            <div class="modal-footer">
+                <input type="submit" formaction='@Url.Action("EnableDisableAccount")' class="btn btn-primary span" value="Add" />
+            </div>
+        </div>
+
+    </div>
+</div>
+    
+}

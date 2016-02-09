@@ -96,14 +96,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_passenger.png", degrees, false);
                     }
-
 		            return ImageHelper.ApplyThemeColorToMapIcon(string.Format("{0}_icon.png", vehicleTypeLogoName ?? defaultIconName), true);
 	            case AddressAnnotationType.NearbyTaxi:
                     if (showOrientation)
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_available.png", degrees, false);
                     }
-
 		            return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
 	            case AddressAnnotationType.NearbyTaxiCluster:
                     return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);

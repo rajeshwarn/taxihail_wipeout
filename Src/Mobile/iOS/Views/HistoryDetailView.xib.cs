@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnStatus.SetTitle(Localize.GetValue("HistoryViewStatusButton"), UIControlState.Normal);
 
 			btnDelete.SetTitle(Localize.GetValue("Delete"), UIControlState.Normal);
-			btnCancel.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
+            btnCancel.SetTitle(Localize.GetValue("StatusActionCancelButton"), UIControlState.Normal);
 
 			btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
 			btnViewRating.SetTitle(Localize.GetValue("ViewRatingBtn"), UIControlState.Normal);
@@ -73,6 +73,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblDestination.RemoveFromSuperview();
 				txtDestination.RemoveFromSuperview();
 			}
+
+            if (!ViewModel.CanShowConfirmationTxt)
+            {
+                txtOrder.RemoveFromSuperview();
+                lblOrder.RemoveFromSuperview();
+            }
 
             ViewModel.PropertyChanged += (sender, e) =>
             {

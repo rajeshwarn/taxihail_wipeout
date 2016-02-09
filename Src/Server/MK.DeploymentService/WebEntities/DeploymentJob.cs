@@ -17,6 +17,7 @@ namespace CustomerPortal.Web.Entities
             Android = false;
             CallBox = false;
             IosAdhoc = false;
+            BlackBerry = false;
             Status = "Requested";
         }
 
@@ -40,6 +41,7 @@ namespace CustomerPortal.Web.Entities
 
         public bool ClientSide { get; set; }
         public bool Android { get; set; }
+        public bool BlackBerry { get; set; }
         public bool CallBox { get; set; }
         public bool IosAdhoc { get; set; }
         public bool IosAppStore { get; set; }

@@ -71,10 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtChargeType.Maybe(x => x.Placeholder = Localize.GetValue("ChargeTypeLabel"));
             txtChargeType.Maybe(x => x.AccessibilityLabel = Localize.GetValue("ChargeTypeLabel"));
 
-            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
-            txtLargeBags.Maybe(x => x.Placeholder = Localize.GetValue ("LargeBagsLabel"));
-            txtLargeBags.Maybe(x => x.AccessibilityLabel = Localize.GetValue ("LargeBagsLabel"));
-           
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
         }
 

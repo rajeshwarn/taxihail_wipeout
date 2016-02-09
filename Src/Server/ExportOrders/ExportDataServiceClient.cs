@@ -2,13 +2,14 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ExportDataServiceClient : BaseServiceClient
     {
-        public ExportDataServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public ExportDataServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

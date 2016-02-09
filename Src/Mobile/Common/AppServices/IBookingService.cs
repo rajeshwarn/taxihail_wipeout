@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IBookingService
     {
-        Task<DirectionInfo> GetFareEstimate(CreateOrder order);
+        Task<DirectionInfo> GetFareEstimate(CreateOrderRequest order);
 
         string GetFareEstimateDisplay(DirectionInfo direction);
 
@@ -41,13 +41,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<bool> IsPaired(Guid orderId);
 
-        Task<OrderStatusDetail> CreateOrder(CreateOrder info);
+        Task<OrderStatusDetail> CreateOrder(CreateOrderRequest info);
 
         Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(Guid orderId, string nextDispatchCompanyKey, string nextDispatchCompanyName);
 
         Task IgnoreDispatchCompanySwitch(Guid orderId);
 
-        Task<OrderValidationResult> ValidateOrder(CreateOrder order);
+        Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order);
 
         Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
 
@@ -80,5 +80,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<ManualRideLinqResponse> GetTripInfoFromManualRideLinq(Guid orderId);
 
         Task<bool> InitiateCallToDriver(Guid orderId);
+
+		Task<bool> UpdateDropOff (Guid orderId, Address dropOffAddress);
     }
 }

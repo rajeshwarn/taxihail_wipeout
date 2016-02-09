@@ -25,7 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = Theme.CompanyColor;
 			
             closeButton.SetTitle(Localize.GetValue("WaitingCarLandscapeViewCloseButtonText"), UIControlState.Normal);
+			closeButton.SetTitleColor(Theme.LabelTextColor, UIControlState.Normal);
             carNumberLabel.AccessibilityLabel = Localize.GetValue("WaitingCarLandscapeViewCarNumber");
+			carNumberLabel.TextColor = Theme.LabelTextColor;
 
             var bindSet = this.CreateBindingSet<WaitingCarLandscapeView, WaitingCarLandscapeViewModel>();
 

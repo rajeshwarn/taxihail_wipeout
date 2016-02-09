@@ -1,26 +1,9 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Data;
+﻿using System;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Jobs;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using AutoMapper;
-using CMTServices;
-
-
-#endregion
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -30,10 +13,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public IbsOrderService(
-            IIBSServiceProvider ibsServiceProvider,
-            IServerSettings serverSettings,
-            ILogger logger)
+        public IbsOrderService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings, ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _logger = logger;
@@ -42,7 +22,8 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, ServiceType serviceType, string companyKey)
+                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, ServiceType serviceType, string companyKey,
+                                           decimal fareAmount = 0, decimal extrasAmount = 0, decimal vatAmount = 0, decimal discountAmount = 0, decimal tollAmount = 0, decimal surchargeAmount = 0)
         {
             if (companyKey.HasValue() || serviceType != ServiceType.Taxi)
             {
@@ -51,7 +32,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             if (!_ibsServiceProvider.Booking(companyKey, serviceType).ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
-                            authorizationCode, cardToken, accountId, name, phone, email, os, userAgent))
+                            authorizationCode, cardToken, accountId, name, phone, email, os, userAgent, fareAmount, extrasAmount, vatAmount, discountAmount, tollAmount, surchargeAmount))
             {
                 throw new Exception("Cannot send payment information to dispatch.");
             }

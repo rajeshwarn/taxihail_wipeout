@@ -46,7 +46,7 @@
 	Bug fix - Issue where zoom would not work correctly when taxi was assinged.
 	Bug fix - Fixed issue where Assigned taxi location would remain sticky when order was either completed, cancelled, or the driver bailed
 3.1.9 
-	Version bump for TestFlight
+	for TestFlight
 3.1.10
 	Crash issue on Android
 	filter sensibility decreased
@@ -95,56 +95,235 @@
 	Bug fix - 'Need a taxi' not responsive
 	Fixed DeviceOrientationLogic
 3.1.13
-	Added vehiclename value to clusters
-	Bug fix - account update - error handling change
-	Orientation change response time decreased
-	Bug fix - Issue where nearby taxi would flash on the screen
+    Bug fix - iOS available vehicle flashing
+    Bug fix - Register account background color to use company theme
+    Bug fix - Tap on taxi icon issue - Ensured that VehicleName was used instead of Vehicle number
+    Orientation change response time decreased
+    Added more errors handling TH account update from admin panel
 3.1.14
-	Android - Regression issues
-	Fixed color coded medallion
-	Moved pairing code setting to Payment settings
-	Added more logging information for notifications
-	Bug fix - SaveExtrPayment now uses the correct company when on the TH Network
-	Make Credit card add/update backward compatible
-	Bug fix - issue with IBS methods not working in external markets
-	Bug fix - contact driver for older app version
+    Bug fix - contact driver for older app version
+    Bug fix - IBS methods not working in external market
+    Bug fix - add or edit a CC - Check if label is null before saving into db
+    Bug fix - Color coded medallion not working
+    Bug fix - Android - Driver info UI issues
 3.1.15
-	Updated Yellow Color for assigned NYC vehicles medallions
-	Increased the wait for vehciles candidates by 5 seconds
-	Bug fix - Null Reference issue with certain filters
-	Bug fix - when removing vehicles on map
+	Version number increase only
 3.1.16
-	Added bailed in menu notification settings and localization
-	Added logging in booking status observable
-	Bug fix - promotion unlocked push enabled setting
-	Bug fix - Issue where NeedATaxi would not work after selecting an address in the Picker
-	Bug fix - issue where CreditCard label was overlapping over business
-	Bug fix - where the ui would stop refreshing on an active manual ridelinq order when application returns from background
-	Added condition if a driver bailed notification push should be sent
-	Bug fix - where  manual ridelinq order getting stuck
-	 date/time and vehicle number information fixed for receipt
+    Bug fix - Date/time and vehicle number information fixed for receipt
+    Bug fix - Fixed issue where NeedATaxi would not work after selecting an address in the Picker
+    Bug fix - Fixed App crash when validating the order
+    Bug fix - App stays in trip after manual pair trip complete
+	Bug fix - Fixed issue where CreditCard label was overlapping over business
+	Bug fix - Fixed a bug with promotion unlocked push enabled setting
+    Bug fix - CC logo would overlap the CC number
+    Bug fix - Text overlap in EditTip view on iOS.
+	Added check if should send driver bailed push or not
+    Added logs to IBSOrderService + bug fixing
+    Added logging in booking status observable
+    Added bailed in menu notification settings and localization
+    Added default value
+    Added Migration Script
+    Added bail push in Notification Settings
+    Updated Yellow colour for assigned NYC vehicle medallion
 3.1.17
-	History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application
-	Bug fix - Fixed crash in the address view model
-	Device Orientation improvements
+    Bug fix - App crash
+    Comparison level changed for Address;
+    History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application;
 3.1.18
-	Bug fix - Regression taxi not moving while assigned on iOS
-	Bug fix - Medallion not always correct when taping on car marker (iOS only)
+	Fixed issue where medallion would not correctly be displayed when reusing PinAnnotationView
+3.1.19
+    Improved memory usage
+    Bug fix - Fixed iOS crash at login
+    Bug fix - Fixed duplicate destination button
+    Bug fix - Fixed issue where AuthenticationToken was saved in the application cache instead of the user cache.
+    Bug fix - Fixed concurrency issue where PrepareForNewOrder was not awaited therefore we would delete the Current account and then retrieve it again.
+3.1.20
+    Bug fix - Crash with orientation service iOS
+    Bug fix - Fix issue where map blur would show the company color on the map
+    Bug fix - Fix Android appbar visibility problems when showing "book a taxi" popup and date selection
+    Bug fix - Fix case where search was slow and user selected an address before the 400ms to open the keyboard would trigger causing the keyboard to appear on the map
+    Bug fix - Fix regression on AddressPickerView with wrong background color
+    Bug fix - Fix binding crash with available vehicles
+    Bug fix - Fix height of ContactTaxiControl
+    Bug fix - Fixed issue where loading bar animation (BookingStatus) would not be correctly disposed.
+3.1.21
+	Cleaned up log information
+3.1.22
+    Bug fix - Fix for horizontal bounce in AccountConfirmationView
+3.1.23
+    Bug fix - fixed colour of a bar in the AccountConfirmationView
+3.1.24
+    Aeroport Taxi - String change
+    added view again
+    removed view
+    Prod_3_1 issues with tutorial view
+    Production_3_1 Added missing tutorial view
+3.1.25
+    Bug fix - Fixed issue where resetting a password while not logged in would result in a null reference exception.
+    Aeroport Taxi - string changes
+    Limits the trip info updated event to only when a pairing error or a trip ended event
+3.1.26
+    String corrections
+    Support contrast colour for buttons border and image
+    Fixed build failure
+3.1.27
+    Added encryption for payment settings
+    Identity info about company vehicles removed for non-authenticated users;
+    Added client certificate validation
+3.1.28
+    Deployment build fix
+3.1.29
+    Merge branch 'MKTAXI-3493-DestinationPopupPromptAfterBookPopup' into Production_3_1
+3.1.30
+    Metadata disabled for service
+    Updatescript (add verification)
+    Deployment build fix
+3.1.31
+    Add ArroUAT resource files
+3.1.32
+	Fixed crash in market vehicles request if best available company is null
+	Fixed a bug where the city information was not present in an address of type "Places"
+3.1.33
+	Fixed issue where GoogleMap not appear or address not working correctly
+3.1.34
+	Fix older version of the app causing problems when updating booking settings and would remove the email of the account
+	Fixed issue where garbage errors where appearing in the logger.
+3.1.35
+	Added a Throttle to TipIncentive to prevent reentry
+	Fix problem with app crashing on iOS 9 when newer version popup would appear at startup
+	Fix problem with iOS street number picker not working (closing keyboard immediately)
+	Taxihail Network - Don't call TH network if network is disabled
+3.1.36
+	Fixed vehicles availables displayed
+3.1.37
+	Custom strings change for EastsideForARide
+3.1.38
+	Custom strings change
 	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
+3.2.0
+	Add - App rating
+3.2.1
+	Fixed duplicate destination button
+	Bug fix - Fixed issue where the app would check at the wrong place for the AuthenticationData. Now correctly obtaining the SessionId.
+	String change
+	Bug fix - Crash on login with SSL on iOS
+3.2.2
+	Bug fix- Fix problem in ReportDetailGenerator where 2 events could be handled at the same time and one would fail to write to db
+	Bug fix - Fixed account confirmation page
+	Improved Memory usage
+	Added log file presence check added;
+3.2.3
+	Store/update dispatcher settings for a specific market
+	Bug fix - Fixed issue where the AccountConfirmationView would bounce horizontally on iOS8 and iOS9
+	Bug fix - Fixed odd coloured bar.
+	Added New API endpoint to get dispatcher settings of a market
+	Bug fix - Where non-super admins cannot save settings
+	Fix GetMarket method doing a "like" search
+	Now removing the CountryCode when phone number is hidden.
+	Removed unnecessary logs
+	Fixed issue where scroll viewer in OrderReview did not work (breaking the responsiveness of the OrderReviewView)
+	Fix for email charge type + sending booking confirmation for paypal prepaid rides
+	Fixed issue where on iPhone iOS9.1 the text in Account Creation was not correctly displayed.
+	metadata disabled for service;
+	Fix market dispatcher settings tests
+	Fixed a bug where the get available vehicle algo for the VTS flow could send vehicles from another company to IBS
+	MKTAXI-3487 Added Shared Project
+	Bug fix - at VTS vehicle selection
+	Cancel Order not working for you? Try this!
+	Implemented Config update for Application name ( wont be displaying 330 Taxi LLC anymore).
+	No longer polling for IBSOrderIds during order creation (we get it anyway).
+	Added blackberry project and MapBox sdk
+	Localization update
+	Bug fix - Text issue on Order Review
+	Fix tag list and use saveBookOrder_10
+3.2.4
+	Merge pull request #224 from apcurium/MKTAXI-3433_Android_Black_screen_after_login
+	Fixed issue where app would use an authenticated call before verifying that it was once logged before.
+	BlakcBerry Set build target framework to 21
+	Added setting to hide Order Number
+	Blackberry - add settings for mapbox key
+	receipt fields reformatted;
+	Blackberry - Use map box settings for map box initialization
+	Modifed logging
+	Added 'resend' receipt for Manual Pairing trip
+	New IBS documentation
+	String change for Arro
+	Added - Notification of pairing failure to user
+	String changes
+	Added - Casco - Modified receipts to add extra fields (Driver photo, vehicle color, vehicle plate, etc.)
+3.2.5
+	Added Callbox to Taxihail solution
+	Bug fix - Fixed logger causing application to freeze on startup.
+	Bug fix - Fixed deployment tool Android
+3.2.6
+	Bug fix - Problem with deployment service for building blackberry
+	Bug fix - When finding you a taxi is not at the top of order status control when order number not shown
+	Fix build
+3.2.7
+	Bug fix - Fixed deployment service for BlackBerry
+	Bug fix - Order report - Aggregate id issue
+	Bug fix - Driver photo not displayed
+	Bug fix - FourSquare Image Partially Hidden
+3.2.8
+	Fixed build
+3.2.9
+	Add localization for CCI for Tolls field + add Tolls field to receipt email
+	Updated wsdl
+3.2.10
+	Updated constraints now tip and card name are displayed correctly
+	change description time out settings + removed unused comment
+3.2.11
+	Resize app for Central Niagara only
+3.2.12
+	Bug fix - Callbox - With only one order in queue, the user is sent back to the home screen/unable to cancel
+	Bug fix - If you enter a wrong sms code during account activation, the translation string is not correct: CreateAccount_InvalidConfirmationToken 
+	Bug fix - Driver bonus - Dragging the slider will cause it to jump back and forth
+	Fixed Callbox build failing on customer portal
+	Bug fix - Fixed invalid priority on constraints for in trip appbar view.
+	Bug fix - Fix problem with app crashing on iOS 9 when newer version popup would appear at startup
+	Ensure that EncryptedPaymentSettings only sends ClientPaymentSettings instead of sending server values.
+	Bug fix - Network features should not be used if network is disabled
+	Bug fix - Buttons on a paired ride would clip through the screen
+	Fixed build
+	Bug fix -  tip and card name are displayed correctly need to check that modifying the constraints has not break anything
+	Bug fix - Fixed issue where full linker was not enabled for AdHoc and Appstore.
+	Fetch of network fleets in local market should also return fleetid like roaming fleets
+3.2.13
+	Debug - Change configuration to not build Android projects while building iOS related configs
+3.2.14
+	Debug - Remove full linker on AdHoc for testing
+3.2.15
+	UI and performance/memory improvements on iOS 
+	Fix problem with iOS street number picker not working
+3.2.16
+	Version for Central Niagara only
+3.2.18
+	Bug fix - on how we get the service URL
+	Build fix
+3.2.19
+	Change "Cancel this Order" unpair button label to "Cancel Order" to fit smaller iOS devices
+	Remove log when VerifyAppVersion throws an exception
+	When changing server url, it's ok for GetSettings to throw an exception to alert the dev that the server doesn't exist and revert server url
+3.2.20
+	UI fix
+	If the order creation fails because of anything else than a bad request, show the generic error message instead of showing nothing and aborting
+	Bug fix - Fix vehicles available on web (only 1 cab was showing up)
+3.2.21
+	Bug fix - Fix issue were on CC decline on eHail trip, the user was not notified
+	Bug fix - Adress picker issue on Android
+3.2.22
+	Bug fix - Fix unpairing; always trying to call local ibs
+	Bug fix - Fix iOS 9 crash with popup at startup of app
+	Bug fix - Fix the way we check for minimum app version server-side
+	Bug fix - Fix Account Confirmation view on iOS (constraints not correct)
+	Add more stuff to the CustomLinker.xml file (fixes registration issue)
+3.2.23
+	Updated MapBox to version 3.0
+3.2.24
+	History detail - Cannot cancel scheduled order
+	EastsideForARide - Custom strings
+Version bump 3.3.1
+	Addes possibility to acces "Pay in Car" for web order only
 
 
 

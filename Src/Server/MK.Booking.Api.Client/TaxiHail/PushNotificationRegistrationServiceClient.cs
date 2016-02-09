@@ -2,10 +2,16 @@
 
 using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -13,8 +19,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PushNotificationRegistrationServiceClient : BaseServiceClient
     {
-        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

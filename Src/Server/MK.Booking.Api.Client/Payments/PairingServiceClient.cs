@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
+using apcurium.MK.Common;
+
+
+#if CLIENT
+using MK.Common.Exceptions;
+#else
+using apcurium.MK.Booking.Api.Client.Extensions;
 using ServiceStack.ServiceClient.Web;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.Payments
 {
     public class PairingServiceClient : BaseServiceClient, IPairingServiceClient
     {
-        public PairingServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public PairingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
         {
         }
 

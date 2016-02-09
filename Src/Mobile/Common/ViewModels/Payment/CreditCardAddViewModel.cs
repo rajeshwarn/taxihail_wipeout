@@ -9,14 +9,13 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -24,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	{
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
+		private readonly IDeviceCollectorService _deviceCollectorService;
 
 		private OverduePayment _paymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -31,11 +31,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public CreditCardAddViewModel(
 			ILocationService locationService,
 			IPaymentService paymentService, 
-			IAccountService accountService)
-			:base(locationService, paymentService, accountService)
+			IAccountService accountService,
+			IDeviceCollectorService deviceCollectorService)
+			: base(locationService, paymentService, accountService)
 		{
 			_paymentService = paymentService;
 			_accountService = accountService;
+			_deviceCollectorService = deviceCollectorService;
 		}
 
 		private bool _isFromPromotionsView;
@@ -44,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private bool _isAddingNew;
 		private Guid _creditCardId;
 		private int _numberOfCreditCards;
+		private string _kountSessionId;
 
 		#region Const and ReadOnly
 		private const string Visa = "Visa";
@@ -91,8 +94,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (paymentToSettle != null)
 			{
-				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
+			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
 			}
+			_kountSessionId = _deviceCollectorService.GetSessionId();
 		}
 
 		public override async void BaseStart()
@@ -102,13 +106,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
 
 				CreditCardCompanies = new List<ListItem>
-					{
-						new ListItem {Display = Visa, Id = 0},
-						new ListItem {Display = MasterCard, Id = 1},
-						new ListItem {Display = Amex, Id = 2},
-						new ListItem {Display = VisaElectron, Id = 3},
-						new ListItem {Display = CreditCardGeneric, Id = 4}
-					};
+				{
+					new ListItem {Display = Visa, Id = 0},
+					new ListItem {Display = MasterCard, Id = 1},
+					new ListItem {Display = Amex, Id = 2},
+					new ListItem {Display = VisaElectron, Id = 3},
+					new ListItem {Display = CreditCardGeneric, Id = 4}
+				};
 
 				ExpirationYears = new List<ListItem>();
 				for (var i = 0; i <= 15; i++)
@@ -286,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationYear = value.ToSafeString();
+				Data.ExpirationYear = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationYearDisplay);
 			}
@@ -302,9 +306,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set 
 			{
-				Data.ExpirationMonth = value.ToSafeString();
+				Data.ExpirationMonth = value.SelectOrDefault(instance => instance.ToString(), string.Empty);
 
-				RaisePropertyChanged();
+                RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationMonthDisplay);
 			}
 		}
@@ -363,7 +367,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && (!Settings.CreditCardIsMandatory  || Settings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+			get { return IsEditing && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public bool CanLinkPayPalAccount
@@ -378,12 +382,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanUnlinkPayPalAccount
 		{
-			get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
+			get { return IsPayPalAccountLinked && !PaymentSettings.CreditCardIsMandatory; }
 		}
 
 		public bool ShowLinkedPayPalInfo
 		{
-			get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
+			get { return IsPayPalAccountLinked && PaymentSettings.CreditCardIsMandatory; }
 		}
 
 		public bool IsPayPalOnly
@@ -664,10 +668,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						Data.CreditCardId = Guid.NewGuid();
 					}
 
-					var success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
+					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
 
 					if (success)
 					{
+						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+
 						UnlinkPayPalAccount(true);
 
 						this.Services().Analytics.LogEvent("AddCOF");
@@ -681,7 +687,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						else if(IsMandatory)
 						{
 							await this.Services().Message.ShowMessage(string.Empty, 
-                                PaymentSettings.IsOutOfAppPaymentDisabled ? 
+								PaymentSettings.IsPaymentOutOfAppDisabled != OutOfAppPaymentDisabled.None ? 
 								this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
 								this.Services().Localize["CreditCardAdded"]);
 						}

@@ -4,9 +4,9 @@
     {
         public static string[] DoneStatuses = { Common.Done };
         public static string[] CancelStatuses = { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow, Common.Timeout };
-        public static string[] ShowOnMapStatuses = { Common.Assigned, Common.Arrived, Common.Loaded };
+        public static string[] ShowOnMapStatuses = { Common.Assigned, Common.Arrived, Common.Loaded, Common.Unloaded };
         public static string[] LogVehiclePositionForOrderStatuses = { Common.Arrived, Common.Loaded };
-        public static string[] CanCancelOrderStatus = { Common.Assigned, Common.Arrived };
+        public static string[] CanCancelOrderStatusButCouldBeChargedFees = { Common.Assigned, Common.Arrived };
         public static string[] CompletedStatuses = { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow, Common.Done, Common.Timeout };
 
         public class Addresses
@@ -28,6 +28,7 @@
             public const string Assigned = "wosASSIGNED";
             public const string Arrived = "wosARRIVED";
             public const string Loaded = "wosLOADED";
+            public const string Unloaded = "wosUNLOAD";
             public const string NoShow = "wosNOSHOW";
             public const string Scheduled = "wosSCHED";
 

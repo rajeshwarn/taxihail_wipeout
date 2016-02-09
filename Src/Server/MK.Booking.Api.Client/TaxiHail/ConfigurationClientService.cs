@@ -4,56 +4,64 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Configuration.Helpers;
+using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-	public class ConfigurationClientService : BaseServiceClient
+    public class ConfigurationClientService : BaseServiceClient
 	{
 	    private readonly ILogger _logger;
 
-	    public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
-			: base(url, sessionId, packageInfo)
+        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService)
 		{
 		    _logger = logger;
 		}
 
-	    public Task<IDictionary<string, string>> GetSettings()
+        public async Task<IDictionary<string, string>> GetSettings(bool shouldThrowExceptionIfError = false)
 		{
-			var tcs = new TaskCompletionSource<IDictionary<string, string>>();
-
 			try
 			{
-				var result = Client.GetAsync<Dictionary<string, string>>("/settings").Result;
-				tcs.TrySetResult(result);
+				return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings");
 			}
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
-				tcs.TrySetResult(new Dictionary<string, string>());
-			}
 
-			return tcs.Task;
+                if (shouldThrowExceptionIfError)
+                {
+                    throw ex;
+                }
+
+			    return new Dictionary<string, string>();
+			}
 		}
 
-		public Task<ClientPaymentSettings> GetPaymentSettings()
+		public async Task<ClientPaymentSettings> GetPaymentSettings()
 		{
-			var tcs = new TaskCompletionSource<ClientPaymentSettings>();
-
+			var paymentSettings = new ClientPaymentSettings();
 			try
 			{
-				var result = Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest()).Result;
-				tcs.TrySetResult(result.ClientPaymentSettings);
+				var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments");
+
+				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
+				SettingsLoader.InitializeDataObjects(paymentSettings, result, _logger);
 			}
 			catch (Exception ex)
 			{
                 _logger.LogError(ex);
-				tcs.TrySetResult(new ClientPaymentSettings());
-			}
-
-			return tcs.Task;
+			}	
+			return paymentSettings;
 		}
 	}
 }

@@ -1,59 +1,23 @@
-using System;
-using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
+using apcurium.MK.Common;
 
 namespace CMTPayment
 {
-    public class BaseServiceClient
+    public partial class BaseServiceClient
     {
         private const string DefaultUserAgent = "TaxiHail";
 
         private readonly string _sessionId;
         private readonly string _url;
         private readonly IPackageInfo _packageInfo;
-        private ServiceClientBase _client;
+        private readonly IConnectivityService _connectivityService;
 
-        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
         {
             _url = url;
             _sessionId = sessionId;
             _packageInfo = packageInfo;
-        }
-
-        protected ServiceClientBase Client
-        {
-            get { return _client ?? (_client = CreateClient()); }
-        }
-
-        private ServiceClientBase CreateClient()
-        {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
-            JsConfig.EmitCamelCaseNames = true;
-
-            var client = new JsonServiceClient(_url) {Timeout = new TimeSpan(0, 0, 2, 0, 0)};
-
-            var uri = new Uri(_url);
-            if (!string.IsNullOrEmpty(_sessionId))
-            {
-                client.CookieContainer = new CookieContainer();
-                client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
-                client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
-            }
-
-            // When packageInfo is not specified, we use a default value as the useragent
-            client.LocalHttpWebRequestFilter = request =>
-            {
-                request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
-
-                if (_packageInfo != null)
-                {
-                    request.Headers.Add("ClientVersion", _packageInfo.Version);
-                }  
-            };
-
-            return client;
+            _connectivityService = connectivityService;
         }
     }
 }

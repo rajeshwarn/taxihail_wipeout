@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view hidden="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarManualRideLinQ">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SJo-EJ-cUL">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Vf-n7-FjQ" userLabel="Estimate view" customClass="HideableView">
+                            <rect key="frame" x="8" y="5" width="73" height="46"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-hI-zUm" userLabel="Estimate" customClass="AppBarButton">
+                                    <rect key="frame" x="7" y="0.0" width="60" height="46"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="46" id="iPQ-ZE-rMI"/>
+                                        <constraint firstAttribute="width" constant="60" id="r9Z-Nu-SRd"/>
+                                    </constraints>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="centerY" secondItem="1Wg-hI-zUm" secondAttribute="centerY" id="s7Q-FF-ZJI"/>
+                                <constraint firstAttribute="centerX" secondItem="1Wg-hI-zUm" secondAttribute="centerX" id="vQZ-zi-BIn"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IEI-dl-oNh" userLabel="Booking view">
+                            <rect key="frame" x="89" y="5" width="223" height="46"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FqU-42-4MJ" userLabel="Manual RideLinQ booking view">
+                                    <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ot-AI-h3e" userLabel="Manual RideLinQ Booking" customClass="FlatButton">
+                                            <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                                            <animations/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="r96-S5-ubt" userLabel="Promotion image">
+                                            <rect key="frame" x="92" y="0.0" width="16" height="16"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="don-zK-dWB"/>
+                                                <constraint firstAttribute="width" constant="16" id="jA6-Fn-toh"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="top" secondItem="FqU-42-4MJ" secondAttribute="top" id="40f-12-NLE"/>
+                                        <constraint firstAttribute="trailing" secondItem="2Ot-AI-h3e" secondAttribute="trailing" id="9db-XX-Waw"/>
+                                        <constraint firstAttribute="trailing" secondItem="r96-S5-ubt" secondAttribute="trailing" id="RAy-06-Llo"/>
+                                        <constraint firstItem="r96-S5-ubt" firstAttribute="top" secondItem="FqU-42-4MJ" secondAttribute="top" id="WTF-Sp-Gx6"/>
+                                        <constraint firstAttribute="bottom" secondItem="2Ot-AI-h3e" secondAttribute="bottom" id="mcd-ES-kyq"/>
+                                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="leading" secondItem="FqU-42-4MJ" secondAttribute="leading" id="nce-uv-6IM"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTx-hZ-snK" userLabel="Booking" customClass="FlatButton">
+                                    <rect key="frame" x="116" y="0.0" width="107" height="46"/>
+                                    <animations/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="FqU-42-4MJ" secondAttribute="bottom" id="3D1-aV-hK5"/>
+                                <constraint firstAttribute="trailing" secondItem="ZTx-hZ-snK" secondAttribute="trailing" id="7ZH-sc-5EL"/>
+                                <constraint firstItem="ZTx-hZ-snK" firstAttribute="leading" secondItem="IEI-dl-oNh" secondAttribute="leading" priority="500" constant="8" id="Gxi-KD-dzH"/>
+                                <constraint firstAttribute="trailing" secondItem="FqU-42-4MJ" secondAttribute="trailing" priority="500" id="KGD-XC-TaD"/>
+                                <constraint firstItem="ZTx-hZ-snK" firstAttribute="width" secondItem="FqU-42-4MJ" secondAttribute="width" id="MHg-Ts-Tdg"/>
+                                <constraint firstItem="ZTx-hZ-snK" firstAttribute="leading" secondItem="FqU-42-4MJ" secondAttribute="trailing" constant="8" id="NNQ-zf-QeH"/>
+                                <constraint firstAttribute="bottom" secondItem="ZTx-hZ-snK" secondAttribute="bottom" id="TSK-Wj-HgB"/>
+                                <constraint firstItem="ZTx-hZ-snK" firstAttribute="top" secondItem="IEI-dl-oNh" secondAttribute="top" id="iL8-Ly-27U"/>
+                                <constraint firstItem="FqU-42-4MJ" firstAttribute="top" secondItem="IEI-dl-oNh" secondAttribute="top" id="jbE-7e-SUM"/>
+                                <constraint firstItem="FqU-42-4MJ" firstAttribute="leading" secondItem="IEI-dl-oNh" secondAttribute="leading" id="jvc-6X-pBq"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="IEI-dl-oNh" secondAttribute="bottom" constant="5" id="5e1-WM-Ssh"/>
+                        <constraint firstItem="9Vf-n7-FjQ" firstAttribute="leading" secondItem="SJo-EJ-cUL" secondAttribute="leading" constant="8" id="84W-WC-0j8"/>
+                        <constraint firstItem="IEI-dl-oNh" firstAttribute="leading" secondItem="SJo-EJ-cUL" secondAttribute="leading" priority="500" constant="8" id="8ad-4S-gOU"/>
+                        <constraint firstAttribute="trailing" secondItem="IEI-dl-oNh" secondAttribute="trailing" constant="8" id="Exk-pa-K7I"/>
+                        <constraint firstItem="IEI-dl-oNh" firstAttribute="leading" secondItem="9Vf-n7-FjQ" secondAttribute="trailing" constant="8" id="IfS-kd-bME"/>
+                        <constraint firstAttribute="bottom" secondItem="9Vf-n7-FjQ" secondAttribute="bottom" constant="5" id="Mxp-wc-ICv"/>
+                        <constraint firstItem="9Vf-n7-FjQ" firstAttribute="top" secondItem="SJo-EJ-cUL" secondAttribute="top" constant="5" id="OSv-cn-btU"/>
+                        <constraint firstItem="IEI-dl-oNh" firstAttribute="width" secondItem="SJo-EJ-cUL" secondAttribute="width" priority="500" id="jSk-TJ-Oj3"/>
+                        <constraint firstItem="9Vf-n7-FjQ" firstAttribute="width" secondItem="IEI-dl-oNh" secondAttribute="width" multiplier="0.33" id="wFS-T7-la6"/>
+                        <constraint firstItem="9Vf-n7-FjQ" firstAttribute="width" secondItem="SJo-EJ-cUL" secondAttribute="width" multiplier="0.25" priority="500" id="x3N-6K-Upz"/>
+                        <constraint firstItem="IEI-dl-oNh" firstAttribute="top" secondItem="SJo-EJ-cUL" secondAttribute="top" constant="5" id="zvX-Aj-aFk"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="SJo-EJ-cUL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0bW-TS-mFz"/>
+                <constraint firstAttribute="trailing" secondItem="SJo-EJ-cUL" secondAttribute="trailing" id="bI7-4Q-P22"/>
+                <constraint firstItem="SJo-EJ-cUL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cE3-AF-bWx"/>
+                <constraint firstAttribute="bottom" secondItem="SJo-EJ-cUL" secondAttribute="bottom" id="eqW-Yc-QQc"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonBooking" destination="ZTx-hZ-snK" id="LxW-f9-jyF"/>
+                <outlet property="buttonEstimate" destination="1Wg-hI-zUm" id="zGM-pD-v4f"/>
+                <outlet property="buttonManualRideLinQBooking" destination="2Ot-AI-h3e" id="h4h-Vq-5Kb"/>
+                <outlet property="imagePromotional" destination="r96-S5-ubt" id="WOe-8B-33K"/>
+                <outlet property="viewEstimate" destination="9Vf-n7-FjQ" id="ThQ-bQ-bPw"/>
+                <outlet property="viewManualRideLinQBooking" destination="FqU-42-4MJ" id="OHj-9h-xTH"/>
+            </connections>
+            <point key="canvasLocation" x="312" y="531"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="promo.png" width="16" height="16"/>
+    </resources>
+</document>

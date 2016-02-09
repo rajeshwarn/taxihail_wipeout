@@ -9,6 +9,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -63,6 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var ibsOrderId = @event.IBSOrderId;
+            var account = _accountDao.FindById(@event.AccountId);
 
             if (!ibsOrderId.HasValue)
             {
@@ -75,7 +77,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive, email, @event.IsHailRequest);
+                    @event.TipIncentive, email, account.defaultTipPercent, @event.IsHailRequest);
 
                 ibsOrderId = result.CreateOrderResult;
             }
@@ -83,7 +85,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
             if (success)
             {
-                SendConfirmationEmail(ibsOrderId.Value, @event);
+                SendConfirmationEmail(ibsOrderId.Value, @event.AccountId, @event.Settings, @event.ChargeTypeEmail,
+                    @event.PickupAddress, @event.DropOffAddress, @event.PickupDate, @event.UserNote, @event.ClientLanguageCode);
 
                 ApplyPromotionIfNecessary(@event);
             }
@@ -97,12 +100,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var accountDetail = _accountDao.FindById(@event.AccountId);
             var email = accountDetail != null ? accountDetail.Email : string.Empty;
 
+            var account = _accountDao.FindById(@event.AccountId);
+
             var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                @event.TipIncentive, email);
+                @event.TipIncentive, email, account.DefaultTipPercent);
 
             SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
@@ -116,14 +121,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             
             DeleteTempOrderData(@event.OrderId);
             
+            var account = _accountDao.FindById(orderInfo.AccountId);
+
             var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.Settings.ServiceType, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
-                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, orderInfo.Account.Email);
+                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, orderInfo.Account.Email, account.DefaultTipPercent);
 
-            SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            if (success)
+            {
+                SendConfirmationEmail(result.CreateOrderResult.Value, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
+                    orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.PickupDate, orderInfo.Request.UserNote, orderInfo.Request.ClientLanguageCode);
+            }
 
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
@@ -139,7 +151,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
-                    WasPrepaid = isPrepaid,
                     ErrorCode = errorCode,
                     ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
                 };
@@ -181,15 +192,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void SendConfirmationEmail(int ibsOrderId, OrderCreated @event)
+        public void SendConfirmationEmail(int ibsOrderId, Guid accountId, BookingSettings bookingSettings, string chargeTypeEmail,
+            Address pickupAddress, Address dropOffAddress, DateTime pickupDate, string userNote, string clientLanguage)
         {
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == @event.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
+            var accountDetail = _accountDao.FindById(accountId);
 
-            var accountDetail = _accountDao.FindById(@event.AccountId);
-            var chargeTypeEmail = _resources.Get(chargeTypeKey, @event.ClientLanguageCode);
+            chargeTypeEmail = chargeTypeEmail ?? GetChargeTypeEmail(bookingSettings.ChargeTypeId, clientLanguage);
 
             var emailCommand = new SendBookingConfirmationEmail
             {
@@ -197,24 +205,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 EmailAddress = accountDetail.Email,
                 Settings = new SendBookingConfirmationEmail.BookingSettings
                 {
-                    ChargeType = @event.Settings.ChargeType,
-                    LargeBags = @event.Settings.LargeBags,
-                    Name = @event.Settings.Name,
-                    Passengers = @event.Settings.Passengers,
-                    Phone = @event.Settings.Phone,
-                    VehicleType = @event.Settings.VehicleType
+                    ChargeType = bookingSettings.ChargeType,
+                    LargeBags = bookingSettings.LargeBags,
+                    Name = bookingSettings.Name,
+                    Passengers = bookingSettings.Passengers,
+                    Phone = bookingSettings.Phone,
+                    VehicleType = bookingSettings.VehicleType
                 },
-                ClientLanguageCode = @event.ClientLanguageCode,
-                DropOffAddress = @event.DropOffAddress,
-                Note = @event.UserNote,
-                PickupAddress = @event.PickupAddress,
-                PickupDate = @event.PickupDate
+                ClientLanguageCode = clientLanguage,
+                DropOffAddress = dropOffAddress,
+                Note = userNote,
+                PickupAddress = pickupAddress,
+                PickupDate = pickupDate
             };
 
             emailCommand.IBSOrderId = ibsOrderId;
             emailCommand.EmailAddress = accountDetail.Email;
             emailCommand.Settings.ChargeType = chargeTypeEmail;
-            emailCommand.Settings.VehicleType = @event.Settings.VehicleType;
+            emailCommand.Settings.VehicleType = bookingSettings.VehicleType;
 
             _commandBus.Send(emailCommand);
         }
@@ -253,6 +261,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 _logger.LogMessage(string.Format("Unable to delete temporary data for order {0}", orderId));
                 _logger.LogError(ex);
             }
+        }
+
+        private string GetChargeTypeEmail(int? chargeTypeId, string clientLanguageCode)
+        {
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == chargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            return _resources.Get(chargeTypeKey, clientLanguageCode);
         }
     }
 }

@@ -1,15 +1,23 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
+
+#if CLIENT
+using MK.Common.Exceptions;
+#else
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Extensions;
 using CMTPayment.Tokenize;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
@@ -22,29 +30,82 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-        private readonly CmtPaymentSettings _cmtSettings;
+        private readonly IIPAddressManager _ipAddressManager;
+        private readonly ILogger _logger;
 
-        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
-            IPackageInfo packageInfo, ILogger logger)
-            : base(baseUrl, sessionId, packageInfo)
+        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+            : base(baseUrl, sessionId, packageInfo, connectivityService)
         {
-            _cmtSettings = cmtSettings;
+            _ipAddressManager = ipAddressManager;
+            _logger = logger;
+
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
         }
         
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
+
+        private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
+
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             var cmtPaymentServiceClient = new CmtPaymentServiceClient(_cmtSettings, ServiceType.Taxi, null, null, null); // Use default ServiceType as it doesn't matter
-            return Tokenize(cmtPaymentServiceClient, accountNumber, expiryDate, cvv, zipCode);
+            return Tokenize(CmtPaymentServiceClient, nameOnCard, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
+        }
+        
+        public async Task<BasePaymentResponse> ValidateTokenizedCard(CreditCardDetails creditCard, string cvv, string kountSessionId, Account account)
+        {
+            try
+            {
+                var request = new TokenizeValidateRequest
+                {
+                    Token = creditCard.Token,
+                    Cvv = cvv,
+                    SessionId = kountSessionId,
+                    Email = account.Email,
+                    BillingFullName = creditCard.NameOnCard,
+                    CustomerIpAddress = _ipAddressManager.GetIPAddress()
+                };
+
+                if(creditCard.ZipCode.HasValue())
+                {
+                    request.ZipCode = creditCard.ZipCode;
+                }
+
+                var response = await CmtPaymentServiceClient.PostAsync(request);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = response.ResponseCode == 1,
+                    Message = response.ResponseMessage
+                };
+            }
+            catch(Exception e)
+            {
+                _logger.Maybe(x => x.LogMessage("Error during card validation"));
+                _logger.Maybe(x => x.LogError(e));
+
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
         }
 
 		/// <summary>
-		/// This method does not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
+		/// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
 		/// </summary>
 		/// <param name="cardToken"></param>
 		/// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-			return new DeleteTokenizedCreditcardResponse();
+            return new DeleteTokenizedCreditcardResponse { IsSuccessful = true };
         }
 
         public Task<OverduePayment> GetOverduePayment()
@@ -65,22 +126,24 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
-            string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
+        private async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient, string nameOnCard,
+            string accountNumber, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
             try
             {
                 var request = new TokenizeRequest
-                    {
-                        AccountNumber = accountNumber,
-                        ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-                        #if DEBUG
-                        ValidateAccountInformation = false,
-                        #endif
-                        Cvv = cvv,
-                    };
+                {
+                    AccountNumber = accountNumber,
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
+                    Cvv = cvv,
+                    SessionId = kountSessionId,
+                    Email = account.Email,
+                    BillingFullName = nameOnCard,
+                    CustomerId = account.Id.ToString(),
+                    CustomerIpAddress = _ipAddressManager.GetIPAddress()
+                };
                 
-                if(!string.IsNullOrEmpty(zipCode))
+                if(zipCode.HasValue())
                 {
                     request.ZipCode = zipCode;
                 }
@@ -96,8 +159,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.LastFour,
                 };
             }
-            catch (Exception e)
+            catch(Exception e)
             {
+                _logger.Maybe(x => x.LogMessage("Error during tokenization"));
+                _logger.Maybe(x => x.LogError(e));
+
                 var message = e.Message;
                 var exception = e as AggregateException;
                 if (exception != null)
@@ -121,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 {
                     AccountNumber = accountNumber,
                     ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-                    ValidateAccountInformation = false //this must be false when testing because we try to tokenize a fake card
+                    ValidateAccountInformation = false
                 });
 
                 response.Wait();
@@ -132,7 +198,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     IsSuccessful = response.Result.ResponseCode == 1,
                     Message = response.Result.ResponseMessage,
                     CardType = response.Result.CardType,
-                    LastFour = response.Result.LastFour,
+                    LastFour = response.Result.LastFour
                 };
             }
             catch (Exception e)

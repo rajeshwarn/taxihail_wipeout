@@ -84,5 +84,9 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsManualRideLinq { get; set; }
 
         public double? TipIncentive { get; set; }
+
+        public string OriginatingIpAddress { get; set; }
+
+        public string KountSessionId { get; set; }
     }
 }

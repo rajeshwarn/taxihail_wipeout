@@ -106,16 +106,20 @@
       <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
     </Reference>
     <Reference Include="PushSharp.Android, Version=2.2.1.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Android.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Apple, Version=2.2.1.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Apple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Blackberry, Version=2.2.1.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Blackberry.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -183,6 +187,7 @@
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
+    <Compile Include="Comparer\AccountDetailComparer.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Data\BestAvailableCompany.cs" />
     <Compile Include="Data\IBSOrderResult.cs" />
@@ -204,6 +209,8 @@
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\Integration\CacheServiceManager.cs" />
+    <Compile Include="EventHandlers\Integration\OrderCancellationManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderCreationManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
@@ -216,7 +223,6 @@
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
-    <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
@@ -240,6 +246,8 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\BlackListEntry.cs" />
+    <Compile Include="ReadModel\ConfigurationChangeEntry.cs" />
     <Compile Include="ReadModel\FeesDetail.cs" />
     <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
@@ -253,6 +261,13 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\AccountNoteEntry.cs" />
+    <Compile Include="ReadModel\Query\AccountNoteService.cs" />
+    <Compile Include="ReadModel\Query\BlackListEntryService.cs" />
+    <Compile Include="ReadModel\Query\Contract\IAccountNoteService.cs" />
+    <Compile Include="ReadModel\Query\ConfigurationChangeService.cs" />
+    <Compile Include="ReadModel\Query\Contract\IBlackListEntryService.cs" />
+    <Compile Include="ReadModel\Query\Contract\IConfigurationChangeService.cs" />
     <Compile Include="ReadModel\Query\PickupPointDao.cs" />
     <Compile Include="ReadModel\Query\AirlineDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
@@ -333,6 +348,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Resources\Capital Taxi Ottawa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Capital Taxi Ottawa.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Central Niagara.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Central Niagara.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Central Taxi Belleville.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Central Taxi Belleville.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\CheckerYellowCabPalmetto.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -374,6 +404,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\West Way Taxi Ottawa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>West Way Taxi Ottawa.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\CryptoService.cs" />
     <Compile Include="Resources\UTOG.Designer.cs">
@@ -508,6 +543,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Blueline Taxi.resx" />
+    <EmbeddedResource Include="Resources\Capital Taxi Ottawa.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Capital Taxi Ottawa1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Central Niagara.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Central Niagara.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Central Taxi Belleville.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Central Taxi Belleville.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\CheckerYellowCabPalmetto.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CheckerYellowCabPalmetto.Designer.cs</LastGenOutput>
@@ -518,6 +566,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DJs Taxi.resx" />
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
@@ -551,6 +600,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UTOG.resx" />
+    <EmbeddedResource Include="Resources\West Way Taxi Ottawa.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>West Way Taxi Ottawa.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

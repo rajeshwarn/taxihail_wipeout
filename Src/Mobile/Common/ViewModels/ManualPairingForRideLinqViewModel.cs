@@ -4,9 +4,13 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceClient.Web;
+using System.Net;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -14,14 +18,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IBookingService _bookingService;
         private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IDeviceCollectorService _deviceCollectorService;
+
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
+		private string _kountSessionId;
 
-        public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService)
+		public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService, IDeviceCollectorService deviceCollectorService)
         {
-            _bookingService = bookingService;
+			_bookingService = bookingService;
             _orderWorkflowService = orderWorkflowService;
+			_deviceCollectorService = deviceCollectorService;
         }
+
+		public void Init()
+		{
+			_kountSessionId = _deviceCollectorService.GetSessionId();
+		}
 
         public string PairingCodeLeft
         {
@@ -67,12 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            var isCreditCardDeactivated = await _orderWorkflowService.ValidateIsCardDeactivated();
-                            if (isCreditCardDeactivated)
-                            {
-                                 this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqCreditCardDisabled"]).FireAndForget();
-                                 return;
-                            }
+							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, _kountSessionId);
 
                             // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
                             await _orderWorkflowService.SetAddressToUserLocation();
@@ -80,20 +88,56 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 							var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
-							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, serviceType);
+							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, serviceType, _kountSessionId);
+							_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 							this.ReturnResult(orderManualRideLinqDetail);
                         }
                     }
-                    catch (WebServiceException ex)
-                    {
-                        Logger.LogError(ex);
-                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).FireAndForget();
-                    }
+					catch(InvalidCreditCardException e)
+					{
+						Logger.LogError(e);
+
+						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+						var message = this.Services().Localize["InvalidCreditCardMessage"];
+
+						this.Services().Message.ShowMessage(title, message,
+							this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
+								if(Settings.MaxNumberOfCardsOnFile > 1)
+								{
+									ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel>();
+								}
+								else
+								{
+									ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>();
+								}
+							},
+							this.Services().Localize["Cancel"], () => {});
+					}
+					catch (ManualPairingException ex)
+					{
+						Logger.LogError(ex);
+
+						switch (ex.ErrorCode)
+						{
+							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
+								break;
+
+							case CmtErrorCodes.UnablePreauthorizeCreditCard:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
+								break;
+
+							case CmtErrorCodes.UnableToPair:
+							default:
+								this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
+								break;
+						}
+					}
                     catch (Exception ex)
                     {
-                        Logger.LogError(ex);
-						this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).FireAndForget();
+						Logger.LogError(ex);
+						this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
                     } 
                 });
             }

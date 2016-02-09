@@ -16,6 +16,10 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 		{
 			_inverted = inverted;
 		}
+		public EnumToBoolConverter()
+		{
+			
+		}
 
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{

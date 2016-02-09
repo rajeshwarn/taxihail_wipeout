@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -21,23 +22,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, IVehicleTypeService vehicleTypeService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_paymentService = paymentService;
+			_vehicleTypeService = vehicleTypeService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
+			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
 		{
-			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+			Vehicles = (await _vehicleTypeService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
@@ -46,11 +49,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
-	    private async Task MarketUpdated(string hashedMarket)
+	    private async Task MarketChanged(MarketSettings marketSettings)
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (hashedMarket.HasValue())
+			if (marketSettings.HashedMarket.HasValue())
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
@@ -98,7 +101,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
+                return _bookingSettings == null
+                    ? default(CountryCode)
+                    : CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
             }
 
             set
@@ -276,9 +281,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 
 				var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
-				if (vehicle == null)
-					return null;
-				return vehicle.Display;
+			    return vehicle == null 
+                    ? null 
+                    : vehicle.Display;
 			}
 		}
 
@@ -286,7 +291,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return _bookingSettings.ChargeTypeId;
+				return _bookingSettings == null
+                    ? null
+                    : _bookingSettings.ChargeTypeId;
 			}
 			set
 			{
@@ -314,9 +321,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 
 				var chargeType = ChargeTypes.FirstOrDefault(x => x.Id == ChargeTypeId);
-				if (chargeType == null)
-					return null;
-				return this.Services().Localize[chargeType.Display]; 
+				return chargeType == null 
+                    ? null 
+                    : this.Services().Localize[chargeType.Display];
 			}
 		}
 	}

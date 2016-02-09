@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
@@ -18,12 +19,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         private nint? _expandedSection;
         private int _collapseItemCount;
+		private AddressLocationType _addressLocationTypePicker;
 
         public GroupedAddressTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
         base( tableView, cellStyle, identifier, bindingText, accessory)
         {
             _collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;            
         }
+			
+		public AddressLocationType AddressLocationTypePicker
+		{
+			get
+			{
+				return _addressLocationTypePicker;
+			}
+			set
+			{
+				if (_addressLocationTypePicker == value) 
+				{
+					return;
+				}
+
+				_addressLocationTypePicker = value;
+				if(_addressLocationTypePicker == AddressLocationType.Airport || _addressLocationTypePicker == AddressLocationType.Train)
+				{
+					_collapseItemCount = int.MaxValue;
+				}
+				else
+				{
+					_collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;
+				}
+			}
+		}
 
         public override nint NumberOfSections(UITableView tableView)
         {
@@ -187,6 +214,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                         AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin
                     };
                     container.AddSubview(googleLogo);
+                    if(_expandedSection != section)
+                    {
+                        tableView.ContentSize = new CGSize(tableView.ContentSize.Width, tableView.ContentSize.Height + PoweredBy.Size.Height + 10);
+                    }
                 }
             }
 
