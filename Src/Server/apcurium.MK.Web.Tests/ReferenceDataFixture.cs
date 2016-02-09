@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void Get()
         {
-            var sut = new ReferenceDataServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            var sut = new ReferenceDataServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var data = await sut.GetReferenceData();
 
             Assert.IsNotEmpty(data.CompaniesList);

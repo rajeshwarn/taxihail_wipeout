@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -16,19 +16,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.PayPal
 {
     public class PayPalServiceClient : BaseServiceClient
     {
-        public PayPalServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public PayPalServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
         public Task<BasePaymentResponse> LinkPayPalAccount(LinkPayPalAccountRequest request)
         {
-            return Client.PostAsync(request);
+            return Client.PostAsync(request, Logger);
         }
 
         public Task<BasePaymentResponse> UnlinkPayPalAccount(UnlinkPayPalAccountRequest request)
         {
-            return Client.PostAsync(request);
+            return Client.PostAsync(request, Logger);
         }
     }
 }

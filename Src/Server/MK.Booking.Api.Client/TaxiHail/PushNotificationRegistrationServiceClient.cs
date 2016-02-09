@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 
 #if !CLIENT
@@ -19,8 +20,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PushNotificationRegistrationServiceClient : BaseServiceClient
     {
-        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public PushNotificationRegistrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
@@ -30,12 +31,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 new PushNotificationRegistration
                 {
                     Platform = platform
-                });
+                }, logger: Logger);
         }
 
         public Task Unregister(string deviceToken)
         {
-            return Client.DeleteAsync<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken));
+            return Client.DeleteAsync<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken), logger: Logger);
         }
 
         public Task Replace(string oldDeviceToken, string newDeviceToken, PushNotificationServicePlatform platform)
@@ -45,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 {
                     OldDeviceToken = oldDeviceToken,
                     Platform = platform
-                });
+                }, logger: Logger);
         }
     }
 }

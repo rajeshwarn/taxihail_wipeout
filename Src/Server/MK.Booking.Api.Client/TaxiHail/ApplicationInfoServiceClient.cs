@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -17,15 +17,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ApplicationInfoServiceClient : BaseServiceClient
     {
-        public ApplicationInfoServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public ApplicationInfoServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
-
         public Task<ApplicationInfo> GetAppInfoAsync()
         {
-            return Client.GetAsync<ApplicationInfo>("/app/info");
+            return Client.GetAsync<ApplicationInfo>("/app/info", logger: Logger);
         }
     }
 }
