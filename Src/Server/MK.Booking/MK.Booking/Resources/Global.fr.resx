@@ -121,7 +121,7 @@
     <value>Pour confirmer votre courriel, utilisez le lien suivant</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
-    <value>Votre adresse courriel est bien enregistré</value>
+    <value>Votre adresse courriel est bien enregistrée</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
     <value>Vous pouvez dès à présent vous connecter à l'application</value>
@@ -337,7 +337,7 @@
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>Désolé, votre chauffeur c'est décommandé, nous vous trouvons un autre véhicule...</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
@@ -373,7 +373,7 @@
     <value>La course sera payée en utilisant le mode de paiement choisi</value>
   </data>
   <data name="OrderStatus_BAILED" xml:space="preserve">
-    <value>Bésolé, votre chauffeur c'est décommandé, nous vous trouvons un autre véhicule...</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
