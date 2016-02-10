@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class BraintreeVZeroService : IPaymentProviderClientService
     {
-        public Task<string> GetPayPalNonce(string clientToken)
+        public async Task<string> GetPayPalNonce(string clientToken)
         {
 			var client = new BTAPIClient(clientToken);
 
@@ -23,28 +23,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				ReturnURLScheme = NSBundle.MainBundle.BundleIdentifier + ".paypal"
 			};
 
-			var tcs = new TaskCompletionSource<string>();
+			var nonce = await paypalDriver.AuthorizeAccountWithAdditionalScopesAsync(new string[]{ "profile" });
 
-			var paypalScopes = new NSSet<NSString>(new NSString("profile"));
-
-			paypalDriver.AuthorizeAccountWithAdditionalScopes(paypalScopes, (paypalNonce, error) =>
-				{
-					if(error != null)
-					{
-						var exception = new NSErrorException(error);
-
-						tcs.TrySetException(exception);
-
-						return;
-					}
-
-					tcs.TrySetResult(paypalNonce.Nonce);
-				});
-
-			return tcs.Task;
+			return nonce.Nonce;
         }
 
-        public Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth,
+        public async Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth,
             string expirationYear, string firstName, string lastName, string zipCode)
         {
 			var braintreeClient = new BTAPIClient(clientToken);
@@ -56,19 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var tcs = new TaskCompletionSource<string>();
 
-			cardClient.TokenizeCard(card, (nonce, error) =>
-				{
-					if(error != null)
-					{
-						var exception = new NSErrorException(error);
+			var nonce = await cardClient.TokenizeCardAsync(card);
 
-						tcs.TrySetException(exception);
-					}
-
-					tcs.TrySetResult(nonce.Nonce);
-				});
-
-			return tcs.Task;
+			return nonce.Nonce;
         }
 
         public Task<string> GetPlatformPayNonce(string clientToken)
