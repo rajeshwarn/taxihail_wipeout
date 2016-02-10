@@ -2361,7 +2361,7 @@
 		<value>Per Mile Rate</value>
 	</data>
   	<data name="BaseRate_PerTenthMile" xml:space="preserve">
-		<value>{0} ({1} per tenth mile)</value>
+		<value>{0} ({1} 1/10mi)</value>
 	</data>
 	<data name="BaseRate_BaseRate" xml:space="preserve">
 		<value>Base Rate (no miles)</value>
@@ -2376,7 +2376,7 @@
 		<value>{0} per minute</value>
 	</data>
   	<data name="BaseRate_PerQuarterMile" xml:space="preserve">
-		<value>{0} ({1} per 0.25 miles)</value>
+		<value>{0} ({1} per 1/4mi)</value>
 	</data>
   	<data name="BaseRate_PerEightySeconds" xml:space="preserve">
 		<value>{0} per 80 seconds</value>
