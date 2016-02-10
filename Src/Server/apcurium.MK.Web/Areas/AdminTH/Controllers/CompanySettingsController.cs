@@ -61,9 +61,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
-                string datas = appSettings.ToJson(false);
+                var data = appSettings.ToJson(false);
                 DateTime date = DateTime.Now;
-                return File(new ASCIIEncoding().GetBytes(datas), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".csf");
+                return File(new ASCIIEncoding().GetBytes(data), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".csf");
             }
 
             return RedirectToAction("Index");
@@ -89,7 +89,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     }
                     else
                     {
-                        string fileContent = System.IO.File.ReadAllText(file.FileName);
+                        var fileContent = System.IO.File.ReadAllText(file.FileName);
                         Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
                         if (fileSettings.Any())
                         {
