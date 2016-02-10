@@ -60,6 +60,12 @@
     <Debugger>Xamarin</Debugger>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+    </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
     </Reference>
@@ -245,6 +251,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">

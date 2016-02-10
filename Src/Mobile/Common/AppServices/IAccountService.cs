@@ -31,14 +31,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearReferenceData();
         
-
-	    void ClearVehicleTypesCache();
-        
         Account CurrentAccount { get; }
 
         Task<IList<VehicleType>> GetVehiclesList(bool refresh = false);
-
-	    void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes);
 
         Task ResetLocalVehiclesList();
 

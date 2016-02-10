@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     ));
 
             // Cancel order on current company IBS
-            _ibsCreateOrderService.CancelIbsOrder(@event.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, orderDetail.AccountId);
+            _ibsCreateOrderService.CancelIbsOrder(@event.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.ServiceType, orderDetail.Settings.Phone, orderDetail.AccountId);
         }
     }
 }

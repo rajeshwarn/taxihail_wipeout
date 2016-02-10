@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateOrderNotificationDetail>,
 		ICommandHandler<CreateReportOrder>,
         ICommandHandler<PayGratuity>,
-        ICommandHandler<UpdateOrderInTrip>
+        ICommandHandler<UpdateOrderInTrip>,
         ICommandHandler<UpdateOrderGratuity>
     {
         private readonly IEventSourcedRepository<Order> _repository;

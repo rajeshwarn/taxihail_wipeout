@@ -96,9 +96,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
                 taxihailNetworkServiceClientMock.Object,
-                new Logger());
+                null,
+                null);
+
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             sut.Setup(new EmailCommandHandler(notificationService));

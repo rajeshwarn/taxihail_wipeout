@@ -7,8 +7,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using CMTPayment.Authorization;
-using CMTPayment.Extensions;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 
 #if CLIENT
@@ -26,7 +24,7 @@ namespace CMTPayment
     {
         private readonly ILogger _logger;
 
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService, ServiceType serviceType)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
                 : cmtSettings.BaseUrl, sessionId, packageInfo, connectivityService)

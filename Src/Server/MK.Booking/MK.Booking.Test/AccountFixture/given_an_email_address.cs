@@ -92,8 +92,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 null,
                 null,
                 null,
-                null,
-                new Logger());
+                new Logger(),
+                null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
             _sut.Setup(new EmailCommandHandler(notificationService));
         }

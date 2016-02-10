@@ -19,6 +19,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Provider;
 using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
@@ -42,6 +43,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly ReferenceDataService _referenceDataService;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
+        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -61,7 +63,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IOrderPaymentDao orderPaymentDao,
             IFeesDao feesDao, 
             ILogger logger,
-            IIbsCreateOrderService ibsCreateOrderService)
+            IIbsCreateOrderService ibsCreateOrderService,
+            IServiceTypeSettingsProvider serviceTypeSettingsProvider)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                    ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                    payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
@@ -76,13 +79,17 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 	        _logger = logger;
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
-
+            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public object Post(CreateOrderRequest request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            // Change the request.settings.providerId to the proper providerId:
+            var settingsForService = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType);
+            request.Settings.ProviderId = settingsForService.ProviderId;
 
             // Needed when we get a webapp request.
             if (request.FromWebApp && request.Id == Guid.Empty)
@@ -174,7 +181,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 			// We are in a network timeout situation.
 	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
 	        {
-                _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.Phone, account.Id);
+                _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.ServiceType, order.Settings.Phone, account.Id);
 
 		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
 		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_" + VehicleStatuses.Common.Timeout);
@@ -220,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             };
 
             var fare = FareHelper.GetFareFromEstimate(new RideEstimate { Price = order.EstimatedFare });
-            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey, ServiceType = order.Settings.ServiceType });
 
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver

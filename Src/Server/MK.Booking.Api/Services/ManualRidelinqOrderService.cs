@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
             _logger = logger;
 			_notificationService = notificationService;
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, default(ServiceType), null, null, null);
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -389,7 +389,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void InitializeCmtServiceClient(ServiceType serviceType)
         {
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }

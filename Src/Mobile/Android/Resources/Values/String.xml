@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">TaxiHail</string>
-  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="GoogleMapKey">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
@@ -66,6 +66,7 @@
   <string name="PickupMapTitle">Pickup location</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
+  <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="Reset">Reset</string>
   <string name="Cancel">Cancel</string>
   <string name="Continue">Continue</string>
@@ -217,7 +218,7 @@
   <string name="ResetPasswordConfirmationMessage">A new password was send by email.</string>
   <string name="EstimatePriceOver100">Call for price</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
-  <string name="CarAssigned">Your taxi {0}</string>
+  <string name="CarAssigned">Your vehicle {0}</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="NoMailClient">There are no email clients installed.</string>
   <string name="ListPromptSelectOne">Select one</string>
@@ -299,7 +300,7 @@
   <string name="Notes">Notes</string>
   <string name="NotesToDriveLabel">Notes to driver (Name of business, specific entrance, ...)</string>
   <string name="DriverBonusTitle">Driver Bonus:</string>
-  <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
+  <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a vehicle.</string>
   <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
   <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="Submit">Submit Rating</string>
@@ -346,6 +347,7 @@
   <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="View_CreditCard">Payment</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
+  <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
   <string name="CreditCardRemoveErrorMessage">You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
@@ -375,7 +377,7 @@
   <string name="DriverInfoLicence">Licence #:</string>
   <string name="DriverInfoMake">Make:</string>
   <string name="DriverInfoModel">Model:</string>
-  <string name="DriverInfoTaxiType">Taxi Type:</string>
+  <string name="DriverInfoTaxiType">Vehicle Type:</string>
   <string name="NoPhoneNumberMessage">Your phone number or the driver\'s phone number is invalid.</string>
   <string name="NoPhoneNumberTitle">Invalid Phone Number</string>
   <string name="DeleteAddressBt">Clear Address</string>
@@ -598,12 +600,12 @@
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="View_RideLinqPair">Check In</string>
   <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
-  <string name="HomeView_ManualPairing">In a Taxi</string>
+  <string name="HomeView_ManualPairing">In a Vehicle</string>
   <string name="HomeView_BookTaxi">Need a Taxi</string>
   <string name="RideSettingsLoadError">Unable to load the account settings. Please try again later.</string>
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
-  <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
+  <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the vehicle touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
@@ -749,14 +751,36 @@
   <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
-  <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
+  <string name="BaseRate_PerMileRate">Per Mile Rate</string>
+  <string name="BaseRate_PerTenthMile">{0} ({1} per tenth mile)</string>
+  <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
+  <string name="BaseRate_MinimumFare">Minimum Fare</string>
+  <string name="BaseRate_WaitTime">Wait Time</string>
+  <string name="BaseRate_PerMinute">{0} per minute</string>
+  <string name="BaseRate_PerQuarterMile">{0} ({1} per 0.25 miles)</string>
+  <string name="BaseRate_PerEightySeconds">{0} per 80 seconds</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
+  <string name="BookingGratuityText">If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</string>
+  <string name="GratuitActivityName">Gratuity</string>
+  <string name="Gratuity_Pay">Give Gratuity</string>
   <string name="ServiceErrorCallTitle">Server error</string>
+  <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
   <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
-  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
-  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
+  <string name="EtaLessThanAMinute_Luxury">Nearest vehicle is less than a minute away</string>
+  <string name="EtaNoTaxiAvailable_Luxury">Sorry, no vehicles currently available nearby.</string>
+  <string name="Eta_Luxury">Nearest vehicle is {0} {1} away</string>
+  <string name="HomeView_BookTaxi_Luxury">Need a vehicle</string>
+  <string name="ManualRideLinqStatus_PairingError_Luxury">An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.</string>
+  <string name="MarketChangedMessage_Luxury">You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.</string>
+  <string name="ReminderDetails_Luxury">Reminder: A vehicle will pick you up from {0} at {1} on {2}.</string>
+  <string name="StatusConfirmNewBooking_Luxury">Booking a new vehicle will keep this order active, do you want to continue ?</string>
 </resources>

@@ -218,7 +218,8 @@ namespace apcurium.MK.Booking.Jobs
 
             _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderStatusDetail.OrderId, rideLinqDetails.PairingToken);
 
-            InitializeCmtServiceClient(orderstatusDetail.ServiceType, paymentSettings);
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
+            InitializeCmtServiceClient(orderStatusDetail.ServiceType, paymentSettings);
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
 
@@ -812,8 +813,8 @@ namespace apcurium.MK.Booking.Jobs
                         account.Email,
                         orderDetail.UserAgent.GetOperatingSystem(),
                         orderDetail.UserAgent,
-                        orderDetail.CompanyKey,
                         orderDetail.Settings.ServiceType,
+                        orderDetail.CompanyKey,
                         fareAmount,
                         extrasAmount,
                         vatAmount,
@@ -1075,9 +1076,9 @@ namespace apcurium.MK.Booking.Jobs
             _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, serviceType, companyKey);
         }
 
-        private void InitializeCmtServiceClient(ServiceType serviceTyp, ServerPaymentSettings paymentSettings)
+        private void InitializeCmtServiceClient(ServiceType serviceType, ServerPaymentSettings paymentSettings)
         {        
-            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings, serviceType, null, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(paymentSettings.CmtPaymentSettings, serviceType, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

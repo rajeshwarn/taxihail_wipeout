@@ -6,7 +6,6 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders

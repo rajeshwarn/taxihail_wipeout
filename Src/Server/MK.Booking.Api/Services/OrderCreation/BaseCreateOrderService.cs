@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
-        protected CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
+        protected Commands.CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_SettingsRequired);
             }
 
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
+            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey, ServiceType = request.Settings.ServiceType });
 
             request.PickupDate = pickupDate;
 
@@ -362,7 +362,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey, default(ServiceType)); // TODO: Not sure.
             if (ibsAccountId.HasValue)
             {
                 return ibsAccountId.Value;

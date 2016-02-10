@@ -13,6 +13,7 @@ using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
 using System.Net;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

@@ -32,14 +32,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
         private readonly IIPAddressManager _ipAddressManager;
         private readonly ILogger _logger;
+        private readonly CmtPaymentSettings _cmtSettings;
 
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
             : base(baseUrl, sessionId, packageInfo, connectivityService)
         {
             _ipAddressManager = ipAddressManager;
             _logger = logger;
-
-            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
+            _cmtSettings = cmtSettings;
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, sessionId, packageInfo, logger, connectivityService, default(ServiceType));
         }
         
 
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
         {
-            var cmtPaymentServiceClient = new CmtPaymentServiceClient(_cmtSettings, ServiceType.Taxi, null, null, null); // Use default ServiceType as it doesn't matter
+            var cmtPaymentServiceClient = new CmtPaymentServiceClient(_cmtSettings, null, null, null, null, default(ServiceType)); // Use default ServiceType as it doesn't matter
             return Tokenize(CmtPaymentServiceClient, nameOnCard, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
         }
         
@@ -220,7 +221,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger, ServiceType serviceType)
         {
-            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, serviceType, null, null, logger);
+            var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, null, logger, null, serviceType);
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessful;
         }

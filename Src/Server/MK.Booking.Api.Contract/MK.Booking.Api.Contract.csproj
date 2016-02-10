@@ -84,6 +84,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\FindMarketSettingsRequest.cs" />
     <Compile Include="Requests\GratuityRequest.cs" />
     <Compile Include="Requests\CreditCardInfoRequest.cs" />
     <Compile Include="Requests\EncryptedConfigurationsRequest.cs" />

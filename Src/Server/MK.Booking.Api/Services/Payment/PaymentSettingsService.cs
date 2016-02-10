@@ -138,7 +138,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             ConsumerKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKeyLuxury,
                             ConsumerSecretKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKeyLuxury,
                             FleetTokenLuxury = request.ServerPaymentSettings.CmtPaymentSettings.FleetTokenLuxury,
-                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
                             IsManualRidelinqCheckInEnabled = request.ServerPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
                             IsSandbox = request.ServerPaymentSettings.CmtPaymentSettings.IsSandbox,
                             Market = request.ServerPaymentSettings.CmtPaymentSettings.Market,

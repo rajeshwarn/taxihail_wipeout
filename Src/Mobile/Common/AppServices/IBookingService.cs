@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task PayGratuity(Gratuity gratuity);
 
-        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType);
+        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType, string kountSessionId);
 
         Task UnpairFromManualRideLinq(Guid orderId);
 

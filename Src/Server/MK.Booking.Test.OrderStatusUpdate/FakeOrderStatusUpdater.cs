@@ -20,7 +20,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
     public class FakeOrderStatusUpdater : OrderStatusUpdater
     {
         public FakeOrderStatusUpdater(IServerSettings serverSettings)
-            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 

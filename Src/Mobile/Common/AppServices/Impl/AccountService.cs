@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class AccountService : BaseService, IAccountService
     {
+        private const string VehicleTypesDataCacheKey = "VehicleTypesData";
         private const string FavoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
@@ -554,10 +555,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.PaymentsList;
         }
 
-        
-        public async Task<IList<VehicleType>> GetVehiclesList()
-	{
-	    var cacheService = Mvx.Resolve<ICacheService>();
+        public async Task<IList<VehicleType>> GetVehiclesList(bool refresh = false)
+	    {
+	        var cacheService = Mvx.Resolve<ICacheService>();
 
             var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
             if (cached != null)

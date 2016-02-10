@@ -7,35 +7,36 @@ using apcurium.MK.Booking.IBS.ChargeAccounts;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace MK.Booking.Test.OrderStatusUpdate
 {
     public class FakeIBSServiceProvider : IIBSServiceProvider
     {
 
-        public IBookingWebServiceClient Booking(string companyKey = null)
+        public IBookingWebServiceClient Booking(string companyKey = null, ServiceType? serviceType = null)
         {
             return new FakeBookingServiceClient();
         }
 
         #region
 
-        public IAccountWebServiceClient Account(string companyKey = null)
+        public IAccountWebServiceClient Account(string companyKey = null, ServiceType? serviceType = null)
         {
             throw new NotImplementedException();
         }
 
-        public IStaticDataWebServiceClient StaticData(string companyKey = null)
+        public IStaticDataWebServiceClient StaticData(string companyKey = null, ServiceType? serviceType = null)
         {
             throw new NotImplementedException();
         }
 
-        public IBSSettingContainer GetSettingContainer(string companyKey = null)
+        public IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null)
         {
             throw new NotImplementedException();
         }
 
-        public IChargeAccountWebServiceClient ChargeAccount(string companyKey = null)
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey = null, ServiceType? serviceType = null)
         {
             throw new NotImplementedException();
         }
@@ -64,7 +65,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            double? tipIncentive, int? tipPercent, Fare fare = null)
+            double? tipIncentive, string email, int? tipPercent, Fare fare = null)
         {
             throw new NotImplementedException();
         }
@@ -72,7 +73,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
         public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            IEnumerable<IbsVehicleCandidate> vehicleCandidates, double? tipIncentive, int? tipPercent, Fare fare = null)
+            IEnumerable<IbsVehicleCandidate> vehicleCandidates, double? tipIncentive, string email, int? tipPercent, Fare fare = null)
         {
             throw new NotImplementedException();
         }

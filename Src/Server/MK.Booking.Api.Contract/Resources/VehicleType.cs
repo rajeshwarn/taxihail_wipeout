@@ -2,6 +2,7 @@
 using System;
 using apcurium.MK.Common.Entity;
 using Newtonsoft.Json;
+using MK.Common.Serializer;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {

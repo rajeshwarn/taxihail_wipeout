@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using CMTPayment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -88,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 							var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
-							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, serviceType, _kountSessionId);
+                            var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, serviceType, _kountSessionId);
 							_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 							this.ReturnResult(orderManualRideLinqDetail);

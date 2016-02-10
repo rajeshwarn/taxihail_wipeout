@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderGratuityUpdated>
+        IEventHandler<OrderGratuityUpdated>,
         IEventHandler<OrderUpdatedInTrip>
     {
         private readonly Func<BookingDbContext> _contextFactory;

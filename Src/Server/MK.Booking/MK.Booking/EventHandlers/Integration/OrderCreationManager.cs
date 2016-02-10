@@ -73,11 +73,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
    
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
                 var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
-                    @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
+                    @event.Settings.CustomerNumber, @event.Settings.ServiceType, @event.CompanyKey, @event.IbsAccountId,
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive, email, account.defaultTipPercent, @event.IsHailRequest);
+                    @event.TipIncentive, email, account.DefaultTipPercent);
 
                 ibsOrderId = result.CreateOrderResult;
             }
@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var account = _accountDao.FindById(@event.AccountId);
 
             var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
-                @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
+                @event.Settings.CustomerNumber, @event.Settings.ServiceType, @event.CompanyKey, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
@@ -124,11 +124,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var account = _accountDao.FindById(orderInfo.AccountId);
 
             var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
-                orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.Settings.ServiceType, orderInfo.Request.IbsAccountId,
+                orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.Settings.ServiceType, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
-                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, orderInfo.Account.Email, account.DefaultTipPercent);
+                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, account.Email, account.DefaultTipPercent);
 
             var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
             if (success)

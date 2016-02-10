@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 
@@ -22,8 +23,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
 		Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId);
-		
-		Task<bool> ValidateIsCardDeactivated();
 		
 		Task<bool> ValidatePromotionUseConditions();
 
@@ -115,8 +114,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
-
-		IObservable<bool> GetAndObserveCanExecuteBookingOperation();
 
 		Task<OrderRepresentation> GetLastActiveOrder();
 

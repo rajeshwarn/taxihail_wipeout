@@ -66,6 +66,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     BaseUrl = companyPaymentSettings.CmtPaymentSettings.BaseUrl,
                     ConsumerKey = companyPaymentSettings.CmtPaymentSettings.ConsumerKey,
                     ConsumerSecretKey = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
+                    ConsumerKeyLuxury = companyPaymentSettings.CmtPaymentSettings.ConsumerKeyLuxury,
+                    ConsumerSecretKeyLuxury = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKeyLuxury,
                     CurrencyCode = companyPaymentSettings.CmtPaymentSettings.CurrencyCode,
                     FleetToken = companyPaymentSettings.CmtPaymentSettings.FleetToken,
                     IsManualRidelinqCheckInEnabled = companyPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,

@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
                         || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
                         || canCancelWhenPaired))
                 {
-                    _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId.Value, order.CompanyKey, order.Settings.Phone, account.Id);
+                    _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId.Value, order.CompanyKey, order.Settings.ServiceType, order.Settings.Phone, account.Id);
                 }
                 else
                 {

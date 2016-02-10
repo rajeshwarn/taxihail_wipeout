@@ -1218,13 +1218,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return success;
 		}
-		}
-
+	
 		private string GetUnhandledErrorMessageForOrderCreation()
 		{
 			return _appSettings.Data.HideCallDispatchButton
 				? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
 				: string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-    }
+    	}
+	}
 }
 

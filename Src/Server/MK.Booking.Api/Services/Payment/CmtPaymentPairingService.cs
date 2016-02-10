@@ -11,6 +11,7 @@ using CMTPayment;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private CmtTripInfoServiceHelper GetTripInfoServiceHelper(string companyKey)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, default(ServiceType), null, null, null);
             return new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
 

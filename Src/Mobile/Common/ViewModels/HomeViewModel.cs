@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			_locateUser = locateUser;
 			_shouldShowReview = shouldShowReview;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+			_defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();
 
 			if (manualRidelinqDetail != null)
 			{
@@ -767,7 +767,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (_lastHashedMarket != marketSettings.HashedMarket
 				&& marketSettings.HashedMarket.HasValue()
 				&& !Settings.Network.HideMarketChangeWarning)
-	https://media3.giphy.com/media/2uYaAlD8ia2kg/200.gif		{
+			{
 				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
 					this.Services().Localize["MarketChangedMessage"]);
 			}

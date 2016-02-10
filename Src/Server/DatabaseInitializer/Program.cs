@@ -1033,7 +1033,7 @@ namespace DatabaseInitializer
                 paymentSettingsNeedsUpdate = true;
                 serverSettingsNeedsUpdate = true;
             }
-
+             
             if (paymentSettingsNeedsUpdate)
             {
                 commandBus.Send(new UpdatePaymentSettings

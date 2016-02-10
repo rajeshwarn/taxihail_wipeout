@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
-            ServiceType serviceType, string CompanyKey, int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
+            ServiceType serviceType, string companyKey,  int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
-            int? requestProviderId, Fare fare, double? tipIncentive, string email, int? tipPercent, bool isHailRequest = false)
+            int? requestProviderId, Fare fare, double? tipIncentive, string email, int? tipPercent, bool isHailRequest = false, int? companyFleetId = null)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
@@ -126,6 +126,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     defaultVehicleTypeId,
                     tipIncentive,
                     email,
+                    tipPercent,
                     fare);
             }
 
@@ -176,7 +177,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private IbsHailResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
             string name, string phone, int passengers, int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress,
-            IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, int? tipPercent, Fare fare)
+            IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, string email, int? tipPercent, Fare fare)
         {
             // Query only the avaiable vehicles from the selected company for the order
             var availableVehicleService = GetAvailableVehiclesServiceClient(market);
@@ -220,6 +221,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 defaultVehicleTypeId,
                 vehicleCandidates,
                 tipIncentive,
+                email,
                 tipPercent,
                 fare);
 

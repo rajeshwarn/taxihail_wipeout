@@ -263,7 +263,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo =
 						(await
 							_geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
-								order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+								order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.ServiceType, order.Settings.VehicleTypeId,
 								order.PickupDate));
 					
 					directionInfo =
@@ -399,7 +399,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return response;
         }
 
-		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType)
+		public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress, ServiceType serviceType, string kountSessionId)
         {
             var request = new ManualRideLinqPairingRequest
             {

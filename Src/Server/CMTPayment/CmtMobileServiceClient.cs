@@ -12,7 +12,7 @@ namespace CMTPayment
 {
     public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxMobileBaseUrl
                 : cmtSettings.MobileBaseUrl, sessionId, packageInfo, connectivityService)

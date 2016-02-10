@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Enumeration;
+﻿using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {

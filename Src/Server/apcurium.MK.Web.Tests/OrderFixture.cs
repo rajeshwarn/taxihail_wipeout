@@ -441,7 +441,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_paying_gratuity_order_gratuity_should_not_be_null()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var orderRatingsRequest = new GratuityRequest
             {
