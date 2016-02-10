@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Services
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
         void SendUnpairingReminderPush(Guid orderId);
-        void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success);
+        void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success, string errorMessageKey = "");
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 
         void SendAccountConfirmationSMS(CountryISOCode countryCode, string phoneNumber, string code, string clientLanguageCode);
@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Services
         void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);
 
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+
+        void SendOrderRefundEmail(DateTime refundDate, string last4Digits, string totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendCreditCardDeactivatedPush(AccountDetail account);
 

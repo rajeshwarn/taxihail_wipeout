@@ -296,12 +296,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var marketSettings = _marketRepository.GetMarket(marketName);
 
             return marketSettings != null
-                ? new CompanyMarketSettingsResponse()
+                ? new CompanyMarketSettingsResponse
                 {
                     Market = marketName,
                     DispatcherSettings = marketSettings.DispatcherSettings,
                     EnableDriverBonus = marketSettings.EnableDriverBonus,
-                    ReceiptFooter = marketSettings.ReceiptFooter
+                    ReceiptFooter = marketSettings.ReceiptFooter,
+                    EnableFutureBooking = marketSettings.EnableFutureBooking,
+                    FutureBookingReservationProvider = marketSettings.FutureBookingReservationProvider,
+                    FutureBookingTimeThresholdInMinutes = marketSettings.FutureBookingTimeThresholdInMinutes,
+                    EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
+                    MarketTariff = marketSettings.MarketTariff,
+                    DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
                 }
                 : new CompanyMarketSettingsResponse();
         }

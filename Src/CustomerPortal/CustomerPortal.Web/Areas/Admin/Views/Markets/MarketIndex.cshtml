@@ -5,8 +5,9 @@
 
 <div class='row'>
     <div class='span12'>
+        <h4>Dispatcher Settings</h4>
         <p>
-            <a class="btn" href='@Url.Action("EditDispatcherSettings", new { Model.Market })'>Edit Dispatcher Settings</a>
+            <a class="btn" href='@Url.Action("EditDispatcherSettings", new {Model.Market})'>Edit Dispatcher Settings</a>
         </p>
     </div>
     <div class="span12">
@@ -28,34 +29,34 @@
     </div>
 </div>
 
-<div class='row'>
-    <div class='span12'>
-        <p>
-            <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
-        </p>
-    </div>
-    <div class="span12">
-        <h5>Vehicle Types</h5>
-        <table class="table table-striped">
-            @foreach (var vehicleType in Model.Vehicles)
-            {
-                <tr>
-                    <td>
-                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
 
-                    </td>
-                    <td>
-                        @Html.ActionLink(
-                            "Delete",
-                            "DeleteVehicle",
-                            new {id = vehicleType.Id, market = Model.Market},
-                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+<div>
+    <h4>Vehicle types</h4>
+    <p>
+        <a class="btn" href='@Url.Action("CreateVehicle", new {Model.Market})'>Add Vehicle Type</a>
+    </p>
 </div>
+<div>
+    <table class="table table-striped">
+        @foreach (var vehicleType in Model.Vehicles)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
+
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Delete",
+                        "DeleteVehicle",
+                        new {id = vehicleType.Id, market = Model.Market},
+                        new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 
 @using (Html.BeginForm("SaveSettings", "Markets", FormMethod.Post))
 {
@@ -63,10 +64,11 @@
         <div class="span12">
             @Html.HiddenFor(x => x.Market)
 
-            <h5>Enable Driver Bonus</h5>
+            <h4>Book Settings</h4>
 
-            @Html.DropDownList(
-            "EnableDriverBonus",
+            <h5>Enable Driver Bonus</h5>
+            @Html.DropDownListFor(
+            x => x.EnableDriverBonus,
             new[]
             {
                 new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.EnableDriverBonus},
@@ -74,8 +76,83 @@
             },
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
 
-            <h5>Receipt Footer</h5>
+            <h5>Future Booking</h5>
+
+            <h6>Enable</h6>
+            @Html.DropDownListFor(
+                x => x.EnableFutureBooking,
+                new[]
+                {
+                    new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.EnableFutureBooking},
+                    new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableFutureBooking }
+                },
+                new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            
+            <h6 title="Company to dispatch to in case of future booking">Reservation Provider</h6>
+            @Html.DropDownListFor(
+                x => x.FutureBookingReservationProvider,
+                Model.CompaniesOrMarket,
+                new { @class = "input-block-level", @style = "width:380px; margin-right:15px" })
+
+            <h6 title="Time after it's considered a future booking'">Time Threshold (minutes)</h6>
+            @Html.TextBoxFor(x => x.FutureBookingTimeThresholdInMinutes, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.FutureBookingTimeThresholdInMinutes)
+
+            <h5>Disable Out Of App Payment</h5>
+            <span>If true, unpairing during a ride will cancel the order</span>
+            @Html.DropDownListFor(
+            x => x.DisableOutOfAppPayment,
+            new[]
+            {
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.DisableOutOfAppPayment},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.DisableOutOfAppPayment }
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
+
+            <h4>Receipt Footer</h4>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
+            <br />
+
+            <h4>Ride Estimates</h4>
+            <span> This section will control the app fare estimates when a app connect to this market during roaming (Arro connects to Chicago for instance).</span> 
+            <br/>
+            <span> This override will be ignored when in local markets. </span>
+
+            <h5>Override app fare estimates</h5>
+            @Html.DropDownListFor(
+            x => x.EnableAppFareEstimates,
+            new[]
+            {
+              new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.EnableAppFareEstimates},
+              new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.EnableAppFareEstimates}
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            
+            <h5>Minimum Rate</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.MinimumRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.MarketTariff.MinimumRate)
+
+            <h5>Flat Rate</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.FlatRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.MarketTariff.FlatRate)
+
+            <h5>Per KM Rate</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.KilometricRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.MarketTariff.KilometricRate)
+
+            <h5>Per Minute Rate</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.PerMinuteRate, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.MarketTariff.PerMinuteRate)
+
+            <h5>Kilometer Included in Flat Rate</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.KilometerIncluded, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            @Html.ValidationMessageFor(x => x.MarketTariff.KilometerIncluded)
+
+            <h5>Overhead (%)</h5>
+            @Html.TextBoxFor(x => x.MarketTariff.MarginOfError, new { @class = "input-block-level", @style = "width:250px; margin-right:15px"})
+            @Html.ValidationMessageFor(x => x.MarketTariff.MarginOfError)
         </div>
     </div>
 
@@ -84,4 +161,5 @@
         <button type="submit" class="btn btn-primary span">Save Changes</button>
         @Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
     </div>
+    <br/>
 }

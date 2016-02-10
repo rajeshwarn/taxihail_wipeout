@@ -78,11 +78,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             var result = _ibsCreateOrderService.CreateIbsOrder(createOrderCommand.OrderId, createOrderCommand.PickupAddress,
                 createOrderCommand.DropOffAddress, createOrderCommand.Settings.AccountNumber, createOrderCommand.Settings.CustomerNumber,
-                createOrderCommand.Settings.ServiceType, createOrderCommand.CompanyKey, createOrderCommand.IbsAccountId, createOrderCommand.Settings.Name, createOrderCommand.Settings.Phone,
-                createOrderCommand.Settings.Passengers, createOrderCommand.Settings.VehicleTypeId, createOrderCommand.IbsInformationNote,
+                createOrderCommand.Settings.ServiceType, createOrderCommand.CompanyKey, createOrderCommand.IbsAccountId, createOrderCommand.Settings.Name, createOrderCommand.Settings.Phone, account.Email,
+                createOrderCommand.Settings.Passengers, createOrderCommand.Settings.VehicleTypeId, createOrderCommand.IbsInformationNote, createOrderCommand.IsFutureBooking,
                 createOrderCommand.PickupDate, createOrderCommand.Prompts, createOrderCommand.PromptsLength, createOrderCommand.ReferenceDataCompanyList,
                 createOrderCommand.Market, createOrderCommand.Settings.ChargeTypeId, createOrderCommand.Settings.ProviderId, createOrderCommand.Fare,
-                createOrderCommand.TipIncentive, account.Email, account.DefaultTipPercent, true, createOrderCommand.CompanyFleetId);
+                createOrderCommand.TipIncentive, account.DefaultTipPercent, true, createOrderCommand.CompanyFleetId);
 
             if (result.HailResult.OrderKey.IbsOrderId > -1)
             {

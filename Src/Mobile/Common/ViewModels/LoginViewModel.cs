@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
+		private readonly IPaymentService _paymentService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IRegisterWorkflowService registrationService,
+			IPaymentService paymentService,
 			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
@@ -42,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
+			_paymentService = paymentService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -232,6 +235,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand PromptChangeServerUrl
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{
+					try
+					{            
+						var serviceUrl = await this.Services().Message.ShowPromptDialog(
+							"Server Url",
+							string.Empty,
+							() => { return; },
+							false,
+							this.Services().Settings.ServiceUrl);
+
+						if(serviceUrl != null)
+						{
+							SetServerUrl(serviceUrl);
+						}
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				});
+			}
+		}
+
         private async Task SignIn()
         {
             using(this.Services().Message.ShowProgress())
@@ -252,13 +283,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     switch (e.Failure)
                     {
                         case AuthFailure.InvalidServiceUrl:
-                        case AuthFailure.NetworkError:
-	                        {
-	                            var title = localize["NoConnectionTitle"];
-	                            var msg = localize["NoConnectionMessage"];
-	                            this.Services().Message.ShowMessage (title, msg);
-	                        }
-                            break;
                         case AuthFailure.InvalidUsernameOrPassword:
 	                        {
 	                            var title = localize["InvalidLoginMessageTitle"];
@@ -524,7 +548,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        return false;
 		    }
 
-		    return !_accountService.CurrentAccount.HasValidPaymentInformation;
+			// Do not use HasValidPaymentInfo here, we only must detect if we have a valid payment method.
+			return !_accountService.CurrentAccount.HasPaymentMethod;
 		}
 
         private async Task CheckFacebookAccount()

@@ -62,18 +62,18 @@ namespace MK.Booking.Test.OrderStatusUpdate
         }
 
         #region
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            double? tipIncentive, string email, int? tipPercent, Fare fare = null)
+            double? tipIncentive, int? tipPercent, Fare fare = null)
         {
             throw new NotImplementedException();
         }
 
-        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
+        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers,
             int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff,
             string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId,
-            IEnumerable<IbsVehicleCandidate> vehicleCandidates, double? tipIncentive, string email, int? tipPercent, Fare fare = null)
+            IEnumerable<IbsVehicleCandidate> vehicleCandidates, double? tipIncentive, int? tipPercent, Fare fare = null)
         {
             throw new NotImplementedException();
         }

@@ -2216,11 +2216,11 @@
     <value>Promociones</value>
     <comment>Promotions</comment>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</value>
     <comment>Are you sure you don’t want to pay with your credit card on file?</comment>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>Si usted decide pagar en el carro, usted no podrá utilizar la promoción</value>
     <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
   </data>
@@ -2984,6 +2984,12 @@
     <value>No se ha encontrado cuenta con este email</value>
     <comment>No account with this email has been found.</comment>
   </data>
+  <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>This email matches a Facebook account. Please login via Facebook.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>This email matches a Twitter account. Please login via Twitter.</value>
+  </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Código de confirmación inválido</value>
     <comment>The confirmation code is incorrect.</comment>
@@ -2995,5 +3001,20 @@
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Actualizar Tarjeta</value>
   	<comment>Update Card</comment>
+  </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
+  </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>Last 4 numbers:  </value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Credit company: </value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Currently selected credit card</value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>No credit card selected</value>
   </data>
 </root>

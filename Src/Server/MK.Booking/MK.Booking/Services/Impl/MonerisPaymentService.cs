@@ -209,9 +209,9 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 bool isSuccessful;
                 bool isCardDeclined = false;
-                var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+                var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
-				var order = _orderDao.FindOrderStatusById(orderId);
+                var order = _orderDao.FindOrderStatusById(orderId);
 				string driverId = order != null ? order.DriverInfos != null ? order.DriverInfos.DriverId : null : null;
 
                 // We cannot re-use the same id has a previously failed payment
@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             throw new NotImplementedException();
         }

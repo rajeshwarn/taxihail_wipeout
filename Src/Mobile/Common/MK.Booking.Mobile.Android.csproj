@@ -140,6 +140,7 @@
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />

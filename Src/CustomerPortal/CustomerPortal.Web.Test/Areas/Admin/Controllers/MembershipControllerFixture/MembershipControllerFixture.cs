@@ -20,7 +20,7 @@ namespace CustomerPortal.Web.Test.Areas.Admin.Controllers.MembershipControllerFi
         {
             Repository = new InMemoryRepository<Company>();
             MembershipService = new InMemoryMembershipService();
-            Sut = new MembershipController(Repository, MembershipService);
+            Sut = new MembershipController(Repository, MembershipService, new InMemoryRepository<UserPreference>());
 
             Repository.Add(new Company
             {

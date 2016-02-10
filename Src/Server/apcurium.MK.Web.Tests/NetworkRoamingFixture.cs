@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
         }
 
         [TestFixtureSetUp]
@@ -44,6 +44,8 @@ namespace apcurium.MK.Web.Tests
 
             Assert.AreEqual(string.Empty, market.HashedMarket);
             Assert.AreEqual(false, market.EnableDriverBonus);
+            Assert.AreEqual(false, market.DisableOutOfAppPayment);
+            Assert.AreEqual(false, market.OverrideEnableAppFareEstimates);
         }
     }
 }

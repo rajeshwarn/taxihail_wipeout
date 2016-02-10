@@ -45,16 +45,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
+		private readonly IConnectivityService _connectivityService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize)
+			ILocalization localize,
+			IConnectivityService connectivityService)
 		{
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
+			_connectivityService = connectivityService;
 		}
 
         public async Task<ReferenceData> GetReferenceData()
@@ -330,10 +333,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
-            catch(WebException e)
+            catch(WebException)
             {
                 // Happen when device is not connected
-                throw new AuthException("Network error", AuthFailure.NetworkError, e);
+                _connectivityService.ShowToast();
             }
             catch(WebServiceException e)
             {
@@ -606,6 +609,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var usRegex = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
 			var zipCode = usRegex.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
 
+			Logger.LogMessage("Tokenizing card ending with: {0}", creditCard.CardNumber.Substring(creditCard.CardNumber.Length - 4));
+
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
                 creditCard.NameOnCard,
@@ -614,6 +619,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				kountSessionId,
 				zipCode,
 				CurrentAccount));
+
+			Logger.LogMessage("Response from tokenization: Success: {0} Message: {1}", response.IsSuccessful, response.Message);
 
 		    if (!response.IsSuccessful)
 		    {

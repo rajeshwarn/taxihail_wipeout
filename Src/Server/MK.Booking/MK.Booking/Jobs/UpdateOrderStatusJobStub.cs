@@ -41,9 +41,11 @@ namespace apcurium.MK.Booking.Jobs
                 return false;
             }
 
+            var cycleStartDateTime = DateTime.UtcNow;
+
             // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
             var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(uniqueId, DateTime.UtcNow));
+                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(uniqueId, DateTime.UtcNow, cycleStartDateTime));
 
             try
             {

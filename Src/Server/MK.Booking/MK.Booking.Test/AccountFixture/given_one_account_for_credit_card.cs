@@ -119,10 +119,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_credit_card_deactivated()
         {
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
 
             _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
+                CreditCardId = creditCardId,
                 OrderId = orderId,
                 OverdueAmount = 12.56m
             });

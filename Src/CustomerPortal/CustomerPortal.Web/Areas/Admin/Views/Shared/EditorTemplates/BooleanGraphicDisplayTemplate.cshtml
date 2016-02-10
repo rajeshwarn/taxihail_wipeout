@@ -1,0 +1,14 @@
+﻿@model bool?
+
+@if (!Model.HasValue)
+{
+    <div title="N/A" style="height: 15px; width: 15px;  margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: grey">&nbsp;</div>;
+}
+else if (Model.Value)
+{
+    <div title="Success" style="height: 15px; width: 15px;  margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: rgb(0,255,0)">&nbsp;</div>;
+}
+else
+{
+    <div title="Connexion failed" style="height: 15px; width: 15px;  margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>;
+}

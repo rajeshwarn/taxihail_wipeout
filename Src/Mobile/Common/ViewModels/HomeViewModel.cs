@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
             IMetricsService metricsService,
-			IBookingService bookingService)
+			IBookingService bookingService,
+			INetworkRoamingService networkRoamingService)
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
+			Observe(networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
 		}
 
 		private bool _firstTime;
@@ -765,7 +766,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			// Market changed and not home market
 			if (_lastHashedMarket != marketSettings.HashedMarket
-				&& marketSettings.HashedMarket.HasValue()
+				&& !marketSettings.IsLocalMarket
 				&& !Settings.Network.HideMarketChangeWarning)
 			{
 				this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
@@ -773,6 +774,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			_lastHashedMarket = marketSettings.HashedMarket;
+
+			if (BookingStatus != null && BookingStatus.BottomBar != null) 
+			{
+				BookingStatus.BottomBar.DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment;
+			}
 
             if (BottomBar != null)
             {

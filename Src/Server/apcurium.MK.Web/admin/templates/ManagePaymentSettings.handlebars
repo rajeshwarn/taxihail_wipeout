@@ -1,23 +1,23 @@
 ﻿<!-- PAYMENT OPTION-->
-<h4 class="table-title">{{localize "Payment Mode"}}</h4>
+<h4 class="table-title">{{localize "Payment Mode"}}</h4>  
 
-<label class="control-label settingsLabel">{{{localize "Enable Prepaid / Web Payment"}}}</label>
-<select name="isPrepaidEnabled" class="settingsBox">
+  <label class="control-label settingsLabel" title="Braintree: Prepaid, CMT/RideLinQ: Normal, Others: No web payment">{{{localize "Enable Prepaid / Web Payment"}}}</label>
+  <select name="isPrepaidEnabled" class="settingsBox">
     <option value="{{isPrepaidEnabled}}" selected="">{{localizeBool isPrepaidEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPrepaidEnabled}}">{{localizeBool isPrepaidEnabled true="No" false="Yes"}}</option>
-</select>
+  </select>
 
-<label class="control-label settingsLabel">{{{localize "Always Display Card on File on Web"}}}</label>
-<select name="alwaysDisplayCoFOption" class="settingsBox">
+  <label class="control-label settingsLabel">{{{localize "Always Display Card on File on Web"}}}</label>
+  <select name="alwaysDisplayCoFOption" class="settingsBox">
     <option value="{{alwaysDisplayCoFOption}}" selected>{{localizeBool alwaysDisplayCoFOption true="Yes" false="No"}}</option>
     <option value="{{invertedBool alwaysDisplayCoFOption}}">{{localizeBool alwaysDisplayCoFOption true="No" false="Yes"}}</option>
-</select>
+  </select>
 
-<label class="control-label settingsLabel">{{{localize "Ask for CVV when Booking"}}}</label>
-<select name="askForCVVAtBooking" class="settingsBox">
+  <label class="control-label settingsLabel">{{{localize "Ask for CVV when Booking"}}}</label>
+  <select name="askForCVVAtBooking" class="settingsBox">
     <option value="{{askForCVVAtBooking}}" selected>{{localizeBool askForCVVAtBooking true="Yes" false="No"}}</option>
     <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
-</select>
+  </select>
 
 <label class="control-label settingsLabel">{{{localize "Payment Method Mandatory"}}}</label>
 <select name="creditCardIsMandatory" class="settingsBox">
@@ -32,11 +32,11 @@
     <option value="All">{{localize "All (Out Of App Payment disabled for Web and App)"}}</option>
 </select>
 
-<label class="control-label settingsLabel">{{{localize "Charge Account Payment"}}}</label>
-<select name="isChargeAccountPaymentEnabled" class="settingsBox">
-    <option value="{{isChargeAccountPaymentEnabled}}" selected="">{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
+  <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
+  <select name="isChargeAccountPaymentEnabled" class="settingsBox">
+    <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isChargeAccountPaymentEnabled}}">{{localizeBool isChargeAccountPaymentEnabled true="No" false="Yes"}}</option>
-</select>
+  </select>
 
 <div>
     <div id="warningChargeAccount" class="alert">
@@ -44,95 +44,95 @@
     </div>
 </div>
 
-<label class="control-label settingsLabel">{{{localize "Card on File Payment"}}}</label>
-<select name="isPayInTaxiEnabled" class="settingsBox">
-    <option value="{{isPayInTaxiEnabled}}" selected="">{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
+<label class="control-label settingsLabel" >{{{localize "Card on File Payment"}}}</label>
+  <select  name="isPayInTaxiEnabled" class="settingsBox">
+    <option value="{{isPayInTaxiEnabled}}" selected="" >{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>
-</select>
+  </select>
 
-<label class="control-label settingsLabel">{{{localize "Card on File Payment Method"}}}</label>
-<select name="paymentMode" class="settingsBox">
+  <label class="control-label settingsLabel" >{{{localize "Card on File Payment Method"}}}</label>
+  <select name="paymentMode"  class="settingsBox">
     <option value="None">{{localize "None"}}</option>
     <option value="Cmt">{{localize "CMT Payments"}}</option>
     <option value="RideLinqCmt">{{localize "CMT RideLinQ Payments"}}</option>
     <option value="Braintree">{{localize "Braintree Payments"}}</option>
     <option value="Moneris">{{localize "Moneris Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
-</select>
-<br />
+  </select>
+  <br />
 
-<div id="isUnpairingDisabledDiv">
+  <div id="isUnpairingDisabledDiv">
     <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
     <select name="isUnpairingDisabled" class="settingsBox">
         <option value="{{isUnpairingDisabled}}" selected="">{{localizeBool isUnpairingDisabled true="Yes" false="No"}}</option>
         <option value="{{invertedBool isUnpairingDisabled}}">{{localizeBool isUnpairingDisabled true="No" false="Yes"}}</option>
     </select>
-</div>
+  </div>
 
-<div id="unpairingTimeOutDiv">
+  <div id="unpairingTimeOutDiv">
     <label class="control-label settingsLabel">{{{localize "Unpair Time Limit (seconds)"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
-</div>
+  </div>
 
-<div id="cancelOrderOnUnpairDiv">
+  <div id="cancelOrderOnUnpairDiv">
     <label class="control-label settingsLabel">{{{localize "Cancel Order on Unpairing"}}}</label>
     <select name="cancelOrderOnUnpair" class="settingsBox">
-        <option value="{{cancelOrderOnUnpair}}" selected="">{{localizeBool cancelOrderOnUnpair true="Yes" false="No"}}</option>
-        <option value="{{invertedBool cancelOrderOnUnpair}}">{{localizeBool cancelOrderOnUnpair true="No" false="Yes"}}</option>
+      <option value="{{cancelOrderOnUnpair}}" selected="">{{localizeBool cancelOrderOnUnpair true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cancelOrderOnUnpair}}">{{localizeBool cancelOrderOnUnpair true="No" false="Yes"}}</option>
     </select>
-</div>
+  </div>
 
-<div id="preAuthAmountEnabledDiv">
+  <div id="preAuthAmountEnabledDiv">
     <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
     <select name="isPreAuthEnabled" class="settingsBox">
         <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
         <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
     </select>
-</div>
+  </div>
 
-<div id="preAuthAmountDiv">
+  <div id="preAuthAmountDiv">
     <label class="control-label settingsLabel">{{{localize "PreAuthorization Amount"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
-</div>
+  </div>
 
 <!-- BRAINTREE SETTINGS-->
-<div class="control-group" id="braintreeSettingsDiv">
+  <div class="control-group" id="braintreeSettingsDiv">
     <br />
     <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
 
-    <h5>{{{localize "Client Settings"}}}</h5>
+    <h5  >{{{localize "Client Settings"}}}</h5>
 
-    <label class="control-label settingsLabel">{{{localize "Client Key"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeClientSettings.clientKey" value="{{braintreeClientSettings.clientKey}}" />
 
     <br />
     <br />
 
 
-    <h5>{{{localize "Server Settings"}}}</h5>
+    <h5  >{{{localize "Server Settings"}}}</h5>
 
-    <label class="control-label settingsLabel">{{{localize "Use Sandbox"}}}</label>
-    <select name="braintreeServerSettings.isSandbox" class="settingsBox">
-        <option value="{{braintreeServerSettings.isSandbox}}" selected>{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
-        <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
+    <select  name="braintreeServerSettings.isSandbox" class="settingsBox">
+      <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
 
-    <label class="control-label settingsLabel">{{{localize "Merchant Id"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.merchantId" value="{{braintreeServerSettings.merchantId}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Private Key"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Private Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.privateKey" value="{{braintreeServerSettings.privateKey}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Public Key"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Public Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.publicKey" value="{{braintreeServerSettings.publicKey}}" />
 
     <div id="brainTreeSettingsMessageZone"></div>
-    <button type='button' id="brainTreeSettingsButton" class='btn'>{{localize "Test"}}</button>
+    <button type='button' id="brainTreeSettingsButton" class='btn' >{{localize "Test"}}</button>
 
-</div>
+  </div>
 
 <!-- CMT SETTINGS-->
-<div class="control-group" id="cmtSettingsDiv">
+  <div class="control-group" id="cmtSettingsDiv">
     <br />
     <h4 class="table-title">{{localize "CMT Settings"}}</h4>
 
@@ -145,30 +145,31 @@
             <option value="{{invertedBool cmtPaymentSettings.isManualRidelinqCheckInEnabled}}">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="No" false="Yes"}}</option>
         </select>
 
-        <label class="control-label settingsLabel">{{{localize "Use Pairing Code"}}}</label>
-        <select name="cmtPaymentSettings.usePairingCode" class="settingsBox">
-            <option value="{{cmtPaymentSettings.usePairingCode}}" selected="">{{localizeBool cmtPaymentSettings.usePairingCode true="Yes" false="No"}}</option>
-            <option value="{{invertedBool cmtPaymentSettings.usePairingCode}}">{{localizeBool cmtPaymentSettings.usePairingCode true="No" false="Yes"}}</option>
+        <label class="control-label settingsLabel">{{{localize "Pairing Method"}}}</label>
+        <select id="cmtPaymentSettings_pairingMethod" name="cmtPaymentSettings.pairingMethod" class="settingsBox">
+            <option value="VehicleMedallion">{{localize "Vehicle Medallion"}}</option>
+            <option value="PairingCode">{{localize "Pairing Code"}}</option>
+            <option value="DeviceName">{{localize "Device Name"}}</option>
         </select>
     </div>
 
-    <label class="control-label settingsLabel">{{{localize "Use Sandbox"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
 
-    <select name="cmtPaymentSettings.isSandbox" class="settingsBox">
-        <option value="{{cmtPaymentSettings.isSandbox}}" selected="">{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
-        <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
+    <select  name="cmtPaymentSettings.isSandbox" class="settingsBox">
+      <option value="{{cmtPaymentSettings.isSandbox}}" selected="" >{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
 
-    <label class="control-label settingsLabel">{{{localize "Server Payment Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Payment Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.baseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Server Mobile Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Mobile Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.mobileBaseUrl" value="{{cmtPaymentSettings.mobileBaseUrl}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Server Payment Sandbox Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Payment Sandbox Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxBaseUrl" value="{{cmtPaymentSettings.sandboxBaseUrl}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Server Mobile Sandbox Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Mobile Sandbox Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxMobileBaseUrl" value="{{cmtPaymentSettings.sandboxMobileBaseUrl}}" />
 
     <label class="control-label settingsLabel" >{{{localize "Consumer Secret Key"}}}</label>
@@ -183,47 +184,19 @@
     <label class="control-label settingsLabel">{{{localize "Market"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.market" value="{{cmtPaymentSettings.market}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Merchant Token"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Submit As Fleet Authorization"}}}</label>
+    <select  name="cmtPaymentSettings.submitAsFleetAuthorization" class="settingsBox">
+      <option value="{{cmtPaymentSettings.submitAsFleetAuthorization}}" selected="">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cmtPaymentSettings.submitAsFleetAuthorization}}">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="No" false="Yes"}}</option>
+    </select>
+	
+	<label class="control-label settingsLabel">{{{localize "Merchant Token"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.merchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
 
-    <label class="control-label settingsLabel">{{{localize "Submit As Fleet Authorization"}}}</label>
-    <select name="cmtPaymentSettings.submitAsFleetAuthorization" class="settingsBox">
-        <option value="{{cmtPaymentSettings.submitAsFleetAuthorization}}" selected="">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="Yes" false="No"}}</option>
-        <option value="{{invertedBool cmtPaymentSettings.submitAsFleetAuthorization}}">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="No" false="Yes"}}</option>
-    </select>
-
-    <br /><br />
-    <h5 class="table-title">{{localize "CMT Credentials - Taxi"}}</h5>
-
-    <label class="control-label settingsLabel">{{{localize "Consumer Secret Key"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerSecretKey" value="{{cmtPaymentSettings.consumerSecretKey}}" />
-
-    <label class="control-label settingsLabel">{{{localize "Consumer Key"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerKey" value="{{cmtPaymentSettings.consumerKey}}" />
-
-    <label class="control-label settingsLabel">{{{localize "Fleet Token"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.fleetToken" value="{{cmtPaymentSettings.fleetToken}}" />
-
     <div id="cmtSettingsMessageZone"></div>
-    <button type='button' id="cmtSettingsButton" class='btn'>{{localize "Test"}}</button>
+    <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>
 
-    <br /><br />
-    <h5 class="table-title">{{localize "CMT Credentials - Luxury"}}</h5>
-
-    <label class="control-label settingsLabel">{{{localize "Consumer Secret Key"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerSecretKeyLuxury" value="{{cmtPaymentSettings.consumerSecretKeyLuxury}}" />
-
-    <label class="control-label settingsLabel">{{{localize "Consumer Key"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerKeyLuxury" value="{{cmtPaymentSettings.consumerKeyLuxury}}" />
-
-    <label class="control-label settingsLabel">{{{localize "Fleet Token"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.fleetTokenLuxury" value="{{cmtPaymentSettings.fleetTokenLuxury}}" />
-
-    <div id="cmtSettingsMessageZoneLuxury"></div>
-    <button type='button' id="cmtSettingsLuxuryButton" class='btn'>{{localize "Test"}}</button>
-
-    <br /><br />
-</div>
+  </div>
 
 <!-- MONERIS SETTINGS-->
 <div class="control-group" id="monerisSettingsDiv">
@@ -255,9 +228,9 @@
 </div>
 
 <div>
-    <div id="warning" class="alert">
-        <input type="checkbox" name="acceptChange"> {{localize "I understand that changing the payment mode will DELETE all stored credit card information for ALL users."}}</input>
-    </div>
+  <div id="warning" class="alert">
+    <input type="checkbox" name="acceptChange"> {{localize "I understand that changing the payment mode will DELETE all stored credit card information for ALL users."}}</input>
+  </div>
 </div>
 
 <br />
@@ -305,7 +278,7 @@
 <input id="prodClientId" type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
 
 <label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input id="prodClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}" />
+<input id="prodClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}"/>
 
 <label class="control-label settingsLabel">{{{localize "MerchantId"}}}</label>
 <input id="prodMerchantId" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.merchantId" value="{{payPalServerSettings.credentials.merchantId}}" />

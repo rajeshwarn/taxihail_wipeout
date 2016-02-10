@@ -522,6 +522,7 @@
     <Content Include="views\ConfirmCVVView.js" />
     <Content Include="views\PaymentDetailView.js" />
     <Content Include="views\PaymentItemView.js" />
+    <Content Include="views\PaymentMinimalView.js" />
     <Content Include="views\PaymentView.js" />
     <Content Include="views\QuestionItemView.js" />
     <Content Include="views\BookAccountChargeView.js" />
@@ -669,6 +670,7 @@
     <Content Include="templates\ConfirmCVV.handlebars" />
     <Content Include="templates\Payment.handlebars" />
     <Content Include="templates\PaymentItem.handlebars" />
+    <Content Include="templates\PaymentMinimal.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

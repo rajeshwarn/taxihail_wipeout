@@ -25,16 +25,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPhoneService _phoneService;
         private readonly IAccountService _accountService;
-        private readonly IPaymentService _paymentService;
+		private readonly IPaymentService _paymentService;		
+		private readonly INetworkRoamingService _networkRoamingService;
 
         private OrderValidationResult _orderValidationResult;
 
-        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IPhoneService phoneService, IAccountService accountService, IPaymentService paymentService)
+		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, 
+			IMvxPhoneCallTask phone, 
+			IAccountService accountService, 
+			IPaymentService paymentService, 
+			INetworkRoamingService networkRoamingService)
         {
             _phoneService = phoneService;
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
             _paymentService = paymentService;
+			_networkRoamingService = networkRoamingService;
 
 			if (!Settings.HideDestination)
 			{
@@ -49,14 +55,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
-            Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
             Observe(_orderWorkflowService.GetAndObserveServiceType(), serviceType =>
             {
                 RaisePropertyChanged(() => BookButtonText);
                 RaisePropertyChanged(() => BookMessage);
             });
+            // We ensure that we correctly update IsFutureBookingDisabled.
+		    var observeValidationResultAndMarkertSettings = Observable.CombineLatest(
+		        _orderWorkflowService.GetAndObserveOrderValidationResult(),
+		        _networkRoamingService.GetAndObserveMarketSettings(),
+		        (orderValidationResult, marketSettings) => new
+		        {
+		            OrderValidationResult = orderValidationResult,
+                    MarketSettings = marketSettings
+		        });
+            Observe(observeValidationResultAndMarkertSettings, mergedResult => HandleOrderValidatedtAndMarketSettingsChanged(mergedResult.OrderValidationResult, mergedResult.MarketSettings));
         }
-
+        
 		public override void Start()
 		{
 			base.Start();
@@ -95,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 var settings = await _paymentService.GetPaymentSettings();
 
-                IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
+				IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled;
 
                 BookButtonHidden = Settings.DisableImmediateBooking && !Settings.UseSingleButtonForNowAndLaterBooking;
@@ -154,6 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 RaisePropertyChanged();
                 RaisePropertyChanged(() => BookButtonText);
+				RaisePropertyChanged(() => HideBookLater);
             }
         }
 
@@ -189,6 +205,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
+
+		public bool HideBookLater
+		{
+			get 
+			{ 
+				return Settings.UseSingleButtonForNowAndLaterBooking 
+					|| IsManualRidelinqEnabled
+					|| Settings.HideDestination;
+			}
+		}
 
 		#region iOS Bindings
 		private bool _hideManualRideLinqButtons;
@@ -263,12 +289,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		#endregion
 
-        private void OrderValidated(OrderValidationResult orderValidationResult)
+        private void HandleOrderValidatedtAndMarketSettingsChanged(OrderValidationResult orderValidationResult, MarketSettings marketSettings)
         {
             _orderValidationResult = orderValidationResult;
-            IsFutureBookingDisabled = Settings.DisableFutureBooking 
-				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
-                || Settings.UseSingleButtonForNowAndLaterBooking;
+
+            IsFutureBookingDisabled = !marketSettings.EnableFutureBooking
+				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking);
 
 			Book.RaiseCanExecuteChangedIfPossible();
 			BookLater.RaiseCanExecuteChangedIfPossible();
@@ -361,6 +387,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+				BookLater.RaiseCanExecuteChangedIfPossible();
         public ICommand SetPickupDateAndReturnToAirport
         {
             get
@@ -737,7 +764,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
-					}, () => CanProceedToBook(true));
+					}, () => CanProceedToBook() && !IsFutureBookingDisabled);
 				}
 				return _bookLaterCommand;
             }
@@ -954,14 +981,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 							return;
 						}
-						// no need for popup, we know we want the current booking if it's not disabled
-						if(!Settings.DisableImmediateBooking)
+
+                    				if(!Settings.DisableImmediateBooking)
 						{
 							CreateOrder.ExecuteIfPossible();
 						}
-						// future booking
-						else if (!IsFutureBookingDisabled)
+					else 
 						{
+						// future booking
 							Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 							await PrevalidatePickupAndDestinationRequired(onValidated);
 						}
@@ -972,45 +999,78 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+
+        private async Task HandleCardDeactivated()
+        {
+            var localize = this.Services().Localize;
+
+            var navigateToPaymentMethodManagement = await this.Services().Message
+                .ShowConfirmMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqDeactivatedCardOnFile"]);
+
+            if (!navigateToPaymentMethodManagement)
+            {
+                return;
+            }
+
+            if (Settings.MaxNumberOfCardsOnFile > 1)
+            {
+                ShowViewModel<CreditCardMultipleViewModel>();
+            }
+            else
+            {
+                ShowViewModel<CreditCardAddViewModel>();
+            }
+        }
+
+        private async Task HandleOverduePayment(OverduePayment overduePayment)
+        {
+            var localize = this.Services().Localize;
+
+            var navigateToOverduePayment = await this.Services().Message
+                .ShowConfirmMessage(localize["View_Overdue"], localize["Overdue_OutstandingPaymentExists"]);
+
+            if (!navigateToOverduePayment)
+            {
+                return;
+            }
+
+            ShowViewModel<OverduePaymentViewModel>(new
+            {
+                overduePayment = overduePayment.ToJson()
+            });
+        }
+
         public ICommand ManualPairingRideLinq
         {
             get
             {
                 return this.GetCommand(async () =>
                 {
-                    var localize = this.Services().Localize;
-
                     if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
-                        this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
+                        var localize = this.Services().Localize;
+                        await this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
                         return;
                     }
 
+                    //We need to verify if we have an overdue payment.
+                    var overduePayment = await _paymentService.GetOverduePayment().ShowProgress();
+
+                    if (overduePayment != null)
+                    {
+                        await HandleOverduePayment(overduePayment);
+
+                        return;
+                    }
+
+                    // We need to ensure that the currently selected default credit card is not deactivated. (needed when in multiple credit card scenarios).
                     if (_accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
-                        this.Services().Message.ShowMessage(
-                            this.Services().Localize["View_Overdue"],
-                            this.Services().Localize["Overdue_OutstandingPaymentExists"],
-                            this.Services().Localize["OkButtonText"], async () =>
-                            {
-                                OverduePayment overduePayment;
-
-                                using (this.Services().Message.ShowProgress())
-                                {
-                                    overduePayment = await _paymentService.GetOverduePayment();
-                                }
-
-                                ShowViewModel<OverduePaymentViewModel>(new
-                                {
-                                    overduePayment = overduePayment.ToJson()
-                                });
-                            },
-                            this.Services().Localize["Cancel"],
-                            () => {});
+                        await HandleCardDeactivated();
 
                         return;
                     }
-
+                    
 	                var homeViewModel = (HomeViewModel) Parent;
 					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });

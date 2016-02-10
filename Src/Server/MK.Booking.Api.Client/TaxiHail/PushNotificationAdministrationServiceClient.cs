@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     public class PushNotificationAdministrationServiceClient : BaseServiceClient
     {
         public PushNotificationAdministrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService, null)
         {
         }
 

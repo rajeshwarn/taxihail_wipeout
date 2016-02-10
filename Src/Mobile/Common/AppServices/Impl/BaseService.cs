@@ -1,14 +1,13 @@
-﻿using System;
+﻿using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using System.Net;
-using apcurium.MK.Common;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -57,15 +56,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             catch (Exception ex)
             {   
                 Logger.LogError(ex, method, lineNumber);
-				bool handled;
+				var handled = false; 
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 				}
 				else
 				{
-					errorHandler (ex);
-					handled = true;
+					try
+					{
+						errorHandler (ex);
+						handled = true;
+					}
+					catch
+					{
+                        
+					}
 				} 
 				if (!handled)
                 {
@@ -105,6 +111,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					throw;
 				}
 			}
+		}
+
+		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
+		{
+			observable.Subscribe(onNext, Logger.LogError);
 		}
 
         private ILogger _logger;

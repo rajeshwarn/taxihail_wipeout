@@ -101,11 +101,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 
-	    IObservable<MarketSettings> GetAndObserveMarketSettings();
-
         IObservable<bool> GetAndObserveIsUsingGeo();
-
-		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
 

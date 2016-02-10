@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using MongoRepository;
 
@@ -11,6 +12,7 @@ namespace CustomerPortal.Web.Entities.Network
         {
             Vehicles = new List<Vehicle>();
             DispatcherSettings = new DispatcherSettings();
+            MarketTariff = new Tariff();
         }
 
         public string Id { get; set; }
@@ -24,7 +26,19 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableDriverBonus { get; set; }
 
+        public bool EnableFutureBooking { get; set; }
+
+        public string FutureBookingReservationProvider { get; set; }
+
+        public int FutureBookingTimeThresholdInMinutes { get; set; }
+
+        public bool DisableOutOfAppPayment { get; set; }
+
         public string ReceiptFooter { get; set; }
+
+        public bool EnableAppFareEstimates { get; set; }
+
+        public Tariff MarketTariff { get; set; }
     }
 
     public class Vehicle

@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     public class ExportDataServiceClient : BaseServiceClient
     {
         public ExportDataServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+            : base(url, sessionId, packageInfo, connectivityService, null)
         {
         }
 

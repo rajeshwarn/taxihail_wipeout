@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Common;
-
+using apcurium.MK.Common.Diagnostic;
 
 #if CLIENT
 using MK.Common.Exceptions;
@@ -19,8 +19,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments
 {
     public class PairingServiceClient : BaseServiceClient, IPairingServiceClient
     {
-        public PairingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public PairingServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
                 var response = await Client.PostAsync(new UnpairingForPaymentRequest
                 {
                     OrderId = orderId
-                });
+                }, Logger);
                 return response;
             }
             catch (WebServiceException)
@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
                 {
                     OrderId = orderId,
                     AutoTipPercentage = autoTipPercentage
-                });
+                }, logger: Logger);
 
                 return true;
             }

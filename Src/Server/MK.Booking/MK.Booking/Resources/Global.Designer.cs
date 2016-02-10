@@ -115,6 +115,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, future booking is not available.
+        /// </summary>
+        public static string CannotCreateOrder_FutureBookingNotAllowed {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_FutureBookingNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Payment Method Available..
+        /// </summary>
+        public static string CannotCreateOrder_NoChargeType {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_NoChargeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no company serving this region.
         /// </summary>
         public static string CannotCreateOrder_NoCompanies {
@@ -423,9 +441,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sorry, there was an error processing your card. Please pay in the taxi.
         /// </summary>
-        public static string CreditCardUnanbleToPreathorizeErrorText {
+        public static string CreditCardUnableToPreathorizeErrorText {
             get {
-                return ResourceManager.GetString("CreditCardUnanbleToPreathorizeErrorText", resourceCulture);
+                return ResourceManager.GetString("CreditCardUnableToPreathorizeErrorText", resourceCulture);
             }
         }
         
@@ -970,6 +988,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Refund.
+        /// </summary>
+        public static string Email_Body_TotalRefund {
+            get {
+                return ResourceManager.GetString("Email_Body_TotalRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transaction Id :.
         /// </summary>
         public static string Email_Body_TransactionId {
@@ -1105,6 +1132,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Order Refund.
+        /// </summary>
+        public static string Email_Subject_OrderRefund {
+            get {
+                return ResourceManager.GetString("Email_Subject_OrderRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
         /// </summary>
         public static string Email_Subject_PasswordReset {
@@ -1128,6 +1164,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_Receipt {
             get {
                 return ResourceManager.GetString("Email_Subject_Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Refund.
+        /// </summary>
+        public static string Email_Title_OrderRefund {
+            get {
+                return ResourceManager.GetString("Email_Title_OrderRefund", resourceCulture);
             }
         }
         

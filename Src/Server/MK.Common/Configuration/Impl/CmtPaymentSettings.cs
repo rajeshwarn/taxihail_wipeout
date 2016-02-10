@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Cryptography;
+﻿using System;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Common.Configuration.Impl
@@ -66,8 +67,22 @@ namespace apcurium.MK.Common.Configuration.Impl
 		[PropertyEncrypt]
         public string MerchantToken { get; set; }
 
+        [Obsolete("Use 'PairingMethod' instead", false)]
         public bool UsePairingCode { get; set; }
 
+        public RideLinqPairingMethod PairingMethod { get; set; }
+
+        public enum RideLinqPairingMethod
+            {
+        /// <summary>
+        /// Default value for migration. Don't use it.
+        /// </summary>
+        NotSet,
+        VehicleMedallion,
+        PairingCode,
+        DeviceName
+        }
+        
         public class Credentials
         {
             public string ConsumerSecretKey { get; set; }

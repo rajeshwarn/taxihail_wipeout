@@ -51,15 +51,16 @@
             var chargeTypes = TaxiHail.referenceData.paymentsList;
 
             // Remove CoF option since there's no card in the user profile
-            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard')) {
-                var chargeTypesClone = chargeTypes.slice();
-                for (var i = 0; i < chargeTypesClone.length; i++) {
-                    var chargeType = chargeTypesClone[i];
-                    if (chargeType.id == 3) {
-                        chargeTypesClone.splice(i, 1);
-                        chargeTypes = chargeTypesClone;
+            if ((TaxiHail.parameters.isBraintreePrepaidEnabled || TaxiHail.parameters.isCMTEnabled || TaxiHail.parameters.isRideLinqCMTEnabled)
+                && !TaxiHail.auth.account.get('defaultCreditCard')) {
+                    var chargeTypesClone = chargeTypes.slice();
+                    for (var i = 0; i < chargeTypesClone.length; i++) {
+                        var chargeType = chargeTypesClone[i];
+                        if (chargeType.id == 3) {
+                            chargeTypesClone.splice(i, 1);
+                            chargeTypes = chargeTypesClone;
+                        }
                     }
-                }
             }
 
             _.extend(data, {

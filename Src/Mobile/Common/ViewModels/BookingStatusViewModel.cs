@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrientationService _orientationService;
 		private readonly IRateApplicationService _rateApplicationService;
 		private readonly IAccountService _accountService;
+		private readonly INetworkRoamingService _networkRoamingService;
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
         private int _refreshPeriod = 5; // in seconds
@@ -67,7 +68,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IOrientationService orientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
-			IAccountService accountService)
+			IAccountService accountService,
+			INetworkRoamingService networkRoamingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
@@ -79,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orientationService = orientationService;
 			_rateApplicationService = rateApplicationService;
 			_accountService = accountService;
+			_networkRoamingService = networkRoamingService;
 
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
@@ -981,8 +984,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-				var isLocalMarket = await _orderWorkflowService.GetAndObserveMarketSettings()
-					.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
+				var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
+					.Select(marketSettings => marketSettings.IsLocalMarket)
 					.Take(1);
 				var hasVehicleInfo = status.VehicleNumber.HasValue()
 				                     && status.VehicleLatitude.HasValue

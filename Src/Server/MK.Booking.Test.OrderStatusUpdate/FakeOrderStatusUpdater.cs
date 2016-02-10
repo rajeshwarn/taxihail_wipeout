@@ -20,7 +20,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
     public class FakeOrderStatusUpdater : OrderStatusUpdater
     {
         public FakeOrderStatusUpdater(IServerSettings serverSettings)
-            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+            : base(serverSettings, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -49,7 +49,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
             return null;
         }
 
-        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime)
+        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime)
         {
         }
     }

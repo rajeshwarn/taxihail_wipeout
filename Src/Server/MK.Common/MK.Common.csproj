@@ -143,11 +143,13 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\RideEstimate.cs" />
+    <Compile Include="Entity\ServiceStatus.cs" />
     <Compile Include="Entity\VehicleCandidate.cs" />
     <Compile Include="Enumeration\ServiceType.cs" />
     <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\NoteType.cs" />
+    <Compile Include="Enumeration\ServiceStatusType.cs" />
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\RefundPaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />

@@ -181,7 +181,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     _commandBus.Send(new SettleOverduePayment
                     {
                         AccountId = accountDetail.Id,
-                        OrderId = orderId
+                        OrderId = orderId,
+                        CreditCardId = accountDetail.DefaultCreditCard.GetValueOrDefault()
                     });
 
                     return true;

@@ -65,25 +65,38 @@ namespace CustomerPortal.Client.Impl
 
         public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
         {
-            if (!_serverSettings.ServerData.Network.Enabled)
+            CompanyMarketSettingsResponse response;
+            if (_serverSettings.ServerData.Network.Enabled)
             {
-                return new CompanyMarketSettingsResponse();
+                var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+                var @params = new Dictionary<string, string>
+                {
+                    { "companyId", homeCompanyKey },
+                    { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                    { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+                };
+
+                var queryString = BuildQueryString(@params);
+
+                response = Client.Get("customer/roaming/marketsettings" + queryString)
+                             .Deserialize<CompanyMarketSettingsResponse>()
+                             .Result;
             }
-
-            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-
-            var @params = new Dictionary<string, string>
+            else
             {
-                { "companyId", homeCompanyKey },
-                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
-                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
-            };
+                response = new CompanyMarketSettingsResponse();
+            }
+            
+            response.EnableFutureBooking = !response.Market.HasValue()
+                ? !_serverSettings.ServerData.DisableFutureBooking
+                : response.EnableFutureBooking;
 
-            var queryString = BuildQueryString(@params);
+            response.DisableOutOfAppPayment = !response.Market.HasValue()
+                ? _serverSettings.GetPaymentSettings().CancelOrderOnUnpair
+                : response.DisableOutOfAppPayment;
 
-            return Client.Get("customer/roaming/marketsettings" + queryString)
-                         .Deserialize<CompanyMarketSettingsResponse>()
-                         .Result;
+            return response;
         }
 
         /// <summary>

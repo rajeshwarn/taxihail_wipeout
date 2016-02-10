@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     public class OrderOptionsViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly INetworkRoamingService _networkRoamingService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
 		private readonly IVehicleTypeService _vehicleTypeService;
@@ -31,14 +32,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
 		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
 
-        private string _hashedMarket;
-
-		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
+		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, INetworkRoamingService networkRoamingService, IAccountService accountService, IVehicleService vehicleService, IVehicleTypeService vehicleTypeService)
 		{
-			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
+			_networkRoamingService = networkRoamingService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+			_vehicleTypeService = vehicleTypeService;
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
@@ -52,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
 			Observe (_orderWorkflowService.GetAndObserveServiceType (), serviceType => ServiceType = serviceType);
+			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehicleTypes => VehicleTypesChanged(vehicleTypes)); 
 			Observe (_orderWorkflowService.GetAndObserveMarketSettings(), MarketChanged);
 			Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
@@ -80,8 +81,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public void Init()
 		{
 			ShowDestination = false;
-
-			StartAsync().FireAndForget();
 		}
 
 		public void UpdateHomeViewState(HomeViewModelState state)
@@ -119,51 +118,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private AvailableVehicle[] _availableVehicles;
 
-	    public async Task StartAsync()
+	    private async Task VehicleTypesChanged(IList<VehicleType> vehicleTypes)
 	    {
-	        await SetLocalMarketVehicleTypes();
-	    }
+			var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
+				.Select(marketSettings => marketSettings.IsLocalMarket)
+				.Take(1);
 
-	    private void MarketChanged(MarketSettings marketSettings)
-	    {
-			_hashedMarket = marketSettings.HashedMarket;
-	    }
-
-	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
-	    {
-	        if (_hashedMarket.HasValue())
-	        {
-                VehicleTypes = marketVehicleTypes;
-	        }
-	        else
-	        {
-	            await SetLocalMarketVehicleTypes();
-	        }
-	        
-            RaisePropertyChanged(() => ShowVehicleSelection);
-			RaisePropertyChanged(() => GroupVehiclesByServiceType);
-	    }
-
-	    private async Task SetLocalMarketVehicleTypes()
-	    {
-			var list = await _vehicleTypeService.GetVehiclesList();
-
-            if (list.None())
+            if (isLocalMarket && vehicleTypes.None())
             {
+                // in local market but no vehicle types, create a fake 
+                // vehicle type with the default value of reference data
                 await SetDefaultVehicleType();
             }
             else
             {
-                VehicleTypes = list;
+                VehicleTypes = vehicleTypes;
             }
+
+            RaisePropertyChanged(() => ShowVehicleSelection);
+			RaisePropertyChanged(() => GroupVehiclesByServiceType);
 	    }
 
-	    async Task SetDefaultVehicleType()
+	    private async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
-			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault??false);
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault ?? false);
 			var defaultId = defaultVehicleType != null
-                ? defaultVehicleType.Id??0
+                ? defaultVehicleType.Id ?? 0
                 : 0;
 
 			VehicleTypes = new List<VehicleType>
