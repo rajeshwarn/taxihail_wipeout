@@ -1087,31 +1087,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-		private async Task PreselectDefaultVehicleType(IList<VehicleType> vehicleList)
+		private async Task PreselectDefaultVehicleType (IList<VehicleType> vehicleList)
 		{
 			int? selectedVehicleId = null;
 			var serviceType = ServiceType.Taxi;
 
-			if (vehicleList.Any())
+			if (vehicleList.Any ())
 			{
+				VehicleType matchingVehicle = null;
+
 				if (_marketSettings.IsLocalMarket)
 				{
-					// Try to match with account vehicle type preference if no match, we use the first vehicle
-					var matchingVehicle = vehicleList.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
-					selectedVehicleId = matchingVehicle != null
-						? matchingVehicle.ReferenceDataVehicleId
-						: vehicleList.First().ReferenceDataVehicleId;
-
-				serviceType = matchingVehicle != null
-					? matchingVehicle.ServiceType? matchingVehicle.ServiceType
-					: localVehicles.First().ServiceType;
-
+					matchingVehicle = vehicleList.FirstOrDefault (v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
 				}
-				else
-				{
-					selectedVehicleId = vehicleList.First().ReferenceDataVehicleId;
-					serviceType = vehicleList.First().ServiceType;
-				}
+				 
+				matchingVehicle = matchingVehicle ?? vehicleList.FirstOrDefault ();
+				selectedVehicleId = matchingVehicle.ReferenceDataVehicleId;
+				serviceType = vehicleList.First ().ServiceType;
 			}
 
 			await SetVehicle(selectedVehicleId, serviceType);

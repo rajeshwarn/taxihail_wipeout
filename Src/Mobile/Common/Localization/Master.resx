@@ -2377,10 +2377,10 @@
   </data>
   <data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
     <value>URL to store page was not configured</value>
-	</data>
-	<data name="BaseRate_PerMileRate" xml:space="preserve">
-		<value>Per Mile Rate</value>
-	</data>
+  </data>
+  <data name="BaseRate_PerMileRate" xml:space="preserve">
+	<value>Per Mile Rate</value>
+  </data>
   	<data name="BaseRate_PerTenthMile" xml:space="preserve">
 		<value>{0} ({1} per tenth mile)</value>
 	</data>

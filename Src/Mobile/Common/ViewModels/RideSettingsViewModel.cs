@@ -81,11 +81,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => IsPayBackFieldEnabled);RaisePropertyChanged(() => IsPayBackFieldEnabled);
 					RaisePropertyChanged(() => Email);
 					RaisePropertyChanged(() => PhoneNumber);
-					RaisePropertyChanged(() => SelectedCountryCode);
+					RaisePropertyChanged(() => SelectedCountryCode); 
 
 					// this should be called last since it calls the server, we don't want to slow down other controls
-					var v = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
-					_vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+					_vehicles = (await _accountService.GetVehiclesList()).ToArray();
+
 					RaisePropertyChanged(() => Vehicles);
 					RaisePropertyChanged(() => VehiclesAsListItems);
 					RaisePropertyChanged(() => VehicleTypeId);

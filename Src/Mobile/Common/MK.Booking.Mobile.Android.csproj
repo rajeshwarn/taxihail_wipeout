@@ -131,7 +131,6 @@
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -369,6 +368,11 @@
     <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
     <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
+    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderReviewBottomSpace { get; set; }
 
-		[Outlet]
+		[Outlet] 
 		UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]

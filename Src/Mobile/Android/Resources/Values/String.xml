@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">TaxiHail</string>
-  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="GoogleMapKey">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
@@ -66,6 +66,7 @@
   <string name="PickupMapTitle">Pickup location</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
+  <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="Reset">Reset</string>
   <string name="Cancel">Cancel</string>
   <string name="Continue">Continue</string>
@@ -346,6 +347,7 @@
   <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="View_CreditCard">Payment</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
+  <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
   <string name="CreditCardRemoveErrorMessage">You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
@@ -753,14 +755,28 @@
   <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
-  <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
+  <string name="BaseRate_PerMileRate">Per Mile Rate</string>
+  <string name="BaseRate_PerTenthMile">{0} ({1} per tenth mile)</string>
+  <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
+  <string name="BaseRate_MinimumFare">Minimum Fare</string>
+  <string name="BaseRate_WaitTime">Wait Time</string>
+  <string name="BaseRate_PerMinute">{0} per minute</string>
+  <string name="BaseRate_PerQuarterMile">{0} ({1} per 0.25 miles)</string>
+  <string name="BaseRate_PerEightySeconds">{0} per 80 seconds</string>
+  <string name="BaseRate_RateStructure">RATE STRUCTURE</string>
+  <string name="BookingGratuityText">If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</string>
+  <string name="GratuitActivityName">Gratuity</string>
+  <string name="Gratuity_Pay">Give Gratuity</string>
   <string name="ServiceErrorCallTitle">Server error</string>
+  <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
+  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
   <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
-  <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
-  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="LastFour">Last 4 numbers:  </string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
   <string name="CreditCompany">Credit company: </string>

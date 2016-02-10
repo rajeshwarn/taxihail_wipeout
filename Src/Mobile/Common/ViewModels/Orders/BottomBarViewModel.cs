@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private OrderValidationResult _orderValidationResult;
 
 		public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, 
-			IMvxPhoneCallTask phone, 
+			IPhoneService phoneService, 
 			IAccountService accountService, 
 			IPaymentService paymentService, 
 			INetworkRoamingService networkRoamingService)
@@ -289,6 +289,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		#endregion
 
+		private bool CanProceedToBook()
+		{
+			return CanExecuteBookOperation;
+		}
+
+		private bool _canExecuteBookOperation;
+
+		/// <summary>
+		/// WARNING: DO NOT BIND THIS PROPERTY TO AN ENABLE, THIS SHOULD BE USED IN A CanExecute.
+		/// </summary>
+		/// <value><c>true</c> if this instance can execute book operation; otherwise, <c>false</c>.</value>
+		public bool CanExecuteBookOperation
+		{
+			get
+			{
+				return _canExecuteBookOperation;
+			}
+			set
+			{
+				_canExecuteBookOperation = value;
+				Book.RaiseCanExecuteChangedIfPossible();
+				BookLater.RaiseCanExecuteChangedIfPossible();
+			}
+		}
+
         private void HandleOrderValidatedtAndMarketSettingsChanged(OrderValidationResult orderValidationResult, MarketSettings marketSettings)
         {
             _orderValidationResult = orderValidationResult;
@@ -387,7 +412,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-				BookLater.RaiseCanExecuteChangedIfPossible();
         public ICommand SetPickupDateAndReturnToAirport
         {
             get
