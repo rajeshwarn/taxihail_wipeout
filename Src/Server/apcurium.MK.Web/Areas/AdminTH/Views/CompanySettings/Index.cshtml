@@ -52,6 +52,9 @@
         <div class="control-group">
             <input type="submit" formaction='@Url.Action("Update")' class="btn btn-primary" value="Save" />
         </div>
+        <div class="control-group">
+            <input type="submit" formaction='@Url.Action("ExportToFile")' class="btn btn-primary" value="Export to file" />
+        </div>
     }
 
     @helper BuildSettingControls(Dictionary<string, PropertyInfo> settings)
@@ -139,3 +142,26 @@
         }
     }
 </div>
+
+
+@section ExternalSection{
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "fileUploadForm", enctype = "multipart/form-data" }))
+    {
+        <div class="container">
+            <div class='row'>
+                <div class="span3">
+                </div>
+                <div class='span9'>
+                    <div class="well clearfix form-horizontal">
+                        <h4 class="table-title">Import Company settings</h4>
+                        <div class="control-group">
+                            <input type="submit" formaction='@Url.Action("ImportFromFile")' class="btn btn-primary" value="Import from file" />
+                            <input type="file" id="fileToUpload" name="file" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

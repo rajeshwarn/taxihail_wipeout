@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -90,7 +91,11 @@ namespace CustomerPortal.Web
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
 
-            StartStatusUpdater(TimeSpan.FromMilliseconds(100));
+            var enableWatchDog = (bool)new AppSettingsReader().GetValue("EnableWatchDog", typeof(bool));
+            if (enableWatchDog)
+            {
+                StartStatusUpdater(TimeSpan.FromMilliseconds(100));
+            }
         }
 
         private static bool _statusUpdaterRunning;
