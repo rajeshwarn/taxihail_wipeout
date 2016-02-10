@@ -8,30 +8,30 @@ namespace apcurium.MK.Common.Extensions
 {
     public static class JsonSerializerExtensions
     {
-        private static NewtonsoftJsonSerializer GetJsonConverter()
+        private static NewtonsoftJsonSerializer GetJsonConverter(bool transformToCamelCase)
         {
             var serializer = new JsonSerializer
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
-                ContractResolver = new CustomCamelCasePropertyNamesContractResolver()
+                ContractResolver = transformToCamelCase ? new CustomCamelCasePropertyNamesContractResolver() : new DefaultContractResolver()
             };
 
             return new NewtonsoftJsonSerializer(serializer);
         }
 
-        public static string ToJson(this object source)
+        public static string ToJson(this object source, bool transformToCamelCase = true)
         {
             return source == null 
                 ? string.Empty 
-                : GetJsonConverter().SerializeObject(source);
+                : GetJsonConverter(transformToCamelCase).SerializeObject(source);
         }
 
-        public static TResult FromJson<TResult>(this string source)
+        public static TResult FromJson<TResult>(this string source, bool transformToCamelCase = true)
         {
             return source.HasValueTrimmed() 
-                ? GetJsonConverter().DeserializeObject<TResult>(source) 
+                ? GetJsonConverter(transformToCamelCase).DeserializeObject<TResult>(source) 
                 : default(TResult);
         }
 
