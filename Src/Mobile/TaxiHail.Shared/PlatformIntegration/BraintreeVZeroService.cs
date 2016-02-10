@@ -5,12 +5,11 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using Braintree.Api;
 using Braintree.Api.Models;
-using BTCard = Braintree.Api.Card;
 
 namespace TaxiHail.Shared.PlatformIntegration
 {
 	public class BraintreeVZeroService : IPaymentProviderClientService
-	{
+    {
 		private readonly IMvxAndroidCurrentTopActivity _activity;
 
 		public BraintreeVZeroService(IMvxAndroidCurrentTopActivity activity)
@@ -22,18 +21,14 @@ namespace TaxiHail.Shared.PlatformIntegration
 	    {
 	        var fragment = GenerateBraintreeFragment(clientToken);
 
-	        var resultTask = fragment.GetPaymentMethodNonceTask();
-            
-            PayPal.AuthorizeAccount(fragment,new []
-            {
-                "profile"
-            });
+	        var additionalParams = new[]
+	        {
+	            "profile"
+	        };
 
-	        var request = new PayPalRequest().ShippingAddressRequired(false);
+            var request = new PayPalRequest().ShippingAddressRequired(false);
 
-            PayPal.RequestBillingAgreement(fragment, request);
-
-	        var result = await resultTask;
+            var result = await fragment.AuthorizePaypalPaymentAsync(true, additionalParams, request).ConfigureAwait(false);
 
 	        return result.Nonce;
 	    }
@@ -41,7 +36,7 @@ namespace TaxiHail.Shared.PlatformIntegration
 	    public async Task<string> GetCreditCardNonce(string clientToken, string creditCardNumber, string ccv, string expirationMonth, string expirationYear, string firstName, string lastName, string zipCode)
 	    {
             var fragment = GenerateBraintreeFragment(clientToken);
-
+	        
             var cardBuilder = new CardBuilder()
 	            .CardNumber(creditCardNumber)
 	            .Cvv(ccv)
@@ -55,16 +50,12 @@ namespace TaxiHail.Shared.PlatformIntegration
 	            cardBuilder = cardBuilder.PostalCode(zipCode);
 	        }
 
-            var resultTask = fragment.GetPaymentMethodNonceTask();
-
-            BTCard.Tokenize(fragment, cardBuilder);
-
-	        var result = await resultTask;
+	        var result = await fragment.TokenizeAsync(cardBuilder).ConfigureAwait(false);
 
             return result.Nonce;
 	    }
 
-	    public Task<string> GetPlatformPayNonce(string clientToken)
+        public Task<string> GetPlatformPayNonce(string clientToken)
 	    {
 	        throw new NotImplementedException("Android pay is not currently implemented.");
 	    }

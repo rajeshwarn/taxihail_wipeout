@@ -191,9 +191,6 @@
     <Reference Include="Braintree.Api.Droid">
       <HintPath>..\Libraries\Monodroid\Braintree.Api.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Braintree.DropIn.Droid">
-      <HintPath>..\Libraries\Monodroid\Braintree.DropIn.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Connectivity.Plugin">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
