@@ -138,18 +138,18 @@
                 <td style="width: 50px;">
                     @if (Model.ServiceStatus.IsUpdaterDeadlocked)
                     {
-                        <div style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>
+                        <div title="Status updater error" style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>
                     }
                     else
                     {
-                        <div style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: green">&nbsp;</div>;
+                        <div title="Status updater running" style="height: 15px; width: 15px; margin: auto; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: rgb(0,255,0)">&nbsp;</div>;
                     }
                 </td>
                 <td style="margin-left: 30px">
                     <span style="margin-left: 30px">
                         @if (Model.ServiceStatus.IsUpdaterDeadlocked)
                         {
-                            <span>A potential deadlock was detected, the webserver will be restarted soon.</span>
+                            <span>A potential deadlock was detected. We should be restarting the server soon.</span>
                         }
                     </span>
                 </td>
