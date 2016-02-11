@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_networkRoamingService = networkRoamingService;
 			_cacheService = cacheService;
-			_marketSettings.HashedMarket = Guid.NewGuid ().ToString (); // Populate with a random string
+
 			Observe(networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 		}
 
