@@ -100,22 +100,5 @@ namespace apcurium.MK.Web.Tests
             CollectionAssert.AllItemsAreNotNull(addresses.Select(x => x.FriendlyName));
             CollectionAssert.AllItemsAreNotNull(addresses.Select(x => x.FullAddress));
         }
-
-        [Test]
-        public async void when_searching_for_nearby_places_with_a_max_radius()
-        {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            var greatRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 100);
-            var smallRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 10);
-
-            if (!greatRadius.Any() || !smallRadius.Any())
-            {
-                Assert.Inconclusive("no places returned");
-            }
-
-            Assert.IsNotEmpty(greatRadius);
-            Assert.IsNotEmpty(smallRadius);
-            Assert.Less(smallRadius.Count(), greatRadius.Count());
-        }
     }
 }

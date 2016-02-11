@@ -24,22 +24,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_geocoding = geocoding;
 		}
 
-        public async Task<Address> ValidateAddress(string address)
-        {
-            try
-            {
-				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = await _geocoding.SearchAsync(address, currentLanguage);
-                
-				return addresses.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-				Logger.LogError (ex);
-                return null;
-            }
-        }
-
         public async Task<Address[]> SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
             try

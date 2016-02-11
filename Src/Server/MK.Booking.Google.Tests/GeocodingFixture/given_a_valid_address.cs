@@ -31,7 +31,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         {
             _config.SetSetting("PriceFormat", "en-ca");
     
-            var a = _sut.GeocodeAddress("5250 ferrier montreal".Split(' ').JoinBy("+"), "en");
+            var a = _sut.GeocodeAddress("5250 ferrier montreal".Split(' ').JoinBy("+"), "en", 45.5323177, -73.629156, 45000);
             Assert.IsTrue(a.Any());
         }
 
@@ -40,7 +40,7 @@ namespace MK.Booking.Google.Tests.GeocodingFixture
         {
 
             _config.SetSetting("PriceFormat", "en-ca");
-            var a = _sut.GeocodeAddress("yul", "en");
+            var a = _sut.GeocodeAddress("yul", "en", 45.5323177, -73.629156, 45000);
             Assert.IsTrue(a.Any());
         }
 
