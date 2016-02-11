@@ -35,7 +35,7 @@
   <string name="Status">Status</string>
   <string name="InvalidLoginMessageTitle">Error de inicio de sesión</string>
   <string name="InvalidLoginMessage">Email y/o contraseña incorrecta</string>
-  <string name="ServiceErrorCallTitle">Error de servidor</string>
+  <string name="ServiceErrorCallTitle">Mensaje</string>
   <string name="ServiceErrorUnauthorized">Su sesión ha expirado, por favor ingrese nuevamente.</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="NotSpecified">Not Specified</string>
@@ -791,4 +791,7 @@
   <string name="CreditCompany">Credit company: </string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
 </resources>

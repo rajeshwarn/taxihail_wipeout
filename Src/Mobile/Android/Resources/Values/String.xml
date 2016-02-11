@@ -760,6 +760,8 @@
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
   <string name="LastFour">Last 4 numbers:  </string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
@@ -767,4 +769,5 @@
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
 </resources>

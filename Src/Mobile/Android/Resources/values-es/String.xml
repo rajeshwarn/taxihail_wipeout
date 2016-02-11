@@ -747,13 +747,15 @@
   <string name="LinkForApplicationStoreAbsentTitle">No se ha encontrado la URL</string>
   <string name="LinkForApplicationStoreAbsentText">URL a página de tienda no configurada</string>
   <string name="ServiceErrorUnauthorized">Su sesión ha expirado, por favor ingrese nuevamente.</string>
-  <string name="ServiceErrorCallTitle">Error de servidor</string>
+  <string name="ServiceErrorCallTitle">Mensaje</string>
   <string name="PairingProcessingErrorTitle">Problema al realizar pago empatado</string>
   <string name="TripUnableToPairErrorText">Lo sentimos, hubo un problema, por favor pague en la unidad</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Lo sentimos, su tarjeta no pudo ser autorizada. Por favor pague en la unidad</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Lo sentimos, hubo un error al procesar su tarjeta. Por favor pague en la unidad</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
   <string name="InvalidCreditCardMessage">Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</string>
   <string name="InvalidCreditCardUpdateCardButton">Actualizar Tarjeta</string>
@@ -762,4 +764,5 @@
   <string name="CreditCompany">Credit company: </string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
 </resources>
