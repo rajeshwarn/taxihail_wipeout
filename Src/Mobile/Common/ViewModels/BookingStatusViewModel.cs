@@ -397,7 +397,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			token.ThrowIfCancellationRequested();
 
-			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)
+			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude && TaxiLocation.VehicleNumber == medallion)
 			{
 				//Nothing to update.
 				return;
