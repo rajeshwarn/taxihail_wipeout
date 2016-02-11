@@ -126,4 +126,7 @@
   <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Confirm that you are in the vehicle number indicated below. Your vehicle number is shown on the right rear window. By tapping confirm, this ride will automatically be paid by your credit card on file.</value>
   </data>
+  <data name="PhoneBlackListed" xml:space="preserve">
+    <value>The account cannot be created due to a balance due.  Please contact support at taxiapp@mears.com.</value>
+  </data>
 </root>

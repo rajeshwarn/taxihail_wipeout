@@ -1,6 +1,7 @@
 using System;
+using apcurium.MK.Booking.Maps.Geo;
 
-namespace apcurium.MK.Booking.Maps.Geo
+namespace apcurium.MK.Booking.MapDataProvider.Resources
 {
 	public class MapBounds
 	{
@@ -33,8 +34,6 @@ namespace apcurium.MK.Booking.Maps.Geo
 			public double Latitude { get; set; }
 			public double Longitude { get; set; }
 		}
-
-
 
 		public bool Contains(double latitude, double longitude)
 		{
