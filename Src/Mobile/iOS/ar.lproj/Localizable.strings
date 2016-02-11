@@ -781,3 +781,4 @@
 "InvalidCreditCardUpdateCardButton"="Update Card";
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
+"ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";

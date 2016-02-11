@@ -2480,4 +2480,7 @@
   <data name="NoCreditCard" xml:space="preserve">
     <value>No credit card selected</value>
   </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة</value>
+  </data>
 </root>

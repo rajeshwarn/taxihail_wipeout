@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
             if (request.Name.HasValue())
             {
-                return _geocoding.Search(request.Name, language, request.GeoResult);
+                return _geocoding.Search(request.Name, request.Lat, request.Lng, language, request.GeoResult);
             }
 // ReSharper disable PossibleInvalidOperationException
             return _geocoding.Search(request.Lat.Value, request.Lng.Value, language, request.GeoResult);

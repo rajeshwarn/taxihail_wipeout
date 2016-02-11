@@ -75,7 +75,7 @@ namespace apcurium.MK.Common.Configuration
     public class NearbyPlacesServiceSettingContainer
     {
         [SendToClient]
-        [Display(Name = "Search - Default Radius", Description = "Default radius (in meters) for places search")]
+        [Display(Name = "Search - Default Nearby Places Radius", Description = "Default radius (in meters) for nearby places search")]
         public int DefaultRadius { get; protected internal set; }
     }
 
@@ -105,6 +105,10 @@ namespace apcurium.MK.Common.Configuration
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Search Filter", Description = "Filter for geolocation search")]
         public string SearchFilter { get; protected internal set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Search - Search Radius", Description = "Search radius (in meters) for geolocation search (only a hint to the search engine). (Default: 45000m)")]
+        public int SearchRadius { get; protected internal set; }
     }
 
     public class AvailableVehiclesSettingContainer

@@ -14,7 +14,7 @@ using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using MK.Common.Exceptions;
-using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -55,16 +55,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						.Take(1)
 						.ToTask()
 						.ConfigureAwait(false);
-					
-					var serviceType = await orderWorkflowService.GetAndObserveServiceType()
-						.Take(1)
-						.ToTask()
-						.ConfigureAwait(false);
 
-					return await CheckForAvailableVehicles(x, vehicleTypeId, serviceType).ConfigureAwait(false);
+                    return await CheckForAvailableVehicles(x, vehicleTypeId).ConfigureAwait(false);
                 })
 				.Publish();
-
 			_availableVehiclesObservable.Connect ();
 
             _availableVehiclesWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleType()
@@ -75,16 +69,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 							.ToTask()
 							.ConfigureAwait(false);
 
-						var serviceType = await orderWorkflowService.GetAndObserveServiceType()
-							.Take(1)
-							.ToTask()
-							.ConfigureAwait(false);
-						
-                        return new { vehicleTypeId, address, serviceType };
+                        return new { vehicleTypeId, address };
                     })
                 .Where(x => x.address.HasValidCoordinate())
-				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId, x.serviceType));
-			
+                .SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
+
 			_isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveIsUsingGeo();
 
             _etaObservable = _availableVehiclesObservable
@@ -131,12 +120,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(refreshRate)));
 		}
 
-		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId, ServiceType serviceType)
+		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)
 		{
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId, serviceType),
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude,vehicleTypeId),
 					ex =>
 					{
 						// Do not use the default event handler because we do not want to show the
@@ -261,14 +250,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, ServiceType.Taxi, null, null, true);  
+			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
 
-	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId, ServiceType serviceType)
+        public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
             try
             {
-                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber, orderId, serviceType))
+                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber, orderId))
                     .ConfigureAwait(false);
 
                 return true;

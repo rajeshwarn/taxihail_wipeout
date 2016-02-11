@@ -2480,4 +2480,12 @@
   <data name="NoCreditCard" xml:space="preserve">
     <value>No credit card selected</value>
   </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Su contraseña y confirmación no concuerdan</value>
+    <comment>The current password is not valid.</comment>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Mensaje</value>
+    <comment>Message</comment>
+  </data>
 </root>

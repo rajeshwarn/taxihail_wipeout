@@ -257,14 +257,18 @@
                                     {
                                         <td>refunded</td> 
                                     }
-                                    else
+                                    else if((OrderStatus)order.Status == OrderStatus.Completed)
                                     {
                                         <td style="max-width:100px; width:100px;"><input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addRefundOrderNoteModalDialog" value="refund" onclick="refundOnClick('@order.Id')" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td>-</td>
                                     }
                                 }
                                 else
                                 {
-                                    <td>-</td>
+                                    <td></td>
                                 }
                             </tr>
                         }
@@ -275,8 +279,8 @@
 
         <div class="col-sm-10">
             <div class="center">
-                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { Model.Id, page}))
-                
+                @Html.PagedListPager(Model.OrdersPaged, page => Url.Action("Index", new { Model.Id, page }))
+
             </div>
         </div>
     </div>

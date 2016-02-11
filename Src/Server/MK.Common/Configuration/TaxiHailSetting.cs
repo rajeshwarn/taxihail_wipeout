@@ -42,7 +42,8 @@ namespace MK.Common.Configuration
 
 		    GeoLoc = new GeoLocSettingContainer
 		    {
-                PlacesTypes = "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist"
+                PlacesTypes = "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist",
+                SearchRadius = 45000
 		    };
 
             AvailableVehicles = new AvailableVehiclesSettingContainer
@@ -446,19 +447,19 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Lower Left Latitude", Description="Lower Left Latitude limit to be used when searching for an address")]
-		public double? LowerLeftLatitude { get; protected set; }
+        public double? LowerLeftLatitude { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Lower Left Longitude", Description="Lower Left Longitude limit to be used when searching for an address")]
-		public double? LowerLeftLongitude { get; protected set; }
+        public double? LowerLeftLongitude { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Upper Right Latitude", Description="Upper Right Latitude limit to be used when searching for an address")]
-		public double? UpperRightLatitude { get; protected set; }
+        public double? UpperRightLatitude { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Search - Upper Right Longitude", Description="Upper Right Longitude limit to be used when searching for an address")]
-		public double? UpperRightLongitude { get; protected set; }
+        public double? UpperRightLongitude { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Map - Zoom on nearby vehicles", Description="Enable zooming on nearby vehicles")]
