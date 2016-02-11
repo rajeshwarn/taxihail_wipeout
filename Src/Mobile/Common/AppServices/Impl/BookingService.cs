@@ -194,8 +194,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow) ||
                 status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone) ||
                 status.IBSStatusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed) ||
-                (status.IBSStatusId.SoftEqual(VehicleStatuses.Unknown.None)
-                    && status.Status == OrderStatus.Canceled);
+				(status.IBSStatusId.SoftEqual(VehicleStatuses.Unknown.None) && status.Status == OrderStatus.Canceled) ||
+				(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Timeout) && status.Status == OrderStatus.Canceled);
         }
 
         public bool IsOrderCancellable(OrderStatusDetail status)

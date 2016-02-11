@@ -3,17 +3,17 @@
 
 @if (Model == ServiceStatusType.Healthy)
 {
-    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: green">&nbsp;</div>;
+    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: rgb(0,255,0)">&nbsp;</div>;
 }
 @if (Model == ServiceStatusType.ApiUnavailable)
 {
-    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: grey">&nbsp;</div>;
+    <div title="N/A" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: grey">&nbsp;</div>;
 }
 @if (Model == ServiceStatusType.NoConnection)
 {
-    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: orangered">&nbsp;</div>;
+    <div title="Server not available" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: orangered">&nbsp;</div>;
 }
 @if (Model == ServiceStatusType.IssuesFound)
 {
-    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>;
+    <div title="Error" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>;
 }
