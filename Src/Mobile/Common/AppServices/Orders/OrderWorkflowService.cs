@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
         private bool _isOrderRebooked;
         private string _kountSessionId;
-		private MarketSettings _marketSettings = new MarketSettings();
+		private MarketSettings _marketSettings = new MarketSettings() { HashedMarket = null };
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
