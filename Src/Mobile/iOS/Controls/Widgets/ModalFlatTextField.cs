@@ -52,6 +52,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _button; }
         }
 
+		public override bool Enabled
+		{
+			get
+			{
+				return base.Enabled;
+			}
+			set
+			{
+				base.Enabled = value;
+				HasRightArrow = value;
+			}
+		}
+
+
+
         public void Configure<T>(string title, Func<ListItem<T>[]> getValues, Func<Nullable<T>> selectedId, Action<ListItem<T>> onItemSelected, bool allowOther = false) where T : struct
         {
             Button.TouchUpInside += (sender, e) => {
