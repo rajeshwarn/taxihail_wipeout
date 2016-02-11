@@ -201,8 +201,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	    {
 	        var @params = new Dictionary<string, string>
 	        {
-                {"address", query.ToString(CultureInfo.InvariantCulture)},
-	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)}
+                {"address", query.Split(' ').JoinBy("+")},
+	            {"language", currentLanguage}
 	        };
 
             if (!query.ToLowerInvariant().Contains("bounds=")
@@ -213,8 +213,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 // The bounds parameter defines the latitude/longitude coordinates of the southwest and northeast corners of this bounding box using a pipe (|) character to separate the coordinates.
 
                 var mapBounds = MapBounds.GetBoundsFromCenterAndRadius(pickupLatitude.Value, pickupLongitude.Value, searchRadiusInMeters, searchRadiusInMeters);
-                var lowerLeft = string.Format("{0},{1}", mapBounds.SouthBound, mapBounds.WestBound);
-                var upperRight = string.Format("{0},{1}", mapBounds.NorthBound, mapBounds.EastBound);
+                var lowerLeft = string.Format(CultureInfo.InvariantCulture, "{0},{1}", mapBounds.SouthBound, mapBounds.WestBound);
+                var upperRight = string.Format(CultureInfo.InvariantCulture, "{0},{1}", mapBounds.NorthBound, mapBounds.EastBound);
                 @params.Add("bounds", string.Format("{0}|{1}", lowerLeft, upperRight));
             }
 
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	        var @params = new Dictionary<string, string>
 	        {
 	            {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
-	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)}
+	            {"language", currentLanguage}
 	        };
 
 	        var requestParameter = "json" + BuildQueryString(@params);
