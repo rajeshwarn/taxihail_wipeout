@@ -121,10 +121,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PublicKey = request.ServerPaymentSettings.BraintreeServerSettings.PublicKey
                         },
                         MonerisPaymentSettings = request.ServerPaymentSettings.MonerisPaymentSettings,
-                        CmtPaymentSettings = request.ServerPaymentSettings.CmtPaymentSettings,
-                        ConsumerKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKeyLuxury,
-                        ConsumerSecretKeyLuxury = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKeyLuxury,
-                        FleetTokenLuxury = request.ServerPaymentSettings.CmtPaymentSettings.FleetTokenLuxury,
+                        CmtPaymentSettings = request.ServerPaymentSettings.CmtPaymentSettings
                     })
                     .HandleErrors();
 
