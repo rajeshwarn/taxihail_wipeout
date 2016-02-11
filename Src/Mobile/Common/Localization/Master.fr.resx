@@ -2414,4 +2414,7 @@
   <data name="NoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit sélectionnée</value>
   </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Désolé, le mot de passe saisi n'est pas valide</value>
+  </data>
 </root>
