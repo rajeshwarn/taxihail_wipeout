@@ -114,6 +114,8 @@
     <Compile Include="Resources\GeoAddress.cs" />
     <Compile Include="Resources\GeoDirection.cs" />
     <Compile Include="Resources\GeoPlace.cs" />
+    <Compile Include="Resources\MapBounds.cs" />
+    <Compile Include="Resources\Position.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
     <Compile Include="TomTom\TomTomProvider.cs" />
   </ItemGroup>

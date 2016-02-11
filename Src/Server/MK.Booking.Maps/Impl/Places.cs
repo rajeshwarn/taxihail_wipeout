@@ -47,9 +47,16 @@ namespace apcurium.MK.Booking.Maps.Impl
                 .ToArray();
         }
 
-		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
+		public Address[] SearchPlaces(string query, double? latitude, double? longitude, string currentLanguage)
         {
-            var defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
+            // the radius depends on what we want, if we have a query, then search larger, otherwise use nearby radius
+            var radius = query.HasValueTrimmed() 
+                ? _appSettings.Data.GeoLoc.SearchRadius <= 0 ? 45000 : _appSettings.Data.GeoLoc.SearchRadius
+                : _appSettings.Data.NearbyPlacesService.DefaultRadius <= 0 ? 500 : _appSettings.Data.NearbyPlacesService.DefaultRadius;
+
+            #if DEBUG
+            Console.WriteLine(string.Format("Places.SearchPlaces with query: {0} radius: {1}", query.HasValueTrimmed() ? query : "(none) [nearby]", radius));
+            #endif
 
 			latitude = (!latitude.HasValue || latitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLatitude : latitude;
 			longitude = (!longitude.HasValue || longitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLongitude : longitude;
@@ -57,14 +64,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             var popularAddresses = Enumerable.Empty<Address>();
             if (latitude.HasValue && longitude.HasValue)
             {
-                if (string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(query))
                 {
                     popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                         select a;
                 }
                 else
                 {
-                    var words = name.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    var words = query.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                     popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                         where
                             words.All(
@@ -79,26 +86,26 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 			IEnumerable<GeoPlace> googlePlaces;
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(query))
             {
                 googlePlaces =
-					_client.GetNearbyPlaces(latitude, longitude, currentLanguage, false,
-                        radius ?? defaultRadius);
+					_client.GetNearbyPlaces(latitude, longitude, currentLanguage,
+                        radius);
             }
             else
             {
                 var priceFormat = new RegionInfo(_appSettings.Data.PriceFormat);
 
                 googlePlaces =
-					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
-                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower());
+					_client.SearchPlaces(latitude, longitude, query, currentLanguage,
+                        radius, priceFormat.TwoLetterISORegionName.ToLower());
             }
 
             if (latitude.HasValue && longitude.HasValue)
             {
                 var places =
                     popularAddresses.Concat(googlePlaces.Select(ConvertToAddress))
-                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude)).Take(15).ToArray();
+                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, query, latitude, longitude)).Take(15).ToArray();
 
                 return places;
             }
