@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             _logger = logger;
         }
 
+        public GeoAddress GetAddressDetail(string placeId)
+        {
+            throw new NotSupportedException();
+        }
+
         public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
         {
             return GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters).Result;

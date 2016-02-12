@@ -14,9 +14,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleGeocoder : IGeocoder
     {
-
         public AppleGeocoder ()
         {
+        }
+
+        public GeoAddress GetAddressDetail(string placeId)
+        {
+            throw new NotSupportedException();
         }
 
         public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
