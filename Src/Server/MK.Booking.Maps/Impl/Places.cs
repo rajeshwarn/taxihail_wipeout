@@ -84,36 +84,30 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses = popularAddresses.ForEach(p => p.AddressType = "popular");
             }
 
-			IEnumerable<GeoPlace> googlePlaces;
+            var places = !query.HasValueTrimmed() 
+                ? _client.GetNearbyPlaces(latitude, longitude, currentLanguage, radius) 
+                : _client.SearchPlaces(latitude, longitude, query, currentLanguage, radius);
 
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                googlePlaces =
-					_client.GetNearbyPlaces(latitude, longitude, currentLanguage,
-                        radius);
-            }
-            else
-            {
-                var priceFormat = new RegionInfo(_appSettings.Data.PriceFormat);
-
-                googlePlaces =
-					_client.SearchPlaces(latitude, longitude, query, currentLanguage,
-                        radius, priceFormat.TwoLetterISORegionName.ToLower());
-            }
+            var result = popularAddresses
+                .Concat(places.Select(ConvertToAddress));
 
             if (latitude.HasValue && longitude.HasValue)
             {
-                var places =
-                    popularAddresses.Concat(googlePlaces.Select(ConvertToAddress))
-                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, query, latitude, longitude)).Take(15).ToArray();
+                result = result.OrderBy(p => AddressSortingHelper.GetRelevance(p, query, latitude, longitude));
+            }
 
-                return places;
-            }
-            else
+            // take top 15
+            result = result.Take(15);
+
+            #if DEBUG
+            Console.WriteLine("Places.SearchPlaces results");
+            foreach(var address in result)
             {
-                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).Take(15).ToArray();
-                return places;
+                Console.WriteLine(string.Format("    {0}", address.DisplayLine1));
             }
+            #endif
+
+            return result.ToArray();
         }
 
 		private Address ConvertToAddress(GeoPlace place)

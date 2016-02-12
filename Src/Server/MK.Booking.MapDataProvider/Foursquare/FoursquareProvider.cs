@@ -113,7 +113,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
             return allVenues.Select(ToPlace).ToArray();
         }
 
-        public async Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string query, string languageCode, int radius, string countryCode)
+        public async Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string query, string languageCode, int radius)
 	    {
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
@@ -179,9 +179,9 @@ namespace MK.Booking.MapDataProvider.Foursquare
            return GetNearbyPlacesAsync(latitude, longitude, languageCode, radius, maximumNumberOfPlaces, pipedTypeList).Result;
 		}
 
-		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string query, string languageCode, int radius, string countryCode)
+		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string query, string languageCode, int radius)
 		{
-            return SearchPlacesAsync(latitude, longitude, query, languageCode, radius, countryCode).Result;
+            return SearchPlacesAsync(latitude, longitude, query, languageCode, radius).Result;
 		}
 
 		private GeoPlace ToPlace(Venue venue)

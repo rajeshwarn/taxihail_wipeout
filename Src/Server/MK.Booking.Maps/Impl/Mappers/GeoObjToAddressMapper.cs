@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                 ZipCode = geoAddress.ZipCode,
                 City = geoAddress.City,
                 State = geoAddress.State, 
+                PlaceId = geoAddress.Id
             };
                                     
             address.AddressType = "postal";
