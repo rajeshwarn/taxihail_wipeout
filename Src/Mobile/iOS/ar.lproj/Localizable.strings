@@ -763,3 +763,4 @@
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "Modify"="Modify";
 "GenericTitle"="";
+"ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";

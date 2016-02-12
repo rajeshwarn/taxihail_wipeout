@@ -797,4 +797,5 @@
   <string name="NoCreditCard">No credit card selected</string>
   <string name="PaypalError_Title">PayPal error</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
 </resources>
