@@ -107,42 +107,81 @@ namespace apcurium.MK.Common.Diagnostic
 
 		protected abstract string GetMessageBase();
 
-		private void DeleteOldEntries (FileInfo fileIO, long overflow)
+		static string RemoveOlderEntries(long overflow, string fileContent)
 		{
-			// Creating a backup copy of the log in case a crash happends.
-			File.Copy(fileIO.FullName, fileIO.FullName + ".bak");
+			var content = fileContent.Split(Environment.NewLine.ToCharArray())
+				.ToArray();
+			
+			var skip = true;
 
-			var content = new string[0];
-
-			using (var sr = fileIO.OpenText())
-			{
-				content = sr.ReadToEnd().Split(Environment.NewLine.ToCharArray()).ToArray();
-			}
-
-			fileIO.Delete();
-
-			content = content.SkipWhile((line, index) =>
+			// We remove the oldest log entries until we have enought space.
+			content = content.SkipWhile((line, index) => 
 				{
-					if(index == 0)
+					if (index == 0)
 					{
 						return true;
-					}	
-
+					}
+					if (!skip)
+					{
+						return false;
+					}
 					var previousLinesTotalLenght = content.Take(index).Sum(p => p.Length);
 
 					return overflow - previousLinesTotalLenght > 0;
 				})
 				.ToArray();
+			
+			skip = true;
+
+			// We remove enought lines to make sure we don't have a first log element that is truncated.
+			var log = content.SkipWhile(line => 
+				{
+					if (!skip)
+					{
+						return false;
+					}
+					skip = !(line.StartsWith("Message on") || line.StartsWith("Error on"));
+					return skip;
+				})
+				.JoinBy(Environment.NewLine).
+				Trim();
+			
+			return log;
+		}
+
+		private void DeleteOldEntries (FileInfo fileIO, long overflow)
+		{
+			var backupFileName = fileIO.FullName + ".bak";
+
+			if(File.Exists(backupFileName))
+			{
+				File.Delete(backupFileName);
+			}
+
+			// Creating a backup copy of the log in case a crash happends.
+			File.Copy(fileIO.FullName, backupFileName);
+
+			var fileContent = string.Empty;
+
+			using (var sr = fileIO.OpenText())
+			{
+				fileContent = sr.ReadToEnd();
+			}
+
+			var log = RemoveOlderEntries(overflow, fileContent);
+
+
+			fileIO.Delete();
 
 			using (var sw = fileIO.CreateText())
 			{
-				sw.Write(content.JoinBy(Environment.NewLine));
+				sw.Write(log);
 				sw.Write(Environment.NewLine);
 				sw.Flush();
 			}
 
 			// Deleting the backup copy.
-			File.Delete(fileIO.FullName + ".bak");
+			File.Delete(backupFileName);
 		}
 
 		private void Write(string message)
