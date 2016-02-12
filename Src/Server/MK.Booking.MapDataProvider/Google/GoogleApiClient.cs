@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             if (name != null)
             {
-                @params.Add("input", name.Split(' ').JoinBy("+"));
+                @params.Add("input", name.Replace(' ', '+'));
             }
 
             return "json" + BuildQueryString(@params);
