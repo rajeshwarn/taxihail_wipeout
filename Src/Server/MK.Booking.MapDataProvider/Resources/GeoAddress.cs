@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Resources
     public class GeoAddress
     
     {
-
+        public string Id { get; set; }
         public string StreetNumber { get; set; }
         public string Street { get; set; }
         public string ZipCode { get; set; }

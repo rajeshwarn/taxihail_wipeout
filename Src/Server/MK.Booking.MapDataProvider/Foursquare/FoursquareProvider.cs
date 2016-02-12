@@ -25,7 +25,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			Explore
 		}
 
-
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
 
@@ -36,7 +35,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		private const string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit={3}";
 		private const string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&sortByDistance=1&limit={3}";
 		private const string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
-
 
         public FoursquareProvider(IAppSettings settings, ILogger logger)
 		{
@@ -112,7 +110,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			return allVenues.Select(ToPlace).ToArray();
 		}
 
-		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, int radius, string countryCode)
+		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, int radius)
 		{
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
@@ -123,7 +121,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			if (!venues.IsValid())
 			{
-				Exception ex = new WebServiceException("Code " + venues.Meta.Code.ToString() + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
+				Exception ex = new WebServiceException("Code " + venues.Meta.Code + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
 
 				_logger.LogError(ex);
 
@@ -184,7 +182,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			if (!venue.IsValid())
 			{
-				Exception ex = new WebServiceException("Code " + venue.Meta.Code.ToString() + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
+				Exception ex = new WebServiceException("Code " + venue.Meta.Code + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
 
 				_logger.LogError(ex);
 

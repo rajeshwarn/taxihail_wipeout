@@ -80,22 +80,35 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             }
 
             var resource = "json" + BuildQueryString(@params);
-            Console.WriteLine(resource);
+
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
 
             return HandleGoogleResult(() => client.Get<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
         }
 
-		public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, int radius, string countryCode)
+        public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, int radius)
         {
             var client = new JsonServiceClient(PlacesAutoCompleteServiceUrl);
+            var resource = GetPlacesAutocompleteSearchRequest(latitude, longitude, name, languageCode, radius, "establishment");
 
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
+
+            return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), 
+                x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]);
+        }
+
+        private string GetPlacesAutocompleteSearchRequest(double? latitude, double? longitude, string name, string languageCode, int radius, string types)
+        {
             var @params = new Dictionary<string, string>
             {
                 {"key", PlacesApiKey},
                 {"radius", radius.ToString(CultureInfo.InvariantCulture)},
                 {"language", languageCode},
-                {"types", "establishment"},
-                {"components", "country:" + countryCode}
+                {"types", types}
             };
 
             if (latitude != null && longitude != null)
@@ -107,13 +120,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             if (name != null)
             {
-                @params.Add("input", name);
+                @params.Add("input", name.Split(' ').JoinBy("+"));
             }
 
-            var resource = "json" + BuildQueryString(@params);
-            Console.WriteLine(resource);
-
-            return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
+            return "json" + BuildQueryString(@params);
         }
 
 		public GeoPlace GetPlaceDetail(string id)
@@ -126,7 +136,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             };
 
             var resource = "json" + BuildQueryString(@params);
-            Console.WriteLine(resource);
 
             Func<PlaceDetailResponse, GeoPlace> selector = response => new GeoPlace 
             {
@@ -135,7 +144,31 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 Address = ResourcesExtensions.ConvertGeoObjectToAddress (response.Result)
             };
 
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
+
             return HandleGoogleResult(() => client.Get<PlaceDetailResponse>(resource), selector, new GeoPlace());
+        }
+
+        public GeoAddress GetAddressDetail(string id)
+        {
+            var client = new JsonServiceClient(PlaceDetailsServiceUrl);
+            var @params = new Dictionary<string, string>
+            {
+                {"placeid", id},
+                {"key", PlacesApiKey},
+            };
+
+            var resource = "json" + BuildQueryString(@params);
+
+            Func<PlaceDetailResponse, GeoAddress> selector = response => ResourcesExtensions.ConvertGeoObjectToAddress (response.Result);
+
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
+
+            return HandleGoogleResult(() => client.Get<PlaceDetailResponse>(resource), selector, new GeoAddress());
         }
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
@@ -150,7 +183,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
 
             var signedUrl = Sign(DirectionsServiceUrl + resource);
+
+            #if DEBUG
             Console.WriteLine(signedUrl);
+            #endif
 
             var result = new GeoDirection();
             try
@@ -192,41 +228,30 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         public GeoAddress[] GeocodeAddress(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 		{
-            var parameters = GenerateGeocodeRequestParameters(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters);
+            var client = new JsonServiceClient(PlacesAutoCompleteServiceUrl);
+            var resource = GetPlacesAutocompleteSearchRequest(pickupLatitude, pickupLongitude, query, currentLanguage, (int)searchRadiusInMeters, "address");
 
-            return Geocode(parameters, () => _fallbackGeocoder.GeocodeAddress (query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
-		}
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
 
-        private string GenerateGeocodeRequestParameters(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
-	    {
-	        var @params = new Dictionary<string, string>
-	        {
-                {"address", query.Split(' ').JoinBy("+")},
-	            {"language", currentLanguage}
-	        };
-
-            if (!query.ToLowerInvariant().Contains("bounds=")
-                && pickupLatitude.HasValue && pickupLongitude.HasValue 
-                && pickupLatitude.Value != 0 && pickupLatitude.Value != 0)
-            {
-                // Note that biasing only prefers results within the bounds; if more relevant results exist outside of these bounds, they may be included.
-                // The bounds parameter defines the latitude/longitude coordinates of the southwest and northeast corners of this bounding box using a pipe (|) character to separate the coordinates.
-
-                var mapBounds = MapBounds.GetBoundsFromCenterAndRadius(pickupLatitude.Value, pickupLongitude.Value, searchRadiusInMeters, searchRadiusInMeters);
-                var lowerLeft = string.Format(CultureInfo.InvariantCulture, "{0},{1}", mapBounds.SouthBound, mapBounds.WestBound);
-                var upperRight = string.Format(CultureInfo.InvariantCulture, "{0},{1}", mapBounds.NorthBound, mapBounds.EastBound);
-                @params.Add("bounds", string.Format("{0}|{1}", lowerLeft, upperRight));
-            }
-
-	        var resource = "json" + BuildQueryString(@params);
-	        return resource;
-	    }
-
+            return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), 
+                x => ConvertPredictionToAddresses(x.predictions).ToArray(), new GeoAddress[0], 
+                () => _fallbackGeocoder.GeocodeAddress(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
+        }
+            
         public Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 	    {
-            var parameters = GenerateGeocodeRequestParameters(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters);
+            var client = new JsonServiceClient(PlacesAutoCompleteServiceUrl);
+            var resource = GetPlacesAutocompleteSearchRequest(pickupLatitude, pickupLongitude, query, currentLanguage, (int)searchRadiusInMeters, "address");
 
-            return GeocodeAsync(parameters, () => _fallbackGeocoder.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
+            #if DEBUG
+            Console.WriteLine(client.BaseUri + resource);
+            #endif
+
+            return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), 
+                x => ConvertPredictionToAddresses(x.predictions).ToArray(), new GeoAddress[0], 
+                () => _fallbackGeocoder.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters));
 	    }
 
 	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
@@ -260,7 +285,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var client = new JsonServiceClient();
 
             var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
+
+            #if DEBUG
             Console.WriteLine(signedUrl);
+            #endif
 
             return HandleGoogleResult(() => client.Get<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
         }
@@ -270,7 +298,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var client = new JsonServiceClient();
 
             var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
+
+            #if DEBUG
             Console.WriteLine(signedUrl);
+            #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
 	    }
@@ -345,7 +376,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return defaultResult;
         }
 
-
 	    private async Task<TResponse> HandleGoogleResultAsync<TResponse, TGoogleResponse>(Func<Task<TGoogleResponse>> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<Task<TResponse>> fallBackAction = null)
 	        where TGoogleResponse : GoogleResult
 	    {
@@ -414,8 +444,18 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 {
                     Id = p.Place_Id,
                     Name = GetNameFromDescription(p.Description),
-                    Address = new GeoAddress { FullAddress =  GetAddressFromDescription(p.Description) },                                                       
+                    Address = new GeoAddress { FullAddress =  GetAddressFromDescription(p.Description, false) },                                                       
                     Types = p.Types
+                });
+        }
+
+        private IEnumerable<GeoAddress> ConvertPredictionToAddresses(IEnumerable<Prediction> result)
+        {            
+            return result.Select(p => 
+                new GeoAddress 
+                { 
+                    Id = p.Place_Id,
+                    FullAddress = GetAddressFromDescription(p.Description, true) 
                 });
         }
 
@@ -429,7 +469,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return components.First().Trim();
         }
 
-        private string GetAddressFromDescription(string description)
+        private string GetAddressFromDescription(string description, bool isStreetAddress)
         {
             if (string.IsNullOrWhiteSpace(description) || !description.Contains(","))
             {
@@ -438,7 +478,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var components = description.Split(',');
             if (components.Count() > 1)
             {
-                return components.Skip(1).Select(c => c.Trim()).JoinBy(", ");
+                return isStreetAddress
+                    ? components.Select(c => c.Trim()).JoinBy(", ")
+                    : components.Skip(1).Select(c => c.Trim()).JoinBy(", ");
             }
             return components.First().Trim();
         }

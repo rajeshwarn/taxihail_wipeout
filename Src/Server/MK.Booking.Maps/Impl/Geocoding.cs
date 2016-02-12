@@ -15,7 +15,6 @@ using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
-using MK.Common.Configuration;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 
 #endregion
@@ -36,6 +35,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             _mapApi = mapApi;
             _appSettings = appSettings;
             _popularAddressProvider = popularAddressProvider;
+        }
+
+        public Address GetPlaceDetail(string placeId)
+        {
+            return new GeoObjToAddressMapper().ConvertToAddress(_mapApi.GetAddressDetail(placeId), null, true);
         }
 
         public Address[] Search(string query, double? pickupLatitude, double? pickupLongitude, string currentLanguage, GeoResult geoResult = null)
@@ -170,6 +174,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             #endif
 
             var addresses = await _mapApi.GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadius);
+
+            #if DEBUG
+            Console.WriteLine("Geocoding.SearchUsingNameAsync results");
+            foreach(var address in addresses)
+            {
+                Console.WriteLine(string.Format("    {0}", address.FullAddress));
+            }
+            #endif
 
             return FilterGeoCodingResults(addresses);
         }

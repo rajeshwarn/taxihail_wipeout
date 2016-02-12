@@ -19,6 +19,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
         }
 
+        public GeoAddress GetAddressDetail(string placeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
         {
             try

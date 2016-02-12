@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
 	    private readonly IPostalCodeService _postalCodeService;
+		private readonly IGeocoding _geocodingService;
 
 	    private bool _isInLocationDetail;
 		private Address _currentAddress;	
@@ -64,7 +65,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IGeolocService geolocService,
 			IAccountService accountService,
 			ILocationService locationService, 
-            IPostalCodeService postalCodeService)
+            IPostalCodeService postalCodeService,
+			IGeocoding geocodingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
@@ -72,6 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 		    _postalCodeService = postalCodeService;
+			_geocodingService = geocodingService;
 
 			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveDropOffSelectionMode(), dropOffSelectionMode => IsDropOffSelectionMode = dropOffSelectionMode);
@@ -258,6 +261,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if ((value != null) && (value.AddressType == "place"))
 			{
 				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceId);
+				return place;
+			}
+
+			if ((value != null) && (value.AddressType == "postal") && (value.PlaceId.HasValueTrimmed()))
+			{
+				// address coming from Google with no detail
+				var place = _geocodingService.GetPlaceDetail(value.PlaceId);
 				return place;
 			}
 
