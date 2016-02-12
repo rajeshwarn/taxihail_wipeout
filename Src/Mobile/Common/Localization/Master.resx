@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1885,7 +1885,7 @@
     <value>Apply</value>
   </data>
   <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
-    <value>PayBack</value>
+    <value>PayBack (Optional)</value>
   </data>
   <data name="PromotionButton" xml:space="preserve">
     <value>Tap to Enter or View Promo Code</value>
