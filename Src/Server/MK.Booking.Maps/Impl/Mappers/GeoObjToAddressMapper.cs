@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
             if (address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
             {
-                address.FullAddress = placeName + ", " + address.FullAddress.ToSafeString();
+                address.FullAddress = string.Format("{0}{1}", placeName, address.FullAddress.HasValueTrimmed() ? string.Format(", {0}", address.FullAddress.ToSafeString()) : "");
             }
 
             return address; 

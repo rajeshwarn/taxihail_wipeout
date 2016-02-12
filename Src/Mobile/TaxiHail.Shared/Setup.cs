@@ -37,8 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup : MvxAndroidDialogSetup
     {
-        
-
 		public Setup(Context applicationContext) : base(applicationContext)
         {
         }
@@ -75,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
             container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
-            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
             container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
@@ -90,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>());
 	                case MapProvider.Google:
 	                default:
-                            return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+                        return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
 

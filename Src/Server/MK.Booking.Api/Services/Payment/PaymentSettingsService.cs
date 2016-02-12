@@ -121,28 +121,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             PrivateKey = request.ServerPaymentSettings.BraintreeServerSettings.PrivateKey,
                             PublicKey = request.ServerPaymentSettings.BraintreeServerSettings.PublicKey
                         },
-                        MonerisPaymentSettings = new MonerisPaymentSettings
-                        {
-                            IsSandbox = request.ServerPaymentSettings.MonerisPaymentSettings.IsSandbox,
-                            ApiToken = request.ServerPaymentSettings.MonerisPaymentSettings.ApiToken,
-                            BaseHost = request.ServerPaymentSettings.MonerisPaymentSettings.BaseHost,
-                            SandboxHost = request.ServerPaymentSettings.MonerisPaymentSettings.SandboxHost,
-                            StoreId = request.ServerPaymentSettings.MonerisPaymentSettings.StoreId
-                        },
-                        CmtPaymentSettings = new CmtPaymentSettings
-                        {
-                            BaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.BaseUrl,
-                            ConsumerKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKey,
-                            ConsumerSecretKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
-                            FleetToken = request.ServerPaymentSettings.CmtPaymentSettings.FleetToken,
-                            IsManualRidelinqCheckInEnabled = request.ServerPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
-                            IsSandbox = request.ServerPaymentSettings.CmtPaymentSettings.IsSandbox,
-                            Market = request.ServerPaymentSettings.CmtPaymentSettings.Market,
-                            MobileBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
-                            SandboxBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
-                            SandboxMobileBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
-                        }
+                        MonerisPaymentSettings = request.ServerPaymentSettings.MonerisPaymentSettings,
+                        CmtPaymentSettings = request.ServerPaymentSettings.CmtPaymentSettings
                     })
                     .HandleErrors();
 

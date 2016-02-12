@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         public T Get<T>(string key) where T : class
         {
             var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(_cacheKey + key);
-           
-            //Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
 
             var result = default( T );
 

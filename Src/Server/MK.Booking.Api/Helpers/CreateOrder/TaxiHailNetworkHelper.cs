@@ -53,28 +53,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 {
                     ClientKey = companyPaymentSettings.BraintreePaymentSettings.ClientKey
                 };
-                paymentSettings.MonerisPaymentSettings = new MonerisPaymentSettings
-                {
-                    IsSandbox = companyPaymentSettings.MonerisPaymentSettings.IsSandbox,
-                    ApiToken = companyPaymentSettings.MonerisPaymentSettings.ApiToken,
-                    BaseHost = companyPaymentSettings.MonerisPaymentSettings.BaseHost,
-                    SandboxHost = companyPaymentSettings.MonerisPaymentSettings.SandboxHost,
-                    StoreId = companyPaymentSettings.MonerisPaymentSettings.StoreId
-                };
-                paymentSettings.CmtPaymentSettings = new CmtPaymentSettings
-                {
-                    BaseUrl = companyPaymentSettings.CmtPaymentSettings.BaseUrl,
-                    ConsumerKey = companyPaymentSettings.CmtPaymentSettings.ConsumerKey,
-                    ConsumerSecretKey = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                    CurrencyCode = companyPaymentSettings.CmtPaymentSettings.CurrencyCode,
-                    FleetToken = companyPaymentSettings.CmtPaymentSettings.FleetToken,
-                    IsManualRidelinqCheckInEnabled = companyPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
-                    IsSandbox = companyPaymentSettings.CmtPaymentSettings.IsSandbox,
-                    Market = companyPaymentSettings.CmtPaymentSettings.Market,
-                    MobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
-                    SandboxBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
-                    SandboxMobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
-                };
+                paymentSettings.MonerisPaymentSettings = companyPaymentSettings.MonerisPaymentSettings;
+                paymentSettings.CmtPaymentSettings = companyPaymentSettings.CmtPaymentSettings;
 
                 // Save/update company settings
                 _commandBus.Send(new UpdatePaymentSettings

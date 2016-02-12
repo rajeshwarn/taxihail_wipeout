@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
-	    private string _lastHashedMarket = string.Empty;
+		private string _lastHashedMarket = null;
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;

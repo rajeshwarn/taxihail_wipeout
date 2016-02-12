@@ -2413,4 +2413,7 @@
   <data name="GenericTitle" xml:space="preserve">
     <value />
   </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة</value>
+  </data>
 </root>

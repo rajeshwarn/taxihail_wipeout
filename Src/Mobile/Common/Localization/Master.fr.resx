@@ -2420,4 +2420,7 @@
   <data name="UnpairCancelOrder" xml:space="preserve">
     <value>Cancel Order</value>
   </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Désolé, le mot de passe saisi n'est pas valide</value>
+  </data>
 </root>
