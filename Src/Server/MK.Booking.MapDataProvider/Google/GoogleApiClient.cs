@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
 
             #if DEBUG
-            Console.WriteLine(client.BaseAddress + resource);
+            Console.WriteLine(PlacesServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = GetPlacesAutocompleteSearchRequest(latitude, longitude, query, languageCode, radius, "establishment");
 
             #if DEBUG
-            Console.WriteLine(client.BaseAddress + resource);
+            Console.WriteLine(PlacesAutoCompleteServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), 
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = GetPlacesAutocompleteSearchRequest(pickupLatitude, pickupLongitude, query, currentLanguage, (int)searchRadiusInMeters, "address");
 
             #if DEBUG
-            Console.WriteLine(client.BaseAddress + resource);
+            Console.WriteLine(PlacesAutoCompleteServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), 

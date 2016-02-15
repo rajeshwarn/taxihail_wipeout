@@ -32,7 +32,7 @@ namespace MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places_with_name()
         {
-            var places = Sut.SearchPlaces(Latitude, Longitude, "restaurants", "en", 800, "ca");
+            var places = Sut.SearchPlaces(Latitude, Longitude, "restaurants", "en", 800);
 
             CollectionAssert.IsNotEmpty(places);
             Assert.NotNull(places.First().Name);
