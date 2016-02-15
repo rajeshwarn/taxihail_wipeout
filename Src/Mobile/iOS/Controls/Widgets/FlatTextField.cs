@@ -18,16 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public bool MoveClearButtonFromUnderRightImage { get; set; }
 
-		public FlatTextField(NSCoder coder) : base(coder)
-		{
-			Initialize();
-		}
-
-		public FlatTextField(NSObjectFlag flag): base(flag)
-		{
-			Initialize();
-		}
-
 	    public FlatTextField (IntPtr handle) : base (handle)
 		{
 			Initialize();
