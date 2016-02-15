@@ -1,7 +1,6 @@
 using System;
 using Android.App;
 using Android.Runtime;
-using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 
@@ -10,16 +9,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
     [Application]
     public class TaxiMobileApplication : Application
     {
-        protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
-            : base(javaReference, transfer)
+        protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-            
         }
-
 
         public TaxiMobileApplication()
         {
-            
         }
 
         public override void OnCreate()
@@ -27,47 +22,20 @@ namespace apcurium.MK.Callbox.Mobile.Client
             base.OnCreate();
 
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
-
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-            Console.WriteLine("App created");
-
         }
 
-		public override void OnTerminate ()
-		{
-			base.OnTerminate ();
-		}
-
-        
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try
+            if (e.ExceptionObject is Exception)
             {
-                if (e.ExceptionObject is Exception)
-                {
-					Mvx.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                Mvx.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
             }
         }
 
-        
         private void AndroidEnvironmentOnUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs raiseThrowableEventArgs)
         {
-            try
-            {
-				Mvx.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Mvx.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
         }
     }
-
-
 }
