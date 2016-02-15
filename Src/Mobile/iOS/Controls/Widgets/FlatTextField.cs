@@ -88,9 +88,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return base.Enabled; }
 			set 
             {
-				base.Enabled = value;
-                base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-				SetNeedsDisplay();
+                if (base.Enabled != value)
+                {
+                    base.Enabled = value;
+                    base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
+                    ShowOrHideRightArrow();
+                    SetNeedsDisplay();
+                }
 			}
 		}
 
@@ -139,29 +143,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _hasRightArrow = value;
 
-                    if (value)
-                    {
-                        if (_rightArrow == null)
-                        {
-                            _rightArrow = new UIImageView { Image = UIImage.FromFile("right_arrow.png") };
-                            AddSubview(_rightArrow);
-                        }
-                    }
-                    else
-                    {
-                        if (_rightArrow != null)
-                        {
-                            _rightArrow.Image = null;
-                            _rightArrow.RemoveFromSuperview ();
-                            _rightArrow.Dispose();
-                            _rightArrow = null;
-                        }
-                    }
+                    ShowOrHideRightArrow();
                 }
             }
         }
 
-        public void SetPadding(nfloat left, nfloat right)
+	    private void ShowOrHideRightArrow()
+	    {
+	        if (HasRightArrow)
+	        {
+	            if (_rightArrow == null)
+	            {
+	                _rightArrow = new UIImageView {Image = UIImage.FromFile("right_arrow.png")};
+	                AddSubview(_rightArrow);
+	            }
+	        }
+	        else
+	        {
+	            if (_rightArrow != null)
+	            {
+	                _rightArrow.Image = null;
+	                _rightArrow.RemoveFromSuperview();
+	                _rightArrow.Dispose();
+	                _rightArrow = null;
+	            }
+	        }
+	    }
+
+	    public void SetPadding(nfloat left, nfloat right)
         {
             LeftPadding = left;
             RightPadding = right;
