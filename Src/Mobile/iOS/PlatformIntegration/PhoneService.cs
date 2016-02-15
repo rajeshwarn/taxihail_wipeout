@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
             
             var mailComposer = new MFMailComposeViewController ();
-			var logFile = _logger.MergeLogFiles();
+			var logFile = _logger.GetLogFileName();
 
 			if (logFile != null)
 			{

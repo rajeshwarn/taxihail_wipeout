@@ -18,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             _cacheKey = cacheKey ?? "MK.Booking.Cache";
         }
 
-        #region ICacheService implementation
         public T Get<T>(string key) where T : class
         {
             var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(_cacheKey + key);
@@ -44,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             }
 
             return result;
-
         }
 
         public void Set<T>(string key, T obj) where T : class
@@ -60,25 +58,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         }
         public void Clear(string key)
         {
-            Console.WriteLine("-----------------------------------  Clear :" + _cacheKey + key + " : " + GetType());
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, _cacheKey + key);               
         }
 
         private void ClearFullKey(string fullKey)
-        {
-            Console.WriteLine ( "-----------------------------------  ClearFullKey :" + fullKey + " : " + GetType ());            
+        {   
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, fullKey);               
         }
 
         public void ClearAll()
-        {
-            Console.WriteLine ( "-----------------------------------  ClearAll :" + GetType ());            
+        {      
             var keys = NSUserDefaults.StandardUserDefaults.ToDictionary ().Keys;
             keys.Where(k => k.ToString().StartsWith(_cacheKey)).ForEach(k => ClearFullKey(k.ToString()));
         }
-        #endregion
-
     }
+
     public class CacheItem<T> where T : class
     {
         public CacheItem(T value)
