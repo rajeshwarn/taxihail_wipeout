@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	public class VehicleTypeService : BaseService, IVehicleTypeService
 	{
 		private readonly ISubject<IList<VehicleType>> _vehiclesListSubject = new BehaviorSubject<IList<VehicleType>>(new List<VehicleType>());
-		private MarketSettings _marketSettings = new MarketSettings();
+		private MarketSettings _marketSettings = new MarketSettings () { HashedMarket = null };
 
 		private readonly INetworkRoamingService _networkRoamingService;
 		private readonly ICacheService _cacheService;
