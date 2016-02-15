@@ -18,12 +18,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public bool MoveClearButtonFromUnderRightImage { get; set; }
 
+		public FlatTextField(NSCoder coder) : base(coder)
+		{
+			Initialize();
+		}
+
+		public FlatTextField(NSObjectFlag flag): base(flag)
+		{
+			Initialize();
+		}
+
 	    public FlatTextField (IntPtr handle) : base (handle)
 		{
 			Initialize();
 		}
 
-		public FlatTextField ()
+		public FlatTextField (): base()
 		{
 			Initialize();
 		}
@@ -90,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     base.Enabled = value;
                     base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-                    ShowOrHideRightArrow();
+
                     SetNeedsDisplay();
                 }
 			}
@@ -148,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    private void ShowOrHideRightArrow()
 	    {
-	        if (HasRightArrow && Enabled)
+			if (HasRightArrow)
 	        {
 	            if (_rightArrow == null)
 	            {
@@ -174,11 +184,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightPadding = right;
         }
 
+		private UIView _rightView;
+		public override UIView RightView
+		{
+			get
+			{
+				return base.RightView;
+			}
+			set
+			{
+				base.RightView = value;
+
+				_rightView = value;
+			}
+		}
+
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
 
-            RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
+			//For some reasons, the RightView property is null when we generate it in a TableCellView.
+			if (RightView == null)
+			{
+				base.RightView = _rightView;
+			}
+
+			RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, Frame.Height);
 
             if (HasRightArrow)
             {
@@ -191,7 +222,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         _rightArrow.Image.Size.Height);
 
                     // this is to keep the same padding between the end of the text and the right arrow
-                    RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + RightPadding); 
+					RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + RightPadding); 
                 }
             }
             else
@@ -199,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_rightArrow != null)
                 {
                     var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
-                    RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + RightPadding));
+					RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + RightPadding));
                     _rightArrow = null;
                 }
             }
