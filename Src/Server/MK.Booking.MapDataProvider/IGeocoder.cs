@@ -13,6 +13,10 @@ namespace apcurium.MK.Booking.MapDataProvider
 		GeoAddress[]  GeocodeLocation(double latitude, double longitude, string currentLanguage);
 
 	    Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage);
+
+        GeoAddress GetAddressDetail(string id);
+
+        Task<GeoAddress> GetAddressDetailAsync(string id);
 	}
 }
 
