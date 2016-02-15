@@ -1681,6 +1681,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your driver indicated you were not at the pickup location..
+        /// </summary>
+        public static string PushNotification_wosNOSHOW {
+            get {
+                return ResourceManager.GetString("PushNotification_wosNOSHOW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
         /// </summary>
         public static string PushNotification_wosTIMEOUT {

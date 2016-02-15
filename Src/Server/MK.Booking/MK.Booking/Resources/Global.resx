@@ -171,6 +171,9 @@
   <data name="PushNotification_BAILED" xml:space="preserve">
     <value>Sorry, your driver canceled. Finding you another taxi...</value>
   </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
+  </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>The passenger has paid</value>
   </data>

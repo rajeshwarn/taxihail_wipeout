@@ -339,6 +339,9 @@
   <data name="PushNotification_BAILED" xml:space="preserve">
     <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Votre chauffeur a indiqué que vous n'etiez pas au point de ramassage.</value>
+  </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
   </data>
