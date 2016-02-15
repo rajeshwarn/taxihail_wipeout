@@ -39,8 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			BackgroundColor = UIColor.White;
 
-            HasRightArrow = Enabled && HasRightArrow;
-
             TextAlignment = UITextAlignment.Natural;
             TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
             TextColor = UIColor.FromRGB(44, 44, 44);
@@ -150,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    private void ShowOrHideRightArrow()
 	    {
-	        if (HasRightArrow)
+	        if (HasRightArrow && Enabled)
 	        {
 	            if (_rightArrow == null)
 	            {
@@ -209,11 +207,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public override void Draw (CGRect rect)
         {   
-            if (!ForceWhiteBackground)
-            {
-                HasRightArrow = Enabled && HasRightArrow;
-            }
-
             DrawStroke();
         }
 
