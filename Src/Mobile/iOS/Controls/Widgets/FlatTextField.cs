@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-			BackgroundColor = UIColor.White;
+			this.BackgroundColor = UIColor.White;
 
             TextAlignment = UITextAlignment.Natural;
             TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
