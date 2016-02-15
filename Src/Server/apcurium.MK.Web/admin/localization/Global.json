@@ -133,6 +133,7 @@
     "promotionUnlockedPush": "Promotion Unlocked",
     "unpairingReminderPush": "Unpairing Reminder",
     "driverBailedPush": "Driver Bailed",
+    "noShowPush": "No Show",
 
     "/******* End notification settings Aliases ******/": ""
 }
