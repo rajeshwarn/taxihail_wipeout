@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-			BackgroundColor = UIColor.White;
+			this.BackgroundColor = UIColor.White;
 
             HasRightArrow = Enabled && HasRightArrow;
 
