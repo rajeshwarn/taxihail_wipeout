@@ -37,9 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
-            BackgroundColor = Enabled 
-                ? UIColor.White 
-                : UIColor.Clear;
+			this.BackgroundColor = UIColor.White;
 
             HasRightArrow = Enabled && HasRightArrow;
 
@@ -71,14 +69,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+		private UIColor backgroundColor;
+		public override UIColor BackgroundColor
+		{
+			get
+			{
+				return backgroundColor;
+			}
+			set
+			{
+				backgroundColor = value;
+				base.BackgroundColor = value;
+			}
+		}
+
 		public override bool Enabled 
         {
             get { return base.Enabled; }
 			set 
             {
-				base.Enabled = value;
-                BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-				SetNeedsDisplay();
+                if (base.Enabled != value)
+                {
+                    base.Enabled = value;
+                    base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
+                    ShowOrHideRightArrow();
+                    SetNeedsDisplay();
+                }
 			}
 		}
 
@@ -127,29 +143,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _hasRightArrow = value;
 
-                    if (value)
-                    {
-                        if (_rightArrow == null)
-                        {
-                            _rightArrow = new UIImageView { Image = UIImage.FromFile("right_arrow.png") };
-                            AddSubview(_rightArrow);
-                        }
-                    }
-                    else
-                    {
-                        if (_rightArrow != null)
-                        {
-                            _rightArrow.Image = null;
-                            _rightArrow.RemoveFromSuperview ();
-                            _rightArrow.Dispose();
-                            _rightArrow = null;
-                        }
-                    }
+                    ShowOrHideRightArrow();
                 }
             }
         }
 
-        public void SetPadding(nfloat left, nfloat right)
+	    private void ShowOrHideRightArrow()
+	    {
+	        if (HasRightArrow)
+	        {
+	            if (_rightArrow == null)
+	            {
+	                _rightArrow = new UIImageView {Image = UIImage.FromFile("right_arrow.png")};
+	                AddSubview(_rightArrow);
+	            }
+	        }
+	        else
+	        {
+	            if (_rightArrow != null)
+	            {
+	                _rightArrow.Image = null;
+	                _rightArrow.RemoveFromSuperview();
+	                _rightArrow.Dispose();
+	                _rightArrow = null;
+	            }
+	        }
+	    }
+
+	    public void SetPadding(nfloat left, nfloat right)
         {
             LeftPadding = left;
             RightPadding = right;

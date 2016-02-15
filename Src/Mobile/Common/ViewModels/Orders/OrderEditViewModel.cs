@@ -14,6 +14,7 @@ using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common;
+using ChargeTypesEnum = apcurium.MK.Common.Enumeration.ChargeTypes;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -57,7 +58,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 		private MarketSettings _marketSettings = new MarketSettings() { HashedMarket = null };
-
 	    private async Task MarketChanged(MarketSettings marketSettings)
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
@@ -70,10 +70,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
 	        paymentList = isCmt
-	            ? RemovePaymentInCarIfNeededForCmt(paymentList, marketSettings)
+	            ? HandlePaymentInCarForCmt(paymentList, marketSettings)
 	            : EnforceExternalMarketPaymentInCarIfNeeded(paymentList, marketSettings);
 
-	        _marketSettings = marketSettings;
 
 	        var localize = this.Services().Localize;
 
@@ -101,11 +100,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .ToArray();
         }
 
-        private IList<ListItem> RemovePaymentInCarIfNeededForCmt(IList<ListItem> paymentList, MarketSettings market)
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (paymentList.None(x => x.Id == ChargeTypesEnum.PaymentInCar.Id))
+			{
+				paymentList.Insert(0, ChargeTypesEnum.PaymentInCar);
+			}
+
+			return paymentList;
+		}
+
+        private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
 	    {
-            if (!market.DisableOutOfAppPayment)
+            if (!market.IsLocalMarket)
             {
-                return paymentList;
+				return market.DisableOutOfAppPayment
+					? paymentList
+					: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
             }
 
             paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
