@@ -238,7 +238,7 @@ namespace apcurium.MK.Common.Diagnostic
 					Directory.CreateDirectory(GetBaseDirectory());
 				}
 
-				var logFileName = Path.Combine(GetBaseDirectory(),LogFileName);
+				var logFileName = Path.Combine(GetBaseDirectory(), LogFileName);
 
 				if (!File.Exists(logFileName) && File.Exists(logFileName + ".bak"))
 				{

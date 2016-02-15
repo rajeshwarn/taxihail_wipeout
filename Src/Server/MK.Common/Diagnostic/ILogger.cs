@@ -13,5 +13,7 @@ namespace apcurium.MK.Common.Diagnostic
         void LogStack();
 
         IDisposable StartStopwatch(string message);
+
+		string GetLogFileName();
     }
 }
