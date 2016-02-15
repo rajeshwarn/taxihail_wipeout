@@ -384,8 +384,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var orderPairing = _orderDao.FindOrderPairingById(orderId);
                 var order = _orderDao.FindById(orderId);
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
                 var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
 
                 var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
@@ -396,6 +396,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var request = new CmtRideLinqRefundRequest
                 {
+                    PairingToken = orderPairing.PairingToken,
                     CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
                     LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     AuthAmount = totalAmount
@@ -403,7 +404,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Put(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+                var response = _cmtMobileServiceClient.Post(request);
 
                 if(response.ResponseCode == 200)
                 {
