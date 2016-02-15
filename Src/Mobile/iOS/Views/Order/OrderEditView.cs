@@ -135,6 +135,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.For(v => v.Enabled)
 				.To(vm => vm.IsChargeTypesEnabled);
 
+			set.Bind(txtChargeType)
+				.For(v => v.HasRightArrow)
+				.To(vm => vm.IsChargeTypesEnabled);
+
             set.Apply();
 
             lblPhoneDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
