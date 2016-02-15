@@ -981,7 +981,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					StopOrientationServiceIfNeeded();
 				}
 
-				var statusInfoText = status.IBSStatusDescription;
+				var statusInfoText = status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow) ? this.Services().Localize["NoShowMessage"] : status.IBSStatusDescription;
 
 				var isLocalMarket = await _networkRoamingService.GetAndObserveMarketSettings()
 					.Select(marketSettings => marketSettings.IsLocalMarket)

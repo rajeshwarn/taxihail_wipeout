@@ -2365,4 +2365,7 @@
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>كلمة المرور الحالية غير صحيحة</value>
   </data>
+  <data name="NoShowMessage" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
+  </data>
 </root>

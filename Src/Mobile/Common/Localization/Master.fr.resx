@@ -2417,4 +2417,7 @@
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>Désolé, le mot de passe saisi n'est pas valide</value>
   </data>
+  <data name="NoShowMessage" xml:space="preserve">
+    <value>Votre chauffeur a indiqué que vous n'etiez pas au point de ramassage.</value>
+  </data>
 </root>
