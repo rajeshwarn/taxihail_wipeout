@@ -226,15 +226,5 @@ namespace apcurium.MK.Common.Diagnostic
 				return logFileName;
 			}
 		}
-
-		public string MergeLogFiles()
-		{
-			throw new NotSupportedException();
-		}
-
-		public void RemoveMergedFile()
-		{
-			throw new NotSupportedException();
-		}
 	}
 }

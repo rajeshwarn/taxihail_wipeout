@@ -75,16 +75,6 @@ namespace apcurium.MK.Common.Diagnostic
             throw new NotSupportedException("This call is only supported on mobile.");
         }
 
-        public string MergeLogFiles()
-        {
-            throw new NotSupportedException("This call is only supported on mobile.");
-        }
-
-        public void RemoveMergedFile()
-        {
-            throw new NotSupportedException("This call is only supported on mobile.");
-        }
-
         private class Disposable : IDisposable
         {
             private readonly Action _action;
