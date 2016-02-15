@@ -67,16 +67,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-		private UIColor backgroundColor;
+		private UIColor _backgroundColor;
 		public override UIColor BackgroundColor
 		{
 			get
 			{
-				return backgroundColor;
+				return _backgroundColor;
 			}
 			set
 			{
-				backgroundColor = value;
+				_backgroundColor = value;
 				base.BackgroundColor = value;
 			}
 		}
