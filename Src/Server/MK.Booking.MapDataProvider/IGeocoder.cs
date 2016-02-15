@@ -6,13 +6,17 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
 	public interface IGeocoder
 	{
-		GeoAddress[] GeocodeAddress(string address, string currentLanguage);
+        GeoAddress[] GeocodeAddress(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters);
 
-	    Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage);
+        Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters);
         
 		GeoAddress[]  GeocodeLocation(double latitude, double longitude, string currentLanguage);
 
 	    Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage);
+
+        GeoAddress GetAddressDetail(string id);
+
+        Task<GeoAddress> GetAddressDetailAsync(string id);
 	}
 }
 

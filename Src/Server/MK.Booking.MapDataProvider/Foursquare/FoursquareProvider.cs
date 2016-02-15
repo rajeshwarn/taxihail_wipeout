@@ -28,7 +28,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			Explore
 		}
 
-
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
 
@@ -40,7 +39,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		private const string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&sortByDistance=1&limit={3}";
 		private const string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
 
-
         public FoursquareProvider(IAppSettings settings, ILogger logger, IConnectivityService connectivityService)
             : base (connectivityService)
 		{
@@ -48,7 +46,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		    _logger = logger;
 		}
 
-	    public async Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
+        public async Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
 	    {
             if (maximumNumberOfPlaces == 0)
             {
@@ -72,7 +70,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 venuesSearch.AddRange(searchAnswer.Response.Venues);
             }
 
-
             uint page = 0, pages = 0;
 
             var exploreQuery = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Explore);
@@ -84,7 +81,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
             do
             {
-                exploreAnswer = await client.GetAsync<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * MaximumPageLength).ToString());
+                exploreAnswer = await client.GetAsync<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * MaximumPageLength));
 
                 if (!exploreAnswer.IsValid())
                 {
@@ -116,18 +113,18 @@ namespace MK.Booking.MapDataProvider.Foursquare
             return allVenues.Select(ToPlace).ToArray();
         }
 
-	    public async Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+        public async Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string query, string languageCode, int radius)
 	    {
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
-            searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
+            searchQueryString = string.Format("{0}&query={1}", searchQueryString, query);
 
             var client = GetClient(ApiUrl);
             var venues = await client.GetAsync<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
             if (!venues.IsValid())
             {
-                var ex = new WebException("Code " + venues.Meta.Code.ToString() + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
+                var ex = new WebException("Code " + venues.Meta.Code + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
 
                 _logger.LogError(ex);
 
@@ -144,7 +141,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
             if (!venue.IsValid())
             {
-                Exception ex = new WebException("Code " + venue.Meta.Code.ToString() + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
+                Exception ex = new WebException("Code " + venue.Meta.Code + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
 
                 _logger.LogError(ex);
 
@@ -177,14 +174,14 @@ namespace MK.Booking.MapDataProvider.Foursquare
             };
         }
 
-	    public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
+	    public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
 		{
-           return GetNearbyPlacesAsync(latitude, longitude, languageCode, sensor, radius, maximumNumberOfPlaces, pipedTypeList).Result;
+           return GetNearbyPlacesAsync(latitude, longitude, languageCode, radius, maximumNumberOfPlaces, pipedTypeList).Result;
 		}
 
-		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string query, string languageCode, int radius)
 		{
-		    return SearchPlacesAsync(latitude, longitude, name, languageCode, sensor, radius, countryCode).Result;
+            return SearchPlacesAsync(latitude, longitude, query, languageCode, radius).Result;
 		}
 
 		private GeoPlace ToPlace(Venue venue)

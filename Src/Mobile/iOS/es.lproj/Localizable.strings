@@ -745,7 +745,7 @@
 "LinkForApplicationStoreAbsentTitle"="No se ha encontrado la URL";
 "LinkForApplicationStoreAbsentText"="URL a página de tienda no configurada";
 "ServiceErrorUnauthorized"="Su sesión ha expirado, por favor ingrese nuevamente.";
-"ServiceErrorCallTitle"="Error de servidor";
+"ServiceErrorCallTitle"="Mensaje";
 "PairingProcessingErrorTitle"="Problema al realizar pago empatado";
 "TripUnableToPairErrorText"="Lo sentimos, hubo un problema, por favor pague en la unidad";
 "CreditCardDeclinedOnPreauthorizationErrorText"="Lo sentimos, su tarjeta no pudo ser autorizada. Por favor pague en la unidad";
@@ -757,3 +757,9 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Código de confirmación inválido";
 "InvalidCreditCardMessage"="Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.";
 "InvalidCreditCardUpdateCardButton"="Actualizar Tarjeta";
+"ManualRideLinqDeactivatedCardOnFile"="You need to have an active credit card set as your default payment method";
+"LastFour"="Last 4 numbers:  ";
+"CreditCompany"="Credit company: ";
+"SelectedCreditCard"="Currently selected credit card";
+"NoCreditCard"="No credit card selected";
+"ServiceErrorUpdatePassword_NotSame"="Su contraseña y confirmación no concuerdan";

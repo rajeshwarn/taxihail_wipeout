@@ -794,4 +794,7 @@
   <string name="CreditCompany">Credit company: </string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
 </resources>
