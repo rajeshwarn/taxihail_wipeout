@@ -477,6 +477,7 @@
 "RateLastRide"="Rate";
 "Notification_DriverAssignedPush"="Driver Assigned";
 "Notification_DriverBailedPush"="Driver bailed";
+"Notification_NoShowPush"="No show";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
 "Notification_Enabled"="Allow Notifications";
 "RateLastRideTitle"="Rate last ride?";
@@ -747,3 +748,4 @@
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";
+"NoShowMessage"="Your driver indicated you were not at the pickup location.";

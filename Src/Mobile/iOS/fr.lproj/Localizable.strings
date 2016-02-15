@@ -483,6 +483,7 @@
 "EtaDurationUnitPlural"="minutes";
 "Notification_DriverAssignedPush"="Chauffeur assigné";
 "Notification_DriverBailedPush"="Course refusée";
+"Notification_NoShowPush"="No show";
 "RateLastRide"="Évaluer";
 "Notification_Enabled"="Notifications";
 "StatusEta"="et arrive dans {0} {1}";
@@ -764,3 +765,4 @@
 "SelectedCreditCard"="Carte de crédit sélectionnée: ";
 "NoCreditCard"="Aucune carte de crédit sélectionnée";
 "ServiceErrorUpdatePassword_NotSame"="Désolé, le mot de passe saisi n'est pas valide";
+"NoShowMessage"="Votre chauffeur a indiqué que vous n'etiez pas au point de ramassage.";

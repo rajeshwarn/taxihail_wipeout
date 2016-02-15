@@ -503,6 +503,7 @@
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "Notification_ReceiptEmail"="Receipt (Email)";
 "Notification_DriverBailedPush"="Driver bailed";
+"Notification_NoShowPush"="No show";
 "Notification_VehicleAtPickupPush"="Vehicle at Pickup";
 "Toggle_Off"="Off";
 "Toggle_On"="On";
@@ -768,3 +769,4 @@
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
+"NoShowMessage"="Your driver indicated you were not at the pickup location.";
