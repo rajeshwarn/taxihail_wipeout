@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Initialize();
 		}
 
-        private void Initialize ()
+        public void Initialize ()
 		{
 			this.ShouldChangeCharacters = CheckMaxLength;
 
@@ -174,30 +174,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightPadding = right;
         }
 
-		private UIView _rightView;
-		public override UIView RightView
-		{
-			get
-			{
-				return base.RightView;
-			}
-			set
-			{
-				base.RightView = value;
-
-				_rightView = value;
-			}
-		}
-
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
-
-			//For some reasons, the RightView property is null when we generate it in a TableCellView.
-			if (RightView == null)
-			{
-				base.RightView = _rightView;
-			}
 
 			RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, Frame.Height);
 
