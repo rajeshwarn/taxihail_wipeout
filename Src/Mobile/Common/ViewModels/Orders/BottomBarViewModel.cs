@@ -474,12 +474,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-				await Task.WhenAll(
-					_orderWorkflowService.ResetOrderSettings(),
-					ShowFareEstimateAlertDialogIfNecessary(),
-					ValidateCardOnFile(),
-					PreValidateOrder()
-				);
+				try
+				{
+					await Task.WhenAll(
+						_orderWorkflowService.ResetOrderSettings(),
+						ShowFareEstimateAlertDialogIfNecessary(),
+						ValidateCardOnFile(),
+						PreValidateOrder()
+					);
+				}
+				catch (Exception ex)
+				{
+					Logger.LogError(ex);
+					ResetToInitialState.ExecuteIfPossible();
+					return;
+				}
 			}
 		}
 
