@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
+		private MarketSettings _marketSettings = new MarketSettings() { HashedMarket = null };
 	    private async Task MarketChanged(MarketSettings marketSettings)
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
