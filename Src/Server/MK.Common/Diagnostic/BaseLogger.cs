@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
@@ -10,11 +9,11 @@ namespace apcurium.MK.Common.Diagnostic
 {
 	public abstract class BaseLogger : ILogger
     {
-		private static int LogFileMaximumSize = 200 * 1024;
+	    private const int LogFileMaximumSize = 200*1024;
 
-		private static string LogFileName = "taxihail_log.txt";
+	    private const string LogFileName = "taxihail_log.txt";
 
-		private readonly object _threadLock = new object();
+	    private readonly object _threadLock = new object();
 		
 		public void LogError(Exception ex, string method, int lineNumber)
 		{
@@ -54,27 +53,26 @@ namespace apcurium.MK.Common.Diagnostic
             var stackFrames = stackTrace.GetFrames();    // get method calls (frames)
 
             // write call stack method names
-            if (stackFrames != null)
+            if (stackFrames == null)
             {
-                foreach (var stackFrame in stackFrames)
-                {
-                    if (stackFrame.GetMethod().Name != "LogStack")
-                    {
-                        Write(string.Format ("Stack: {0}", stackFrame.GetMethod().Name)); // write method name
-                    }
-                }
+                return;
+            }
+
+            foreach (var stackFrame in stackFrames.Where(stackFrame => stackFrame.GetMethod().Name != "LogStack"))
+            {
+                Write(string.Format ("Stack: {0}", stackFrame.GetMethod().Name)); // write method name
             }
         }
 
         public IDisposable StartStopwatch (string message)
         {
-            var w = new Stopwatch();
-            w.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             LogMessage(string.Format("Start: {0}", message));
             return Disposable.Create (() => 
                 {
-                    w.Stop();
-                    LogMessage(string.Format("Stop: {0} Execution time : {1} ms", message, w.ElapsedMilliseconds));
+                    stopwatch.Stop();
+                    LogMessage(string.Format("Stop: {0} Execution time : {1} ms", message, stopwatch.ElapsedMilliseconds));
                 });
         }
 
@@ -107,7 +105,7 @@ namespace apcurium.MK.Common.Diagnostic
 
 		protected abstract string GetMessageBase();
 
-		static string RemoveOlderEntries(long overflow, string fileContent)
+		private static string RemoveOlderEntries(long overflow, string fileContent)
 		{
 			var content = fileContent.Split(Environment.NewLine.ToCharArray())
 				.ToArray();
@@ -125,9 +123,11 @@ namespace apcurium.MK.Common.Diagnostic
 					{
 						return false;
 					}
-					var previousLinesTotalLenght = content.Take(index).Sum(p => p.Length);
+					var previousLinesTotalLength = content.Take(index).Sum(p => p.Length);
 
-					return overflow - previousLinesTotalLenght > 0;
+				    skip = overflow - previousLinesTotalLength > 0;
+
+                    return skip;
 				})
 				.ToArray();
 			
@@ -140,11 +140,13 @@ namespace apcurium.MK.Common.Diagnostic
 					{
 						return false;
 					}
+
 					skip = !(line.StartsWith("Message on") || line.StartsWith("Error on"));
+
 					return skip;
 				})
-				.JoinBy(Environment.NewLine).
-				Trim();
+				.JoinBy(Environment.NewLine)
+                .Trim();
 			
 			return log;
 		}
@@ -153,15 +155,23 @@ namespace apcurium.MK.Common.Diagnostic
 		{
 			var backupFileName = fileIO.FullName + ".bak";
 
-			if(File.Exists(backupFileName))
-			{
-				File.Delete(backupFileName);
-			}
+		    try
+		    {
+                if (File.Exists(backupFileName))
+                {
+                    File.Delete(backupFileName);
+                }
+            }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
+			
 
 			// Creating a backup copy of the log in case a crash happends.
 			File.Copy(fileIO.FullName, backupFileName);
 
-			var fileContent = string.Empty;
+			string fileContent;
 
 			using (var sr = fileIO.OpenText())
 			{
@@ -170,18 +180,30 @@ namespace apcurium.MK.Common.Diagnostic
 
 			var log = RemoveOlderEntries(overflow, fileContent);
 
-
-			fileIO.Delete();
+		    try
+		    {
+		        fileIO.Delete();
+		    }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
 
 			using (var sw = fileIO.CreateText())
 			{
-				sw.Write(log);
-				sw.Write(Environment.NewLine);
+				sw.WriteLine(log);
 				sw.Flush();
 			}
 
-			// Deleting the backup copy.
-			File.Delete(backupFileName);
+		    try
+		    {
+		        // Deleting the backup copy.
+		        File.Delete(backupFileName);
+		    }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
 		}
 
 		private void Write(string message)
