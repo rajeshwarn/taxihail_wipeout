@@ -455,9 +455,9 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.IsNotNull(order);
                 Assert.AreEqual(@event.AccountId, order.AccountId);
                 Assert.AreEqual(@event.TripId, order.IBSOrderId);
-                Assert.AreEqual(@event.StartTime, order.PickupDate);
-                Assert.AreEqual(@event.PairingDate, order.CreatedDate);
-                Assert.AreEqual(@event.PickupAddress, order.PickupAddress);
+                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), order.PickupDate.ToLongDateString());
+                Assert.AreEqual(@event.PairingDate.ToLongDateString(), order.CreatedDate.ToLongDateString());
+                Assert.AreEqual(@event.PickupAddress.DisplayLine1, order.PickupAddress.DisplayLine1);
                 Assert.AreEqual((int)OrderStatus.Created, order.Status);
                 Assert.AreEqual(@event.UserAgent, order.UserAgent);
                 Assert.AreEqual(@event.ClientLanguageCode, order.ClientLanguageCode);
@@ -470,8 +470,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.IsNotNull(orderStatus);
                 Assert.AreEqual(@event.AccountId, orderStatus.AccountId);
                 Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
-                Assert.AreEqual("", orderStatus.IBSStatusDescription);
-                Assert.AreEqual(@event.StartTime, orderStatus.PickupDate);
+                Assert.AreEqual("Processing your order...", orderStatus.IBSStatusDescription);
+                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), orderStatus.PickupDate.ToLongDateString());
                 Assert.AreEqual(@event.Medallion, orderStatus.VehicleNumber);
                 Assert.AreEqual(@event.DriverId.ToString(), orderStatus.DriverInfos.DriverId);
 
@@ -480,8 +480,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(@event.AccountId, orderRideLinq.AccountId);
                 Assert.AreEqual(@event.PairingCode, orderRideLinq.PairingCode);
                 Assert.AreEqual(@event.PairingToken, orderRideLinq.PairingToken);
-                Assert.AreEqual(@event.PairingDate, orderRideLinq.PairingDate);
-                Assert.AreEqual(@event.StartTime, orderRideLinq.StartTime);
+                Assert.AreEqual(@event.PairingDate.ToLongDateString(), orderRideLinq.PairingDate.ToLongDateString());
+                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), orderRideLinq.StartTime.Value.ToLongDateString());
                 Assert.AreEqual(@event.Distance, orderRideLinq.Distance);
                 Assert.AreEqual(@event.Extra, orderRideLinq.Extra);
                 Assert.AreEqual(@event.Fare, orderRideLinq.Fare);
@@ -549,7 +549,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             Sut.Handle(new OrderUnpairedFromManualRideLinq
             {
-                SourceId = _orderId
+                SourceId = _orderId,
+                EventDate = _eventDate
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -565,7 +566,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
                 Assert.NotNull(rideLinq);
                 Assert.AreEqual(true, rideLinq.IsCancelled);
-                Assert.AreEqual(_eventDate, rideLinq.EndTime);
+                Assert.AreEqual(_eventDate.ToLongDateString(), rideLinq.EndTime.Value.ToLongDateString());
             }
         }
 
@@ -640,7 +641,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var orderStatus = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(orderStatus);
                 Assert.AreEqual(OrderStatus.WaitingForPayment, orderStatus.Status);
-                Assert.AreEqual(now, orderStatus.LastTripPollingDateInUtc);
+                Assert.AreEqual(now.ToLongDateString(), orderStatus.LastTripPollingDateInUtc.Value.ToLongDateString());
 
                 var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
                 Assert.NotNull(rideLinq);
@@ -669,7 +670,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var orderStatus = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(orderStatus);
                 Assert.AreEqual(OrderStatus.TimedOut, orderStatus.Status);
-                Assert.AreEqual(now, orderStatus.LastTripPollingDateInUtc);
+                Assert.AreEqual(now.ToLongDateString(), orderStatus.LastTripPollingDateInUtc.Value.ToLongDateString());
 
                 var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
                 Assert.NotNull(rideLinq);
