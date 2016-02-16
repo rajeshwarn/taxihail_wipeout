@@ -159,6 +159,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool OrderIsCancelled { get; set; }
 
         public bool OrderIsCompleted { get; set; }
+
+        public bool OrderIsNoShow { get; set; }
     }
 
     public class OrderReportPayment

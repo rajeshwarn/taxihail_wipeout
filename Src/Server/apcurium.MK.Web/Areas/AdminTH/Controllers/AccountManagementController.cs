@@ -22,6 +22,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -425,6 +427,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                .Select(x =>
                {
                    var promo = _promoDao.FindByOrderId(x.Id);
+                   var status = _orderDao.FindOrderStatusById(x.Id);
                    return new OrderModel(x)
                    {
                        PromoCode = promo != null ? promo.Code : string.Empty,
@@ -434,7 +437,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
                        TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
-                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
+                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? status.IBSStatusDescription : ((OrderStatus)x.Status).ToString()
                    };
                })
                .ToList();

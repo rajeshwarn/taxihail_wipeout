@@ -338,7 +338,7 @@
     <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
   </data>
   <data name="PushNotification_wosNOSHOW" xml:space="preserve">
     <value>Your driver indicated you were not at the pickup location.</value>
