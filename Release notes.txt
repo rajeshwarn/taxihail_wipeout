@@ -322,11 +322,101 @@
 3.2.24
 	History detail - Cannot cancel scheduled order
 	EastsideForARide - Custom strings
-Version bump 3.3.1
+3.3.1
 	Addes possibility to acces "Pay in Car" for web order only
 
 
+4.1.0
+	correction on accountId link between note and account
+	Arro iphone pairing failure app crash - Error parse fix and refactoring
+	if trip has an error during manual ridelinq, end the polling and complete the order
+	fix problem on Note assignment in AdminTH
+4.1.2
+	fix iOS address search + standardize search (IPlaces + IGeocoding implementations)
+	Fixed cases where overdue payment exists or payment method is disactivated when attempting to do manual pairing.
+	Remove cache for dispatcher settings, always call customer portal for latest settings
+4.1.3
+	Arro iphone pairing failure app crash - Fix with a custom ManualPairingException
+4.1.4
+	Ajusted Overduepayment screen to display current credit card.
+	Ensuring that overdue payment flow reacts correctly.
+	Fixed Resend email problem for manual ride
+	correction on keyboard visibility
+	Localization update
+	Fixing issue where map would not auto-follow taxi on iOS.
+	keyboard keep focus on invalid manual pairing.
 
+
+4.2.0
+	check server side if email is linked to Facebook or Twitter
+	Prevented flickering, added error loging to a task and fixed odd flow when charge type is enabled or not
+	Reduced the number of resolves done in chargetype list
+	If not in cmt, we need to also ensure that if Payments is 1, we also disable the chargeType dropdown.
+	Fixed issue where charge type was blank
+	Fixed auto-follow on iOS.
+	add city client side for places
+	fix book later not respecting market settings
+	add check server side to have full address with city for history addres
+	Add future booking settings
+	fix market change detection false position
+	Adding self monitoring api to taxihail server.
+	Added test to payment API (cmt) and fixed bug with IsUpdaterDeadlocked.
+	add check to detect if driver has bailed
+	add check to update position if driver has bailed
+	add prepaid check for alert message
+	Update Spanish resource file
+	Add logs when tokenizing card
+	Moved accountId from RatingScoreDetail to OrderRatingDetails
+	Updated CompanyServerStatus to be more positive
+	correction on email generation
+	Payment settings update page
+	Callbox - Fixed issue where Butons Hidden By Keyboard
+	Now ensuring that errors are thrown in Geo and Honeybadger when we are expecting to receive an error.
+	Support Bailed state to show CancelButton
+	Fix serverside compilation
+	Use Device name for pairing
+	Email templates
+	Callbox - Fixed the color of user prompts
+	Add email address to ibs order creation
+	Fixing updater to acutally wait on the underlying parallel tasks and fixed refresh delays
+	remove check for AuthFailure.NetworkError in VM since it is handled in AccountService
+	replace HttpRequestException with WebException (WebExceptionStatus.ConnectFailure) 
+	Fixed some typo
+	Callbox - added popup when server is unavailable
+	Add French strings
+	Add setting for customer portal watchdog
+	Fixed CC card scan
+	Fix customer portal menu
+	Change push notification message on pairing for Arro
+	Fixed issue with CustomerPortal. Now deleting user preferences when deleting a user.
+4.2.1
+	Added tooltips and changed the green color to something more green...
+	Fix Unable to delete 'no driver accepted' order from history
+	Payment settings not all saved on Customer Portal
+4.2.2
+	Message missing for current wrong password in Profile screen
+	When driver bail, status is no more wosWaiting as in Master but wosBailed
+	Simplification of logs.
+	Keep the other case when dispatcher is not used
+	Payment settings not all saved when coming from Customer Portal
+4.2.3
+	Send totalAmount otherwise, 0 is send.... show button only if Completed
+	Check when update if medallion is different than the previous one
+	Fixed Refund that is not working
+	Fix iOS address Search
+	Fixed logic in app for DisableOutOfAppPayment via market.
+	Fixed FlatTextField to correctly set it's background color and arrow on enable/disabled.
+	MarketChanged should be HashedMarketless-safe
+	Refactor of the rollover system to only use 1 file (and 1 temporary backup).
+	Use Places Autocomplete Google maps api instead of Geocode
+	Correction on refund, send POST instead of PUT
+	Fixed issue where the HasRightArrow was overridden during draw phase.
+	String changes
+4.2.3.1
+	Fixing issue where RightView might be null when displaying FlatTextFieldView inside of a TableCellSource.
+	Fixing missing call to the correct method to get and run a log file.
+	Refund correction
+	Cleanup of FlatTextField
 
 
 
