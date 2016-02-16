@@ -73,7 +73,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
             {
                 var activeOrder = (from order in context.Set<OrderStatusDetail>()
                                    where order.AccountId == accountId
-                                   where order.Status == OrderStatus.Created select order).ToList();
+                                   where VehicleStatuses.OrderActiveStatuses.Any(status => status == order.IBSStatusId)
+                                   select order).ToList();
 
                 return activeOrder.SingleOrDefault();
             }
