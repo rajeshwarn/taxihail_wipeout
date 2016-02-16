@@ -178,6 +178,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
+            if (RightView == null)
+            {
+                RightView = new UIView();
+            }
+
 			RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, Frame.Height);
 
             if (HasRightArrow)
