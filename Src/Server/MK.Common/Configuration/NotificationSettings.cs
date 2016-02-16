@@ -23,5 +23,6 @@ namespace MK.Common.Configuration
         public bool? PaymentConfirmationPush { get; set; }
         public bool? PromotionUnlockedPush { get; set; }
         public bool? DriverBailedPush { get; set; }
+        public bool? NoShowPush { get; set; }
     }
 }
