@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Events
 
         public DateTime PairingDate { get; set; }
 
-        public DateTime? StartTime { get; set; }
-
         public string ClientLanguageCode { get; set; }
 
         public string UserAgent { get; set; }

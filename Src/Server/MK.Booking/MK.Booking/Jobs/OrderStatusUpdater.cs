@@ -299,8 +299,7 @@ namespace apcurium.MK.Booking.Jobs
             }
 
             if (orderStatusDetail.Status == OrderStatus.Created
-                && tripInfo.StartTime.HasValue 
-                && tripInfo.StartTime.Value.ToUniversalTime().AddHours(2) <= DateTime.UtcNow)
+                && rideLinqDetails.PairingDate.AddHours(2) <= DateTime.Now)
             {
                 _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [trip id: {0} (order {1})]", tripInfo.TripId, orderStatusDetail.OrderId);
 
@@ -316,8 +315,7 @@ namespace apcurium.MK.Booking.Jobs
 
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
             {
-                var orderShouldBeSetToTimedOut = tripInfo.StartTime.HasValue
-                    && tripInfo.StartTime.Value.ToUniversalTime().AddDays(30) <= DateTime.UtcNow;
+                var orderShouldBeSetToTimedOut = rideLinqDetails.PairingDate.AddDays(30) <= DateTime.Now;
 
                 if (orderShouldBeSetToTimedOut)
                 {
@@ -325,7 +323,7 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 else
                 {
-                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1}", orderStatusDetail.OrderId, tripInfo.StartTime.Value.ToUniversalTime().AddDays(30));
+                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1}", orderStatusDetail.OrderId, rideLinqDetails.PairingDate.AddDays(30));
                 }
 
                 _commandBus.Send(new ChangeOrderStatusForManualRideLinq

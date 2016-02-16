@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
 			var order = new Order(command.OrderId);
 
-			order.UpdateOrderManuallyPairedForRideLinq(command.AccountId, command.StartTime, command.PairingDate, command.PairingCode, command.PairingToken,
+			order.UpdateOrderManuallyPairedForRideLinq(command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.DeviceName,

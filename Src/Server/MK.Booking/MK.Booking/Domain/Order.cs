@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-		public void UpdateOrderManuallyPairedForRideLinq(Guid accountId, DateTime? startTime, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+		public void UpdateOrderManuallyPairedForRideLinq(Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
@@ -170,7 +170,6 @@ namespace apcurium.MK.Booking.Domain
 			{
 				AccountId = accountId,
 				PairingDate = pairingDate,
-                StartTime = startTime,
                 UserAgent = userAgent,
 				ClientLanguageCode = clientLanguageCode,
 				ClientVersion = clientVersion,

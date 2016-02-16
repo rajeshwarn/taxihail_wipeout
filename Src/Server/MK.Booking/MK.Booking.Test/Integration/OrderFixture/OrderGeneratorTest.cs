@@ -425,7 +425,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 SourceId = Guid.NewGuid(),
                 AccountId = Guid.NewGuid(),
                 TripId = 15,
-                StartTime = DateTime.Now.AddMinutes(-5),
                 PairingDate = DateTime.Now,
                 PickupAddress = new Address
                 {
@@ -455,7 +454,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.IsNotNull(order);
                 Assert.AreEqual(@event.AccountId, order.AccountId);
                 Assert.AreEqual(@event.TripId, order.IBSOrderId);
-                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), order.PickupDate.ToLongDateString());
                 Assert.AreEqual(@event.PairingDate.ToLongDateString(), order.CreatedDate.ToLongDateString());
                 Assert.AreEqual(@event.PickupAddress.DisplayLine1, order.PickupAddress.DisplayLine1);
                 Assert.AreEqual((int)OrderStatus.Created, order.Status);
@@ -471,7 +469,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(@event.AccountId, orderStatus.AccountId);
                 Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
                 Assert.AreEqual("Processing your order...", orderStatus.IBSStatusDescription);
-                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), orderStatus.PickupDate.ToLongDateString());
                 Assert.AreEqual(@event.Medallion, orderStatus.VehicleNumber);
                 Assert.AreEqual(@event.DriverId.ToString(), orderStatus.DriverInfos.DriverId);
 
@@ -481,7 +478,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(@event.PairingCode, orderRideLinq.PairingCode);
                 Assert.AreEqual(@event.PairingToken, orderRideLinq.PairingToken);
                 Assert.AreEqual(@event.PairingDate.ToLongDateString(), orderRideLinq.PairingDate.ToLongDateString());
-                Assert.AreEqual(@event.StartTime.Value.ToLongDateString(), orderRideLinq.StartTime.Value.ToLongDateString());
                 Assert.AreEqual(@event.Distance, orderRideLinq.Distance);
                 Assert.AreEqual(@event.Extra, orderRideLinq.Extra);
                 Assert.AreEqual(@event.Fare, orderRideLinq.Fare);
@@ -507,11 +503,14 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
     [TestFixture]
     public class given_existing_manual_ridelinq_order : given_a_view_model_generator
     {
-        private readonly Guid _orderId = Guid.NewGuid();
+        private Guid _orderId;
         private readonly DateTime _eventDate = DateTime.Now;
 
-        public given_existing_manual_ridelinq_order()
+        [SetUp]
+        public void Setup()
         {
+            _orderId = Guid.NewGuid();
+
             var @event = new OrderManuallyPairedForRideLinq
             {
                 EventDate = _eventDate,
@@ -519,7 +518,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 SourceId = _orderId,
                 AccountId = Guid.NewGuid(),
                 TripId = 15,
-                StartTime = DateTime.Now.AddMinutes(-5),
                 PairingDate = DateTime.Now,
                 PickupAddress = new Address
                 {

@@ -530,7 +530,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
                     IBSOrderId = @event.TripId,
-                    PickupDate = @event.StartTime.HasValue ? @event.StartTime.Value : @event.PairingDate, //support old events
+                    PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
                     Status = (int)OrderStatus.Created,
@@ -556,7 +556,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
-                        PickupDate = @event.StartTime.HasValue ? @event.StartTime.Value : @event.PairingDate, //support old events
+                        PickupDate = @event.PairingDate,
                         IsManualRideLinq = true,
                         VehicleNumber = @event.Medallion,
                         DriverInfos = new DriverInfos
@@ -580,7 +580,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         PairingCode = @event.PairingCode,
                         PairingToken = @event.PairingToken,
                         PairingDate = @event.PairingDate,
-                        StartTime = @event.StartTime,
                         Distance = @event.Distance,
                         Extra = @event.Extra,
                         Fare = @event.Fare,

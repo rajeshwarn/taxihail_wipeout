@@ -530,7 +530,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Order = new OrderReportOrder
                 {
                     ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
-                    PickupDateTime = @event.StartTime.HasValue ? @event.StartTime.Value : @event.PairingDate, //support old events
+                    PickupDateTime = @event.PairingDate,
                     CreateDateTime = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
                     OriginatingIpAddress = @event.OriginatingIpAddress,
