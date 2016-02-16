@@ -123,34 +123,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void Initialize()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
+
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var coordonates = new[] 
-            {
-                    CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
-                    CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
-            };
-            
+            var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<Position>("UserLastKnownPosition");
 
+            var defaultLatitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLatitude : lastKnownPosition.Latitude;
+            var defaultLongitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLongitude : lastKnownPosition.Longitude;
 
-	        // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
-	        // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                var minLat = coordonates.Min(a => a.Coordinate.Latitude);
-                var maxLat = coordonates.Max(a => a.Coordinate.Latitude);
-                var minLon = coordonates.Min(a => a.Coordinate.Longitude);
-                var maxLon = coordonates.Max(a => a.Coordinate.Longitude);
+            var latitude = bestPosition != null ? bestPosition.Latitude : defaultLatitude;
+            var longitude = bestPosition != null ? bestPosition.Longitude : defaultLongitude;
 
-                var center = new CLLocationCoordinate2D(((maxLat + minLat) / 2), (maxLon + minLon) / 2);
+            var region = new MKCoordinateRegion(new CLLocationCoordinate2D(latitude, longitude), new MKCoordinateSpan(0.1, 0.1));
 
-                var region = new MKCoordinateRegion(center, new MKCoordinateSpan(0.1, 0.1));
-
-                Region = region;
-            }
-
-
+            Region = region;
 
             this.DelayBind(() => 
             {

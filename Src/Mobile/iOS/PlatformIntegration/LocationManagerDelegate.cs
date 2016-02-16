@@ -15,8 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public LocationManagerDelegate ()
         {
             Observers = new List<IObserver<Position>>();
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ("UserAppCache");
         }
 
+        private readonly ICacheService _cacheService;
         List<IObserver<Position>> Observers {get; set;}
         public Position LastKnownPosition {get;set;}
         public Position BestPosition {get;set;}
@@ -53,6 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
 
             LastKnownPosition = position;
+
+            _cacheService.Set("UserLastKnownPosition", position);
         }
 
         public IDisposable Subscribe (IObserver<Position> observer)

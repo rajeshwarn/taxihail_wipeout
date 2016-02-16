@@ -32,8 +32,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Map = new MapView(Activity.ApplicationContext,  settings.MapBoxKey);
             Map.OnCreate(savedInstanceState);
 
-			var latitude = bestPosition != null ? bestPosition.Latitude : settings.GeoLoc.DefaultLatitude;
-			var longitude = bestPosition != null ? bestPosition.Longitude : settings.GeoLoc.DefaultLongitude;
+            var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<Position>("UserLastKnownPosition");
+
+            var defaultLatitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLatitude : lastKnownPosition.Latitude;
+            var defaultLongitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLongitude : lastKnownPosition.Longitude;
+
+            var latitude = bestPosition != null ? bestPosition.Latitude : defaultLatitude;
+            var longitude = bestPosition != null ? bestPosition.Longitude : defaultLongitude;
 
             Map.SetLogoVisibility((int)ViewStates.Gone);
             Map.SetAttributionVisibility((int)ViewStates.Gone);

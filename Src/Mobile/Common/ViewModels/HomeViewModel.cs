@@ -139,8 +139,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             BottomBar.NextAirport = OrderAirport.NextCommand;
 		}
 
-
-
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
