@@ -81,8 +81,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false);
 
 	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
-
-	    IObservable<bool> GetAndObserveSignedInStatus();
     }
 }
 
