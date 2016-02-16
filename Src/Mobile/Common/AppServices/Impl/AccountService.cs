@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reactive;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
@@ -46,6 +48,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ILocalization _localize;
 		private readonly IConnectivityService _connectivityService;
 
+
+        private readonly ISubject<bool> _isUserSignedIn;
+
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -57,6 +62,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_facebookService = facebookService;
 			_appSettings = appSettings;
 			_connectivityService = connectivityService;
+
+            _isUserSignedIn = new BehaviorSubject<bool>(CurrentAccount != null);
 		}
 
         public async Task<ReferenceData> GetReferenceData()
@@ -110,6 +117,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             ClearCache ();
+
+            _isUserSignedIn.OnNext(false);
         }
 
 		public async void RefreshCache (bool reload)
@@ -326,9 +335,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
 					error => { throw error; /* Avoid trigerring global error handler */ });
-                SaveCredentials (authResponse);                
-                return await GetAccount ();
-            }
+                SaveCredentials (authResponse);           
+                var account = await GetAccount ();
+
+                _isUserSignedIn.OnNext(true);
+
+			    return account;
+			}
             catch(WebException)
             {
                 // Happen when device is not connected
@@ -832,6 +845,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
+        }
+
+        public IObservable<bool> GetAndObserveSignedInStatus()
+        {
+            return _isUserSignedIn;
         }
     }
 }

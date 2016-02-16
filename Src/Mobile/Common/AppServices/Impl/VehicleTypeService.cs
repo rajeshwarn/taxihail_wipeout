@@ -3,9 +3,11 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using apcurium.MK.Booking.Api.Client;
 using System.Reactive.Subjects;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -16,21 +18,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		private readonly INetworkRoamingService _networkRoamingService;
 		private readonly ICacheService _cacheService;
+	    private readonly IAccountService _accountService;
 
 		private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
-		public VehicleTypeService(INetworkRoamingService networkRoamingService, ICacheService cacheService)
+		public VehicleTypeService(INetworkRoamingService networkRoamingService, ICacheService cacheService, IAccountService accountService)
 		{
 			_networkRoamingService = networkRoamingService;
 			_cacheService = cacheService;
+		    _accountService = accountService;
 
-			Observe(networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
+		    var marketObservable = Observable.CombineLatest(
+		        networkRoamingService.GetAndObserveMarketSettings(),
+		        _accountService.GetAndObserveSignedInStatus(),
+		        (marketSettings, isSignedIn) => new
+		        {
+		            marketSettings,
+                    isSignedIn
+		        });
+
+		    Observe(marketObservable.Where(setting => setting.isSignedIn), settings => MarketChanged(settings.marketSettings).FireAndForget());
 		}
 
 		private async Task MarketChanged(MarketSettings marketSettings)
 		{
-			// If we changed market
-			if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
+            // If we changed market
+            if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
 			{
 				var vehicles = marketSettings.IsLocalMarket
 					? await GetLocalMarketVehiclesList()
