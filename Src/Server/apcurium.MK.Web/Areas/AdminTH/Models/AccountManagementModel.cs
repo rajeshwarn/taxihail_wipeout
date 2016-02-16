@@ -70,6 +70,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Display(Name = "Credit card last 4 digits")]
         public string CreditCardLast4Digits { get; set; }
 
+        [Display(Name = "Total Completed")]
+        public int TotalCompleted { get; set; }
+
+        [Display(Name = "Total Canceled")]
+        public int TotalCanceled { get; set; }
+
+        [Display(Name = "Total No Shows")]
+        public int TotalNoShows { get; set; }
+
+        [Display(Name = "Average trips per day")]
+        public decimal AverageTripsPerDay { get; set; }
+
         public PagedList<OrderModel> OrdersPaged { get; set; }
 
         public string NotePopupContent { get; set; }

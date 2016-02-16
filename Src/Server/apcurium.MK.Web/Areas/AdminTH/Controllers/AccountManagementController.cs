@@ -386,6 +386,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var accountDetail = _accountDao.FindById(accountId);
 
+            var orders = GetOrderDetails(accountId) ?? new List<OrderDetail>();
+            var ordersCount = orders.Count();
+            var accountAgeInDays = (DateTime.Now.ToUniversalTime() - accountDetail.CreationDate.ToUniversalTime()).TotalDays;
+            var averageTripsPerDay = decimal.Round((decimal) (ordersCount/accountAgeInDays));
+            var totalCanceled = orders.Count(order => order.Status == (int) OrderStatus.Canceled);
+            var totalCompleted = orders.Count(order => order.Status == (int)OrderStatus.Completed);
+
             var model = new AccountManagementModel
             {
                 Id = accountId,
@@ -401,7 +408,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PhoneNumber = accountDetail.Settings.Phone,
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
-                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
+                TotalCanceled = totalCanceled,
+                TotalCompleted = totalCompleted,
+                AverageTripsPerDay = averageTripsPerDay
             };
 
             if (accountDetail.DefaultCreditCard != null)
@@ -418,12 +428,19 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return model;
         }
 
+        private IEnumerable<OrderDetail> _orderDetails;
+
+        private IEnumerable<OrderDetail> GetOrderDetails(Guid accountId)
+        {
+            return _orderDetails ?? (_orderDetails = _orderDao.FindByAccountId(accountId)
+                .OrderByDescending(c => c.CreatedDate));
+        }
+
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
-            var orders = _orderDao.FindByAccountId(accountId)
-               .OrderByDescending(c => c.CreatedDate)
+            var orders = GetOrderDetails(accountId)
                .Select(x =>
                {
                    var promo = _promoDao.FindByOrderId(x.Id);

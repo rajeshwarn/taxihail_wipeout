@@ -161,7 +161,50 @@
       <br />
    </div>
 
-   <div class="well clearfix form-horizontal" style="width:1000px;">
+    <div class="well clearfix form-horizontal">
+        <h4 class="table-title">Order Details Summary</h4>
+        <br/>
+        <div class="div-account-block">
+            <div class="left-column">
+                @Html.LabelFor(x => x.TotalCompleted, new { @class = "control-label-wide" })
+            </div>
+            <div class="right-column">
+                @Html.Label(Model.TotalCompleted.ToString(), new { @class = "label-account-item label-account-item-normalcolor" })
+                @Html.HiddenFor(x => x.TotalCompleted)
+            </div>
+        </div>
+        <div class="div-account-block">
+            <div class="left-column">
+                @Html.LabelFor(x => x.TotalCanceled, new { @class = "control-label-wide" })
+            </div>
+            <div class="right-column">
+                @Html.Label(Model.TotalCanceled.ToString(), new { @class = "label-account-item label-account-item-normalcolor" })
+                @Html.HiddenFor(x => x.TotalCanceled)
+            </div>
+        </div>
+        <div class="div-account-block">
+            <div class="left-column">
+                @Html.LabelFor(x => x.TotalNoShows, new { @class = "control-label-wide" })
+            </div>
+            <div class="right-column">
+                @Html.Label(Model.TotalNoShows.ToString(), new { @class = "label-account-item label-account-item-normalcolor" })
+                @Html.HiddenFor(x => x.TotalNoShows)
+            </div>
+        </div>
+        <div class="div-account-block">
+            <div class="left-column">
+                @Html.LabelFor(x => x.AverageTripsPerDay, new { @class = "control-label-wide" })
+            </div>
+            <div class="right-column">
+                @Html.Label(Model.AverageTripsPerDay.ToString(), new { @class = "label-account-item label-account-item-normalcolor" })
+                @Html.HiddenFor(x => x.AverageTripsPerDay)
+            </div>
+        </div>
+
+        <br/>
+    </div>
+
+    <div class="well clearfix form-horizontal" style="width:1000px;">
         <h4 class="table-title">Notes</h4>
 
         @if (Model.Notes != null && Model.Notes.Any())
