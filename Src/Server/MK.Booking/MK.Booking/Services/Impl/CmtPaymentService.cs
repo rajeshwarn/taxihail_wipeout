@@ -404,9 +404,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Post(request);
+                var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
 
-                if (response != null && response.ResponseCode == 200)
+                if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
                     // send a command to update refund status of Order
                     _commandBus.Send(new UpdateRefundedOrder
@@ -427,7 +427,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                        Message = response != null ? response.ResponseMessage : string.Empty
+                        Message = response != null ? response.StatusDescription : string.Empty
                     };
                 }
             }
