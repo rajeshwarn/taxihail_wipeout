@@ -338,7 +338,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
 
-                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
                     TempData["UserMessage"] = "order refunded, note added, email sent";
                 }
