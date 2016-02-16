@@ -7253,8 +7253,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080177
 			public const int AccountDisabled_NoCall = 2131231095;
 			
-			// aapt resource value: 0x7f080377
-			public const int AccountLinkedWithFAcebook = 2131231607;
+			// aapt resource value: 0x7f08037a
+			public const int AccountLinkedWithFAcebook = 2131231610;
 			
 			// aapt resource value: 0x7f08035c
 			public const int AccountLinkedWithFacebook = 2131231580;
@@ -7730,8 +7730,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0801cf
 			public const int CreditCardZipCode = 2131231183;
 			
-			// aapt resource value: 0x7f080373
-			public const int CreditCompany = 2131231603;
+			// aapt resource value: 0x7f080375
+			public const int CreditCompany = 2131231605;
 			
 			// aapt resource value: 0x7f080131
 			public const int CurrencyPriceFormat = 2131231025;
@@ -8087,11 +8087,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080159
 			public const int InvalidChoiceTitle = 2131231065;
 			
-			// aapt resource value: 0x7f080372
-			public const int InvalidCreditCardMessage = 2131231602;
-			
 			// aapt resource value: 0x7f080374
-			public const int InvalidCreditCardUpdateCardButton = 2131231604;
+			public const int InvalidCreditCardMessage = 2131231604;
+			
+			// aapt resource value: 0x7f080376
+			public const int InvalidCreditCardUpdateCardButton = 2131231606;
 			
 			// aapt resource value: 0x7f080135
 			public const int InvalidEmailMessage = 2131231029;
@@ -8150,8 +8150,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0801f6
 			public const int LargeBagsLabel = 2131231222;
 			
-			// aapt resource value: 0x7f080371
-			public const int LastFour = 2131231601;
+			// aapt resource value: 0x7f080373
+			public const int LastFour = 2131231603;
 			
 			// aapt resource value: 0x7f080368
 			public const int LinkForApplicationStoreAbsentText = 2131231592;
@@ -8399,8 +8399,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080086
 			public const int NoConnectionTitle = 2131230854;
 			
-			// aapt resource value: 0x7f080376
-			public const int NoCreditCard = 2131231606;
+			// aapt resource value: 0x7f080378
+			public const int NoCreditCard = 2131231608;
 			
 			// aapt resource value: 0x7f0801e6
 			public const int NoCreditCardSelected = 2131231206;
@@ -8981,8 +8981,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080239
 			public const int ScanCreditCard = 2131231289;
 			
-			// aapt resource value: 0x7f080375
-			public const int SelectedCreditCard = 2131231605;
+			// aapt resource value: 0x7f080377
+			public const int SelectedCreditCard = 2131231607;
 			
 			// aapt resource value: 0x7f08016d
 			public const int SendEmail = 2131231085;
@@ -9011,14 +9011,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08036a
 			public const int ServiceErrorCallTitle = 2131231594;
 			
-			// aapt resource value: 0x7f080370
-			public const int ServiceErrorCreateAccount_InvalidConfirmationToken = 2131231600;
+			// aapt resource value: 0x7f080372
+			public const int ServiceErrorCreateAccount_InvalidConfirmationToken = 2131231602;
 			
 			// aapt resource value: 0x7f08036f
 			public const int ServiceErrorResetPassword_AccountNotFound = 2131231599;
 			
+			// aapt resource value: 0x7f080370
+			public const int ServiceErrorResetPassword_FacebookAccount = 2131231600;
+			
+			// aapt resource value: 0x7f080371
+			public const int ServiceErrorResetPassword_TwitterAccount = 2131231601;
+			
 			// aapt resource value: 0x7f080369
 			public const int ServiceErrorUnauthorized = 2131231593;
+			
+			// aapt resource value: 0x7f080379
+			public const int ServiceErrorUpdatePassword_NotSame = 2131231609;
 			
 			// aapt resource value: 0x7f08030d
 			public const int ServiceError_EmailClientAbsent = 2131231501;
