@@ -406,7 +406,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var response = _cmtMobileServiceClient.Post(request);
 
-                if(response.ResponseCode == 200)
+                if (response != null && response.ResponseCode == 200)
                 {
                     // send a command to update refund status of Order
                     _commandBus.Send(new UpdateRefundedOrder
@@ -427,20 +427,30 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                        Message = response.ResponseMessage
+                        Message = response != null ? response.ResponseMessage : string.Empty
                     };
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
+                var message = ex.Message;
+                var responseBody = string.Empty;
+
+                if (ex is WebServiceException)
+                {
+                    responseBody = " [" + ((WebServiceException)ex).ResponseBody + "]";
+                }
+
+                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip" + responseBody);
+                message += responseBody;
+
                 _logger.LogError(ex);
 
                 return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
                     Last4Digits = string.Empty,
-                    Message = ex.Message
+                    Message = message
                 };
             }
         }
