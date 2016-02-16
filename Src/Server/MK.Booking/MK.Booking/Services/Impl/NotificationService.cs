@@ -140,6 +140,17 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public void SendNoShowPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            if (ShouldSendNotification(order.AccountId, x => x.NoShowPush))
+            {
+                SendPushOrSms(order.AccountId,
+                    _resources.Get("PushNotification_wosNOSHOW", order.ClientLanguageCode),
+                    new Dictionary<string, object>());
+            }
+        }
+
         public void SendChangeDispatchCompanyPush(Guid orderId)
         {
             var order = _orderDao.FindById(orderId);

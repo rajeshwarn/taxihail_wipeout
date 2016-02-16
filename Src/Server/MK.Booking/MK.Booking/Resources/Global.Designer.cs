@@ -1357,7 +1357,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No show.
+        ///   Looks up a localized string similar to Your driver indicated you were not at the pickup location..
         /// </summary>
         public static string OrderStatus_wosNOSHOW {
             get {
@@ -1677,6 +1677,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_wosLOADED {
             get {
                 return ResourceManager.GetString("PushNotification_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your driver indicated you were not at the pickup location..
+        /// </summary>
+        public static string PushNotification_wosNOSHOW {
+            get {
+                return ResourceManager.GetString("PushNotification_wosNOSHOW", resourceCulture);
             }
         }
         

@@ -276,6 +276,7 @@
 "Notification_DriverAssignedEmail"="Chofer asignado (email)";
 "Notification_DriverAssignedPush"="Chofer asignado";
 "Notification_DriverBailedPush"="EL conductor activo reasignación";
+"Notification_NoShowPush"="No show";
 "Notification_Enabled"="Notificiaciones";
 "Notification_NearbyTaxiPush"="Taxis cercanos";
 "Toggle_Off"="Apagado";

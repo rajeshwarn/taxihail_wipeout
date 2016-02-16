@@ -777,7 +777,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						: companySettings.PromotionUnlockedPush,
                     VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
                         ? userSettings.VehicleAtPickupPush 
-                        : companySettings.VehicleAtPickupPush
+                        : companySettings.VehicleAtPickupPush,
+					NoShowPush = companySettings.NoShowPush.HasValue && userSettings.NoShowPush.HasValue
+						? userSettings.NoShowPush
+						: companySettings.NoShowPush
                 };
 
             UserCache.Set(UserNotificationSettingsCacheKey, mergedSettings);

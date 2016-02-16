@@ -1216,6 +1216,9 @@
   <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>EL conductor activo reasignación</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notificiaciones</value>
     <comment>Notifications</comment>

@@ -406,8 +406,8 @@
     <comment>Invalid order, please call dispatch center</comment>
   </data>
 	<data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Pasajero no presentado</value>
-    <comment>No show</comment>
+    <value>Your driver indicated you were not at the pickup location.</value>
+    <comment>Your driver indicated you were not at the pickup location.</comment>
   </data>
 	<data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Programado</value>
@@ -523,8 +523,11 @@
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
 	<data name="PushNotification_BAILED" xml:space="preserve">
-    <value>SDisculpe, su conductor ha cancelado. Le estamos buscando otra unidad...</value>
+    <value>Disculpe, su conductor ha cancelado. Le estamos buscando otra unidad...</value>
     <comment>Sorry, your driver canceled. Finding you another taxi...</comment>
+  </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
   </data>
 	<data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>El cliente pagará en el carro al final del viaje.</value>

@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
 using System.Linq;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -179,6 +180,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
 
                     orderReport.OrderStatus.Status = @event.Status.Status;
+                    orderReport.OrderStatus.OrderIsNoShow = @event.Status.IBSStatusId == VehicleStatuses.Common.NoShow;
 
                     orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue
                         ? (DateTime?)@event.Status.PickupDate
