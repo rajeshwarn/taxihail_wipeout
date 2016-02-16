@@ -214,10 +214,20 @@ namespace apcurium.MK.Booking.Jobs
 
         public virtual void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
         {
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment && orderStatusDetail.LastTripPollingDateInUtc.HasValue)
+            {
+                var nextPolling = orderStatusDetail.LastTripPollingDateInUtc.Value.AddHours(4);
+                if (nextPolling >= DateTime.UtcNow)
+                {
+                    _logger.LogMessage("Manual RideLinq Order {0} is WaitingForPayment but we have to wait a bit more before calling GetTripInfo again...", orderStatusDetail.OrderId);
+                    return;
+                }
+            }
+
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderStatusDetail.OrderId);
             if (rideLinqDetails == null)
             {
-                _logger.LogMessage("No manual RideLinQ details found for order {0}", orderStatusDetail.OrderId);
+                _logger.LogMessage("No manual RideLinq details found for order {0}", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -285,6 +295,47 @@ namespace apcurium.MK.Booking.Jobs
                     LastLongitudeOfVehicle = tripInfo.Lon,
                     PairingError = pairingError
                 });                
+                return;
+            }
+
+            if (orderStatusDetail.Status == OrderStatus.Created
+                && tripInfo.StartTime.HasValue 
+                && tripInfo.StartTime.Value.ToUniversalTime().AddHours(2) <= DateTime.UtcNow)
+            {
+                _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [trip id: {0} (order {1})]", tripInfo.TripId, orderStatusDetail.OrderId);
+
+                _commandBus.Send(new ChangeOrderStatusForManualRideLinq
+                {
+                    OrderId = orderStatusDetail.OrderId,
+                    Status = OrderStatus.WaitingForPayment,
+                    LastTripPollingDateInUtc = DateTime.UtcNow
+                });
+
+                return;
+            }
+
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
+            {
+                var orderShouldBeSetToTimedOut = tripInfo.StartTime.HasValue
+                    && tripInfo.StartTime.Value.ToUniversalTime().AddDays(30) <= DateTime.UtcNow;
+
+                if (orderShouldBeSetToTimedOut)
+                {
+                    _logger.LogMessage("Trip for order {0} has timed out after 30 days of waiting for EndTime", orderStatusDetail.OrderId);
+                }
+                else
+                {
+                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1}", orderStatusDetail.OrderId, tripInfo.StartTime.Value.ToUniversalTime().AddDays(30));
+                }
+
+                _commandBus.Send(new ChangeOrderStatusForManualRideLinq
+                {
+                    OrderId = orderStatusDetail.OrderId,
+                    Status = orderShouldBeSetToTimedOut 
+                        ? OrderStatus.TimedOut 
+                        : OrderStatus.WaitingForPayment,
+                    LastTripPollingDateInUtc = DateTime.UtcNow
+                });
                 return;
             }
 

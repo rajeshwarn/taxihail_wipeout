@@ -41,9 +41,10 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderCancelledBecauseOfError>(OnOrderCancelledBecauseOfError);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
-            Handles<OrderManuallyPairedForRideLinq>(NoAction);
-            Handles<OrderUnpairedFromManualRideLinq>(NoAction);
-            Handles<ManualRideLinqTripInfoUpdated>(NoAction);
+            Handles<OrderManuallyPairedForRideLinq>(OnOrderManuallyPairedForRideLinq);
+            Handles<OrderUnpairedFromManualRideLinq>(OnOrderUnpairedFromManualRideLinq);
+            Handles<ManualRideLinqTripInfoUpdated>(OnManualRideLinqTripInfoUpdated);
+            Handles<OrderStatusChangedForManualRideLinq>(OnOrderStatusChangedForManualRideLinq);
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<IbsOrderSwitchInitiated>(NoAction);
             Handles<OrderUpdatedInTrip>(NoAction);
         }
-
+        
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
@@ -159,7 +160,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-		public void UpdateOrderManuallyPairedForRideLinq(Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+		public void UpdateOrderManuallyPairedForRideLinq(Guid accountId, DateTime? startTime, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
@@ -169,7 +170,8 @@ namespace apcurium.MK.Booking.Domain
 			{
 				AccountId = accountId,
 				PairingDate = pairingDate,
-				UserAgent = userAgent,
+                StartTime = startTime,
+                UserAgent = userAgent,
 				ClientLanguageCode = clientLanguageCode,
 				ClientVersion = clientVersion,
 				PairingCode = pairingCode,
@@ -329,6 +331,18 @@ namespace apcurium.MK.Booking.Domain
                     Surcharge = surcharge,
                     IsCompleted = status.Status == OrderStatus.Completed,
                     PreviousIBSStatusId = _ibsStatus,
+                });
+            }
+        }
+
+        public void ChangeStatusForManualRideLinq(OrderStatus status, DateTime lastTripPollingDateInUtc)
+        {
+            if (_status == OrderStatus.Created || _status == OrderStatus.WaitingForPayment)
+            {
+                Update(new OrderStatusChangedForManualRideLinq
+                {
+                    Status = status,
+                    LastTripPollingDateInUtc = lastTripPollingDateInUtc
                 });
             }
         }
@@ -524,6 +538,34 @@ namespace apcurium.MK.Booking.Domain
         private void OnNextDispatchCompanySwitchIgnored(DispatchCompanySwitchIgnored obj)
         {
             _isTimedOut = false;
+        }
+
+        private void OnOrderManuallyPairedForRideLinq(OrderManuallyPairedForRideLinq @event)
+        {
+            _status = OrderStatus.Created;
+        }
+
+        private void OnOrderUnpairedFromManualRideLinq(OrderUnpairedFromManualRideLinq @event)
+        {
+            _status = OrderStatus.Canceled;
+        }
+        
+        private void OnManualRideLinqTripInfoUpdated(ManualRideLinqTripInfoUpdated @event)
+        {
+            if (@event.EndTime.HasValue)
+            {
+                _status = OrderStatus.Completed;
+            }
+
+            if (@event.PairingError.HasValueTrimmed())
+            {
+                _status = OrderStatus.Canceled;
+            }
+        }
+
+        private void OnOrderStatusChangedForManualRideLinq(OrderStatusChangedForManualRideLinq @event)
+        {
+            _status = @event.Status;
         }
     }
 }

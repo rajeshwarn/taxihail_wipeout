@@ -60,5 +60,7 @@ namespace apcurium.MK.Common.Entity
         public string LastFour { get; set; }
 
         public string PairingError { get; set; }
+
+        public bool IsWaitingForPayment { get; set; }
     }
 }

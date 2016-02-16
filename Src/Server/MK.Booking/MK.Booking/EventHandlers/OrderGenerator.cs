@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<OrderStatusChangedForManualRideLinq>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
@@ -530,7 +531,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
                     IBSOrderId = @event.TripId,
-                    PickupDate = @event.PairingDate,
+                    PickupDate = @event.StartTime.HasValue ? @event.StartTime.Value : @event.PairingDate, //support old events
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
                     Status = (int)OrderStatus.Created,
@@ -557,7 +558,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
-                        PickupDate = @event.PairingDate,
+                        PickupDate = @event.StartTime.HasValue ? @event.StartTime.Value : @event.PairingDate, //support old events
                         IsManualRideLinq = true,
                         VehicleNumber = @event.Medallion,
                         DriverInfos = new DriverInfos
@@ -581,6 +582,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         PairingCode = @event.PairingCode,
                         PairingToken = @event.PairingToken,
                         PairingDate = @event.PairingDate,
+                        StartTime = @event.StartTime,
                         Distance = @event.Distance,
                         Extra = @event.Extra,
                         Fare = @event.Fare,
@@ -626,7 +628,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (rideLinqDetails != null)
                 {
                     // Must set an endtime to end order on client side
-                    rideLinqDetails.EndTime = DateTime.UtcNow;
+                    rideLinqDetails.EndTime = @event.EventDate;
                     rideLinqDetails.IsCancelled = true;
                     
                     context.Save(rideLinqDetails);
@@ -703,6 +705,39 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.PairingError = @event.PairingError;
 
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(OrderStatusChangedForManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)@event.Status;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    orderStatusDetails.Status = @event.Status;
+                    orderStatusDetails.LastTripPollingDateInUtc = @event.LastTripPollingDateInUtc;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    if (@event.Status == OrderStatus.TimedOut)
+                    {
+                        rideLinqDetails.EndTime = @event.EventDate;
+                    }
+                    
+                    rideLinqDetails.IsWaitingForPayment = @event.Status == OrderStatus.WaitingForPayment;
+                    context.Save(rideLinqDetails);
+                }
             }
         }
 
