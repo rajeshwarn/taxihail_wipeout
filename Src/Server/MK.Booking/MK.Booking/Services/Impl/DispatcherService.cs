@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
 
         private static readonly Dictionary<Guid, List<Tuple<string, string>>> LegacyVehicleIdMapping = new Dictionary<Guid, List<Tuple<string, string>>>();
@@ -41,7 +42,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             ICommandBus commandBus,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IAccountDao accountDao)
+            IAccountDao accountDao,
+            IOrderDao orderDao)
         {
             _logger = logger;
             _ibsServiceProvider = ibsServiceProvider;
@@ -49,6 +51,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _commandBus = commandBus;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _accountDao = accountDao;
+            _orderDao = orderDao;
 
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, ibsServiceProvider, serverSettings, taxiHailNetworkServiceClient, commandBus, _logger);
         }
@@ -102,6 +105,16 @@ namespace apcurium.MK.Booking.Services.Impl
                     // Don't query IBS if we don't find any vehicles
                     Thread.Sleep(TimeSpan.FromSeconds(dispatcherSettings.DurationOfOfferInSeconds));
                     continue;
+                }
+
+                var orderDetails = _orderDao.FindById(orderId);
+                if (orderDetails.Status == (int)OrderStatus.Canceled)
+                {
+                    // User requested a cancellation before we had a chance to dispatch, stop trying
+                    return new IBSOrderResult()
+                    {
+                        OrderKey = new OrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
+                    };
                 }
 
                 // Call CreateIbsOrder from IbsCreateOrderService
