@@ -305,7 +305,7 @@
     <value>طلب خاطئ/ رجاء الإتصال بمركز الإرسال</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>لم يظهر</value>
+    <value>Your driver indicated you were not at the pickup location.</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>تم الحجز</value>

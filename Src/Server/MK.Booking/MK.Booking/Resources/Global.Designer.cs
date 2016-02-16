@@ -1357,7 +1357,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No show.
+        ///   Looks up a localized string similar to Your driver indicated you were not at the pickup location..
         /// </summary>
         public static string OrderStatus_wosNOSHOW {
             get {

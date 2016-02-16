@@ -438,7 +438,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
                        TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
                        IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
-                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? status.IBSStatusDescription : ((OrderStatus)x.Status).ToString()
+                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()
                    };
                })
                .ToList();

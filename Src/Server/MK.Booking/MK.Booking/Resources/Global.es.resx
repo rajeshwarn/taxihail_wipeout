@@ -406,8 +406,8 @@
     <comment>Invalid order, please call dispatch center</comment>
   </data>
 	<data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Pasajero no presentado</value>
-    <comment>No show</comment>
+    <value>Your driver indicated you were not at the pickup location.</value>
+    <comment>Your driver indicated you were not at the pickup location.</comment>
   </data>
 	<data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Programado</value>
