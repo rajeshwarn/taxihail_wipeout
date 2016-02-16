@@ -3,7 +3,7 @@
 namespace CMTPayment.Actions
 {
     [Route("payment/{PairingToken}/credit")]
-    public class CmtRideLinqRefundRequest : IReturn<PaymentResponse>
+    public class CmtRideLinqRefundRequest : IReturn<UnsuccessfulResponse>
     {
         public string PairingToken { get; set; }
 
