@@ -1049,8 +1049,17 @@ namespace apcurium.MK.Booking.Jobs
             }
             else if (ibsOrderInfo.IsCanceled)
             {
-                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
-                _logger.LogMessage("Setting Canceled status description: {0}", description);
+                if (ibsOrderInfo.Status == VehicleStatuses.Common.NoShow)
+                {
+                    description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
+                    _logger.LogMessage("Setting NoShow status description: {0}", description);
+                }
+                else
+                {
+                    description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
+                    _logger.LogMessage("Setting Canceled status description: {0}", description);
+                }
+                
             }
             else if (ibsOrderInfo.IsComplete)
             {
