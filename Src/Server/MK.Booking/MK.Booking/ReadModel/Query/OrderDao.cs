@@ -67,6 +67,18 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public OrderStatusDetail GetActiveOrderStatusDetails(Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var activeOrder = (from order in context.Set<OrderStatusDetail>()
+                                   where order.AccountId == accountId
+                                   where order.Status == OrderStatus.Created select order).ToList();
+
+                return activeOrder.SingleOrDefault();
+            }
+        }
+
         public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())

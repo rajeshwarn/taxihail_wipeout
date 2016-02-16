@@ -24,10 +24,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Run(GetCurrentOrderAsync).FireAndForget();
         }
 
-
         private async Task GetCurrentOrderAsync()
         {
-            var currentOrder = await _orderWorkflowService.GetLastActiveOrder();
+            var currentOrder = await _bookingService.GetActiveOrder();
 
             if (currentOrder == null)
             {
