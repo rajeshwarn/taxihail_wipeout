@@ -382,8 +382,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var orderPairing = _orderDao.FindOrderPairingById(orderId);
                 var order = _orderDao.FindById(orderId);
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
                 InitializeServiceClient(order.Settings.ServiceType);
 
                 var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
@@ -396,6 +396,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var request = new CmtRideLinqRefundRequest
                 {
+                    PairingToken = orderPairing.PairingToken,
                     CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
                     LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
                     AuthAmount = totalAmount
@@ -403,9 +404,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Put(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+                var response = _cmtMobileServiceClient.Post(request);
 
-                if(response.ResponseCode == 200)
+                if (response != null && response.ResponseCode == 200)
                 {
                     // send a command to update refund status of Order
                     _commandBus.Send(new UpdateRefundedOrder
@@ -426,20 +427,30 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                        Message = response.ResponseMessage
+                        Message = response != null ? response.ResponseMessage : string.Empty
                     };
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip");
+                var message = ex.Message;
+                var responseBody = string.Empty;
+
+                if (ex is WebServiceException)
+                {
+                    responseBody = " [" + ((WebServiceException)ex).ResponseBody + "]";
+                }
+
+                _logger.LogMessage("Error when trying to refund CMT RideLinq auto tip" + responseBody);
+                message += responseBody;
+
                 _logger.LogError(ex);
 
                 return new RefundPaymentResponse
                 {
                     IsSuccessful = false,
                     Last4Digits = string.Empty,
-                    Message = ex.Message
+                    Message = message
                 };
             }
         }

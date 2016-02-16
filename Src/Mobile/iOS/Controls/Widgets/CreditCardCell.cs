@@ -1,6 +1,4 @@
-﻿
-using System;
-
+﻿using System;
 using Foundation;
 using UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -12,7 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class CreditCardCell : MvxTableViewCell
     {
-        public static readonly UINib Nib = UINib.FromName("CreditCardCell", NSBundle.MainBundle);
         public static readonly NSString Key = new NSString("CreditCardCell");
 
         public CreditCardCell(IntPtr handle)
@@ -20,14 +17,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
         }
 
-        public static CreditCardCell Create()
-        {
-            return (CreditCardCell)Nib.Instantiate(null, null)[0];
-        }
-
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
+
+            // for some reason, style is not preserved when instantiated here, reapply it to prevent problems
+            txtCardNumber.Initialize();
 
             txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
             txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
@@ -46,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
         }
-
     }
 }
 

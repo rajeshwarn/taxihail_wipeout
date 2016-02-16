@@ -15,6 +15,7 @@ using apcurium.MK.Common;
 using MK.Common.Exceptions;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -49,8 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _payments = new ListItem[0];
 
             PhoneNumber = new PhoneNumberModel();
-
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 		}
 
 		public async void Init()
@@ -74,9 +73,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
                         .ToArray();
 
+					var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
+
+					await MarketChanged(marketSettings);
+
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
 					RaisePropertyChanged(() => IsChargeTypesEnabled);
+                    RaisePropertyChanged(() => IsChargeTypesEnabled);
 					RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
 					RaisePropertyChanged(() => IsPayBackFieldEnabled);RaisePropertyChanged(() => IsPayBackFieldEnabled);
 					RaisePropertyChanged(() => Email);
@@ -102,18 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async Task MarketChanged(MarketSettings marketSettings)
 		{
 			var paymentList = await _accountService.GetPaymentsList();
+			var paymentSettings = await _paymentService.GetPaymentSettings();
 
-            paymentList = paymentList ?? new ListItem[0];
+			var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
+				paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
-            if (marketSettings.DisableOutOfAppPayment)
-			{
-				paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
-
-				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
-				{
-					ChargeTypeId = null;
-				}
-			}
+			paymentList = isCmt
+				? HandlePaymentInCarForCmt(paymentList, marketSettings)
+				: EnforceExternalMarketPaymentInCarIfNeeded(paymentList, marketSettings);
 
             var localize = this.Services().Localize;
 
@@ -121,19 +121,64 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
                 .ToArray();
 
-            // We ignore the DisableChargeTypeWhenCardOnFile when in external market to ensure that DisableOutOfAppPayment works correctly when out of local market.
-		    if (!marketSettings.IsLocalMarket)
-		    {
-		        IsChargeTypesEnabled = Payments.Length > 1;
-
-		        return;
-		    }
-            
-            var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && 
-                Settings.DisableChargeTypeWhenCardOnFile;
-
-            IsChargeTypesEnabled = !isChargeTypeLocked && Payments.Length > 1;
+			HandleChargeTypeSelectionAccess(marketSettings.IsLocalMarket);
         }
+
+		private void HandleChargeTypeSelectionAccess(bool isLocalMarket)
+		{
+			// We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
+			if (!isLocalMarket)
+			{
+				IsChargeTypesEnabled = Payments.Length > 1;
+				return;
+			}
+
+			// If the setting DisableChargeTypeWhenCardOnFile is true, prevent changing the chargetype to something else then credit card.
+			var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && Settings.DisableChargeTypeWhenCardOnFile;
+
+			IsChargeTypesEnabled = !isChargeTypeLocked && Payments.Length > 1;
+		}
+
+		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (market.IsLocalMarket)
+			{
+				return paymentList;
+			}
+
+			return paymentList
+				.Where(paymentMethod => paymentMethod.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+				.ToArray();
+		}
+
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
+			{
+				paymentList.Insert(0, ChargeTypes.PaymentInCar);
+			}
+
+			return paymentList;
+		}
+
+		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (!market.IsLocalMarket)
+			{
+				return market.DisableOutOfAppPayment
+					? paymentList
+						: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
+			}
+
+			paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+
+			if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+			{
+				ChargeTypeId = null;
+			}
+
+			return paymentList;
+		}
 
 	    public bool IsChargeTypesEnabled
 	    {
@@ -226,7 +271,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _payments = value ?? new ListItem[0];
 
                 RaisePropertyChanged();
-                RaisePropertyChanged(() => IsChargeTypesEnabled);
             }
         }
 

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
 
             var logger = TinyIoCContainer.Current.Resolve<ILogger> ();
-			var logFile = logger.MergeLogFiles();
+			var logFile = logger.GetLogFileName();
 
 			if (logFile != null)
 			{

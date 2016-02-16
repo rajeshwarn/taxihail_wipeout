@@ -489,15 +489,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var shouldContinue = true;
 			using (this.Services().Message.ShowProgress())
 			{
-				await _orderWorkflowService.ResetOrderSettings();
-				shouldContinue = shouldContinue && await PreValidateOrder();
-				shouldContinue = shouldContinue && await ValidateCardOnFile();
-				if (shouldContinue)
+				try
 				{
-					await ShowFareEstimateAlertDialogIfNecessary();
+				await Task.WhenAll(
+					_orderWorkflowService.ResetOrderSettings(),
+					ShowFareEstimateAlertDialogIfNecessary(),
+					ValidateCardOnFile(),
+					PreValidateOrder()
+				);
+				}
+				catch (Exception ex)
+				{
+					Logger.LogError(ex);
+					ResetToInitialState.ExecuteIfPossible();
+					return;
 				}
 			}
-			return shouldContinue;
 		}
 
         public ICommand ConfirmOrderCommand
