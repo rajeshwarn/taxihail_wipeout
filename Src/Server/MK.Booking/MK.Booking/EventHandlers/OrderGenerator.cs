@@ -390,7 +390,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
                 {
-                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
                     orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
@@ -535,7 +534,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
                     Status = (int)OrderStatus.Created,
-                    IsRated = false,
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
