@@ -107,10 +107,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     continue;
                 }
 
-                // Ensuring order is not cancelled by user.
                 var orderDetails = _orderDao.FindById(orderId);
                 if (orderDetails.Status == (int)OrderStatus.Canceled)
                 {
+                    // User requested a cancellation before we had a chance to dispatch, stop trying
                     return new IBSOrderResult()
                     {
                         OrderKey = new OrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
