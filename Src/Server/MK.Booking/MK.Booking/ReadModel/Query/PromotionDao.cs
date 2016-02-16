@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IEnumerable<PromotionUsageDetail> FindByPromotionUsageByAccountId(Guid accountId)
+        public IEnumerable<PromotionUsageDetail> FindPromotionUsageByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {

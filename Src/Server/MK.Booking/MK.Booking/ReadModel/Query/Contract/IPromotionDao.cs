@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
 
         PromotionUsageDetail FindByOrderId(Guid orderId);
 
-        IEnumerable<PromotionUsageDetail> FindByPromotionUsageByAccountId(Guid accountid);
+        IEnumerable<PromotionUsageDetail> FindPromotionUsageByAccountId(Guid accountid);
 
         IEnumerable<PromotionUsageDetail> GetRedeemedPromotionUsages(Guid promoId);
     }

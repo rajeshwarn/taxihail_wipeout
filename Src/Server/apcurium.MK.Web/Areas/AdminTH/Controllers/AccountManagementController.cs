@@ -445,7 +445,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private IEnumerable<PromotionUsageDetail> _promotionUsageDetails;
         private IEnumerable<PromotionUsageDetail> GetPromotionUsageDetails(Guid accountId)
         {
-            return _promotionUsageDetails ?? (_promotionUsageDetails = _promoDao.FindByPromotionUsageByAccountId(accountId));
+            return _promotionUsageDetails ?? (_promotionUsageDetails = _promoDao.FindPromotionUsageByAccountId(accountId));
         }
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
