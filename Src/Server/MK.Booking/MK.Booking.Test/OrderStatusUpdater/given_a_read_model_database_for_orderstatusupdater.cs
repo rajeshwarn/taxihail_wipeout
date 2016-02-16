@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
                 notificationDetailsDaoMock.Object,
                 new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object),
-                new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, taxihailNetworkServiceClient), ConfigurationManager, bus.Object, taxihailNetworkServiceClient, accountDao),
+                new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, taxihailNetworkServiceClient), ConfigurationManager, bus.Object, taxihailNetworkServiceClient, accountDao, orderDao),
                 new VehicleTypeDao(() => new BookingDbContext(DbName)), 
                 new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, taxihailNetworkServiceClient),
                 taxihailNetworkServiceClient,
