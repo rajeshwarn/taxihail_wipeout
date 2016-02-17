@@ -304,7 +304,7 @@
     <value>Votre commande ne peut pas être prise en compte, merci de joindre le support</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Client ne s'est pas présenté</value>
+    <value>Votre chauffeur a indiqué que vous n'étiez pas au point de ramassage.</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Planifié</value>
@@ -338,6 +338,9 @@
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
     <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
+  </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Votre chauffeur a indiqué que vous n'étiez pas au point de ramassage.</value>
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>

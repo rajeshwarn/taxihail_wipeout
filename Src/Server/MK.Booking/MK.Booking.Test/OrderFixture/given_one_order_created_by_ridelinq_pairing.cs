@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -11,7 +7,6 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -33,12 +28,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Name = "Bob",
                 Password = null,
                 Email = "bob.smith@apcurium.com"
-            });
-            _sut.Given(new OrderCreated
-            {
-                SourceId = _orderId,
-                AccountId = _accountId,
-                PickupDate = DateTime.Now,
             });
             _sut.Given(new OrderManuallyPairedForRideLinq()
             {
@@ -101,7 +90,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 EndTime = endTime,
             });
 
-
             var @event = _sut.ThenHasOne<ManualRideLinqTripInfoUpdated>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual(15f, @event.Fare);
@@ -109,6 +97,49 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(1.5f, @event.Tip);
             Assert.AreEqual(25d, @event.Distance);
             Assert.AreEqual(endTime, @event.EndTime);
+        }
+
+        [Test]
+        public void when_ridelinq_order_is_still_active_after_two_hours()
+        {
+            var date = DateTime.UtcNow;
+
+            _sut.When(new ChangeOrderStatusForManualRideLinq
+            {
+                OrderId = _orderId,
+                Status = OrderStatus.WaitingForPayment,
+                LastTripPollingDateInUtc = date
+            });
+
+            var @event = _sut.ThenHasOne<OrderStatusChangedForManualRideLinq>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(OrderStatus.WaitingForPayment, @event.Status);
+            Assert.AreEqual(date, @event.LastTripPollingDateInUtc);
+        }
+
+        [Test]
+        public void when_ridelinq_order_is_still_active_after_30_days()
+        {
+            var date = DateTime.UtcNow;
+
+            _sut.Given(new OrderStatusChangedForManualRideLinq
+            {
+                Status = OrderStatus.WaitingForPayment,
+                SourceId = _orderId,
+                LastTripPollingDateInUtc = date.AddHours(-4)
+            });
+
+            _sut.When(new ChangeOrderStatusForManualRideLinq
+            {
+                OrderId = _orderId,
+                Status = OrderStatus.TimedOut,
+                LastTripPollingDateInUtc = date
+            });
+
+            var @event = _sut.ThenHasOne<OrderStatusChangedForManualRideLinq>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(OrderStatus.TimedOut, @event.Status);
+            Assert.AreEqual(date, @event.LastTripPollingDateInUtc);
         }
     }
 }
