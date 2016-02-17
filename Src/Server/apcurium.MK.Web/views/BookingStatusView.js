@@ -72,6 +72,7 @@
             }
             
             var status = this.model.getStatus();
+            var ibsStatusId = status.get('IBSStatusId');
 
             if (TaxiHail.parameters.showCallDriver == true) {
                 var driverInfos = status.get('driverInfos');
