@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
             txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
-            txtCardNumber.ForceWhiteBackground = true;
             txtCardNumber.HasRightArrow = true;
 
             var set = this.CreateBindingSet<CreditCardCell, CreditCardInfos>();
