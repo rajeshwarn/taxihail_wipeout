@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class NetworkRoamingService : BaseService, INetworkRoamingService
     {
-		private readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
+		private readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings { HashedMarket = null });
 
 		private Position _lastMarketPosition = new Position();
 

@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreateOrderForManualRideLinqPair>,
         ICommandHandler<UnpairOrderForManualRideLinq>,
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
+        ICommandHandler<ChangeOrderStatusForManualRideLinq>,
         ICommandHandler<UpdateAutoTip>,
         ICommandHandler<LogOriginalEta>,
         ICommandHandler<UpdateOrderNotificationDetail>,
@@ -227,6 +228,13 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.Tip, command.TollTotal, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
                 command.RateChangeTime, command.StartTime, command.EndTime, command.PairingToken, command.TripId, command.DriverId, command.AccessFee,
                 command.LastFour, command.Tolls, command.LastLatitudeOfVehicle, command.LastLongitudeOfVehicle, command.PairingError);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(ChangeOrderStatusForManualRideLinq command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.ChangeStatusForManualRideLinq(command.Status, command.LastTripPollingDateInUtc);
             _repository.Save(order, command.Id.ToString());
         }
 

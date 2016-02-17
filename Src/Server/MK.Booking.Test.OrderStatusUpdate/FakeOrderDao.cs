@@ -16,20 +16,20 @@ namespace MK.Booking.Test.OrderStatusUpdate
                 IBSOrderId = 1
             };
         }
-        public IList<OrderStatusDetail> GetOrdersInProgress()
+        public IList<OrderStatusDetail> GetOrdersInProgress(bool forManualRideLinq)
         {
             var response = new List<OrderStatusDetail>();
             var i = 1;
             while (i <=145)
             {
-                    response.Add(new OrderStatusDetail()
+                    response.Add(new OrderStatusDetail
                     {
                         IBSOrderId = i,
                         OrderId = new Guid(),
                         CompanyKey = "Apcurium",
                         Market = "MTL",
-                        Status = OrderStatus.Pending,
-                        IsManualRideLinq = i <= 100
+                        Status = OrderStatus.Created,
+                        IsManualRideLinq = forManualRideLinq
                     });
                 i++;
             }
