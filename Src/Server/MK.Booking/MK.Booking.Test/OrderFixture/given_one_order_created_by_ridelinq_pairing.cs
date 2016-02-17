@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
+using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.OrderFixture

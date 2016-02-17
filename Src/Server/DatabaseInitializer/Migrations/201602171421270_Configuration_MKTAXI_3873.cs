@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.NotificationSettings", "NoShowPush", c => c.Boolean(false, true));
+            AddColumn("Config.NotificationSettings", "NoShowPush", c => c.Boolean());
         }
         
         public override void Down()
