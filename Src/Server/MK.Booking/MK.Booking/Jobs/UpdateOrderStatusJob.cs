@@ -191,7 +191,6 @@ namespace apcurium.MK.Booking.Jobs
                 new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism },
                 orderStatusDetail =>
                 {
-                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                     _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
                 });
         }

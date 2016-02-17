@@ -219,10 +219,11 @@ namespace apcurium.MK.Booking.Jobs
                 var nextPolling = orderStatusDetail.LastTripPollingDateInUtc.Value.AddHours(4);
                 if (nextPolling >= DateTime.UtcNow)
                 {
-                    _logger.LogMessage("Manual RideLinq Order {0} is WaitingForPayment but we have to wait a bit more before calling GetTripInfo again...", orderStatusDetail.OrderId);
                     return;
                 }
             }
+
+            _logger.LogMessage("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
 
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderStatusDetail.OrderId);
             if (rideLinqDetails == null)
@@ -301,7 +302,8 @@ namespace apcurium.MK.Booking.Jobs
             if (orderStatusDetail.Status == OrderStatus.Created
                 && rideLinqDetails.PairingDate.AddHours(2) <= DateTime.Now)
             {
-                _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [trip id: {0} (order {1})]", tripInfo.TripId, orderStatusDetail.OrderId);
+                _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [tripId: {0} orderId: {1} pairingDate (server local time): {2}]", 
+                    tripInfo.TripId, orderStatusDetail.OrderId, orderStatusDetail.PairingDate.ToLongDateString());
 
                 _commandBus.Send(new ChangeOrderStatusForManualRideLinq
                 {
@@ -323,7 +325,7 @@ namespace apcurium.MK.Booking.Jobs
                 }
                 else
                 {
-                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1}", orderStatusDetail.OrderId, rideLinqDetails.PairingDate.AddDays(30));
+                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1} (server local time)", orderStatusDetail.OrderId, rideLinqDetails.PairingDate.AddDays(30).ToLongDateString());
                 }
 
                 _commandBus.Send(new ChangeOrderStatusForManualRideLinq
