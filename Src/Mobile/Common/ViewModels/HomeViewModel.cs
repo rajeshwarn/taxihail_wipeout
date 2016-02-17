@@ -736,7 +736,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
 				_locationService.Start();
 
-                if (CurrentViewState != HomeViewModelState.ManualRidelinq || CurrentViewState != HomeViewModelState.BookingStatus)
+                var isInBookingMode = CurrentViewState == HomeViewModelState.ManualRidelinq ||
+                                      CurrentViewState == HomeViewModelState.BookingStatus;
+
+                if (!isInBookingMode)
                 {
                     Task.Run(() => VerifyActiveOrder()).FireAndForget();
                 }
