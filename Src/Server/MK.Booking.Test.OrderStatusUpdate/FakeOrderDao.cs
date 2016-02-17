@@ -98,7 +98,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
             throw new NotImplementedException();
         }
 
-	public IList<OrderStatusDetail> FindOrderStatusDetailsByAccountId(Guid accountId)
+	public IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId)
         {
             throw new NotImplementedException();
         }

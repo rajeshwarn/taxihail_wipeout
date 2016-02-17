@@ -387,11 +387,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             var orders = GetOrderDetails(accountId) ?? new List<OrderDetail>();
             var ordersCount = orders.Count();
-            var accountAgeInDays = (DateTime.Now.ToUniversalTime() - accountDetail.CreationDate.ToUniversalTime()).TotalDays;
+            var accountAgeInDays = (DateTime.UtcNow - accountDetail.CreationDate).TotalDays;
             var averageTripsPerDay = decimal.Round((decimal) (ordersCount/accountAgeInDays), 1);
-            var totalCanceled = orders.Count(order => order.Status == (int) OrderStatus.Canceled);
+            var totalCanceled = GetOrderStatusDetails(accountId).Count(x => x.IBSStatusId == VehicleStatuses.Common.Cancelled || x.IBSStatusId == VehicleStatuses.Common.CancelledDone);
             var totalCompleted = orders.Count(order => order.Status == (int)OrderStatus.Completed);
-            var totalNoShow = GetOrderStatusDetails(accountId).Count(x => x.AccountId == accountId && x.IBSStatusId == VehicleStatuses.Common.NoShow);
+            var totalNoShow = GetOrderStatusDetails(accountId).Count(x => x.IBSStatusId == VehicleStatuses.Common.NoShow);
 
             var model = new AccountManagementModel
             {
@@ -439,7 +439,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private IEnumerable<OrderStatusDetail> _orderStatusDetails;
         private IEnumerable<OrderStatusDetail> GetOrderStatusDetails(Guid accountId)
         {
-            return _orderStatusDetails ?? (_orderStatusDetails = _orderDao.FindOrderStatusDetailsByAccountId(accountId));
+            return _orderStatusDetails ?? (_orderStatusDetails = _orderDao.FindOrderStatusByAccountId(accountId));
         }
 
         private IEnumerable<PromotionUsageDetail> _promotionUsageDetails;

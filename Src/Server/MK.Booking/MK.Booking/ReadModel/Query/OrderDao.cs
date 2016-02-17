@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IList<OrderStatusDetail> FindOrderStatusDetailsByAccountId(Guid accountId)
+        public IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {
