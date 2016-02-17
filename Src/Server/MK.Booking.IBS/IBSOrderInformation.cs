@@ -111,6 +111,11 @@ namespace apcurium.MK.Booking.IBS
             get { return Status.SoftEqual(VehicleStatuses.Common.Waiting); }
         }
 
+        public bool DriverHasBailed
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Bailed); }
+        }
+
         public bool IsAssigned
         {
             get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); }

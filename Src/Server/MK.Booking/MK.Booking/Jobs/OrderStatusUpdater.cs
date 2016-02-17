@@ -441,16 +441,7 @@ namespace apcurium.MK.Booking.Jobs
             {
                 _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountIdForOrderToCancel.Value);
 
-                var referenceDataCompanyList = _ibsServiceProvider.StaticData(orderDetail.CompanyKey).GetCompaniesList();
-
                 var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
-
-                var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
-                    _serverSettings.ServerData.IBS, defaultVehicleType,
-                    orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
-                    orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
-                    orderDetail.Settings.CustomerNumber, referenceDataCompanyList,
-                    orderDetail.Market, orderDetail.Settings.ProviderId, orderDetail.CompanyKey);
 
                 var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)
@@ -461,6 +452,15 @@ namespace apcurium.MK.Booking.Jobs
 
                 // Determine best available company now based on available vehicles
                 var bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(new CompanyMarketSettingsResponse { Market = market }, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, false, driverIdsToExclude);
+                
+                var referenceDataCompanyList = _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey).GetCompaniesList();
+
+                var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
+                    _serverSettings.ServerData.IBS, defaultVehicleType,
+                    orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
+                    orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
+                    orderDetail.Settings.CustomerNumber, referenceDataCompanyList,
+                    orderDetail.Market, orderDetail.Settings.ProviderId, orderDetail.CompanyKey);
 
                 _logger.LogMessage("Driver {0} bailed, trying to dispatch again to new found best avail company: {1} (fleetid: {2})", driverIdWhoBailed, bestAvailableCompany.CompanyKey, bestAvailableCompany.FleetId);
 
