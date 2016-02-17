@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Jobs
                 && rideLinqDetails.PairingDate.AddHours(2) <= DateTime.Now)
             {
                 _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [tripId: {0} orderId: {1} pairingDate (server local time): {2}]", 
-                    tripInfo.TripId, orderStatusDetail.OrderId, orderStatusDetail.PairingDate.ToLongDateString());
+                    tripInfo.TripId, orderStatusDetail.OrderId, rideLinqDetails.PairingDate.ToLongDateString());
 
                 _commandBus.Send(new ChangeOrderStatusForManualRideLinq
                 {
