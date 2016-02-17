@@ -406,7 +406,7 @@
     <comment>Invalid order, please call dispatch center</comment>
   </data>
 	<data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Your driver indicated you were not at the pickup location.</value>
+    <value>Pasajero no presentado</value>
     <comment>Your driver indicated you were not at the pickup location.</comment>
   </data>
 	<data name="OrderStatus_wosSCHED" xml:space="preserve">
@@ -527,7 +527,7 @@
     <comment>Sorry, your driver canceled. Finding you another taxi...</comment>
   </data>
   <data name="PushNotification_wosNOSHOW" xml:space="preserve">
-    <value>Your driver indicated you were not at the pickup location.</value>
+    <value>Pasajero no presentado</value>
   </data>
 	<data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>El cliente pagará en el carro al final del viaje.</value>
@@ -841,9 +841,9 @@
     <value>Lo sentimos, hubo un error procesando su tarjeta. Por favor pague en la unidad</value>
   </data>
   <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
-    <value>No Payment Method Available.</value>
+    <value>No hay método de pago disponible</value>
   </data>
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
-    <value>Sorry, future booking is not available</value>
+    <value>Lo sentimos, la reservación de viajes no esta disponible</value>
   </data>
 </root>
