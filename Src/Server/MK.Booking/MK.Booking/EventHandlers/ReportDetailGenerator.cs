@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
 using System.Linq;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -40,7 +41,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
-        IEventHandler<OriginalEtaLogged>
+        IEventHandler<OriginalEtaLogged>,
+        IEventHandler<OrderStatusChangedForManualRideLinq>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -180,6 +182,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
 
                     orderReport.OrderStatus.Status = @event.Status.Status;
+                    orderReport.OrderStatus.OrderIsNoShow = @event.Status.IBSStatusId == VehicleStatuses.Common.NoShow;
 
                     orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue
                         ? (DateTime?)@event.Status.PickupDate
@@ -596,6 +599,20 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.OrderStatus.Status = OrderStatus.Canceled;
                 }
 
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderStatusChangedForManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.OrderStatus.Status = @event.Status;
+                if (@event.Status == OrderStatus.TimedOut)
+                {
+                    orderReport.Order.HasTimedOut = true;
+                }
                 context.Save(orderReport);
             }
         }

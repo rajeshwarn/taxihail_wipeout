@@ -49,8 +49,7 @@ namespace apcurium.MK.Booking.Jobs
 
             try
             {
-                var orders = _orderDao.GetOrdersInProgress()
-                    .Where(x => x.IsManualRideLinq)
+                var orders = _orderDao.GetOrdersInProgress(true)
                     .Where(x => x.Status == OrderStatus.Created);
 
                 foreach (var orderStatusDetail in orders)
@@ -58,7 +57,6 @@ namespace apcurium.MK.Booking.Jobs
                     Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                     _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
                 }
-
             }
             finally
             {

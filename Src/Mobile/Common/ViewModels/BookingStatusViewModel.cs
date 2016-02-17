@@ -170,24 +170,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
                 .Do(RefreshManualRideLinqDetails)
-                .Where(orderDetails => orderDetails != null && (orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue()))
+                .Where(x => x != null && (x.EndTime.HasValue || x.PairingError.HasValue() || x.IsWaitingForPayment))
 				.Take(1) // trigger only once
 				.SelectMany(async orderDetails =>
 				{
                     try
                     {
-				    if (orderDetails.PairingError.HasValue())
-				    {
+				        if (orderDetails.PairingError.HasValue())
+				        {
                             Logger.LogMessage("A pairing error occurred in manual RideLinQ trip. Going back home...");
-
-				        await GoToHomeScreen();
-				    }
-				    else
-				    {
+                            await GoToHomeScreen();
+				        }
+				        else
+				        {
                             GoToRideSummary(orderDetails.OrderId);
-				    }
+				        }
 
-					return orderDetails;
+					    return orderDetails;
                     }
                     catch (Exception ex)
                     {

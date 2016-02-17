@@ -232,7 +232,7 @@
                                         <div class="divText">Total:</div><div class="divAmount">@order.TotalAmountString</div>
                                     </div>
                                 </td>
-                                <td style="max-width:80px; width:80px;">@((OrderStatus)order.Status)</td>
+                                <td style="max-width:80px; width:80px;">@order.StatusString</td>
                                 <td style="max-width:120px; width:120px;">@order.UserNote</td>
                                 <td style="max-width:80px; width:80px;">@order.PromoCode</td>
                                 @if (order.IsManualRideLinq)

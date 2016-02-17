@@ -59,6 +59,7 @@
     <Compile Include="AddUpdateAccountQuestionAnswer.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
+    <Compile Include="ChangeOrderStatusForManualRideLinq.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
     <Compile Include="CreateReportOrder.cs" />
     <Compile Include="DeletePromotion.cs" />

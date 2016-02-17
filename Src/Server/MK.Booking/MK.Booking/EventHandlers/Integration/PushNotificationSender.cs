@@ -63,6 +63,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     case VehicleStatuses.Common.Bailed:
                         _notificationService.SendBailedPush(@event.Status);
                         break;
+                    case VehicleStatuses.Common.NoShow:
+                        _notificationService.SendNoShowPush(@event.Status);
+                        break;
                     default:
                         // No push notification for this order status
                         return;
