@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
                 .Do(RefreshManualRideLinqDetails)
-                .Where(orderDetails => orderDetails != null && (orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue()))
+                .Where(x => x != null && (x.EndTime.HasValue || x.PairingError.HasValue() || x.IsWaitingForPayment))
 				.Take(1) // trigger only once
 				.SelectMany(async orderDetails =>
 				{

@@ -1010,6 +1010,10 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver (Name of business, specific entrance, ...)</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
+  </data>
   <data name="DriverBonusTitle" xml:space="preserve">
     <value>Driver Bonus:</value>
   </data>

@@ -67,6 +67,9 @@ namespace apcurium.MK.Common.Entity
         public ServiceType ServiceType { get; set; }
 
         public DateTime? ChargeAmountsTimeOut { get; set; }
+
+        public DateTime? LastTripPollingDateInUtc { get; set; }
+
         public override string ToString()
         {
             return Status + " " + Name;

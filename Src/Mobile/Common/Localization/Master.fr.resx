@@ -121,6 +121,11 @@
   <data name="GoogleMapKey" xml:space="preserve">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</data>
   <data name="Callbox.ApplicationName" xml:space="preserve">
     <value>TaxiHail Callbox</value>
+  <data name="AcceptButton" xml:space="preserve">
+    <value>Accepter</value>
+  </data>
+  <data name="AccountActivationMessage" xml:space="preserve">
+    <value>Vous allez recevoir un courriel de confirmation. Merci de cliquer sur le lien pour valider votre inscription</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
@@ -1618,6 +1623,9 @@
   </data>
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Driver Assigned</value>
+  </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
   </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>

@@ -21,12 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.AwakeFromNib();
 
-            // for some reason, style is not preserved when instantiated here, reapply it to prevent problems
-            txtCardNumber.Initialize();
-
             txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
             txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
-            txtCardNumber.ForceWhiteBackground = true;
             txtCardNumber.HasRightArrow = true;
 
             var set = this.CreateBindingSet<CreditCardCell, CreditCardInfos>();

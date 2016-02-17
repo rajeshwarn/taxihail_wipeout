@@ -217,10 +217,21 @@ namespace apcurium.MK.Booking.Jobs
 
         public virtual void HandleManualRidelinqFlow(OrderStatusDetail orderStatusDetail)
         {
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment && orderStatusDetail.LastTripPollingDateInUtc.HasValue)
+            {
+                var nextPolling = orderStatusDetail.LastTripPollingDateInUtc.Value.AddHours(4);
+                if (nextPolling >= DateTime.UtcNow)
+                {
+                    return;
+                }
+            }
+
+            _logger.LogMessage("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
+
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderStatusDetail.OrderId);
             if (rideLinqDetails == null)
             {
-                _logger.LogMessage("No manual RideLinQ details found for order {0}", orderStatusDetail.OrderId);
+                _logger.LogMessage("No manual RideLinq details found for order {0}", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -288,6 +299,46 @@ namespace apcurium.MK.Booking.Jobs
                     LastLongitudeOfVehicle = tripInfo.Lon,
                     PairingError = pairingError
                 });                
+                return;
+            }
+
+            if (orderStatusDetail.Status == OrderStatus.Created
+                && rideLinqDetails.PairingDate.AddHours(2) <= DateTime.Now)
+            {
+                _logger.LogMessage("Trip has been active for 2 hours, change it's status to waiting for payment to trigger a trip end to the client [tripId: {0} orderId: {1} pairingDate (server local time): {2}]", 
+                    tripInfo.TripId, orderStatusDetail.OrderId, rideLinqDetails.PairingDate.ToLongDateString());
+
+                _commandBus.Send(new ChangeOrderStatusForManualRideLinq
+                {
+                    OrderId = orderStatusDetail.OrderId,
+                    Status = OrderStatus.WaitingForPayment,
+                    LastTripPollingDateInUtc = DateTime.UtcNow
+                });
+
+                return;
+            }
+
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
+            {
+                var orderShouldBeSetToTimedOut = rideLinqDetails.PairingDate.AddDays(30) <= DateTime.Now;
+
+                if (orderShouldBeSetToTimedOut)
+                {
+                    _logger.LogMessage("Trip for order {0} has timed out after 30 days of waiting for EndTime", orderStatusDetail.OrderId);
+                }
+                else
+                {
+                    _logger.LogMessage("Trip for order {0} is still WaitingForPayment... Will stop polling at {1} (server local time)", orderStatusDetail.OrderId, rideLinqDetails.PairingDate.AddDays(30).ToLongDateString());
+                }
+
+                _commandBus.Send(new ChangeOrderStatusForManualRideLinq
+                {
+                    OrderId = orderStatusDetail.OrderId,
+                    Status = orderShouldBeSetToTimedOut 
+                        ? OrderStatus.TimedOut 
+                        : OrderStatus.WaitingForPayment,
+                    LastTripPollingDateInUtc = DateTime.UtcNow
+                });
                 return;
             }
 
@@ -1098,7 +1149,9 @@ namespace apcurium.MK.Booking.Jobs
             else if (ibsOrderInfo.IsCanceled)
             {
                 description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode, orderDetail.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null);
-                _logger.LogMessage("Setting Canceled status description: {0}", description);
+                var status = ibsOrderInfo.Status == VehicleStatuses.Common.NoShow ? "NoShow" : "Canceled";
+                _logger.LogMessage("Setting {0} status description: {1}", status, description);
+                
             }
             else if (ibsOrderInfo.IsComplete)
             {

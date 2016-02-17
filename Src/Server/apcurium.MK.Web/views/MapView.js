@@ -198,7 +198,7 @@
             } else {
                 this._vehicleMarker.setPosition(new google.maps.LatLng(orderStatus.get('vehicleLatitude'), orderStatus.get('vehicleLongitude')));
                 this._vehicleMarker.setVisible(true);
-                this._vehicleMarker.set('text', orderStatus.get('vehicleName'));
+                this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
                 this.centerMapAroundVehicleAndPickup();
             }
         },

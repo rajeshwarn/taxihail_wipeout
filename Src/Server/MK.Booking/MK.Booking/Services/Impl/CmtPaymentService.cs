@@ -82,7 +82,17 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order not found");
                     }
 
-                    if (_serverPaymentSettings.CmtPaymentSettings.PairingMethod == CmtPaymentSettings.RideLinqPairingMethod.PairingCode
+                    var pairingMethod = _serverPaymentSettings.CmtPaymentSettings.PairingMethod;
+                    
+                    if (pairingMethod == RideLinqPairingMethod.NotSet && companyKey.HasValueTrimmed())
+                    {
+                        // we are on a company that wasn't migrated to the new pairing method setting, use the old one
+                        pairingMethod = _serverPaymentSettings.CmtPaymentSettings.UsePairingCode
+                            ? RideLinqPairingMethod.PairingCode
+                            : RideLinqPairingMethod.VehicleMedallion;
+                    }
+
+                    if (pairingMethod == RideLinqPairingMethod.PairingCode
                         && !orderStatusDetail.RideLinqPairingCode.HasValue())
                     {
                         // We haven't received the pairing code from IBS yet, set the ignore response false
@@ -97,7 +107,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
+                    var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 
                     if (response.ErrorCode.HasValue)
                     {
@@ -404,9 +414,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Post(request);
+                var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
 
-                if (response != null && response.ResponseCode == 200)
+                if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
                     // send a command to update refund status of Order
                     _commandBus.Send(new UpdateRefundedOrder
@@ -427,7 +437,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                        Message = response != null ? response.ResponseMessage : string.Empty
+                        Message = response != null ? response.StatusDescription : string.Empty
                     };
                 }
             }
@@ -505,7 +515,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(RideLinqPairingMethod pairingMethod, OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -538,7 +548,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     SessionId = orderDetail.KountSessionId
                 };
 
-                switch (_serverPaymentSettings.CmtPaymentSettings.PairingMethod)
+                switch (pairingMethod)
                 {
                     case CmtPaymentSettings.RideLinqPairingMethod.VehicleMedallion:
                         _logger.LogMessage("OrderPairingManager RideLinq with VehicleMedallion : " + (orderStatusDetail.VehicleNumber.HasValue() ? orderStatusDetail.VehicleNumber : "No vehicle number"));

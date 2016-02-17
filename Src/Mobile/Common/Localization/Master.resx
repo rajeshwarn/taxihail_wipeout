@@ -1634,6 +1634,9 @@
   <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>Driver bailed</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>
