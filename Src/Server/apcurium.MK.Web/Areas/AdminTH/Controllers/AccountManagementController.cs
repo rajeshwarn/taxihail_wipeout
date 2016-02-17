@@ -335,7 +335,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
-                        orderModel.TotalAmountString, 
+                        orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
