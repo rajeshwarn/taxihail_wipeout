@@ -218,12 +218,9 @@ namespace apcurium.MK.Booking.Api.Services
 							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
 								_notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardDeclinedOnPreauthorizationErrorText", request.ClientLanguageCode));
 								break;
-
 							case CmtErrorCodes.UnablePreauthorizeCreditCard:
                                 _notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("CreditCardUnableToPreathorizeErrorText", request.ClientLanguageCode));
 								break;
-
-							case CmtErrorCodes.UnableToPair:
 							default:
 								_notificationService.SendCmtPaymentFailedPush(accountId, _resources.Get("TripUnableToPairErrorText", request.ClientLanguageCode));
 								break;
