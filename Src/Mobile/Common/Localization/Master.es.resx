@@ -1013,7 +1013,6 @@
   <data name="Notification_NoShowPush" xml:space="preserve">
     <value>No show</value>
   </data>
-  </data>
   <data name="DriverBonusTitle" xml:space="preserve">
     <value>Driver Bonus:</value>
   </data>
