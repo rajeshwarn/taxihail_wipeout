@@ -97,7 +97,10 @@ namespace MK.Booking.Test.OrderStatusUpdate
 
                 try
                 {
-                    var orders = _orderDao.GetOrdersInProgress();
+                    // keep the old status job like it was before
+                    var orders = _orderDao.GetOrdersInProgress(false);
+                    orders = orders.Concat(_orderDao.GetOrdersInProgress(true)).ToList();
+
                     var groupedOrders = orders.GroupBy(x => new { x.CompanyKey, x.Market });
 
                     foreach (var orderGroup in groupedOrders)
