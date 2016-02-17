@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         OrderDetail FindById(Guid id);
         IList<OrderDetail> FindByAccountId(Guid id);
         IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId);
-        IList<OrderStatusDetail> GetOrdersInProgress();
+        IList<OrderStatusDetail> GetOrdersInProgress(bool forManualRideLinq);
         IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId);
         OrderStatusDetail FindOrderStatusById(Guid orderId);
         OrderPairingDetail FindOrderPairingById(Guid orderId);
