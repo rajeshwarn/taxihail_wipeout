@@ -3,15 +3,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ServiceStack.CacheAccess;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
 namespace apcurium.MK.Common.Caching
 {
-    public class EfCacheClient : ICacheClient, IRemoveByPattern
-    {
+    public class EfCacheClient
+    {//TODO MKTAXI-3914: CacheClient
         private readonly Func<CachingDbContext> _contextFactory;
 
         public EfCacheClient(Func<CachingDbContext> contextFactory)
@@ -55,7 +54,7 @@ namespace apcurium.MK.Common.Caching
                     context.SaveChanges();
                     return default(T);
                 }
-                return JsonSerializer.DeserializeFromString<T>(item.Value);
+                return item.Value.FromJsonSafe<T>();
             }
         }
 
@@ -159,7 +158,7 @@ namespace apcurium.MK.Common.Caching
                     return false;
                 }
                 
-                var item = new CacheItem(key, JsonSerializer.SerializeToString(value), expiresAt);
+                var item = new CacheItem(key, value.ToJson(), expiresAt);
                 context.Set<CacheItem>().Add(item);
                 context.SaveChanges();
             }
@@ -188,12 +187,12 @@ namespace apcurium.MK.Common.Caching
                 var item = context.Find(key);
                 if (item == null)
                 {
-                    item = new CacheItem(key, JsonSerializer.SerializeToString(value), expiresAt);
+                    item = new CacheItem(key, value.ToJson(), expiresAt);
                     context.Set<CacheItem>().Add(item);
                     context.SaveChanges();
                     return true;
                 }
-                item.Value = JsonSerializer.SerializeToString(value);
+                item.Value = value.ToJson();
                 item.ExpiresAt = expiresAt;
                 context.SaveChanges();
                 return true;

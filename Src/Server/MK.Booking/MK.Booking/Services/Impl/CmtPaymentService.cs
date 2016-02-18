@@ -18,9 +18,8 @@ using CMTPayment.Reverse;
 using CMTPayment.Tokenize;
 using Infrastructure.Messaging;
 using Newtonsoft.Json;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using CMTPayment.Actions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -222,7 +221,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 long.Parse(transactionId),
                 orderStatus.DriverInfos == null 
                     ? 0 
-                    : orderStatus.DriverInfos.DriverId.To<int>(),
+                    : orderStatus.DriverInfos.DriverId.ToInt(),
                 orderStatus.IBSOrderId.Value, ref message);
         }
 
@@ -315,7 +314,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 var deviceId = orderStatus.VehicleNumber;
-                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
+                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.ToInt();
                 var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
                 var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;

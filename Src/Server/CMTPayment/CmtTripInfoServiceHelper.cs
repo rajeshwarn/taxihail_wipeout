@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Threading;
 using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using System.Net;
+using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace CMTPayment
 {

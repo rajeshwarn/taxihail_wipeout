@@ -12,9 +12,6 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 
 namespace apcurium.MK.Booking.Api.Services
 {

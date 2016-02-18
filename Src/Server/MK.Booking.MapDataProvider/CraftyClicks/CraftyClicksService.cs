@@ -2,7 +2,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
-using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;

@@ -10,8 +10,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
-using ServiceStack.Common;
-using ServiceStack.Text;
 
 namespace CMTServices
 {

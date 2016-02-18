@@ -6,13 +6,12 @@ using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
-#if CLIENT
 using apcurium.MK.Common.Extensions;
 using MK.Common.DummyServiceStack;
+#if CLIENT
+using apcurium.MK.Common.Extensions;
 #else
 using apcurium.MK.Booking.Api.Client.Extensions;
-using ServiceStack.ServiceInterface.Auth;
 #endif
 
 #endregion

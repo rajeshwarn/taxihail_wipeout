@@ -10,15 +10,14 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Html;
-using ServiceStack.Text;
-using ServiceStack.Text.Json;
 using AccountCharge = apcurium.MK.Booking.Api.Contract.Resources.AccountCharge;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
+
+    //TODO MKTAXI-3370: Refactor this to use async/await
     public class AdministrationServiceClient : BaseServiceClient
     {
         public AdministrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)

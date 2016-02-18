@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         orderReportEntry["Client.UserAgent"] = orderReport.Client.UserAgent;
                         orderReportEntry["Client.Version"] = orderReport.Client.Version;
 
-                        var rating = (JsonSerializer.DeserializeFromString(orderReport.Rating, typeof(Dictionary<string, string>)) as Dictionary<string, string>) ?? new Dictionary<string, string>();
+                        var rating =  orderReport.Rating.FromJsonSafe<Dictionary<string, string>>() ?? new Dictionary<string, string>();
 
                         foreach (var rate in rating)
                         {

@@ -3,9 +3,6 @@ using System.IO;
 using System.Net;
 using apcurium.MK.Common.Extensions;
 using CMTPayment.Authorization;
-using ServiceStack.Common.Web;
-using ServiceStack.Text;
-using CMTPayment.Authorization;
 
 namespace CMTPayment
 {
@@ -14,8 +11,9 @@ namespace CMTPayment
         partial void ClientSetup()
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;
-            Client.LocalHttpWebResponseFilter = LogErrorBody;
+            //TODO MKTAXI-3370: Handle this case in a messagehandler
+            //Client.LocalHttpWebRequestFilter = SignRequest;
+            //Client.LocalHttpWebResponseFilter = LogErrorBody;
         }
 
         private void SignRequest(WebRequest request)
@@ -35,7 +33,7 @@ namespace CMTPayment
                 requestUri,
                 null);
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
-            request.ContentType = ContentType.Json;
+            request.ContentType = "";//TODO MKTAXI-3370: ContentType:Json
 
 
             _logger.Maybe(() => _logger.LogMessage("CMT request header info : " + request.Headers));

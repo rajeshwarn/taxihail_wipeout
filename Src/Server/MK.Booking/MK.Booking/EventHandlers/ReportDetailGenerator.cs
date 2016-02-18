@@ -10,7 +10,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Text;
 using System.Linq;
 using apcurium.MK.Common;
 
@@ -409,7 +408,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                 }
 
-                orderReport.Rating = JsonSerializer.SerializeToString(rating);
+                orderReport.Rating = rating.ToJson();
 
                 context.SaveChanges();
             }

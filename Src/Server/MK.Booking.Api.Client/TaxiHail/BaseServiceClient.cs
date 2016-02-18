@@ -4,16 +4,11 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-using System.Net;
 using apcurium.MK.Common.Diagnostic;
+using System.Net.Http;
 
 #if CLIENT
 using ModernHttpClient;
-using System.Net.Http;
-#else
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
-using HttpClient = ServiceStack.ServiceClient.Web.ServiceClientBase;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -25,7 +20,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private string _sessionId;
         private string _url;
         private readonly IPackageInfo _packageInfo;
-        private HttpClient _client;
         private readonly IConnectivityService _connectivityService;
         protected readonly ILogger Logger;
 
@@ -47,17 +41,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _url = url;
             _sessionId = sessionId;
         }
-#if CLIENT
+
         protected HttpClient Client
         {
             // Recreate the HttpClient everytime to fix the problem with certain calls returning Unauthorized for no reason (seems to be on Android only)
             get { return CreateClient(); }
         }
 
-        private HttpClient CreateClient()
+#if CLIENT
+        private HttpClient CreateHttpClient(Uri baseAddress)
         {
-            var uri = new Uri(_url, UriKind.Absolute);
-
             var cookieHandler = new NativeCookieHandler();
 
             // CustomSSLVerification must be set to true to enable certificate pinning.
@@ -68,9 +61,23 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var client = new HttpClient(nativeHandler)
             {
-                BaseAddress = uri,
+                BaseAddress = baseAddress,
                 Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
+        }
+#else
+        private HttpClient CreateHttpClient(Uri baseAddress)
+        {
+            return new HttpClient()
+            {
+                BaseAddress = baseAddress,
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
+            };
+        }
+#endif
+        private HttpClient CreateClient()
+        {
+            var client = CreateHttpClient(new Uri(_url, UriKind.Absolute));
 
             // When packageInfo is not specified, we use a default value as the useragent
             client.DefaultRequestHeaders.Add("User-Agent", GetUserAgent());
@@ -90,42 +97,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             return client;
         }
-#else
-        protected ServiceClientBase Client
-        {
-            get { return _client ?? (_client = CreateClient()); }
-        }
-
-        private ServiceClientBase CreateClient()
-        {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
-            JsConfig.EmitCamelCaseNames = true;
-
-            var client = new JsonServiceClient(_url) { Timeout = new TimeSpan(0, 0, 2, 0, 0) };
-
-            var uri = new Uri(_url);
-            if (!string.IsNullOrEmpty(_sessionId))
-            {
-                client.CookieContainer = new CookieContainer();
-                client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
-                client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
-            }
-
-            // When packageInfo is not specified, we use a default value as the useragent
-            client.LocalHttpWebRequestFilter = request =>
-            {
-                request.UserAgent = GetUserAgent();
-
-                if (_packageInfo != null)
-                {
-                    request.Headers.Add("ClientVersion", _packageInfo.Version);
-                }
-            };
-
-            return client;
-        }
-#endif
-            
+           
         protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
         {
             return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));

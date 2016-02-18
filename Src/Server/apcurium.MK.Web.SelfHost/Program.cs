@@ -14,10 +14,6 @@ using apcurium.MK.Common.IoC;
 using Funq;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.ServiceInterface.Validation;
-using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
@@ -32,8 +28,8 @@ namespace apcurium.MK.Web.SelfHost
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
             var appHost = new AppHost();
-            appHost.Init();
-            appHost.Start(listeningOn);
+            //appHost.Init();
+            //appHost.Start(listeningOn);
 
 // ReSharper disable once LocalizableElement
             Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
@@ -41,13 +37,14 @@ namespace apcurium.MK.Web.SelfHost
         }
     }
 
-    public class AppHost : AppHostHttpListenerBase
+    //TODO MKTAXI-3370: Handle apphost here
+    public class AppHost //: AppHostHttpListenerBase
     {
-        public AppHost() : base("Mobile Knowledge Web Services", typeof (CurrentAccountService).Assembly)
+        public AppHost() //: base("Mobile Knowledge Web Services", typeof (CurrentAccountService).Assembly)
         {
         }
 
-        public override void Configure(Container containerFunq)
+        public void Configure(Container containerFunq)
         {
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
@@ -55,31 +52,31 @@ namespace apcurium.MK.Web.SelfHost
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             var container = UnityServiceLocator.Instance;
-            containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
+            //containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
 
-            Plugins.Add(new AuthFeature(() => new AuthUserSession(),
-                new IAuthProvider[]
-                {
-                    new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
-                        UnityContainerExtensions.Resolve<IAccountDao>(container),
-                        UnityContainerExtensions.Resolve<IPasswordService>(container),
-                        UnityContainerExtensions.Resolve<IServerSettings>(container)),
-                    new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
-                    new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
-                }));
-            Plugins.Add(new ValidationFeature());
-            containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
+            //Plugins.Add(new AuthFeature(() => new AuthUserSession(),
+            //    new IAuthProvider[]
+            //    {
+            //        new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
+            //            UnityContainerExtensions.Resolve<IAccountDao>(container),
+            //            UnityContainerExtensions.Resolve<IPasswordService>(container),
+            //            UnityContainerExtensions.Resolve<IServerSettings>(container)),
+            //        new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
+            //        new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
+            //    }));
+            //Plugins.Add(new ValidationFeature());
+            //containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
 
             
 
-            SetConfig(new EndpointHostConfig
-            {
-                GlobalResponseHeaders =
-                {
-                    {"Access-Control-Allow-Origin", "*"},
-                    {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
-                },
-            });
+            //SetConfig(new EndpointHostConfig
+            //{
+            //    GlobalResponseHeaders =
+            //    {
+            //        {"Access-Control-Allow-Origin", "*"},
+            //        {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
+            //    },
+            //});
         }
     }
 }

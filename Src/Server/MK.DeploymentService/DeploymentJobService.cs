@@ -401,7 +401,7 @@ namespace MK.DeploymentService
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";
             
-            File.WriteAllText(Path.Combine(packagesDirectory, "DatabaseInitializer\\") +  paramFile,  ServiceStack.Text.JsonSerializer.SerializeToString(p));
+            File.WriteAllText(Path.Combine(packagesDirectory, "DatabaseInitializer\\") +  paramFile, JsonConvert.SerializeObject(p));
             
             var deployDb =
                 ProcessEx.GetProcess(

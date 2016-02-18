@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceInterface.Auth;
+
 using apcurium.MK.Common.Configuration;
 using System.Web;
 using apcurium.MK.Common.Extensions;

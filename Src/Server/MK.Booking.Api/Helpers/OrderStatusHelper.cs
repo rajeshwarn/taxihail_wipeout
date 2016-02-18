@@ -5,8 +5,8 @@ using System.Net;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface.Auth;
+//using ServiceStack.Common.Web;
+//using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
 
 #endregion

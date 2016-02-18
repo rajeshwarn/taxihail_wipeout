@@ -37,7 +37,6 @@ namespace apcurium.MK.Web
         protected void Application_Start(object sender, EventArgs e)
         {
             XmlConfigurator.Configure();
-            new MkWebAppHost().Init();
 
             var config = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.ServerData.TaxiHail.ApplicationKey);

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Net.Http;
 using apcurium.MK.Common;
-using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.MapDataProvider
 {
@@ -10,12 +11,19 @@ namespace apcurium.MK.Booking.MapDataProvider
         {
         }
 
-        protected JsonServiceClient GetClient(string url = "")
+        public HttpClient GetClient(string url = "")
         {
-            return new JsonServiceClient(url)
+            var client = new HttpClient()
             {
                 Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
+
+            if (url.HasValueTrimmed())
+            {
+                client.BaseAddress = new Uri(url);
+            }
+
+            return client;
         }
     }
 }

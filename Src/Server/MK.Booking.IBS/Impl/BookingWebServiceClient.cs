@@ -9,7 +9,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
-using ServiceStack.Text;
 using System.Text.RegularExpressions;
 using apcurium.MK.Common.Entity;
 

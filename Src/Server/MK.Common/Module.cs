@@ -6,7 +6,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
-using ServiceStack.CacheAccess;
 
 #endregion
 
@@ -34,7 +33,8 @@ namespace apcurium.MK.Common
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
-            container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
+            //TODO MKTAXI-3370: ICacheClient
+            //container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
         }
     }
 }

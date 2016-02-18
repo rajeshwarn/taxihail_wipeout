@@ -9,18 +9,15 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
+using MK.Common.DummyServiceStack;
 using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Security
 {
-    public class CustomCredentialsAuthProvider : CredentialsAuthProvider
+    public class CustomCredentialsAuthProvider// : CredentialsAuthProvider
     {
         private readonly ICommandBus _commandBus;
         private readonly IPasswordService _passwordService;

@@ -2,8 +2,8 @@
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using RestSharp.Extensions;
-using ServiceStack.Text;
 using Twilio;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.SMS.Impl
 {

@@ -2,13 +2,12 @@
 
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
-using ServiceStack.Configuration;
 
 #endregion
 
 namespace apcurium.MK.Common.IoC
 {
-    public class UnityContainerAdapter : IContainerAdapter
+    public class UnityContainerAdapter //TODO MKTAXI-3370: is this still needed?
     {
         private readonly IUnityContainer _container;
         private readonly ILogger _logger;

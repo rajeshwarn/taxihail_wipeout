@@ -14,7 +14,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -112,7 +111,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             // Paypal web (prepaid) flow
 
             var temporaryInfo = _orderDao.GetTemporaryInfo(@event.OrderId);
-            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+            var orderInfo = temporaryInfo.SerializedOrderCreationInfo.FromJsonSafe<TemporaryOrderCreationInfo>();
 
             DeleteTempOrderData(@event.OrderId);
             
