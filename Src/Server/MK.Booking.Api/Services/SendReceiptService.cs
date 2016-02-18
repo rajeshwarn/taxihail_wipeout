@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
-		private readonly IReportDao _reportDao;
+        private readonly IReportDao _reportDao;
         private readonly IServerSettings _serverSettings;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IPromotionDao promotionDao,
-			IReportDao reportDao,
+            IReportDao reportDao,
             IServerSettings serverSettings,
             IGeocoding geocoding,
             ILogger logger)
@@ -56,10 +56,10 @@ namespace apcurium.MK.Booking.Api.Services
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
             _promotionDao = promotionDao;
-			_reportDao = reportDao;
+            _reportDao = reportDao;
             _creditCardDao = creditCardDao;
-            _commandBus = commandBus;
             _geocoding = geocoding;
+            _commandBus = commandBus;
         }
 
         public object Post(SendReceipt request)
@@ -130,7 +130,8 @@ namespace apcurium.MK.Booking.Api.Services
                 creditCard = orderPayment.CardToken.HasValue()
                     ? _creditCardDao.FindByToken(orderPayment.CardToken)
                     : null;
-            } else if (pairingInfo == null && order.IsManualRideLinq)
+            }
+            else if (pairingInfo == null && order.IsManualRideLinq)
             {
                 var manualRideLinqDetail = _orderDao.GetManualRideLinqById(order.Id);
                 fareAmount = manualRideLinqDetail.Fare;
@@ -141,9 +142,8 @@ namespace apcurium.MK.Booking.Api.Services
                 taxAmount = manualRideLinqDetail.Tax;
                 surcharge = manualRideLinqDetail.Surcharge;
                 orderStatus.DriverInfos.DriverId = manualRideLinqDetail.DriverId.ToString();
-
                 order.DropOffAddress = TryToGetExactDropOffAddress(order.Id, manualRideLinqDetail, order.DropOffAddress, order.ClientLanguageCode);
-
+                
                 cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
                 {
                     TripId = manualRideLinqDetail.TripId,
@@ -154,14 +154,14 @@ namespace apcurium.MK.Booking.Api.Services
                     DropOffDateTime = manualRideLinqDetail.EndTime,
                     LastFour = manualRideLinqDetail.LastFour,
                     FareAtAlternateRate = manualRideLinqDetail.FareAtAlternateRate,
-                    RateAtTripEnd = (int) (manualRideLinqDetail.RateAtTripEnd.GetValueOrDefault()),
-                    RateAtTripStart = (int) (manualRideLinqDetail.RateAtTripStart.GetValueOrDefault()),
+                    RateAtTripEnd = (int)(manualRideLinqDetail.RateAtTripEnd.GetValueOrDefault()),
+                    RateAtTripStart = (int)(manualRideLinqDetail.RateAtTripStart.GetValueOrDefault()),
                     LastLatitudeOfVehicle = order.DropOffAddress.Latitude,
                     LastLongitudeOfVehicle = order.DropOffAddress.Longitude,
                     TipIncentive = order.TipIncentive ?? 0
                 };
 
-                
+
             }
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
@@ -170,16 +170,16 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    fareAmount = Math.Round(((double) tripInfo.Fare/100), 2);
+                    fareAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
                     var tollHistory = tripInfo.TollHistory != null
                         ? tripInfo.TollHistory.Sum(p => p.TollAmount)
                         : 0;
 
-                    tollAmount = Math.Round(((double) tollHistory/100), 2);
-                    extraAmount = Math.Round(((double) tripInfo.Extra/100), 2);
-                    tipAmount = Math.Round(((double) tripInfo.Tip/100), 2);
-                    taxAmount = Math.Round(((double) tripInfo.Tax/100), 2);
-                    surcharge = Math.Round(((double) tripInfo.Surcharge/100), 2);
+                    tollAmount = Math.Round(((double)tollHistory / 100), 2);
+                    extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                    tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
+                    taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                    surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
 
                     cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
@@ -187,11 +187,11 @@ namespace apcurium.MK.Booking.Api.Services
                         TripId = tripInfo.TripId,
                         DriverId = tripInfo.DriverId.ToString(),
                         Distance = tripInfo.Distance,
-                        AccessFee = Math.Round(((double) tripInfo.AccessFee/100), 2),
+                        AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                         PickUpDateTime = tripInfo.StartTime,
                         DropOffDateTime = tripInfo.EndTime,
                         LastFour = tripInfo.LastFour,
-                        FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate/100), 2),
+                        FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
                         RateAtTripStart = tripInfo.RateAtTripStart,
                         Tolls = tripInfo.TollHistory,
@@ -227,10 +227,10 @@ namespace apcurium.MK.Booking.Api.Services
             var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
 
             var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
-                    order, 
-                    account, 
+                    order,
+                    account,
                     ibsOrderId,
-					(orderReport != null ? orderReport.VehicleInfos.Number : ibsOrder.VehicleNumber),
+                    (orderReport != null ? orderReport.VehicleInfos.Number : ibsOrder.VehicleNumber),
                     orderStatus.DriverInfos,
                     fareAmount,
                     tollAmount,
