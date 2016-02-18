@@ -257,7 +257,7 @@
                                     {
                                         <td>refunded</td>
                                     }
-                                    else if ((OrderStatus)order.Status == OrderStatus.Completed)
+                                    else if((OrderStatus)order.Status == OrderStatus.Completed && order.IsOrderPairing)
                                     {
                                         <td style="max-width:100px; width:100px;"><input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addRefundOrderNoteModalDialog" value="refund" onclick="refundOnClick('@order.Id')" /></td>
                                     }
