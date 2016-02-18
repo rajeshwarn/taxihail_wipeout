@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderPaymentDao _orderPaymentDao;
 		private readonly IReportDao _reportDao;
         private readonly IServerSettings _serverSettings;
+        private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
 
         public SendReceiptService(
@@ -44,6 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
             IPromotionDao promotionDao,
 			IReportDao reportDao,
             IServerSettings serverSettings,
+            IGeocoding geocoding,
             ILogger logger)
         {
             _serverSettings = serverSettings;
@@ -56,6 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
 			_reportDao = reportDao;
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
+            _geocoding = geocoding;
         }
 
         public object Post(SendReceipt request)
@@ -137,6 +141,9 @@ namespace apcurium.MK.Booking.Api.Services
                 taxAmount = manualRideLinqDetail.Tax;
                 surcharge = manualRideLinqDetail.Surcharge;
                 orderStatus.DriverInfos.DriverId = manualRideLinqDetail.DriverId.ToString();
+
+                order.DropOffAddress = TryToGetExactDropOffAddress(order.Id, manualRideLinqDetail, order.DropOffAddress, order.ClientLanguageCode);
+
                 cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
                 {
                     TripId = manualRideLinqDetail.TripId,
@@ -149,6 +156,8 @@ namespace apcurium.MK.Booking.Api.Services
                     FareAtAlternateRate = manualRideLinqDetail.FareAtAlternateRate,
                     RateAtTripEnd = (int) (manualRideLinqDetail.RateAtTripEnd.GetValueOrDefault()),
                     RateAtTripStart = (int) (manualRideLinqDetail.RateAtTripStart.GetValueOrDefault()),
+                    LastLatitudeOfVehicle = order.DropOffAddress.Latitude,
+                    LastLongitudeOfVehicle = order.DropOffAddress.Longitude,
                     TipIncentive = order.TipIncentive ?? 0
                 };
 
@@ -244,6 +253,41 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(sendReceiptCommand);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        private Address TryToGetExactDropOffAddress(Guid orderId, OrderManualRideLinqDetail manualRideLinqDetail, Address dropOffAddress, string clientLanguageCode)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if ((orderStatus == null
+                || !orderStatus.VehicleLatitude.HasValue
+                || !orderStatus.VehicleLongitude.HasValue)
+                && (manualRideLinqDetail == null
+                || !manualRideLinqDetail.LastLatitudeOfVehicle.HasValue
+                || !manualRideLinqDetail.LastLongitudeOfVehicle.HasValue))
+            {
+                return dropOffAddress;
+            }
+
+            double latitude;
+            double longitude;
+
+            if (manualRideLinqDetail != null
+                && manualRideLinqDetail.LastLatitudeOfVehicle.HasValue
+                && manualRideLinqDetail.LastLongitudeOfVehicle.HasValue)
+            {
+                latitude = manualRideLinqDetail.LastLatitudeOfVehicle.Value;
+                longitude = manualRideLinqDetail.LastLongitudeOfVehicle.Value;
+            }
+            else
+            {
+                latitude = orderStatus.VehicleLatitude.Value;
+                longitude = orderStatus.VehicleLongitude.Value;
+            }
+
+            // Find the exact dropoff address using the last vehicle position
+            var exactDropOffAddress = _geocoding.Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
+
+            return exactDropOffAddress ?? dropOffAddress;
         }
 
         private Trip GetTripInfo(string pairingToken)
