@@ -72,7 +72,12 @@
             }
             
             var status = this.model.getStatus();
-            var ibsStatusId = status.get('IBSStatusId');
+            var ibsStatusId = status.get('ibsStatusId');
+
+            if (ibsStatusId == "wosLOADED") {
+                this.$('#callDriverButton').addClass('hidden');
+                this.$('#messageDriverButton').addClass('hidden');
+            }
 
             if (TaxiHail.parameters.showCallDriver == true) {
                 var driverInfos = status.get('driverInfos');
