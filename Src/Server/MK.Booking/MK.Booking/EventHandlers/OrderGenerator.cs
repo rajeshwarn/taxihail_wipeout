@@ -525,6 +525,19 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+
+                var settings = new BookingSettings()
+                {
+                    ChargeType = ChargeTypes.CardOnFile.Display,
+                    ChargeTypeId = ChargeTypes.CardOnFile.Id
+                };
+
+                var paymentInfo = new PaymentInformationDetails()
+                {
+                    CreditCardId = @event.CreditCardId,
+                    PayWithCreditCard = true
+                };
+
                 context.Save(new OrderDetail
                 {
                     AccountId = @event.AccountId,
@@ -539,7 +552,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     IsManualRideLinq = true,
                     OriginatingIpAddress = @event.OriginatingIpAddress,
-                    KountSessionId = @event.KountSessionId
+                    KountSessionId = @event.KountSessionId,
+
+                    //Payment information: User should always pay with a credit card for ManualPairing. Older trips might not have the information available.
+                    PaymentInformation = @event.CreditCardId.HasValue ? paymentInfo : null,
+                    Settings = @event.CreditCardId.HasValue ? settings : null
                 });
 
                 // Create an empty OrderStatusDetail row
