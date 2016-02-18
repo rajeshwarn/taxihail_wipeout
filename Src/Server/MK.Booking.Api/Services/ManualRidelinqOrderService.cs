@@ -173,6 +173,16 @@ namespace apcurium.MK.Booking.Api.Services
 
 					_commandBus.Send(command);
 
+                    _commandBus.Send(new PairForPayment
+                    {
+                        OrderId = command.OrderId,
+                        Medallion = response.Medallion,
+                        PairingCode = response.PairingCode,
+                        PairingToken = response.PairingToken,
+                        DriverId = trip.DriverId.ToString(),
+                        TokenOfCardToBeUsedForPayment = creditCard.Token
+                    });
+
 					var data = new OrderManualRideLinqDetail
 					{
 						OrderId = command.OrderId,
