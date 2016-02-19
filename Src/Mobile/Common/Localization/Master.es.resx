@@ -582,9 +582,12 @@
     <value>Para usar esta aplicación necesita ingresar un método de pago a su cuenta</value>
     <comment>In order to use the application, you need to add a payment method to your account.</comment>
   </data>
-  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+  <data name="CreditCardInvalidCrediCardNumber" xml:space="preserve">
     <value>El número de tarjeta de crédito es inválido</value>
     <comment>The Credit Card Number is invalid</comment>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
+    <value>Sorry, Amex cards are not supported</value>
   </data>
   <data name="CreditCardLabel" xml:space="preserve">
     <value>Etiqueta</value>

@@ -115,7 +115,8 @@
 "CreditCardExpMonth"="Fecha de expiración";
 "CreditCardExpYear"="Mes de expiración";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
-"CreditCardInvalidCrediCardNUmber"="El número de tarjeta de crédito es inválido";
+"CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
 "CreditCardLabel"="Etiqueta";
 "CreditCardName"="Nombre tal y como aparece en la tarjeta";
 "CreditCardNumber"="Número de tarjeta";

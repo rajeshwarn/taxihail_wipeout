@@ -433,8 +433,11 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
-  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+  <data name="CreditCardInvalidCrediCardNumber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
+    <value>Sorry, Amex cards are not supported</value>
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>

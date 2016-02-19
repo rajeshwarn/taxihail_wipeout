@@ -106,8 +106,9 @@
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.";
-"CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
+"CreditCardInvalidCrediCardNumber"="Le numéro de la carte ne semble pas être valide";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
+"CreditCardInvalidCrediCardTypeAmex"="Désolé, nous ne supportons pas les cartes Amex";
 "CreditCardLabel"="Label";
 "CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";

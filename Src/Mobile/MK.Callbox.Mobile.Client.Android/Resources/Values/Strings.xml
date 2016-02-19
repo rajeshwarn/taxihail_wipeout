@@ -386,7 +386,7 @@
   <string name="CreditCardErrorTitle">Cannot save credit card</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
-  <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
+  <string name="CreditCardInvalidCrediCardNumber">The Credit Card Number is invalid</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="ReminderTitle">{0} Booked</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
