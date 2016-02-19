@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
         {
             var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 
             var initialPosition = locationService.GetInitialPosition();
 

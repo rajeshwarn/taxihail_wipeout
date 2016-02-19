@@ -57,6 +57,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		public Position GetInitialPosition()
 		{
+			if (BestPosition != null)
+			{
+				return BestPosition;
+			}
+
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
 			var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Position>("UserLastKnownPosition");
 
@@ -68,9 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				}
 				: lastKnownPosition;
 
-			var position = BestPosition != null ? BestPosition : defaultPosition;
-
-			return position;
+			return defaultPosition;
 		}
 
 		public abstract Position LastKnownPosition { get; }

@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             mOriginalContentView = base.OnCreateView(inflater, parent, savedInstanceState);
 
             var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
-			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 
             var initialPosition = locationService.GetInitialPosition();
 
