@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public LocationManagerDelegate ()
         {
             Observers = new List<IObserver<Position>>();
-            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ("UserAppCache");
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ();
         }
 
         private readonly ICacheService _cacheService;

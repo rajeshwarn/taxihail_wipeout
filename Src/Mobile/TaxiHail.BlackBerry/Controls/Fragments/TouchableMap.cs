@@ -26,25 +26,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
         {
-            var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+
+            var initialPosition = locationService.GetInitialPosition();
 
             Map = new MapView(Activity.ApplicationContext,  settings.MapBoxKey);
             Map.OnCreate(savedInstanceState);
-
-            var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<Position>("UserLastKnownPosition");
-
-            var defaultLatitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLatitude : lastKnownPosition.Latitude;
-            var defaultLongitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLongitude : lastKnownPosition.Longitude;
-
-            var latitude = bestPosition != null ? bestPosition.Latitude : defaultLatitude;
-            var longitude = bestPosition != null ? bestPosition.Longitude : defaultLongitude;
 
             Map.SetLogoVisibility((int)ViewStates.Gone);
             Map.SetAttributionVisibility((int)ViewStates.Gone);
 
             Map.StyleUrl = Com.Mapbox.Mapboxsdk.Constants.Style.MapboxStreets;
-            Map.SetCenterCoordinate(new LatLngZoom(new LatLng(latitude, longitude), 12f), true);
+            Map.SetCenterCoordinate(new LatLngZoom(new LatLng(initialPosition.Latitude, initialPosition.Longitude), 12f), true);
 
             // disable gestures on the map since we're handling them ourselves
             Map.CompassEnabled = false;

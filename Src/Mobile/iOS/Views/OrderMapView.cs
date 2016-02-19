@@ -123,20 +123,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void Initialize()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
-            var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
 
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<Position>("UserLastKnownPosition");
+            var initialPosition = locationService.GetInitialPosition();
 
-            var defaultLatitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLatitude : lastKnownPosition.Latitude;
-            var defaultLongitude = lastKnownPosition == null ? settings.GeoLoc.DefaultLongitude : lastKnownPosition.Longitude;
-
-            var latitude = bestPosition != null ? bestPosition.Latitude : defaultLatitude;
-            var longitude = bestPosition != null ? bestPosition.Longitude : defaultLongitude;
-
-            var region = new MKCoordinateRegion(new CLLocationCoordinate2D(latitude, longitude), new MKCoordinateSpan(0.1, 0.1));
+            var region = new MKCoordinateRegion(new CLLocationCoordinate2D(initialPosition.Latitude, initialPosition.Longitude), new MKCoordinateSpan(0.1, 0.1));
 
             Region = region;
 

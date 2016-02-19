@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _observers = new List<IObserver<Position>>();
             GpsListener = new LocationListener(this);
             NetworkListener = new LocationListener(this);
-            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ("UserAppCache");
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ();
         }
 
         public LocationListener GpsListener { get; private set; }
