@@ -82,7 +82,16 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order not found");
                     }
 
-                    if (_serverPaymentSettings.CmtPaymentSettings.PairingMethod == RideLinqPairingMethod.PairingCode
+                    var pairingMethod = _serverPaymentSettings.CmtPaymentSettings.PairingMethod;
+                    if (pairingMethod == RideLinqPairingMethod.NotSet && companyKey.HasValueTrimmed())
+                    {
+                        // we are on a company that wasn't migrated to the new pairing method setting, use the old one
+                        pairingMethod = _serverPaymentSettings.CmtPaymentSettings.UsePairingCode
+                            ? RideLinqPairingMethod.PairingCode
+                            : RideLinqPairingMethod.VehicleMedallion;
+                    }
+
+                    if (pairingMethod == RideLinqPairingMethod.PairingCode
                         && !orderStatusDetail.RideLinqPairingCode.HasValue())
                     {
                         // We haven't received the pairing code from IBS yet, set the ignore response false
@@ -97,7 +106,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
+                    var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 
                     if (response.ErrorCode.HasValue)
                     {
@@ -386,7 +395,13 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = _orderDao.FindById(orderId);
                 var orderPairing = _orderDao.FindOrderPairingById(orderId);
-                var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
+
+                if (orderPairing == null)
+                {
+                    throw new Exception(string.Format("can't find orderPairing object for orderId {0}", orderId));
+                }
+
+                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
 
                 var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
                                     + order.Tax.GetValueOrDefault()
@@ -505,7 +520,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(RideLinqPairingMethod pairingMethod, OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
         {
             InitializeServiceClient();
 
@@ -539,7 +554,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     SessionId = orderDetail.KountSessionId
                 };
 
-                switch (_serverPaymentSettings.CmtPaymentSettings.PairingMethod)
+                switch (pairingMethod)
                 {
                     case RideLinqPairingMethod.VehicleMedallion:
                         _logger.LogMessage("OrderPairingManager RideLinq with VehicleMedallion : " + (orderStatusDetail.VehicleNumber.HasValue() ? orderStatusDetail.VehicleNumber : "No vehicle number"));

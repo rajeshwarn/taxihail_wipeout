@@ -33,11 +33,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Initialize();
 		}
 
-        public void Initialize ()
+        private void Initialize ()
 		{
-			this.ShouldChangeCharacters = CheckMaxLength;
+			ShouldChangeCharacters = CheckMaxLength;
 
-			this.BackgroundColor = UIColor.White;
+			BackgroundColor = UIColor.White;
 
             TextAlignment = UITextAlignment.Natural;
             TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
@@ -51,24 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
-          
-        bool _forceWhiteBackground;
-        public bool ForceWhiteBackground
-        {
-            get
-            {
-                return _forceWhiteBackground;
-            }
-            set
-            {
-                _forceWhiteBackground = value;
-                BackgroundColor = UIColor.White;
-                SetNeedsDisplay();
-            }
-        }
 
 		private UIColor _backgroundColor;
-		public override UIColor BackgroundColor
+		public new UIColor BackgroundColor
 		{
 			get
 			{
@@ -177,11 +162,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
-
-            if (RightView == null)
-            {
-                RightView = new UIView();
-            }
 
 			RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, Frame.Height);
 
