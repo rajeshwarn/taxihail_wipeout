@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.ToArray();
 		}
 
-		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList)
 		{
 			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
 			{
@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return market.DisableOutOfAppPayment
 					? paymentList
-						: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
+						: EnsurePaymentInCarAvailableIfNeeded(paymentList);
 			}
 
 			paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);

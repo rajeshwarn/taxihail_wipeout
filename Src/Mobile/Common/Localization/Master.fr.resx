@@ -1122,9 +1122,6 @@
   <data name="Save" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
-  <data name="Modify" xml:space="preserve">
-    <value>Modifier</value>
-  </data>
   <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
     <value>Désolé, les données ne semble pas valides. Merci de saisir les informations</value>
   </data>
@@ -2419,5 +2416,8 @@
   </data>
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>Désolé, le mot de passe saisi n'est pas valide</value>
+  </data>
+  <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
+    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
   </data>
 </root>

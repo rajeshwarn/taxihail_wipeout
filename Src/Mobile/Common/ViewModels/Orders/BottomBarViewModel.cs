@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -976,7 +977,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                     if(!Settings.DisableImmediateBooking)
 					{
-						CreateOrder.ExecuteIfPossible();
+						var noChargeType  = !(await _orderWorkflowService.ValidateChargeType());
+						var noCreditCard = !(await _accountService.GetCreditCards()).ToList().Any();
+
+						if (noChargeType && noCreditCard)
+						{
+							this.Services().Message.ShowMessage(
+								this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
+					            () => ((HomeViewModel) Parent).CurrentViewState = HomeViewModelState.Initial);
+						} else 
+						{
+							var paymentValidated = await _orderWorkflowService.ValidateCardOnFile();
+							CreateOrder.ExecuteIfPossible();
+						}
 					}
 					else 
 					{
