@@ -23,7 +23,10 @@ namespace apcurium.MK.Common.Configuration.Impl
         [PropertyEncrypt]
         public string MerchantAccountId { get; set; }
 
-		[PropertyEncrypt]
+        [PropertyEncrypt]
+        public string MerchantAccountId { get; set; }
+
+        [PropertyEncrypt]
         public string PublicKey { get; set; }
 
 		[PropertyEncrypt]
