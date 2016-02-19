@@ -700,6 +700,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
                 rideLinqDetails.PairingError = @event.PairingError;
+                rideLinqDetails.LastLatitudeOfVehicle = @event.LastLatitudeOfVehicle;
+                rideLinqDetails.LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle;
 
                 context.Save(rideLinqDetails);
             }
