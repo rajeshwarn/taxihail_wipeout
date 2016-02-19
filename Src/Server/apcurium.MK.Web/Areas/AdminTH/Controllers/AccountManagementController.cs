@@ -335,12 +335,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
-                        orderModel.TotalAmountString, 
+                        orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
 
-                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
                     TempData["UserMessage"] = "order refunded, note added, email sent";
                 }
@@ -428,8 +427,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                {
                    var promo = _promoDao.FindByOrderId(x.Id);
                    var status = _orderDao.FindOrderStatusById(x.Id);
+                   var orderPairing = _orderDao.FindOrderPairingById(x.Id);
+
                    return new OrderModel(x)
                    {
+                       IsOrderPairing = orderPairing != null,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),

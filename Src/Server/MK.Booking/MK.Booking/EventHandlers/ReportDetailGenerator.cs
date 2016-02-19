@@ -41,7 +41,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
-        IEventHandler<OriginalEtaLogged>
+        IEventHandler<OriginalEtaLogged>,
+        IEventHandler<OrderStatusChangedForManualRideLinq>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -594,6 +595,20 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.OrderStatus.Status = OrderStatus.Canceled;
                 }
 
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderStatusChangedForManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.OrderStatus.Status = @event.Status;
+                if (@event.Status == OrderStatus.TimedOut)
+                {
+                    orderReport.Order.HasTimedOut = true;
+                }
                 context.Save(orderReport);
             }
         }
