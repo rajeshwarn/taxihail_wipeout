@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>Taxi</string>
+    <string>TaxiHail</string>
     <key>CFBundleIconFiles</key>
     <array>
       <string>app.png</string>
@@ -11,7 +11,7 @@
       <string>Icon-60@2x</string>
     </array>
     <key>CFBundleIdentifier</key>
-    <string>com.apcurium.MK.MearsTaxi</string>
+    <string>com.apcurium.MK.TaxiHailDemo</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
@@ -19,17 +19,19 @@
         <string>facebook</string>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>fb134284363380764taxi</string>
-          <string>mktaxi</string>
+          <string>fb134284363380764apcurium</string>
+          <string>taxihail</string>
+          <string>fb134284363380764</string>
+          <string>fb134284363380764taxihail</string>
         </array>
         <key>CFBundleURLTypes</key>
         <string>Viewer</string>
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>0.3.3</string>
+    <string>3.5.0</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.3.3</string>
+    <string>3.5.0</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -57,5 +59,35 @@
     <true />
     <key>XSLaunchImageAssets</key>
     <string>Resources/Images.xcassets/LaunchImage.launchimage</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <!--Connect to anything (this is probably BAD)-->
+      <key>NSAllowsArbitraryLoads</key>
+      <true />
+      <!-- <key>NSExceptionDomains</key>
+      <dict>
+        <key>test.taxihail.biz</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <true />
+          <key>NSIncludesSubdomains</key>
+          <false />
+        </dict>
+        <key>staging.taxihail.com</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <true />
+          <key>NSIncludesSubdomains</key>
+          <false />
+        </dict>
+        <key>cmtapi.com</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <true />
+          <key>NSIncludesSubdomains</key>
+          <true />
+        </dict>
+      </dict> -->
+    </dict>
   </dict>
 </plist>
