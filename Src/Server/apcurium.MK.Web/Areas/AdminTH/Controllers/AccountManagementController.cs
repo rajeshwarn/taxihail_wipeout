@@ -335,7 +335,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
-                        orderModel.TotalAmountString, 
+                        orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
@@ -457,8 +457,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                {
                    var promo =  GetPromotionUsageDetails(accountId).FirstOrDefault(promotionUsageDetail => promotionUsageDetail.OrderId == x.Id);
                    var status = GetOrderStatusDetails(accountId).FirstOrDefault(orderStatusDetail => orderStatusDetail.OrderId == x.Id);
+                   var orderPairing = _orderDao.FindOrderPairingById(x.Id);
+
                    return new OrderModel(x)
                    {
+                       IsOrderPairing = orderPairing != null,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),

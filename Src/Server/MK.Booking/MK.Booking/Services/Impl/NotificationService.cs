@@ -697,7 +697,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
                     ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
                     ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
-                    ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || Math.Abs(toll) >= 0.01,
+                    ShowTollTotal = (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4) || (Math.Abs(toll) >= 0.01 && !hasCmtTollDetails),
                     ShowRideLinqLastFour = isCmtRideLinqReceipt,
                     ShowTripId = isCmtRideLinqReceipt,
                     ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
@@ -806,7 +806,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
-        public void SendOrderRefundEmail(DateTime refundDate, string last4Digits, string totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        public void SendOrderRefundEmail(DateTime refundDate, string last4Digits, double? totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -834,7 +834,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 RefundDate = refundDate.ToString("D", dateFormat),
                 RefundTime = refundDate.ToString("t" /* Short time pattern */),
                 Last4Digits = last4Digits,
-                TotalAmount = totalAmount,
+                TotalAmount = _resources.FormatPrice(totalAmount),
                 LogoImg = imageLogoUrl
             };
 

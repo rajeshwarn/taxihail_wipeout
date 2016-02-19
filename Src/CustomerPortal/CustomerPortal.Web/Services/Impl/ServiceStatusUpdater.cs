@@ -49,11 +49,8 @@ namespace CustomerPortal.Web.Services.Impl
         {
             var companies = _companyRepository
                 // We only get the companies that have active websites.
-                .Where(company => company.Status == AppStatus.Production ||
-                                  company.Status == AppStatus.TestingNewVersion ||
-                                  company.CompanyKey.Equals("ArroDemo") ||
-                                  company.CompanyKey.Equals("ArroNT") ||
-                                  company.CompanyKey.Equals("Apcurium")
+                .Where(company => company.Status == AppStatus.MonitoringProd ||
+                                  company.Status == AppStatus.MonitoringDemo
                 )
                 .ToArray();
 

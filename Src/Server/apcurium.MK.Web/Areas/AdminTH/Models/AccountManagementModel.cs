@@ -119,6 +119,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TotalAmountString { get; set; }
 
         public bool IsRideLinqCMTPaymentMode { get; set; }
+
+        public bool IsOrderPairing { get; set; }
     }
 
     public class NoteModel : AccountNoteEntry
