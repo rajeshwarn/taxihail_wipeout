@@ -983,7 +983,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						if (noChargeType && noCreditCard)
 						{
 							this.Services().Message.ShowMessage(
-					            this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["BookNoCreditCard"],
+								this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
 					            () => ((HomeViewModel) Parent).CurrentViewState = HomeViewModelState.Initial);
 						} else 
 						{

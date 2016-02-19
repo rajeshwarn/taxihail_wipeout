@@ -3031,4 +3031,8 @@
     <value>Mensaje</value>
     <comment>Message</comment>
   </data>
+  <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
+    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
+    <comment>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</comment>
+  </data>
 </root>
