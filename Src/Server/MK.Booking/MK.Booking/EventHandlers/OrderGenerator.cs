@@ -525,20 +525,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-
-                var settings = new BookingSettings()
-                {
-                    ChargeType = ChargeTypes.CardOnFile.Display,
-                    ChargeTypeId = ChargeTypes.CardOnFile.Id
-                };
-
-                var paymentInfo = new PaymentInformationDetails()
-                {
-                    CreditCardId = @event.CreditCardId,
-                    PayWithCreditCard = true
-                };
-
-                context.Save(new OrderDetail
+                var orderDetail = new OrderDetail
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
@@ -546,18 +533,32 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
-                    Status = (int)OrderStatus.Created,
+                    Status = (int) OrderStatus.Created,
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
                     IsManualRideLinq = true,
                     OriginatingIpAddress = @event.OriginatingIpAddress,
                     KountSessionId = @event.KountSessionId,
+                };
+                
 
-                    //Payment information: User should always pay with a credit card for ManualPairing. Older trips might not have the information available.
-                    PaymentInformation = @event.CreditCardId.HasValue ? paymentInfo : null,
-                    Settings = @event.CreditCardId.HasValue ? settings : null
-                });
+                if (@event.CreditCardId.HasValue)
+                {
+                    orderDetail.PaymentInformation = new PaymentInformationDetails()
+                    {
+                        CreditCardId = @event.CreditCardId,
+                        PayWithCreditCard = true
+                    };
+
+                    orderDetail.Settings = new BookingSettings()
+                    {
+                        ChargeType = ChargeTypes.CardOnFile.Display,
+                        ChargeTypeId = ChargeTypes.CardOnFile.Id
+                    };
+                }
+
+                context.Save(orderDetail);
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
