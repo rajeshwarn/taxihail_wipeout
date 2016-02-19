@@ -6,7 +6,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public BraintreeServerSettings()
         {
 #if DEBUG
-
+            MerchantAccountId = "r5ftmsvsjksgrrjq";
             MerchantId = "8xv86vbp9cy3cv96";
             PrivateKey = "eaee7d483323a971beb07edfc91880ae";
             PublicKey = "33nbqvrwjg7hy2n5";
@@ -20,7 +20,10 @@ namespace apcurium.MK.Common.Configuration.Impl
 		[PropertyEncrypt]
         public string MerchantId { get; set; }
 
-		[PropertyEncrypt]
+        [PropertyEncrypt]
+        public string MerchantAccountId { get; set; }
+
+        [PropertyEncrypt]
         public string PublicKey { get; set; }
 
 		[PropertyEncrypt]
