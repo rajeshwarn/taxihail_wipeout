@@ -1212,6 +1212,9 @@
   <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>EL conductor activo reasignación</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>Pasajero no presentado</value>
+  </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notificiaciones</value>
     <comment>Notifications</comment>
@@ -2977,10 +2980,12 @@
     <comment>No account with this email has been found.</comment>
   </data>
   <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
-    <value>This email matches a Facebook account. Please login via Facebook.</value>
+  	<value>Este email esta asociado a una cuenta de Facebook. Por favor ingrese via Facebook.</value>
+    <comment>This email matches a Facebook account. Please login via Facebook.</comment>
   </data>
   <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
-    <value>This email matches a Twitter account. Please login via Twitter.</value>
+    <value>Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</value>
+    <comment>This email matches a Twitter account. Please login via Twitter.</comment>
   </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>Código de confirmación inválido</value>
@@ -2995,25 +3000,30 @@
   	<comment>Update Card</comment>
   </data>
   <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
-    <value>You need to have an active credit card set as your default payment method</value>
+    <value>Necesita tener una tarjeta de crédito activa como método de pago por defecto</value>
+    <comment>You need to have an active credit card set as your default payment method</comment>
   </data>
   <data name="PaypalErrorMessage" xml:space="preserve">
   	<value>An error occurred while attempting to contact PayPal</value>
   </data>
   <data name="LastFour" xml:space="preserve">
-    <value>Last 4 numbers:  </value>
+    <value>Los últimos 4 números:  </value>
+    <comment>Last 4 numbers:  </comment>
   </data>
   <data name="PaypalAccount" xml:space="preserve">
     <value>PayPal account</value>
   </data>
   <data name="CreditCompany" xml:space="preserve">
-    <value>Credit company: </value>
+    <value>Compañía de Crédito: </value>
+    <comment>Credit company: </comment>
   </data>
   <data name="SelectedCreditCard" xml:space="preserve">
-    <value>Currently selected credit card</value>
+    <value>Tarjeta de crédito seleccionada actualmente</value>
+    <comment>Currently selected credit card</comment>
   </data>
   <data name="NoCreditCard" xml:space="preserve">
-    <value>No credit card selected</value>
+    <value>No ha seleccionado una tarjeta de crédito</value>
+    <comment>No credit card selected</comment>
   </data>
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>Su contraseña y confirmación no concuerdan</value>

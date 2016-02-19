@@ -413,4 +413,268 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             }
         }
     }
+
+    [TestFixture]
+    public class given_no_manual_ridelinq_order : given_a_view_model_generator
+    {
+        [Test]
+        public void when_order_paired_then_order_dto_populated()
+        {
+            var @event = new OrderManuallyPairedForRideLinq
+            {
+                SourceId = Guid.NewGuid(),
+                AccountId = Guid.NewGuid(),
+                TripId = 15,
+                PairingDate = DateTime.Now,
+                PickupAddress = new Address
+                {
+                    Apartment = "3939",
+                    Street = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                },
+                UserAgent = "useragent",
+                ClientLanguageCode = "en",
+                ClientVersion = "1.0",
+                OriginatingIpAddress = "192.168.12.30",
+                KountSessionId = "1i3u13n123",
+
+                Medallion = "1251515",
+                DriverId = 124135356,
+
+                PairingCode = "515152",
+                PairingToken = "62523",
+            };
+            Sut.Handle(@event);
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Query<OrderDetail>().SingleOrDefault(x => x.Id == @event.SourceId);
+                Assert.IsNotNull(order);
+                Assert.AreEqual(@event.AccountId, order.AccountId);
+                Assert.AreEqual(@event.TripId, order.IBSOrderId);
+                Assert.AreEqual(@event.PairingDate.ToLongDateString(), order.CreatedDate.ToLongDateString());
+                Assert.AreEqual(@event.PickupAddress.DisplayLine1, order.PickupAddress.DisplayLine1);
+                Assert.AreEqual((int)OrderStatus.Created, order.Status);
+                Assert.AreEqual(@event.UserAgent, order.UserAgent);
+                Assert.AreEqual(@event.ClientLanguageCode, order.ClientLanguageCode);
+                Assert.AreEqual(@event.ClientVersion, order.ClientVersion);
+                Assert.AreEqual(true, order.IsManualRideLinq);
+                Assert.AreEqual(@event.OriginatingIpAddress, order.OriginatingIpAddress);
+                Assert.AreEqual(@event.KountSessionId, order.KountSessionId);
+
+                var orderStatus = context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == @event.SourceId);
+                Assert.IsNotNull(orderStatus);
+                Assert.AreEqual(@event.AccountId, orderStatus.AccountId);
+                Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
+                Assert.AreEqual("Processing your order...", orderStatus.IBSStatusDescription);
+                Assert.AreEqual(@event.Medallion, orderStatus.VehicleNumber);
+                Assert.AreEqual(@event.DriverId.ToString(), orderStatus.DriverInfos.DriverId);
+
+                var orderRideLinq = context.Query<OrderManualRideLinqDetail>().SingleOrDefault(x => x.OrderId == @event.SourceId);
+                Assert.IsNotNull(orderRideLinq);
+                Assert.AreEqual(@event.AccountId, orderRideLinq.AccountId);
+                Assert.AreEqual(@event.PairingCode, orderRideLinq.PairingCode);
+                Assert.AreEqual(@event.PairingToken, orderRideLinq.PairingToken);
+                Assert.AreEqual(@event.PairingDate.ToLongDateString(), orderRideLinq.PairingDate.ToLongDateString());
+                Assert.AreEqual(@event.Distance, orderRideLinq.Distance);
+                Assert.AreEqual(@event.Extra, orderRideLinq.Extra);
+                Assert.AreEqual(@event.Fare, orderRideLinq.Fare);
+                Assert.AreEqual(@event.FareAtAlternateRate, orderRideLinq.FareAtAlternateRate);
+                Assert.AreEqual(@event.Total, orderRideLinq.Total);
+                Assert.AreEqual(@event.Toll, orderRideLinq.Toll);
+                Assert.AreEqual(@event.Tax, orderRideLinq.Tax);
+                Assert.AreEqual(@event.Tip, orderRideLinq.Tip);
+                Assert.AreEqual(@event.Surcharge, orderRideLinq.Surcharge);
+                Assert.AreEqual(@event.RateAtTripStart, orderRideLinq.RateAtTripStart);
+                Assert.AreEqual(@event.RateAtTripEnd, orderRideLinq.RateAtTripEnd);
+                Assert.AreEqual(@event.RateChangeTime, orderRideLinq.RateChangeTime);
+                Assert.AreEqual(@event.Medallion, orderRideLinq.Medallion);
+                Assert.AreEqual(@event.DeviceName, orderRideLinq.DeviceName);
+                Assert.AreEqual(@event.TripId, orderRideLinq.TripId);
+                Assert.AreEqual(@event.DriverId, orderRideLinq.DriverId);
+                Assert.AreEqual(@event.LastFour, orderRideLinq.LastFour);
+                Assert.AreEqual(@event.AccessFee, orderRideLinq.AccessFee);
+            }
+        }
+    }
+
+    [TestFixture]
+    public class given_existing_manual_ridelinq_order : given_a_view_model_generator
+    {
+        private Guid _orderId;
+        private readonly DateTime _eventDate = DateTime.Now;
+
+        [SetUp]
+        public void Setup()
+        {
+            _orderId = Guid.NewGuid();
+
+            var @event = new OrderManuallyPairedForRideLinq
+            {
+                EventDate = _eventDate,
+
+                SourceId = _orderId,
+                AccountId = Guid.NewGuid(),
+                TripId = 15,
+                PairingDate = DateTime.Now,
+                PickupAddress = new Address
+                {
+                    Apartment = "3939",
+                    Street = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                },
+                UserAgent = "useragent",
+                ClientLanguageCode = "en",
+                ClientVersion = "1.0",
+                OriginatingIpAddress = "192.168.12.30",
+                KountSessionId = "1i3u13n123",
+
+                Medallion = "1251515",
+                DriverId = 124135356,
+
+                PairingCode = "515152",
+                PairingToken = "62523",
+            };
+            Sut.Handle(@event);
+        }
+
+        [Test]
+        public void when_unpaired_from_vehicle()
+        {
+            Sut.Handle(new OrderUnpairedFromManualRideLinq
+            {
+                SourceId = _orderId,
+                EventDate = _eventDate
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(order);
+                Assert.AreEqual((int)OrderStatus.Canceled, order.Status);
+
+                var orderStatus = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(orderStatus);
+                Assert.AreEqual(OrderStatus.Canceled, orderStatus.Status);
+
+                var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
+                Assert.NotNull(rideLinq);
+                Assert.AreEqual(true, rideLinq.IsCancelled);
+                Assert.AreEqual(_eventDate.ToLongDateString(), rideLinq.EndTime.Value.ToLongDateString());
+            }
+        }
+
+        [Test]
+        public void when_trip_updated_with_endtime()
+        {
+            Sut.Handle(new ManualRideLinqTripInfoUpdated
+            {
+                SourceId = _orderId,
+                EndTime = DateTime.Now
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(order);
+                Assert.AreEqual((int)OrderStatus.Completed, order.Status);
+                Assert.AreEqual(true, order.DropOffDate.HasValue);
+
+                var orderStatus = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(orderStatus);
+                Assert.AreEqual(OrderStatus.Completed, orderStatus.Status);
+
+                var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
+                Assert.NotNull(rideLinq);
+                Assert.AreEqual(true, rideLinq.EndTime.HasValue);
+            }
+        }
+
+        [Test]
+        public void when_trip_updated_with_pairing_error()
+        {
+            Sut.Handle(new ManualRideLinqTripInfoUpdated
+            {
+                SourceId = _orderId,
+                PairingError = "error"
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(order);
+                Assert.AreEqual((int)OrderStatus.Canceled, order.Status);
+
+                var orderStatus = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(orderStatus);
+                Assert.AreEqual(OrderStatus.Canceled, orderStatus.Status);
+
+                var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
+                Assert.NotNull(rideLinq);
+                Assert.AreEqual("error", rideLinq.PairingError);
+            }
+        }
+
+        [Test]
+        public void when_trip_status_changed_to_waitingforpayment()
+        {
+            var now = DateTime.Now;
+            Sut.Handle(new OrderStatusChangedForManualRideLinq
+            {
+                SourceId = _orderId,
+                Status = OrderStatus.WaitingForPayment,
+                LastTripPollingDateInUtc = now
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(order);
+                Assert.AreEqual((int)OrderStatus.WaitingForPayment, order.Status);
+
+                var orderStatus = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(orderStatus);
+                Assert.AreEqual(OrderStatus.WaitingForPayment, orderStatus.Status);
+                Assert.AreEqual(now.ToLongDateString(), orderStatus.LastTripPollingDateInUtc.Value.ToLongDateString());
+
+                var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
+                Assert.NotNull(rideLinq);
+                Assert.AreEqual(false, rideLinq.EndTime.HasValue);
+                Assert.AreEqual(true, rideLinq.IsWaitingForPayment);
+            }
+        }
+
+        [Test]
+        public void when_trip_status_changed_to_timedout()
+        {
+            var now = DateTime.Now;
+            Sut.Handle(new OrderStatusChangedForManualRideLinq
+            {
+                SourceId = _orderId,
+                Status = OrderStatus.TimedOut,
+                LastTripPollingDateInUtc = now
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var order = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(order);
+                Assert.AreEqual((int)OrderStatus.TimedOut, order.Status);
+
+                var orderStatus = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(orderStatus);
+                Assert.AreEqual(OrderStatus.TimedOut, orderStatus.Status);
+                Assert.AreEqual(now.ToLongDateString(), orderStatus.LastTripPollingDateInUtc.Value.ToLongDateString());
+
+                var rideLinq = context.Find<OrderManualRideLinqDetail>(_orderId);
+                Assert.NotNull(rideLinq);
+                Assert.AreEqual(true, rideLinq.EndTime.HasValue);
+                Assert.AreEqual(false, rideLinq.IsWaitingForPayment);
+            }
+        }
+    }
 }

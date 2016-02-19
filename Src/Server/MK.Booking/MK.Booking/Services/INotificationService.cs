@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Services
         void SendArrivedPush(OrderStatusDetail orderStatusDetail);
         void SendTimeoutPush(OrderStatusDetail orderStatusDetail);
         void SendBailedPush(OrderStatusDetail orderStatusDetail);
+        void SendNoShowPush(OrderStatusDetail orderStatusDetail);
         void SendChangeDispatchCompanyPush(Guid orderId);
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
@@ -41,7 +42,7 @@ namespace apcurium.MK.Booking.Services
 
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
-        void SendOrderRefundEmail(DateTime refundDate, string last4Digits, string totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+        void SendOrderRefundEmail(DateTime refundDate, string last4Digits, double? totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendCreditCardDeactivatedPush(AccountDetail account);
 

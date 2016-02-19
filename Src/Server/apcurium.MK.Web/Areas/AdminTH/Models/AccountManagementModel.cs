@@ -102,10 +102,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TaxString { get; set; }
         public string TollString { get; set; }
         public string TipString { get; set; }
+        public string StatusString { get; set; }
         public string SurchargeString { get; set; }
         public string TotalAmountString { get; set; }
 
         public bool IsRideLinqCMTPaymentMode { get; set; }
+
+        public bool IsOrderPairing { get; set; }
     }
 
     public class NoteModel : AccountNoteEntry

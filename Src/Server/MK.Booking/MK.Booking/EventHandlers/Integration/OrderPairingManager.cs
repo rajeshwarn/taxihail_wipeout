@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
                             
-                        var errorMessageKey = string.Empty;
-                       
+                        var errorMessageKey = "TripUnableToPairErrorText";
+
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
                         if (response.IgnoreResponse)
@@ -88,10 +88,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         switch (response.ErrorCode)
                         {
-                            case CmtErrorCodes.CardDeclined:
+                            case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
                                 errorMessageKey = "CreditCardDeclinedOnPreauthorizationErrorText";
                                 break;
-
                             case CmtErrorCodes.UnablePreauthorizeCreditCard:
                                 errorMessageKey = "CreditCardUnableToPreathorizeErrorText";
                                 break;

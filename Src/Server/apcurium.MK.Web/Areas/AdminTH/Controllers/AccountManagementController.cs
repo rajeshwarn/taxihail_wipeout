@@ -22,6 +22,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -333,12 +335,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
-                        orderModel.TotalAmountString, 
+                        orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
 
-                    accountManagementModel.OrdersPaged.FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId).IsRefunded = true;
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
                     TempData["UserMessage"] = "order refunded, note added, email sent";
                 }
@@ -425,8 +426,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                .Select(x =>
                {
                    var promo = _promoDao.FindByOrderId(x.Id);
+                   var status = _orderDao.FindOrderStatusById(x.Id);
+                   var orderPairing = _orderDao.FindOrderPairingById(x.Id);
+
                    return new OrderModel(x)
                    {
+                       IsOrderPairing = orderPairing != null,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),
@@ -434,7 +439,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
                        TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
-                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
+                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()
                    };
                })
                .ToList();

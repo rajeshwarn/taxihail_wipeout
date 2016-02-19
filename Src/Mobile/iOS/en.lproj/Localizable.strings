@@ -503,6 +503,7 @@
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "Notification_ReceiptEmail"="Receipt (Email)";
 "Notification_DriverBailedPush"="Driver bailed";
+"Notification_NoShowPush"="No show";
 "Notification_VehicleAtPickupPush"="Vehicle at Pickup";
 "Toggle_Off"="Off";
 "Toggle_On"="On";

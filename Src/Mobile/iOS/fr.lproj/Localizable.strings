@@ -482,6 +482,7 @@
 "EtaDurationUnitPlural"="minutes";
 "Notification_DriverAssignedPush"="Chauffeur assigné";
 "Notification_DriverBailedPush"="Course refusée";
+"Notification_NoShowPush"="No show";
 "RateLastRide"="Évaluer";
 "Notification_Enabled"="Notifications";
 "StatusEta"="et arrive dans {0} {1}";

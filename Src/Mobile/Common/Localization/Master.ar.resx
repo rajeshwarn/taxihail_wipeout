@@ -1555,6 +1555,9 @@
   <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>Driver bailed</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
   </data>

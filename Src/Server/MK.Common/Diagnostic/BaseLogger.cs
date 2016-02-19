@@ -1,29 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
 using apcurium.MK.Common.Extensions;
+using System.Linq;
 
 namespace apcurium.MK.Common.Diagnostic
 {
-    public abstract class BaseLogger : ILogger
+	public abstract class BaseLogger : ILogger
     {
-		private static int LogFileMaximumSize = 200 * 1024;
+	    private const int LogFileMaximumSize = 200*1024;
 
-		private static string FirstLogFileName = "taxihail_log_1.txt";
-		private static string SecondLogFileName = "taxihail_log_2.txt";
-		private static string MergedLogFileName = "taxihail_log.txt";
+	    private const string LogFileName = "taxihail_log.txt";
 
-		private static int RetainMergedFileTime = 1; // hours
-
-		private string _firstLogFileFullName;
-		private string _secondLogFileFullName;
-		private string _mergedLogFileFullName;
-		private string _activeFileFullName;
-		private string _inactiveFileFullName;
-
-		private readonly object _fileSwitchExclusiveAccess = new object();
+	    private readonly object _threadLock = new object();
 		
 		public void LogError(Exception ex, string method, int lineNumber)
 		{
@@ -63,27 +53,26 @@ namespace apcurium.MK.Common.Diagnostic
             var stackFrames = stackTrace.GetFrames();    // get method calls (frames)
 
             // write call stack method names
-            if (stackFrames != null)
+            if (stackFrames == null)
             {
-                foreach (var stackFrame in stackFrames)
-                {
-                    if (stackFrame.GetMethod().Name != "LogStack")
-                    {
-                        Write(string.Format ("Stack: {0}", stackFrame.GetMethod().Name)); // write method name
-                    }
-                }
+                return;
+            }
+
+            foreach (var stackFrame in stackFrames.Where(stackFrame => stackFrame.GetMethod().Name != "LogStack"))
+            {
+                Write(string.Format ("Stack: {0}", stackFrame.GetMethod().Name)); // write method name
             }
         }
 
         public IDisposable StartStopwatch (string message)
         {
-            var w = new Stopwatch();
-            w.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             LogMessage(string.Format("Start: {0}", message));
             return Disposable.Create (() => 
                 {
-                    w.Stop();
-                    LogMessage(string.Format("Stop: {0} Execution time : {1} ms", message, w.ElapsedMilliseconds));
+                    stopwatch.Stop();
+                    LogMessage(string.Format("Stop: {0} Execution time : {1} ms", message, stopwatch.ElapsedMilliseconds));
                 });
         }
 
@@ -116,123 +105,147 @@ namespace apcurium.MK.Common.Diagnostic
 
 		protected abstract string GetMessageBase();
 
-		private void SetActiveLogFile(long nextMessageLength)
+		private static string RemoveOlderEntries(long overflow, string fileContent)
 		{
-			if (!Directory.Exists(GetBaseDirectory()))
-			{
-				Directory.CreateDirectory(GetBaseDirectory());
-			}
+			var content = fileContent.Split(Environment.NewLine.ToCharArray())
+				.ToArray();
+			
+			var skip = true;
 
-			if (_firstLogFileFullName == null || _secondLogFileFullName == null || _mergedLogFileFullName == null)
-			{
-				_firstLogFileFullName = Path.Combine(GetBaseDirectory(), FirstLogFileName);
-				_secondLogFileFullName = Path.Combine(GetBaseDirectory(), SecondLogFileName);
-
-				_activeFileFullName = _firstLogFileFullName;
-				_inactiveFileFullName = _secondLogFileFullName;
-
-				_mergedLogFileFullName = Path.Combine(GetBaseDirectory(), MergedLogFileName);
-			}
-
-			long activeFileLength = 0;
-
-			if (File.Exists(_activeFileFullName))
-			{
-				var activeFileInfo = new FileInfo(_activeFileFullName);
-				activeFileLength = activeFileInfo.Length;
-			}
-
-			if (activeFileLength + nextMessageLength >= LogFileMaximumSize)
-			{
-				if (File.Exists(_inactiveFileFullName))
+			// We remove the oldest log entries until we have enought space.
+			content = content.SkipWhile((line, index) => 
 				{
-					File.Delete(_inactiveFileFullName);
-				}
+					if (index == 0)
+					{
+						return true;
+					}
+					if (!skip)
+					{
+						return false;
+					}
+					var previousLinesTotalLength = content.Take(index).Sum(p => p.Length);
 
-				var tempFullName = _activeFileFullName;
-				_activeFileFullName = _inactiveFileFullName;
-				_inactiveFileFullName = tempFullName;
-			}
+				    skip = overflow - previousLinesTotalLength > 0;
 
-			if (File.Exists(_mergedLogFileFullName) && (DateTime.Now - (new FileInfo(_mergedLogFileFullName)).LastWriteTime).TotalHours >= RetainMergedFileTime)
+                    return skip;
+				})
+				.ToArray();
+			
+			skip = true;
+
+			// We remove enought lines to make sure we don't have a first log element that is truncated.
+			var log = content.SkipWhile(line => 
+				{
+					if (!skip)
+					{
+						return false;
+					}
+
+					skip = !(line.StartsWith("Message on") || line.StartsWith("Error on"));
+
+					return skip;
+				})
+				.JoinBy(Environment.NewLine)
+                .Trim();
+			
+			return log;
+		}
+
+		private void DeleteOldEntries (FileInfo fileIO, long overflow)
+		{
+			var backupFileName = fileIO.FullName + ".bak";
+
+		    try
+		    {
+                if (File.Exists(backupFileName))
+                {
+                    File.Delete(backupFileName);
+                }
+            }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
+			
+
+			// Creating a backup copy of the log in case a crash happends.
+			File.Copy(fileIO.FullName, backupFileName);
+
+			string fileContent;
+
+			using (var sr = fileIO.OpenText())
 			{
-				File.Delete(_inactiveFileFullName);
+				fileContent = sr.ReadToEnd();
 			}
+
+			var log = RemoveOlderEntries(overflow, fileContent);
+
+		    try
+		    {
+		        fileIO.Delete();
+		    }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
+
+			using (var sw = fileIO.CreateText())
+			{
+				sw.WriteLine(log);
+				sw.Flush();
+			}
+
+		    try
+		    {
+		        // Deleting the backup copy.
+		        File.Delete(backupFileName);
+		    }
+		    catch (Exception ex)
+		    {
+		        LogError(ex);
+		    }
 		}
 
 		private void Write(string message)
 		{
             var messageWithUserName = message + GetMessageBase();
 
-			lock (_fileSwitchExclusiveAccess)
+			lock (_threadLock)
 			{
-				SetActiveLogFile(messageWithUserName.Length);
+				var fileIO = new FileInfo(GetLogFileName());
 
-				File.AppendAllLines(_activeFileFullName, new[] { messageWithUserName });
+				using (var sw = fileIO.AppendText())
+				{
+					sw.WriteLine(messageWithUserName);
+					sw.Flush();
+				}
+
+				if (fileIO.Length > LogFileMaximumSize)
+				{
+					DeleteOldEntries(fileIO, fileIO.Length - LogFileMaximumSize);
+				}
 			}
-
 
 			Console.WriteLine(messageWithUserName);
 		}
 
-		private string[] GetLogFilesFullName()
+		public string GetLogFileName()
 		{
-			SetActiveLogFile(0);
-
-			var nonEmptyLogs = new List<string>();
-
-			if (File.Exists(_inactiveFileFullName) && (new FileInfo(_inactiveFileFullName)).Length > 0)
+			lock (_threadLock)
 			{
-				nonEmptyLogs.Add(_inactiveFileFullName);
-			}
-
-			if (File.Exists(_activeFileFullName) && (new FileInfo(_activeFileFullName)).Length > 0)
-			{
-				nonEmptyLogs.Add(_activeFileFullName);
-			}
-
-			return nonEmptyLogs.ToArray();
-		}
-
-		public string MergeLogFiles()
-		{
-			lock (_fileSwitchExclusiveAccess)
-			{
-				var logFiles = GetLogFilesFullName();
-
-			    if (logFiles.Length <= 0)
-			    {
-			        return null;
-			    }
-
-			    var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
-
-			    File.Copy(logFiles[0], mergedLogFile, true);
-
-			    for (var i = 1; i < logFiles.Length; i++)
-			    {
-			        var currentLogStream = File.OpenRead(logFiles[i]);
-			        var currentStreamReader = new StreamReader(currentLogStream);
-
-			        var h = currentStreamReader.ReadToEnd();
-			        currentStreamReader.Close();
-			        currentLogStream.Close();
-
-			        File.AppendAllText(mergedLogFile, h);
-			    }
-
-			    return mergedLogFile;
-			}
-		}
-
-		public void RemoveMergedFile()
-		{
-			lock (_fileSwitchExclusiveAccess)
-			{
-				if (_mergedLogFileFullName != null && File.Exists(_mergedLogFileFullName))
+				if (!Directory.Exists(GetBaseDirectory()))
 				{
-					File.Delete(_mergedLogFileFullName);
+					Directory.CreateDirectory(GetBaseDirectory());
 				}
+
+				var logFileName = Path.Combine(GetBaseDirectory(), LogFileName);
+
+				if (!File.Exists(logFileName) && File.Exists(logFileName + ".bak"))
+				{
+					File.Copy(logFileName + ".bak", logFileName);
+				}
+
+				return logFileName;
 			}
 		}
 	}
