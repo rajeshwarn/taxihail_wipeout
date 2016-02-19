@@ -125,7 +125,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnSaveCard)
                 .For("Title")
                 .To(vm => vm.CreditCardSaveButtonDisplay);
-            
+
+			set.Bind(btnSaveCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsAddingNewCard)
+				.WithConversion("BoolInverter");
+
             set.Bind(btnSaveCard)
                 .For("TouchUpInside")
 				.To(vm => vm.SaveCreditCardCommand);
@@ -152,9 +157,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
 
+			set.Bind(txtNameOnCard)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtZipCode)
                 .For(v => v.Text)
                 .To(vm => vm.Data.ZipCode);
+
+			set.Bind(txtZipCode)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
 			set.Bind(txtCardNumber)
 				.For(v => v.Text)
@@ -164,17 +177,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
 
+			set.Bind(txtCardNumber)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtExpMonth)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationMonthDisplay);
+
+			set.Bind(txtExpMonth)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(txtExpYear)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationYearDisplay);
 
+			set.Bind(txtExpYear)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtCvv)
 				.For(v => v.Text)
 				.To(vm => vm.Data.CCV);
+
+			set.Bind(txtCvv)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(btnLinkPayPal)
                 .For(v => v.Hidden)
@@ -199,6 +228,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.SelectedSegment)
                 .To(vm => vm.Data.Label)
                 .WithConversion("CreditCardLabel");
+
+			set.Bind(segmentedLabel)
+				.For(v => v.Enabled)
+                .To(vm => vm.IsAddingNewCard);
 
 			set.Apply ();   
 

@@ -2430,4 +2430,7 @@
   <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
     <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
   </data>
+  <data name="BookNoCreditCard" xml:space="preserve">
+    <value>Oops, looks like you don't have a credit card on file. Go to Payment to add one.</value>
+  </data>
 </root>
