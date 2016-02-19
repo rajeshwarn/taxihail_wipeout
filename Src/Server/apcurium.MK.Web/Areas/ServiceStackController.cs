@@ -2,12 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Attributes;
-//using ServiceStack.CacheAccess;
-//using ServiceStack.ServiceInterface;
-//using ServiceStack.ServiceInterface.Auth;
-//using ServiceStack.WebHost.Endpoints.Extensions;
 
 namespace apcurium.MK.Web.Areas
 {

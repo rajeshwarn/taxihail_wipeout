@@ -1,7 +1,7 @@
 ﻿using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {

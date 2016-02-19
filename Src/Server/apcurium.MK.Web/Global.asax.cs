@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -17,6 +18,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.IoC;
 using apcurium.MK.Web;
+using apcurium.MK.Web.App_Start;
 using log4net;
 using log4net.Config;
 using MK.Common.Configuration;
@@ -36,7 +38,10 @@ namespace apcurium.MK.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            Log.Info("Configure AppHost");
             XmlConfigurator.Configure();
+            var container = UnityConfig.GetConfiguredContainer();
+            new Module().Init(container);
 
             var config = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.ServerData.TaxiHail.ApplicationKey);
@@ -48,6 +53,7 @@ namespace apcurium.MK.Web
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
         private void PollIbs(int pollingValue)

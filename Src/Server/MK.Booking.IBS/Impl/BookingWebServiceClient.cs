@@ -505,12 +505,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
-                Logger.LogMessage("WebService Creating IBS Order pickup : " +
-                                  JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
-                Logger.LogMessage("WebService Creating IBS Order dest : " +
-                                  JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
+                Logger.LogMessage("WebService Creating IBS Order : " + order.ToJson());
+                Logger.LogMessage("WebService Creating IBS Order pickup : " + order.PickupAddress.ToJson());
+                Logger.LogMessage("WebService Creating IBS Order dest : " + order.DropoffAddress.ToJson());
 
                 orderId = service.SaveBookOrder_10(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
@@ -529,12 +526,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Creating IBS Hail : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_12)));
-                Logger.LogMessage("WebService Creating IBS Hail pickup : " +
-                                  JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
-                Logger.LogMessage("WebService Creating IBS Hail dest : " +
-                                  JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
+                Logger.LogMessage("WebService Creating IBS Hail : " + order.ToJson());
+                Logger.LogMessage("WebService Creating IBS Hail pickup : " + order.PickupAddress.ToJson());
+                Logger.LogMessage("WebService Creating IBS Hail dest : " + order.DropoffAddress.ToJson());
 
                 orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
                 Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
@@ -556,10 +550,10 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Getting Vehicle Candidates : " + JsonSerializer.SerializeToString(orderKey, typeof(IbsOrderKey)));
+                Logger.LogMessage("WebService Getting Vehicle Candidates : " + orderKey.ToJson());
 
                 vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.IbsOrderId });
-                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp)));            
+                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + vehicleCandidates.ToJson());
             });
 
             return Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
@@ -574,8 +568,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Confirming Hail for orderkey: " + JsonSerializer.SerializeToString(ibsOrderKey, typeof(TBookOrderKey)));
-                Logger.LogMessage("WebService Confirming Hail for vehicle: " + JsonSerializer.SerializeToString(ibsVehicleCandidate, typeof(TVehicleComp)));
+                Logger.LogMessage("WebService Confirming Hail for orderkey: " + ibsOrderKey.ToJson());
+                Logger.LogMessage("WebService Confirming Hail for vehicle: " + ibsVehicleCandidate.ToJson());
 
                 result = service.UpdateJobToVehicle(UserNameApp, PasswordApp, ibsOrderKey, ibsVehicleCandidate);
                 Logger.LogMessage("WebService Confirm Hail, orderid : " + ibsOrderKey.OrderID + ", orderGUID : " + ibsOrderKey.GUID);

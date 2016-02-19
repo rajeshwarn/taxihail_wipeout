@@ -7,11 +7,12 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using System.Collections;
+using System.Web;
+using System.Web.Http;
 
 #endregion
 
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (account.Id != address.AccountId)
             {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Can't remove another account's address");
+                throw new HttpException(HttpStatusCode.Unauthorized, "Can't remove another account's address");
             }
 
             _commandBus.Send(new RemoveAddressFromHistory {AddressId = request.AddressId, AccountId = account.Id});

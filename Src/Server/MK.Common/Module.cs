@@ -33,8 +33,8 @@ namespace apcurium.MK.Common
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
-            //TODO MKTAXI-3370: ICacheClient
-            //container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
+
+            container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
         }
     }
 }

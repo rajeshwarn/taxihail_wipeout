@@ -9,8 +9,8 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Caching
 {
-    public class EfCacheClient
-    {//TODO MKTAXI-3914: CacheClient
+    public class EfCacheClient : ICacheClient
+    {
         private readonly Func<CachingDbContext> _contextFactory;
 
         public EfCacheClient(Func<CachingDbContext> contextFactory)

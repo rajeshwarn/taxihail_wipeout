@@ -2,6 +2,9 @@
 
 using System;
 using System.Web;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Security;
@@ -17,38 +20,38 @@ using Funq;
 using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.ServiceInterface.Validation;
-using ServiceStack.Text;
-using ServiceStack.Text.Common;
-using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.Common;
-using ServiceStack.ServiceHost;
-
+using apcurium.MK.Web.App_Start;
+using Microsoft.Owin;
+using Owin;
 #endregion
+
 
 namespace apcurium.MK.Web
 {
-    public class MkWebAppHost 
+    public partial class MkWebAppHost 
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (MkWebAppHost));
 
-        public MkWebAppHost()
+        public void Configuration(IAppBuilder app)
         {
+            
 
+            
+
+            //ConfigureAuth(app);
+
+            
         }
 
         public void Configure(Container containerFunq)
         {
-    //        Log.Info("Configure AppHost");
-    //        new Module().Init(UnityServiceLocator.Instance);
+    //        
+    //        
 
-    //        var container = UnityServiceLocator.Instance;
+    //        
     //        containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
             
 

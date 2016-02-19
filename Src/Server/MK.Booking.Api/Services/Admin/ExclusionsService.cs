@@ -7,11 +7,10 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
 using ServiceStack.ServiceInterface;
 
 #endregion

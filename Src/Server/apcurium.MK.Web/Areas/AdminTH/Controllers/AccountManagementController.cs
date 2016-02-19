@@ -9,7 +9,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +22,7 @@ using apcurium.MK.Common.Enumeration;
 using PagedList;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers

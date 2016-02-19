@@ -7,12 +7,11 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
-using ServiceStack.Common.Extensions;
 
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers

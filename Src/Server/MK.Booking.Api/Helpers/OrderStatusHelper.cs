@@ -2,12 +2,14 @@
 
 using System;
 using System.Net;
+using System.Web;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 //using ServiceStack.Common.Web;
 //using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Http;
 
 #endregion
 
@@ -25,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Helpers
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
+        public virtual OrderStatusDetail GetOrderStatus(Guid orderId, SessionEntity session)
         {
             var order = _orderDao.FindById(orderId);
 
@@ -49,11 +51,11 @@ namespace apcurium.MK.Booking.Api.Helpers
             return o;
         }
 
-        private static void ThrowIfUnauthorized(OrderDetail order, IAuthSession session)
+        private static void ThrowIfUnauthorized(OrderDetail order, SessionEntity session)
         {
-            if (new Guid(session.UserAuthId) != order.AccountId)
+            if (session.UserId != order.AccountId)
             {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't access another account's order");
             }
         }
     }

@@ -5,13 +5,13 @@ using System.Web.Mvc;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
-using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {

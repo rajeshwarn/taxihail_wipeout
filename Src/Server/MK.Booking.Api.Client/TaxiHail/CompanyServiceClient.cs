@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -9,14 +10,12 @@ using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
+using MK.Common.Exceptions;
 #if CLIENT
 using MK.Common.Exceptions;
 using System.Net.Http;
 #else
 using apcurium.MK.Booking.Api.Client.Extensions;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Common.Web;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

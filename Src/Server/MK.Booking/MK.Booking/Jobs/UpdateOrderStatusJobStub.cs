@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Logging;
+using log4net;
 
 namespace apcurium.MK.Booking.Jobs
 {

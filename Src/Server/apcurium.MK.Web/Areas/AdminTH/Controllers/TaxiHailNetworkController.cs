@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -18,7 +19,6 @@ using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {

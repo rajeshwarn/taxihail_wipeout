@@ -82,6 +82,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\apcurium.MK.Web\Bin\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +98,7 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
+    <Compile Include="Caching\ICacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
     <Compile Include="Collections\SynchronizedList.cs" />
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
@@ -225,6 +230,7 @@
     <Compile Include="Http\Exceptions\ServiceResponseException.cs" />
     <Compile Include="Http\Extensions\HttpClientExtensions.cs" />
     <Compile Include="Http\Extensions\HttpResponseMessageExtensions.cs" />
+    <Compile Include="Http\SessionEntity.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="IIPAddressManager.cs" />

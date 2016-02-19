@@ -6,10 +6,10 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
-using ServiceStack.CacheAccess;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using apcurium.MK.Common.Caching;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
@@ -14,8 +15,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
-using ServiceStack.ServiceModel.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {

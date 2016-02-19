@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration;
 using System.Web;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Http;
 
 #endregion
 
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Helpers
             _orderDao = orderDao;
         }
 
-        public override OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
+        public override OrderStatusDetail GetOrderStatus(Guid orderId, SessionEntity session)
         {
             var orderStatus = base.GetOrderStatus(orderId, session);
 

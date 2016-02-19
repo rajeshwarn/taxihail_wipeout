@@ -1,11 +1,8 @@
 ﻿#region
 
 using System.Web.UI;
+using apcurium.MK.Common.Caching;
 using Funq;
-using ServiceStack.CacheAccess;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.WebHost.Endpoints;
 
 #endregion
 
