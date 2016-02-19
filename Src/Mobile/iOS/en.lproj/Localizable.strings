@@ -104,7 +104,6 @@
 "ApartmentLabel"="Apartment";
 "EntryCodeLabel"="Entry code";
 "Save"="Save";
-"Modify"="Modify";
 "Delete"="Delete";
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
@@ -769,3 +768,4 @@
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";

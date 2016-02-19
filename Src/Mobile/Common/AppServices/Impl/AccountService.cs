@@ -80,13 +80,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// If we changed market
 			if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
 			{
-				var chargeTypes = await GetChargeTypes(marketSettings);
-
-				Console.WriteLine("ChargeTypes:" + JsonConvert.SerializeObject(chargeTypes));
-				_chargeTypesListSubject.OnNext(chargeTypes ?? new ListItem[0]);
+				UpdateChargeTypes(marketSettings);
 			}
 
 			_marketSettings = marketSettings;
+		}
+
+		private async Task UpdateChargeTypes(MarketSettings marketSettings)
+		{
+			_chargeTypesListSubject.OnNext(await GetChargeTypes(marketSettings) ?? new ListItem[0]);
 		}
 
 		public async Task<ReferenceData> GetReferenceData()
@@ -752,7 +754,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
+			UpdateCachedAccount(defaultCreditCard ?? null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 		}
 
 		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
@@ -810,6 +812,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             account.Settings.ChargeTypeId = chargeTypeId;
             account.IsPayPalAccountLinked = isPayPalAccountLinked;
             CurrentAccount = account;
+
+			UpdateChargeTypes(_marketSettings).FireAndForget();
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)

@@ -241,7 +241,6 @@
 "March"="Mar (03)";
 "May"="May (05)";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
-"Modify"="Modificar";
 "NbPassenger"="({0} pasajero)";
 "NbPassengers"="({0} pasajeros)";
 "NearbyPlacesTitle"="Lugares cercanos";
@@ -764,3 +763,4 @@
 "SelectedCreditCard"="Tarjeta de crédito seleccionada actualmente";
 "NoCreditCard"="No ha seleccionado una tarjeta de crédito";
 "ServiceErrorUpdatePassword_NotSame"="Su contraseña y confirmación no concuerdan";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
