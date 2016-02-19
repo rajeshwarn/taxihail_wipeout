@@ -72,13 +72,18 @@
             }
             
             var status = this.model.getStatus();
+            var ibsStatusId = status.get('ibsStatusId');
 
             if (TaxiHail.parameters.showCallDriver == true) {
                 var driverInfos = status.get('driverInfos');
                 if (driverInfos !== undefined) {
                     if (driverInfos.mobilePhone) {
                         this.$('#callDispatchButton').addClass('hidden');
-                        this.$('#callDriverButton').removeClass('hidden');
+                        if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
+                            this.$('#callDriverButton').removeClass('hidden');
+                        } else {
+                            this.$('#callDriverButton').addClass('hidden');
+                        }
                     }
                 }
             }
@@ -86,7 +91,11 @@
             if (TaxiHail.parameters.showMessageDriver == true) {
                 var driverInfos = status.get('driverInfos');
                 if (driverInfos !== undefined) {
-                    this.$('#messageDriverButton').removeClass('hidden');
+                    if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
+                        this.$('#messageDriverButton').removeClass('hidden');
+                    } else {
+                        this.$('#messageDriverButton').addClass('hidden');
+                    }
                 }
             }
 
