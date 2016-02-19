@@ -24,15 +24,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             mOriginalContentView = base.OnCreateView(inflater, parent, savedInstanceState);
 
-            var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 
-			var latitude = bestPosition != null ? bestPosition.Latitude : settings.GeoLoc.DefaultLatitude;
-			var longitude = bestPosition != null ? bestPosition.Longitude : settings.GeoLoc.DefaultLongitude;
-
+            var initialPosition = locationService.GetInitialPosition();
 
             Map.MapType = GoogleMap.MapTypeNormal;
-            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 12f));
+            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(initialPosition.Latitude, initialPosition.Longitude) , 12f));
 
             // disable gestures on the map since we're handling them ourselves
             Map.UiSettings.CompassEnabled = false;

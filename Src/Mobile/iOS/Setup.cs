@@ -71,6 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var container = TinyIoCContainer.Current;
 
             container.Register<IAnalyticsService, GoogleAnalyticsService> ();
+            container.Register<ICacheService> (new CacheService ());
+            container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
             container.Register<ILocationService> (new LocationService ());
             container.Register<IMessageService, MessageService> ();
             container.Register<IConnectivityService, ConnectivityService> ();
@@ -78,8 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IIPAddressManager, IPAddressManager>();
 			container.Register<ILocalization, Localize> ();
 			container.Register<ILogger, LoggerWrapper> ();        
-			container.Register<ICacheService> (new CacheService ());
-			container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
 			container.Register<IPhoneService, PhoneService> ();
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));

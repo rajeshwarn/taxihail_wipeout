@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		IObservable<Position> GetNextBest(TimeSpan timeout);
 
         Task<Position> GetUserPosition();
+
+		Position GetInitialPosition();
         
         Position LastKnownPosition { get; }
 
