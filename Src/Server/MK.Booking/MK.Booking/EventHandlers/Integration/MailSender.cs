@@ -230,7 +230,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
+
+                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId.GetValueOrDefault());
 
                 _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
             }
@@ -259,7 +260,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             var order = _orderDao.FindById(orderId);
             var account = _accountDao.FindById(order.AccountId);
-            var creditCard = _creditCardDao.FindByAccountId(order.AccountId).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
             if (feeType == FeeTypes.Cancellation)
             {

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using System.Net;
+using apcurium.MK.Common.Diagnostic;
 
 #if CLIENT
 using ModernHttpClient;
@@ -26,13 +27,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private readonly IPackageInfo _packageInfo;
         private HttpClient _client;
         private readonly IConnectivityService _connectivityService;
+        protected readonly ILogger Logger;
 
-        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
+        public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
         {
             _url = url;
             _sessionId = sessionId;
             _packageInfo = packageInfo;
             _connectivityService = connectivityService;
+            Logger = logger;
         }
 
         public BaseServiceClient()

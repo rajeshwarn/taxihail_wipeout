@@ -49,7 +49,7 @@ namespace MK.Booking.Test.OrderStatusUpdate
             return null;
         }
 
-        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime)
+        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime)
         {
         }
     }

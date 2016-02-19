@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             _accountId = Guid.NewGuid();
             const string creditCardComapny = "visa";
-            const string nameOnCard = "Bob";
+            const string nameOnCard = "Bob";           
             _creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string expirationMonth = "5";
@@ -77,7 +77,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             Sut.Handle(new CreditCardDeactivated
             {
-                SourceId = _accountId
+                SourceId = _accountId,
+                CreditCardId = _creditCardId
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -92,7 +93,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             Sut.Handle(new OverduePaymentSettled
             {
-                SourceId = _accountId
+                SourceId = _accountId,
+                CreditCardId = _creditCardId
             });
 
             using (var context = new BookingDbContext(DbName))

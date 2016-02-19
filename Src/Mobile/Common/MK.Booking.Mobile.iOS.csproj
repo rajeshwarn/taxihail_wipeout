@@ -140,6 +140,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
+    <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
@@ -305,7 +306,6 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
-    <Compile Include="ViewModels\Map\MapBounds.cs" />
     <Compile Include="AppServices\Orders\OrderWorkflowService.cs" />
     <Compile Include="AppServices\Orders\OrderValidationException.cs" />
     <Compile Include="AppServices\Orders\OrderValidationError.cs" />

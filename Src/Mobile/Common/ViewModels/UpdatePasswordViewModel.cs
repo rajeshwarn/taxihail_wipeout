@@ -60,9 +60,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get 
 			{ 
 				return !CurrentPassword.IsNullOrEmpty() 
-						&& !NewPassword.IsNullOrEmpty() 
-						&& NewPassword.Length > 6 
-						&& NewPasswordIsConfirmed; 
+						&& !NewPassword.IsNullOrEmpty()
+                        && !(NewPassword.Length < 6)
+                        && NewPasswordIsConfirmed; 
 			}
 		}
 

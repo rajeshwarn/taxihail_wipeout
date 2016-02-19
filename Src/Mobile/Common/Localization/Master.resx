@@ -1632,6 +1632,9 @@
   <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>Driver bailed</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>
@@ -2006,6 +2009,9 @@
   </data>
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
   </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
     <value>CVV Required</value>
@@ -2394,13 +2400,34 @@
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>No account with this email has been found.</value>
   </data>
+  <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>This email matches a Facebook account. Please login via Facebook.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>This email matches a Twitter account. Please login via Twitter.</value>
+  </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
     <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>Last 4 numbers:  </value>
   </data>
   <data name="InvalidCreditCardMessage" xml:space="preserve">
   	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
   </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Credit company: </value>
+  </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Update Card</value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Currently selected credit card</value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>No credit card selected</value>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>The current password is not valid.</value>
   </data>
 </root>

@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Initialize();
 		}
 
-		public FlatTextField ()
+		public FlatTextField (): base()
 		{
 			Initialize();
 		}
@@ -35,13 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize ()
 		{
-			this.ShouldChangeCharacters = CheckMaxLength;
+			ShouldChangeCharacters = CheckMaxLength;
 
-            BackgroundColor = Enabled 
-                ? UIColor.White 
-                : UIColor.Clear;
-
-            HasRightArrow = Enabled && HasRightArrow;
+			BackgroundColor = UIColor.White;
 
             TextAlignment = UITextAlignment.Natural;
             TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
@@ -55,30 +51,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
 		}
-          
-        bool _forceWhiteBackground;
-        public bool ForceWhiteBackground
-        {
-            get
-            {
-                return _forceWhiteBackground;
-            }
-            set
-            {
-                _forceWhiteBackground = value;
-                BackgroundColor = UIColor.White;
-                SetNeedsDisplay();
-            }
-        }
+
+		private UIColor _backgroundColor;
+		public new UIColor BackgroundColor
+		{
+			get
+			{
+				return _backgroundColor;
+			}
+			set
+			{
+				_backgroundColor = value;
+				base.BackgroundColor = value;
+			}
+		}
 
 		public override bool Enabled 
         {
             get { return base.Enabled; }
 			set 
             {
-				base.Enabled = value;
-                BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-				SetNeedsDisplay();
+                if (base.Enabled != value)
+                {
+                    base.Enabled = value;
+                    base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
+
+                    SetNeedsDisplay();
+                }
 			}
 		}
 
@@ -127,29 +126,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _hasRightArrow = value;
 
-                    if (value)
-                    {
-                        if (_rightArrow == null)
-                        {
-                            _rightArrow = new UIImageView { Image = UIImage.FromFile("right_arrow.png") };
-                            AddSubview(_rightArrow);
-                        }
-                    }
-                    else
-                    {
-                        if (_rightArrow != null)
-                        {
-                            _rightArrow.Image = null;
-                            _rightArrow.RemoveFromSuperview ();
-                            _rightArrow.Dispose();
-                            _rightArrow = null;
-                        }
-                    }
+                    ShowOrHideRightArrow();
                 }
             }
         }
 
-        public void SetPadding(nfloat left, nfloat right)
+	    private void ShowOrHideRightArrow()
+	    {
+			if (HasRightArrow)
+	        {
+	            if (_rightArrow == null)
+	            {
+	                _rightArrow = new UIImageView {Image = UIImage.FromFile("right_arrow.png")};
+	                AddSubview(_rightArrow);
+	            }
+	        }
+	        else
+	        {
+	            if (_rightArrow != null)
+	            {
+	                _rightArrow.Image = null;
+	                _rightArrow.RemoveFromSuperview();
+	                _rightArrow.Dispose();
+	                _rightArrow = null;
+	            }
+	        }
+	    }
+
+	    public void SetPadding(nfloat left, nfloat right)
         {
             LeftPadding = left;
             RightPadding = right;
@@ -159,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
-            RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
+			RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, Frame.Height);
 
             if (HasRightArrow)
             {
@@ -172,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         _rightArrow.Image.Size.Height);
 
                     // this is to keep the same padding between the end of the text and the right arrow
-                    RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + RightPadding); 
+					RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + RightPadding); 
                 }
             }
             else
@@ -180,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_rightArrow != null)
                 {
                     var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
-                    RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + RightPadding));
+					RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + RightPadding));
                     _rightArrow = null;
                 }
             }
@@ -188,11 +192,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public override void Draw (CGRect rect)
         {   
-            if (!ForceWhiteBackground)
-            {
-                HasRightArrow = Enabled && HasRightArrow;
-            }
-
             DrawStroke();
         }
 

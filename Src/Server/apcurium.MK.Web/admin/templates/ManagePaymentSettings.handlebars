@@ -1,7 +1,7 @@
 ﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>  
 
-  <label class="control-label settingsLabel">{{{localize "Enable Prepaid / Web Payment"}}}</label>
+  <label class="control-label settingsLabel" title="Braintree: Prepaid, CMT/RideLinQ: Normal, Others: No web payment">{{{localize "Enable Prepaid / Web Payment"}}}</label>
   <select name="isPrepaidEnabled" class="settingsBox">
     <option value="{{isPrepaidEnabled}}" selected="">{{localizeBool isPrepaidEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPrepaidEnabled}}">{{localizeBool isPrepaidEnabled true="No" false="Yes"}}</option>
@@ -145,10 +145,11 @@
             <option value="{{invertedBool cmtPaymentSettings.isManualRidelinqCheckInEnabled}}">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="No" false="Yes"}}</option>
         </select>
 
-        <label class="control-label settingsLabel">{{{localize "Use Pairing Code"}}}</label>
-        <select name="cmtPaymentSettings.usePairingCode" class="settingsBox">
-            <option value="{{cmtPaymentSettings.usePairingCode}}" selected="">{{localizeBool cmtPaymentSettings.usePairingCode true="Yes" false="No"}}</option>
-            <option value="{{invertedBool cmtPaymentSettings.usePairingCode}}">{{localizeBool cmtPaymentSettings.usePairingCode true="No" false="Yes"}}</option>
+        <label class="control-label settingsLabel">{{{localize "Pairing Method"}}}</label>
+        <select id="cmtPaymentSettings_pairingMethod" name="cmtPaymentSettings.pairingMethod" class="settingsBox">
+            <option value="VehicleMedallion">{{localize "Vehicle Medallion"}}</option>
+            <option value="PairingCode">{{localize "Pairing Code"}}</option>
+            <option value="DeviceName">{{localize "Device Name"}}</option>
         </select>
     </div>
 

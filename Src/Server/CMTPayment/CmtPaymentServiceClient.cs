@@ -47,7 +47,7 @@ namespace CMTPayment
         {
             SetOAuthHeader(requestUrl, "GET", ConsumerKey, ConsumerSecretKey);
 
-            return Client.GetAsync<T>(requestUrl, LogSuccess, LogError);
+            return Client.GetAsync<T>(requestUrl, LogSuccess, LogError, _logger);
         }
 
         public Task<T> GetAsync<T>(IReturn<T> request)
@@ -61,7 +61,7 @@ namespace CMTPayment
         {
             SetOAuthHeader(requestUrl, "POST", ConsumerKey, ConsumerSecretKey);
 
-            return Client.PostAsync<T>(requestUrl, content, LogSuccess, LogError);
+            return Client.PostAsync<T>(requestUrl, content, LogSuccess, LogError, _logger);
         }
 
         public Task<T> PostAsync<T>(IReturn<T> request)
@@ -75,7 +75,7 @@ namespace CMTPayment
         {
             SetOAuthHeader(requestUrl, "DELETE", ConsumerKey, ConsumerSecretKey);
 
-            return Client.DeleteAsync<T>(requestUrl, LogSuccess, LogError);
+            return Client.DeleteAsync<T>(requestUrl, LogSuccess, LogError, _logger);
         }
 
         public Task<T> DeleteAsync<T>(IReturn<T> request)

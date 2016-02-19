@@ -24,6 +24,8 @@
         Rule_DuplicateName,
         Rule_InvalidPriority,
         ResetPassword_AccountNotFound,
+        ResetPassword_FacebookAccount,
+        ResetPassword_TwitterAccount,
         AccountCharge_AccountAlreadyExisting,
         AccountCharge_InvalidAccountNumber,
         AccountCharge_InvalidAnswer,

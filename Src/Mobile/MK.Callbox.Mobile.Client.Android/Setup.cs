@@ -47,7 +47,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());
-            container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+			container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
             container.Register<IConnectivityService, ConnectivityService>();
 			container.Register<IErrorHandler, ErrorHandler>();
         }

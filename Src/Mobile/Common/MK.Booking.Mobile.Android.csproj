@@ -140,6 +140,7 @@
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
@@ -317,7 +318,6 @@
     <Compile Include="AppServices\Orders\OrderValidationError.cs" />
     <Compile Include="AppServices\Orders\OrderValidationException.cs" />
     <Compile Include="AppServices\Orders\OrderWorkflowService.cs" />
-    <Compile Include="ViewModels\Map\MapBounds.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderOptionsViewModel.cs" />
     <Compile Include="Data\VehicleClusterHelper.cs" />

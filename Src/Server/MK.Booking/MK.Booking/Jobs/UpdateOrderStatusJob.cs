@@ -89,9 +89,11 @@ namespace apcurium.MK.Booking.Jobs
                 (lastUpdate.UpdaterUniqueId == updaterUniqueId) ||
                 (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
             {
+                var cycleStartDateTime = DateTime.UtcNow;
+
                 // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
+                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow, cycleStartDateTime));
 
                 // If this timer elapses, it will dispose the first timer which would allow another process to start
                 var deadlockTimer = Observable.Timer(TimeSpan.FromMinutes(15))
@@ -109,32 +111,42 @@ namespace apcurium.MK.Booking.Jobs
 
                 try
                 {
-                    var orders = _orderDao.GetOrdersInProgress();
+                    // Normal IBS handling
+                    var orders = _orderDao.GetOrdersInProgress(false);
                     var groupedOrders = orders.GroupBy(x => new { x.CompanyKey, x.Market });
 
                     foreach (var orderGroup in groupedOrders)
                     {
                         var ordersForCompany = orderGroup.ToArray();
 
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders{1}", ordersForCompany.Count(), string.IsNullOrWhiteSpace(orderGroup.Key.CompanyKey)
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders{1}", ordersForCompany.Count(), string.IsNullOrWhiteSpace(orderGroup.Key.CompanyKey)
                             ? string.Empty
                             : string.Format(" for company {0}", orderGroup.Key.CompanyKey));
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
+                        BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
+                        BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
+                        BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
+                        BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
                     
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
+
+                    // Manual RideLinq handling
+                    var manualRideLinqOrders = _orderDao.GetOrdersInProgress(true);
+
+                    Log.DebugFormat("Starting BatchUpdateStatusForManualRideLinq with {0} orders ({1} waiting for payment)", 
+                        manualRideLinqOrders.Count, manualRideLinqOrders.Count(x => x.Status == OrderStatus.WaitingForPayment));
+                    BatchUpdateStatusForManualRideLinq(manualRideLinqOrders);
                 }
                 finally
                 {
                     deadlockTimer.Dispose();
                     timer.Dispose();
+                    // Needed to ensure we do not have a false positive in deadlock detection.
+                    _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow, null);
                     Log.DebugFormat("CheckStatus completed for {0}", updaterUniqueId);
                 }
             }
@@ -146,23 +158,12 @@ namespace apcurium.MK.Booking.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatusForIbs(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
             // Enumerate orders to avoid multiple enumerations of IEnumerable
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
 
-            var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
-
-            Parallel.ForEach(manualRideLinqOrders, 
-                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism }, 
-                orderStatusDetail =>
-                {
-                    Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
-                    _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
-                });
-
             var ibsOrdersIds = orderStatusDetails
-                .Where(order => !order.IsManualRideLinq)
                 .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
                 .ToList();
 
@@ -178,6 +179,19 @@ namespace apcurium.MK.Booking.Jobs
 
                     Log.InfoFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);
+                });
+        }
+
+        private void BatchUpdateStatusForManualRideLinq(IEnumerable<OrderStatusDetail> orders)
+        {
+            // Enumerate orders to avoid multiple enumerations of IEnumerable
+            var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
+
+            Parallel.ForEach(orderStatusDetails,
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelism },
+                orderStatusDetail =>
+                {
+                    _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
                 });
         }
 

@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
 	    private readonly IPostalCodeService _postalCodeService;
+		private readonly IGeocoding _geocodingService;
 
 	    private bool _isInLocationDetail;
 		private Address _currentAddress;	
@@ -64,7 +65,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IGeolocService geolocService,
 			IAccountService accountService,
 			ILocationService locationService, 
-            IPostalCodeService postalCodeService)
+            IPostalCodeService postalCodeService,
+			IGeocoding geocodingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
@@ -72,6 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 		    _postalCodeService = postalCodeService;
+			_geocodingService = geocodingService;
 
 			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveDropOffSelectionMode(), dropOffSelectionMode => IsDropOffSelectionMode = dropOffSelectionMode);
@@ -113,7 +116,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     null,
                     _currentAddress != null ? _currentAddress.Latitude : (double?)null,
                     _currentAddress != null ? _currentAddress.Longitude : (double?)null,
-                    null,
                     _currentLanguage
 				), cancellationToken);
             
@@ -265,6 +267,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if ((value != null) && (value.AddressType == "place"))
 			{
 				var place = await _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceId);
+				return place;
+			}
+
+			if ((value != null) && (value.AddressType == "postal") && (value.PlaceId.HasValueTrimmed()))
+			{
+				// address coming from Google with no detail
+				var place = await _geocodingService.GetPlaceDetail(value.PlaceId);
 				return place;
 			}
 
@@ -427,8 +436,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{           
 			var fullAddresses = _placesService.SearchPlaces(criteria, 
 				_currentAddress != null ? _currentAddress.Latitude : (double?)null, 
-				_currentAddress != null ? _currentAddress.Longitude : (double?)null, 
-				null, _currentLanguage);
+				_currentAddress != null ? _currentAddress.Longitude : (double?)null,
+				_currentLanguage);
 
 			var addresses = fullAddresses.ToList();
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
@@ -473,7 +482,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
             
 	    }
-
 
 		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{

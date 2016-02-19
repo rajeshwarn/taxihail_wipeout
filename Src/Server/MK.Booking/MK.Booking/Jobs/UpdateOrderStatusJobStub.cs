@@ -41,14 +41,15 @@ namespace apcurium.MK.Booking.Jobs
                 return false;
             }
 
+            var cycleStartDateTime = DateTime.UtcNow;
+
             // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
             var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(uniqueId, DateTime.UtcNow));
+                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(uniqueId, DateTime.UtcNow, cycleStartDateTime));
 
             try
             {
-                var orders = _orderDao.GetOrdersInProgress()
-                    .Where(x => x.IsManualRideLinq)
+                var orders = _orderDao.GetOrdersInProgress(true)
                     .Where(x => x.Status == OrderStatus.Created);
 
                 foreach (var orderStatusDetail in orders)
@@ -56,7 +57,6 @@ namespace apcurium.MK.Booking.Jobs
                     Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                     _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
                 }
-
             }
             finally
             {

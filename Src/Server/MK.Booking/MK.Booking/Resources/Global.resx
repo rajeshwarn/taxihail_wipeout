@@ -148,7 +148,7 @@
     <value>Invalid order, please call dispatch center</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>No show</value>
+    <value>Your driver indicated you were not at the pickup location.</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Scheduled</value>
@@ -170,6 +170,9 @@
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
     <value>Sorry, your driver canceled. Finding you another taxi...</value>
+  </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
   </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>The passenger has paid</value>
@@ -495,6 +498,9 @@
   <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
     <value>You are not allowed to use this promotion</value>
   </data>
+  <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
+    <value>Sorry, future booking is not available</value>
+  </data>
   <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
     <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
   </data>
@@ -698,5 +704,14 @@
   </data>
   <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
     <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+  </data>
+  <data name="Email_Subject_OrderRefund" xml:space="preserve">
+    <value>{{ ApplicationName }} - Order Refund</value>
+  </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total Refund</value>
+  </data>
+  <data name="Email_Title_OrderRefund" xml:space="preserve">
+    <value>Order Refund</value>
   </data>
 </root>

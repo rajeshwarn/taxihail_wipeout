@@ -21,6 +21,9 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
+using apcurium.MK.Booking.Services;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -34,12 +37,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly IPromotionDao _promoDao;
+        private readonly INotificationService _notificationService;
         private readonly BookingSettingsService _bookingSettingsService;
         private readonly ConfirmAccountService _confirmAccountService;
         private readonly ExportDataService _exportDataService;
+        private readonly IPaymentService _paymentService;
         private readonly Resources _resources;
-
-        
 
         public AccountManagementController(ICacheClient cache,
            IServerSettings serverSettings,
@@ -49,7 +52,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
            ICommandBus commandBus,
            IOrderDao orderDao,
            IPromotionDao promoDao,
-           BookingSettingsService bookingSettingsService,
+           IPaymentService paymentService,
+           INotificationService notificationService,
+        BookingSettingsService bookingSettingsService,
            ConfirmAccountService confirmAccountService,
            ExportDataService exportDataService)
            : base(cache, serverSettings)
@@ -64,6 +69,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _promoDao = promoDao;
             _confirmAccountService = confirmAccountService;
             _exportDataService = exportDataService;
+            _paymentService = paymentService;
+            _notificationService = notificationService;
 
             _resources = new Resources(serverSettings);
         }
@@ -313,6 +320,47 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return View("Index", accountManagementModel);
         }
 
+        [HttpPost]
+        public ActionResult RefundOrder(AccountManagementModel accountManagementModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var refundPaymentResponse = _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
+
+                if (refundPaymentResponse.IsSuccessful)
+                {
+                    var order = _orderDao.FindByAccountId(accountManagementModel.Id).FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId);
+                    var orderModel = new OrderModel(order);
+
+                    _notificationService.SendOrderRefundEmail(
+                        DateTime.Now, 
+                        refundPaymentResponse.Last4Digits,
+                        orderModel.TotalAmount(), 
+                        accountManagementModel.Email, 
+                        AuthSession.UserAuthName,
+                        order.ClientLanguageCode);
+
+                    AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
+                    TempData["UserMessage"] = "order refunded, note added, email sent";
+                }
+                else
+                {
+                    TempData["UserMessage"] = "an error occured: " + refundPaymentResponse.Message;
+                }
+
+                ModelState.Clear();
+            }
+            else
+            {
+                TempData["UserMessage"] = "Model state is not valid";
+            }
+
+            // needed to feed orders list
+            accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
+
+            return View("Index", accountManagementModel);
+        }
+
         private void AddNote(AccountManagementModel accountManagementModel, NoteType noteType, string noteContent)
         {
             var accountNoteEntry = new AccountNoteEntry
@@ -336,6 +384,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private AccountManagementModel InitializeModel(Guid accountId)
         {
             var accountDetail = _accountDao.FindById(accountId);
+
             var model = new AccountManagementModel
             {
                 Id = accountId,
@@ -370,20 +419,28 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
         {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
             var orders = _orderDao.FindByAccountId(accountId)
                .OrderByDescending(c => c.CreatedDate)
                .Select(x =>
                {
                    var promo = _promoDao.FindByOrderId(x.Id);
+                   var status = _orderDao.FindOrderStatusById(x.Id);
+                   var orderPairing = _orderDao.FindOrderPairingById(x.Id);
+
                    return new OrderModel(x)
                    {
+                       IsOrderPairing = orderPairing != null,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),
                        TollString = _resources.FormatPrice(x.Toll),
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
-                       TotalAmountString = _resources.FormatPrice(x.TotalAmount())
+                       TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
+                       IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
+                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()
                    };
                })
                .ToList();

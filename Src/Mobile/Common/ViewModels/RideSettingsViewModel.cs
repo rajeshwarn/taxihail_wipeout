@@ -15,6 +15,7 @@ using apcurium.MK.Common;
 using MK.Common.Exceptions;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -39,16 +40,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IOrderWorkflowService orderWorkflowService,
 			INetworkRoamingService networkRoamingService)
 		{
-			this._vehicleTypeService = vehicleTypeService;
+			_vehicleTypeService = vehicleTypeService;
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
 
-            PhoneNumber = new PhoneNumberModel();
+            _payments = new ListItem[0];
 
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
+            PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async void Init()
@@ -64,16 +65,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					PhoneNumber.Country = _bookingSettings.Country;
                     PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 
-					var paymentList = await _accountService.GetPaymentsList();
+                    var paymentList = await _accountService.GetPaymentsList();
 
-					_payments = paymentList == null ? 
-						new ListItem[0] : 
-						paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+                    var localize = this.Services().Localize;
 
-                    RaisePropertyChanged(() => Payments);
+                    Payments = (paymentList ?? new ListItem[0])
+                        .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                        .ToArray();
+
+					var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
+
+					await MarketChanged(marketSettings);
+
                     RaisePropertyChanged(() => ChargeTypeId);
                     RaisePropertyChanged(() => ChargeTypeName);
-                    RaisePropertyChanged(() => IsChargeTypesEnabled);
                     RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
                     RaisePropertyChanged(() => IsPayBackFieldEnabled);
 					RaisePropertyChanged(() => Email);
@@ -98,30 +103,88 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async Task MarketChanged(MarketSettings marketSettings)
 		{
 			var paymentList = await _accountService.GetPaymentsList();
+			var paymentSettings = await _paymentService.GetPaymentSettings();
 
-			if (marketSettings.DisableOutOfAppPayment)
+			var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
+				paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+			paymentList = isCmt
+				? HandlePaymentInCarForCmt(paymentList, marketSettings)
+				: EnforceExternalMarketPaymentInCarIfNeeded(paymentList, marketSettings);
+
+            var localize = this.Services().Localize;
+
+            Payments = paymentList
+                .Select(x => new ListItem { Id = x.Id, Display = localize[x.Display] })
+                .ToArray();
+
+			HandleChargeTypeSelectionAccess(marketSettings.IsLocalMarket);
+        }
+
+		private void HandleChargeTypeSelectionAccess(bool isLocalMarket)
+		{
+			// We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
+			if (!isLocalMarket)
 			{
-				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
-
-				if (ChargeTypeId == ChargeTypes.PaymentInCar.Id) 
-				{
-					ChargeTypeId = null;
-				}
+				IsChargeTypesEnabled = Payments.Length > 1;
+				return;
 			}
 
-			_payments = paymentList == null ? 
-				new ListItem[0] : 
-				paymentList.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+			// If the setting DisableChargeTypeWhenCardOnFile is true, prevent changing the chargetype to something else then credit card.
+			var isChargeTypeLocked = _accountService.CurrentAccount.DefaultCreditCard != null && Settings.DisableChargeTypeWhenCardOnFile;
 
-			RaisePropertyChanged(() => Payments);
+			IsChargeTypesEnabled = !isChargeTypeLocked && Payments.Length > 1;
+		}
+
+		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (market.IsLocalMarket)
+			{
+				return paymentList;
+			}
+
+			return paymentList
+				.Where(paymentMethod => paymentMethod.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+				.ToArray();
+		}
+
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
+			{
+				paymentList.Insert(0, ChargeTypes.PaymentInCar);
+			}
+
+			return paymentList;
+		}
+
+		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (!market.IsLocalMarket)
+			{
+				return market.DisableOutOfAppPayment
+					? paymentList
+						: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
+			}
+
+			paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+
+			if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
+			{
+				ChargeTypeId = null;
+			}
+
+			return paymentList;
 		}
 
 	    public bool IsChargeTypesEnabled
 	    {
-	        get
+	        get { return _isChargeTypesEnabled; }
+	        set
 	        {
-                return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
-            }
+	            _isChargeTypesEnabled = value;
+	            RaisePropertyChanged();
+	        }
 	    }
 
 	    public bool IsChargeAccountPaymentEnabled
@@ -172,15 +235,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		private ListItem[] _payments;
-        public ListItem[] Payments
+	    private bool _isChargeTypesEnabled;
+
+	    public ListItem[] Payments
         {
             get
             {
 				return _payments;
             }
+            set
+            {
+                _payments = value ?? new ListItem[0];
+
+                RaisePropertyChanged();
+            }
         }
 
-        public int? VehicleTypeId
+	    public int? VehicleTypeId
         {
             get
             {

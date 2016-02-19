@@ -1,9 +1,6 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
@@ -11,37 +8,58 @@ using apcurium.MK.Booking.MapDataProvider;
 using System.Threading.Tasks;
 using Android.Locations;
 using Cirrious.CrossCore.Droid;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-#endregion
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
 	public class AndroidGeocoder : IGeocoder
 	{
-		private readonly IAppSettings _settings;
 		private readonly IMvxAndroidGlobals _androidGlobals;
 		private readonly ILogger _logger;
 
-		public AndroidGeocoder (IAppSettings settings, ILogger logger, IMvxAndroidGlobals androidGlobals)
+		public AndroidGeocoder (ILogger logger, IMvxAndroidGlobals androidGlobals)
 		{
 			_androidGlobals = androidGlobals;
 			_logger = logger;
-			_settings = settings;
 		}
 
-		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
+        public GeoAddress GetAddressDetail(string id)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<GeoAddress> GetAddressDetailAsync(string id)
+        {
+            throw new NotSupportedException();
+        }
+
+        public GeoAddress[] GeocodeAddress (string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 		{
-			return GeocodeAddressAsync(address, currentLanguage).Result;
+            return GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters).Result;
 		}
 
-	    public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+        public async Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 	    {
             // Do nothing with currentLanguage parameter since Android Geocoder
             // automatically gets the results using the system language
             var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
 
-	        var locationsTask = SettingsForGeocodingRegionAreSet 
-                ? geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100,_settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value,_settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value)
-                : geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100);
+            Position lowerLeft = null;
+            Position upperRight = null;
+            if (!query.ToLowerInvariant().Contains("bounds=")
+                && pickupLatitude.HasValue && pickupLongitude.HasValue
+                && pickupLatitude.Value != 0 && pickupLatitude.Value != 0)
+            {
+                // Note that biasing only prefers results within the bounds; if more relevant results exist outside of these bounds, they may be included.
+                var mapBounds = MapBounds.GetBoundsFromCenterAndRadius(pickupLatitude.Value, pickupLongitude.Value, searchRadiusInMeters, searchRadiusInMeters);
+                lowerLeft = new Position { Latitude = mapBounds.SouthBound, Longitude = mapBounds.WestBound };
+                upperRight = new Position { Latitude = mapBounds.NorthBound, Longitude = mapBounds.EastBound };
+            }
+
+            var locationsTask = lowerLeft != null && upperRight != null
+                ? geocoder.GetFromLocationNameAsync(query.Replace("+", " "), 100, lowerLeft.Latitude, lowerLeft.Longitude, upperRight.Latitude, upperRight.Longitude)
+                : geocoder.GetFromLocationNameAsync(query.Replace("+", " "), 100);
+            
 	        try
 	        {
                 var locations = await locationsTask;
@@ -53,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 _logger.LogError(ex);
                 return new GeoAddress[0];
 	        }
-	        		
 	    }
 
 	    public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
@@ -169,21 +186,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	            };
 	        }
 	    }
-
-        private bool SettingsForGeocodingRegionAreSet
-        {
-            get
-            {
-                return
-                    new[]
-	                {
-	                    _settings.Data.LowerLeftLatitude, 
-                        _settings.Data.LowerLeftLongitude, 
-                        _settings.Data.UpperRightLatitude,
-	                    _settings.Data.UpperRightLongitude
-	                }.All(d => d.HasValue);
-            }
-        }
 	}
 }
 

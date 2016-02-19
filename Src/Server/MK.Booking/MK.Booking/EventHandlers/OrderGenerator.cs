@@ -28,10 +28,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<OrderStatusChangedForManualRideLinq>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderUpdatedInTrip>
+        IEventHandler<OrderUpdatedInTrip>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -244,6 +246,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
                 {
                     Id = Guid.NewGuid(),
+                    AccountId = @event.AccountId,
                     OrderId = @event.SourceId,
                     Note = @event.Note,
                 });
@@ -253,7 +256,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
                         Id = Guid.NewGuid(),
-						AccountId = @event.AccountId,
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
                         RatingTypeId = ratingScore.RatingTypeId,
@@ -388,7 +390,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
                 {
-                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
                     orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
@@ -533,7 +534,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
                     Status = (int)OrderStatus.Created,
-                    IsRated = false,
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
@@ -625,7 +625,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (rideLinqDetails != null)
                 {
                     // Must set an endtime to end order on client side
-                    rideLinqDetails.EndTime = DateTime.UtcNow;
+                    rideLinqDetails.EndTime = @event.EventDate;
                     rideLinqDetails.IsCancelled = true;
                     
                     context.Save(rideLinqDetails);
@@ -702,6 +702,39 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.PairingError = @event.PairingError;
 
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(OrderStatusChangedForManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)@event.Status;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    orderStatusDetails.Status = @event.Status;
+                    orderStatusDetails.LastTripPollingDateInUtc = @event.LastTripPollingDateInUtc;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    if (@event.Status == OrderStatus.TimedOut)
+                    {
+                        rideLinqDetails.EndTime = @event.EventDate;
+                    }
+                    
+                    rideLinqDetails.IsWaitingForPayment = @event.Status == OrderStatus.WaitingForPayment;
+                    context.Save(rideLinqDetails);
+                }
             }
         }
 
@@ -786,6 +819,19 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
             context.SaveChanges();
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+                if (orderDetail != null)
+                {
+                    orderDetail.IsRefunded = @event.IsSuccessful;
+                    context.Save(orderDetail);
+                }
+            }
         }
     }
 }

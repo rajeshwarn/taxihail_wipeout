@@ -87,15 +87,20 @@ namespace MK.Booking.Test.OrderStatusUpdate
                 (lastUpdate.UpdaterUniqueId == updaterUniqueId) ||
                 (DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
             {
+                var cycleStartDateTime = DateTime.UtcNow;
+
                 // Update LastUpdateDate while processing to block the other instance from starting while we're executing the try block
                 var timer = Observable.Timer(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(pollingValue))
-                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow));
+                                .Subscribe(_ => _orderStatusUpdateDao.UpdateLastUpdate(updaterUniqueId, DateTime.UtcNow, cycleStartDateTime));
 
                 Log.DebugFormat("CheckStatus was allowed for {0}", updaterUniqueId);
 
                 try
                 {
-                    var orders = _orderDao.GetOrdersInProgress();
+                    // keep the old status job like it was before
+                    var orders = _orderDao.GetOrdersInProgress(false);
+                    orders = orders.Concat(_orderDao.GetOrdersInProgress(true)).ToList();
+
                     var groupedOrders = orders.GroupBy(x => new { x.CompanyKey, x.Market });
 
                     foreach (var orderGroup in groupedOrders)

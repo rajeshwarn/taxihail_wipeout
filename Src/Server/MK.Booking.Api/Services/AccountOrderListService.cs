@@ -42,20 +42,6 @@ namespace apcurium.MK.Booking.Api.Services
             return response;
         }
 
-		public object Get(AccountOrderListRequestWithUserIdRequest request)
-		{
-			var orderMapper = new OrderMapper();
-
-			var orders = _orderDao.FindByAccountId(request.UserId)
-				.Where(x => !x.IsRemovedFromHistory)
-				.OrderByDescending(c => c.CreatedDate)
-				.Select(read => orderMapper.ToResource(read));
-
-			var response = new AccountOrderListRequestWithUserIdResponse();
-			response.AddRange(orders);
-			return response;
-		}
-
         public object Get(OrderCountForAppRatingRequest request)
 		{
 			var acccountId = new Guid(this.GetSession().UserAuthId);

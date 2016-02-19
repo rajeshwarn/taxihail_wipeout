@@ -427,6 +427,7 @@
   <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
   <string name="CmtConfirmPayment">Confirm</string>
   <string name="UnpairPayInCar">Pay in Car</string>
+  <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="CmtRideLinqSaveChanges">Save</string>
   <string name="CmtRideLinqErrorTitle">Error</string>
@@ -543,8 +544,10 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">Don\'t warn</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
-  <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
+  <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
   <string name="UnpairWarningOkButton">Pay in car</string>
   <string name="UnpairWarningCancelButton">Cancel</string>
   <string name="View_Promotions">Promotions</string>
@@ -627,6 +630,7 @@
   <string name="AddPaymentMethod_PayPal">Link PayPal account</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
   <string name="CvvRequiredTitle">CVV Required</string>
   <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file ending with {0} to continue</string>
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
@@ -756,7 +760,14 @@
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="LastFour">Last 4 numbers:  </string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
+  <string name="CreditCompany">Credit company: </string>
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
+  <string name="SelectedCreditCard">Currently selected credit card</string>
+  <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
 </resources>

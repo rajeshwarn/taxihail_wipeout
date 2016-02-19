@@ -53,28 +53,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 {
                     ClientKey = companyPaymentSettings.BraintreePaymentSettings.ClientKey
                 };
-                paymentSettings.MonerisPaymentSettings = new MonerisPaymentSettings
-                {
-                    IsSandbox = companyPaymentSettings.MonerisPaymentSettings.IsSandbox,
-                    ApiToken = companyPaymentSettings.MonerisPaymentSettings.ApiToken,
-                    BaseHost = companyPaymentSettings.MonerisPaymentSettings.BaseHost,
-                    SandboxHost = companyPaymentSettings.MonerisPaymentSettings.SandboxHost,
-                    StoreId = companyPaymentSettings.MonerisPaymentSettings.StoreId
-                };
-                paymentSettings.CmtPaymentSettings = new CmtPaymentSettings
-                {
-                    BaseUrl = companyPaymentSettings.CmtPaymentSettings.BaseUrl,
-                    ConsumerKey = companyPaymentSettings.CmtPaymentSettings.ConsumerKey,
-                    ConsumerSecretKey = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                    CurrencyCode = companyPaymentSettings.CmtPaymentSettings.CurrencyCode,
-                    FleetToken = companyPaymentSettings.CmtPaymentSettings.FleetToken,
-                    IsManualRidelinqCheckInEnabled = companyPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
-                    IsSandbox = companyPaymentSettings.CmtPaymentSettings.IsSandbox,
-                    Market = companyPaymentSettings.CmtPaymentSettings.Market,
-                    MobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
-                    SandboxBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
-                    SandboxMobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
-                };
+                paymentSettings.MonerisPaymentSettings = companyPaymentSettings.MonerisPaymentSettings;
+                paymentSettings.CmtPaymentSettings = companyPaymentSettings.CmtPaymentSettings;
 
                 // Save/update company settings
                 _commandBus.Send(new UpdatePaymentSettings
@@ -138,11 +118,11 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 throw createOrderException;
             }
 
-            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var fleets = market.HasValue()
-                ? _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray()
-                : _taxiHailNetworkServiceClient.GetNetworkFleet(companyKey, latitude, longitude).ToArray();
+                ? _taxiHailNetworkServiceClient.GetMarketFleets(homeCompanyKey, market).ToArray()
+                : _taxiHailNetworkServiceClient.GetNetworkFleet(homeCompanyKey, latitude, longitude).ToArray();
 
             if (orderCompanyKey.HasValue())
             {
@@ -176,14 +156,46 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             return new BestAvailableCompany();
         }
 
-        internal BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
+        internal BestAvailableCompany FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking)
         {
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
+
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
                 // Do nothing if in home market or if we don't have position
                 _logger.LogMessage("FindBestAvailableCompany - We are in local market (or lat/lng is null), skip honeybadger/geo and call local ibs first");
                 return new BestAvailableCompany();
             }
+
+            // we are in external market
+
+            if (isFutureBooking)
+            {
+                if (marketSettings.FutureBookingReservationProvider.HasValueTrimmed())
+                {
+                    // future booking detected, we find the specified future booking company and return it
+                    var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                    var fleets = _taxiHailNetworkServiceClient.GetMarketFleets(homeCompanyKey, market).ToArray();
+
+                    var match = fleets.FirstOrDefault(f => f.CompanyKey == marketSettings.FutureBookingReservationProvider);
+                    if (match != null)
+                    {
+                        _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: {0}", match.CompanyKey);
+                        return new BestAvailableCompany
+                        {
+                            CompanyKey = match.CompanyKey,
+                            CompanyName = match.CompanyName,
+                            FleetId = match.FleetId
+                        };
+                    }
+
+                    _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: No company found with setting {0}", marketSettings.FutureBookingReservationProvider);
+                }
+
+                _logger.LogMessage("FindBestAvailableCompany - Future Booking in Market: FutureBookingReservationProvider has no value, searching for best company");
+            }
+
+            // we have to find the best available company
 
             int? bestFleetId = null;
             const int searchExpendLimit = 10;

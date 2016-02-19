@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 #if CLIENT
 using apcurium.MK.Common.Extensions;
@@ -20,14 +21,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AuthServiceClient : BaseServiceClient, IAuthServiceClient
     {
-        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
-            : base(url, sessionId, packageInfo, connectivityService)
+        public AuthServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
         public Task CheckSession()
         {
-            return Client.GetAsync<Account>("/account");
+            return Client.GetAsync<Account>("/account", logger: Logger);
         }
 
         public async Task<AuthenticationData> Authenticate(string email, string password)
@@ -81,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
 		{
-			return Client.PostAsync<AuthResponse>("/auth/" + provider , auth);
+            return Client.PostAsync<AuthResponse>("/auth/" + provider , auth, logger: Logger);
 		}
     }
 }
