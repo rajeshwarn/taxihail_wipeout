@@ -1082,10 +1082,6 @@
     <value>http://www.mobile-knowledge.com/</value>
     <comment>http://www.mobile-knowledge.com/</comment>
   </data>
-  <data name="Modify" xml:space="preserve">
-    <value>Modificar</value>
-    <comment>Modify</comment>
-  </data>
   <data name="NbPassenger" xml:space="preserve">
     <value>({0} pasajero)</value>
     <comment>({0} passenger)</comment>

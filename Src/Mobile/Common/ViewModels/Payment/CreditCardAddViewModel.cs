@@ -14,7 +14,9 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -23,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
 		private bool _hasPaymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -31,11 +34,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService,
-			IDeviceCollectorService deviceCollectorService)
+			IDeviceCollectorService deviceCollectorService,
+			INetworkRoamingService networkRoamingService)
 			: base(locationService, paymentService, accountService)
 		{
 			_paymentService = paymentService;
 			_accountService = accountService;
+			_networkRoamingService = networkRoamingService;
 			_deviceCollectorService = deviceCollectorService;
 		}
 
@@ -145,6 +150,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				if (creditCard == null || _isAddingNew)
 				{
+					IsAddingNewCard = true;
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
 					Data.Label = CreditCardLabelConstants.Personal;
 
@@ -170,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 				else
 				{
-					IsEditing = true;
+					IsAddingNewCard = false;
 
 					Data.CreditCardId = creditCard.CreditCardId;
 					Data.CardNumber = "************" + creditCard.Last4Digits;
@@ -339,15 +345,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private bool _isEditing;
-		public bool IsEditing
+		private bool _isAddingNewCard;
+		public bool IsAddingNewCard
 		{
-			get { return _isEditing; }
+			get { return _isAddingNewCard; }
 			set
 			{
-				if (_isEditing != value)
+				if (_isAddingNewCard != value)
 				{
-					_isEditing = value;
+					_isAddingNewCard = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
 				}
@@ -356,7 +362,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+			get { return !IsAddingNewCard && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public bool CanLinkPayPalAccount
@@ -393,7 +399,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
+				return this.Services().Localize["Save"];
 			}
 		}
 
@@ -496,9 +502,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 						var localize = this.Services().Localize;
 
+						var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings ().Take (1).ToTask ();
+						// DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG 
+						marketSettings.DisableOutOfAppPayment = true;
+
+						var deletingRequiredCreditCard = _numberOfCreditCards == 1 && marketSettings.DisableOutOfAppPayment;
+
+						var deleteCreditCardText = deletingRequiredCreditCard ? "RideSettingsLastCreditCardDeletion" : "DeleteCreditCard";
+
 						this.Services().Message.ShowMessage(
 							localize["DeleteCreditCardTitle"],
-							localize["DeleteCreditCard"],
+							localize[deleteCreditCardText],
 							localize["Delete"], () => tcs.SetResult(true),
 							localize["Cancel"], () => tcs.SetResult(false));
 
@@ -585,8 +599,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private async Task DeleteCreditCard(bool replacedByPayPal = false)
 		{
-			if (!IsEditing)
-			{
+			if (IsAddingNewCard) {
 				return;
 			}
 
@@ -648,12 +661,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 
-					if (!IsEditing)
+					if (IsAddingNewCard)
 					{
 						Data.CreditCardId = Guid.NewGuid();
 					}
 
-					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
+					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, !IsAddingNewCard);
 
 					if (success)
 					{

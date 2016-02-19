@@ -336,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _payPalPayment = new PayPalCustomFuturePaymentViewController((PayPalConfiguration)Mvx.Resolve<IPayPalConfigurationService>().GetConfiguration(), _payPalPaymentDelegate);
             }
 
-            if (ViewModel.IsEditing)
+            if (!ViewModel.IsAddingNewCard)
             {
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["DeleteCreditCardTitle"],
