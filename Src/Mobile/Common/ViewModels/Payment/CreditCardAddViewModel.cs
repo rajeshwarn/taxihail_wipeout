@@ -503,8 +503,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						var localize = this.Services().Localize;
 
 						var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings ().Take (1).ToTask ();
-						// DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG // DEBUG 
-						marketSettings.DisableOutOfAppPayment = true;
 
 						var deletingRequiredCreditCard = _numberOfCreditCards == 1 && marketSettings.DisableOutOfAppPayment;
 
