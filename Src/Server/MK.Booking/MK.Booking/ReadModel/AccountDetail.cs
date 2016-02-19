@@ -52,6 +52,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPayPalAccountLinked { get; set; }
 
+        public string BraintreeAccountId { get; set; }
+
         /// <summary>
         /// This date is saved in UTC
         /// </summary>
