@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				try
 				{
-					var result = await Task.Run(action);
+					var result = await action().ConfigureAwait(false);
 					return result;
 				}
 				catch (Exception ex)
