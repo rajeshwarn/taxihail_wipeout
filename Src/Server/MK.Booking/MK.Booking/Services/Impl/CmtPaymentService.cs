@@ -396,7 +396,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 var orderPairing = _orderDao.FindOrderPairingById(orderId);
                 InitializeServiceClient(order.Settings.ServiceType);
 
-                var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
+
+                if (orderPairing == null)
+                {
+                    throw new Exception(string.Format("can't find orderPairing object for orderId {0}", orderId));
+                }
+
+                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
 
                 var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
                                     + order.Tax.GetValueOrDefault()

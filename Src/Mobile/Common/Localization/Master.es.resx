@@ -1011,7 +1011,7 @@
     <value>Notes to driver (Name of business, specific entrance, ...)</value>
   </data>
   <data name="Notification_NoShowPush" xml:space="preserve">
-    <value>No show</value>
+    <value>Pasajero no presentado</value>
   </data>
   <data name="DriverBonusTitle" xml:space="preserve">
     <value>Driver Bonus:</value>
@@ -2379,7 +2379,6 @@
     <value>URL is missing</value>
   </data>
   <data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
-    <value>URL to store page was not configured</value>
   </data>
   <data name="BaseRate_PerMileRate" xml:space="preserve">
 	<value>Per Mile Rate</value>
@@ -2436,7 +2435,7 @@
 		<value>The confirmation code is incorrect.</value>
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>Your session has expired, please login again.</value>
+    <value>Su sesión ha expirado, por favor ingrese nuevamente.</value>
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Server error</value>
@@ -2457,31 +2456,48 @@
     <value>No account with this email has been found.</value>
   </data>
   <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
-    <value>This email matches a Facebook account. Please login via Facebook.</value>
+  	<value>Este email esta asociado a una cuenta de Facebook. Por favor ingrese via Facebook.</value>
+    <comment>This email matches a Facebook account. Please login via Facebook.</comment>
   </data>
   <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
-    <value>This email matches a Twitter account. Please login via Twitter.</value>
+    <value>Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</value>
+    <comment>This email matches a Twitter account. Please login via Twitter.</comment>
   </data>
   <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>The confirmation code is incorrect.</value>
+    <value>Código de confirmación inválido</value>
+    <comment>The confirmation code is incorrect.</comment>
+  </data>
+  <data name="InvalidCreditCardMessage" xml:space="preserve">
+  	<value>Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</value>
+  	<comment>There was a problem with your current Payment Method. Please add a different card or update the information.</comment>
+  </data>
+  <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+  	<value>Actualizar Tarjeta</value>
+  	<comment>Update Card</comment>
+  </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <comment>You need to have an active credit card set as your default payment method</comment>
   </data>
   <data name="LastFour" xml:space="preserve">
-    <value>Last 4 numbers:  </value>
+    <value>Los últimos 4 números:  </value>
+    <comment>Last 4 numbers:  </comment>
   </data>
   <data name="InvalidCreditCardMessage" xml:space="preserve">
   	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
   </data>
   <data name="CreditCompany" xml:space="preserve">
-    <value>Credit company: </value>
-  </data>
+    <value>Compañía de Crédito: </value>
+    <comment>Credit company: </comment>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Update Card</value>
   </data>
   <data name="SelectedCreditCard" xml:space="preserve">
-    <value>Currently selected credit card</value>
+    <value>Tarjeta de crédito seleccionada actualmente</value>
+    <comment>Currently selected credit card</comment>
   </data>
   <data name="NoCreditCard" xml:space="preserve">
-    <value>No credit card selected</value>
+    <value>No ha seleccionado una tarjeta de crédito</value>
+    <comment>No credit card selected</comment>
   </data>
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>Su contraseña y confirmación no concuerdan</value>

@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Services
 
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
-        void SendOrderRefundEmail(DateTime refundDate, string last4Digits, string totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+        void SendOrderRefundEmail(DateTime refundDate, string last4Digits, double? totalAmount, string clientEmailAddress, string ccEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendCreditCardDeactivatedPush(AccountDetail account);
 
