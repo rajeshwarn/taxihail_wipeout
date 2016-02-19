@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services
                 taxAmount = manualRideLinqDetail.Tax;
                 surcharge = manualRideLinqDetail.Surcharge;
                 orderStatus.DriverInfos.DriverId = manualRideLinqDetail.DriverId.ToString();
-                order.DropOffAddress = TryToGetExactDropOffAddress(order.Id, manualRideLinqDetail, order.DropOffAddress, order.ClientLanguageCode);
+                order.DropOffAddress = _geocoding.TryToGetExactDropOffAddress(orderStatus, manualRideLinqDetail.LastLatitudeOfVehicle, manualRideLinqDetail.LastLongitudeOfVehicle, order.DropOffAddress, order.ClientLanguageCode);
                 
                 cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
                 {
@@ -253,41 +253,6 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(sendReceiptCommand);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
-        }
-
-        private Address TryToGetExactDropOffAddress(Guid orderId, OrderManualRideLinqDetail manualRideLinqDetail, Address dropOffAddress, string clientLanguageCode)
-        {
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if ((orderStatus == null
-                || !orderStatus.VehicleLatitude.HasValue
-                || !orderStatus.VehicleLongitude.HasValue)
-                && (manualRideLinqDetail == null
-                || !manualRideLinqDetail.LastLatitudeOfVehicle.HasValue
-                || !manualRideLinqDetail.LastLongitudeOfVehicle.HasValue))
-            {
-                return dropOffAddress;
-            }
-
-            double latitude;
-            double longitude;
-
-            if (manualRideLinqDetail != null
-                && manualRideLinqDetail.LastLatitudeOfVehicle.HasValue
-                && manualRideLinqDetail.LastLongitudeOfVehicle.HasValue)
-            {
-                latitude = manualRideLinqDetail.LastLatitudeOfVehicle.Value;
-                longitude = manualRideLinqDetail.LastLongitudeOfVehicle.Value;
-            }
-            else
-            {
-                latitude = orderStatus.VehicleLatitude.Value;
-                longitude = orderStatus.VehicleLongitude.Value;
-            }
-
-            // Find the exact dropoff address using the last vehicle position
-            var exactDropOffAddress = _geocoding.Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
-
-            return exactDropOffAddress ?? dropOffAddress;
         }
 
         private Trip GetTripInfo(string pairingToken)

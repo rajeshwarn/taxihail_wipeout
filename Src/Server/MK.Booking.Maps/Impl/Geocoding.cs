@@ -271,5 +271,38 @@ namespace apcurium.MK.Booking.Maps.Impl
                 && instance.Longitude >= -180 
                 && instance.Longitude <= 180;
         }
+
+        public Address TryToGetExactDropOffAddress(OrderStatusDetail orderStatusDetail, double? manualRideLinqLastLatitudeOfVehicle,  double? manualRideLinqLastLongitudeOfVehicle, Address dropOffAddress, string clientLanguageCode)
+        {
+            
+            if ((orderStatusDetail == null
+                || !orderStatusDetail.VehicleLatitude.HasValue
+                || !orderStatusDetail.VehicleLongitude.HasValue)
+                || !manualRideLinqLastLatitudeOfVehicle.HasValue
+                || !manualRideLinqLastLongitudeOfVehicle.HasValue)
+            {
+                return dropOffAddress;
+            }
+
+            double latitude;
+            double longitude;
+
+            if (manualRideLinqLastLatitudeOfVehicle.HasValue
+                && manualRideLinqLastLongitudeOfVehicle.HasValue)
+            {
+                latitude = manualRideLinqLastLatitudeOfVehicle.Value;
+                longitude = manualRideLinqLastLongitudeOfVehicle.Value;
+            }
+            else
+            {
+                latitude = orderStatusDetail.VehicleLatitude.Value;
+                longitude = orderStatusDetail.VehicleLongitude.Value;
+            }
+
+            // Find the exact dropoff address using the last vehicle position
+            var exactDropOffAddress = Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
+
+            return exactDropOffAddress ?? dropOffAddress;
+        }
     }
 }
