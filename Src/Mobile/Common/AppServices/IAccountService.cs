@@ -33,8 +33,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account CurrentAccount { get; }
 
-        Task<IList<ListItem>> GetPaymentsList();
-        
+	    IObservable<IList<ListItem>> GetAndObservePaymentsList();
+
         Task ResetPassword( string email );
         
 		Task<string> UpdatePassword( Guid accountId, string currentPassword, string newPassword );

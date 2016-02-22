@@ -20,8 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class CreditCardAddViewModel : CreditCardBaseViewModel
 	{
-		private readonly IPaymentService _paymentService;
-		private readonly IAccountService _accountService;
+	    private readonly IAccountService _accountService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
 
 		private bool _hasPaymentToSettle;
@@ -34,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			IDeviceCollectorService deviceCollectorService)
 			: base(locationService, paymentService, accountService)
 		{
-			_paymentService = paymentService;
-			_accountService = accountService;
+		    _accountService = accountService;
 			_deviceCollectorService = deviceCollectorService;
 		}
 
