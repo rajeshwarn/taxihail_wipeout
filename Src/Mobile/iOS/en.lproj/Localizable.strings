@@ -356,7 +356,8 @@
 "CreditCardErrorTitle"="Cannot save credit card";
 "CreditCardError_Label"="Cannot save credit card label. Please try again";
 "CreditCardRequiredFields"="All the fields are required";
-"CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
+"CreditCardInvalidCrediCardNumber"="The Credit Card Number is invalid";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "ReminderTitle"="{0} Booked";
 "ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";

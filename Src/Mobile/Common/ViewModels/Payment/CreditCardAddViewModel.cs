@@ -649,7 +649,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				if (!IsValid(Data.CardNumber))
 				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
+					return;
+				}
+
+				if (Data.CreditCardCompany == Amex && PaymentSettings.DisableAMEX)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
 					return;
 				}
 

@@ -386,7 +386,7 @@
   <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">كافة الخانات مطلوبة</string>
-  <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>
+  <string name="CreditCardInvalidCrediCardNumber">رقم البطاقة الائتمانية خاطئة</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="ReminderTitle">تم الحجز {0}</string>
   <string name="ReminderDetails">تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.</string>

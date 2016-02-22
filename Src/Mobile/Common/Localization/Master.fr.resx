@@ -441,11 +441,14 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.</value>
   </data>
-  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+  <data name="CreditCardInvalidCrediCardNumber" xml:space="preserve">
     <value>Le numéro de la carte ne semble pas être valide</value>
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>La carte ne semble pas être valide</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
+    <value>Désolé, nous ne supportons pas les cartes Amex</value>
   </data>
   <data name="CreditCardLabel" xml:space="preserve">
     <value>Label</value>
