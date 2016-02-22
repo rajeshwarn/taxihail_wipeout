@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Settings = settings;
 
 			// this is cached, call it first
-			var chargeTypes = await _accountService.GetPaymentsList();
+			var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
 			var vehicle = (await _vehicleTypeService.GetAndObserveVehiclesList().Take(1)).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);

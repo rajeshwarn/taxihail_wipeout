@@ -108,12 +108,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _poiProvider = poiProvider;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
-		
-			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => _marketSettings = marketSettings);
-			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
+
+            Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+            Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 		}
 
-		public async Task SetAddress(Address address)
+        private async Task MarketChanged(MarketSettings marketSettings)
+		{
+			if (_marketSettings.HashedMarket != marketSettings.HashedMarket)
+			{
+				await SetBookingSettings(_accountService.CurrentAccount.Settings);
+			}
+
+			_marketSettings = marketSettings;
+		}
+
+        public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
 		}
@@ -221,14 +231,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    public async Task<bool> ValidateChargeType()
 	    {
-            var chargeTypes = await _accountService.GetPaymentsList();
+            var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
-			if (_marketSettings.DisableOutOfAppPayment)
-			{
-				chargeTypes.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
-			}
-
-	        if (!chargeTypes.Any())
+            if (!chargeTypes.Any())
 	        {
 	            return false;
 	        }
@@ -357,15 +362,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
-			var paymentList = await _accountService.GetPaymentsList();
-
-			if (_marketSettings.DisableOutOfAppPayment)
-			{
-				paymentList.Remove (x => x.Id == ChargeTypes.PaymentInCar.Id);
-			}
+            var paymentList = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
-		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
 				if (!_marketSettings.IsLocalMarket)
 		        {
