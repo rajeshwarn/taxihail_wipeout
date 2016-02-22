@@ -127,6 +127,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				? HandlePaymentInCarForCmt(refData.PaymentsList, marketSettings)
 				: EnforceExternalMarketPaymentInCarIfNeeded(refData.PaymentsList, marketSettings);
 
+			if (refData.PaymentsList.All(x => x.Id == ChargeTypes.CardOnFile.Id))
+			{
+				// there's only one Charge Type and it's card on file, return it
+				// don't attempt to remove it because you'll end up with a message saying
+				// you haven't selected a charge type when trying to book and not a message
+				// saying "hey you need a card, add it now"
+				// TLDR: it's easier to understand for the user this way
+				Console.WriteLine(refData.PaymentsList.ToJson());
+				return refData.PaymentsList;
+			}
+
 			var creditCard = await GetDefaultCreditCard();
 			if (creditCard == null
 				|| CurrentAccount.IsPayPalAccountLinked
@@ -135,6 +146,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 			}
 
+			Console.WriteLine(refData.PaymentsList.ToJson());
 			return refData.PaymentsList;
 		}
 
@@ -729,7 +741,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						ExpirationYear = request.ExpirationYear,
 						IsDeactivated = false
 					};
-				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
+				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
 			}	
 
 			return true;
@@ -743,7 +755,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			UpdateCachedAccount(defaultCreditCard ?? null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
+			UpdateCachedAccount(defaultCreditCard ?? null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked, true);
 		}
 
 		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
@@ -780,7 +792,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public Task LinkPayPalAccount(string authCode)
 		{
-            UpdateCachedAccount(null, ChargeTypes.PayPal.Id, true);
+            UpdateCachedAccount(null, ChargeTypes.PayPal.Id, true, true);
 
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.LinkPayPalAccount(new LinkPayPalAccountRequest { AuthCode = authCode }));
 		}
@@ -789,12 +801,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    var updatedChargeTypeId = replacedByCreditCard ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
 
-            UpdateCachedAccount(CurrentAccount.DefaultCreditCard, updatedChargeTypeId, false);
+            UpdateCachedAccount(CurrentAccount.DefaultCreditCard, updatedChargeTypeId, false, true);
 
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest()));
 		}
 
-		private void UpdateCachedAccount(CreditCardDetails defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
+		private void UpdateCachedAccount(CreditCardDetails defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked, bool shouldUpdateChargeType = false)
         {
             var account = CurrentAccount;
             account.DefaultCreditCard = defaultCreditCard;
@@ -802,7 +814,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             account.IsPayPalAccountLinked = isPayPalAccountLinked;
             CurrentAccount = account;
 
-			UpdateChargeTypes(_marketSettings).FireAndForget();
+			if (shouldUpdateChargeType)
+			{
+				UpdateChargeTypes(_marketSettings).FireAndForget();
+			}
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
