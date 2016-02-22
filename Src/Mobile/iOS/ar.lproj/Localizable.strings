@@ -748,3 +748,4 @@
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";

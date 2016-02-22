@@ -333,7 +333,6 @@
 "RingCode"="Saisissez un code";
 "RingCodeTextPlaceholder"="Saisissez un code";
 "Save"="Enregistrer";
-"Modify"="Modifier";
 "SaveAddressEmptyFieldMessage"="Désolé, les données ne semble pas valides. Merci de saisir les informations";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
 "ScanCreditCard"="Scanner la carte de paiement";
@@ -765,3 +764,4 @@
 "SelectedCreditCard"="Carte de crédit sélectionnée: ";
 "NoCreditCard"="Aucune carte de crédit sélectionnée";
 "ServiceErrorUpdatePassword_NotSame"="Désolé, le mot de passe saisi n'est pas valide";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
