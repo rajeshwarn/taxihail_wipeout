@@ -591,7 +591,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
-                var addressToUseForDropOff = _geocoding.TryToGetExactDropOffAddress(orderStatusDetail, cmtRideLinqFields.LastLatitudeOfVehicle, cmtRideLinqFields.LastLongitudeOfVehicle,  dropOffAddress, clientLanguageCode);
+
+                var latitude = cmtRideLinqFields == null
+                    ? null
+                    : cmtRideLinqFields.LastLatitudeOfVehicle;
+
+                var longitude = cmtRideLinqFields == null
+                    ? null
+                    : cmtRideLinqFields.LastLongitudeOfVehicle;
+
+                var addressToUseForDropOff = _geocoding.TryToGetExactDropOffAddress(orderStatusDetail, latitude, longitude, dropOffAddress, clientLanguageCode);
                 var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
 
                 var hasDropOffAddress = addressToUseForDropOff != null
@@ -1149,7 +1158,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
-                if (!marketSettings.ReceiptFooter.HasValueTrimmed())
+                if (marketSettings == null || !marketSettings.ReceiptFooter.HasValueTrimmed())
                 {
                     return string.Empty;
                 }
