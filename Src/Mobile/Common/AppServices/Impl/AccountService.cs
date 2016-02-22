@@ -127,17 +127,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				? HandlePaymentInCarForCmt(refData.PaymentsList, marketSettings)
 				: EnforceExternalMarketPaymentInCarIfNeeded(refData.PaymentsList, marketSettings);
 
-			if (refData.PaymentsList.All(x => x.Id == ChargeTypes.CardOnFile.Id))
-			{
-				// there's only one Charge Type and it's card on file, return it
-				// don't attempt to remove it because you'll end up with a message saying
-				// you haven't selected a charge type when trying to book and the only way 
-				// to add have card on file is to have a valid card but the confirm will
-				// still validate if you have a valid card before allowing the order to go through
-				// TLDR: it's easier to understand for the user this way
-				return refData.PaymentsList;
-			}
-
 			var creditCard = await GetDefaultCreditCard();
 			if (creditCard == null
 				|| CurrentAccount.IsPayPalAccountLinked
