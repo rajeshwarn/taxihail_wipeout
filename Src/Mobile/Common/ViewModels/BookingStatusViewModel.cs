@@ -891,16 +891,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread(() => this.Services().Message.ShowMessage(
-                    this.Services().Localize["AddReminderTitle"], 
+                    this.Services().Localize["AddReminderTitle"],
                     this.Services().Localize["AddReminderMessage"],
-                    this.Services().Localize["YesButton"],
-					() => _phoneService.AddEventToCalendarAndReminder(
-						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
-                        string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
-                    Order.PickupAddress.FullAddress, 
-                    Order.PickupDate,
-                    Order.PickupDate.AddHours(-2)), 
-                    this.Services().Localize["NoButton"], () => { }));
+                    this.Services().Localize["YesButton"], async () =>
+                   {
+                        _phoneService.AddEventToCalendarAndReminder(
+                        string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName),
+                        string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),
+                        Order.PickupAddress.FullAddress,
+                        Order.PickupDate,
+                        Order.PickupDate.AddHours(-2));
+                        await GoToHomeScreen();
+                    }, 
+                    this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
             }
         }
 
