@@ -892,7 +892,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread(() => this.Services().Message.ShowMessage(
                     this.Services().Localize["AddReminderTitle"],
-                    this.Services().Localize["AddReminderMessage"],
+					this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"], async () =>
                    {
                         _phoneService.AddEventToCalendarAndReminder(
