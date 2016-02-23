@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net.Mail;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -14,14 +12,13 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
 
-#endregion
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {

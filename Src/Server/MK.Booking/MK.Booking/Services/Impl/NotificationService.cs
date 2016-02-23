@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -26,7 +25,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {

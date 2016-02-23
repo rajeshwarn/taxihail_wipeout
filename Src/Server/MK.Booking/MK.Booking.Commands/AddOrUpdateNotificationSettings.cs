@@ -1,6 +1,6 @@
 ﻿using System;
+using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Commands
 {

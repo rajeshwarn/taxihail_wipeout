@@ -97,16 +97,19 @@
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
-      <Name>MK.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

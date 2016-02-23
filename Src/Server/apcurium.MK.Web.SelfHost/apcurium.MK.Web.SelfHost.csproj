@@ -115,9 +115,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
       <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
       <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
@@ -150,10 +158,6 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
       <Name>MK.Booking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

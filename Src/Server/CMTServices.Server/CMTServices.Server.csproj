@@ -88,12 +88,15 @@
     <Compile Include="Responses\VehicleResponse.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MK.Common</Name>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

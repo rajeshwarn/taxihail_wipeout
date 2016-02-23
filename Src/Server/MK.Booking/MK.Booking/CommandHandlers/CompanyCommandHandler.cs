@@ -1,13 +1,10 @@
-﻿#region
-
-using apcurium.MK.Booking.Commands;
+﻿using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 
-#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {

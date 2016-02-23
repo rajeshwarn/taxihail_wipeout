@@ -125,9 +125,17 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
       <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
       <Name>BrainTreeEncryption.Library.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
@@ -144,10 +152,6 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{baf90740-9220-4bb0-b857-1e5927e464e9}</Project>
       <Name>MK.Booking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
-      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

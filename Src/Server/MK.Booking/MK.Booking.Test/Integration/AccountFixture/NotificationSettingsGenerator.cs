@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging;
-using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
 

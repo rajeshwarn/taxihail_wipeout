@@ -51,6 +51,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
       <Name>CMTServices.Server</Name>
@@ -62,10 +70,6 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
       <Project>{2ad48d85-462d-4763-8016-a2aa10f185a7}</Project>
       <Name>MK.Booking.Test</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
-      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

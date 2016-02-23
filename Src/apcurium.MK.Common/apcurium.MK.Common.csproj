@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>apcurium.MK.Common</RootNamespace>
+    <AssemblyName>apcurium.MK.Common</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationVersion.cs" />
+    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
+    <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
+    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
+    <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
+    <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\NotificationSettings.cs" />
+    <Compile Include="Configuration\SettingContainers.cs" />
+    <Compile Include="Enumeration\SmtpDeliveryMethod.cs" />
+    <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="CountryCode.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
+    <Compile Include="Cryptography\SettingsEncryptor.cs" />
+    <Compile Include="CurencyCodes.cs" />
+    <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="Entity\Address.cs" />
+    <Compile Include="Entity\AddressLocationType.cs" />
+    <Compile Include="Entity\DirectionSetting.cs" />
+    <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
+    <Compile Include="Entity\RatingType.cs" />
+    <Compile Include="Entity\RatingTypeWrapper.cs" />
+    <Compile Include="Entity\Tariff.cs" />
+    <Compile Include="Enumeration\DistanceFormat.cs" />
+    <Compile Include="Enumeration\SupportedLanguages.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EventExtension.cs" />
+    <Compile Include="Extensions\GuidExtensions.cs" />
+    <Compile Include="Extensions\NullableExtension.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Geography\GeographyHelper.cs" />
+    <Compile Include="ICacheService.cs" />
+    <Compile Include="IPackageInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\IPopularAddressProvider.cs" />
+    <Compile Include="Provider\ITariffProvider.cs" />
+    <Compile Include="Resources\BasePaymentResponse.cs" />
+    <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
+    <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\PairingResponse.cs" />
+    <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Serializer\TolerantEnumConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="libphonenumber">
+      <HintPath>Libraries\libphonenumber\libphonenumber.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\PCLCrypto.1.0.86\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portable.DataAnnotations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\Portable.DataAnnotations.1.0.0\lib\portable-net45+netcore45+wp8+wpa81\Portable.DataAnnotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\Splat.1.6.2\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UnicodeNormalization, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\UnicodeNormalization.1.0.1\lib\UnicodeNormalization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\Server\packages\Validation.2.2.8\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

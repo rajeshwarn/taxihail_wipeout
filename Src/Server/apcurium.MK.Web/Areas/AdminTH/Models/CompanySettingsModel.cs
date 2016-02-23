@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using apcurium.MK.Common.Configuration;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {

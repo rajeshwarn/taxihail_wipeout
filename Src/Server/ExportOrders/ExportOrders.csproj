@@ -83,6 +83,14 @@
     <None Include="Properties\Settings.settings" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Client\MK.Booking.Api.Client.csproj">
       <Project>{304f8e9e-0e9c-40f4-81fb-e7558286c5c1}</Project>
       <Name>MK.Booking.Api.Client</Name>
@@ -94,10 +102,6 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{baf90740-9220-4bb0-b857-1e5927e464e9}</Project>
       <Name>MK.Booking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
-      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

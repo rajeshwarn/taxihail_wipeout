@@ -14,12 +14,12 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Response;
-using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
 

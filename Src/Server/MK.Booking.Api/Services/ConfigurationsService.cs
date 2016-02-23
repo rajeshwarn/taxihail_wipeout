@@ -1,7 +1,4 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -13,16 +10,12 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using MK.Common.Configuration;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.Text;
 using System.Reflection;
 using apcurium.MK.Common.Cryptography;
 
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {

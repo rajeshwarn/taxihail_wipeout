@@ -6,8 +6,8 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
-using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
 

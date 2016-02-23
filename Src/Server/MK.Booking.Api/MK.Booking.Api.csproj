@@ -228,6 +228,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
       <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
       <Name>CustomerPortal.Client</Name>
@@ -239,6 +243,10 @@
     <ProjectReference Include="..\..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
       <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
       <Name>BrainTreeEncryption.Library.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>apcurium.MK.Common.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
@@ -279,10 +287,6 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
       <Name>MK.Booking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

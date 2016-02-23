@@ -4,7 +4,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
-using MK.Common.Configuration;
 
 namespace MK.Booking.Test.OrderStatusUpdate
 {
