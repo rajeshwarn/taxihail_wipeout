@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reactive.Disposables;
 using apcurium.MK.Common.Extensions;
-using System.Linq;
 
 namespace apcurium.MK.Common.Diagnostic
 {
@@ -76,65 +77,59 @@ namespace apcurium.MK.Common.Diagnostic
                 });
         }
 
-        private void LogError(Exception ex, int indent, string method, int lineNumber)
+		private void LogError(Exception ex, int indent, string method, int lineNumber, IList<string> fullErrorMessage = null)
         {
             var indentStr = "";
             for (var i = 0; i < indent; i++)
             {
                 indentStr += "   ";
             }
+
+			if (fullErrorMessage == null)
+			{
+				fullErrorMessage = new List<string>();
+			}
+
             if (indent == 0)
             {
                 var errorMessage = method.HasValueTrimmed() && lineNumber > -1
                     ? string.Format("{0}Error on {1} at {2}:{3}", indentStr, DateTime.Now, method, lineNumber)
                     : string.Format("{0}Error on {1}", indentStr, DateTime.Now);
 
-                Write(errorMessage);
+				fullErrorMessage.Add(errorMessage);
             }
 
-            Write(string.Format ("{0}Message : {1}", indentStr, ex.Message));
-            Write(string.Format ("{0}Stack : {1}", indentStr, ex.StackTrace));
+			fullErrorMessage.Add(string.Format ("{0}Message : {1}", indentStr, ex.Message));
+			fullErrorMessage.Add(string.Format ("{0}Stack : {1}", indentStr, ex.StackTrace));
 
-            if (ex.InnerException != null)
-            {
-                LogError(ex.InnerException, ++indent, method, lineNumber);
-            }
+
+			if (ex.InnerException != null)
+			{
+				LogError(ex.InnerException, ++indent, method, lineNumber, fullErrorMessage);
+			}
+			else
+			{
+				Write(fullErrorMessage.JoinBy(Environment.NewLine));
+			}
         }
 
 		protected abstract string GetBaseDirectory();
 
 		protected abstract string GetMessageBase();
 
-		private static string RemoveOlderEntries(long overflow, string fileContent)
+		private static string RemoveOlderEntries(string fileContent)
 		{
-			var content = fileContent.Split(Environment.NewLine.ToCharArray())
+			var content = fileContent.Trim()
+				.Split(Environment.NewLine.ToCharArray())
 				.ToArray();
 			
 			var skip = true;
 
-			// We remove the oldest log entries until we have enought space.
-			content = content.SkipWhile((line, index) => 
-				{
-					if (index == 0)
-					{
-						return true;
-					}
-					if (!skip)
-					{
-						return false;
-					}
-					var previousLinesTotalLength = content.Take(index).Sum(p => p.Length);
-
-				    skip = overflow - previousLinesTotalLength > 0;
-
-                    return skip;
-				})
-				.ToArray();
-			
-			skip = true;
-
-			// We remove enought lines to make sure we don't have a first log element that is truncated.
-			var log = content.SkipWhile(line => 
+			var log = content
+				// We remove 1/8 on the top of the log file (older entries).
+				.Skip(content.Length / 8)
+				// We remove enought lines to make sure we don't have a log element that is truncated (for instance, a partial stack from an error).
+				.SkipWhile(line => 
 				{
 					if (!skip)
 					{
@@ -151,7 +146,7 @@ namespace apcurium.MK.Common.Diagnostic
 			return log;
 		}
 
-		private void DeleteOldEntries (FileInfo fileIO, long overflow)
+		private void DeleteOldEntries (FileInfo fileIO)
 		{
 			var backupFileName = fileIO.FullName + ".bak";
 
@@ -160,73 +155,114 @@ namespace apcurium.MK.Common.Diagnostic
                 if (File.Exists(backupFileName))
                 {
                     File.Delete(backupFileName);
-                }
-            }
-		    catch (Exception ex)
-		    {
-		        LogError(ex);
-		    }
-			
+				}
 
-			// Creating a backup copy of the log in case a crash happends.
-			File.Copy(fileIO.FullName, backupFileName);
+				// Creating a backup copy of the log in case a crash happends.
+				File.Copy(fileIO.FullName, backupFileName);
 
-			string fileContent;
+				string fileContent;
 
-			using (var sr = fileIO.OpenText())
-			{
+
+				var fs = fileIO.Open(FileMode.Open, FileAccess.Read);
+
+				var sr = new StreamReader(fs);
+
 				fileContent = sr.ReadToEnd();
-			}
 
-			var log = RemoveOlderEntries(overflow, fileContent);
+				// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened).
+				sr.Dispose();
+				fs.Close();
+				fs.Dispose();
 
-		    try
-		    {
-		        fileIO.Delete();
-		    }
-		    catch (Exception ex)
-		    {
-		        LogError(ex);
-		    }
+				var log = RemoveOlderEntries(fileContent);
 
-			using (var sw = fileIO.CreateText())
-			{
+
+				fs = fileIO.Open(FileMode.Truncate, FileAccess.Write);
+				var sw = new StreamWriter(fs);
 				sw.WriteLine(log);
 				sw.Flush();
-			}
 
-		    try
-		    {
-		        // Deleting the backup copy.
-		        File.Delete(backupFileName);
-		    }
-		    catch (Exception ex)
-		    {
-		        LogError(ex);
-		    }
+				// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened).
+				sw.Dispose();
+				fs.Close();
+				fs.Dispose();
+
+				// Deleting the backup copy.
+				File.Delete(backupFileName);
+			}
+			catch (Exception ex)
+			{
+				LogError(ex);
+			}
 		}
+
+		private bool _isWriting;
+
+		private IList<string> _waitingQueue = new List<string>();
 
 		private void Write(string message)
 		{
-            var messageWithUserName = message + GetMessageBase();
-
-			lock (_threadLock)
+			try
 			{
-				var fileIO = new FileInfo(GetLogFileName());
+				var messageWithUserName = message + GetMessageBase();
 
-				using (var sw = fileIO.AppendText())
+				lock (_threadLock)
 				{
-					sw.WriteLine(messageWithUserName);
+					if(_isWriting)
+					{
+						_waitingQueue.Add(messageWithUserName);
+						return;
+					}
+
+					_isWriting = true;
+
+					_waitingQueue.Add(messageWithUserName);
+
+					var fileIO = new FileInfo(GetLogFileName());
+
+					if (fileIO.Length + messageWithUserName.Length > LogFileMaximumSize)
+					{
+						#if DEBUG
+						Console.WriteLine("**********************  Log is too long, removing older entries.");
+						#endif
+						DeleteOldEntries(fileIO);
+					}
+
+
+					var fs = fileIO.Open(FileMode.Append, FileAccess.Write);
+
+					var sw = new StreamWriter(fs);
+
+					while(_waitingQueue.Any())
+					{
+						var additionalLine = _waitingQueue.FirstOrDefault();
+
+						_waitingQueue.RemoveAt(0);
+
+						Console.WriteLine(additionalLine);
+
+						sw.WriteLine(additionalLine);
+					}
+
 					sw.Flush();
-				}
 
-				if (fileIO.Length > LogFileMaximumSize)
-				{
-					DeleteOldEntries(fileIO, fileIO.Length - LogFileMaximumSize);
+					// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened".
+					sw.Dispose();
+					fs.Close();
+					fs.Dispose();
+
+					fileIO = null;
 				}
 			}
-
-			Console.WriteLine(messageWithUserName);
+			catch(Exception ex)
+			{
+				LogError(ex);
+			}
+			finally
+			{
+				GC.Collect();
+				_isWriting = false;
+			}
 		}
 
 		public string GetLogFileName()
