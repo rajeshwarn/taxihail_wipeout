@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.Maps
 
         Task<Address[]> SearchAsync(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null, bool searchPopularAddresses = false);
 
+        Address TryToGetExactDropOffAddress(OrderStatusDetail orderStatusDetail, double? manualRideLinqLastLatitudeOfVehicle, double? manualRideLinqLastLongitudeOfVehicle, Address dropOffAddress, string clientLanguageCode);
+
         Task<Address> GetPlaceDetail(string placeId);
     }
 }

@@ -433,8 +433,11 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
-  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+  <data name="CreditCardInvalidCrediCardNumber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
+    <value>Sorry, Amex cards are not supported</value>
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>
@@ -2367,5 +2370,9 @@
   </data>
   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>كلمة المرور الحالية غير صحيحة</value>
+  </data>
+  <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
+    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
+    <comment>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</comment>
   </data>
 </root>

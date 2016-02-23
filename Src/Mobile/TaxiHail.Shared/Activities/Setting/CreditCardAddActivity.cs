@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private void LinkPayPayAccount()
         {
-            if (ViewModel.IsEditing)
+            if (!ViewModel.IsAddingNewCard)
             {
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["DeleteCreditCardTitle"],

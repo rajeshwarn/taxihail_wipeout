@@ -105,7 +105,7 @@
   <string name="CreditCardExpMonth">شهر الإنتهاء</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
-  <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>
+  <string name="CreditCardInvalidCrediCardNumber">رقم البطاقة الائتمانية خاطئة</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">الإسم كما يظهر على البطاقة</string>
