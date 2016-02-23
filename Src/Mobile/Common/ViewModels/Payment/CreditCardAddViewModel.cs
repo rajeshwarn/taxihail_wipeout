@@ -14,16 +14,18 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class CreditCardAddViewModel : CreditCardBaseViewModel
 	{
-		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 	    private readonly IPaymentProviderClientService _paymentProviderClientService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
 		private bool _hasPaymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -33,12 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			IPaymentService paymentService, 
 			IAccountService accountService,
 			IDeviceCollectorService deviceCollectorService,
-			IPaymentProviderClientService paymentProviderClientService)
+			IPaymentProviderClientService paymentProviderClientService,
+			INetworkRoamingService networkRoamingService)
 			: base(locationService, paymentService, accountService)
 		{
-			_paymentService = paymentService;
 			_accountService = accountService;
 		    _paymentProviderClientService = paymentProviderClientService;
+			_networkRoamingService = networkRoamingService;
 			_deviceCollectorService = deviceCollectorService;
 		}
 
@@ -177,6 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if (!_isFromCreditCardListView)
                 {
+					IsAddingNewCard = false;
                     await GoToOverduePayment();
                 }
             }
@@ -364,17 +368,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private bool _isEditing;
+		private bool _isAddingNewCard;
 	    private bool _isShowingCancel;
+		public bool IsAddingNewCard
 
-	    public bool IsEditing
 		{
-			get { return _isEditing; }
+			get { return _isAddingNewCard; }
 			set
 			{
-				if (_isEditing != value)
+				if (_isAddingNewCard != value)
 				{
-					_isEditing = value;
+					_isAddingNewCard = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
 				}
@@ -383,14 +387,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && !IsShowingCancel &&(!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+			get { return !IsAddingNewCard && (!PaymentSettings.CreditCardIsMandatory  || PaymentSettings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public string CreditCardSaveButtonDisplay
 		{
 			get
 			{
-				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
+				return this.Services().Localize["Save"];
 			}
 		}
 
@@ -512,9 +516,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 						var localize = this.Services().Localize;
 
+						var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings ().Take (1).ToTask ();
+
+						var deletingRequiredCreditCard = _numberOfCreditCards == 1 && marketSettings.DisableOutOfAppPayment;
+
+						var deleteCreditCardText = deletingRequiredCreditCard ? "RideSettingsLastCreditCardDeletion" : "DeleteCreditCard";
+
 						this.Services().Message.ShowMessage(
 							localize["DeleteCreditCardTitle"],
-							localize["DeleteCreditCard"],
+							localize[deleteCreditCardText],
 							localize["Delete"], () => tcs.SetResult(true),
 							localize["Cancel"], () => tcs.SetResult(false));
 
@@ -601,8 +611,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private async Task DeleteCreditCard()
 		{
-			if (!IsEditing)
-			{
+			if (IsAddingNewCard) {
 				return;
 			}
 
@@ -661,10 +670,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if (!IsValid(Data.CardNumber))
                 {
-                    await
-                        this.Services()
-                            .Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
-                                this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
+					return;
+				}
+
+				if (Data.CreditCardCompany == Amex && PaymentSettings.DisableAMEX)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
                     return;
                 }
 
@@ -718,12 +730,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    {
 	        Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
 
-	        if (!IsEditing)
+					if (IsAddingNewCard)
 	        {
 	            Data.CreditCardId = Guid.NewGuid();
 	        }
 
-	        var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, IsEditing);
+					var success = await _accountService.AddOrUpdateCreditCard(Data, _kountSessionId, !IsAddingNewCard);
 
 	        if (success)
 	        {

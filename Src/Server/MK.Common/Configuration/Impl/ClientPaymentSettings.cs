@@ -17,6 +17,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsPayInTaxiEnabled = false;
             IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             AskForCVVAtBooking = false;
+            DisableAMEX = false;
             CancelOrderOnUnpair = false;
             CreditCardIsMandatory = false;
     }
@@ -45,6 +46,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool AutomaticPaymentPairing { get; set; }
 
         public bool AskForCVVAtBooking { get; set; }
+
+        public bool DisableAMEX { get; set; }
 
         public bool CancelOrderOnUnpair { get; set; }
 

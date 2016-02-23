@@ -116,7 +116,7 @@
   <string name="CreditCardExpMonth">Fecha de expiración</string>
   <string name="CreditCardExpYear">Mes de expiración</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
-  <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
+  <string name="CreditCardInvalidCrediCardNumber">El número de tarjeta de crédito es inválido</string>
   <string name="CreditCardLabel">Etiqueta</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>

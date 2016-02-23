@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -554,10 +555,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var cardValidated = await _orderWorkflowService.ValidateCardOnFile();
 				if (!cardValidated)
 				{
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["ErrorCreatingOrderTitle"],
-						this.Services().Localize["NoCardOnFileMessage"]);
-
+					PromptToAddCreditCard(false);
 					return;
 				}
 
@@ -673,16 +671,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				Logger.LogError(e);
 
-				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
-				var message = this.Services().Localize["InvalidCreditCardMessage"];
-
-				this.Services().Message.ShowMessage(title, message,
-					this.Services().Localize["InvalidCreditCardUpdateCardButton"], () => {
-						// Force the user to return to redo the Confirm Order flow
-						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
-						ParentViewModel.Panel.NavigateToPaymentInformation.ExecuteIfPossible();
-					},
-					this.Services().Localize["Cancel"], () => {});
+				PromptToAddCreditCard(true);
+				return;
 			}
 			catch (OrderCreationException e)
 			{
@@ -734,6 +724,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_orderWorkflowService.EndCreateOrder ();
 			}
+		}
+
+		private void PromptToAddCreditCard(bool invalidCard, bool forManualRideLinq = false)
+		{
+			var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+			var message = forManualRideLinq 
+				? invalidCard 
+					? this.Services().Localize["ManualRideLinqDeactivatedCardOnFile"]
+					: this.Services().Localize["ManualRideLinqNoCardOnFile"]
+				: invalidCard 
+					? this.Services().Localize["InvalidCreditCardMessage"]
+					: this.Services().Localize["NoCardOnFileMessage"];
+
+			var buttonText = invalidCard 
+				? this.Services().Localize["InvalidCreditCardUpdateCardButton"]
+				: this.Services().Localize["AddACardButton"];
+
+			this.Services().Message.ShowMessage(title, message,
+				buttonText, () => {
+					// Force the user to return to redo the Confirm Order flow
+					ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
+					ParentViewModel.Panel.NavigateToPaymentInformation.ExecuteIfPossible();
+				},
+				this.Services().Localize["Cancel"], 
+				() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
 		}
 
 		private async Task ConfirmOrderAndGoToBookingStatus()
@@ -956,6 +971,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 return _book = this.GetCommand(async () =>
                 {
+					var chargeTypeValidated = await _orderWorkflowService.ValidateChargeType();
+
+
 					// popup
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 						&& !IsFutureBookingDisabled && !Settings.DisableImmediateBooking)
@@ -988,29 +1006,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-
-        private async Task HandleCardDeactivated()
-        {
-            var localize = this.Services().Localize;
-
-            var navigateToPaymentMethodManagement = await this.Services().Message
-                .ShowConfirmMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqDeactivatedCardOnFile"]);
-
-            if (!navigateToPaymentMethodManagement)
-            {
-                return;
-            }
-
-            if (Settings.MaxNumberOfCardsOnFile > 1)
-            {
-                ShowViewModel<CreditCardMultipleViewModel>();
-            }
-            else
-            {
-                ShowViewModel<CreditCardAddViewModel>();
-            }
-        }
-
         private async Task HandleOverduePayment(OverduePayment overduePayment)
         {
             var localize = this.Services().Localize;
@@ -1035,11 +1030,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null
+						|| _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
-                        var localize = this.Services().Localize;
-                        await this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
-                        return;
+						var cardDeactivated = _accountService.CurrentAccount.DefaultCreditCard != null
+							&& _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated;
+
+						PromptToAddCreditCard(cardDeactivated, true);
+						return;
                     }
 
                     //We need to verify if we have an overdue payment.
@@ -1052,14 +1050,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         return;
                     }
 
-                    // We need to ensure that the currently selected default credit card is not deactivated. (needed when in multiple credit card scenarios).
-                    if (_accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
-                    {
-                        await HandleCardDeactivated();
-
-                        return;
-                    }
-                    
 	                var homeViewModel = (HomeViewModel) Parent;
 					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });
@@ -1082,15 +1072,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             if (!await _orderWorkflowService.ValidateCardOnFile())
             {
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
-                    this.Services().Localize["AddACardButton"],
-                    () => {
-						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
-						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
-                    },
-                    this.Services().Localize["Cancel"],
-					() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
+				PromptToAddCreditCard(false);
             }
         }
 

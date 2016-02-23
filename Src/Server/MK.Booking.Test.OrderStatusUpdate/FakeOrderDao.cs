@@ -98,6 +98,11 @@ namespace MK.Booking.Test.OrderStatusUpdate
             throw new NotImplementedException();
         }
 
+	public IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId)
+        {
+            throw new NotImplementedException();
+        }
+
         public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
         {
             throw new NotImplementedException();

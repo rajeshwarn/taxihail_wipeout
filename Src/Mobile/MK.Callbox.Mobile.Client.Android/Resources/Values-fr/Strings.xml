@@ -386,7 +386,7 @@
   <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="CreditCardError_Label">Le label de cette carte n\'a pas pu être sauvergardée. S\'il vous plait réessayer</string>
   <string name="CreditCardRequiredFields">Tous les champs obligatoires doivent être remplis</string>
-  <string name="CreditCardInvalidCrediCardNUmber">Le numéro de la carte ne semble pas être valide</string>
+  <string name="CreditCardInvalidCrediCardNumber">Le numéro de la carte ne semble pas être valide</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="ReminderTitle">{0} Enregistré</string>
   <string name="ReminderDetails">Rappel: votre taxi arrivera au {0} à {1} le {2}</string>

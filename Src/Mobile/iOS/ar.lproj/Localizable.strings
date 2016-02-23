@@ -103,7 +103,8 @@
 "CreditCardExpMonth"="شهر الإنتهاء";
 "CreditCardExpYear"="سنة الإنتهاء";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
-"CreditCardInvalidCrediCardNUmber"="رقم البطاقة الائتمانية خاطئة";
+"CreditCardInvalidCrediCardNumber"="رقم البطاقة الائتمانية خاطئة";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "CreditCardLabel"="Label";
 "CreditCardName"="الإسم كما يظهر على البطاقة";
@@ -765,3 +766,4 @@
 "Modify"="Modify";
 "GenericTitle"="";
 "ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
