@@ -106,8 +106,9 @@
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.";
-"CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
+"CreditCardInvalidCrediCardNumber"="Le numéro de la carte ne semble pas être valide";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
+"CreditCardInvalidCrediCardTypeAmex"="Désolé, nous ne supportons pas les cartes Amex";
 "CreditCardLabel"="Label";
 "CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";
@@ -333,7 +334,6 @@
 "RingCode"="Saisissez un code";
 "RingCodeTextPlaceholder"="Saisissez un code";
 "Save"="Enregistrer";
-"Modify"="Modifier";
 "SaveAddressEmptyFieldMessage"="Désolé, les données ne semble pas valides. Merci de saisir les informations";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
 "ScanCreditCard"="Scanner la carte de paiement";
@@ -765,3 +765,4 @@
 "SelectedCreditCard"="Carte de crédit sélectionnée: ";
 "NoCreditCard"="Aucune carte de crédit sélectionnée";
 "ServiceErrorUpdatePassword_NotSame"="Désolé, le mot de passe saisi n'est pas valide";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";

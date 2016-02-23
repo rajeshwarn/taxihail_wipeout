@@ -22,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class CreditCardAddViewModel : CreditCardBaseViewModel
 	{
-		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
 		private readonly INetworkRoamingService _networkRoamingService;
@@ -38,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			INetworkRoamingService networkRoamingService)
 			: base(locationService, paymentService, accountService)
 		{
-			_paymentService = paymentService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
 			_deviceCollectorService = deviceCollectorService;
@@ -651,7 +649,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				if (!IsValid(Data.CardNumber))
 				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
+					return;
+				}
+
+				if (Data.CreditCardCompany == Amex && PaymentSettings.DisableAMEX)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
 					return;
 				}
 

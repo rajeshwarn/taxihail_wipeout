@@ -19,6 +19,12 @@
     <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
   </select>
 
+<label class="control-label settingsLabel">{{{localize "Disable AMEX when adding card"}}}</label>
+<select name="disableAMEX" class="settingsBox">
+    <option value="{{disableAMEX}}" selected>{{localizeBool disableAMEX true="Yes" false="No"}}</option>
+    <option value="{{invertedBool disableAMEX}}">{{localizeBool disableAMEX true="No" false="Yes"}}</option>
+</select>
+
 <label class="control-label settingsLabel">{{{localize "Payment Method Mandatory"}}}</label>
 <select name="creditCardIsMandatory" class="settingsBox">
     <option value="{{creditCardIsMandatory}}" selected="">{{localizeBool creditCardIsMandatory true="Yes" false="No"}}</option>
