@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    private readonly IPaymentProviderClientService _paymentProviderClientService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
 		private readonly INetworkRoamingService _networkRoamingService;
+		private readonly IPaymentService _paymentService;
 
 		private bool _hasPaymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -40,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			: base(locationService, paymentService, accountService)
 		{
 			_accountService = accountService;
+			_paymentService = paymentService;
 		    _paymentProviderClientService = paymentProviderClientService;
 			_networkRoamingService = networkRoamingService;
 			_deviceCollectorService = deviceCollectorService;
@@ -160,8 +162,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 }
                 else
                 {
-                    IsEditing = true;
-
                     EditCurrentPaymentMethod(_currentlyDisplayedCreditCard);
                 }
 
@@ -215,6 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	    private void AddNewCreditCard()
 	    {
+			IsAddingNewCard = true;
 	        Data.NameOnCard = _accountService.CurrentAccount.Name;
 	        Data.Label = CreditCardLabelConstants.Personal;
 
