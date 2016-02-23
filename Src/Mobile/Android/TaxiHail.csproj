@@ -775,9 +775,13 @@
   </Target>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
+      <Name>apcurium.MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
       <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>

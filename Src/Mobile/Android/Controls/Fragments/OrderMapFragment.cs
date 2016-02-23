@@ -21,7 +21,6 @@ using Android.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
-using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Common;
 using Android.Animation;
@@ -29,6 +28,7 @@ using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

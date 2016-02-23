@@ -2,8 +2,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Configuration;
 using MK.Common.Entity;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

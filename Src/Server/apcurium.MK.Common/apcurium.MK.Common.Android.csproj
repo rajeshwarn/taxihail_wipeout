@@ -75,81 +75,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationVersion.cs" />
     <Compile Include="DummyServiceStack\Auth.cs" />
     <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
     <Compile Include="DummyServiceStack\IReturn.cs" />
     <Compile Include="DummyServiceStack\RouteAttribute.cs" />
-    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
-    <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
-    <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
-    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
-    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
-    <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
-    <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
-    <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
-    <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
-    <Compile Include="Configuration\Impl\PaymentMethod.cs" />
-    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
-    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
-    <Compile Include="Configuration\NotificationSettings.cs" />
-    <Compile Include="Configuration\SettingContainers.cs" />
-    <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CoordinateSystemOrientation.cs" />
-    <Compile Include="CountryCode.cs" />
-    <Compile Include="CurencyCodes.cs" />
-    <Compile Include="Diagnostic\ILogger.cs" />
-    <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\AssignedVehicleMarkets.cs" />
-    <Compile Include="Entity\DirectionSetting.cs" />
-    <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
-    <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
-    <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
-    <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
-    <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />
-    <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
-    <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Exceptions\WebServiceException.cs" />
-    <Compile Include="Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\EventExtension.cs" />
-    <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Extensions\LoggerExtensions.cs" />
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
-    <Compile Include="Extensions\NullableExtension.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\ReturnExtensions.cs" />
-    <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="Extensions\StringBuilderExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Geography\GeographyHelper.cs" />
     <Compile Include="Helpers\AirlineComparer.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
-    <Compile Include="ICacheService.cs" />
-    <Compile Include="IPackageInfo.cs" />
     <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
     <Compile Include="Params.cs">
@@ -158,8 +115,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Provider\IPOIProvider.cs" />
-    <Compile Include="Provider\IPopularAddressProvider.cs" />
-    <Compile Include="Provider\ITariffProvider.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
     <Compile Include="Entity\OrderStatus.cs" />
     <Compile Include="Entity\OrderStatusDetail.cs" />
@@ -167,12 +122,7 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Patterns\ActionDisposable.cs" />
     <Compile Include="Patterns\Singleton.cs" />
-    <Compile Include="Resources\BasePaymentResponse.cs" />
-    <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
-    <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
-    <Compile Include="Resources\PairingResponse.cs" />
-    <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="VehicleStatuses.cs" />
@@ -187,15 +137,17 @@
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Enumeration\RateApplicationState.cs" />
-    <Compile Include="Cryptography\CryptographyHelper.cs" />
-    <Compile Include="Cryptography\SettingsEncryptor.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Serializer\TolerantEnumConverter.cs" />
     <Compile Include="IIPAddressManager.cs" />
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="CustomNativeMessageHandler.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

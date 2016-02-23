@@ -376,6 +376,14 @@
     <Compile Include="ViewModels\DebugViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
+      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Name>apcurium.MK.Common.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
       <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>
       <Name>CMTPayment.Android</Name>
@@ -391,10 +399,6 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj">
       <Project>{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}</Project>
       <Name>MK.Booking.Maps.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>

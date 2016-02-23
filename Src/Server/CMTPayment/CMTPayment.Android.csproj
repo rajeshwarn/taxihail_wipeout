@@ -75,12 +75,6 @@
     <Compile Include="Utilities\OAuthUtils.cs" />
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -91,5 +85,15 @@
   -->
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
+      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Name>apcurium.MK.Common.Android</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

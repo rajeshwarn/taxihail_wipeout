@@ -5,10 +5,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using Foundation;
-using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 

@@ -376,6 +376,16 @@
     <Compile Include="ViewModels\DebugViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.iOS.csproj">
+      <Project>{cf82f47f-a55d-45c6-b605-822458968e12}</Project>
+      <Name>apcurium.MK.Common.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
@@ -383,10 +393,6 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
       <Name>MK.Booking.Api.Contract.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
-      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
-      <Name>MK.Common.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
