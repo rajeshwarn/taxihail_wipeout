@@ -10,7 +10,7 @@ namespace apcurium.MK.Common.Diagnostic
 {
 	public abstract class BaseLogger : ILogger
     {
-	    private const int LogFileMaximumSize = 200*1024;
+	    private const int LogFileMaximumSize = 500*1024;
 
 	    private const string LogFileName = "taxihail_log.txt";
 
@@ -117,17 +117,23 @@ namespace apcurium.MK.Common.Diagnostic
 
 		protected abstract string GetMessageBase();
 
-		private static string RemoveOlderEntries(string fileContent)
+		private static string RemoveOlderEntries(string fileContent, int overflow)
 		{
+		    var minTruncateLength = LogFileMaximumSize/8;
+
+            var truncateLength = minTruncateLength < overflow
+                ? minTruncateLength + overflow
+                : minTruncateLength;
+
 			var content = fileContent.Trim()
+                // We truncate at least 1/8 of the max length or 1/8 max legth + overflow
+                .Substring(truncateLength)
 				.Split(Environment.NewLine.ToCharArray())
 				.ToArray();
 			
 			var skip = true;
 
 			var log = content
-				// We remove 1/8 on the top of the log file (older entries).
-				.Skip(content.Length / 8)
 				// We remove enought lines to make sure we don't have a log element that is truncated (for instance, a partial stack from an error).
 				.SkipWhile(line => 
 				{
@@ -146,7 +152,7 @@ namespace apcurium.MK.Common.Diagnostic
 			return log;
 		}
 
-		private void DeleteOldEntries (FileInfo fileIO)
+		private void DeleteOldEntries (FileInfo fileIO, int overflow)
 		{
 			var backupFileName = fileIO.FullName + ".bak";
 
@@ -160,21 +166,19 @@ namespace apcurium.MK.Common.Diagnostic
 				// Creating a backup copy of the log in case a crash happends.
 				File.Copy(fileIO.FullName, backupFileName);
 
-				string fileContent;
 
-
-				var fs = fileIO.Open(FileMode.Open, FileAccess.Read);
+		        var fs = fileIO.Open(FileMode.Open, FileAccess.Read);
 
 				var sr = new StreamReader(fs);
 
-				fileContent = sr.ReadToEnd();
+				var fileContent = sr.ReadToEnd();
 
 				// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened).
 				sr.Dispose();
 				fs.Close();
 				fs.Dispose();
 
-				var log = RemoveOlderEntries(fileContent);
+				var log = RemoveOlderEntries(fileContent, overflow);
 
 
 				fs = fileIO.Open(FileMode.Truncate, FileAccess.Write);
@@ -198,7 +202,7 @@ namespace apcurium.MK.Common.Diagnostic
 
 		private bool _isWriting;
 
-		private IList<string> _waitingQueue = new List<string>();
+		private readonly IList<string> _waitingQueue = new List<string>();
 
 		private void Write(string message)
 		{
@@ -225,7 +229,7 @@ namespace apcurium.MK.Common.Diagnostic
 						#if DEBUG
 						Console.WriteLine("**********************  Log is too long, removing older entries.");
 						#endif
-						DeleteOldEntries(fileIO);
+						DeleteOldEntries(fileIO, (int)(fileIO.Length + messageWithUserName.Length - LogFileMaximumSize));
 					}
 
 
