@@ -52,28 +52,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\AdHoc</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|AnyCPU'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\AppStore</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\Debug</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
     <DefineConstants>CLIENT</DefineConstants>
     <OutputPath>bin\Release</OutputPath>
-    <AssemblyName>MK.Booking.MapDataProvider.iOS</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
@@ -140,6 +136,7 @@
     <Compile Include="Resources\Position.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

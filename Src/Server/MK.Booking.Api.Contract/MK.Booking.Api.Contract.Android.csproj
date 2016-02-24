@@ -139,11 +139,11 @@
   -->
   <ItemGroup>
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
-      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
-      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>apcurium.MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
@@ -152,6 +152,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

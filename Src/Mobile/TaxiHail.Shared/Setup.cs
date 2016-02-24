@@ -31,6 +31,7 @@ using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -63,6 +64,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPackageInfo>(new PackageInfo(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<IIPAddressManager, IPAddressManager>();
             container.Register<IMessageService, MessageService>();
+		    container.Register<ISymmetricKeyAlgorithmProviderFactory>((c,x) => WinRTCrypto.SymmetricKeyAlgorithmProvider);
+            container.Register<ICryptographicEngine>((c, x) => WinRTCrypto.CryptographicEngine);
+            container.Register<IHashAlgorithmProviderFactory>((c, x) => WinRTCrypto.HashAlgorithmProvider);
             container.Register<IConnectivityService, ConnectivityService> ();
             container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
             container.Register<ICacheService>(new CacheService());

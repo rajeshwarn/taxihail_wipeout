@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
 using PCLCrypto;
 
 namespace apcurium.MK.Common.Cryptography
@@ -8,13 +9,13 @@ namespace apcurium.MK.Common.Cryptography
     {
         public static byte[] GetHash(string inputString)
         {
-            var md5Hasher = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Md5);
+            var md5Hasher = Mvx.Resolve<IHashAlgorithmProviderFactory>().OpenAlgorithm(HashAlgorithm.Md5);
             return md5Hasher.HashData(Encoding.UTF8.GetBytes(inputString));
         }
 
         public static byte[] GetHash(byte[] inputBytes)
         {
-            var md5Hasher = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Md5);
+            var md5Hasher = Mvx.Resolve<IHashAlgorithmProviderFactory>().OpenAlgorithm(HashAlgorithm.Md5);
             return md5Hasher.HashData(inputBytes);
         }
 
@@ -52,10 +53,10 @@ namespace apcurium.MK.Common.Cryptography
 
 		public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] key, byte[] initVector)
 		{
-            var provider = WinRTCrypto.SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithm.AesCbc);
+            var provider = Mvx.Resolve<ISymmetricKeyAlgorithmProviderFactory>().OpenAlgorithm(SymmetricAlgorithm.AesCbc);
             var internalKey = provider.CreateSymmetricKey(key);
             byte[] iv = initVector; // this is optional, but must be the same for both encrypting and decrypting
-            byte[] cipherText = WinRTCrypto.CryptographicEngine.Encrypt(internalKey, Encoding.UTF8.GetBytes(plainText), iv);
+            byte[] cipherText = Mvx.Resolve<ICryptographicEngine>().Encrypt(internalKey, Encoding.UTF8.GetBytes(plainText), iv);
 
             return cipherText;
 
@@ -65,10 +66,10 @@ namespace apcurium.MK.Common.Cryptography
 
 		public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] key, byte[] initVector)
 		{
-            var provider = WinRTCrypto.SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithm.AesCbc);
+            var provider = Mvx.Resolve<ISymmetricKeyAlgorithmProviderFactory>().OpenAlgorithm(SymmetricAlgorithm.AesCbc);
             var internalKey = provider.CreateSymmetricKey(key);
             byte[] iv = initVector; // this is optional, but must be the same for both encrypting and decrypting
-            byte[] plainText = WinRTCrypto.CryptographicEngine.Decrypt(internalKey, cipherText, iv);
+            byte[] plainText = Mvx.Resolve<ICryptographicEngine>().Decrypt(internalKey, cipherText, iv);
 
             return Encoding.UTF8.GetString(plainText, 0, plainText.Length);
 		}

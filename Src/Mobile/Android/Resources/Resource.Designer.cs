@@ -1531,6 +1531,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance;
 			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Booking.Mobile.Client.Resource.String.library_name;
+			global::PCLCrypto.Resource.String.ApplicationName = global::apcurium.MK.Booking.Mobile.Client.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::apcurium.MK.Booking.Mobile.Client.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -7316,8 +7318,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0800df
 			public const int ApartmentLabel = 2131230943;
 			
-			// aapt resource value: 0x7f080078
-			public const int ApplicationName = 2131230840;
+			// aapt resource value: 0x7f080077
+			public const int ApplicationName = 2131230839;
 			
 			// aapt resource value: 0x7f08020c
 			public const int April = 2131231244;
@@ -7979,8 +7981,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08022c
 			public const int GooglePlayServicesNotAvailableTitle = 2131231276;
 			
-			// aapt resource value: 0x7f080077
-			public const int Hello = 2131230839;
+			// aapt resource value: 0x7f080076
+			public const int Hello = 2131230838;
 			
 			// aapt resource value: 0x7f08033d
 			public const int HistoryActivityName = 2131231549;
@@ -9818,8 +9820,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080062
 			public const int invalid_panorama_data = 2131230818;
 			
-			// aapt resource value: 0x7f080076
-			public const int library_name = 2131230838;
+			// aapt resource value: 0x7f080078
+			public const int library_name = 2131230840;
 			
 			// aapt resource value: 0x7f08005d
 			public const int location_client_powered_by_google = 2131230813;

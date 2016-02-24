@@ -29,6 +29,7 @@ using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -75,6 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<ICacheService> (new CacheService ("MK.Booking.Application.Cache"), "UserAppCache");
             container.Register<ILocationService> (new LocationService ());
             container.Register<IMessageService, MessageService> ();
+            container.Register<ISymmetricKeyAlgorithmProviderFactory>((c, x) => WinRTCrypto.SymmetricKeyAlgorithmProvider);
+            container.Register<ICryptographicEngine>((c, x) => WinRTCrypto.CryptographicEngine);
+            container.Register<IHashAlgorithmProviderFactory>((c, x) => WinRTCrypto.HashAlgorithmProvider);
             container.Register<IConnectivityService, ConnectivityService> ();
 			container.Register<IPackageInfo> (new PackageInfo ());
             container.Register<IIPAddressManager, IPAddressManager>();
