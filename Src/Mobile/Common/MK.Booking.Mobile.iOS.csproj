@@ -58,9 +58,6 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -125,6 +122,9 @@
     </Reference>
     <Reference Include="Connectivity.Plugin.Abstractions">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -377,14 +377,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
-      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.iOS.csproj">
-      <Project>{cf82f47f-a55d-45c6-b605-822458968e12}</Project>
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>apcurium.MK.Common.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+      <IsAppExtension>False</IsAppExtension>
+      <IsWatchApp>False</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>

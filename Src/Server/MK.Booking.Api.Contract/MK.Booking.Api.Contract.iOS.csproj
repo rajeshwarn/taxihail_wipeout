@@ -61,8 +61,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\..\Mobile\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Mobile\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -146,14 +146,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
-      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.iOS.csproj">
-      <Project>{cf82f47f-a55d-45c6-b605-822458968e12}</Project>
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>apcurium.MK.Common.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+      <IsAppExtension>False</IsAppExtension>
+      <IsWatchApp>False</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

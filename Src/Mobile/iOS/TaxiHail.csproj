@@ -184,14 +184,6 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\ModernHttpClient\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
-    </Reference>
-    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
-      <HintPath>..\packages\PCLCrypto.1.0.86\lib\Xamarin.iOS\PCLCrypto.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -202,10 +194,6 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Core.dll</HintPath>
@@ -221,9 +209,6 @@
     </Reference>
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.DownloadCache.dll</HintPath>
@@ -290,6 +275,18 @@
     </Reference>
     <Reference Include="Connectivity.Plugin.Abstractions">
       <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\Libraries\ModernHttpClient\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c">
+      <HintPath>..\packages\PCLCrypto.1.0.86\lib\Xamarin.iOS\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7">
+      <HintPath>..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -803,14 +800,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
-      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.iOS.csproj">
-      <Project>{cf82f47f-a55d-45c6-b605-822458968e12}</Project>
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>apcurium.MK.Common.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+      <IsAppExtension>False</IsAppExtension>
+      <IsWatchApp>False</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>

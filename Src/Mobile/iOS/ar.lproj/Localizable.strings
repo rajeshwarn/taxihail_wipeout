@@ -104,7 +104,7 @@
 "CreditCardExpYear"="سنة الإنتهاء";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "CreditCardInvalidCrediCardNumber"="رقم البطاقة الائتمانية خاطئة";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "CreditCardLabel"="Label";
 "CreditCardName"="الإسم كما يظهر على البطاقة";
