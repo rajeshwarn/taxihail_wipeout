@@ -14,7 +14,7 @@ using apcurium.MK.Common.Caching;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Support)]
-    public class AccountsManagementController : ServiceStackController
+    public class AccountsManagementController : ApcuriumServiceController
     {
         private readonly IAccountDao _accountDao;
 

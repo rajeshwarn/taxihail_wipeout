@@ -54,6 +54,15 @@ namespace apcurium.MK.Common.Extensions
             return Task.Run(() => client.DeleteAsync(client.GetForEndpointIfNeeded(url)).HandleResult<T>(onSuccess, onError, logger));
         }
 
+	    public static Task<HttpResponseMessage> PostAndGetHttpResponseMessage(this HttpClient client, string url, object content)
+	    {
+            var body = new StringContent(content.ToJson(), Encoding.UTF8, "application/json");
+
+            var relativeUrl = client.GetForEndpointIfNeeded(url);
+
+            return client.PostAsync(relativeUrl, body);
+	    }
+
         public static Task<TResult> PostAsync<TResult>(this HttpClient client,
             string url,
             object content,
@@ -82,6 +91,11 @@ namespace apcurium.MK.Common.Extensions
             return await client.PostAsync(relativeUrl, body).HandleResult<TResult>(onSuccess, onError, logger);
 	    }
 
+	    public static Task<TResult> PutAsync<TResult>(this HttpClient client, IReturn<TResult> content, Action<HttpResponseMessage> onSuccess = null, Action<HttpResponseMessage> onError = null, ILogger logger = null)
+	    {
+	        return PutAsync<TResult>(client, content.GetUrlFromRoute(), content, onSuccess, onError, logger);
+	    } 
+
 	    public static Task<TResult> PutAsync<TResult>(this HttpClient client,
             string url,
             object content,
@@ -95,13 +109,6 @@ namespace apcurium.MK.Common.Extensions
 
                 return await client.PutAsync(client.GetForEndpointIfNeeded(url), body).HandleResult<TResult>(onSuccess, onError, logger);
             });
-        }
-
-        private static async Task HandleResult(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError, ILogger logger = null)
-        {
-            var result = await response;
-
-            await result.HandleResultInternal(onSuccess, onError, logger);
         }
 
         private static async Task<TResult> HandleResult<TResult>(this Task<HttpResponseMessage> response, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError, ILogger logger)

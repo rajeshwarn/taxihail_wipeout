@@ -13,7 +13,7 @@ using apcurium.MK.Web.Attributes;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Admin)]
-    public class BlackListController : ServiceStackController
+    public class BlackListController : ApcuriumServiceController
     {
         private readonly IBlackListEntryService _blackListService;
 

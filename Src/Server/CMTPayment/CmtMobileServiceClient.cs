@@ -1,8 +1,13 @@
 using System;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Http.Extensions;
 using CMTPayment.Authorization;
 using ServiceStack.ServiceHost;
 
@@ -16,7 +21,7 @@ namespace CMTPayment
                 : cmtSettings.MobileBaseUrl, sessionId, packageInfo, connectivityService)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;
+            //Client.LocalHttpWebRequestFilter = SignRequest;
 
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
@@ -37,38 +42,38 @@ namespace CMTPayment
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
         }
 
-        public T Get<T>(IReturn<T> request)
+        public Task<T> Get<T>(IReturn<T> request)
         {
-            return Client.Get(request);
+            return Client.GetAsync(request);
         }
 
-        public T Delete<T>(string requestUrl)
+        public Task<T> Delete<T>(string requestUrl)
         {
-            return Client.Delete<T>(requestUrl);
+            return Client.DeleteAsync<T>(requestUrl);
         }
 
-        public T Delete<T>(IReturn<T> payload)
+        public Task<T> Delete<T>(IReturn<T> payload)
         {
-            return Client.Delete(payload);
+            return Client.DeleteAsync(payload);
         }
 
-        public T Post<T>(IReturn<T> request)
+        public Task<T> Post<T>(IReturn<T> request)
         {
-            return Client.Post(request);
+            return Client.PostAsync(request);
         }
-        public HttpWebResponse Post<T>(string relativeOrAbsoluteUrl, IReturn<T> request)
+        public Task<HttpResponseMessage> Post<T>(string relativeOrAbsoluteUrl, IReturn<T> request)
         {
-            return Client.Post<HttpWebResponse>(relativeOrAbsoluteUrl, request);
-        }
-
-        public T Put<T>(string requestUrl, IReturn<T> payload)
-        {
-            return Client.Put<T>(requestUrl, payload);
+            return Client.PostAndGetHttpResponseMessage(relativeOrAbsoluteUrl, request);
         }
 
-        public T Put<T>(IReturn<T> request)
+        public Task<T> Put<T>(string requestUrl, IReturn<T> payload)
         {
-            return Client.Put(request);
+            return Client.PutAsync<T>(requestUrl, payload);
+        }
+
+        public Task<T> Put<T>(IReturn<T> request)
+        {
+            return Client.PutAsync<T>(request);
         }
     }
 }

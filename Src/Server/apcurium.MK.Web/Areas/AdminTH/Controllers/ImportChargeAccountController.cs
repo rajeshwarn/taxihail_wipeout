@@ -16,7 +16,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-    public class ImportChargeAccountController : ServiceStackController
+    public class ImportChargeAccountController : ApcuriumServiceController
     {
         private readonly IAccountChargeDao _dao;
         private readonly IIBSServiceProvider _ibsServiceProvider;

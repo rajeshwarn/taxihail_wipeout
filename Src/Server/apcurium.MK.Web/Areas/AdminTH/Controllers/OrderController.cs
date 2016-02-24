@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Admin)]
-    public class OrderController : ServiceStackController
+    public class OrderController : ApcuriumServiceController
     {
         private readonly Func<EventStoreDbContext> _eventsContextFactory;
         private readonly Func<BookingDbContext> _bookingContextFactory;

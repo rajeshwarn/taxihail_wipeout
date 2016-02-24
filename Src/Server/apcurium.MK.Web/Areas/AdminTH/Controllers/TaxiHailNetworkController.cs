@@ -23,7 +23,7 @@ using Infrastructure.Messaging;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Admin)]
-    public class TaxiHailNetworkController : ServiceStackController
+    public class TaxiHailNetworkController : ApcuriumServiceController
     {
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;

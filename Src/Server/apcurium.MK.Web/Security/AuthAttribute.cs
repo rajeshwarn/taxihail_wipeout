@@ -68,7 +68,6 @@ namespace apcurium.MK.Web.Security
                 context.ErrorResult = new AuthenticationFailureResult("User not authorized", context.Request);
             }
 
-
             return Task.FromResult(Unit.Default);
         }
 

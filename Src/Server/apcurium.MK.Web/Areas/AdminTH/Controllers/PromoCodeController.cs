@@ -19,7 +19,7 @@ using Infrastructure.Messaging;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Support)]
-    public class PromoCodeController : ServiceStackController
+    public class PromoCodeController : ApcuriumServiceController
     {
         private readonly IPromotionDao _promotionDao;
         private readonly IAccountDao _accountDao;

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
@@ -15,15 +16,15 @@ namespace apcurium.MK.Booking.Services
 
         CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false);
 
-        RefundPaymentResponse RefundPayment(string companyKey, Guid orderId);
+        Task<RefundPaymentResponse> RefundPayment(string companyKey, Guid orderId);
 
-        BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage);
+        Task<BasePaymentResponse> UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage);
         
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
 
-        PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage);
+        Task<PairingResponse> Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage);
 
-        BasePaymentResponse Unpair(string companyKey, Guid orderId);
+        Task<BasePaymentResponse> Unpair(string companyKey, Guid orderId);
 
         void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false);
 

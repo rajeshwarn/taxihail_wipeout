@@ -11,9 +11,7 @@ using CMTPayment.Authorization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-#if !CLIENT
-using CMTPayment.Extensions;
-#endif
+
 
 namespace CMTPayment
 {

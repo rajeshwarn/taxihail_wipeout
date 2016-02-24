@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
         
-        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
+        public async Task<PairingResponse> Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
+                    var response = await PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 
                     if (response.ErrorCode.HasValue)
                     {
@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
+        public async Task<BasePaymentResponse> Unpair(string companyKey, Guid orderId)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order not found");
                     }
 
-                    UnpairFromVehicleUsingRideLinq(orderPairingDetail);
+                    await UnpairFromVehicleUsingRideLinq(orderPairingDetail);
 
                     // send a command to delete the pairing pairing info for this order
                     _commandBus.Send(new UnpairForPayment
@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 orderStatus.DriverInfos == null 
                     ? 0 
                     : orderStatus.DriverInfos.DriverId.ToInt(),
-                orderStatus.IBSOrderId.Value, ref message);
+                orderStatus.IBSOrderId.GetValueOrDefault(), ref message);
         }
 
         private void Void(string fleetToken, string deviceId, long transactionId, int driverId, int tripId, ref string message)
@@ -252,7 +252,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 CardToken = cardToken
             };
-            var response = DeleteCreditCard(request);
+            var response = DeleteCreditCard();
 
             return new DeleteTokenizedCreditcardResponse
             {
@@ -316,7 +316,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var deviceId = orderStatus.VehicleNumber;
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.ToInt();
                 var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
-                var tripId = orderStatus.IBSOrderId.Value;
+                var tripId = orderStatus.IBSOrderId.GetValueOrDefault();
                 var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public async Task<RefundPaymentResponse> RefundPayment(string companyKey, Guid orderId)
         {
             if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
             {
@@ -418,7 +418,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+                var response = await _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
@@ -441,7 +441,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                        Message = response != null ? response.StatusDescription : string.Empty
+                        Message = response != null ? response.ReasonPhrase : string.Empty
                     };
                 }
             }
@@ -469,7 +469,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        public async Task<BasePaymentResponse> UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
         {
             if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
             {
@@ -496,10 +496,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Updating CMT RideLinq auto tip. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", orderPairing.PairingToken), request);
+                var response = await _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", orderPairing.PairingToken), request);
 
                 // Wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForTipUpdated(orderPairing.PairingToken, autoTipPercentage, response.TimeoutSeconds);
+                await _cmtTripInfoServiceHelper.WaitForTipUpdated(orderPairing.PairingToken, autoTipPercentage, response.TimeoutSeconds);
 
                 return new BasePaymentResponse
                 {
@@ -519,7 +519,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(RideLinqPairingMethod pairingMethod, OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
+        private async Task<CmtPairingResponse> PairWithVehicleUsingRideLinq(RideLinqPairingMethod pairingMethod, OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
         {
             InitializeServiceClient();
 
@@ -572,12 +572,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
                 _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
 
-                var response = _cmtMobileServiceClient.Post(pairingRequest);
+                var response = await _cmtMobileServiceClient.Post(pairingRequest);
 
                 _logger.LogMessage("Pairing response : " + response.ToJson());
 
                 // Wait for trip to be updated to check if pairing was successful
-                var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                var trip = await _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
                 response.ErrorCode = trip != null ? trip.ErrorCode : CmtErrorCodes.UnableToPair;
 
@@ -605,18 +605,18 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
+        private async Task UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
         {
             InitializeServiceClient();
 
             // send unpairing request
-            var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
+            var response = await _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
                 PairingToken = orderPairingDetail.PairingToken
             });
 
             // wait for trip to be updated
-            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
+            await _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
         }
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)
@@ -652,13 +652,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 var aggregateException = ex as AggregateException;
                 if (aggregateException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var webServiceException = aggregateException.InnerException as WebServiceException;
                 if (webServiceException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
@@ -667,7 +667,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return response;
         }
 
-        private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
+        private TokenizeDeleteResponse DeleteCreditCard()
         {
             return new TokenizeDeleteResponse
             {
@@ -694,13 +694,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 var aggregateException = ex as AggregateException;
                 if (aggregateException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var webServiceException = aggregateException.InnerException as WebServiceException;
                 if (webServiceException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 response = JsonConvert.DeserializeObject<ReverseResponse>(webServiceException.ResponseBody);

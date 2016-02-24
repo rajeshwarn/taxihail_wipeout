@@ -3,6 +3,8 @@
 #if CLIENT
 using System;
 #else
+using System;
+using System.Web.Mvc;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 #endif
@@ -15,20 +17,16 @@ namespace apcurium.MK.Booking.Api.Contract.Http
 #if CLIENT
     public partial class NoCacheAttribute: Attribute {}
 #else
-    public class NoCacheAttribute : ResponseFilterAttribute
+    public class NoCacheAttribute : FilterAttribute, IResultFilter
     {
-        public NoCacheAttribute(ApplyTo applyTo)
-            : base(applyTo)
+        public void OnResultExecuting(ResultExecutingContext filterContext)
         {
+            
         }
 
-        public NoCacheAttribute()
+        public void OnResultExecuted(ResultExecutedContext filterContext)
         {
-        }
-
-        public override void Execute(IHttpRequest req, IHttpResponse res, object requestDto)
-        {
-            res.AddHeader("Cache-Control", "no-cache");
+            filterContext.HttpContext.Response.Headers.Add("Cache-Control", "no-cache");
         }
     }
 #endif

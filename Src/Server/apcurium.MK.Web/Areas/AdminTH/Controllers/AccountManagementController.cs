@@ -28,7 +28,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Support)]
-    public class AccountManagementController : ServiceStackController
+    public class AccountManagementController : ApcuriumServiceController
     {
         private readonly IAccountDao _accountDao;
         private readonly IAccountNoteService _accountNoteService;

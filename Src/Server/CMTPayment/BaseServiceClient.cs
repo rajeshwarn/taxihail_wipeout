@@ -5,6 +5,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
 using CMTPayment.Authorization;
 
+
 namespace CMTPayment
 {
     public partial class BaseServiceClient

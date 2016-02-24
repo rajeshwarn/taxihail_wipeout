@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
 using System.Net;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Exceptions;
 
@@ -20,11 +20,11 @@ namespace CMTPayment
             _logger = logger;
         }
 
-        public Trip GetTripInfo(string pairingToken)
+        public async Task<Trip> GetTripInfo(string pairingToken)
         {
             try
             {
-                var trip = _cmtMobileServiceClient.Get(new TripRequest {Token = pairingToken});
+                var trip = await _cmtMobileServiceClient.Get(new TripRequest {Token = pairingToken});
                 if (trip == null)
                 {
                     _logger.LogMessage("No Trip info found for pairing token {0}", pairingToken);
@@ -78,12 +78,12 @@ namespace CMTPayment
             }
         }
 
-        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds)
+        public async Task<Trip> WaitForTripInfo(string pairingToken, long timeoutSeconds)
         {
             // wait for trip to be updated
             var watch = new Stopwatch();
             watch.Start();
-            var trip = GetTripInfo(pairingToken);
+            var trip = await GetTripInfo(pairingToken);
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
@@ -92,8 +92,8 @@ namespace CMTPayment
 					return trip;
 				}
 
-                Thread.Sleep(2000);
-                trip = GetTripInfo(pairingToken);
+                await Task.Delay(2000);
+                trip = await GetTripInfo(pairingToken);
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {
@@ -105,16 +105,16 @@ namespace CMTPayment
             return trip;
         }
 
-        public void WaitForRideLinqUnpaired(string pairingToken, long timeoutSeconds)
+        public async Task WaitForRideLinqUnpaired(string pairingToken, long timeoutSeconds)
         {
             var watch = new Stopwatch();
             watch.Start();
-            var trip = GetTripInfo(pairingToken);
+            var trip = await GetTripInfo(pairingToken);
 
             while (trip != null && !trip.ErrorCode.HasValue)
             {
-                Thread.Sleep(2000);
-                trip = GetTripInfo(pairingToken);
+                await Task.Delay(2000);
+                trip = await GetTripInfo(pairingToken);
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {
@@ -123,18 +123,18 @@ namespace CMTPayment
             }
         }
 
-        public Trip CheckForTripEndErrors(string pairingToken)
+        public async Task<Trip> CheckForTripEndErrors(string pairingToken)
         {
             var timeToWaitForErrors = 45; // In seconds
 
             var watch = new Stopwatch();
             watch.Start();
-            var trip = GetTripInfo(pairingToken);
+            var trip = await GetTripInfo(pairingToken);
 
             while (trip != null && !trip.ErrorCode.HasValue)
             {
-                Thread.Sleep(2000);
-                trip = GetTripInfo(pairingToken);
+                await Task.Delay(2000);
+                trip = await GetTripInfo(pairingToken);
 
                 if (watch.Elapsed.TotalSeconds >= timeToWaitForErrors)
                 {
@@ -147,16 +147,16 @@ namespace CMTPayment
             return trip;
         }
 
-        public void WaitForTipUpdated(string pairingToken, int updatedTipPercentage, long timeoutSeconds)
+        public async Task WaitForTipUpdated(string pairingToken, int updatedTipPercentage, long timeoutSeconds)
         {
             var watch = new Stopwatch();
             watch.Start();
-            var trip = GetTripInfo(pairingToken);
+            var trip = await GetTripInfo(pairingToken);
 
             while (trip.AutoTipPercentage != updatedTipPercentage)
             {
-                Thread.Sleep(2000);
-                trip = GetTripInfo(pairingToken);
+                await Task.Delay(2000);
+                trip = await GetTripInfo(pairingToken);
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {

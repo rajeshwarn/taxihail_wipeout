@@ -730,7 +730,7 @@
     <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
     <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\Company\Controllers\TermsAndConditionsController.cs" />
-    <Compile Include="Areas\ServiceStackController.cs" />
+    <Compile Include="Areas\ApcuriumServiceController.cs" />
     <Compile Include="Attributes\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Attributes\SkipAuthenticationAttribute.cs" />
     <Compile Include="Controllers\Api\LoginController.cs" />
@@ -741,6 +741,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="helpers\HiddenExtensions.cs" />
     <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />

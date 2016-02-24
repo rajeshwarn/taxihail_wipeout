@@ -24,7 +24,7 @@ using apcurium.MK.Common.Caching;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Admin)]
-    public class CompanySettingsController : ServiceStackController
+    public class CompanySettingsController : ApcuriumServiceController
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;

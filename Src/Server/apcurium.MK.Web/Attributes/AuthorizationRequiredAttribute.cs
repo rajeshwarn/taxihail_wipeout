@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Attributes
 
         private bool UserHasPermission(AuthorizationContext filterContext)
         {
-            return ((ServiceStackController) filterContext.Controller).UserHasPermission(_permissions);
+            return ((ApcuriumServiceController) filterContext.Controller).UserHasPermission(_permissions);
         }
     }
 }

@@ -11,7 +11,7 @@ using Infrastructure.Messaging;
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     [AuthorizationRequired(RoleName.Admin)]
-    public class PrivacyController : ServiceStackController
+    public class PrivacyController : ApcuriumServiceController
     {
         private readonly ICompanyDao _companyDao;
         private readonly ICommandBus _commandBus;
