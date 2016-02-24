@@ -4,17 +4,13 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Helpers;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common;
-using ChargeTypesEnum = apcurium.MK.Common.Enumeration.ChargeTypes;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -36,92 +32,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+			Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
 		{
-            var paymentList = await _accountService.GetPaymentsList();
-
-            ChargeTypes = (paymentList ?? new ListItem[0])
-				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
-                .ToArray();
-
             PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
             RaisePropertyChanged(() => PhoneNumber);
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 			
-	    private async Task MarketChanged(MarketSettings marketSettings)
+		private async Task PaymentTypesChanged(IList<ListItem> paymentList)
 	    {
-			var paymentList = (await _accountService.GetPaymentsList()) ?? new ListItem[0];
-
-            var paymentSettings = await _paymentService.GetPaymentSettings();
-
-            var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
-                        paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-
-	        paymentList = isCmt
-	            ? HandlePaymentInCarForCmt(paymentList, marketSettings)
-	            : EnforceExternalMarketPaymentInCarIfNeeded(paymentList, marketSettings);
-
-            ChargeTypes = paymentList
-				.Select(x => new ListItem
-				{
-					Id = x.Id,
-					Display = this.Services().Localize[x.Display]
-				})
-                .ToArray();
-            
-	        HandleChargeTypeSelectionAccess(marketSettings.IsLocalMarket);
+			ChargeTypes = paymentList
+				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
+				.ToArray();
+			
+			await HandleChargeTypeSelectionAccess();
 	    }
 
-        private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
-        {
-            if (market.IsLocalMarket)
-            {
-                return paymentList;
-            }
-
-            return paymentList
-                .Where(paymentMethod => paymentMethod.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
-                .ToArray();
-        }
-
-		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
-		{
-			if (paymentList.None(x => x.Id == ChargeTypesEnum.PaymentInCar.Id))
-			{
-				paymentList.Insert(0, ChargeTypesEnum.PaymentInCar);
-			}
-
-			return paymentList;
-		}
-
-        private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
+		private async Task HandleChargeTypeSelectionAccess()
 	    {
-            if (!market.IsLocalMarket)
-            {
-				return market.DisableOutOfAppPayment
-					? paymentList
-					: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
-            }
+			var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
+			var isLocalMarket = marketSettings.IsLocalMarket;
 
-            paymentList.Remove(x => x.Id == Common.Enumeration.ChargeTypes.PaymentInCar.Id);
-
-            if (ChargeTypeId == Common.Enumeration.ChargeTypes.PaymentInCar.Id)
-            {
-                ChargeTypeId = null;
-            }
-
-            return paymentList;
-        }
-
-	    private void HandleChargeTypeSelectionAccess(bool isLocalMarket)
-	    {
             // We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
 	        if (!isLocalMarket)
 	        {

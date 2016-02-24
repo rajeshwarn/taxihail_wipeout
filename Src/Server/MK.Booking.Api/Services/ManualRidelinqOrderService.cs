@@ -87,8 +87,8 @@ namespace apcurium.MK.Booking.Api.Services
 		        }
 
                 var creditCard = account.DefaultCreditCard.HasValue
-                ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
-                : null;
+                    ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
+                    : null;
 
                 if (creditCard == null)
 		        {
@@ -166,10 +166,21 @@ namespace apcurium.MK.Booking.Api.Services
 						LastFour = trip.LastFour,
 						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2),
                         OriginatingIpAddress = request.CustomerIpAddress,
-                        KountSessionId = request.KountSessionId
+                        KountSessionId = request.KountSessionId,
+                        CreditCardId = creditCard.CreditCardId,
                     };
 
 					_commandBus.Send(command);
+
+                    _commandBus.Send(new PairForPayment
+                    {
+                        OrderId = command.OrderId,
+                        Medallion = response.Medallion,
+                        PairingCode = response.PairingCode,
+                        PairingToken = response.PairingToken,
+                        DriverId = trip.DriverId.ToString(),
+                        TokenOfCardToBeUsedForPayment = creditCard.Token
+                    });
 
 					var data = new OrderManualRideLinqDetail
 					{

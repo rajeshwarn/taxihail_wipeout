@@ -554,7 +554,17 @@ namespace apcurium.MK.Booking.Services.Impl
                     paymentTransactionId = paymentInfo.TransactionId;
                 }
 
-                var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
+                var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
+
+                var latitude = cmtRideLinqFields == null
+                    ? null
+                    : cmtRideLinqFields.LastLatitudeOfVehicle;
+
+                var longitude = cmtRideLinqFields == null
+                    ? null
+                    : cmtRideLinqFields.LastLongitudeOfVehicle;
+
+                var addressToUseForDropOff = _geocoding.TryToGetExactDropOffAddress(orderStatusDetail, latitude, longitude, dropOffAddress, clientLanguageCode);
                 var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
 
                 var hasDropOffAddress = addressToUseForDropOff != null
@@ -859,41 +869,6 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
 
-        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
-        {
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if ((orderStatus == null
-                || !orderStatus.VehicleLatitude.HasValue
-                || !orderStatus.VehicleLongitude.HasValue)
-                && (cmtRideLinqFields == null
-                || !cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
-                || !cmtRideLinqFields.LastLongitudeOfVehicle.HasValue))
-            {
-                return dropOffAddress;
-            }
-
-            double latitude;
-            double longitude;
-
-            if (cmtRideLinqFields != null
-                && cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
-                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue)
-            {
-                latitude = cmtRideLinqFields.LastLatitudeOfVehicle.Value;
-                longitude = cmtRideLinqFields.LastLongitudeOfVehicle.Value;
-            }
-            else
-            {
-                latitude = orderStatus.VehicleLatitude.Value;
-                longitude = orderStatus.VehicleLongitude.Value;
-            }
-
-            // Find the exact dropoff address using the last vehicle position
-            var exactDropOffAddress = _geocoding.Search(latitude, longitude, clientLanguageCode).FirstOrDefault();
-
-            return exactDropOffAddress ?? dropOffAddress;
-        }
-
         private TimeZones TryToGetOrderTimeZone(Guid orderId)
         {
             var order = _orderDao.FindById(orderId);
@@ -1191,7 +1166,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
-                if (!marketSettings.ReceiptFooter.HasValueTrimmed())
+                if (marketSettings == null || !marketSettings.ReceiptFooter.HasValueTrimmed())
                 {
                     return string.Empty;
                 }

@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task ResetLocalVehiclesList();
 
-        Task<IList<ListItem>> GetPaymentsList();
         
         Task ResetPassword( string email );
         

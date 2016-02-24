@@ -123,31 +123,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void Initialize()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
+
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var coordonates = new[] 
-            {
-                CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
-                CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
-            };
+            var initialPosition = locationService.GetInitialPosition();
 
-	        // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
-	        // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                var minLat = coordonates.Min(a => a.Coordinate.Latitude);
-                var maxLat = coordonates.Max(a => a.Coordinate.Latitude);
-                var minLon = coordonates.Min(a => a.Coordinate.Longitude);
-                var maxLon = coordonates.Max(a => a.Coordinate.Longitude);
+            var region = new MKCoordinateRegion(new CLLocationCoordinate2D(initialPosition.Latitude, initialPosition.Longitude), new MKCoordinateSpan(0.1, 0.1));
 
-                var center = new CLLocationCoordinate2D(((maxLat + minLat) / 2), (maxLon + minLon) / 2);
-
-                var region = new MKCoordinateRegion(center, new MKCoordinateSpan(0.1, 0.1));
-
-                Region = region;
-            }
-
+            Region = region;
             this.DelayBind(() => 
             {
                 var set = this.CreateBindingSet<OrderMapView, MapViewModel>();
