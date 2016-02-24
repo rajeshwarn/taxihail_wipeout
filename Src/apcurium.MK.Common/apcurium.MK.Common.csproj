@@ -97,9 +97,6 @@
     <Reference Include="PCLStorage.Abstractions">
       <HintPath>..\Mobile\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="PCLCrypto">
-      <HintPath>..\Mobile\packages\PCLCrypto.1.0.86\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Mobile\packages\Newtonsoft.Json.8.0.2\lib\portable-net45+wp80+win8+wpa81+dnxcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -120,6 +117,12 @@
     </Reference>
     <Reference Include="LibPhoneNumber">
       <HintPath>Libraries\libphonenumber\libphonenumber.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\Mobile\packages\Validation.2.2.8\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto">
+      <HintPath>..\Mobile\packages\PCLCrypto.1.0.86\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
