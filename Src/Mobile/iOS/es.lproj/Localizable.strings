@@ -116,7 +116,7 @@
 "CreditCardExpYear"="Mes de expiración";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
 "CreditCardLabel"="Etiqueta";
 "CreditCardName"="Nombre tal y como aparece en la tarjeta";
 "CreditCardNumber"="Número de tarjeta";
@@ -383,7 +383,7 @@
 "SaveAddressEmptyFieldMessage"="Los datos no son válidos, los campos de nombre y dirección son requeridos.";
 "SaveAddressEmptyFieldTitle"="Nombre";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";
-"SetAsDefaultCreditCard"="Set As Default";
+"SetAsDefaultCreditCard"="Poner por Defecto";
 "searchHint"="Buscar";
 "SendEmail"="Enviar email...";
 "SendErrorLogButton"="Enviar registro de errores";
@@ -401,7 +401,7 @@
 "StatusCallButton"="Llamar";
 "StatusCancelButton"="Cancelar reservación";
 "StatusCannotBeDisplayed"="No podemos obtener estato, por favor llame proveedor";
-"StatusConfirmCancelRide"="Are you sure you want to cancel?";
+"StatusConfirmCancelRide"="Estás seguro que deseas cancelar?";
 "StatusConfirmCancelRideError"="Esta reservación no puede ser cancelada, por favor llame para cancelar esta esta reservación.";
 "StatusConfirmCancelRideErrorTitle"="No se puede cancelar";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
@@ -507,7 +507,7 @@
 "WarningLocationServiceTitle"="Aviso";
 "WarningPushServiceAction"="Gracias por informarme";
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
-"WarningPushServiceTitle"="Notificaciones lanzadas";
+"WarningPushServiceTitle"="Notificaciones enviadas";
 "WarningTitle"="Aviso";
 "YesButton"="Si";
 "NetworkContactingNextDispatchDescription"="Contactando {0} …";
@@ -518,9 +518,9 @@
 "UpdateBookingSettingsInvalidCoF"="Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta";
 "MarketChangedMessage"="Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.";
 "MarketChangedMessageTitle"="Se ha detectado una nueva área de servicio.";
-"PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
-"View_UserTaxiHailNetworkSettings"="TaxiHail Network";
-"UserTaxiHailNetwork_Enabled"="TaxiHail Network";
+"PanelMenuViewTaxiHailNetworkText"="Red TaxiHail";
+"View_UserTaxiHailNetworkSettings"="Red TaxiHail";
+"UserTaxiHailNetwork_Enabled"="Red TaxiHail";
 "PromoCodeLabel"="Código de promoción";
 "PromoMustUseCardOnFileMessage"="Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="Para utilizar un código de promoción, es necesario tener un método de pago configurado como parte de su cuenta.";
@@ -572,7 +572,7 @@
 "Overdue_OutstandingPaymentExists"="Su tarjeta de crédito no pudo ser cargada con el viaje anterior. Usted tendrá que pagar esta cantidad pendiente para que su tarjeta sea reactivada.";
 "PromoDescriptionCode"="Ingrese el código {0} o pulse el botón de abajo";
 "PromoApply"="Aplicar";
-"CreateAccountPayBackPlaceHolder"="PayBack";
+"CreateAccountPayBackPlaceHolder"="PayBack (Opcional)";
 "PromotionButton"="Pulse para entrar o Ver Código de promoción";
 "NoPayBackErrorMessage"="El campo PayBack es obligatorio.";
 "InvalidPayBackErrorMessage"="El campo PayBack debe ser solamente dígitos y no debe superar los 10 caracteres de longitud.";
@@ -587,7 +587,7 @@
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualRideLinqStatus_PairingError"="Ha ocurrido un error. Por favor intente registrarse nuevamente utilizando el código mostrado en la pantalla de la unidad.";
 "ManualPairingForRideLinQ_Instructions"="Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.";
-"ManualPairingForRideLinQ_InvalidCode_Message"="El código de emparejamiento es inválido.";
+"ManualPairingForRideLinQ_InvalidCode_Message"="El código de sincronización es inválido.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Código Inválido";
 "ManualPairingForRideLinQ_Pair"="Registrarse";
 "HomeView_ManualPairing"="En un Taxi";
@@ -616,7 +616,7 @@
 "CvvRequiredMessage"="Por favor introduzca el CVV asociado a su tarjeta registrada con terminación {0} para continuar";
 "Error_InvalidCvvTitle"="CVV Inválido";
 "Error_InvalidCvvMessage"="El CVV debe ser un número entre 3 y 4 dígitos";
-"ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ";
+"ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el sincronización con RideLinQ";
 "CallDriverUsingProxyMessage"="Su conductor le marcara en unos minutos";
 "CallDriverUsingProxyErrorMessage"="Lo sentimos, no nos fue posible iniciar una llamada con su conductor.";
 "GenericErrorTitle"="Error";
@@ -637,7 +637,7 @@
 "ServiceError_ErrorCreatingOrderMessage_NoCall"="La orden no puede ser creada, intente mas tarde.";
 "DialCodeSelectorTitle"="Código de Marcación";
 "ServiceError_EmailClientAbsent"="Lo sentimos, no fue posible crear un email. No hay un cliente de email configurado en éste dispositivo.";
-"DriverInfoVehicleMedallion"="Medallón:";
+"DriverInfoVehicleMedallion"="Unidad:";
 "ResendConfirmationCodeButtonText"="Reenviar código de confirmación";
 "ResendConfirmationCodeTitle"="Confirmación";
 "ResendConfirmationCodeText"="El código de confirmación será reenviado en un momemnto";
@@ -653,7 +653,7 @@
 "CallDriver"="Llamar al Conductor";
 "MenuButton"="Menú";
 "SendMessageDriver"="Enviar Mensaje al Conductor";
-"LocateMeButton"="Localízame";
+"LocateMeButton"="Ubícame";
 "AirportsButton"="Aeropuertos";
 "Rating1"="Terrible";
 "Rating2"="Malo";
@@ -675,7 +675,7 @@
 "BookingAirportPickupPointFee"="Seleccionar el punto de abordaje {0} generará un cargo adicional por {1}";
 "BookingAirportDetails"="Aeropuerto: {0},\nAerolinea: {1},\nVuelo #: {2},\nPunto de Abordaje: {3}";
 "BookingAirportDetailsFee"=", (Tarifa de abordaje: {0})";
-"ManualRideLinqStatus_Cancelled"="Has sido desligado de RideLinQ. Por favor ingresa el código de emparejamiento nuevamente.";
+"ManualRideLinqStatus_Cancelled"="Has sido desligado de RideLinQ. Por favor ingresa el código de sincronización nuevamente.";
 "TutorialActivityName"="Tutorial";
 "HomeActivityName"="Inicio";
 "PasswordRecoveryActivityName"="Recuperación de contraseña";
@@ -698,7 +698,7 @@
 "AccountConfirmationActivityName"="Confirmación de cuenta";
 "UpdatePasswordActivityName"="Actualizar contraseña";
 "UserTaxiHailNetworkSettingsActivityName"="Ajustes de configuración de red del TaxiHail de Usuario";
-"ManualPairingForRideLinqActivityName"="Emparejamiento manual de RideLinq";
+"ManualPairingForRideLinqActivityName"="sincronización manual de RideLinq";
 "ManualRideLinqStatusActivityName"="Estatus Manual de RideLinq";
 "MessageActivityName"="Mensaje";
 "BookSummaryActivityName"="Resumen de reserva";
@@ -714,7 +714,7 @@
 "TaxiHailNetworkTimeOutPopupAccept"="Aceptar";
 "TaxiHailNetworkTimeOutPopupMessage"="Debido a alta demanda, no hay unidades disponibles en este momento. Desea reservar con {0} en su lugar?";
 "TaxiHailNetworkTimeOutPopupTitle"="Cambiar compañia?";
-"OrderStatus_Medallion"="Medallón";
+"OrderStatus_Medallion"="Unidad";
 "OrderStatus_AddDestination"="Agregar destino";
 "OrderStatus_RemoveDestination"="Eliminar el destino";
 "ErrorChangeDropOff_Message"="Lo sentimos, no pudimos actualizar su destino.";
@@ -746,8 +746,8 @@
 "LinkForApplicationStoreAbsentTitle"="No se ha encontrado la URL";
 "LinkForApplicationStoreAbsentText"="URL a página de tienda no configurada";
 "ServiceErrorUnauthorized"="Su sesión ha expirado, por favor ingrese nuevamente.";
-"ServiceErrorCallTitle"="Error de servidor";
-"PairingProcessingErrorTitle"="Problema al realizar pago empatado";
+"ServiceErrorCallTitle"="Mensaje";
+"PairingProcessingErrorTitle"="Problema al realizar pago sincronizado";
 "TripUnableToPairErrorText"="Lo sentimos, hubo un problema, por favor pague en la unidad";
 "CreditCardDeclinedOnPreauthorizationErrorText"="Lo sentimos, su tarjeta no pudo ser autorizada. Por favor pague en la unidad";
 "CreditCardUnanbleToPreathorizeErrorText"="Lo sentimos, hubo un error al procesar su tarjeta. Por favor pague en la unidad";
@@ -763,4 +763,5 @@
 "CreditCompany"="Compañía de Crédito: ";
 "SelectedCreditCard"="Tarjeta de crédito seleccionada actualmente";
 "NoCreditCard"="No ha seleccionado una tarjeta de crédito";
+"ServiceErrorUpdatePassword_NotSame"="Su contraseña y confirmación no concuerdan";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
