@@ -51,6 +51,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<OrderStatusDetail>().Where(c => c.AccountId == accountId).ToList();
+            }
+        }
+        
         /// <summary>
         /// Returns all active orders (active in terms of the UpdateOrderStatusJob)
         /// </summary>

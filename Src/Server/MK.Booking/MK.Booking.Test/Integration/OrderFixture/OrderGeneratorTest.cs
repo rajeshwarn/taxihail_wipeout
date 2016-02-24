@@ -10,6 +10,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -420,6 +421,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         [Test]
         public void when_order_paired_then_order_dto_populated()
         {
+
             var @event = new OrderManuallyPairedForRideLinq
             {
                 SourceId = Guid.NewGuid(),
@@ -439,12 +441,14 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 ClientVersion = "1.0",
                 OriginatingIpAddress = "192.168.12.30",
                 KountSessionId = "1i3u13n123",
-
+                
                 Medallion = "1251515",
                 DriverId = 124135356,
 
                 PairingCode = "515152",
                 PairingToken = "62523",
+
+                CreditCardId = Guid.NewGuid()
             };
             Sut.Handle(@event);
 
@@ -463,6 +467,10 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(true, order.IsManualRideLinq);
                 Assert.AreEqual(@event.OriginatingIpAddress, order.OriginatingIpAddress);
                 Assert.AreEqual(@event.KountSessionId, order.KountSessionId);
+
+                Assert.IsTrue(order.PaymentInformation.PayWithCreditCard);
+                Assert.AreEqual(ChargeTypes.CardOnFile.Id, order.Settings.ChargeTypeId);
+                Assert.AreEqual(@event.CreditCardId, order.PaymentInformation.CreditCardId);
 
                 var orderStatus = context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == @event.SourceId);
                 Assert.IsNotNull(orderStatus);
@@ -538,6 +546,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
                 PairingCode = "515152",
                 PairingToken = "62523",
+                CreditCardId = Guid.NewGuid()
             };
             Sut.Handle(@event);
         }

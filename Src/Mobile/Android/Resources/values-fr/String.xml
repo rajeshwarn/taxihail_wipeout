@@ -108,7 +108,7 @@
   <string name="CreditCardExpMonth">Date d\'expiration (mois)</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter un mode de paiement à votre compte.</string>
-  <string name="CreditCardInvalidCrediCardNUmber">Le numéro de la carte ne semble pas être valide</string>
+  <string name="CreditCardInvalidCrediCardNumber">Le numéro de la carte ne semble pas être valide</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">Nom du titulaire (tel qu\'il apparaît sur la carte)</string>

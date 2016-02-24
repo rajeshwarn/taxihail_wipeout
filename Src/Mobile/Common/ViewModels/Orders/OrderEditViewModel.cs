@@ -14,28 +14,30 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-    public class OrderEditViewModel: BaseViewModel
+	public class OrderEditViewModel: BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-        private readonly INetworkRoamingService _networkRoamingService;
+		private readonly IPaymentService _paymentService;
+		private readonly INetworkRoamingService _networkRoamingService;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, INetworkRoamingService networkRoamingService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService, INetworkRoamingService networkRoamingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
-		    _networkRoamingService = networkRoamingService;
+			_paymentService = paymentService;
+			_networkRoamingService = networkRoamingService;
 
             _chargeTypes = new ListItem[0];
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-            Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
+			Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
 
             PhoneNumber = new PhoneNumberModel();
 		}
 
-		public void Init()
+		public async Task Init()
 		{
             PhoneNumber.Country = _bookingSettings.Country;
             PhoneNumber.PhoneNumber = _bookingSettings.Phone;
@@ -43,22 +45,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 			
-	    private async Task PaymentTypesChanged(IList<ListItem> paymentList)
-        {
-            ChargeTypes = paymentList
-               .Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
-               .ToArray();
-            
-            await HandleChargeTypeSelectionAccess();
-        }
-
-	    private async Task HandleChargeTypeSelectionAccess()
+		private async Task PaymentTypesChanged(IList<ListItem> paymentList)
 	    {
-            var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
-            var isLocalMarket = marketSettings.IsLocalMarket;
+			ChargeTypes = paymentList
+				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
+				.ToArray();
+			
+			await HandleChargeTypeSelectionAccess();
+	    }
+
+		private async Task HandleChargeTypeSelectionAccess()
+	    {
+			var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
+			var isLocalMarket = marketSettings.IsLocalMarket;
 
             // We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
-            if (!isLocalMarket)
+	        if (!isLocalMarket)
 	        {
                 IsChargeTypesEnabled = ChargeTypes.Length > 1;
                 return;

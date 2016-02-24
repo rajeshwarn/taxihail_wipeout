@@ -386,7 +386,7 @@
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">Todos los campos requeridos</string>
-  <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
+  <string name="CreditCardInvalidCrediCardNumber">El número de tarjeta de crédito es inválido</string>
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="ReminderTitle">{0} Reservado</string>
   <string name="ReminderDetails">Recordatorio: Un taxi lo vendrá a recoger de {0} al {1} en {2}</string>

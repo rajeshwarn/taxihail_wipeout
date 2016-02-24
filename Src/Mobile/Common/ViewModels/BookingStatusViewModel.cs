@@ -887,24 +887,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder(OrderStatusDetail status)
         {
-            if (!HasSeenReminderPrompt(status.OrderId))
-            {
-                SetHasSeenReminderPrompt(status.OrderId);
-                InvokeOnMainThread(() => this.Services().Message.ShowMessage(
-                    this.Services().Localize["AddReminderTitle"],
-					this.Services().Localize["AddReminderMessage"],
-                    this.Services().Localize["YesButton"], async () =>
-                   {
-                        _phoneService.AddEventToCalendarAndReminder(
-                        string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName),
-                        string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),
-                        Order.PickupAddress.FullAddress,
-                        Order.PickupDate,
-                        Order.PickupDate.AddHours(-2));
-                        await GoToHomeScreen();
-                    }, 
-                    this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
-            }
+			if (!HasSeenReminderPrompt(status.OrderId))
+			{
+				SetHasSeenReminderPrompt(status.OrderId);
+				InvokeOnMainThread(() => this.Services().Message.ShowMessage(
+						this.Services().Localize["AddReminderTitle"], 
+						this.Services().Localize["AddReminderMessage"],
+						this.Services().Localize["YesButton"], async () => 
+					{
+						_phoneService.AddEventToCalendarAndReminder(
+							string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
+							string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
+							Order.PickupAddress.FullAddress, 
+							Order.PickupDate,
+							Order.PickupDate.AddHours(-2));
+						await GoToHomeScreen();
+					}, 
+						this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
+			}
         }
 
 		private BookingStatusBottomBarViewModel _bottomBar;
@@ -1107,7 +1107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				// This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
-				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
+                if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
 				}

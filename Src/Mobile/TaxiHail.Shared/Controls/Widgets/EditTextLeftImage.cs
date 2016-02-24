@@ -84,8 +84,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _textViewLabel.AfterTextChanged += HandleCreditCardNumberChanged;
             _textViewLabel.InputType = InputTypes.ClassNumber;
             _textViewLabel.SetSelectAllOnFocus (true);
-
 			_textViewLabel.ContentDescription = this.ContentDescription;
+			_textViewLabel.Enabled = this.Enabled;
 
             _imageLeftView = (ImageView) layout.FindViewById(Resource.Id.CreditCardImagePath);
             if (LeftImage != null)
@@ -112,5 +112,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 AfterCreditCardNumberChanged.Invoke(this, e);
             }
         }
+
+		public override bool Enabled
+		{
+			get { return base.Enabled; }
+			set
+			{
+				base.Enabled = value;
+				if (_textViewLabel != null)
+				{
+					_textViewLabel.Enabled = value;	
+				}
+			}
+		}
     }
 }

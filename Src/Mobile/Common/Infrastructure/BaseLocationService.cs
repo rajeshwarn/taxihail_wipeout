@@ -2,6 +2,8 @@
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -51,7 +53,28 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
             // between the first call to BestPosition, we might have received a position if LocationService was started by GetNextPosition()
             return BestPosition;
-        }
+		}
+
+		public Position GetInitialPosition()
+		{
+			if (BestPosition != null)
+			{
+				return BestPosition;
+			}
+
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+			var lastKnownPosition = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Position>("UserLastKnownPosition");
+
+			var defaultPosition = lastKnownPosition == null 
+				? new Position() 
+				{ 
+					Latitude = settings.GeoLoc.DefaultLatitude,
+					Longitude = settings.GeoLoc.DefaultLongitude
+				}
+				: lastKnownPosition;
+
+			return defaultPosition;
+		}
 
 		public abstract Position LastKnownPosition { get; }
 

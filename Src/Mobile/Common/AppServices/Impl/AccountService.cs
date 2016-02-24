@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
@@ -28,7 +27,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 using MK.Common.Exceptions;
 using System.Threading;
+using System.Reactive.Subjects;
 using apcurium.MK.Common.Configuration.Impl;
+using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -47,96 +48,109 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
 		private readonly IConnectivityService _connectivityService;
-        private readonly IPaymentService _paymentService;
+		private readonly IPaymentService _paymentService;
 
-        private MarketSettings _marketSettings = new MarketSettings() { HashedMarket = null };
+		private MarketSettings _marketSettings = new MarketSettings { HashedMarket = null };
 
-        private readonly ISubject<IList<ListItem>> _chargeTypesListSubject = new BehaviorSubject<IList<ListItem>>(new List<ListItem>());
+		private readonly ISubject<IList<ListItem>> _chargeTypesListSubject = new BehaviorSubject<IList<ListItem>>(new List<ListItem>());
 
         public AccountService(IAppSettings appSettings,
-            IFacebookService facebookService,
-            ITwitterService twitterService,
-            ILocalization localize,
-            IConnectivityService connectivityService,
-            INetworkRoamingService networkRoamingService,
-            IPaymentService paymentService)
-        {
-            _localize = localize;
-            _twitterService = twitterService;
-            _facebookService = facebookService;
-            _appSettings = appSettings;
-            _connectivityService = connectivityService;
-            _paymentService = paymentService;
+			IFacebookService facebookService,
+			ITwitterService twitterService,
+			ILocalization localize,
+			IConnectivityService connectivityService,
+			INetworkRoamingService networkRoamingService,
+			IPaymentService paymentService)
+		{
+			_localize = localize;
+		    _twitterService = twitterService;
+			_facebookService = facebookService;
+			_appSettings = appSettings;
+			_connectivityService = connectivityService;
+			_paymentService = paymentService;
 
-            if (networkRoamingService != null)
+			if (networkRoamingService != null)
+			{
+				Observe(networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+			}
+		}
+
+		private async Task MarketChanged(MarketSettings marketSettings)
+		{
+			// If we changed market
+			if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
+			{
+				UpdateChargeTypes(marketSettings);
+			}
+
+			_marketSettings = marketSettings;
+		}
+
+		private async Task UpdateChargeTypes(MarketSettings marketSettings)
+		{
+			_chargeTypesListSubject.OnNext(await GetChargeTypes(marketSettings) ?? new ListItem[0]);
+		}
+
+		public async Task<ReferenceData> GetReferenceData()
+        {
+            var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
+
+            if (cached == null)
             {
-                Observe(networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+                var refData = await UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
+				UserCache.Set(RefDataCacheKey, refData, DateTime.Now.AddHours(1));
+				return refData;
             }
+            return cached;
         }
 
-        private async Task MarketChanged(MarketSettings marketSettings)
-        {
-            // If we changed market
-            if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
-            {
-                UpdateChargeTypes(marketSettings);
-            }
-            
-            _marketSettings = marketSettings;
-        }
+		private async Task<IList<ListItem>> GetChargeTypes(MarketSettings marketSettings)
+		{
+			var refData = await GetReferenceData();
 
-        private async Task UpdateChargeTypes(MarketSettings marketSettings)
-        {
-            _chargeTypesListSubject.OnNext(await GetChargeTypes(marketSettings) ?? new ListItem[0]);
-        }
+			if (refData == null)
+			{
+				return null;
+			}
 
-        private async Task<IList<ListItem>> GetChargeTypes(MarketSettings marketSettings)
-        {
-            var refData = await GetReferenceData();
-            
-            if (refData == null)
-            {
-                return null;
-            }
+			if (!CurrentAccount.IsPayPalAccountLinked)
+			{
+				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
+			}
 
-            if (!CurrentAccount.IsPayPalAccountLinked)
-            {
-                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
-            }
-            
-            var paymentSettings = await _paymentService.GetPaymentSettings();
-            
-            var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
-                paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-            
-            refData.PaymentsList = isCmt
-                ? HandlePaymentInCarForCmt(refData.PaymentsList, marketSettings)
-                : EnforceExternalMarketPaymentInCarIfNeeded(refData.PaymentsList, marketSettings);
-            
-            if (refData.PaymentsList.All(x => x.Id == ChargeTypes.CardOnFile.Id))
-            {
-                // there's only one Charge Type and it's card on file, return it
-                // don't attempt to remove it because you'll end up with a message saying
-                // you haven't selected a charge type when trying to book and not a message
-                // saying "hey you need a card, add it now"
-                // TLDR: it's easier to understand for the user this way
-                Console.WriteLine(refData.PaymentsList.ToJson());
-                return refData.PaymentsList;
-            }
-            
-            var creditCard = await GetDefaultCreditCard();
-            if (creditCard == null
-                || CurrentAccount.IsPayPalAccountLinked
-                || creditCard.IsDeactivated)
-            {
-                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
-            }
-            
-            Console.WriteLine(refData.PaymentsList.ToJson());
-            return refData.PaymentsList;
-        }
+			var paymentSettings = await _paymentService.GetPaymentSettings();
 
-        private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+			var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
+				paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+			refData.PaymentsList = isCmt
+				? HandlePaymentInCarForCmt(refData.PaymentsList, marketSettings)
+				: EnforceExternalMarketPaymentInCarIfNeeded(refData.PaymentsList, marketSettings);
+
+			if (refData.PaymentsList.All(x => x.Id == ChargeTypes.CardOnFile.Id))
+			{
+				// there's only one Charge Type and it's card on file, return it
+				// don't attempt to remove it because you'll end up with a message saying
+				// you haven't selected a charge type when trying to book and not a message
+				// saying "hey you need a card, add it now"
+				// TLDR: it's easier to understand for the user this way
+				Console.WriteLine(refData.PaymentsList.ToJson());
+				return refData.PaymentsList;
+			}
+
+			var creditCard = await GetDefaultCreditCard();
+			if (creditCard == null
+				|| CurrentAccount.IsPayPalAccountLinked
+				|| creditCard.IsDeactivated)
+			{
+				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+			}
+
+			Console.WriteLine(refData.PaymentsList.ToJson());
+			return refData.PaymentsList;
+		}
+
+		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
 		{
 			if (market.IsLocalMarket)
 			{
@@ -154,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				return market.DisableOutOfAppPayment
 					? paymentList
-					: EnsurePaymentInCarAvailableIfNeeded(paymentList);
+					: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
 			}
 
 			paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
@@ -162,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return paymentList;
 		}
 
-		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList)
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
 		{
 			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
 			{
@@ -171,20 +185,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return paymentList;
 		}
-
-
-        public async Task<ReferenceData> GetReferenceData()
-        {
-            var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
-
-            if (cached == null)
-            {
-                var refData = await UseServiceClientAsync<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-				UserCache.Set(RefDataCacheKey, refData, DateTime.Now.AddHours(1));
-				return refData;
-            }
-            return cached;
-        }
 
         public void ClearReferenceData()
         {
@@ -522,7 +522,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
 			{
-				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {});
+				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {
+					throw e;
+				});
                 SaveCredentials (authResponse);
 
 				return await GetAccount ();
@@ -560,11 +562,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             return data;
-        }
-
-        public IObservable<IList<ListItem>> GetAndObservePaymentsList()
-        {
-            return _chargeTypesListSubject;
         }
 
         public Task ResetPassword (string email)
@@ -648,29 +645,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList()
+		public IObservable<IList<ListItem>> GetAndObservePaymentsList()
         {
-			var refData = await GetReferenceData();
-
-			if (refData == null)
-			{
-				return null;
-			}
-
-            if (!CurrentAccount.IsPayPalAccountLinked)
-		    {
-                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
-		    }
-
-			var creditCard = await GetDefaultCreditCard();
-            if (creditCard == null
-                || CurrentAccount.IsPayPalAccountLinked
-                || creditCard.IsDeactivated)
-		    {
-		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
-		    }
-
-            return refData.PaymentsList;
+			return _chargeTypesListSubject;
         }
 
         public async Task<CreditCardDetails> GetDefaultCreditCard ()
@@ -780,7 +757,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked, true);
+			UpdateCachedAccount(defaultCreditCard ?? null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked, true);
 		}
 
 		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
@@ -839,10 +816,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             account.IsPayPalAccountLinked = isPayPalAccountLinked;
             CurrentAccount = account;
 
-            if (shouldUpdateChargeType)
-            {
-                UpdateChargeTypes(_marketSettings).FireAndForget();
-            }
+			if (shouldUpdateChargeType)
+			{
+				UpdateChargeTypes(_marketSettings).FireAndForget();
+			}
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
