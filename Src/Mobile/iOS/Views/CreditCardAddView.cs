@@ -147,27 +147,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtPayPalAccountName)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
+			
 			set.Bind(txtNameOnCard)
 				.For(v => v.Enabled)
 				.To(vm => vm.IsAddingNewCard);
-
-			set.Bind(btnUseCreditCard)
-				.For(v => v.Command)
-				.To(vm => vm.ShowCreditCardViewCommand);
-
-			set.Bind(btnUseCreditCard)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsShowUseCreditCardButton)
-				.WithConversion("BoolInverter");
-
-			set.Bind(btnCancel)
-				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.IsShowingCancel)
-				.WithConversion("BoolInverter");
-
-			set.Bind(btnCancel)
-				.For(v => v.Command)
-				.To(vm => vm.CancelCommand);
 
             set.Bind(txtZipCode)
                 .For(v => v.Text)
@@ -245,11 +228,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{
 				ViewModel.UsePaypalCommand.ExecuteIfPossible();
 			};
-
-			FlatButtonStyle.Green.ApplyTo(btnUseCreditCard);
-			FlatButtonStyle.Red.ApplyTo(btnCancel);
+			
 			lblPayPalAccountName.Text = Localize.GetValue("PaypalAccount");
-			btnUseCreditCard.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
 		}
 
         private void ConfigureTipSection()

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditCardAddView">
             <connections>
-                <outlet property="btnCancel" destination="1Ey-Gi-eTJ" id="udm-ER-dOO"/>
                 <outlet property="btnCardDefault" destination="QOQ-sL-Vm6" id="RT7-IT-UFA"/>
                 <outlet property="btnDeleteCard" destination="IeH-q4-qcf" id="bwh-yM-SxR"/>
                 <outlet property="btnLinkPayPal" destination="btW-1V-APs" id="oUy-Fg-3DF"/>
                 <outlet property="btnSaveCard" destination="sNz-rV-N8y" id="ydn-h0-qyW"/>
                 <outlet property="btnScanCard" destination="WJg-Rj-tzy" id="T5p-kp-a1L"/>
-                <outlet property="btnUseCreditCard" destination="GNJ-eb-yaN" id="iU4-9x-zIj"/>
                 <outlet property="lblCardNumber" destination="DfD-Yo-WvS" id="8a2-VX-TKW"/>
                 <outlet property="lblCvv" destination="Tz3-UC-Wg8" id="RsN-3z-3Io"/>
                 <outlet property="lblExpMonth" destination="Ipi-wL-ffn" id="fr8-gg-fIQ"/>
@@ -83,7 +82,7 @@
                             <rect key="frame" x="0.0" y="92" width="320" height="60"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfr-Na-E9J">
-                                    <rect key="frame" x="8" y="0.0" width="31.5" height="17"/>
+                                    <rect key="frame" x="8" y="0.0" width="32" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="Ztc-rY-eRL"/>
                                     </constraints>
@@ -110,12 +109,12 @@
                             </constraints>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
-                            <rect key="frame" x="8" y="164" width="304" height="40.5"/>
+                            <rect key="frame" x="8" y="164" width="304" height="41"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQ0-KB-zhX" userLabel="PayPalDetails" customClass="HideableView">
-                            <rect key="frame" x="0.0" y="219.5" width="320" height="145"/>
+                            <rect key="frame" x="0.0" y="220" width="320" height="485"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paypal account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fur-Ls-dsF">
                                     <rect key="frame" x="8" y="10" width="96" height="17"/>
@@ -135,30 +134,16 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNJ-eb-yaN" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="94" width="304" height="41"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="304" id="N9v-mn-GrH"/>
-                                        <constraint firstAttribute="height" constant="41" id="kZR-3V-Wzx"/>
-                                    </constraints>
-                                    <state key="normal" title="Btn CreditCard">
-                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="iEf-ho-zJm" firstAttribute="top" secondItem="Fur-Ls-dsF" secondAttribute="bottom" constant="6" id="8DK-eY-8ti"/>
                                 <constraint firstItem="iEf-ho-zJm" firstAttribute="leading" secondItem="CQ0-KB-zhX" secondAttribute="leading" constant="8" id="FXu-Jm-pSQ"/>
-                                <constraint firstItem="GNJ-eb-yaN" firstAttribute="top" secondItem="iEf-ho-zJm" secondAttribute="bottom" constant="20" id="Nrz-at-2hV"/>
-                                <constraint firstItem="GNJ-eb-yaN" firstAttribute="centerX" secondItem="CQ0-KB-zhX" secondAttribute="centerX" id="Sxy-Qr-FJk"/>
                                 <constraint firstItem="Fur-Ls-dsF" firstAttribute="top" secondItem="CQ0-KB-zhX" secondAttribute="top" constant="10" id="XRW-az-xvk"/>
                                 <constraint firstItem="Fur-Ls-dsF" firstAttribute="leading" secondItem="CQ0-KB-zhX" secondAttribute="leading" constant="8" id="k7d-uJ-6pb"/>
-                                <constraint firstAttribute="bottom" secondItem="GNJ-eb-yaN" secondAttribute="bottom" constant="10" id="oEW-e2-C6c"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard" customClass="HideableView">
-                            <rect key="frame" x="0.0" y="219.5" width="320" height="470"/>
+                            <rect key="frame" x="0.0" y="219" width="320" height="470"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
                                     <rect key="frame" x="8" y="10" width="198" height="17"/>
@@ -311,17 +296,6 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ey-Gi-eTJ" userLabel="Btn Cancel" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="414" width="304" height="41"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="304" id="JHb-P3-aje"/>
-                                        <constraint firstAttribute="height" constant="41" id="Nfh-th-T4c"/>
-                                    </constraints>
-                                    <state key="normal" title="Cancel">
-                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="CKf-21-NCh" firstAttribute="leading" secondItem="WEq-Dm-0h1" secondAttribute="leading" id="02E-vh-Y2g"/>
@@ -343,8 +317,6 @@
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="trailing" constant="12" id="VMN-vP-nWz"/>
                                 <constraint firstItem="Tz3-UC-Wg8" firstAttribute="centerY" secondItem="DfD-Yo-WvS" secondAttribute="centerY" id="WV7-CP-2es"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
-                                <constraint firstItem="1Ey-Gi-eTJ" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="Y8C-dE-0Q7"/>
-                                <constraint firstItem="1Ey-Gi-eTJ" firstAttribute="centerX" secondItem="hLR-a7-OyV" secondAttribute="centerX" id="Z3X-1x-xd0"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
                                 <constraint firstAttribute="centerX" secondItem="QOQ-sL-Vm6" secondAttribute="centerX" id="a5z-pL-AjY"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
@@ -352,7 +324,6 @@
                                 <constraint firstAttribute="bottom" secondItem="IeH-q4-qcf" secondAttribute="bottom" constant="15" id="c11-py-ZLk"/>
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
                                 <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
-                                <constraint firstAttribute="bottom" secondItem="1Ey-Gi-eTJ" secondAttribute="bottom" constant="15" id="gE8-k8-JMd"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="10" id="gqs-sv-Jo0"/>
                                 <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="iG0-nP-46y"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="QOQ-sL-Vm6" secondAttribute="bottom" constant="5" id="ig1-D0-dEt"/>
@@ -372,7 +343,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="689.5" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="689" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>

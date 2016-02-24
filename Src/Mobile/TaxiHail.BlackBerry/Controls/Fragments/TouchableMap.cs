@@ -28,9 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
 
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
             var initialPosition = locationService.GetInitialPosition();
 
-            Map = new MapView(Activity.ApplicationContext,  settings.MapBoxKey);
+            Map = new MapView(Activity.ApplicationContext,  settings.Data.MapBoxKey);
             Map.OnCreate(savedInstanceState);
 
             Map.SetLogoVisibility((int)ViewStates.Gone);

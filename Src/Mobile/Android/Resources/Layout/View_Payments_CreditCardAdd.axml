@@ -90,208 +90,208 @@
                     android:layout_height="fill_parent"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
-                  <!-- Credit Card -->
-                  <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    local:MvxBind="Visibility IsShowPaypalView, Converter=InvertedVisibility"
-                    android:orientation="vertical">
-                    <TextView
+                <!-- Credit Card -->
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/CreditCardLabel"
-                        style="@style/BlackTextLabel"
-                        android:layout_marginBottom="4dp"
-                        local:MvxBind="Visibility CanChooseLabel, Converter=Visibility" />
-                    <RadioGroup
-                        android:id="@+id/labelCardRadioGroup"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="4dp"
-                        local:MvxBind="Visibility CanChooseLabel, Converter=Visibility">
-                        <RadioButton
-                            android:id="@+id/personalRadioButton"
-                            android:layout_width="wrap_content"
+                        local:MvxBind="Visibility IsShowPaypalView, Converter=InvertedVisibility"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/PaymentDetails.Label.Personal"
+                            android:text="@string/CreditCardLabel"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Enabled IsAddingNewCard; Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter=''"
-                            android:paddingRight="30dip" />
-                        <RadioButton
-                            android:id="@+id/businessRadioButton"
-                            android:layout_width="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            local:MvxBind="Visibility CanChooseLabel, Converter=Visibility" />
+                        <RadioGroup
+                            android:id="@+id/labelCardRadioGroup"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/PaymentDetails.Label.Business"
-                            local:MvxBind="Enabled IsAddingNewCard; Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter='Inverted'"
-                            style="@style/BlackTextLabel" />
-                    </RadioGroup>
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/CreditCardName"
-                        style="@style/BlackTextLabel"
-                        android:layout_marginBottom="4dp" />
-                    <EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:singleLine="true"
-                        android:inputType="textCapWords"
-                        local:MvxBind="Enabled IsAddingNewCard; Text Data.NameOnCard"
-                        android:layout_marginBottom="8dp"
-                        android:hint="@string/CreditCardName" />
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="4dp">
-                        <TextView
-                            style="@style/BlackTextLabel"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.75"
-                            android:layout_height="wrap_content"
-                            android:text="@string/CreditCardNumber"
-                            android:layout_marginBottom="4dp" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_weight="0.05"
-                            android:layout_height="fill_parent" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_marginStart="10dip"
-                            android:layout_weight="0.2"
-                            android:layout_height="wrap_content"
-                            android:text="@string/CreditCardCCV"
-                            style="@style/BlackTextLabel"
-                            android:layout_marginBottom="4dp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
-                        <apcurium.mk.booking.mobile.client.controls.EditTextLeftImage
-                            android:id="@+id/CreditCardNumberEditText"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/HeightEditTextFlat"
-                            android:layout_weight="0.8"
-                            android:singleLine="true"
-                            android:inputType="number"
-                            local:MvxBind="Enabled IsAddingNewCard; CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath"
-                            android:contentDescription="@string/CreditCardNumber" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_weight="0.02"
-                            android:layout_height="fill_parent" />
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_marginStart="10dip"
-                            android:layout_height="@dimen/HeightEditTextFlat"
-                            android:layout_weight="0.2"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            local:MvxBind="Enabled IsAddingNewCard; Text Data.CCV"
-                            android:layout_marginBottom="8dp"
-                            android:hint="@string/CreditCardCCV" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="8dp" />
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="4dp">
-                        <TextView
-                            android:gravity="start"
-                            android:layout_width="135dip"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dip"
-                            android:text="@string/CreditCardExpMonth"
-                            style="@style/BlackTextLabel" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_weight="0.05"
-                            android:layout_height="fill_parent" />
-                        <TextView
-                            android:gravity="start"
-                            android:layout_width="135dip"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/CreditCardExpYear"
-                            style="@style/BlackTextLabel" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
-                        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                            android:id="@+id/ExpMonthSpinner"
-                            android:layout_width="0dip"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="10dip"
-                            android:layout_height="@dimen/HeightEditTextFlat"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            local:allowEmptySelection="true"
-                            local:MvxBind="Enabled IsAddingNewCard; Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth"
-                            android:contentDescription="@string/CreditCardExpMonth" />
-                    <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_weight="0.05"
-                            android:layout_height="fill_parent" />
-                        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                            android:id="@+id/ExpYearSpinner"
-                            android:layout_width="0dip"
-                            android:layout_weight="1"
-                            android:layout_height="@dimen/HeightEditTextFlat"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            local:allowEmptySelection="true"
-                            local:MvxBind="Enabled IsAddingNewCard; Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear"
-                            android:contentDescription="@string/CreditCardExpYear" />
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/CreditCardZipCode"
-                        style="@style/BlackTextLabel"
-                        android:layout_marginBottom="4dp" />
-                    <EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:singleLine="true"
-                        android:inputType="textCapWords"
-                        local:MvxBind="Enabled IsAddingNewCard; Text Data.ZipCode"
-                        android:layout_marginBottom="8dp"
-                        android:hint="@string/CreditCardZipCode" />
-                  </LinearLayout>
-                  <!-- PayPal -->
-                  <LinearLayout android:layout_width="fill_parent"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="4dp"
+                            local:MvxBind="Visibility CanChooseLabel, Converter=Visibility">
+                            <RadioButton
+                                android:id="@+id/personalRadioButton"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                local:MvxBind="Visibility IsShowPaypalView, Converter=Visibility"
-                                android:orientation="vertical">
-                    <TextView
+                                android:text="@string/PaymentDetails.Label.Personal"
+                                style="@style/BlackTextLabel"
+                                local:MvxBind="Enabled IsAddingNewCard; Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter=''"
+                                android:paddingRight="30dip" />
+                            <RadioButton
+                                android:id="@+id/businessRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/PaymentDetails.Label.Business"
+                                local:MvxBind="Enabled IsAddingNewCard; Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter='Inverted'"
+                                style="@style/BlackTextLabel" />
+                        </RadioGroup>
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/CreditCardName"
+                            style="@style/BlackTextLabel"
+                            android:layout_marginBottom="4dp" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            android:inputType="textCapWords"
+                            local:MvxBind="Enabled IsAddingNewCard; Text Data.NameOnCard"
+                            android:layout_marginBottom="8dp"
+                            android:hint="@string/CreditCardName" />
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="4dp">
+                            <TextView
+                                style="@style/BlackTextLabel"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.75"
+                                android:layout_height="wrap_content"
+                                android:text="@string/CreditCardNumber"
+                                android:layout_marginBottom="4dp" />
+                        <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="0.05"
+                                android:layout_height="fill_parent" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_marginStart="10dip"
+                                android:layout_weight="0.2"
+                                android:layout_height="wrap_content"
+                                android:text="@string/CreditCardCCV"
+                                style="@style/BlackTextLabel"
+                                android:layout_marginBottom="4dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+                            <apcurium.mk.booking.mobile.client.controls.EditTextLeftImage
+                                android:id="@+id/CreditCardNumberEditText"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:layout_weight="0.8"
+                                android:singleLine="true"
+                                android:inputType="number"
+                                local:MvxBind="Enabled IsAddingNewCard; CreditCardNumber CreditCardNumber; LeftImage CreditCardImagePath"
+                                android:contentDescription="@string/CreditCardNumber" />
+                        <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="0.02"
+                                android:layout_height="fill_parent" />
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_marginStart="10dip"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:layout_weight="0.2"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                local:MvxBind="Enabled IsAddingNewCard; Text Data.CCV"
+                                android:layout_marginBottom="8dp"
+                                android:hint="@string/CreditCardCCV" />
+                        </LinearLayout>
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="8dp" />
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="4dp">
+                            <TextView
+                                android:gravity="start"
+                                android:layout_width="135dip"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dip"
+                                android:text="@string/CreditCardExpMonth"
+                                style="@style/BlackTextLabel" />
+                        <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="0.05"
+                                android:layout_height="fill_parent" />
+                            <TextView
+                                android:gravity="start"
+                                android:layout_width="135dip"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="@string/CreditCardExpYear"
+                                style="@style/BlackTextLabel" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+                            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                                android:id="@+id/ExpMonthSpinner"
+                                android:layout_width="0dip"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="10dip"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                local:allowEmptySelection="true"
+                                local:MvxBind="Enabled IsAddingNewCard; Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth"
+                                android:contentDescription="@string/CreditCardExpMonth" />
+                        <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="0.05"
+                                android:layout_height="fill_parent" />
+                            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                                android:id="@+id/ExpYearSpinner"
+                                android:layout_width="0dip"
+                                android:layout_weight="1"
+                                android:layout_height="@dimen/HeightEditTextFlat"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                local:allowEmptySelection="true"
+                                local:MvxBind="Enabled IsAddingNewCard; Text ExpirationYearDisplay; Data ExpirationYears; SelectedItem ExpirationYear"
+                                android:contentDescription="@string/CreditCardExpYear" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/CreditCardZipCode"
+                            style="@style/BlackTextLabel"
+                            android:layout_marginBottom="4dp" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            android:inputType="textCapWords"
+                            local:MvxBind="Enabled IsAddingNewCard; Text Data.ZipCode"
+                            android:layout_marginBottom="8dp"
+                            android:hint="@string/CreditCardZipCode" />
+                    </LinearLayout>
+                <!-- PayPal -->
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/PaypalAccount"
-                        style="@style/BlackTextLabel"
-                        android:layout_marginBottom="4dp" />
-                    <EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        local:MvxBind="Text Data.NameOnCard"
-                        android:enabled="false"
-                        android:layout_marginBottom="8dp"/>
-                    
-                  </LinearLayout>
+                        local:MvxBind="Visibility IsShowPaypalView, Converter=Visibility"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/PaypalAccount"
+                            style="@style/BlackTextLabel"
+                            android:layout_marginBottom="4dp" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            local:MvxBind="Text Data.NameOnCard"
+                            android:enabled="false"
+                            android:layout_marginBottom="8dp" />
+                    </LinearLayout>
                     <Button
                         style="@style/ButtonActionGrayStyle"
                         android:id="@+id/SetAsDefaultCreditCardButton"
@@ -324,17 +324,6 @@
                         local:MvxBind="Visibility IsAddingNewCard, Converter=Visibility; Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
-                  <Button
-                        style="@style/ButtonActionGreenStyle"
-                        android:id="@+id/SaveSettingsButton"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
-                        android:singleLine="true"
-                        android:lines="1"
-                        android:text="@string/UnlinkPayPal"
-                        local:MvxBind="Click ShowCreditCardViewCommand; Visibility IsShowUseCreditCardButton, Converter=Visibility"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
                     <Button
                         style="@style/ButtonActionGrayStyle"
                         android:id="@+id/UsePayPalAccountButton"
@@ -347,17 +336,6 @@
                         android:lines="1"
                         android:text="@string/LinkPayPal"
                         local:MvxBind="Click UsePaypalCommand; Visibility IsPaypalEnabled, Converter=Visibility"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
-                  <Button
-                        style="@style/ButtonActionRedStyle"
-                        android:id="@+id/CancelNewCreditCard"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
-                        android:singleLine="true"
-                        android:lines="1"
-                        android:text="@string/Cancel"
-                        local:MvxBind="Click CancelCommand; Visibility IsShowingCancel, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button
