@@ -13,14 +13,12 @@ using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/orders/{OrderId}/status/", "GET")]
     public class OrderStatusRequest : BaseDto
     {
         public Guid OrderId { get; set; }
     }
 
-    [Authenticate]
     [Route("/account/orders/status/active", "GET")]
     public class ActiveOrderStatusRequest : BaseDto
     {

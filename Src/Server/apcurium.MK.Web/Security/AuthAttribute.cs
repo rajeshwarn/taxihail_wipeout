@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
@@ -13,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using apcurium.MK.Web.App_Start;
 using Microsoft.Practices.Unity;
+using IAuthenticationFilter = System.Web.Http.Filters.IAuthenticationFilter;
 
 namespace apcurium.MK.Web.Security
 {
@@ -46,7 +46,7 @@ namespace apcurium.MK.Web.Security
             {
                 context.ErrorResult = new AuthenticationFailureResult("Missing credentials", context.Request);
 
-                return Task.FromResult(Unit.Default);
+                return Task.FromResult(0);
             }
 
 
@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Security
             {
                 context.ErrorResult = new AuthenticationFailureResult("Invalid username or password", context.Request);
 
-                return Task.FromResult(Unit.Default);
+                return Task.FromResult(0);
             }
 
             var account = _accountDao.FindById(cachedSession.UserId);
@@ -68,7 +68,7 @@ namespace apcurium.MK.Web.Security
                 context.ErrorResult = new AuthenticationFailureResult("User not authorized", context.Request);
             }
 
-            return Task.FromResult(Unit.Default);
+            return Task.FromResult(0);
         }
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)

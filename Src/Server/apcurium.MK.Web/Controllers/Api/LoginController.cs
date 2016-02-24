@@ -3,6 +3,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Http;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -18,7 +19,7 @@ using MK.Common.DummyServiceStack;
 namespace apcurium.MK.Web.Controllers.Api
 {
     [RoutePrefix("api/auth")]
-    public class LoginController : ApiController
+    public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();
         private readonly RandomNumberGenerator _randgen = new RNGCryptoServiceProvider();

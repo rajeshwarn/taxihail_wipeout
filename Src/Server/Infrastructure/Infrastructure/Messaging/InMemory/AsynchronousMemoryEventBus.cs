@@ -84,7 +84,43 @@ namespace Infrastructure.Messaging.InMemory
                     .Select(i => new { HandlerInterface = i, EventType = i.GetGenericArguments()[0] })
                     .Select(e => new Tuple<Type, Action<Envelope>>(e.EventType, this.BuildEnvelopeHandlerInvocation(handler, e.HandlerInterface, e.EventType)));
 
-            return eventHandlerInvocations.Union(envelopedEventHandlerInvocations);
+            var asyncEventHandlerInvocations = 
+                interfaces
+                    .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IAsyncEventHandler<>))
+                    .Select(i => new { HandlerInterface = i, EventType = i.GetGenericArguments()[0] })
+                    .Select(e => new Tuple<Type, Action<Envelope>>(e.EventType, this.BuildAsyncHandlerInvocation(handler, e.HandlerInterface, e.EventType)));
+
+
+            return eventHandlerInvocations.Union(envelopedEventHandlerInvocations).Union(asyncEventHandlerInvocations);
+        }
+
+        private Action<Envelope> BuildAsyncHandlerInvocation(IEventHandler handler, Type handlerType, Type messageType)
+        {
+            var envelopeType = typeof(Envelope<>).MakeGenericType(messageType);
+
+            var parameter = Expression.Parameter(typeof(Envelope));
+            var invocationExpression =
+                Expression.Lambda(
+                    Expression.Block(
+                        Expression.Call(
+                            Expression.Convert(Expression.Constant(handler), handlerType),
+                            handlerType.GetMethod("Handle"),
+                            Expression.Property(Expression.Convert(parameter, envelopeType), "Body"))),
+                    parameter);
+
+            return async e =>
+            {
+                try
+                {
+                    var asyncFunction = (Func<Envelope, Task>)invocationExpression.Compile();
+                    await asyncFunction(e);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Error occurred during asynchronous event handling", ex);
+                }
+                
+            };
         }
 
         private Action<Envelope> BuildHandlerInvocation(IEventHandler handler, Type handlerType, Type messageType)

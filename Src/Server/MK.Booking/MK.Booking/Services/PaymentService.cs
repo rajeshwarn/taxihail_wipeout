@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
@@ -124,17 +124,17 @@ namespace apcurium.MK.Booking.Services
             return GetInstance(companyKey).CommitPayment(companyKey, orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId);
         }
 
-        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public async Task<RefundPaymentResponse> RefundPayment(string companyKey, Guid orderId)
         {
             if (IsPayPal(orderId: orderId))
             {
                 return _payPalServiceFactory.GetInstance(companyKey).RefundWebPayment(companyKey, orderId);
             }
 
-            return GetInstance(companyKey).RefundPayment(companyKey, orderId);
+            return await GetInstance(companyKey).RefundPayment(companyKey, orderId);
         }
 
-        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        public Task<BasePaymentResponse> UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
         {
             if (IsPayPal(orderId: orderId))
             {
@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Services
             return GetInstance(null).DeleteTokenizedCreditcard(cardToken);
         }
 
-        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
+        public async Task<PairingResponse> Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
             var order = _orderDao.FindById(orderId);
 
@@ -166,17 +166,17 @@ namespace apcurium.MK.Booking.Services
             var account = _accountDao.FindById(order.AccountId);
             var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
-            return GetInstance(companyKey).Pair(companyKey, orderId, creditCard.Token, autoTipPercentage);
+            return await GetInstance(companyKey).Pair(companyKey, orderId, creditCard.Token, autoTipPercentage);
         }
 
-        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
+        public async Task<BasePaymentResponse> Unpair(string companyKey, Guid orderId)
         {
             if (IsPayPal(orderId: orderId))
             {
                 return _payPalServiceFactory.GetInstance(companyKey).Unpair(orderId);
             }
 
-            return GetInstance(companyKey).Unpair(companyKey, orderId);
+            return await GetInstance(companyKey).Unpair(companyKey, orderId);
         }
 
         public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)

@@ -2,12 +2,11 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-//using ServiceStack.Common.Web;
-//using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Http;
 
@@ -27,28 +26,31 @@ namespace apcurium.MK.Booking.Api.Helpers
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public virtual OrderStatusDetail GetOrderStatus(Guid orderId, SessionEntity session)
+        public virtual Task<OrderStatusDetail> GetOrderStatus(Guid orderId, SessionEntity session)
         {
-            var order = _orderDao.FindById(orderId);
-
-            if (order == null)
+            return Task.Run(() =>
             {
-                //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
-                return new OrderStatusDetail
+                var order = _orderDao.FindById(orderId);
+
+                if (order == null)
                 {
-                    OrderId = orderId,
-                    Status = OrderStatus.Created,
-                    IBSOrderId =  0,
-                    IBSStatusId = "",
-                    IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING"),
-                };
-            }
+                    //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
+                    return new OrderStatusDetail
+                    {
+                        OrderId = orderId,
+                        Status = OrderStatus.Created,
+                        IBSOrderId = 0,
+                        IBSStatusId = "",
+                        IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING"),
+                    };
+                }
 
-            ThrowIfUnauthorized(order, session);
+                ThrowIfUnauthorized(order, session);
 
-            var o = _orderDao.FindOrderStatusById(orderId);
+                var o = _orderDao.FindOrderStatusById(orderId);
 
-            return o;
+                return o;
+            });
         }
 
         private static void ThrowIfUnauthorized(OrderDetail order, SessionEntity session)

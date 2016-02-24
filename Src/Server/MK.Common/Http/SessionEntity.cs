@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Http
 {
@@ -11,5 +12,11 @@ namespace apcurium.MK.Common.Http
         public string SessionId { get; set; }
         public string UserName { get; set; }
         public Guid UserId { get; set; }
+
+
+        public bool IsAuthenticated()
+        {
+            return SessionId.HasValueTrimmed();
+        }
     }
 }

@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -27,7 +26,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<OrderStatusChanged>,
+        IAsyncEventHandler<OrderStatusChanged>,
         IEventHandler<CreditCardDeactivated>,
         IEventHandler<UserAddedToPromotionWhiteList_V2>,
         IEventHandler<ManualRideLinqTripInfoUpdated>
@@ -65,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _logger = logger;
         }
 
-        public void Handle(OrderStatusChanged @event)
+        public async Task Handle(OrderStatusChanged @event)
         {
             if (@event.IsCompleted)
             {
@@ -98,7 +97,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         // Send receipt for CMTRideLinq
                         InitializeCmtServiceClient(order.CompanyKey);
 
-                        var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                        var tripInfo = await _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                         {
 							var tollHistory = tripInfo.TollHistory != null

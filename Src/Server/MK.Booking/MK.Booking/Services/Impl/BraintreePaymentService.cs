@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -57,38 +57,44 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
 
-        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
+        public Task<PairingResponse> Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
-            try
+            return Task.Run(() =>
             {
-                _pairingService.Pair(orderId, cardToken, autoTipPercentage);
-                
-                return new PairingResponse
+                try
+                {
+                    _pairingService.Pair(orderId, cardToken, autoTipPercentage);
+
+                    return new PairingResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Success"
+                    };
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e);
+                    return new PairingResponse
+                    {
+                        IsSuccessful = false,
+                        Message = e.Message
+                    };
+                }
+            });
+        }
+
+        public Task<BasePaymentResponse> Unpair(string companyKey, Guid orderId)
+        {
+            return Task.Run(() =>
+            {
+                _pairingService.Unpair(orderId);
+
+                return new BasePaymentResponse
                 {
                     IsSuccessful = true,
                     Message = "Success"
                 };
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e);
-                return new PairingResponse
-                {
-                    IsSuccessful = false,
-                    Message = e.Message
-                };
-            }
-        }
-
-        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
-        {
-           _pairingService.Unpair(orderId);
-
-            return new BasePaymentResponse
-            {
-                IsSuccessful = true,
-                Message = "Success"
-            };
+            });
         }
 
         public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)
@@ -345,50 +351,53 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public Task<RefundPaymentResponse> RefundPayment(string companyKey, Guid orderId)
         {
-            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
-            var orderPairing = _orderDao.FindOrderPairingById(orderId);
-            var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
-            if (paymentDetail == null)
+            return Task.Run(() =>
             {
-                // No payment to refund
-                var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
-                _logger.LogMessage(message);
-
-                return new RefundPaymentResponse
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
+                var creditCardDetail = orderPairing != null ? _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment) : null;
+                if (paymentDetail == null)
                 {
-                    IsSuccessful = false,
-                    Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits: string.Empty,
-                    Message = message
-                };
-            }
+                    // No payment to refund
+                    var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
+                    _logger.LogMessage(message);
 
-            try
-            {
-                var message = string.Empty;
-                Void(paymentDetail.TransactionId, ref message);
+                    return new RefundPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
+                        Message = message
+                    };
+                }
 
-                return new RefundPaymentResponse
+                try
                 {
-                    IsSuccessful = true,
-                    Last4Digits = string.Empty
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogMessage(string.Format("Braintree refund for transaction {0} failed. {1}", paymentDetail.TransactionId, ex.Message));
+                    var message = string.Empty;
+                    Void(paymentDetail.TransactionId, ref message);
 
-                return new RefundPaymentResponse
+                    return new RefundPaymentResponse
+                    {
+                        IsSuccessful = true,
+                        Last4Digits = string.Empty
+                    };
+                }
+                catch (Exception ex)
                 {
-                    IsSuccessful = false,
-                    Last4Digits = string.Empty,
-                    Message = ex.Message
-                };
-            }
+                    _logger.LogMessage(string.Format("Braintree refund for transaction {0} failed. {1}", paymentDetail.TransactionId, ex.Message));
+
+                    return new RefundPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        Last4Digits = string.Empty,
+                        Message = ex.Message
+                    };
+                }
+            });
         }
 
-        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        public Task<BasePaymentResponse> UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
         {
             throw new NotImplementedException("Method only implemented for CMT RideLinQ");
         }

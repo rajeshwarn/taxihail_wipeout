@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -17,11 +18,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class OrderPaymentManager :
         IIntegrationEventHandler,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<OrderCancelled>,
+        IAsyncEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
-        IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfError>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IAsyncEventHandler<OrderStatusChanged>,
+        IAsyncEventHandler<OrderCancelledBecauseOfError>,
+        IAsyncEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -116,12 +117,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibs.SendPaymentNotification((double)totalAmountBeforePromotion, (double)taxedMeterAmount, (double)tipAmount, authorizationCode, orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
         }
 
-        public void Handle(OrderCancelled @event)
+        public async Task Handle(OrderCancelled @event)
         {
             var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                var response = _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
+                var response = await _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
 
                 if (response.IsSuccessful)
                 {
@@ -170,12 +171,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(OrderCancelledBecauseOfError @event)
+        public async Task Handle(OrderCancelledBecauseOfError @event)
         {
             var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                var response = _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
+                var response = await _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
 
                 if (response.IsSuccessful)
                 {
@@ -194,7 +195,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(OrderStatusChanged @event)
+        public async Task Handle(OrderStatusChanged @event)
         {
             if (@event.IsCompleted)
             {
@@ -208,7 +209,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
+                    var trip = await _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
                     {
@@ -243,7 +244,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        public async Task Handle(ManualRideLinqTripInfoUpdated @event)
         {
             if (@event.EndTime.HasValue)
             {
@@ -255,7 +256,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
+                    var trip = await _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
                     {

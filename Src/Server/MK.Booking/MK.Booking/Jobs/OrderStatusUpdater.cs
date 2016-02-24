@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
@@ -182,7 +183,7 @@ namespace apcurium.MK.Booking.Jobs
         /// <param name="orderStatusDetail"></param>
         /// <param name="paymentSettings"></param>
         /// <returns></returns>
-        private Trip CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
+        private async Task<Trip> CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings)
         {
             var paymentMode = paymentSettings.PaymentMode;
             if (paymentMode != PaymentMethod.RideLinqCmt)
@@ -200,7 +201,7 @@ namespace apcurium.MK.Booking.Jobs
 
             InitializeCmtServiceClient(paymentSettings);
 
-            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+            var tripInfo = await _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
             if (tripInfo != null
                 && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
                     || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))

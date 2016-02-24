@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System.Threading.Tasks;
+
 namespace Infrastructure.Messaging.Handling
 {
     /// <summary>
@@ -22,6 +24,11 @@ namespace Infrastructure.Messaging.Handling
         where T : IEvent
     {
         void Handle(T @event);
+    }
+
+    public interface IAsyncEventHandler<T> : IEventHandler where T : IEvent
+    {
+        Task Handle(T @event);
     }
 
     public interface IEnvelopedEventHandler<T> : IEventHandler

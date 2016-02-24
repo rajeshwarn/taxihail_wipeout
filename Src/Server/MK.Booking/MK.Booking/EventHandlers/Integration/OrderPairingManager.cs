@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 using CMTPayment;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPairingManager:
         IIntegrationEventHandler,
-        IEventHandler<OrderStatusChanged>
+        IAsyncEventHandler<OrderStatusChanged>
     {
         private readonly INotificationService _notificationService;
         private readonly IOrderDao _orderDao;
@@ -50,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Handle(OrderStatusChanged @event)
+        public async Task Handle(OrderStatusChanged @event)
         {
             _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
             
@@ -76,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         var errorMessageKey = "TripUnableToPairErrorText";
 
-                        var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
+                        var response = await _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
                         if (response.IgnoreResponse)
                         {

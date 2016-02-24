@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -32,9 +33,9 @@ namespace apcurium.MK.Booking.Api.Helpers
             _orderDao = orderDao;
         }
 
-        public override OrderStatusDetail GetOrderStatus(Guid orderId, SessionEntity session)
+        public override async Task<OrderStatusDetail> GetOrderStatus(Guid orderId, SessionEntity session)
         {
-            var orderStatus = base.GetOrderStatus(orderId, session);
+            var orderStatus = await base.GetOrderStatus(orderId, session);
 
             if (orderStatus.Status == OrderStatus.Completed)
             {

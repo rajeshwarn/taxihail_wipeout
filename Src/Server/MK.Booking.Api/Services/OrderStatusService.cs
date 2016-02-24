@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Threading.Tasks;
+using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -10,25 +12,14 @@ using AutoMapper;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderStatusService : Service
+
+    [RoutePrefix("api")]
+    public class OrderStatusService : Services
     {
-        private readonly OrderStatusHelper _orderStatusHelper;
-
-        public OrderStatusService(OrderStatusHelper orderStatusHelper)
-        {
-            _orderStatusHelper = orderStatusHelper;
-        }
-
-        public object Get(OrderStatusRequest request)
-        {
-            AuthService.CurrentSessionFactory();
-            var status = _orderStatusHelper.GetOrderStatus(request.OrderId, SessionAs<IAuthSession>());
-
-            return Mapper.Map<OrderStatusRequestResponse>(status);
-        }
+        
     }
 
-    public class ActiveOrderStatusService : Service
+    public class ActiveOrderStatusService : BaseApiController
     {
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
@@ -42,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(ActiveOrderStatusRequest request)
         {
             var statuses = new ActiveOrderStatusRequestResponse();
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(GetSession().UserId);
 
             foreach (var status in _orderDao.GetOrdersInProgressByAccountId(account.Id))
             {

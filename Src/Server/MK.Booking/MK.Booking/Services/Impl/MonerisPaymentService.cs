@@ -3,6 +3,7 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -61,38 +62,44 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
 
-        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
+        public Task<PairingResponse> Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
-            try
+            return Task.Run(() =>
             {
-                _pairingService.Pair(orderId, cardToken, autoTipPercentage);
+                try
+                {
+                    _pairingService.Pair(orderId, cardToken, autoTipPercentage);
 
-                return new PairingResponse
+                    return new PairingResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Success"
+                    };
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e);
+                    return new PairingResponse
+                    {
+                        IsSuccessful = false,
+                        Message = e.Message
+                    };
+                }
+            });
+        }
+
+        public Task<BasePaymentResponse> Unpair(string companyKey, Guid orderId)
+        {
+            return Task.Run(() =>
+            {
+                _pairingService.Unpair(orderId);
+
+                return new BasePaymentResponse
                 {
                     IsSuccessful = true,
                     Message = "Success"
                 };
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e);
-                return new PairingResponse
-                {
-                    IsSuccessful = false,
-                    Message = e.Message
-                };
-            }
-        }
-
-        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
-        {
-            _pairingService.Unpair(orderId);
-
-            return new BasePaymentResponse
-            {
-                IsSuccessful = true,
-                Message = "Success"
-            };
+            });
         }
 
         public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)
@@ -394,12 +401,12 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)
+        public Task<RefundPaymentResponse> RefundPayment(string companyKey, Guid orderId)
         {
             throw new NotImplementedException();
         }
 
-        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        public Task<BasePaymentResponse> UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
         {
             throw new NotImplementedException("Method only implemented for CMT RideLinQ");
         }
@@ -480,42 +487,45 @@ namespace apcurium.MK.Booking.Services.Impl
     /// </summary>
     public class Completion : Transaction
     {
-        private static string[] xmlTags = new string[4]
+        private static string[] xmlTags = 
         {
           "order_id",
           "comp_amount",
           "txn_number",
           "crypt_type"
         };
+
         private Hashtable keyHashes = new Hashtable();
 
         public Completion(Hashtable completion)
-            : base(completion, Completion.xmlTags)
+            : base(completion, xmlTags)
         {
         }
 
-        public Completion(string order_id, string comp_amount, string txn_number, string crypt_type)
-            : base(Completion.xmlTags)
+        public Completion(string orderId, string compAmount, string txnNumber, string cryptType)
+            : base(xmlTags)
         {
-            this.transactionParams.Add((object)"order_id", (object)order_id);
-            this.transactionParams.Add((object)"comp_amount", (object)comp_amount);
-            this.transactionParams.Add((object)"txn_number", (object)txn_number);
-            this.transactionParams.Add((object)"crypt_type", (object)crypt_type);
+            transactionParams.Add("order_id", orderId);
+            transactionParams.Add("comp_amount", compAmount);
+            transactionParams.Add("txn_number", txnNumber);
+            transactionParams.Add("crypt_type", cryptType);
         }
 
-        public void SetDynamicDescriptor(string dynamic_descriptor)
+        public void SetDynamicDescriptor(string dynamicDescriptor)
         {
-            this.keyHashes.Add((object)"dynamic_descriptor", (object)dynamic_descriptor);
+            keyHashes.Add("dynamic_descriptor", dynamicDescriptor);
         }
 
         public override string toXML()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             stringBuilder.Append("<completion>");
             stringBuilder.Append(base.toXML());
-            IDictionaryEnumerator enumerator = this.keyHashes.GetEnumerator();
+            var enumerator = keyHashes.GetEnumerator();
             while (enumerator.MoveNext())
-                stringBuilder.Append("<" + enumerator.Key.ToString() + ">" + enumerator.Value.ToString() + "</" + enumerator.Key.ToString() + ">");
+            {
+                stringBuilder.Append("<" + enumerator.Key + ">" + enumerator.Value + "</" + enumerator.Key + ">");
+            }
             stringBuilder.Append("</completion>");
             return stringBuilder.ToString();
         }
