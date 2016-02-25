@@ -132,12 +132,8 @@
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
     <Compile Include="Serialization\CsvCustomSerializer.cs" />
-    <Compile Include="Services\AccountsChargeService.cs" />
-    <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
-    <Compile Include="Services\ApplicationInfoService.cs" />
-    <Compile Include="Services\AppStartUpLogService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\IbsChargeAccountService.cs" />
     <Compile Include="Services\LogMetricsService.cs" />
@@ -168,7 +164,6 @@
     <Compile Include="Services\Maps\GeocodingService.cs" />
     <Compile Include="Services\CurrentAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AddressesService.cs" />
     <Compile Include="Services\Maps\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
     <Compile Include="Services\OrderRatingsService.cs" />

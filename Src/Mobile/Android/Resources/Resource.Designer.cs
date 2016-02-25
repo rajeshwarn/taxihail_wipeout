@@ -7695,7 +7695,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int CreditCardInstructions = 2131231185;
 			
 			// aapt resource value: 0x7f0801df
-			public const int CreditCardInvalidCrediCardNUmber = 2131231199;
+			public const int CreditCardInvalidCrediCardNumber = 2131231199;
 			
 			// aapt resource value: 0x7f0801d5
 			public const int CreditCardLabel = 2131231189;
