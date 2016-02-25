@@ -54,10 +54,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
         }
 
-        private async Task PaymentTypesChanged(IList<ListItem> paymentList)
+		private async Task PaymentTypesChanged(IList<ListItem> paymentList)
 		{
 			Payments = paymentList
-				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display]})
+				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
 				.ToArray();
 
 			await HandleChargeTypeSelectionAccess();
@@ -105,8 +105,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task HandleChargeTypeSelectionAccess()
 		{
-            var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
-            var isLocalMarket = marketSettings.IsLocalMarket;
+			var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
+			var isLocalMarket = marketSettings.IsLocalMarket;
 
             // We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
             if (!isLocalMarket)

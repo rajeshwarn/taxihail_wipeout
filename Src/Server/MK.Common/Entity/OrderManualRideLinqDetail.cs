@@ -38,6 +38,10 @@ namespace apcurium.MK.Common.Entity
 
         public double? Extra { get; set; }
 
+        public double? LastLatitudeOfVehicle { get; set; }
+
+        public double? LastLongitudeOfVehicle { get; set; }
+
         public double? Tip { get; set; }
 
         public double? Surcharge { get; set; }

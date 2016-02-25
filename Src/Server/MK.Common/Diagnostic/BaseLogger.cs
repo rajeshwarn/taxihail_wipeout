@@ -103,14 +103,14 @@ namespace apcurium.MK.Common.Diagnostic
             fullErrorMessage.Add(string.Format("{0}Stack : {1}", indentStr, ex.StackTrace));
 
 
-            if (ex.InnerException != null)
-            {
-                LogError(ex.InnerException, ++indent, method, lineNumber, fullErrorMessage);
-            }
-            else
-            {
-                Write(fullErrorMessage.JoinBy(Environment.NewLine));
-            }
+			if (ex.InnerException != null)
+			{
+				LogError(ex.InnerException, ++indent, method, lineNumber, fullErrorMessage);
+			}
+			else
+			{
+				Write(fullErrorMessage.JoinBy(Environment.NewLine));
+			}
         }
 
         protected abstract string GetBaseDirectory();
@@ -265,6 +265,8 @@ namespace apcurium.MK.Common.Diagnostic
                 GC.Collect();
                 _isWriting = false;
             }
+				_isWriting = false;
+			}
         }
 
         public string GetLogFileName()

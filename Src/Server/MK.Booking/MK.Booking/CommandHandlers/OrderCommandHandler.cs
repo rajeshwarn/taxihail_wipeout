@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.DeviceName,
-				command.TripId, command.DriverId, command.AccessFee, command.LastFour, command.OriginatingIpAddress, command.KountSessionId);
+				command.TripId, command.DriverId, command.AccessFee, command.LastFour, command.OriginatingIpAddress, command.KountSessionId, command.CreditCardId);
             _repository.Save(order, command.Id.ToString());
         }
 

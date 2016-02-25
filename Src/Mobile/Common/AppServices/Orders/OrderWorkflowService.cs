@@ -109,11 +109,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 
-            Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+            Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
             Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 		}
 
-        private async Task MarketChanged(MarketSettings marketSettings)
+		private async Task MarketChanged(MarketSettings marketSettings)
 		{
 			if (_marketSettings.HashedMarket != marketSettings.HashedMarket)
 			{
@@ -231,12 +231,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    public async Task<bool> ValidateChargeType()
 	    {
-            var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
+			var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
             if (!chargeTypes.Any())
 	        {
 	            return false;
 	        }
+
 	        return true;
 	    }
 

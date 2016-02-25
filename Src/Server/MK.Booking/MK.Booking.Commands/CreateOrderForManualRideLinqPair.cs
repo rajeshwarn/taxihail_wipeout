@@ -74,5 +74,7 @@ namespace apcurium.MK.Booking.Commands
         public string OriginatingIpAddress { get; set; }
 
         public string KountSessionId { get; set; }
+
+        public Guid? CreditCardId { get; set; }
     }
 }

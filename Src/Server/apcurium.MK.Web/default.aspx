@@ -83,6 +83,7 @@
             TaxiHail.parameters.autoConfirmFleetChange = <%: AutoConfirmFleetChange ? "true" : "false" %>;
             TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
             TaxiHail.parameters.askForCVVAtBooking = <%: AskForCVVAtBooking ? "true" : "false" %>;
+            TaxiHail.parameters.disableAMEX = <%: DisableAMEX ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;

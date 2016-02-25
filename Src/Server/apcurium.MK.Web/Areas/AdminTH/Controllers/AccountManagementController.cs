@@ -385,6 +385,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var accountDetail = _accountDao.FindById(accountId);
 
+            var orders = GetOrderDetails(accountId) ?? new List<OrderDetail>();
+            var ordersCount = orders.Count();
+            var accountAgeInDays = (DateTime.UtcNow - accountDetail.CreationDate).TotalDays;
+            var averageTripsPerDay = decimal.Round((decimal) (ordersCount/accountAgeInDays), 1);
+            var totalCanceled = GetOrderStatusDetails(accountId).Count(x => x.IBSStatusId == VehicleStatuses.Common.Cancelled || x.IBSStatusId == VehicleStatuses.Common.CancelledDone);
+            var totalCompleted = orders.Count(order => order.Status == (int)OrderStatus.Completed);
+            var totalNoShow = GetOrderStatusDetails(accountId).Count(x => x.IBSStatusId == VehicleStatuses.Common.NoShow);
+
             var model = new AccountManagementModel
             {
                 Id = accountId,
@@ -400,7 +408,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PhoneNumber = accountDetail.Settings.Phone,
                 ChargeType = accountDetail.Settings.ChargeType,
                 DefaultTipPercent = accountDetail.DefaultTipPercent,
-                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked
+                IsPayPalAccountLinked = accountDetail.IsPayPalAccountLinked,
+                TotalCanceled = totalCanceled,
+                TotalCompleted = totalCompleted,
+                AverageTripsPerDay = averageTripsPerDay,
+                TotalNoShows = totalNoShow
             };
 
             if (accountDetail.DefaultCreditCard != null)
@@ -417,16 +429,34 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return model;
         }
 
+        private IEnumerable<OrderDetail> _orderDetails;
+        private IEnumerable<OrderDetail> GetOrderDetails(Guid accountId)
+        {
+            return _orderDetails ?? (_orderDetails = _orderDao.FindByAccountId(accountId)
+                .OrderByDescending(c => c.CreatedDate));
+        }
+
+        private IEnumerable<OrderStatusDetail> _orderStatusDetails;
+        private IEnumerable<OrderStatusDetail> GetOrderStatusDetails(Guid accountId)
+        {
+            return _orderStatusDetails ?? (_orderStatusDetails = _orderDao.FindOrderStatusByAccountId(accountId));
+        }
+
+        private IEnumerable<PromotionUsageDetail> _promotionUsageDetails;
+        private IEnumerable<PromotionUsageDetail> GetPromotionUsageDetails(Guid accountId)
+        {
+            return _promotionUsageDetails ?? (_promotionUsageDetails = _promoDao.FindPromotionUsageByAccountId(accountId));
+        }
+
         private PagedList<OrderModel> GetOrders(Guid accountId, int page, int ordersPageSize)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
 
-            var orders = _orderDao.FindByAccountId(accountId)
-               .OrderByDescending(c => c.CreatedDate)
+            var orders = GetOrderDetails(accountId)
                .Select(x =>
                {
-                   var promo = _promoDao.FindByOrderId(x.Id);
-                   var status = _orderDao.FindOrderStatusById(x.Id);
+                   var promo =  GetPromotionUsageDetails(accountId).FirstOrDefault(promotionUsageDetail => promotionUsageDetail.OrderId == x.Id);
+                   var status = GetOrderStatusDetails(accountId).FirstOrDefault(orderStatusDetail => orderStatusDetail.OrderId == x.Id);
                    var orderPairing = _orderDao.FindOrderPairingById(x.Id);
 
                    return new OrderModel(x)
@@ -440,7 +470,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
                        TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
                        IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
-                       StatusString = status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()
+                       StatusString = status != null ? (status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()) : string.Empty
                    };
                })
                .ToList();

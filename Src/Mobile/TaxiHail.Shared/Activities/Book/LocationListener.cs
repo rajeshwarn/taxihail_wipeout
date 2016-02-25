@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.iOS.Patterns;
 using Object = Java.Lang.Object;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -43,12 +44,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     public class LocationListenerManager : Object, IObservable<Position>
     {
         private readonly List<IObserver<Position>> _observers;
+        private readonly ICacheService _cacheService;
 
         public LocationListenerManager()
         {
             _observers = new List<IObserver<Position>>();
             GpsListener = new LocationListener(this);
             NetworkListener = new LocationListener(this);
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ();
         }
 
         public LocationListener GpsListener { get; private set; }
@@ -85,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
 
                 LastKnownPosition = position;
+
+                _cacheService.Set("UserLastKnownPosition", position);
             }
             catch 
             {
