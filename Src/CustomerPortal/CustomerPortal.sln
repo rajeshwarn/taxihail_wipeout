@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Web", "CustomerPortal.Web\CustomerPortal.Web.csproj", "{66FB44CA-BF67-4B22-9BF4-0A41EC227F0B}"
 EndProject
@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Client", "Cu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Contract", "CustomerPortal.Contract\CustomerPortal.Contract.csproj", "{6A4623E1-41EF-4286-9A34-2ADC6407E94F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common", "..\Server\MK.Common\MK.Common.csproj", "{65033050-1D55-465A-A772-F3192F9E2428}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.MK.Common", "..\apcurium.MK.Common\apcurium.MK.Common.csproj", "{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.MK.Common.Server", "..\Server\apcurium.MK.Common\apcurium.MK.Common.Server.csproj", "{65033050-1D55-465A-A772-F3192F9E2428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{6A4623E1-41EF-4286-9A34-2ADC6407E94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A4623E1-41EF-4286-9A34-2ADC6407E94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A4623E1-41EF-4286-9A34-2ADC6407E94F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65033050-1D55-465A-A772-F3192F9E2428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65033050-1D55-465A-A772-F3192F9E2428}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65033050-1D55-465A-A772-F3192F9E2428}.Release|Any CPU.ActiveCfg = Release|Any CPU
