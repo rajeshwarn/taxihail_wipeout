@@ -137,5 +137,11 @@
   </data>
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
     <value>Do you want to request a call with your driver? If so, the driver will be notified and asked to dial an anonymous number which will be routed to your phone.</value>
+  </data>
+  <data name="NoCardOnFileMessage" xml:space="preserve">
+    <value>Oops, looks like you don't have a credit card on file. Select "Add Card" to add one.</value>
+  </data>
+  <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
+    <value>Oops, looks like you don't have a credit card on file. Select "Add Card" to add one.</value>
   </data>  
 </root>
