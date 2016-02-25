@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
@@ -30,7 +29,6 @@ using MK.Common.Exceptions;
 using System.Threading;
 using System.Reactive.Subjects;
 using apcurium.MK.Common.Configuration.Impl;
-using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -81,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             // If we changed market
             if (marketSettings.HashedMarket != _marketSettings.HashedMarket)
             {
-                UpdateChargeTypes(marketSettings);
+                await UpdateChargeTypes(marketSettings);
             }
             
             _marketSettings = marketSettings;
@@ -187,88 +185,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             return cached;
         }
-
-		private async Task<IList<ListItem>> GetChargeTypes(MarketSettings marketSettings)
-		{
-			var refData = await GetReferenceData();
-
-			if (refData == null)
-			{
-				return null;
-			}
-
-			if (!CurrentAccount.IsPayPalAccountLinked)
-			{
-				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
-			}
-
-			var paymentSettings = await _paymentService.GetPaymentSettings();
-
-			var isCmt = paymentSettings.PaymentMode == PaymentMethod.Cmt ||
-				paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-
-			refData.PaymentsList = isCmt
-				? HandlePaymentInCarForCmt(refData.PaymentsList, marketSettings)
-				: EnforceExternalMarketPaymentInCarIfNeeded(refData.PaymentsList, marketSettings);
-
-			if (refData.PaymentsList.All(x => x.Id == ChargeTypes.CardOnFile.Id))
-			{
-				// there's only one Charge Type and it's card on file, return it
-				// don't attempt to remove it because you'll end up with a message saying
-				// you haven't selected a charge type when trying to book and not a message
-				// saying "hey you need a card, add it now"
-				// TLDR: it's easier to understand for the user this way
-				Console.WriteLine(refData.PaymentsList.ToJson());
-				return refData.PaymentsList;
-			}
-
-			var creditCard = await GetDefaultCreditCard();
-			if (creditCard == null
-				|| CurrentAccount.IsPayPalAccountLinked
-				|| creditCard.IsDeactivated)
-			{
-				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
-			}
-
-			Console.WriteLine(refData.PaymentsList.ToJson());
-			return refData.PaymentsList;
-		}
-
-		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
-		{
-			if (market.IsLocalMarket)
-			{
-				return paymentList;
-			}
-
-			return paymentList
-				.Where(paymentMethod => paymentMethod.Id == ChargeTypes.PaymentInCar.Id)
-				.ToArray();
-		}
-
-		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
-		{
-			if (!market.IsLocalMarket)
-			{
-				return market.DisableOutOfAppPayment
-					? paymentList
-					: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
-			}
-
-			paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
-
-			return paymentList;
-		}
-
-		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
-		{
-			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
-			{
-				paymentList.Insert(0, ChargeTypes.PaymentInCar);
-			}
-
-			return paymentList;
-		}
 
         public void ClearReferenceData()
         {
@@ -646,11 +562,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             return data;
-        }
-
-        public IObservable<IList<ListItem>> GetAndObservePaymentsList()
-        {
-            return _chargeTypesListSubject;
         }
 
         public Task ResetPassword (string email)

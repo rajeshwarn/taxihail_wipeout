@@ -1,14 +1,9 @@
-using System;
-using Android.Content;
 using Android.OS;
-using Android.Util;
 using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using TinyIoC;
 using Android.Runtime;
-using Com.Mapbox.Mapboxsdk;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Views;
 using Android.App;
@@ -26,11 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
         {
-            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
+            var initialPosition = TinyIoCContainer.Current.Resolve<ILocationService>().GetInitialPosition();
 
-            var initialPosition = locationService.GetInitialPosition();
-
-            Map = new MapView(Activity.ApplicationContext,  settings.MapBoxKey);
+            Map = new MapView(Activity.ApplicationContext,  TinyIoCContainer.Current.Resolve<IAppSettings>().Data.MapBoxKey);
             Map.OnCreate(savedInstanceState);
 
             Map.SetLogoVisibility((int)ViewStates.Gone);

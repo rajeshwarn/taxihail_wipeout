@@ -265,8 +265,6 @@ namespace apcurium.MK.Common.Diagnostic
                 GC.Collect();
                 _isWriting = false;
             }
-				_isWriting = false;
-			}
         }
 
         public string GetLogFileName()
