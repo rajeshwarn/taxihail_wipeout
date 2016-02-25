@@ -26,5 +26,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         void DeleteTemporaryPaymentInfo(Guid orderId);
         OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId);
 		OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId);
+        VehicleIdMappingDetail GetVehicleMapping(Guid orderId);
     }
 }

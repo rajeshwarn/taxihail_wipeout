@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                    command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
+                    command.CompanyKey, command.CompanyName, command.CompanyFleetId, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
                     command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                     command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId,
                     command.OriginatingIpAddress, command.KountSessionId);
@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
+				command.CompanyKey, command.CompanyName, command.CompanyFleetId, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
                 command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                 command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId,
                 command.OriginatingIpAddress, command.KountSessionId);
@@ -192,14 +192,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddIbsOrderInfoToOrder command)
         {
             var order = _repository.Find(command.OrderId);
-            order.AddIbsOrderInfo(command.IBSOrderId);
+            order.AddIbsOrderInfo(command.IBSOrderId, command.CompanyKey);
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(CancelOrderBecauseOfError command)
         {
             var order = _repository.Find(command.OrderId);
-            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription);
+            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription, command.DispatcherTimedOut);
             _repository.Save(order, command.Id.ToString());
         }
 
