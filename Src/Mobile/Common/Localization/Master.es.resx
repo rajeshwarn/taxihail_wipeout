@@ -518,7 +518,6 @@
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
     <value>Sorry, Amex cards are not supported</value>
   </data>
-  </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>The server cannot be contacted, try again later.</value>
   </data>
@@ -2492,6 +2491,7 @@
   <data name="CreditCompany" xml:space="preserve">
     <value>Compañía de Crédito: </value>
     <comment>Credit company: </comment>
+  </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Update Card</value>
   </data>

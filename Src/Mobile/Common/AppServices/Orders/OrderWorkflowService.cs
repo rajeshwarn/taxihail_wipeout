@@ -1151,7 +1151,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return success;
 		}
-	
+
+		public IObservable<bool> GetAndObserveCanExecuteBookingOperation()
+		{
+			return _canExecuteBookingOperation;
+		}
+
 		private string GetUnhandledErrorMessageForOrderCreation()
 		{
 			return _appSettings.Data.HideCallDispatchButton

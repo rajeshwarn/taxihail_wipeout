@@ -766,24 +766,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				ParentViewModel.GotoBookingStatus(result.Order, result.OrderStatus);
 			}
 		}
-	    private ICommand _bookLater;
-
-		private AsyncCommand _bookLaterCommand;
-		public AsyncCommand BookLater
+	    
+		private ICommand _bookLater;
+		public ICommand BookLater
         {
             get
             {
-				if (_bookLaterCommand == null)
+				return _bookLater ?? (_bookLater = this.GetCommand(async () =>
 				{
-					_bookLaterCommand = (AsyncCommand)this.GetCommand(async () =>
-					{
-						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
-						await PrevalidatePickupAndDestinationRequired(onValidated);
-					}, () => CanProceedToBook() && !IsFutureBookingDisabled);
-				}
-				return _bookLaterCommand;
+					Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
+					await PrevalidatePickupAndDestinationRequired(onValidated);
+					}, () => CanProceedToBook() && !IsFutureBookingDisabled));
             }
         }
+
+		private bool CanProceedToBook()
+		{
+			return CanExecuteBookOperation;
+		}
 
         public ICommand BookAirportLater
         {
@@ -970,14 +970,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    }
 	    }
 
-		private AsyncCommand _bookCommand;
-		public AsyncCommand Book
+		private ICommand _book;
+		public ICommand Book
         {
             get
             {
-				if (_bookCommand == null)
+				if (_book == null)
 				{
-					_bookCommand = (AsyncCommand)this.GetCommand(async () =>
+					_book = this.GetCommand(async () =>
 					{
 						if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 							&& !IsFutureBookingDisabled && !Settings.DisableImmediateBooking)
@@ -1007,10 +1007,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 							await PrevalidatePickupAndDestinationRequired(onValidated);
 						}
-					}, () => CanProceedToBook(false));
+					}, CanProceedToBook);
 				}
 
-				return _bookCommand;
+				return _book;
             }
         }
 

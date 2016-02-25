@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 using CMTPayment.Actions;
+using RideLinqPairingMethod = apcurium.MK.Common.Configuration.Impl.CmtPaymentSettings.RideLinqPairingMethod;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
