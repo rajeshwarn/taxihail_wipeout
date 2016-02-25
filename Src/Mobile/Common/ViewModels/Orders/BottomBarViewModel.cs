@@ -556,7 +556,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (!cardValidated)
 				{
 					PromptToAddCreditCard(false);
-					return;
+                    return;
 				}
 
 				var cardExpirationValidated = await _orderWorkflowService.ValidateCardExpiration();
@@ -751,7 +751,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
 		}
 
-		private async Task ConfirmOrderAndGoToBookingStatus()
 		{
 			using (this.Services().Message.ShowProgress())
 			{
@@ -974,8 +973,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var chargeTypeValidated = await _orderWorkflowService.ValidateChargeType();
 
 
-					// popup
-					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
+                    // popup
+                    if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 						&& !IsFutureBookingDisabled && !Settings.DisableImmediateBooking)
                     {
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
@@ -1005,7 +1004,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }, CanProceedToBook);
             }
         }
-
+        
         private async Task HandleOverduePayment(OverduePayment overduePayment)
         {
             var localize = this.Services().Localize;
@@ -1049,7 +1048,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                         return;
                     }
-
+                    
 	                var homeViewModel = (HomeViewModel) Parent;
 					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });
@@ -1072,7 +1071,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             if (!await _orderWorkflowService.ValidateCardOnFile())
             {
-				PromptToAddCreditCard(false);
+                PromptToAddCreditCard(false);
             }
         }
 

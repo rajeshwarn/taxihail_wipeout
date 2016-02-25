@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 			
-		private async Task PaymentTypesChanged(IList<ListItem> paymentList)
-	    {
+	    private async Task PaymentTypesChanged(IList<ListItem> paymentList)
+        {
 			ChargeTypes = paymentList
 				.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] })
 				.ToArray();

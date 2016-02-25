@@ -613,7 +613,7 @@
   <string name="Overdue_OutstandingPaymentExists">Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</string>
   <string name="PromoDescriptionCode">Enter code {0} or press the button below</string>
   <string name="PromoApply">Apply</string>
-  <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
+  <string name="CreateAccountPayBackPlaceHolder">PayBack (Optional)</string>
   <string name="PromotionButton">Tap to Enter or View Promo Code</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="InvalidPayBackErrorMessage">The PayBack field must be all digits and must not exceed 10 characters in length</string>
@@ -796,4 +796,8 @@
   <string name="NoCreditCard">No credit card selected</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
   <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="Notification_NoShowPush">No show</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

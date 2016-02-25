@@ -118,6 +118,7 @@
   <string name="CreditCardExpYear">Mes de expiración</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardInvalidCrediCardNumber">El número de tarjeta de crédito es inválido</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
   <string name="CreditCardLabel">Etiqueta</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
@@ -243,7 +244,6 @@
   <string name="March">Mar (03)</string>
   <string name="May">May (05)</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
-  <string name="Modify">Modificar</string>
   <string name="NbPassenger">({0} pasajero)</string>
   <string name="NbPassengers">({0} pasajeros)</string>
   <string name="NearbyPlacesTitle">Lugares cercanos</string>
@@ -278,6 +278,7 @@
   <string name="Notification_DriverAssignedEmail">Chofer asignado (email)</string>
   <string name="Notification_DriverAssignedPush">Chofer asignado</string>
   <string name="Notification_DriverBailedPush">EL conductor activo reasignación</string>
+  <string name="Notification_NoShowPush">Pasajero no presentado</string>
   <string name="Notification_Enabled">Notificiaciones</string>
   <string name="Notification_NearbyTaxiPush">Taxis cercanos</string>
   <string name="Toggle_Off">Apagado</string>
@@ -384,7 +385,7 @@
   <string name="SaveAddressEmptyFieldMessage">Los datos no son válidos, los campos de nombre y dirección son requeridos.</string>
   <string name="SaveAddressEmptyFieldTitle">Nombre</string>
   <string name="ScanCreditCard">Escanear su Tarjeta de crédito</string>
-  <string name="SetAsDefaultCreditCard">Set As Default</string>
+  <string name="SetAsDefaultCreditCard">Poner por Defecto</string>
   <string name="searchHint">Buscar</string>
   <string name="SendEmail">Enviar email...</string>
   <string name="SendErrorLogButton">Enviar registro de errores</string>
@@ -402,7 +403,7 @@
   <string name="StatusCallButton">Llamar</string>
   <string name="StatusCancelButton">Cancelar reservación</string>
   <string name="StatusCannotBeDisplayed">No podemos obtener estato, por favor llame proveedor</string>
-  <string name="StatusConfirmCancelRide">Are you sure you want to cancel?</string>
+  <string name="StatusConfirmCancelRide">Estás seguro que deseas cancelar?</string>
   <string name="StatusConfirmCancelRideError">Esta reservación no puede ser cancelada, por favor llame para cancelar esta esta reservación.</string>
   <string name="StatusConfirmCancelRideErrorTitle">No se puede cancelar</string>
   <string name="StatusConfirmNewBooking">Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?</string>
@@ -508,7 +509,7 @@
   <string name="WarningLocationServiceTitle">Aviso</string>
   <string name="WarningPushServiceAction">Gracias por informarme</string>
   <string name="WarningPushServiceMessage">Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria</string>
-  <string name="WarningPushServiceTitle">Notificaciones lanzadas</string>
+  <string name="WarningPushServiceTitle">Notificaciones enviadas</string>
   <string name="WarningTitle">Aviso</string>
   <string name="YesButton">Si</string>
   <string name="NetworkContactingNextDispatchDescription">Contactando {0} …</string>
@@ -519,9 +520,9 @@
   <string name="UpdateBookingSettingsInvalidCoF">Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta</string>
   <string name="MarketChangedMessage">Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.</string>
   <string name="MarketChangedMessageTitle">Se ha detectado una nueva área de servicio.</string>
-  <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
-  <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
-  <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
+  <string name="PanelMenuViewTaxiHailNetworkText">Red TaxiHail</string>
+  <string name="View_UserTaxiHailNetworkSettings">Red TaxiHail</string>
+  <string name="UserTaxiHailNetwork_Enabled">Red TaxiHail</string>
   <string name="PromoCodeLabel">Código de promoción</string>
   <string name="PromoMustUseCardOnFileMessage">Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">Para utilizar un código de promoción, es necesario tener un método de pago configurado como parte de su cuenta.</string>
@@ -573,7 +574,7 @@
   <string name="Overdue_OutstandingPaymentExists">Su tarjeta de crédito no pudo ser cargada con el viaje anterior. Usted tendrá que pagar esta cantidad pendiente para que su tarjeta sea reactivada.</string>
   <string name="PromoDescriptionCode">Ingrese el código {0} o pulse el botón de abajo</string>
   <string name="PromoApply">Aplicar</string>
-  <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
+  <string name="CreateAccountPayBackPlaceHolder">PayBack (Opcional)</string>
   <string name="PromotionButton">Pulse para entrar o Ver Código de promoción</string>
   <string name="NoPayBackErrorMessage">El campo PayBack es obligatorio.</string>
   <string name="InvalidPayBackErrorMessage">El campo PayBack debe ser solamente dígitos y no debe superar los 10 caracteres de longitud.</string>
@@ -588,7 +589,7 @@
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ManualRideLinqStatus_PairingError">Ha ocurrido un error. Por favor intente registrarse nuevamente utilizando el código mostrado en la pantalla de la unidad.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
-  <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
+  <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de sincronización es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
   <string name="ManualPairingForRideLinQ_Pair">Registrarse</string>
   <string name="HomeView_ManualPairing">En un Taxi</string>
@@ -617,7 +618,7 @@
   <string name="CvvRequiredMessage">Por favor introduzca el CVV asociado a su tarjeta registrada con terminación {0} para continuar</string>
   <string name="Error_InvalidCvvTitle">CVV Inválido</string>
   <string name="Error_InvalidCvvMessage">El CVV debe ser un número entre 3 y 4 dígitos</string>
-  <string name="ManualRideLinqCreditCardDisabled">Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ</string>
+  <string name="ManualRideLinqCreditCardDisabled">Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el sincronización con RideLinQ</string>
   <string name="CallDriverUsingProxyMessage">Su conductor le marcara en unos minutos</string>
   <string name="CallDriverUsingProxyErrorMessage">Lo sentimos, no nos fue posible iniciar una llamada con su conductor.</string>
   <string name="GenericErrorTitle">Error</string>
@@ -638,7 +639,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">La orden no puede ser creada, intente mas tarde.</string>
   <string name="DialCodeSelectorTitle">Código de Marcación</string>
   <string name="ServiceError_EmailClientAbsent">Lo sentimos, no fue posible crear un email. No hay un cliente de email configurado en éste dispositivo.</string>
-  <string name="DriverInfoVehicleMedallion">Medallón:</string>
+  <string name="DriverInfoVehicleMedallion">Unidad:</string>
   <string name="ResendConfirmationCodeButtonText">Reenviar código de confirmación</string>
   <string name="ResendConfirmationCodeTitle">Confirmación</string>
   <string name="ResendConfirmationCodeText">El código de confirmación será reenviado en un momemnto</string>
@@ -654,7 +655,7 @@
   <string name="CallDriver">Llamar al Conductor</string>
   <string name="MenuButton">Menú</string>
   <string name="SendMessageDriver">Enviar Mensaje al Conductor</string>
-  <string name="LocateMeButton">Localízame</string>
+  <string name="LocateMeButton">Ubícame</string>
   <string name="AirportsButton">Aeropuertos</string>
   <string name="Rating1">Terrible</string>
   <string name="Rating2">Malo</string>
@@ -676,7 +677,7 @@
   <string name="BookingAirportPickupPointFee">Seleccionar el punto de abordaje {0} generará un cargo adicional por {1}</string>
   <string name="BookingAirportDetails">Aeropuerto: {0},\nAerolinea: {1},\nVuelo #: {2},\nPunto de Abordaje: {3}</string>
   <string name="BookingAirportDetailsFee">, (Tarifa de abordaje: {0})</string>
-  <string name="ManualRideLinqStatus_Cancelled">Has sido desligado de RideLinQ. Por favor ingresa el código de emparejamiento nuevamente.</string>
+  <string name="ManualRideLinqStatus_Cancelled">Has sido desligado de RideLinQ. Por favor ingresa el código de sincronización nuevamente.</string>
   <string name="TutorialActivityName">Tutorial</string>
   <string name="HomeActivityName">Inicio</string>
   <string name="PasswordRecoveryActivityName">Recuperación de contraseña</string>
@@ -699,7 +700,7 @@
   <string name="AccountConfirmationActivityName">Confirmación de cuenta</string>
   <string name="UpdatePasswordActivityName">Actualizar contraseña</string>
   <string name="UserTaxiHailNetworkSettingsActivityName">Ajustes de configuración de red del TaxiHail de Usuario</string>
-  <string name="ManualPairingForRideLinqActivityName">Emparejamiento manual de RideLinq</string>
+  <string name="ManualPairingForRideLinqActivityName">sincronización manual de RideLinq</string>
   <string name="ManualRideLinqStatusActivityName">Estatus Manual de RideLinq</string>
   <string name="MessageActivityName">Mensaje</string>
   <string name="BookSummaryActivityName">Resumen de reserva</string>
@@ -715,7 +716,7 @@
   <string name="TaxiHailNetworkTimeOutPopupAccept">Aceptar</string>
   <string name="TaxiHailNetworkTimeOutPopupMessage">Debido a alta demanda, no hay unidades disponibles en este momento. Desea reservar con {0} en su lugar?</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Cambiar compañia?</string>
-  <string name="OrderStatus_Medallion">Medallón</string>
+  <string name="OrderStatus_Medallion">Unidad</string>
   <string name="OrderStatus_AddDestination">Agregar destino</string>
   <string name="OrderStatus_RemoveDestination">Eliminar el destino</string>
   <string name="ErrorChangeDropOff_Message">Lo sentimos, no pudimos actualizar su destino.</string>
@@ -748,21 +749,22 @@
   <string name="LinkForApplicationStoreAbsentText">URL a página de tienda no configurada</string>
   <string name="ServiceErrorUnauthorized">Su sesión ha expirado, por favor ingrese nuevamente.</string>
   <string name="ServiceErrorCallTitle">Mensaje</string>
-  <string name="PairingProcessingErrorTitle">Problema al realizar pago empatado</string>
+  <string name="PairingProcessingErrorTitle">Problema al realizar pago sincronizado</string>
   <string name="TripUnableToPairErrorText">Lo sentimos, hubo un problema, por favor pague en la unidad</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Lo sentimos, su tarjeta no pudo ser autorizada. Por favor pague en la unidad</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Lo sentimos, hubo un error al procesar su tarjeta. Por favor pague en la unidad</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No se ha encontrado cuenta con este email</string>
-  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
-  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">Este email esta asociado a una cuenta de Facebook. Por favor ingrese via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
   <string name="InvalidCreditCardMessage">Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</string>
   <string name="InvalidCreditCardUpdateCardButton">Actualizar Tarjeta</string>
-  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
-  <string name="LastFour">Last 4 numbers:  </string>
-  <string name="CreditCompany">Credit company: </string>
-  <string name="SelectedCreditCard">Currently selected credit card</string>
-  <string name="NoCreditCard">No credit card selected</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">Necesita tener una tarjeta de crédito activa como método de pago por defecto</string>
+  <string name="LastFour">Los últimos 4 números:  </string>
+  <string name="CreditCompany">Compañía de Crédito: </string>
+  <string name="SelectedCreditCard">Tarjeta de crédito seleccionada actualmente</string>
+  <string name="NoCreditCard">No ha seleccionado una tarjeta de crédito</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

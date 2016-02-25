@@ -51,8 +51,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             PhoneNumber = new PhoneNumberModel();
 
-			Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
-		}
+            Observe(_accountService.GetAndObservePaymentsList(), paymentTypes => PaymentTypesChanged(paymentTypes).FireAndForget());
+        }
 
 		private async Task PaymentTypesChanged(IList<ListItem> paymentList)
 		{
@@ -65,9 +65,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => ChargeTypeId);
 			RaisePropertyChanged(() => ChargeTypeName);
 			RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
-		}
+ 		}
 
-		public async void Init()
+        public async void Init()
         {
 		    using (this.Services ().Message.ShowProgress ())
 			{
@@ -108,8 +108,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1).ToTask();
 			var isLocalMarket = marketSettings.IsLocalMarket;
 
-			// We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
-			if (!isLocalMarket)
+            // We ignore the DisableChargeTypeWhenCardOnFile when on external market because the override in marketSetting will decide if we can change the charge type.
+            if (!isLocalMarket)
 			{
 				IsChargeTypesEnabled = Payments.Length > 1;
 				return;

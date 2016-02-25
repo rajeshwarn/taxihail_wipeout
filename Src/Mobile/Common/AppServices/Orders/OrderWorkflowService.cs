@@ -108,9 +108,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _poiProvider = poiProvider;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
-		
-			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
-			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
+
+            Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+            Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 		}
 
 		private async Task MarketChanged(MarketSettings marketSettings)
@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_marketSettings = marketSettings;
 		}
 
-		public async Task SetAddress(Address address)
+        public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
 		}
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
 			var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
-	        if (!chargeTypes.Any())
+            if (!chargeTypes.Any())
 	        {
 	            return false;
 	        }
@@ -363,10 +363,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
-			var paymentList = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
+            var paymentList = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
-		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
 				if (!_marketSettings.IsLocalMarket)
 		        {
@@ -1002,6 +1002,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task PreselectDefaultVehicleType(IList<VehicleType> vehicleList)
 		{
+
 			int? selectedVehicleId = null;
 
 			if (vehicleList.Any())
