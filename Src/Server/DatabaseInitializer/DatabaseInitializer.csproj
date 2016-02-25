@@ -291,6 +291,14 @@
     <Compile Include="Migrations\201602191821111_Configuration_MKTAXI_3005.Designer.cs">
       <DependentUpon>201602191821111_Configuration_MKTAXI_3005.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602251514370_Booking_MKTAXI_3867.cs" />
+    <Compile Include="Migrations\201602251514370_Booking_MKTAXI_3867.Designer.cs">
+      <DependentUpon>201602251514370_Booking_MKTAXI_3867.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602251515214_Configuration_MKTAXI_3878.cs" />
+    <Compile Include="Migrations\201602251515214_Configuration_MKTAXI_3878.Designer.cs">
+      <DependentUpon>201602251515214_Configuration_MKTAXI_3878.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
@@ -490,6 +498,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602191821111_Configuration_MKTAXI_3005.resx">
       <DependentUpon>201602191821111_Configuration_MKTAXI_3005.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251514370_Booking_MKTAXI_3867.resx">
+      <DependentUpon>201602251514370_Booking_MKTAXI_3867.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251515214_Configuration_MKTAXI_3878.resx">
+      <DependentUpon>201602251515214_Configuration_MKTAXI_3878.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
