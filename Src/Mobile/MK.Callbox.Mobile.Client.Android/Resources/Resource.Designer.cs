@@ -1095,7 +1095,10 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int CreditCardInstructions = 2131034485;
 			
 			// aapt resource value: 0x7f050183
-			public const int CreditCardInvalidCrediCardNUmber = 2131034499;
+			public const int CreditCardInvalidCrediCardNumber = 2131034499;
+			
+			// aapt resource value: 0x7f05031d
+			public const int CreditCardInvalidCrediCardTypeAmex = 2131034909;
 			
 			// aapt resource value: 0x7f050179
 			public const int CreditCardLabel = 2131034489;
@@ -1883,6 +1886,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050210
 			public const int Notification_NearbyTaxiPush = 2131034640;
 			
+			// aapt resource value: 0x7f05031e
+			public const int Notification_NoShowPush = 2131034910;
+			
 			// aapt resource value: 0x7f050211
 			public const int Notification_PaymentConfirmationPush = 2131034641;
 			
@@ -2363,6 +2369,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0500ab
 			public const int RideSettingsEmailTitle = 2131034283;
 			
+			// aapt resource value: 0x7f050320
+			public const int RideSettingsLastCreditCardDeletion = 2131034912;
+			
 			// aapt resource value: 0x7f050274
 			public const int RideSettingsLoadError = 2131034740;
 			
@@ -2458,6 +2467,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050025
 			public const int ServiceErrorUnauthorized = 2131034149;
+			
+			// aapt resource value: 0x7f05031f
+			public const int ServiceErrorUpdatePassword_NotSame = 2131034911;
 			
 			// aapt resource value: 0x7f0502ac
 			public const int ServiceError_EmailClientAbsent = 2131034796;

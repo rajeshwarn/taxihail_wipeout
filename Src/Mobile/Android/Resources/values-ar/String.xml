@@ -106,6 +106,7 @@
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardInvalidCrediCardNumber">رقم البطاقة الائتمانية خاطئة</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">الإسم كما يظهر على البطاقة</string>
@@ -479,6 +480,7 @@
   <string name="RateLastRide">Rate</string>
   <string name="Notification_DriverAssignedPush">Driver Assigned</string>
   <string name="Notification_DriverBailedPush">Driver bailed</string>
+  <string name="Notification_NoShowPush">No show</string>
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
   <string name="Notification_Enabled">Allow Notifications</string>
   <string name="RateLastRideTitle">Rate last ride?</string>
@@ -749,4 +751,5 @@
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
   <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>
