@@ -1168,14 +1168,17 @@ namespace apcurium.MK.Booking.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return (ibsOrderInfo.Status.HasValue()                                // ibs status changed
-                        && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) 
-                   || (!orderStatusDetail.FareAvailable                           // fare was not available and ibs now has the information
-                        && ibsOrderInfo.Fare > 0)
+            return (ibsOrderInfo.Status.HasValue() // ibs status changed
+                    && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
+                   || (!orderStatusDetail.FareAvailable // fare was not available and ibs now has the information
+                       && ibsOrderInfo.Fare > 0)
                    || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
-                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
-                   || (orderStatusDetail.Status == OrderStatus.TimedOut           // special case for network                   
-                        && _serverSettings.ServerData.Network.Enabled);           
+                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
+                   || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   
+                       && _serverSettings.ServerData.Network.Enabled)
+                   || (orderStatusDetail.VehicleNumber != ibsOrderInfo.VehicleNumber); // sometimes driver bailed, and we got the status assigned 
+                                                                                       //directly after the previous status assigned (to the previous driver)
+                                                                                       //so we need to check the vehicle number with the previous one
         }
 
         private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
