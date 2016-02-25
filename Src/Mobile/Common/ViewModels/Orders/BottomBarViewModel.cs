@@ -751,6 +751,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
 		}
 
+        private async Task ConfirmOrderAndGoToBookingStatus()
 		{
 			using (this.Services().Message.ShowProgress())
 			{
