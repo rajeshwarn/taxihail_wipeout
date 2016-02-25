@@ -339,40 +339,10 @@
     <Compile Include="ReadModel\TemporaryOrderPaymentInfoDetail.cs" />
     <Compile Include="ReadModel\VehicleIdMappingDetail.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
-    <Compile Include="Resources\Aexid.fr.Designer.cs">
-      <DependentUpon>Aexid.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Aexid.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Aexid.resx</DependentUpon>
-    </Compile>
     <Compile Include="Resources\Arro.Designer.cs">
       <DependentUpon>Arro.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Resources\Capital Taxi Ottawa.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Capital Taxi Ottawa.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Central Niagara.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Central Niagara.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Central Taxi Belleville.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Central Taxi Belleville.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\CheckerYellowCabPalmetto.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CheckerYellowCabPalmetto.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
@@ -389,38 +359,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.es.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\MearsTaxi.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MearsTaxi.resx</DependentUpon>
-    </Compile>
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\TaxiHailNYC.Designer.cs">
-      <DependentUpon>TaxiHailNYC.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Thriev.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Thriev.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\West Way Taxi Ottawa.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>West Way Taxi Ottawa.resx</DependentUpon>
-    </Compile>
     <Compile Include="Security\CryptoService.cs" />
-    <Compile Include="Resources\UTOG.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UTOG.resx</DependentUpon>
-    </Compile>
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
@@ -535,18 +480,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Aeroport Taxi.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Aexid.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Aexid.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Aexid.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Arro.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -554,30 +487,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ArroNT.resx" />
     <EmbeddedResource Include="Resources\ArroUAT.resx" />
-    <EmbeddedResource Include="Resources\Blueline Taxi.resx" />
-    <EmbeddedResource Include="Resources\Capital Taxi Ottawa.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Capital Taxi Ottawa1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Central Niagara.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Central Niagara.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Central Taxi Belleville.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Central Taxi Belleville.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\CheckerYellowCabPalmetto.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CheckerYellowCabPalmetto.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ArroDemo.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\DJs Taxi.resx" />
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.ar.Designer.cs</LastGenOutput>
@@ -591,28 +505,10 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MearsTaxi.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Thriev.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\UTOG.resx" />
-    <EmbeddedResource Include="Resources\West Way Taxi Ottawa.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>West Way Taxi Ottawa.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
