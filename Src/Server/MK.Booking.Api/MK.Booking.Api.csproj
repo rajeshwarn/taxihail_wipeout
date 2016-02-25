@@ -134,7 +134,6 @@
     <Compile Include="Serialization\CsvCustomSerializer.cs" />
     <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
-    <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
@@ -147,7 +146,6 @@
     <Compile Include="Services\Payment\BraintreeClientPaymentService.cs" />
     <Compile Include="Services\Payment\CmtPaymentPairingService.cs" />
     <Compile Include="Services\Payment\ProcessPaymentService.cs" />
-    <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
@@ -174,8 +172,6 @@
     <Compile Include="Services\Maps\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
     <Compile Include="Services\OrderRatingsService.cs" />
-    <Compile Include="Services\OrderService.cs" />
-    <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
     <Compile Include="Services\PushNotificationRegistrationService.cs" />
     <Compile Include="Services\RulesService.cs" />
