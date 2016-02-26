@@ -1135,8 +1135,8 @@
     <comment>Update now</comment>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value>El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</value>
-    <comment>The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</comment>
+    <value>El servidor no puede ser contactado.</value>
+    <comment>The server cannot be contacted.</comment>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>Error en conexión</value>
