@@ -151,12 +151,10 @@
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
     <Compile Include="Services\OrderCreation\CreateOrderService.cs" />
-    <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />
     <Compile Include="Services\Maps\DirectionsService.cs" />
     <Compile Include="Services\Maps\GeocodingService.cs" />
-    <Compile Include="Services\CurrentAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Maps\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
