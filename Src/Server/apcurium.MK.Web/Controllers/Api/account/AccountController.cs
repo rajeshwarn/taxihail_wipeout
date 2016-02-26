@@ -41,10 +41,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 
             _resources = new Resources(serverSettings);
         }
-
-
+        
         [HttpPut,Auth(Roles = new [] { Roles.Support }), Route("update/{accountId}")]
-        public object AccountUpdate(Guid accountId, BookingSettingsRequest bookingSettings)
+        public HttpResponseMessage AccountUpdate(Guid accountId, BookingSettingsRequest bookingSettings)
         {
             var existingEmailAccountDetail = _accountDao.FindByEmail(bookingSettings.Email);
             var currentAccountDetail = _accountDao.FindById(accountId);
@@ -105,6 +104,10 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        
+        [HttpPut, Route("bookingsettings")]
+        public HttpResponseMessage AccountUpdate(BookingSettingsRequest request)
+        {
+            return AccountUpdate(GetSession().UserId, request);
+        }
     }
 }
