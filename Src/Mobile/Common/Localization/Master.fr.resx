@@ -820,7 +820,7 @@
     <value>Non</value>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value>Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</value>
+    <value>Echec de connexion.</value>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>Erreur de connexion</value>
