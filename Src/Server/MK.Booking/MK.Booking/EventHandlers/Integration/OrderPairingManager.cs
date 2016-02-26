@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         
                         var ibsStatusDescription = response.IsSuccessful ? "OrderStatus_PairingSuccess" : errorMessageKey;
 
-                        UpdateIBSStatusDescription(order.Id, account.Language, ibsStatusDescription);
+                        UpdateIBSStatusDescription(order.Id, order.ClientLanguageCode, ibsStatusDescription);
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful, errorMessageKey);
                     } 

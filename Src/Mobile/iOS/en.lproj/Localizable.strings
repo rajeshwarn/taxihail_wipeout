@@ -13,7 +13,7 @@
 "Close"="Close";
 "GenericTitle"="";
 "NoConnectionTitle"="Connection error";
-"NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
+"NoConnectionMessage"="The server cannot be contacted.";
 "FavoriteLocationsTitle"="Favorite locations";
 "NearbyPlacesTitle"="Nearby places";
 "BookItLaterButton"="Later";

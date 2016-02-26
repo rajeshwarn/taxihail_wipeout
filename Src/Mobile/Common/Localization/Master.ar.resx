@@ -803,7 +803,7 @@
     <value>لا</value>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value>لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</value>
+    <value>The server cannot be contacted.</value>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>خطأ في الإتصال</value>
