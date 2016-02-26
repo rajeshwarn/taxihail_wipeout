@@ -3,6 +3,7 @@
 using System;
 using System.Web;
 using System.Web.Hosting;
+using System.Web.Http.Controllers;
 using ServiceStack.ServiceHost;
 
 #endregion
@@ -11,11 +12,10 @@ namespace apcurium.MK.Booking.Api.Helpers
 {
     public static class ApplicationPathResolver
     {
-        public static string GetApplicationPath(IRequestContext requestContext)
-        {
-            var httpRequest = requestContext.Get<IHttpRequest>();
-            var root = new Uri(requestContext.AbsoluteUri).GetLeftPart(UriPartial.Authority);
-            var aspNetRequest = httpRequest.OriginalRequest as HttpRequest;
+        public static string GetApplicationPath(HttpRequestContext httpRequest)
+        {   
+            var root = httpRequest.Url.Request.RequestUri.GetLeftPart(UriPartial.Authority);
+            var aspNetRequest = httpRequest.Url.Request;
             if (aspNetRequest != null)
             {
                 //We are in IIS

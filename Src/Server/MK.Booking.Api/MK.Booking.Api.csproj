@@ -141,7 +141,6 @@
     <Compile Include="Services\Payment\BraintreeClientPaymentService.cs" />
     <Compile Include="Services\Payment\CmtPaymentPairingService.cs" />
     <Compile Include="Services\Payment\ProcessPaymentService.cs" />
-    <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\Payment\PaymentSettingsService.cs" />
     <Compile Include="Services\NotificationAdministrationService.cs" />
     <Compile Include="Services\PrivacyPolicyService.cs" />

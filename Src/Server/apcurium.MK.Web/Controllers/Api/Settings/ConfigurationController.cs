@@ -126,15 +126,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             var userId = accountId ?? request.AccountId ?? GetSession().UserId;
 
-            var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(id)
-                ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[] { } };
-
-            return new UserTaxiHailNetworkSettings
-            {
-                Id = networkSettings.Id,
-                IsEnabled = networkSettings.IsEnabled,
-                DisabledFleets = networkSettings.DisabledFleets
-            };
+            return _configDao.GetUserTaxiHailNetworkSettings(userId) ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[] { } };
         }
 
         [HttpPost, Auth, Route("settings/taxihailnetwork/{accountId:Guid?}")]
