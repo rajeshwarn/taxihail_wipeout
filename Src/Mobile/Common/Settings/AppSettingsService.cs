@@ -10,8 +10,8 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Services;
 using Cirrious.CrossCore;
-using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -21,16 +21,19 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 		private bool _settingsFileLoaded;
 
-        readonly ICacheService _cacheService;
-		readonly ILogger _logger;
+        private readonly ICacheService _cacheService;
+		private readonly ILogger _logger;
+        private readonly ICryptographyService _cryptographyService;
+
 		const string SettingsCacheKey = "TaxiHailSetting";
 
-		public AppSettingsService (ICacheService cacheService, ILogger logger)
+		public AppSettingsService (ICacheService cacheService, ILogger logger, ICryptographyService cryptographyService)
         {
 			_logger = logger;
 			_cacheService = cacheService;
+		    _cryptographyService = cryptographyService;
 
-			Data = new TaxiHailSetting();
+            Data = new TaxiHailSetting();
 
 			//bare minimum for the app to work (server url etc.)
 			LoadSettingsFromFile();
@@ -194,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			_logger.LogMessage("load settings from server");
 
 			var settingsFromServer = await TinyIoCContainer.Current.Resolve<ConfigurationClientService>().GetSettings(getSettingsShouldThrowExceptionIfError);
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
+            _cryptographyService.SwitchEncryptionStringsDictionary(Data.GetType(), null, settingsFromServer, false);
 
             SettingsLoader.InitializeDataObjects(Data, settingsFromServer, _logger, new[] { "ServiceUrl", "CanChangeServiceUrl" });
 

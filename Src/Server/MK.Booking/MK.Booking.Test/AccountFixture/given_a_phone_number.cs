@@ -9,6 +9,9 @@ using apcurium.MK.Booking.SMS;
 using Moq;
 using NUnit.Framework;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Services;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -36,7 +39,20 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _serverSettings.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
             _serverSettings.SetSetting("SMSFromNumber", "15147002781");
 
-            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _serverSettings, null, _orderDaoMock.Object, null, new StaticMap(), _smsSenderMock.Object, null, null, null)));
+            _sut.Setup(new SmsCommandHandler(new NotificationService(null, 
+                null, 
+                null, 
+                null,
+                _serverSettings, 
+                null, 
+                _orderDaoMock.Object, 
+                null, 
+                new StaticMap(), 
+                _smsSenderMock.Object, 
+                null, 
+                null, 
+                null,
+                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()))));
         }
 
         [Test]

@@ -1,10 +1,7 @@
-﻿#region
-
-using apcurium.MK.Common.Cryptography;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Services;
 
-#endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {

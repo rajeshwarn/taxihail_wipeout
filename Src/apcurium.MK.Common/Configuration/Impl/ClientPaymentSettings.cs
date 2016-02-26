@@ -1,5 +1,5 @@
-﻿using apcurium.MK.Common.Cryptography;
-using System;
+﻿using System;
+using apcurium.MK.Common.Services;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {

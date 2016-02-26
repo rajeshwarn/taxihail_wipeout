@@ -20,6 +20,7 @@ using ErrorHandler = apcurium.MK.Booking.Mobile.ErrorHandler;
 using apcurium.MK.Callbox.Mobile.Client.Cache;
 using apcurium.MK.Callbox.Mobile.Client.Localization;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Services;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -43,7 +44,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
             container.Register<IIPAddressManager, IPAddressManager>();
-			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>()));
+			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>(), container.Resolve<ICryptographyService>()));
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());

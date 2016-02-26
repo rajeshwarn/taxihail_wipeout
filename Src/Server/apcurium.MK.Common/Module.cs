@@ -6,6 +6,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
+using PCLCrypto;
 using ServiceStack.CacheAccess;
 
 #endregion
@@ -35,6 +36,10 @@ namespace apcurium.MK.Common
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
             container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
+
+            container.RegisterInstance<ISymmetricKeyAlgorithmProviderFactory>(WinRTCrypto.SymmetricKeyAlgorithmProvider);
+            container.RegisterInstance<ICryptographicEngine>(WinRTCrypto.CryptographicEngine);
+            container.RegisterInstance<IHashAlgorithmProviderFactory>(WinRTCrypto.HashAlgorithmProvider);
         }
     }
 }

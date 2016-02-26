@@ -18,6 +18,7 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Services;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -55,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile
             
             _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>()));
 
-            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>()));
+            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>(), c.Resolve<ICryptographyService>()));
 
             _container.Register<IAccountService>((c, p) => new AccountService(c.Resolve<IAppSettings>(), null, null, c.Resolve<ILocalization>(), c.Resolve<IConnectivityService>(), null, null));
 

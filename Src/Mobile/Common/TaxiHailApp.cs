@@ -31,7 +31,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Services;
 using MK.Common.iOS;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -82,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>()));
 
-			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>()));
+			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>(), c.Resolve<ICryptographyService>()));
 
 			_container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().GetServiceUrl(), GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<IConnectivityService>(), c.Resolve<ILogger>()));
 
@@ -124,6 +126,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IErrorHandler, ErrorHandler>();
 			_container.Register<IOrientationService, OrientationService>();
 			_container.Register<IRateApplicationService, RateApplicationService>();
+
+            _container.Register<ICryptographyService>((c, p) => new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, c.Resolve<ILogger>()));
 
             RefreshAppData();
 

@@ -1,5 +1,5 @@
-﻿using apcurium.MK.Common.Cryptography;
-using apcurium.MK.Common.Enumeration.PayPal;
+﻿using apcurium.MK.Common.Enumeration.PayPal;
+using apcurium.MK.Common.Services;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {

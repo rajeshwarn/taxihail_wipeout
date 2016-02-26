@@ -27,8 +27,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Services;
 using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<ILogger, LoggerWrapper> ();        
 			container.Register<IPhoneService, PhoneService> ();
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
-            container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
+            container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> (), container.Resolve<ICryptographyService>()));
             container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
             container.Register<IGeocoder> ((c, p) => new AppleGeocoder ());
             container.Register<IPlaceDataProvider, FoursquareProvider> ();
@@ -110,8 +110,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             Cirrious.MvvmCross.Plugins.DownloadCache.PluginLoader.Instance.EnsureLoaded ();
             Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
             Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
-
-			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 
 			InitializeSocialNetwork ();
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
-using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Services;
+
 namespace apcurium.MK.Common.Configuration.Impl
 {
     public class CmtPaymentSettings

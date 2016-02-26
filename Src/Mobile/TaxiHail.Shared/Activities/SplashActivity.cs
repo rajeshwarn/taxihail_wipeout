@@ -8,7 +8,6 @@ using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Common.Cryptography;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -42,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             // Overriden in order to pass params
 			Mvx.RegisterSingleton<ILogger>(new LoggerImpl());
-			SettingsEncryptor.SetLogger(Mvx.Resolve<ILogger>());
 			
 			var starter = Mvx.Resolve<IMvxAppStart>();
             starter.Start(_params);           

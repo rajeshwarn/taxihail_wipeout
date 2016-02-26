@@ -31,6 +31,7 @@ using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Services;
 using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
-            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>(), container.Resolve<ICryptographyService>()));
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IConnectivityService>(), new AndroidGeocoder(c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();

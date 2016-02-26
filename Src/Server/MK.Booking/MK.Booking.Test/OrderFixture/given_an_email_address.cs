@@ -18,10 +18,12 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Response;
 using Moq;
 using NUnit.Framework;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -98,7 +100,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null,
                 _geocodingMock.Object,
                 taxihailNetworkServiceClientMock.Object,
-                new Logger());
+                new Logger(),
+                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()));
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             sut.Setup(new EmailCommandHandler(notificationService));

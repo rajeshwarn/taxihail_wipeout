@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Services;
 
 namespace apcurium.MK.Common.Configuration
 {

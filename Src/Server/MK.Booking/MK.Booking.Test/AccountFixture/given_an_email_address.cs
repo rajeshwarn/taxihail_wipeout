@@ -16,8 +16,10 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Services;
 using Moq;
 using NUnit.Framework;
+using PCLCrypto;
 
 
 namespace apcurium.MK.Booking.Test.AccountFixture
@@ -90,7 +92,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 null,
                 null,
                 null,
-                new Logger());
+                new Logger(),
+                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()));
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
             _sut.Setup(new EmailCommandHandler(notificationService));
         }
