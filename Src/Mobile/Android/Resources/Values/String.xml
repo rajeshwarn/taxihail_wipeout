@@ -15,7 +15,7 @@
   <string name="Close">Close</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">Connection error</string>
-  <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
+  <string name="NoConnectionMessage">The server cannot be contacted.</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="BookItLaterButton">Later</string>
@@ -507,6 +507,7 @@
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
   <string name="Notification_ReceiptEmail">Receipt (Email)</string>
   <string name="Notification_DriverBailedPush">Driver bailed</string>
+  <string name="Notification_NoShowPush">No show</string>
   <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup</string>
   <string name="Toggle_Off">Off</string>
   <string name="Toggle_On">On</string>
