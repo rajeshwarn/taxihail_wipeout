@@ -405,6 +405,7 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Master.nl.resx" />
     <EmbeddedResource Include="Localization\yoolka.resx" />
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
@@ -444,6 +445,7 @@
     <None Include="Localization\UTOG.resx" />
     <None Include="Localization\ArroUAT.resx" />
     <None Include="Localization\Bram City Taxi.resx" />
+    <None Include="TutorialContent\Tutorial-nl.json" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>

@@ -414,6 +414,7 @@
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
+    <EmbeddedResource Include="Localization\Master.nl.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -434,6 +435,7 @@
     <None Include="Localization\ArroUAT.resx" />
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
+    <BundleResource Include="TutorialContent\Tutorial-nl.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
