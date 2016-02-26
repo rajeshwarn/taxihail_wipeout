@@ -29,9 +29,9 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>4.2.8</string>
+    <string>4.2.9</string>
     <key>CFBundleShortVersionString</key>
-    <string>4.2.8</string>
+    <string>4.2.9</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
     <key>NSLocationWhenInUseUsageDescription</key>
