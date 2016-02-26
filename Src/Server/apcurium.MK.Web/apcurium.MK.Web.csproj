@@ -736,9 +736,12 @@
     <Compile Include="Controllers\Api\Account\AccountController.cs" />
     <Compile Include="Controllers\Api\Account\AccountOrderController.cs" />
     <Compile Include="Controllers\Api\Account\AddressController.cs" />
+    <Compile Include="Controllers\Api\Account\CreditCardController.cs" />
+    <Compile Include="Controllers\Api\Account\CurrentAccountController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
+    <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\Api\LoginController.cs" />

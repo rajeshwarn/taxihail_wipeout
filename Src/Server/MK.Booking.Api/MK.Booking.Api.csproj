@@ -151,7 +151,6 @@
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
     <Compile Include="Services\OrderCreation\CreateOrderService.cs" />
-    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />
