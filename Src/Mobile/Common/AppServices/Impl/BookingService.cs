@@ -148,9 +148,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     service => service.GetActiveOrder(),
                     ex => { throw ex; });
 
-                return orderData == null
-                    ? null
-                    : new OrderRepresentation(orderData.Item1, orderData.Item2);
+                return new OrderRepresentation(orderData.Item1, orderData.Item2);
 
             }
             catch (WebServiceException ex)
