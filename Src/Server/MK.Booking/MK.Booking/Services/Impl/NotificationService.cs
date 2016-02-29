@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IGeocoding geocoding,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             ILogger logger,
-            ICryptographyService cryptographyService)
+            ICryptographyService cryptographyService = null)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -1133,7 +1133,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var hashedImagedata = _cryptographyService.GetHashString(imageData);
+                        var hashedImagedata = CryptographyService.GetHashString(imageData);
 
                         // Append its hash to its URL
                         return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
@@ -1170,6 +1170,19 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 return string.Empty;
+            }
+        }
+
+        private ICryptographyService CryptographyService
+        {
+            get
+            {
+                if (_cryptographyService == null)
+                {
+                    throw new NullReferenceException("Can't find CryptographyService instance. Dependancy Injection step missing ?!");
+                }
+
+                return _cryptographyService;
             }
         }
     }
