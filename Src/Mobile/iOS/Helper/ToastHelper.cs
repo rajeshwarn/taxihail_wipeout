@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -17,8 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 		{
 			try
 			{
-				UIApplication.EnsureUIThread();
-
 				if(UIApplication.SharedApplication.Windows != null 
 					&& UIApplication.SharedApplication.Windows.Length > 0 
 					&& UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length-1].RootViewController != null
@@ -36,9 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
 				return true;
 			}
-			catch
+			catch(Exception ex)
 			{
-				// Attempted to show Toast before the app is are ready.
+				Mvx.Resolve<ILogger>().LogError(ex);
+				// Retrying to show Toast.
 				Task.Run(async () =>
 					{
 						// retrying asynchronously in 5 seconds to make sure the app is loaded
