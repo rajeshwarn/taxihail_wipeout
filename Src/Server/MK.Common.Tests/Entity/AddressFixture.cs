@@ -36,6 +36,7 @@ namespace apcurium.MK.Common.Tests.Entity
                 BuildingName = "the building name",
                 StreetNumber = "13A",
                 Street = "Street name",
+                City = "A city"
             };
 
             Assert.IsTrue(address.DisplayAddress.StartsWith("the building name"));
