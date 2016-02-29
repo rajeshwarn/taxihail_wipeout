@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         private static bool IsTopMostViewSplashScreen()
         {
+			// We get the topmost window on the stack.
             var topMostWindow = UIApplication.SharedApplication.Windows.LastOrDefault();
 
 			return topMostWindow.SelectOrDefault(window => window.RootViewController is SplashView || window.RootViewController is ExtendedSplashScreenView);
@@ -41,11 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 				}
 
 				UIApplication.SharedApplication.InvokeOnMainThread(() =>
-					{
-						Toast = new ToastView(message);
+				{
+					Toast = new ToastView(message);
 
-						Toast.Show();
-					});
+					Toast.Show();
+				});
 
 				return true;
 			}
