@@ -111,9 +111,9 @@
   <resheader name="version">
     <value>2.0</value>
   </resheader>
-  <resheader name="reader">89</value>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e0
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
@@ -798,7 +798,7 @@
   </data>
   <data name="Email_Body_RateClass" xml:space="preserve">
     <value>Rate Code</value>
-    <vacommentlue>Rate Code</comment>
+    <comment>Rate Code</comment>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>CreditCard is geweigerd</value>
