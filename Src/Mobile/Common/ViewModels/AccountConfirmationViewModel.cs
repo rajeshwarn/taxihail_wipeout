@@ -146,9 +146,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					try
 					{
-						_registerService.GetConfirmationCode(SelectedCountryCode.CountryISOCode, Phone);
+						await _registerService.GetConfirmationCode(SelectedCountryCode.CountryISOCode, Phone);
 						this.Services().Message.ShowMessage(this.Services().Localize["ResendConfirmationCodeTitle"],
 							this.Services().Localize["ResendConfirmationCodeText"]);
+					}
+					catch (WebServiceException exception)
+					{
+							this.Services().Message.ShowMessage(this.Services().Localize["AccountConfirmation_ErrorTitle"],
+								exception.Message);
 					}
 					catch (ArgumentException exception)
 					{
