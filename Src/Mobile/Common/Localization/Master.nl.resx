@@ -783,6 +783,7 @@
 		<comment>Zip/Postal</comment>
 	</data>
 	<data name="CreditCompany" xml:space="preserve">
+		<value>Credit company: </value>
 		<comment>Credit company: </comment>
 	</data>
 	<data name="CurrencyPriceFormat" xml:space="preserve">
@@ -1284,6 +1285,7 @@
 		<comment>Invalid Number of Passengers</comment>
 	</data>
 	<data name="InvalidPayBackErrorMessage" xml:space="preserve">
+		<value>The PayBack field must be all digits and must not exceed 10 characters in length</value>
 		<comment>The PayBack field must be all digits and must not exceed 10 characters in length</comment>
 	</data>
 	<data name="InvalidPhoneErrorMessage" xml:space="preserve">
@@ -1323,7 +1325,7 @@
 		<comment>Large Bags</comment>
 	</data>
 	<data name="LastFour" xml:space="preserve">
-		<value/>
+		<value>Last 4 numbers:  </value>
 		<comment>Last 4 numbers:  </comment>
 	</data>
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
@@ -2697,7 +2699,7 @@
 		<comment>Terms and conditions</comment>
 	</data>
 	<data name="TermsAndConditionsLabel" xml:space="preserve">
-		<value>Algemene Voorwaarden</value>
+		<value>algemene voorwaarden</value>
 		<comment>Terms and Conditions</comment>
 	</data>
 	<data name="Time" xml:space="preserve">
