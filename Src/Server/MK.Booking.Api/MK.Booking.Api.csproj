@@ -122,8 +122,6 @@
     <Compile Include="Services\OrderCreation\ChargeAccountValidationResult.cs" />
     <Compile Include="Services\OrderCreation\HailService.cs" />
     <Compile Include="Services\OrderCreation\PayPalCheckoutService.cs" />
-    <Compile Include="Services\DriverService.cs" />
-    <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
     <Compile Include="Services\OrderUpdateService.cs" />

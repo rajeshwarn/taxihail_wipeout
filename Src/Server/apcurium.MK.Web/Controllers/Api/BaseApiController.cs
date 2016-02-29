@@ -26,6 +26,11 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
+        protected HttpException GetException(HttpStatusCode statusCode, string message)
+        {
+            return new HttpException((int)statusCode, message);
+        }
+
         public SessionEntity GetSession()
         {
             var sessionId = Request.Headers.Where(request =>
