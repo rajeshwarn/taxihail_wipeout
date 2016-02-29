@@ -21,27 +21,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
         {
             var topMostWindow = UIApplication.SharedApplication.Windows.LastOrDefault();
 
-            return topMostWindow.SelectOrDefault(window => window.RootViewController is SplashView);
+			return topMostWindow.SelectOrDefault(window => window.RootViewController is SplashView || window.RootViewController is ExtendedSplashScreenView);
         }
 
 		public static bool Show(string message)
 		{
 			try
 			{
+				//In the case where SharedApplication.Windows is null or empty, we return false.
 			    if (UIApplication.SharedApplication.Windows == null || UIApplication.SharedApplication.Windows.None())
 			    {
-                    // Will retry to show toast since we might not be ready yet.
-                    Task.Run(async () =>
-                    {
-                        // retrying asynchronously in 5 seconds to make sure the app is loaded
-                        await Task.Delay(TimeSpan.FromSeconds(5));
-                        var service = Mvx.Resolve<IConnectivityService>();
-                        UIApplication.SharedApplication.InvokeOnMainThread(() => service.HandleToastInNewView());
-                    }).FireAndForget();
-
 			        return false;
 			    }
 
+				//If we are displaying he splashscreen or extended splashscreen.
 				if(IsTopMostViewSplashScreen())
 				{
 					return false;
@@ -62,14 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
 			    logger.LogMessage("An error occurred while attempting to show toast, will retry in 5 seconds");
                 logger.LogErrorWithCaller(ex);
-                // Will retry to show toast since we might not be ready yet.
-                Task.Run(async () =>
-					{
-						// retrying asynchronously in 5 seconds to make sure the app is loaded
-						await Task.Delay(TimeSpan.FromSeconds(5));
-						var service = Mvx.Resolve<IConnectivityService>();
-						UIApplication.SharedApplication.InvokeOnMainThread(() => service.HandleToastInNewView());
-					}).FireAndForget();
 
 				return false;
 			}
