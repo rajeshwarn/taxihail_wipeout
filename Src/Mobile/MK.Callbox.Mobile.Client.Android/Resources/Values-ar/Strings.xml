@@ -797,5 +797,4 @@
   <string name="Notification_NoShowPush">No show</string>
   <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
-  <string name="Notification_NoShowPush">No show</string>
 </resources>
