@@ -51,7 +51,7 @@
   <string name="Close">إغلاق</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">خطأ في الإتصال</string>
-  <string name="NoConnectionMessage">لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</string>
+  <string name="NoConnectionMessage">The server cannot be contacted.</string>
   <string name="FavoriteLocationsTitle">مشاويرك المفضلة</string>
   <string name="NearbyPlacesTitle">أماكن قريبة</string>
   <string name="BookItLaterButton">لاحقا</string>
@@ -797,4 +797,5 @@
   <string name="Notification_NoShowPush">No show</string>
   <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
+  <string name="Notification_NoShowPush">No show</string>
 </resources>

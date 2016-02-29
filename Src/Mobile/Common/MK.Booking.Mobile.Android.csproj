@@ -418,6 +418,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\ArroUAT.resx" />
+    <None Include="Localization\FLAT RATE.resx" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>
