@@ -66,18 +66,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public override bool Enabled 
-        {
-            get { return base.Enabled; }
-			set 
-            {
-                if (base.Enabled != value)
-                {
-                    base.Enabled = value;
-                    base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-
-                    SetNeedsDisplay();
-                }
+		public override bool Enabled
+		{
+			get { return base.Enabled; }
+			set
+			{
+				base.Enabled = value;
+				base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
+				ShowOrHideRightArrow();
+				SetNeedsDisplay ();
 			}
 		}
 
@@ -122,18 +119,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _hasRightArrow; }
             set 
             {
-                if (_hasRightArrow != value)
-                {
-                    _hasRightArrow = value;
-
-                    ShowOrHideRightArrow();
-                }
+                _hasRightArrow = value;
+                ShowOrHideRightArrow();
             }
         }
 
 	    private void ShowOrHideRightArrow()
 	    {
-			if (HasRightArrow)
+			if (HasRightArrow && Enabled)
 	        {
 	            if (_rightArrow == null)
 	            {
