@@ -271,14 +271,6 @@
     <Compile Include="Migrations\201512101522081_Booking_MTA_79.Designer.cs">
       <DependentUpon>201512101522081_Booking_MTA_79.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512142020010_Booking_MKTAXI_3687_3604.cs" />
-    <Compile Include="Migrations\201512142020010_Booking_MKTAXI_3687_3604.Designer.cs">
-      <DependentUpon>201512142020010_Booking_MKTAXI_3687_3604.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512231646283_Booking_MKTAXI_3649.cs" />
-    <Compile Include="Migrations\201512231646283_Booking_MKTAXI_3649.Designer.cs">
-      <DependentUpon>201512231646283_Booking_MKTAXI_3649.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201601062151509_Configuration_MTA_86.cs" />
     <Compile Include="Migrations\201601062151509_Configuration_MTA_86.Designer.cs">
       <DependentUpon>201601062151509_Configuration_MTA_86.cs</DependentUpon>
@@ -287,53 +279,9 @@
     <Compile Include="Migrations\201601111611506_Configuration_MTA_87.Designer.cs">
       <DependentUpon>201601111611506_Configuration_MTA_87.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111939103_Booking_MKTAXI_3648.cs" />
-    <Compile Include="Migrations\201601111939103_Booking_MKTAXI_3648.Designer.cs">
-      <DependentUpon>201601111939103_Booking_MKTAXI_3648.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601112007026_Booking_MKTAXI_3651.cs" />
-    <Compile Include="Migrations\201601112007026_Booking_MKTAXI_3651.Designer.cs">
-      <DependentUpon>201601112007026_Booking_MKTAXI_3651.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601112117305_Booking_MKTAXI_3711.cs" />
-    <Compile Include="Migrations\201601112117305_Booking_MKTAXI_3711.Designer.cs">
-      <DependentUpon>201601112117305_Booking_MKTAXI_3711.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601271845573_Booking_MKTAXI-3818.cs" />
-    <Compile Include="Migrations\201601271845573_Booking_MKTAXI-3818.Designer.cs">
-      <DependentUpon>201601271845573_Booking_MKTAXI-3818.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602031618297_Booking_MKTAXI_3815.cs" />
-    <Compile Include="Migrations\201602031618297_Booking_MKTAXI_3815.Designer.cs">
-      <DependentUpon>201602031618297_Booking_MKTAXI_3815.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602032237485_Booking_MKTAXI-3654.cs" />
-    <Compile Include="Migrations\201602032237485_Booking_MKTAXI-3654.Designer.cs">
-      <DependentUpon>201602032237485_Booking_MKTAXI-3654.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602052007129_Booking_MKTAXI_3823.cs" />
-    <Compile Include="Migrations\201602052007129_Booking_MKTAXI_3823.Designer.cs">
-      <DependentUpon>201602052007129_Booking_MKTAXI_3823.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201602052050525_Configuration_MKTAXI_3835.cs" />
     <Compile Include="Migrations\201602052050525_Configuration_MKTAXI_3835.Designer.cs">
       <DependentUpon>201602052050525_Configuration_MKTAXI_3835.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602161429505_Booking_MKTAXI_3873.cs" />
-    <Compile Include="Migrations\201602161429505_Booking_MKTAXI_3873.Designer.cs">
-      <DependentUpon>201602161429505_Booking_MKTAXI_3873.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602161744294_Booking_MKTAXI_3874.cs" />
-    <Compile Include="Migrations\201602161744294_Booking_MKTAXI_3874.Designer.cs">
-      <DependentUpon>201602161744294_Booking_MKTAXI_3874.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602191739572_Booking_MKTAXI_3005.cs" />
-    <Compile Include="Migrations\201602191739572_Booking_MKTAXI_3005.Designer.cs">
-      <DependentUpon>201602191739572_Booking_MKTAXI_3005.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602191833390_Booking_MKTAXI_3867.cs" />
-    <Compile Include="Migrations\201602191833390_Booking_MKTAXI_3867.Designer.cs">
-      <DependentUpon>201602191833390_Booking_MKTAXI_3867.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
@@ -520,56 +468,14 @@
     <EmbeddedResource Include="Migrations\201512101522081_Booking_MTA_79.resx">
       <DependentUpon>201512101522081_Booking_MTA_79.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512142020010_Booking_MKTAXI_3687_3604.resx">
-      <DependentUpon>201512142020010_Booking_MKTAXI_3687_3604.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512231646283_Booking_MKTAXI_3649.resx">
-      <DependentUpon>201512231646283_Booking_MKTAXI_3649.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601062151509_Configuration_MTA_86.resx">
       <DependentUpon>201601062151509_Configuration_MTA_86.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111611506_Configuration_MTA_87.resx">
       <DependentUpon>201601111611506_Configuration_MTA_87.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111939103_Booking_MKTAXI_3648.resx">
-      <DependentUpon>201601111939103_Booking_MKTAXI_3648.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601112007026_Booking_MKTAXI_3651.resx">
-      <DependentUpon>201601112007026_Booking_MKTAXI_3651.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601112117305_Booking_MKTAXI_3711.resx">
-      <DependentUpon>201601112117305_Booking_MKTAXI_3711.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601271845573_Booking_MKTAXI-3818.resx">
-      <DependentUpon>201601271845573_Booking_MKTAXI-3818.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602031618297_Booking_MKTAXI_3815.resx">
-      <DependentUpon>201602031618297_Booking_MKTAXI_3815.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602032237485_Booking_MKTAXI-3654.resx">
-      <DependentUpon>201602032237485_Booking_MKTAXI-3654.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602052007129_Booking_MKTAXI_3823.resx">
-      <DependentUpon>201602052007129_Booking_MKTAXI_3823.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602052050525_Configuration_MKTAXI_3835.resx">
       <DependentUpon>201602052050525_Configuration_MKTAXI_3835.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602161429505_Booking_MKTAXI_3873.resx">
-      <DependentUpon>201602161429505_Booking_MKTAXI_3873.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602161744294_Booking_MKTAXI_3874.resx">
-      <DependentUpon>201602161744294_Booking_MKTAXI_3874.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602191739572_Booking_MKTAXI_3005.resx">
-      <DependentUpon>201602191739572_Booking_MKTAXI_3005.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602191833390_Booking_MKTAXI_3867.resx">
-      <DependentUpon>201602191833390_Booking_MKTAXI_3867.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
