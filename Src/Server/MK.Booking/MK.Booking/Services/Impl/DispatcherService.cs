@@ -384,6 +384,19 @@ namespace apcurium.MK.Booking.Services.Impl
             });
         }
 
+        public async Task RunPeriodicTask(Action action, TimeSpan period, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(period, cancellationToken).ConfigureAwait(false);
+
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    action();
+                }
+            }
+        }
+
         private IEnumerable<VehicleCandidate> WaitForCandidatesResponse(string companyKey, IbsOrderKey ibsOrderKey, DispatcherSettingsResponse dispatcherSettings)
         {
             if (ibsOrderKey.IbsOrderId < 0)
@@ -392,17 +405,55 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             // Need to wait for vehicles to receive hail request (5 seconds of padding)
-            Thread.Sleep(TimeSpan.FromSeconds(dispatcherSettings.DurationOfOfferInSeconds + 5));
+            // each 5 seconds, check if we have candidates response
+            IbsVehicleCandidate[] candidates = null;
+            var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(dispatcherSettings.DurationOfOfferInSeconds + 5));
+            var earlyExit = false;
 
-            var candidates = _ibsServiceProvider.Booking(companyKey).GetCandidatesResponse(ibsOrderKey);
-            return candidates.Select(vehicle => new VehicleCandidate
+            try
             {
-                CandidateType = vehicle.CandidateType,
-                ETADistance = vehicle.ETADistance,
-                ETATime = vehicle.ETATime,
-                Rating = vehicle.Rating,
-                VehicleId = vehicle.VehicleId.Trim() // Need to trim because IBS can return us junk trailling or leading spaces in that field...
-            });
+                RunPeriodicTask(() =>
+                {
+                    candidates = _ibsServiceProvider.Booking(companyKey).GetCandidatesResponse(ibsOrderKey);
+                    if (candidates != null && candidates.Any())
+                    {
+                        earlyExit = true;
+                        tokenSource.Cancel();
+                    }
+                },
+               TimeSpan.FromSeconds(5),
+               tokenSource.Token).Wait(tokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // nothing to do here
+            }
+            finally
+            {
+                tokenSource.Dispose();
+            }
+
+            if (earlyExit)
+            {
+                candidates = _ibsServiceProvider.Booking(companyKey).GetCandidatesResponse(ibsOrderKey);
+            }
+
+            if (candidates != null)
+            {
+                return candidates.Select(vehicle => new VehicleCandidate
+                {
+                    CandidateType = vehicle.CandidateType,
+                    ETADistance = vehicle.ETADistance,
+                    ETATime = vehicle.ETATime,
+                    Rating = vehicle.Rating,
+                    VehicleId = vehicle.VehicleId.Trim()
+                    // Need to trim because IBS can return us junk trailling or leading spaces in that field...
+                });
+            }
+            else
+            {
+                return new List<VehicleCandidate>();
+            }
         }
 
         public DispatcherSettingsResponse GetSettings(string market, double latitude, double longitude, bool isHailRequest = false)
