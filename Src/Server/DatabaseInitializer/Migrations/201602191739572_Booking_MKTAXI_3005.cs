@@ -3,16 +3,16 @@ namespace apcurium.MK.Booking.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Booking_MTA_56 : DbMigration
+    public partial class Booking_MKTAXI_3005 : DbMigration
     {
         public override void Up()
         {
-            AddColumn("Booking.OrderStatusDetail", "ServiceType", c => c.Int(nullable: false));
+            AddColumn("Booking.AccountDetail", "BraintreeAccountId", c => c.String());
         }
         
         public override void Down()
         {
-            DropColumn("Booking.OrderStatusDetail", "ServiceType");
+            DropColumn("Booking.AccountDetail", "BraintreeAccountId");
         }
     }
 }
