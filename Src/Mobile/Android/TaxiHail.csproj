@@ -613,7 +613,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\values-nl\String.xml" />
-    <AndroidResource Include="Resources\values-nl\String.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
