@@ -101,12 +101,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         var order = 0;
                         if (form.AllKeys.Contains(orderKey))
                         {
-                            order = form[orderKey] == string.Empty ? i : int.Parse(form[orderKey]);
+                            order = form[orderKey].Split(',')[0] == string.Empty ? i : int.Parse(form[orderKey].Split(',')[0]); // Hotfix before MKTAXI-3933
                         }
 
                         preferences.Add(new CompanyPreference
                         {
-                            CompanyKey = form["idKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey],
+                            CompanyKey = form["idKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Split(',')[0], // Hotfix before MKTAXI-3933
                             CanAccept = form["acceptKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
                             CanDispatch = form["dispatchKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
                             Order = order

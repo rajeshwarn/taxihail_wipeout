@@ -81,15 +81,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
                 else if (file.ContentLength > 0)
                 {
-                    string[] AllowedFileExtensions = new string[] { ".csf" };
+                    string[] allowedFileExtensions = new string[] { ".csf" };
 
-                    if (!AllowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+                    if (!allowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
                     {
-                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", AllowedFileExtensions);
+                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", allowedFileExtensions);
                     }
                     else
                     {
-                        var fileContent = System.IO.File.ReadAllText(file.FileName);
+                        StreamReader stream = new StreamReader(file.InputStream); 
+                        var fileContent = stream.ReadToEnd();
+                        stream.Close();
                         Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
                         if (fileSettings.Any())
                         {
