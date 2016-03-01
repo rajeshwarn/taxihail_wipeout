@@ -883,6 +883,7 @@
 		<comment>Destination not specified</comment>
 	</data>
 	<data name="DestinationTextPlaceholder" xml:space="preserve">
+    <value>Destination street address</value>
 		<comment>Destination street address</comment>
 	</data>
 	<data name="DestinationViewDestinationLabel" xml:space="preserve">
@@ -1003,6 +1004,7 @@
 		<comment>Invalid CVV</comment>
 	</data>
 	<data name="ErrorChangeDropOff_Message" xml:space="preserve">
+    <value>Sorry, we couldn't update your destination.</value>
 		<comment>Sorry, we couldn't update your destination.</comment>
 	</data>
 	<data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
@@ -1247,9 +1249,11 @@
 		<comment>Invalid Choice</comment>
 	</data>
 	<data name="InvalidCreditCardMessage" xml:space="preserve">
+    <value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
 		<comment>There was a problem with your current Payment Method. Please add a different card or update the information.</comment>
 	</data>
 	<data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+    <value>Update Card</value>
 		<comment>Update Card</comment>
 	</data>
 	<data name="InvalidEmailMessage" xml:space="preserve">
@@ -1465,6 +1469,7 @@
 		<comment>Error</comment>
 	</data>
 	<data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
 		<comment>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</comment>
 	</data>
 	<data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
@@ -1476,21 +1481,27 @@
 		<comment>Invalid code</comment>
 	</data>
 	<data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
+    <value>CHECK IN</value>
 		<comment>CHECK IN</comment>
 	</data>
 	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
+    <value>Manual pairing for RideLinq</value>
 		<comment>Manual pairing for RideLinq</comment>
 	</data>
 	<data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
 		<comment>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</comment>
 	</data>
 	<data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
 		<comment>You need to have an active credit card set as your default payment method</comment>
 	</data>
 	<data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
+    <value>You need to have a card on file to pair with RideLinQ</value>
 		<comment>You need to have a card on file to pair with RideLinQ</comment>
 	</data>
 	<data name="ManualRideLinqStatus_Cancelled" xml:space="preserve">
+    <value>You have been unpaired from RideLinQ. Please type in the pairing code again.</value>
 		<comment>You have been unpaired from RideLinQ. Please type in the pairing code again.</comment>
 	</data>
 	<data name="ManualRideLinqStatus_Distance" xml:space="preserve">
@@ -1522,9 +1533,11 @@
 		<comment>You're checked into taxi #{0}.</comment>
 	</data>
 	<data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
 		<comment>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</comment>
 	</data>
 	<data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</value>
 		<comment>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</comment>
 	</data>
 	<data name="ManualRideLinqStatus_Tax" xml:space="preserve">
@@ -1544,9 +1557,11 @@
 		<comment>Total cost:</comment>
 	</data>
 	<data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
+		<value>Unpair</value>
 		<comment>Unpair</comment>
 	</data>
 	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
+		<value>Manual RideLinq Status</value>
 		<comment>Manual RideLinq Status</comment>
 	</data>
 	<data name="ManualRideLinqSummary_Done" xml:space="preserve">
@@ -1554,6 +1569,7 @@
 		<comment>Done</comment>
 	</data>
 	<data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
+		<value>An error occured when trying to unpair. Please try again.</value>
 		<comment>An error occured when trying to unpair. Please try again.</comment>
 	</data>
 	<data name="March" xml:space="preserve">
@@ -1645,6 +1661,7 @@
 		<comment>Connection error</comment>
 	</data>
 	<data name="NoCreditCard" xml:space="preserve">
+		<value>No credit card selected</value>
 		<comment>No credit card selected</comment>
 	</data>
 	<data name="NoCreditCardSelected" xml:space="preserve">
@@ -1688,6 +1705,7 @@
 		<comment>No code</comment>
 	</data>
 	<data name="NotAvailable" xml:space="preserve">
+		<value>N/A</value>
 		<comment>N/A</comment>
 	</data>
 	<data name="Notes" xml:space="preserve">
@@ -1715,6 +1733,7 @@
 		<comment>Driver Assigned</comment>
 	</data>
 	<data name="Notification_DriverBailedPush" xml:space="preserve">
+		<value>Driver bailed</value>
 		<comment>Driver bailed</comment>
 	</data>
 	<data name="Notification_Enabled" xml:space="preserve">
@@ -1726,7 +1745,7 @@
 		<comment>Nearby Taxi</comment>
 	</data>
 	<data name="Notification_NoShowPush" xml:space="preserve">
-		<value/>
+		<value>No show</value>
 		<comment>No show</comment>
 	</data>
 	<data name="Notification_PaymentConfirmationPush" xml:space="preserve">
@@ -1734,9 +1753,11 @@
 		<comment>Payment Confirmation</comment>
 	</data>
 	<data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
 		<comment>Promotions unlocked (Email)</comment>
 	</data>
 	<data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
 		<comment>Promotions unlocked (Push)</comment>
 	</data>
 	<data name="Notification_ReceiptEmail" xml:space="preserve">
@@ -2024,6 +2045,7 @@
 		<comment>Payment In Car</comment>
 	</data>
 	<data name="PaymentLoadError" xml:space="preserve">
+		<value>Unable to load the payment details. Please try again later.</value>
 		<comment>Unable to load the payment details. Please try again later.</comment>
 	</data>
 	<data name="PaymentViewMeterAmountText" xml:space="preserve">
@@ -2423,6 +2445,7 @@
 		<comment>Search</comment>
 	</data>
 	<data name="SelectedCreditCard" xml:space="preserve">
+		<value>Currently selected credit card</value>
 		<comment>Currently selected credit card</comment>
 	</data>
 	<data name="SendEmail" xml:space="preserve">
@@ -2482,9 +2505,11 @@
 		<comment>No account with this email has been found.</comment>
 	</data>
 	<data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>This email matches a Facebook account. Please login via Facebook.</value>
 		<comment>This email matches a Facebook account. Please login via Facebook.</comment>
 	</data>
 	<data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>This email matches a Twitter account. Please login via Twitter.</value>
 		<comment>This email matches a Twitter account. Please login via Twitter.</comment>
 	</data>
 	<data name="ServiceErrorUnauthorized" xml:space="preserve">
@@ -2492,6 +2517,7 @@
 		<comment>Your session has expired, please login again.</comment>
 	</data>
 	<data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>The current password is not valid.</value>
 		<comment>The current password is not valid.</comment>
 	</data>
 	<data name="SetAsDefaultCreditCard" xml:space="preserve">
@@ -2795,6 +2821,7 @@
 		<comment>You can review your order history at any time, and even rebook a previous trip with the push of a button</comment>
 	</data>
 	<data name="TutorialActivityName" xml:space="preserve">
+		<value>Tutorial</value>
 		<comment>Tutorial</comment>
 	</data>
 	<data name="Twitter" xml:space="preserve">
@@ -2810,12 +2837,15 @@
 		<comment>Unlink PayPal</comment>
 	</data>
 	<data name="UnpairCancelOrder" xml:space="preserve">
+		<value>Cancel Order</value>
 		<comment>Cancel Order</comment>
 	</data>
 	<data name="UnpairCancelWarningMessage" xml:space="preserve">
+		<value>Are you sure you want to cancel this order?</value>
 		<comment>Are you sure you want to cancel this order?</comment>
 	</data>
 	<data name="UnpairCancelWarningMessageWithPromo" xml:space="preserve">
+		<value>If you decide to cancel, you will not be able to use the promotion.</value>
 		<comment>If you decide to cancel, you will not be able to use the promotion.</comment>
 	</data>
 	<data name="UnpairErrorMessage" xml:space="preserve">
@@ -2827,9 +2857,11 @@
 		<comment>Pay in Car</comment>
 	</data>
 	<data name="UnpairPayInCarWarningMessage" xml:space="preserve">
+		<value>Are you sure you don't want to pay with your credit card on file?</value>
 		<comment>Are you sure you don't want to pay with your credit card on file?</comment>
 	</data>
 	<data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
+		<value>If you decide to pay in car, you will not be able to use the promotion</value>
 		<comment>If you decide to pay in car, you will not be able to use the promotion</comment>
 	</data>
 	<data name="UnpairWarningCancelButton" xml:space="preserve">
