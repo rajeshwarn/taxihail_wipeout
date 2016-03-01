@@ -424,7 +424,7 @@ namespace apcurium.MK.Booking.Services.Impl
                TimeSpan.FromSeconds(5),
                tokenSource.Token).Wait(tokenSource.Token);
             }
-            catch (Exception)
+            catch (OperationCanceledException)
             {
                 // nothing to do here
             }
