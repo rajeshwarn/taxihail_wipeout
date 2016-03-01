@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						var msg = e.Message;
 						if(String.Equals(e.Message, "NoNetwork"))
 						{
-							msg = this.Services().Localize["RideSettingsCannotLoadListMessage"];
+							msg = this.Services().Localize["NoConnectionMessage"];
 						}
 						this.Services().Message.ShowMessage(title, msg);
 					}

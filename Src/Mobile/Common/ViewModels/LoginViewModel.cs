@@ -337,7 +337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case AuthFailure.NetworkError:
 							{
 								var title = localize["InvalidLoginMessageTitle"];
-								var message = localize["RideSettingsCannotLoadListMessage"];
+								var message = localize["NoConnectionMessage"];
 
 								this.Services().Message.ShowMessage(title, message);
 							}
