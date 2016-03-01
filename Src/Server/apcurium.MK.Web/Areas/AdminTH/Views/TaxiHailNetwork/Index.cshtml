@@ -1,15 +1,12 @@
 ﻿@model Dictionary<string, List<CustomerPortal.Contract.Response.CompanyPreferenceResponse>>
 
+<div class="well clearfix form-horizontal">
+    <div id="validationPanel" class="alert-success alert" style="display: none"> </div>
 
-<div id="validationPanel" class="alert-success alert" style="display: none"> </div>
-
-
-@using (Html.BeginForm("Index", "TaxiHailNetwork", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
-{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    if (Model == null)
+    @if (Model == null)
     {
         <h4>Your company has not been configured for the network. Please login to the CustomerPortal and do so before continuing.</h4>
     }
@@ -52,7 +49,7 @@
                         }
                         else
                         {
-                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new {disabled = "disabled"})
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                         }
                     </div>
                     @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
@@ -61,7 +58,7 @@
         </ul>
 
         <legend>
-            <br/>
+            <br />
             @Html.DisplayName("Roaming")
         </legend>
 
@@ -95,7 +92,7 @@
                             }
                             else
                             {
-                                @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new {disabled = "disabled"})
+                                @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                             }
                         </div>
                     </li>
@@ -105,53 +102,54 @@
 
         if (hasLocalCompanies || hasRoamingCompanies)
         {
-            <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save() ">Save</a>
+            <br/>
+            <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
         }
     }
-}
+    
+    <script type="text/javascript">
 
-<script type="text/javascript">
+        function displayValidationMessage(control, message, valid) {
+            var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
+            if (valid) {
+                if (control.hasClass("alert-danger")) {
+                    control.removeClass("alert-danger");
+                }
+                control.addClass("alert-success");
+            } else {
+                if (control.hasClass("alert-success")) {
+                    control.removeClass("alert-success");
+                }
+                control.addClass("alert-danger");
+            }
 
-    function displayValidationMessage(control, message, valid) {
-        var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
-        if (valid) {
-            if (control.hasClass("alert-danger")) {
-                control.removeClass("alert-danger");
-            }
-            control.addClass("alert-success");
-        } else {
-            if (control.hasClass("alert-success")) {
-                control.removeClass("alert-success");
-            }
-            control.addClass("alert-danger");
+            control.html(html + message);
+            control.css("display", "block");
+            setTimeout(function () { control.css("display", "none") }, 2000);
         }
 
-        control.html(html + message);
-        control.css("display", "block");
-        setTimeout(function () { control.css("display", "none") }, 2000);
-    }
+        function save() {
+            var form = $('#containerForm');
+            var panel = $('#validationPanel');
 
-    function save() {
-        var form = $('#taxiHailNetworkForm');
-        var panel = $('#validationPanel');
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (response) {
 
-        $.ajax({
-            type: "POST",
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function (response) {
-
-                displayValidationMessage(panel, response.Message, response.Success);
-            }
-        });
-    }
-
-    $(document).ready(function() {
-        $('.sortable').sortable().bind('sortupdate', function(e, ui) {
-            $('.sortable').children('li').each(function() {
-                $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
+                    displayValidationMessage(panel, response.Message, response.Success);
+                }
             });
+        }
 
+        $(document).ready(function () {
+            $('.sortable').sortable().bind('sortupdate', function (e, ui) {
+                $('.sortable').children('li').each(function () {
+                    $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
+                });
+
+            });
         });
-    });
-</script>
+    </script>
+</div>

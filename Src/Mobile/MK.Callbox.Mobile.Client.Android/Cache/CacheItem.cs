@@ -1,6 +1,7 @@
 using System;
+using Newtonsoft.Json;
 
-namespace apcurium.MK.Booking.Mobile.Client.Cache
+namespace apcurium.MK.Callbox.Mobile.Client.Cache
 {
     public class CacheItem<T> where T : class
     {
@@ -8,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         {
             Value = value;
         }
-
+        [JsonConstructor]
         public CacheItem(T value, DateTime expireAt)
         {
             Value = value;

@@ -68,13 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseServiceClient.Server.cs" />
     <Compile Include="CraftyClicks\CraftyClicksRequest.cs" />
     <Compile Include="CraftyClicks\CraftyClicksService.cs" />
     <Compile Include="CraftyClicks\Resources\CraftyClicksAddress.cs" />
     <Compile Include="CraftyClicks\Resources\DeliveryPoint.cs" />
     <Compile Include="CraftyClicks\Resources\OSGeoCode.cs" />
     <Compile Include="Extensions\ResourcesExtensions.cs" />
-    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
     <Compile Include="Foursquare\FoursquareProviderData.cs" />
     <Compile Include="Google\GoogleApiClient.cs" />
@@ -113,6 +114,8 @@
     <Compile Include="Resources\GeoAddress.cs" />
     <Compile Include="Resources\GeoDirection.cs" />
     <Compile Include="Resources\GeoPlace.cs" />
+    <Compile Include="Resources\MapBounds.cs" />
+    <Compile Include="Resources\Position.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
     <Compile Include="TomTom\TomTomProvider.cs" />
   </ItemGroup>

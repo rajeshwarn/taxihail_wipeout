@@ -39,13 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		}
 
         public override void Draw (CGRect rect)
-        {   
+        {  
 			if (!Hidden)
 			{
-                DrawStroke();
+				DrawStroke();
 			}
 
-            SetNeedsDisplay();
+			SetNeedsDisplay();
         }
 
         private CAShapeLayer GetMaskForRoundedCorners()

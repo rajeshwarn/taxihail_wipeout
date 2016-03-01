@@ -1,13 +1,14 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Client.Extensions
 {
-	public static class ServiceClientBaseExtensions
+    public static class ServiceClientBaseExtensions
     {
-        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
+        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, ILogger logger = null)
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             return tcs.Task;
         }
 
-        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
+        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request, ILogger logger = null)
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
@@ -29,31 +30,31 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             return tcs.Task;
         }
 
-		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
-		{
-			var tcs = new TaskCompletionSource<TResponse>();
+        public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request, ILogger logger = null)
+        {
+            var tcs = new TaskCompletionSource<TResponse>();
 
-			client.PostAsync(request,
-				tcs.SetResult,
+            client.PostAsync(request,
+                tcs.SetResult,
                 (result, error) => tcs.SetException(FixWebServiceException(error)));
 
-			return tcs.Task;
-		}
-        
+            return tcs.Task;
+        }
 
-		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
-		{
-			var tcs = new TaskCompletionSource<TResponse>();
 
-			client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
-				request,
-				tcs.SetResult,
+        public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request, ILogger logger = null)
+        {
+            var tcs = new TaskCompletionSource<TResponse>();
+
+            client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
+                request,
+                tcs.SetResult,
                 (result, error) => tcs.SetException(FixWebServiceException(error)));
 
-			return tcs.Task;
-		}
+            return tcs.Task;
+        }
 
-        public static Task<TResponse> PutAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
+        public static Task<TResponse> PutAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request, ILogger logger = null)
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
@@ -65,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             return tcs.Task;
         }
 
-        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
+        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, ILogger logger = null)
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             return tcs.Task;
         }
 
-        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
+        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request, ILogger logger = null)
         {
             var tcs = new TaskCompletionSource<TResponse>();
 

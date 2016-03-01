@@ -60,6 +60,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             _notificationService.SendBailedPush(@event.Status);
                         }
                         break;
+                    case VehicleStatuses.Common.NoShow:
+                        _notificationService.SendNoShowPush(@event.Status);
+                        break;
                     default:
                         // No push notification for this order status
                         return;
@@ -122,6 +125,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         
         public void Handle(OrderCancelledBecauseOfError @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                Log.Info(string.Format("Received OrderCancelledBecauseOfError event but cancel was requested by user before, no need to inform him of order creation failure (OrderId: {0}).", @event.SourceId));
+                return;
+            }
+
             try
             {
                 _notificationService.SendOrderCreationErrorPush(@event.SourceId, @event.ErrorDescription);

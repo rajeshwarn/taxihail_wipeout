@@ -1,23 +1,26 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
+
+#if !CLIENT
+using apcurium.MK.Booking.Api.Client.Extensions;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-        private readonly ILogger _logger;
-        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
-            : base(url, sessionId, packageInfo)
+        public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
-			_logger = logger;
         }
 
 		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType serviceType)
@@ -28,9 +31,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					Longitude = longitude,
 					VehicleTypeId = vehicleTypeId,
 					ServiceType = serviceType
-				});
-
-			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2}", latitude, longitude, response.Count)));
+				}, Logger);
 
 			return response.ToArray();
 		}
@@ -41,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			{
 				Medallion = medallion,
 				OrderId = orderId
-			});
+            }, Logger);
 		}
 
 	    public Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleRegistration, Guid orderId)
@@ -52,27 +53,26 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	            Latitude = latitude,
 	            VehicleRegistration = vehicleRegistration,
 	            OrderId = orderId
-	        });
+            }, Logger);
 	    }
 
 		public async Task<VehicleType[]> GetVehicleTypes()
-	    {
-            var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes");
-            return response.ToArray();
-	    }
+		{
+			var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes", logger: Logger);
+			return response.ToArray();
+		}
 
 		public async Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId, ServiceType serviceType)
-	    {
-            var request = string.Format("/vehicle/{0}/message", vehicleNumber);
-
-            await Client.PostAsync<string>(request,
-                new SendMessageToDriverRequest
-	            {
-	                Message = message,
-	                VehicleNumber = vehicleNumber,
-					OrderId = orderId,
-					ServiceType = serviceType
-	            });
-	    }
-    }
+		{
+			var request = string.Format("/vehicle/{0}/message", vehicleNumber);
+			await Client.PostAsync<string>(request,
+			new SendMessageToDriverRequest
+			{
+				Message = message,
+				VehicleNumber = vehicleNumber,
+				OrderId = orderId,
+				ServiceType = serviceType
+			}, logger: Logger);
+		}
+	}
 }

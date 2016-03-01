@@ -15,6 +15,9 @@ namespace apcurium.MK.Common.Entity
         // This is the token to use to Get or Delete info.
         public string PairingToken { get; set; }
 
+        /// <summary>
+        /// this is set as DateTime.Now from the server when pairing occurs
+        /// </summary>
         public DateTime PairingDate { get; set; }
 
         public DateTime? StartTime { get; set; }
@@ -34,6 +37,10 @@ namespace apcurium.MK.Common.Entity
         public double? Toll { get; set; }
 
         public double? Extra { get; set; }
+
+        public double? LastLatitudeOfVehicle { get; set; }
+
+        public double? LastLongitudeOfVehicle { get; set; }
 
         public double? Tip { get; set; }
 
@@ -60,5 +67,7 @@ namespace apcurium.MK.Common.Entity
         public string LastFour { get; set; }
 
         public string PairingError { get; set; }
+
+        public bool IsWaitingForPayment { get; set; }
     }
 }

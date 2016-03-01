@@ -288,7 +288,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dip"
                     android:layout_marginTop="10dip"
-                    android:id="@+id/driverBonusView">
+                    android:id="@+id/driverBonusView"
+                    local:MvxBind="Visibility CanShowDriverBonus, Converter=Visibility"
+                  
+                    
+                    >
                     <TextView
                         android:id="@+id/lblBonus"
                         android:layout_height="wrap_content"

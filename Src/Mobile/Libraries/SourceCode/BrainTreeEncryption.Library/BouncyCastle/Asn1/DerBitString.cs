@@ -141,7 +141,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 			byte[]	data,
 			int		padBits)
 		{
-			// TODO Deep copy?
+			// TODO_ Deep copy?
 			this.data = data;
 			this.padBits = padBits;
 		}
@@ -149,7 +149,7 @@ namespace BraintreeEncryption.Library.BouncyCastle.Asn1
 		public DerBitString(
 			byte[] data)
 		{
-			// TODO Deep copy?
+			// TODO_ Deep copy?
 			this.data = data;
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -23,12 +24,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
+        private readonly IBlackListEntryService _blackListEntryService;
 
-        public RegisterAccountService(ICommandBus commandBus, IAccountDao accountDao, IServerSettings serverSettings)
+        public RegisterAccountService(ICommandBus commandBus, IAccountDao accountDao, IServerSettings serverSettings, IBlackListEntryService blackListEntryService)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _serverSettings = serverSettings;
+            _blackListEntryService = blackListEntryService;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -44,13 +47,18 @@ namespace apcurium.MK.Booking.Api.Services
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
 
-			if (PhoneHelper.IsNumberPossible(countryCode, request.Phone))
+            if (PhoneHelper.IsPossibleNumber(countryCode, request.Phone))
             {
                 request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
             }
             else
             {
                 throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+            }
+
+            if (_blackListEntryService.GetAll().Any(e => e.PhoneNumber.Equals(request.Phone)))
+            {
+                throw new HttpError(_resources.Get("PhoneBlackListed"));
             }
 
             if (request.FacebookId.HasValue())

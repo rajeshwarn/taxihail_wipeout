@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             return MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
         }
+
 		public void ShowProgress(bool show)
 		{
             if(show)
@@ -118,6 +119,21 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false, string inputText = "")
         {
             return MessageHelper.Prompt (title, message, cancelAction, isNumericOnly, inputText);
+        }
+
+        public bool ShowToast(string message)
+        {           
+            return ToastHelper.Show(message);
+        }
+
+        public void DismissToast()
+        {
+            ToastHelper.Dismiss();
+        }
+
+        public void DismissToastNoAnimation()
+        {
+            ToastHelper.DismissNoAnimation();
         }
 	}
 }

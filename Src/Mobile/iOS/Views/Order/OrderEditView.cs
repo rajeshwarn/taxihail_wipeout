@@ -71,10 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtChargeType.Maybe(x => x.Placeholder = Localize.GetValue("ChargeTypeLabel"));
             txtChargeType.Maybe(x => x.AccessibilityLabel = Localize.GetValue("ChargeTypeLabel"));
 
-            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
-            txtLargeBags.Maybe(x => x.Placeholder = Localize.GetValue ("LargeBagsLabel"));
-            txtLargeBags.Maybe(x => x.AccessibilityLabel = Localize.GetValue ("LargeBagsLabel"));
-           
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
         }
 
@@ -137,6 +133,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			set.BindSafe(txtChargeType)
 				.For(v => v.Enabled)
+				.To(vm => vm.IsChargeTypesEnabled);
+
+			set.Bind(txtChargeType)
+				.For(v => v.HasRightArrow)
 				.To(vm => vm.IsChargeTypesEnabled);
 
             set.Apply();

@@ -6,7 +6,6 @@ using Foundation;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -29,11 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 try 
                 {
-                    if (!UIHelper.IsOS7orHigher)
-                    {
-                        throw new NotSupportedException("AppleDirectionProvider not available prior to iOS 7");
-                    }
-
                     var origin = new CLLocationCoordinate2D (originLat, originLng);
                     var destination = new CLLocationCoordinate2D (destLat, destLng);
 

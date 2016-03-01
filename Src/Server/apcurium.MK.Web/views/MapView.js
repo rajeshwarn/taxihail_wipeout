@@ -235,7 +235,7 @@
         updateAvailableVehiclesPosition: function () {
 
             // Get vehicle backbone models as simple objects for underscore query purposes
-            var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });
+            var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleName: e.vehicleName, latitude: e.latitude, longitude: e.longitude }) });
 
             // Get all existing available vehicle pin ID to manage them
             var _pins = _.map(this._availableVehiclePins, function (e) { return (e.metadata) });
@@ -243,20 +243,20 @@
             var self = this;
 
             _.each(_vehicles, function (_vehicle) {
-                if (self._availableVehiclePins.hasOwnProperty(_vehicle.vehicleNumber) == false) {
+                if (self._availableVehiclePins.hasOwnProperty(_vehicle.vehicleName) == false) {
 
                     // Add a new marker on the map
-                    self._availableVehiclePins[_vehicle.vehicleNumber] = new google.maps.Marker({
+                    self._availableVehiclePins[_vehicle.vehicleName] = new google.maps.Marker({
                         position: new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude),
                         map: self._map,
                         icon: 'assets/img/nearby_cab.png',
-                        metadata: _vehicle.vehicleNumber
+                        metadata: _vehicle.vehicleName
                     });
                     self.updatePickup();
                 } else {
 
                     // Refresh existing marker on the map
-                    var _car = self._availableVehiclePins[_vehicle.vehicleNumber];
+                    var _car = self._availableVehiclePins[_vehicle.vehicleName];
 
                     // Verify that vehicle position changed to avoid flicker, or check if vehicle was previously unavailable
                     if (_vehicle.longitude.toFixed(4) != _car.position.lng().toFixed(4) || _vehicle.latitude.toFixed(4) != _car.position.lat().toFixed(4) || (_car.map != self._map)) {
@@ -268,7 +268,7 @@
             });
 
             // Remove unused markers on the map
-            _.each(_.difference(_pins, _.map(_vehicles, function (e) { return (e.vehicleNumber) })), function (_removedVehicle) {
+            _.each(_.difference(_pins, _.map(_vehicles, function (e) { return (e.vehicleName) })), function (_removedVehicle) {
                 self._availableVehiclePins[_removedVehicle].setMap(null);
             });
         },

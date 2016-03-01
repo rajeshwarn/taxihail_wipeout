@@ -1,11 +1,14 @@
 ﻿using apcurium.MK.Common.Enumeration;
 using System;
 using apcurium.MK.Common.Entity;
+using Newtonsoft.Json;
+using MK.Common.Serializer;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class VehicleType
     {
+        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid Id { get; set; }
 
         public ServiceType ServiceType { get; set; }

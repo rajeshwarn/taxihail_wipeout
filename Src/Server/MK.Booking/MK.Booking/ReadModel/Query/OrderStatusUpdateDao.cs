@@ -23,23 +23,20 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<OrderStatusUpdateDetail>().Where(s=>s.Id == _defaultId).SingleOrDefault();
+                return context.Query<OrderStatusUpdateDetail>().SingleOrDefault(s => s.Id == _defaultId);
             }
         }
 
-        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime)
+        public void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var lastUpdate =  context.Query<OrderStatusUpdateDetail>().FirstOrDefault();
-                if ( lastUpdate == null )
-                {
-                    lastUpdate = new OrderStatusUpdateDetail();
-                }
+                var lastUpdate =  context.Query<OrderStatusUpdateDetail>().FirstOrDefault() ?? new OrderStatusUpdateDetail();
                 lastUpdate.Id = _defaultId;
                 lastUpdate.UpdaterUniqueId = updaterUniqueId;
                 lastUpdate.LastUpdateDate = updateTime;
-
+                lastUpdate.CycleStartDate = cycleStartTime;
+                
                 context.Save(lastUpdate);
             }
         }

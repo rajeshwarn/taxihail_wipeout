@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web.Routing;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -12,8 +11,10 @@ using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using CustomerPortal.Client;
 using Moq;
 using NUnit.Framework;
 using Infrastructure.Messaging;
@@ -39,6 +40,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Commands = new List<ICommand>();
 
             _geocodingMock = new Mock<IGeocoding>();
+            var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
+
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
                 TemplateServiceMock.Object,
@@ -50,15 +53,48 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
+                taxihailNetworkServiceClientMock.Object,
+                new Logger(),
                 bus.Object);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             Sut.Setup(new EmailCommandHandler(notificationService));
             
+            var returnAddressValue = new Address {FullAddress = "full dropoff"};
+
             _geocodingMock
-                .Setup(x => x.Search(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
-                .Returns(new [] {new Address { FullAddress = "full dropoff" }});
+                .Setup(x => x.TryToGetExactDropOffAddress(It.IsAny<OrderStatusDetail>(), 45, -73, It.IsAny<Address>(), It.IsAny<string>()))
+                .Returns(returnAddressValue);
+
+            _geocodingMock
+                .Setup(x => x.TryToGetExactDropOffAddress(It.Is<OrderStatusDetail>(
+                    o => o.VehicleLatitude.GetValueOrDefault() == 45 && o.VehicleLongitude.GetValueOrDefault() == -73), 
+                    null,
+                    null,
+                    It.IsAny<Address>(),
+                    It.IsAny<string>())
+                )
+                .Returns(returnAddressValue);
+
+            _geocodingMock
+                .Setup(x => x.TryToGetExactDropOffAddress(
+                    It.Is<OrderStatusDetail>(o => !o.VehicleLongitude.HasValue && !o.VehicleLatitude.HasValue),
+                    null, 
+                    null, 
+                    It.IsAny<Address>(),
+                    It.IsAny<string>())
+                )
+                .Returns(new Address() { FullAddress = "hardcoded dropoff" });
+
+            _geocodingMock
+                .Setup(x => x.TryToGetExactDropOffAddress(
+                    It.Is<OrderStatusDetail>(o => !o.VehicleLongitude.HasValue && !o.VehicleLatitude.HasValue),
+                    null,
+                    null,
+                    null,
+                    It.IsAny<string>())
+                )
+                .Returns(new Address() { FullAddress = "-"});
 
             TemplateServiceMock
                 .Setup(x => x.InlineCss(It.IsAny<string>()))
@@ -148,7 +184,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("TotalFare", "$21.00");
             AssertTemplateValueEquals("Tax", "$1.00");
             AssertTemplateValueEquals("ShowTax", "True");
-            AssertTemplateValueEquals("ShowToll", "True");
+            AssertTemplateValueEquals("ShowTollTotal", "True");
             AssertTemplateValueEquals("ShowSurcharge", "True");
             AssertTemplateValueEquals("ShowBookingFees", "True");
             AssertTemplateValueEquals("vatIsEnabled", "False");
@@ -201,9 +237,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 },
                 ClientLanguageCode = "fr"
             });
-
+            
             // verify that geocoding is called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
+            _geocodingMock.Verify(g => g.TryToGetExactDropOffAddress(It.IsAny<OrderStatusDetail>(), It.IsAny<double?>(), It.IsAny<double?>(),It.IsAny<Address>(), It.IsAny<string>()), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "full dropoff");
@@ -241,7 +277,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is not called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
+            _geocodingMock.Verify(g => g.TryToGetExactDropOffAddress(It.IsAny<OrderStatusDetail>(), null, null, null, It.IsAny<string>()), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "-");
@@ -282,7 +318,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is not called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
+            _geocodingMock.Verify(g => g.TryToGetExactDropOffAddress(It.IsAny<OrderStatusDetail>(), null, null, It.IsAny<Address>(), It.IsAny<string>()), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "hardcoded dropoff");
@@ -325,7 +361,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             // verify that geocoding is called
-            _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
+            _geocodingMock.Verify(g => g.TryToGetExactDropOffAddress(It.IsAny<OrderStatusDetail>(), It.IsAny<double?>(), It.IsAny<double?>(), It.IsAny<Address>(), It.IsAny<string>()), Times.Once);
 
             // verify templateData (2 times for subject + body)
             AssertTemplateValueEquals("DropOffAddress", "full dropoff");

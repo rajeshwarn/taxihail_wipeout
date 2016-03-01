@@ -1,11 +1,12 @@
 #region
 
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Text;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -13,8 +14,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class POIServiceClient : BaseServiceClient
     {
-	    public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
+        public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
+            : base(url, sessionId, packageInfo, connectivityService, logger)
         {
         }
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
 			var request = GetParameters(company, textMatch, maxRespSize, "pickuppoint").ToString();
 
-			return Client.GetAsync<PickupPoint[]>(request);
+            return Client.GetAsync<PickupPoint[]>(request, logger: Logger);
         }
 
 		public Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				.Append("&coreFieldsOnly=true")
 				.ToString();
 
-            return Client.GetAsync<Airline[]>(request);
+            return Client.GetAsync<Airline[]>(request, logger: Logger);
         }
 
 	    private static StringBuilder GetParameters(string company, string textMatch, int maxRespSize,string endpoint)

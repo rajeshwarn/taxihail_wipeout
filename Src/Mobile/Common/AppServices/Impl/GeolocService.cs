@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -14,32 +16,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
     public class GeolocService : BaseService, IGeolocService
     {
-		readonly IGeocoding _geocoding;
-		readonly IAddresses _addresses;
-		readonly IDirections _directions;
+		private readonly IGeocoding _geocoding;
+		private readonly IAddresses _addresses;
+		private readonly IDirections _directions;
+        private readonly INetworkRoamingService _networkRoamingService;
 
-		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions)
+        public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, INetworkRoamingService networkRoamingService)
 		{
 			_directions = directions;
-			_addresses = addresses;
+            _networkRoamingService = networkRoamingService;
+            _addresses = addresses;
 			_geocoding = geocoding;
 		}
-
-        public async Task<Address> ValidateAddress(string address)
-        {
-            try
-            {
-				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = await _geocoding.SearchAsync(address, currentLanguage);
-                
-				return addresses.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-				Logger.LogError (ex);
-                return null;
-            }
-        }
 
         public async Task<Address[]> SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
@@ -76,13 +64,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, serviceType, vehicleTypeId, date);
-				return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
+                var marketTariff = await GetMarketTariffIfPossible();
+				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, serviceType, vehicleTypeId, date, false, marketTariff);
+                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price, TripDurationInSeconds = (int?)direction.Duration };
             }
             catch
             {
                 return new DirectionInfo();
             }
+        }
+
+        private async Task<Tariff> GetMarketTariffIfPossible()
+        {
+            var marketSettings = await _networkRoamingService.GetAndObserveMarketSettings().Take(1);
+
+            return marketSettings.IsLocalMarket || !marketSettings.OverrideEnableAppFareEstimates
+                ? null 
+                : marketSettings.MarketTariff;
         }
     }
 }

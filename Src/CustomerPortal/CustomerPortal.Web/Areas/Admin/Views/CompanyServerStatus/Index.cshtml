@@ -1,0 +1,27 @@
+﻿@model  IEnumerable<CustomerPortal.Web.Areas.Admin.Models.CompanyStatusModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+
+<div style="width: 870px;">
+    <div class='row'>
+        <div id="companiesServiceStatus" style="white-space: normal;">
+           @Html.Partial("_StatusList", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function refresh() {
+            $.get('CompanyServerStatus/StatusList/', function(result) {
+                $("#companiesServiceStatus").html(result);
+            });
+        }
+
+        // Auto-refresh set to every minutes.
+        setInterval(refresh, 60000);
+    </script>
+}

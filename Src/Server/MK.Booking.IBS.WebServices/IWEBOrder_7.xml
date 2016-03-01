@@ -1,0 +1,2684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="IWEBOrder_7service" targetNamespace="http://tempuri.org/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns1="urn:TypeWEB" xmlns:ns2="urn:TypeOrder" xmlns:ns3="urn:TypeAccount" xmlns:ns4="urn:TypeZone" xmlns:ns5="urn:StaticDataIntf" xmlns:ns6="urn:TypeVehicle">
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:TypeWEB">
+      <simpleType name="TWEBOrderStatusValue">
+        <restriction base="string">
+          <enumeration value="wosNone"/>
+          <enumeration value="wosAddrValidQry"/>
+          <enumeration value="wosAddrValidating"/>
+          <enumeration value="wosAddrValidatingTimeout"/>
+          <enumeration value="wosAddrNotValid"/>
+          <enumeration value="wosAddrValid"/>
+          <enumeration value="wosSCHED"/>
+          <enumeration value="wosCANCELLED"/>
+          <enumeration value="wosPost"/>
+          <enumeration value="wosMove"/>
+          <enumeration value="wosMoved"/>
+          <enumeration value="wosDONE"/>
+          <enumeration value="wosWAITING"/>
+          <enumeration value="wosASSIGNED"/>
+          <enumeration value="wosARRIVED"/>
+          <enumeration value="wosLOADED"/>
+          <enumeration value="wosNOSHOW"/>
+          <enumeration value="wosAddrPostalValidQry"/>
+          <enumeration value="wosCANCELLED_DONE"/>
+          <enumeration value="wosCCPreauthQry"/>
+          <enumeration value="wosCCSaleQry"/>
+          <enumeration value="wosCCProcessing"/>
+          <enumeration value="wosCCProcDone"/>
+          <enumeration value="wosPriceQry"/>
+          <enumeration value="wosPriceCalculating"/>
+          <enumeration value="wosPriceDone"/>
+          <enumeration value="wosReportQry"/>
+          <enumeration value="wosReportProcessing"/>
+          <enumeration value="wosReportDone"/>
+          <enumeration value="wosCCEncryptCCInfo"/>
+          <enumeration value="wosCCEncryptCCInfoDone"/>
+          <enumeration value="wosTIMEOUT"/>
+          <enumeration value="wosDoneNotPayed"/>
+          <enumeration value="wosBAILED"/>
+          <enumeration value="wosUNLOAD"/>
+        </restriction>
+      </simpleType>
+      <simpleType name="TCCTransResult">
+        <restriction base="string">
+          <enumeration value="ctrNone"/>
+          <enumeration value="ctrDeclined"/>
+          <enumeration value="ctrApproved"/>
+          <enumeration value="ctrTimeout"/>
+        </restriction>
+      </simpleType>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:TypeOrder">
+      <complexType name="TBookOrder">
+        <sequence>
+          <element name="ServiceProviderID" type="xs:int"/>
+          <element name="ConfirmationID" type="xs:int"/>
+          <element name="AccountID" type="xs:int"/>
+          <element name="Customer" type="xs:string"/>
+          <element name="Phone" type="xs:string"/>
+          <element name="PickupDate" type="ns2:TWEBTimeStamp"/>
+          <element name="PickupTime" type="ns2:TWEBTimeStamp"/>
+          <element name="PickupAddress" type="ns2:TWEBAddress"/>
+          <element name="DropoffAddress" type="ns2:TWEBAddress"/>
+          <element name="Passengers" type="xs:int"/>
+          <element name="VehicleTypeName" type="xs:string"/>
+          <element name="VehicleTypeID" type="xs:int"/>
+          <element name="Note" type="xs:string"/>
+          <element name="ContactPhone" type="xs:string"/>
+          <element name="Fare" type="xs:double"/>
+          <element name="Tolls" type="xs:double"/>
+          <element name="EstDistance" type="xs:double"/>
+          <element name="CCNumber" type="xs:string"/>
+          <element name="CCExpMonth" type="xs:string"/>
+          <element name="CCExpYear" type="xs:string"/>
+          <element name="CCTransID" type="xs:int"/>
+          <element name="CCHolder" type="xs:string"/>
+          <element name="CCStartMonth" type="xs:string"/>
+          <element name="CCStartYear" type="xs:string"/>
+          <element name="CCSecurityCode" type="xs:string"/>
+          <element name="CCIssueNumber" type="xs:string"/>
+          <element name="CCTransDate" type="xs:string"/>
+          <element name="CCTransResult" type="ns1:TCCTransResult"/>
+          <element name="CCRespondText" type="xs:string"/>
+          <element name="CCAuth" type="xs:string"/>
+          <element name="OrderStatus" type="ns1:TWEBOrderStatusValue"/>
+          <element name="OrderID" type="xs:int"/>
+          <element name="OrderDate" type="ns2:TWEBTimeStamp"/>
+        </sequence>
+      </complexType>
+      <complexType name="TWEBTimeStamp">
+        <sequence>
+          <element name="Year" type="xs:int"/>
+          <element name="Month" type="xs:int"/>
+          <element name="Day" type="xs:int"/>
+          <element name="Hour" type="xs:int"/>
+          <element name="Minute" type="xs:int"/>
+          <element name="Second" type="xs:int"/>
+          <element name="Fractions" type="xs:int"/>
+        </sequence>
+      </complexType>
+      <complexType name="TWEBAddress">
+        <sequence>
+          <element name="StreetPlace" type="xs:string"/>
+          <element name="AptBaz" type="xs:string"/>
+          <element name="Postal" type="xs:string"/>
+          <element name="CityID" type="xs:int"/>
+          <element name="RegionID" type="xs:int"/>
+          <element name="CountryID" type="xs:int"/>
+          <element name="Longitude" type="xs:double"/>
+          <element name="Latitude" type="xs:double"/>
+          <element name="AddressID" type="xs:int"/>
+          <element name="StopTime" type="ns2:TWEBTimeStamp"/>
+          <element name="StopOrder" type="xs:int"/>
+          <element name="RunOrder" type="xs:int"/>
+          <element name="StopPass" type="xs:int"/>
+        </sequence>
+      </complexType>
+      <complexType name="TWEBFavotiteAddress">
+        <complexContent>
+          <extension base="ns2:TWEBAddress">
+            <sequence>
+              <element name="AddressAlias" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_2">
+        <complexContent>
+          <extension base="ns2:TBookOrder">
+            <sequence>
+              <element name="OrderedBy" type="xs:string"/>
+              <element name="MajorIntersect" type="xs:string"/>
+              <element name="CancelNum" type="xs:int"/>
+              <element name="Airline" type="xs:string"/>
+              <element name="Flight" type="xs:string"/>
+              <element name="Arrival" type="ns2:TWEBTimeStamp"/>
+              <element name="AirportCode" type="xs:string"/>
+              <element name="CrewAuthoriz" type="xs:string"/>
+              <element name="PermanentRem" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_3">
+        <complexContent>
+          <extension base="ns2:TBookOrder_2">
+            <sequence>
+              <element name="RideStops" type="ns2:TRideStopArray"/>
+              <element name="TxtBack" type="xs:boolean"/>
+              <element name="EmailBack" type="xs:boolean"/>
+              <element name="CallBack" type="xs:boolean"/>
+              <element name="Prompt1" type="xs:string"/>
+              <element name="Prompt2" type="xs:string"/>
+              <element name="Prompt3" type="xs:string"/>
+              <element name="Prompt4" type="xs:string"/>
+              <element name="Prompt5" type="xs:string"/>
+              <element name="Prompt6" type="xs:string"/>
+              <element name="Prompt7" type="xs:string"/>
+              <element name="Prompt8" type="xs:string"/>
+              <element name="Field1" type="xs:string"/>
+              <element name="Field2" type="xs:string"/>
+              <element name="Field3" type="xs:string"/>
+              <element name="Field4" type="xs:string"/>
+              <element name="Field5" type="xs:string"/>
+              <element name="Field6" type="xs:string"/>
+              <element name="Field7" type="xs:string"/>
+              <element name="Field8" type="xs:string"/>
+              <element name="TxtBackAdd" type="xs:string"/>
+              <element name="EmailBackAdd" type="xs:string"/>
+              <element name="CallBackNo" type="xs:string"/>
+              <element name="CCAddress" type="xs:string"/>
+              <element name="CCPostCode" type="xs:string"/>
+              <element name="RideID" type="xs:int"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TRideStopArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TWEBAddress[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_4">
+        <complexContent>
+          <extension base="ns2:TBookOrder_3">
+            <sequence>
+              <element name="ccType" type="xs:string"/>
+              <element name="ccFirst" type="xs:string"/>
+              <element name="ccLast" type="xs:string"/>
+              <element name="ccCity" type="xs:string"/>
+              <element name="ccState" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_5">
+        <complexContent>
+          <extension base="ns2:TBookOrder_4">
+            <sequence>
+              <element name="ChargeTypeID" type="xs:int"/>
+              <element name="RideExceptions" type="ns2:TExceptionsArray"/>
+              <element name="CabNo" type="xs:string"/>
+              <element name="CallNumber" type="xs:string"/>
+              <element name="DispByAuto" type="xs:boolean"/>
+              <element name="FrCity" type="xs:string"/>
+              <element name="FrRegion" type="xs:string"/>
+              <element name="ToCity" type="xs:string"/>
+              <element name="ToRegion" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TExceptionsArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TException[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_6">
+        <complexContent>
+          <extension base="ns2:TBookOrder_5">
+            <sequence>
+              <element name="Priority" type="xs:int"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_7">
+        <complexContent>
+          <extension base="ns2:TBookOrder_6">
+            <sequence>
+              <element name="Tips" type="xs:double"/>
+              <element name="VAT" type="xs:double"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_8">
+        <complexContent>
+          <extension base="ns2:TBookOrder_7">
+            <sequence>
+              <element name="AccountNum" type="xs:string"/>
+              <element name="CustomerNum" type="xs:int"/>
+              <element name="WaitTime" type="xs:int"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_10">
+        <complexContent>
+          <extension base="ns2:TBookOrder_8">
+            <sequence>
+              <element name="JobOfferPrompt" type="xs:string"/>
+              <element name="AssignDriver" type="xs:string"/>
+              <element name="AssignCab" type="xs:string"/>
+              <element name="ExpirySec" type="xs:int"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_11">
+        <complexContent>
+          <extension base="ns2:TBookOrder_10">
+            <sequence>
+              <element name="GUID" type="xs:string"/>
+              <element name="TipAmount" type="xs:int"/>
+              <element name="TipPercent" type="xs:int"/>
+              <element name="PBToken" type="xs:int"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_12">
+        <complexContent>
+          <extension base="ns2:TBookOrder_11">
+            <sequence>
+              <element name="JobOfferAcceptTimeout" type="xs:int"/>
+              <element name="JobProvider" type="xs:int"/>
+              <element name="TipIncentive" type="xs:double"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_13">
+        <complexContent>
+          <extension base="ns2:TBookOrder_12">
+            <sequence>
+              <element name="IsSharedRide" type="xs:boolean"/>
+              <element name="RunNum" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrder_14">
+        <complexContent>
+          <extension base="ns2:TBookOrder_13">
+            <sequence>
+              <element name="ContactEmail" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TRun">
+        <complexContent>
+          <extension base="ns2:TBookOrder">
+            <sequence>
+              <element name="RunNum" type="xs:string"/>
+              <element name="RunRides" type="ns2:TOrderList_6"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderList_6">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TBookOrder_6[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TException">
+        <sequence>
+          <element name="ExID" type="xs:int"/>
+          <element name="ExName" type="xs:string"/>
+        </sequence>
+      </complexType>
+      <complexType name="TBookOrderList_3">
+        <sequence>
+          <element name="OrderCount" type="xs:int"/>
+          <element name="OrderList" type="ns2:TOrderList_3"/>
+        </sequence>
+      </complexType>
+      <complexType name="TOrderList_3">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TBookOrder_3[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrderList_4">
+        <sequence>
+          <element name="OrderCount" type="xs:int"/>
+          <element name="OrderList" type="ns2:TOrderList_4"/>
+        </sequence>
+      </complexType>
+      <complexType name="TOrderList_4">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TBookOrder_4[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrderList_5">
+        <sequence>
+          <element name="OrderCount" type="xs:int"/>
+          <element name="OrderList" type="ns2:TOrderList_5"/>
+        </sequence>
+      </complexType>
+      <complexType name="TOrderList_5">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TBookOrder_5[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrderList_6">
+        <sequence>
+          <element name="OrderCount" type="xs:int"/>
+          <element name="OrderList" type="ns2:TOrderList_6"/>
+        </sequence>
+      </complexType>
+      <complexType name="TVehiclePositionArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TVehiclePosition[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TVehiclePosition">
+        <sequence>
+          <element name="VehicleNumber" type="xs:string"/>
+          <element name="Longitude" type="xs:double"/>
+          <element name="Latitude" type="xs:double"/>
+          <element name="GPSLastUpdated" type="ns2:TWEBTimeStamp"/>
+        </sequence>
+      </complexType>
+      <complexType name="TVehiclePosition_2">
+        <complexContent>
+          <extension base="ns2:TVehiclePosition">
+            <sequence>
+              <element name="DriverID" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TVehiclePosition_4">
+        <complexContent>
+          <extension base="ns2:TVehiclePosition_2">
+            <sequence>
+              <element name="VehicleType" type="ns5:TVehicleTypeItem"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TVehiclePositionArray_2">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TVehiclePosition_2[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TVehiclePositionArray_4">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TVehiclePosition_4[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBookOrderList_7">
+        <sequence>
+          <element name="OrderCount" type="xs:int"/>
+          <element name="OrderList" type="ns2:TOrderList_7"/>
+        </sequence>
+      </complexType>
+      <complexType name="TOrderList_7">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TBookOrder_7[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderIDList">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="xs:int[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatusList">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TOrderStatus[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatus">
+        <sequence>
+          <element name="OrderID" type="xs:int"/>
+          <element name="OrderStatus" type="ns1:TWEBOrderStatusValue"/>
+          <element name="VehicleNumber" type="xs:string"/>
+          <element name="VehicleCoordinateLat" type="xs:double"/>
+          <element name="VehicleCoordinateLong" type="xs:double"/>
+          <element name="VehicleMake" type="xs:string"/>
+          <element name="VehicleModel" type="xs:string"/>
+          <element name="VehicleColor" type="xs:string"/>
+          <element name="VehicleRegistration" type="xs:string"/>
+          <element name="DriverFirstName" type="xs:string"/>
+          <element name="DriverLastName" type="xs:string"/>
+          <element name="DriverMobilePhone" type="xs:string"/>
+          <element name="Fare" type="xs:double"/>
+          <element name="Tolls" type="xs:double"/>
+          <element name="Tips" type="xs:double"/>
+          <element name="VAT" type="xs:double"/>
+          <element name="ETATime" type="ns2:TWEBTimeStamp"/>
+        </sequence>
+      </complexType>
+      <complexType name="TOrderStatus_2">
+        <complexContent>
+          <extension base="ns2:TOrderStatus">
+            <sequence>
+              <element name="CallNumber" type="xs:string"/>
+              <element name="ReferenceNumber" type="xs:string"/>
+              <element name="TerminalId" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatus_3">
+        <complexContent>
+          <extension base="ns2:TOrderStatus_2">
+            <sequence>
+              <element name="PairingCode" type="xs:string"/>
+              <element name="Surcharge" type="xs:double"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatus_4">
+        <complexContent>
+          <extension base="ns2:TOrderStatus_3">
+            <sequence>
+              <element name="DriverNumber" type="xs:int"/>
+              <element name="OriginalImg" type="xs:string"/>
+              <element name="ThumbnailImg" type="xs:string"/>
+              <element name="WebImg" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatus_5">
+        <complexContent>
+          <extension base="ns2:TOrderStatus_4">
+            <sequence>
+              <element name="Extras" type="xs:double"/>
+              <element name="Discount" type="xs:double"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatusList_2">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TOrderStatus_2[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatusList_3">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TOrderStatus_3[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatusList_4">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TOrderStatus_4[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TOrderStatusList_5">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TOrderStatus_5[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TPaymentAuthorization3dParty">
+        <sequence>
+          <element name="AuthorizationNumber" type="xs:string"/>
+          <element name="CardType" type="xs:string"/>
+          <element name="CardNumber" type="xs:string"/>
+          <element name="ExpiryDate" type="xs:string"/>
+          <element name="TransactionDate" type="xs:string"/>
+          <element name="TransactionTime" type="xs:string"/>
+          <element name="CCSequenceNumber" type="xs:string"/>
+          <element name="ApprovedAmount" type="xs:string"/>
+          <element name="ApprovalText" type="xs:string"/>
+          <element name="CollectAmount" type="xs:string"/>
+          <element name="ExtrasAmount" type="xs:string"/>
+          <element name="FareAmount" type="xs:string"/>
+          <element name="TaxAmount" type="xs:string"/>
+          <element name="TipAmount" type="xs:string"/>
+          <element name="TollsAmount" type="xs:string"/>
+          <element name="SurchargeAmount" type="xs:string"/>
+          <element name="DiscountAmount" type="xs:string"/>
+          <element name="PayType" type="xs:int"/>
+          <element name="Approved" type="xs:boolean"/>
+          <element name="JobNumber" type="xs:int"/>
+        </sequence>
+      </complexType>
+      <complexType name="TPaymentAuthorization3dParty2">
+        <complexContent>
+          <extension base="ns2:TPaymentAuthorization3dParty">
+            <sequence>
+              <element name="CardBalanceRemaining" type="xs:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      <complexType name="TEstimateFare_10Result">
+        <sequence>
+          <element name="Fare" type="xs:double"/>
+          <element name="Extras" type="xs:double"/>
+          <element name="Tax" type="xs:double"/>
+          <element name="Tip" type="xs:double"/>
+          <element name="Tolls" type="xs:double"/>
+          <element name="VAT" type="xs:double"/>
+          <element name="Total" type="xs:double"/>
+          <element name="Distance" type="xs:double"/>
+          <element name="TripTime" type="xs:double"/>
+          <element name="PBToken" type="xs:int"/>
+          <element name="CabType" type="xs:string"/>
+        </sequence>
+      </complexType>
+      <complexType name="TEstimateDistance_2_ParamI">
+        <sequence>
+          <element name="Distance" type="xs:double"/>
+          <element name="TripTime" type="xs:int"/>
+          <element name="WaitTime" type="xs:int"/>
+          <element name="StopCount" type="xs:int"/>
+          <element name="PassengerCount" type="xs:int"/>
+          <element name="FrDate" type="ns2:TWEBTimeStamp"/>
+          <element name="AccountNum" type="xs:string"/>
+          <element name="CustomerNum" type="xs:int"/>
+          <element name="CabType" type="xs:int"/>
+        </sequence>
+      </complexType>
+      <complexType name="TEstimateDistance_2_ParamO">
+        <sequence>
+          <element name="TotalFare" type="xs:double"/>
+          <element name="TripTime" type="xs:int"/>
+        </sequence>
+      </complexType>
+      <complexType name="TBookOrderKey">
+        <sequence>
+          <element name="GUID" type="xs:string"/>
+          <element name="OrderID" type="xs:int"/>
+        </sequence>
+      </complexType>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:TypeAccount">
+      <complexType name="TFavoriteAddressesArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns2:TWEBFavotiteAddress[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:TypeZone">
+      <complexType name="TBannedZoneArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns4:TBannedZone[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TBannedZone">
+        <sequence>
+          <element name="Zone" type="xs:string"/>
+          <element name="ZoneID" type="xs:int"/>
+          <element name="Vehicles" type="ns4:TVehicleNameArray"/>
+          <element name="Drivers" type="ns4:TDriverNameArray"/>
+        </sequence>
+      </complexType>
+      <complexType name="TVehicleNameArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="xs:string[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TDriverNameArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="xs:string[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:StaticDataIntf">
+      <complexType name="TVehicleTypeItem">
+        <sequence>
+          <element name="Name" type="xs:string"/>
+          <element name="Capacity" type="xs:int"/>
+          <element name="ID" type="xs:int"/>
+          <element name="isDefault" type="xs:boolean"/>
+        </sequence>
+      </complexType>
+      <complexType name="TVehicleTypeArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns5:TVehicleTypeItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:TypeVehicle">
+      <complexType name="TVehicleCompArray">
+        <complexContent>
+          <restriction base="soapenc:Array">
+            <sequence/>
+            <attribute ref="soapenc:arrayType" n1:arrayType="ns6:TVehicleComp[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </restriction>
+        </complexContent>
+      </complexType>
+      <complexType name="TVehicleComp">
+        <sequence>
+          <element name="VehicleCompType" type="ns6:TVehicleCompType"/>
+          <element name="VehicleID" type="xs:string"/>
+          <element name="ETADistance" type="xs:int"/>
+          <element name="ETATime" type="xs:int"/>
+          <element name="Rating" type="xs:string"/>
+        </sequence>
+      </complexType>
+      <simpleType name="TVehicleCompType">
+        <restriction base="string">
+          <enumeration value="vctNumber"/>
+          <enumeration value="vctPimID"/>
+          <enumeration value="vctMedallion"/>
+        </restriction>
+      </simpleType>
+    </schema>
+  </types>
+  <message name="GetOrderStatus0Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetOrderStatus0Response">
+    <part name="return" type="ns1:TWEBOrderStatusValue"/>
+  </message>
+  <message name="GetBookOrder1Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder1Response">
+    <part name="return" type="ns2:TBookOrder"/>
+  </message>
+  <message name="SaveBookOrder2Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder"/>
+  </message>
+  <message name="SaveBookOrder2Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrderWrapper3Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ServiceProviderID" type="xs:int"/>
+    <part name="ConfirmationID" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="Customer" type="xs:string"/>
+    <part name="Phone" type="xs:string"/>
+    <part name="PickupYear" type="xs:int"/>
+    <part name="PickupMonth" type="xs:int"/>
+    <part name="PickupDay" type="xs:int"/>
+    <part name="PickupHour" type="xs:int"/>
+    <part name="PickupMinute" type="xs:int"/>
+    <part name="PickupStreetPlace" type="xs:string"/>
+    <part name="PickupAptBaz" type="xs:string"/>
+    <part name="PickupPostal" type="xs:string"/>
+    <part name="PickupCityID" type="xs:int"/>
+    <part name="PickupRegionID" type="xs:int"/>
+    <part name="PickupCountryID" type="xs:int"/>
+    <part name="PickupAddressID" type="xs:int"/>
+    <part name="PickupLatitude" type="xs:double"/>
+    <part name="PickupLongitude" type="xs:double"/>
+    <part name="DropoffStreetPlace" type="xs:string"/>
+    <part name="DropoffAptBaz" type="xs:string"/>
+    <part name="DropoffPostal" type="xs:string"/>
+    <part name="DropoffCityID" type="xs:int"/>
+    <part name="DropoffRegionID" type="xs:int"/>
+    <part name="DropoffCountryID" type="xs:int"/>
+    <part name="DropoffAddressID" type="xs:int"/>
+    <part name="DropoffLatitude" type="xs:double"/>
+    <part name="DropoffLongitude" type="xs:double"/>
+    <part name="Passengers" type="xs:int"/>
+    <part name="VehicleTypeName" type="xs:string"/>
+    <part name="VehicleTypeID" type="xs:int"/>
+    <part name="Note" type="xs:string"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="CCExpMonth" type="xs:string"/>
+    <part name="CCExpYear" type="xs:string"/>
+    <part name="CCTransID" type="xs:int"/>
+    <part name="OrderStatus" type="ns1:TWEBOrderStatusValue"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="Fare" type="xs:double"/>
+    <part name="Tolls" type="xs:double"/>
+    <part name="EstDistance" type="xs:double"/>
+    <part name="CCHolder" type="xs:string"/>
+    <part name="CCStartMonth" type="xs:string"/>
+    <part name="CCStartYear" type="xs:string"/>
+    <part name="CCSecurityCode" type="xs:string"/>
+    <part name="CCIssueNumber" type="xs:string"/>
+    <part name="CCTransDate" type="xs:string"/>
+    <part name="CCTransResult" type="ns1:TCCTransResult"/>
+    <part name="CCRespondText" type="xs:string"/>
+    <part name="CCAuth" type="xs:string"/>
+  </message>
+  <message name="SaveBookOrderWrapper3Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="CancelBookOrder4Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="CancelBookOrder4Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetHeartBeat5Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+  </message>
+  <message name="GetHeartBeat5Response">
+    <part name="return" type="ns2:TWEBTimeStamp"/>
+  </message>
+  <message name="DeleteBookOrder6Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+  </message>
+  <message name="DeleteBookOrder6Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetFareTollsDistance7Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="Fare" type="xs:double"/>
+    <part name="Tolls" type="xs:double"/>
+    <part name="Distance" type="xs:double"/>
+  </message>
+  <message name="GetFareTollsDistance7Response">
+    <part name="Fare" type="xs:double"/>
+    <part name="Tolls" type="xs:double"/>
+    <part name="Distance" type="xs:double"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetVehicleLocation8Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+  </message>
+  <message name="GetVehicleLocation8Response">
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetDriverLocation9Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="DriverID" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+  </message>
+  <message name="GetDriverLocation9Response">
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendDriverMsg10Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CarID" type="xs:string"/>
+    <part name="Msg" type="xs:string"/>
+  </message>
+  <message name="SendDriverMsg10Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveExtrPayment11Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="RideID" type="xs:int"/>
+    <part name="Amount" type="xs:double"/>
+    <part name="AuthNum" type="xs:string"/>
+  </message>
+  <message name="SaveExtrPayment11Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveExtrPayment_212Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="TransID" type="xs:string"/>
+    <part name="AuthNum" type="xs:string"/>
+    <part name="CardToken" type="xs:string"/>
+    <part name="PaymentType" type="xs:string"/>
+    <part name="PaymentProvider" type="xs:string"/>
+    <part name="MDTTip" type="xs:int"/>
+    <part name="MDTToll" type="xs:int"/>
+    <part name="MDTExtras" type="xs:int"/>
+    <part name="MDTFare" type="xs:int"/>
+    <part name="PaymentTipAmount" type="xs:int"/>
+    <part name="PaymentMeterAmount" type="xs:int"/>
+    <part name="PaymentTotal" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="Name" type="xs:string"/>
+    <part name="Phone" type="xs:string"/>
+    <part name="Email" type="xs:string"/>
+    <part name="OS" type="xs:string"/>
+    <part name="UserAgent" type="xs:string"/>
+    <part name="GUID" type="xs:string"/>
+  </message>
+  <message name="SaveExtrPayment_212Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveExtrPayment_313Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="TransID" type="xs:string"/>
+    <part name="AuthNum" type="xs:string"/>
+    <part name="CardToken" type="xs:string"/>
+    <part name="PaymentType" type="xs:string"/>
+    <part name="PaymentProvider" type="xs:string"/>
+    <part name="MDTTip" type="xs:int"/>
+    <part name="MDTToll" type="xs:int"/>
+    <part name="MDTExtras" type="xs:int"/>
+    <part name="MDTFare" type="xs:int"/>
+    <part name="PaymentTipAmount" type="xs:int"/>
+    <part name="PaymentMeterAmount" type="xs:int"/>
+    <part name="PaymentTotal" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="Name" type="xs:string"/>
+    <part name="Phone" type="xs:string"/>
+    <part name="Email" type="xs:string"/>
+    <part name="OS" type="xs:string"/>
+    <part name="UserAgent" type="xs:string"/>
+    <part name="GUID" type="xs:string"/>
+    <part name="MDTVAT" type="xs:int"/>
+    <part name="MDTFee" type="xs:int"/>
+    <part name="MDTDiscount" type="xs:int"/>
+    <part name="Collect" type="xs:int"/>
+    <part name="Balance" type="xs:int"/>
+  </message>
+  <message name="SaveExtrPayment_313Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_214Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_214Response">
+    <part name="return" type="ns2:TBookOrder_2"/>
+  </message>
+  <message name="SaveBookOrder_215Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_2"/>
+  </message>
+  <message name="SaveBookOrder_215Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo16Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ConfirmationNo" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo16Response">
+    <part name="return" type="ns2:TBookOrderList_3"/>
+  </message>
+  <message name="GetBookOrder_317Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_317Response">
+    <part name="return" type="ns2:TBookOrder_3"/>
+  </message>
+  <message name="GetOrderHistory18Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="ToDate" type="ns2:TWEBTimeStamp"/>
+    <part name="OrderStatus" type="xs:int"/>
+  </message>
+  <message name="GetOrderHistory18Response">
+    <part name="return" type="ns2:TBookOrderList_3"/>
+  </message>
+  <message name="SaveBookOrderWithCar19Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CarNumber" type="xs:int"/>
+    <part name="BookOrder" type="ns2:TBookOrder_3"/>
+  </message>
+  <message name="SaveBookOrderWithCar19Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_320Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_3"/>
+  </message>
+  <message name="SaveBookOrder_320Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="AddressCorrelation21Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+  </message>
+  <message name="AddressCorrelation21Response">
+    <part name="return" type="ns3:TFavoriteAddressesArray"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_422Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ConfirmationNo" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_422Response">
+    <part name="return" type="ns2:TBookOrderList_4"/>
+  </message>
+  <message name="GetBookOrder_423Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_423Response">
+    <part name="return" type="ns2:TBookOrder_4"/>
+  </message>
+  <message name="GetOrderHistory_424Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="ToDate" type="ns2:TWEBTimeStamp"/>
+    <part name="OrderStatus" type="xs:int"/>
+  </message>
+  <message name="GetOrderHistory_424Response">
+    <part name="return" type="ns2:TBookOrderList_4"/>
+  </message>
+  <message name="GetVehicleLocationWithTaxiNo25Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="LastGPSUpdate" type="ns2:TWEBTimeStamp"/>
+    <part name="TaxiNo" type="xs:string"/>
+  </message>
+  <message name="GetVehicleLocationWithTaxiNo25Response">
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="LastGPSUpdate" type="ns2:TWEBTimeStamp"/>
+    <part name="TaxiNo" type="xs:string"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_426Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_4"/>
+  </message>
+  <message name="SaveBookOrder_426Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="CancelBookOrder_227Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="Reason" type="xs:string"/>
+  </message>
+  <message name="CancelBookOrder_227Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_528Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ConfirmationNo" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_528Response">
+    <part name="return" type="ns2:TBookOrderList_5"/>
+  </message>
+  <message name="GetBookOrder_529Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_529Response">
+    <part name="return" type="ns2:TBookOrder_5"/>
+  </message>
+  <message name="GetOrderHistory_530Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="ToDate" type="ns2:TWEBTimeStamp"/>
+    <part name="OrderStatus" type="xs:int"/>
+  </message>
+  <message name="GetOrderHistory_530Response">
+    <part name="return" type="ns2:TBookOrderList_5"/>
+  </message>
+  <message name="SaveBookOrder_531Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_5"/>
+  </message>
+  <message name="SaveBookOrder_531Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetBannedZones32Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ProviderID" type="xs:int"/>
+    <part name="Zone" type="xs:string"/>
+    <part name="CompanyID" type="xs:string"/>
+    <part name="CabNo" type="xs:string"/>
+    <part name="CallNumber" type="xs:string"/>
+  </message>
+  <message name="GetBannedZones32Response">
+    <part name="return" type="ns4:TBannedZoneArray"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_633Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ConfirmationNo" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_633Response">
+    <part name="return" type="ns2:TBookOrderList_6"/>
+  </message>
+  <message name="GetBookOrder_634Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_634Response">
+    <part name="return" type="ns2:TBookOrder_6"/>
+  </message>
+  <message name="GetOrderHistory_635Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="ToDate" type="ns2:TWEBTimeStamp"/>
+    <part name="OrderStatus" type="xs:int"/>
+  </message>
+  <message name="GetOrderHistory_635Response">
+    <part name="return" type="ns2:TBookOrderList_6"/>
+  </message>
+  <message name="SaveBookOrder_636Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_6"/>
+  </message>
+  <message name="SaveBookOrder_636Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="CancelRun37Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="RunID" type="xs:int"/>
+  </message>
+  <message name="CancelRun37Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="CancelSROrder38Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+  </message>
+  <message name="CancelSROrder38Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetAvailableVehicles39Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="maxRadius" type="xs:double"/>
+    <part name="count" type="xs:int"/>
+  </message>
+  <message name="GetAvailableVehicles39Response">
+    <part name="return" type="ns2:TVehiclePositionArray"/>
+  </message>
+  <message name="GetAvailableVehicles_240Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="maxRadius" type="xs:double"/>
+    <part name="count" type="xs:int"/>
+  </message>
+  <message name="GetAvailableVehicles_240Response">
+    <part name="return" type="ns2:TVehiclePositionArray_2"/>
+  </message>
+  <message name="GetAvailableVehicles_341Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="maxRadius" type="xs:double"/>
+    <part name="count" type="xs:int"/>
+    <part name="BookedOnly" type="xs:boolean"/>
+  </message>
+  <message name="GetAvailableVehicles_341Response">
+    <part name="return" type="ns2:TVehiclePositionArray_2"/>
+  </message>
+  <message name="GetAvailableVehicles_442Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="maxRadius" type="xs:double"/>
+    <part name="count" type="xs:int"/>
+    <part name="BookedOnly" type="xs:boolean"/>
+    <part name="VehicleTypes" type="ns5:TVehicleTypeArray"/>
+  </message>
+  <message name="GetAvailableVehicles_442Response">
+    <part name="return" type="ns2:TVehiclePositionArray_4"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_743Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ConfirmationNo" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrderByConfirmationNo_743Response">
+    <part name="return" type="ns2:TBookOrderList_7"/>
+  </message>
+  <message name="GetBookOrder_744Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetBookOrder_744Response">
+    <part name="return" type="ns2:TBookOrder_7"/>
+  </message>
+  <message name="GetOrderHistory_745Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="ToDate" type="ns2:TWEBTimeStamp"/>
+    <part name="OrderStatus" type="xs:int"/>
+  </message>
+  <message name="GetOrderHistory_745Response">
+    <part name="return" type="ns2:TBookOrderList_7"/>
+  </message>
+  <message name="GetOrderStatus_246Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ContactPhone" type="xs:string"/>
+    <part name="CCNumber" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+  </message>
+  <message name="GetOrderStatus_246Response">
+    <part name="return" type="ns1:TWEBOrderStatusValue"/>
+  </message>
+  <message name="GetOrdersStatus47Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderIDList" type="ns2:TOrderIDList"/>
+  </message>
+  <message name="GetOrdersStatus47Response">
+    <part name="return" type="ns2:TOrderStatusList"/>
+  </message>
+  <message name="GetOrdersStatus_248Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderIDList" type="ns2:TOrderIDList"/>
+  </message>
+  <message name="GetOrdersStatus_248Response">
+    <part name="return" type="ns2:TOrderStatusList_2"/>
+  </message>
+  <message name="GetOrdersStatus_349Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderIDList" type="ns2:TOrderIDList"/>
+  </message>
+  <message name="GetOrdersStatus_349Response">
+    <part name="return" type="ns2:TOrderStatusList_3"/>
+  </message>
+  <message name="GetOrdersStatus_450Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderIDList" type="ns2:TOrderIDList"/>
+  </message>
+  <message name="GetOrdersStatus_450Response">
+    <part name="return" type="ns2:TOrderStatusList_4"/>
+  </message>
+  <message name="GetOrdersStatus_551Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderIDList" type="ns2:TOrderIDList"/>
+  </message>
+  <message name="GetOrdersStatus_551Response">
+    <part name="return" type="ns2:TOrderStatusList_5"/>
+  </message>
+  <message name="GetRun52Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="RunID" type="xs:int"/>
+  </message>
+  <message name="GetRun52Response">
+    <part name="return" type="ns2:TRun"/>
+  </message>
+  <message name="GetVehicleLocationWithTaxiNoComp53Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="LastGPSUpdate" type="ns2:TWEBTimeStamp"/>
+    <part name="TaxiNo" type="xs:string"/>
+    <part name="CompanyID" type="xs:string"/>
+  </message>
+  <message name="GetVehicleLocationWithTaxiNoComp53Response">
+    <part name="Lon" type="xs:double"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="LastGPSUpdate" type="ns2:TWEBTimeStamp"/>
+    <part name="TaxiNo" type="xs:string"/>
+    <part name="CompanyID" type="xs:string"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_754Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_7"/>
+  </message>
+  <message name="SaveBookOrder_754Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_855Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_8"/>
+  </message>
+  <message name="SaveBookOrder_855Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveRun56Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Run" type="ns2:TRun"/>
+  </message>
+  <message name="SaveRun56Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveTripValues57Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="RideID" type="xs:int"/>
+    <part name="Distance" type="xs:double"/>
+  </message>
+  <message name="SaveTripValues57Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendDriverMsg_258Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CarID" type="xs:string"/>
+    <part name="Msg" type="xs:string"/>
+  </message>
+  <message name="SendDriverMsg_258Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentAuth59Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="MDTNum" type="xs:string"/>
+    <part name="PaymentAuth" type="ns2:TPaymentAuthorization3dParty"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentAuth59Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentNotification60Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="MDTNum" type="xs:string"/>
+    <part name="Approved" type="xs:boolean"/>
+    <part name="JobNumber" type="xs:int"/>
+    <part name="DisplayText" type="xs:string"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentNotification60Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="UpdateJobPaymentType61Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="ChargeTypeID" type="xs:int"/>
+  </message>
+  <message name="UpdateJobPaymentType61Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="EstimateFare62Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ABookOrder" type="ns2:TBookOrder_7"/>
+  </message>
+  <message name="EstimateFare62Response">
+    <part name="ATotalFare" type="xs:double"/>
+    <part name="AFare" type="xs:double"/>
+    <part name="ATolls" type="xs:double"/>
+    <part name="ADistance" type="xs:double"/>
+  </message>
+  <message name="EstimateFare_863Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ABookOrder" type="ns2:TBookOrder_8"/>
+  </message>
+  <message name="EstimateFare_863Response">
+    <part name="ATotalFare" type="xs:double"/>
+    <part name="AFare" type="xs:double"/>
+    <part name="ATolls" type="xs:double"/>
+    <part name="ADistance" type="xs:double"/>
+    <part name="TripTime" type="xs:double"/>
+  </message>
+  <message name="SaveBookOrder_964Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_8"/>
+    <part name="APBToken" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_964Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="EstimateFare_965Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="aBookOrder" type="ns2:TBookOrder_8"/>
+  </message>
+  <message name="EstimateFare_965Response">
+    <part name="aTotalFare" type="xs:double"/>
+    <part name="aFare" type="xs:double"/>
+    <part name="aTolls" type="xs:double"/>
+    <part name="aDistance" type="xs:double"/>
+    <part name="aTripTime" type="xs:double"/>
+    <part name="aPBToken" type="xs:int"/>
+  </message>
+  <message name="EstimateFare_1066Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="aBookOrder" type="ns2:TBookOrder_8"/>
+  </message>
+  <message name="EstimateFare_1066Response">
+    <part name="return" type="ns2:TEstimateFare_10Result"/>
+  </message>
+  <message name="EstimateDistance67Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Distance" type="xs:double"/>
+    <part name="WaitTime" type="xs:int"/>
+    <part name="StopCount" type="xs:int"/>
+    <part name="PassengerCount" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="AccountNum" type="xs:string"/>
+    <part name="CustomerNum" type="xs:int"/>
+    <part name="CabType" type="xs:int"/>
+  </message>
+  <message name="EstimateDistance67Response">
+    <part name="TotalFare" type="xs:double"/>
+    <part name="TripTime" type="xs:int"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="EstimateDistance_268Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ParamI" type="ns2:TEstimateDistance_2_ParamI"/>
+  </message>
+  <message name="EstimateDistance_268Response">
+    <part name="ParamO" type="ns2:TEstimateDistance_2_ParamO"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="EstimateDistance_369Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Distance" type="xs:double"/>
+    <part name="TripTime" type="xs:int"/>
+    <part name="WaitTime" type="xs:int"/>
+    <part name="StopCount" type="xs:int"/>
+    <part name="PassengerCount" type="xs:int"/>
+    <part name="FrDate" type="ns2:TWEBTimeStamp"/>
+    <part name="AccountNum" type="xs:string"/>
+    <part name="CustomerNum" type="xs:int"/>
+    <part name="CabType" type="xs:int"/>
+    <part name="OutTotalFare" type="xs:double"/>
+    <part name="OutTripTime" type="xs:int"/>
+  </message>
+  <message name="EstimateDistance_369Response">
+    <part name="OutTotalFare" type="xs:double"/>
+    <part name="OutTripTime" type="xs:int"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="RideCurrentFare70Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="RideID" type="xs:int"/>
+  </message>
+  <message name="RideCurrentFare70Response">
+    <part name="TotalFare" type="xs:double"/>
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendP2DCall71Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CarID" type="xs:string"/>
+    <part name="OrderID" type="xs:int"/>
+  </message>
+  <message name="SendP2DCall71Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_1072Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_10"/>
+  </message>
+  <message name="SaveBookOrder_1072Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_1173Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_11"/>
+  </message>
+  <message name="SaveBookOrder_1173Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_1274Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_12"/>
+    <part name="Vehicles" type="ns6:TVehicleCompArray"/>
+  </message>
+  <message name="SaveBookOrder_1274Response">
+    <part name="return" type="ns2:TBookOrderKey"/>
+  </message>
+  <message name="GetVehicleCandidates75Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderKey" type="ns2:TBookOrderKey"/>
+  </message>
+  <message name="GetVehicleCandidates75Response">
+    <part name="return" type="ns6:TVehicleCompArray"/>
+  </message>
+  <message name="UpdateJobToVehicle76Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OrderKey" type="ns2:TBookOrderKey"/>
+    <part name="Vehicle" type="ns6:TVehicleComp"/>
+  </message>
+  <message name="UpdateJobToVehicle76Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentAuth277Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="MDTNum" type="xs:string"/>
+    <part name="PaymentAuth" type="ns2:TPaymentAuthorization3dParty2"/>
+  </message>
+  <message name="SendMsg_3dPartyPaymentAuth277Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="UpdateDestinationAddress78Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ProviderID" type="xs:int"/>
+    <part name="OrderID" type="xs:int"/>
+    <part name="GUID" type="xs:string"/>
+    <part name="address" type="ns2:TWEBAddress"/>
+  </message>
+  <message name="UpdateDestinationAddress78Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_1379Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_13"/>
+  </message>
+  <message name="SaveBookOrder_1379Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveBookOrder_1480Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="BookOrder" type="ns2:TBookOrder_14"/>
+  </message>
+  <message name="SaveBookOrder_1480Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <portType name="IWEBOrder_7">
+    <operation name="GetOrderStatus">
+      <input message="tns:GetOrderStatus0Request"/>
+      <output message="tns:GetOrderStatus0Response"/>
+    </operation>
+    <operation name="GetBookOrder">
+      <input message="tns:GetBookOrder1Request"/>
+      <output message="tns:GetBookOrder1Response"/>
+    </operation>
+    <operation name="SaveBookOrder">
+      <input message="tns:SaveBookOrder2Request"/>
+      <output message="tns:SaveBookOrder2Response"/>
+    </operation>
+    <operation name="SaveBookOrderWrapper">
+      <input message="tns:SaveBookOrderWrapper3Request"/>
+      <output message="tns:SaveBookOrderWrapper3Response"/>
+    </operation>
+    <operation name="CancelBookOrder">
+      <input message="tns:CancelBookOrder4Request"/>
+      <output message="tns:CancelBookOrder4Response"/>
+    </operation>
+    <operation name="GetHeartBeat">
+      <input message="tns:GetHeartBeat5Request"/>
+      <output message="tns:GetHeartBeat5Response"/>
+    </operation>
+    <operation name="DeleteBookOrder">
+      <input message="tns:DeleteBookOrder6Request"/>
+      <output message="tns:DeleteBookOrder6Response"/>
+    </operation>
+    <operation name="GetFareTollsDistance">
+      <input message="tns:GetFareTollsDistance7Request"/>
+      <output message="tns:GetFareTollsDistance7Response"/>
+    </operation>
+    <operation name="GetVehicleLocation">
+      <input message="tns:GetVehicleLocation8Request"/>
+      <output message="tns:GetVehicleLocation8Response"/>
+    </operation>
+    <operation name="GetDriverLocation">
+      <input message="tns:GetDriverLocation9Request"/>
+      <output message="tns:GetDriverLocation9Response"/>
+    </operation>
+    <operation name="SendDriverMsg">
+      <input message="tns:SendDriverMsg10Request"/>
+      <output message="tns:SendDriverMsg10Response"/>
+    </operation>
+    <operation name="SaveExtrPayment">
+      <input message="tns:SaveExtrPayment11Request"/>
+      <output message="tns:SaveExtrPayment11Response"/>
+    </operation>
+    <operation name="SaveExtrPayment_2">
+      <input message="tns:SaveExtrPayment_212Request"/>
+      <output message="tns:SaveExtrPayment_212Response"/>
+    </operation>
+    <operation name="SaveExtrPayment_3">
+      <input message="tns:SaveExtrPayment_313Request"/>
+      <output message="tns:SaveExtrPayment_313Response"/>
+    </operation>
+    <operation name="GetBookOrder_2">
+      <input message="tns:GetBookOrder_214Request"/>
+      <output message="tns:GetBookOrder_214Response"/>
+    </operation>
+    <operation name="SaveBookOrder_2">
+      <input message="tns:SaveBookOrder_215Request"/>
+      <output message="tns:SaveBookOrder_215Response"/>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo">
+      <input message="tns:GetBookOrderByConfirmationNo16Request"/>
+      <output message="tns:GetBookOrderByConfirmationNo16Response"/>
+    </operation>
+    <operation name="GetBookOrder_3">
+      <input message="tns:GetBookOrder_317Request"/>
+      <output message="tns:GetBookOrder_317Response"/>
+    </operation>
+    <operation name="GetOrderHistory">
+      <input message="tns:GetOrderHistory18Request"/>
+      <output message="tns:GetOrderHistory18Response"/>
+    </operation>
+    <operation name="SaveBookOrderWithCar">
+      <input message="tns:SaveBookOrderWithCar19Request"/>
+      <output message="tns:SaveBookOrderWithCar19Response"/>
+    </operation>
+    <operation name="SaveBookOrder_3">
+      <input message="tns:SaveBookOrder_320Request"/>
+      <output message="tns:SaveBookOrder_320Response"/>
+    </operation>
+    <operation name="AddressCorrelation">
+      <input message="tns:AddressCorrelation21Request"/>
+      <output message="tns:AddressCorrelation21Response"/>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_4">
+      <input message="tns:GetBookOrderByConfirmationNo_422Request"/>
+      <output message="tns:GetBookOrderByConfirmationNo_422Response"/>
+    </operation>
+    <operation name="GetBookOrder_4">
+      <input message="tns:GetBookOrder_423Request"/>
+      <output message="tns:GetBookOrder_423Response"/>
+    </operation>
+    <operation name="GetOrderHistory_4">
+      <input message="tns:GetOrderHistory_424Request"/>
+      <output message="tns:GetOrderHistory_424Response"/>
+    </operation>
+    <operation name="GetVehicleLocationWithTaxiNo">
+      <input message="tns:GetVehicleLocationWithTaxiNo25Request"/>
+      <output message="tns:GetVehicleLocationWithTaxiNo25Response"/>
+    </operation>
+    <operation name="SaveBookOrder_4">
+      <input message="tns:SaveBookOrder_426Request"/>
+      <output message="tns:SaveBookOrder_426Response"/>
+    </operation>
+    <operation name="CancelBookOrder_2">
+      <input message="tns:CancelBookOrder_227Request"/>
+      <output message="tns:CancelBookOrder_227Response"/>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_5">
+      <input message="tns:GetBookOrderByConfirmationNo_528Request"/>
+      <output message="tns:GetBookOrderByConfirmationNo_528Response"/>
+    </operation>
+    <operation name="GetBookOrder_5">
+      <input message="tns:GetBookOrder_529Request"/>
+      <output message="tns:GetBookOrder_529Response"/>
+    </operation>
+    <operation name="GetOrderHistory_5">
+      <input message="tns:GetOrderHistory_530Request"/>
+      <output message="tns:GetOrderHistory_530Response"/>
+    </operation>
+    <operation name="SaveBookOrder_5">
+      <input message="tns:SaveBookOrder_531Request"/>
+      <output message="tns:SaveBookOrder_531Response"/>
+    </operation>
+    <operation name="GetBannedZones">
+      <input message="tns:GetBannedZones32Request"/>
+      <output message="tns:GetBannedZones32Response"/>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_6">
+      <input message="tns:GetBookOrderByConfirmationNo_633Request"/>
+      <output message="tns:GetBookOrderByConfirmationNo_633Response"/>
+    </operation>
+    <operation name="GetBookOrder_6">
+      <input message="tns:GetBookOrder_634Request"/>
+      <output message="tns:GetBookOrder_634Response"/>
+    </operation>
+    <operation name="GetOrderHistory_6">
+      <input message="tns:GetOrderHistory_635Request"/>
+      <output message="tns:GetOrderHistory_635Response"/>
+    </operation>
+    <operation name="SaveBookOrder_6">
+      <input message="tns:SaveBookOrder_636Request"/>
+      <output message="tns:SaveBookOrder_636Response"/>
+    </operation>
+    <operation name="CancelRun">
+      <input message="tns:CancelRun37Request"/>
+      <output message="tns:CancelRun37Response"/>
+    </operation>
+    <operation name="CancelSROrder">
+      <input message="tns:CancelSROrder38Request"/>
+      <output message="tns:CancelSROrder38Response"/>
+    </operation>
+    <operation name="GetAvailableVehicles">
+      <input message="tns:GetAvailableVehicles39Request"/>
+      <output message="tns:GetAvailableVehicles39Response"/>
+    </operation>
+    <operation name="GetAvailableVehicles_2">
+      <input message="tns:GetAvailableVehicles_240Request"/>
+      <output message="tns:GetAvailableVehicles_240Response"/>
+    </operation>
+    <operation name="GetAvailableVehicles_3">
+      <input message="tns:GetAvailableVehicles_341Request"/>
+      <output message="tns:GetAvailableVehicles_341Response"/>
+    </operation>
+    <operation name="GetAvailableVehicles_4">
+      <input message="tns:GetAvailableVehicles_442Request"/>
+      <output message="tns:GetAvailableVehicles_442Response"/>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_7">
+      <input message="tns:GetBookOrderByConfirmationNo_743Request"/>
+      <output message="tns:GetBookOrderByConfirmationNo_743Response"/>
+    </operation>
+    <operation name="GetBookOrder_7">
+      <input message="tns:GetBookOrder_744Request"/>
+      <output message="tns:GetBookOrder_744Response"/>
+    </operation>
+    <operation name="GetOrderHistory_7">
+      <input message="tns:GetOrderHistory_745Request"/>
+      <output message="tns:GetOrderHistory_745Response"/>
+    </operation>
+    <operation name="GetOrderStatus_2">
+      <input message="tns:GetOrderStatus_246Request"/>
+      <output message="tns:GetOrderStatus_246Response"/>
+    </operation>
+    <operation name="GetOrdersStatus">
+      <input message="tns:GetOrdersStatus47Request"/>
+      <output message="tns:GetOrdersStatus47Response"/>
+    </operation>
+    <operation name="GetOrdersStatus_2">
+      <input message="tns:GetOrdersStatus_248Request"/>
+      <output message="tns:GetOrdersStatus_248Response"/>
+    </operation>
+    <operation name="GetOrdersStatus_3">
+      <input message="tns:GetOrdersStatus_349Request"/>
+      <output message="tns:GetOrdersStatus_349Response"/>
+    </operation>
+    <operation name="GetOrdersStatus_4">
+      <input message="tns:GetOrdersStatus_450Request"/>
+      <output message="tns:GetOrdersStatus_450Response"/>
+    </operation>
+    <operation name="GetOrdersStatus_5">
+      <input message="tns:GetOrdersStatus_551Request"/>
+      <output message="tns:GetOrdersStatus_551Response"/>
+    </operation>
+    <operation name="GetRun">
+      <input message="tns:GetRun52Request"/>
+      <output message="tns:GetRun52Response"/>
+    </operation>
+    <operation name="GetVehicleLocationWithTaxiNoComp">
+      <input message="tns:GetVehicleLocationWithTaxiNoComp53Request"/>
+      <output message="tns:GetVehicleLocationWithTaxiNoComp53Response"/>
+    </operation>
+    <operation name="SaveBookOrder_7">
+      <input message="tns:SaveBookOrder_754Request"/>
+      <output message="tns:SaveBookOrder_754Response"/>
+    </operation>
+    <operation name="SaveBookOrder_8">
+      <input message="tns:SaveBookOrder_855Request"/>
+      <output message="tns:SaveBookOrder_855Response"/>
+    </operation>
+    <operation name="SaveRun">
+      <input message="tns:SaveRun56Request"/>
+      <output message="tns:SaveRun56Response"/>
+    </operation>
+    <operation name="SaveTripValues">
+      <input message="tns:SaveTripValues57Request"/>
+      <output message="tns:SaveTripValues57Response"/>
+    </operation>
+    <operation name="SendDriverMsg_2">
+      <input message="tns:SendDriverMsg_258Request"/>
+      <output message="tns:SendDriverMsg_258Response"/>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentAuth">
+      <input message="tns:SendMsg_3dPartyPaymentAuth59Request"/>
+      <output message="tns:SendMsg_3dPartyPaymentAuth59Response"/>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentNotification">
+      <input message="tns:SendMsg_3dPartyPaymentNotification60Request"/>
+      <output message="tns:SendMsg_3dPartyPaymentNotification60Response"/>
+    </operation>
+    <operation name="UpdateJobPaymentType">
+      <input message="tns:UpdateJobPaymentType61Request"/>
+      <output message="tns:UpdateJobPaymentType61Response"/>
+    </operation>
+    <operation name="EstimateFare">
+      <input message="tns:EstimateFare62Request"/>
+      <output message="tns:EstimateFare62Response"/>
+    </operation>
+    <operation name="EstimateFare_8">
+      <input message="tns:EstimateFare_863Request"/>
+      <output message="tns:EstimateFare_863Response"/>
+    </operation>
+    <operation name="SaveBookOrder_9">
+      <input message="tns:SaveBookOrder_964Request"/>
+      <output message="tns:SaveBookOrder_964Response"/>
+    </operation>
+    <operation name="EstimateFare_9">
+      <input message="tns:EstimateFare_965Request"/>
+      <output message="tns:EstimateFare_965Response"/>
+    </operation>
+    <operation name="EstimateFare_10">
+      <input message="tns:EstimateFare_1066Request"/>
+      <output message="tns:EstimateFare_1066Response"/>
+    </operation>
+    <operation name="EstimateDistance">
+      <input message="tns:EstimateDistance67Request"/>
+      <output message="tns:EstimateDistance67Response"/>
+    </operation>
+    <operation name="EstimateDistance_2">
+      <input message="tns:EstimateDistance_268Request"/>
+      <output message="tns:EstimateDistance_268Response"/>
+    </operation>
+    <operation name="EstimateDistance_3">
+      <input message="tns:EstimateDistance_369Request"/>
+      <output message="tns:EstimateDistance_369Response"/>
+    </operation>
+    <operation name="RideCurrentFare">
+      <input message="tns:RideCurrentFare70Request"/>
+      <output message="tns:RideCurrentFare70Response"/>
+    </operation>
+    <operation name="SendP2DCall">
+      <input message="tns:SendP2DCall71Request"/>
+      <output message="tns:SendP2DCall71Response"/>
+    </operation>
+    <operation name="SaveBookOrder_10">
+      <input message="tns:SaveBookOrder_1072Request"/>
+      <output message="tns:SaveBookOrder_1072Response"/>
+    </operation>
+    <operation name="SaveBookOrder_11">
+      <input message="tns:SaveBookOrder_1173Request"/>
+      <output message="tns:SaveBookOrder_1173Response"/>
+    </operation>
+    <operation name="SaveBookOrder_12">
+      <input message="tns:SaveBookOrder_1274Request"/>
+      <output message="tns:SaveBookOrder_1274Response"/>
+    </operation>
+    <operation name="GetVehicleCandidates">
+      <input message="tns:GetVehicleCandidates75Request"/>
+      <output message="tns:GetVehicleCandidates75Response"/>
+    </operation>
+    <operation name="UpdateJobToVehicle">
+      <input message="tns:UpdateJobToVehicle76Request"/>
+      <output message="tns:UpdateJobToVehicle76Response"/>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentAuth2">
+      <input message="tns:SendMsg_3dPartyPaymentAuth277Request"/>
+      <output message="tns:SendMsg_3dPartyPaymentAuth277Response"/>
+    </operation>
+    <operation name="UpdateDestinationAddress">
+      <input message="tns:UpdateDestinationAddress78Request"/>
+      <output message="tns:UpdateDestinationAddress78Response"/>
+    </operation>
+    <operation name="SaveBookOrder_13">
+      <input message="tns:SaveBookOrder_1379Request"/>
+      <output message="tns:SaveBookOrder_1379Response"/>
+    </operation>
+    <operation name="SaveBookOrder_14">
+      <input message="tns:SaveBookOrder_1480Request"/>
+      <output message="tns:SaveBookOrder_1480Response"/>
+    </operation>
+  </portType>
+  <binding name="IWEBOrder_7binding" type="tns:IWEBOrder_7">
+    <binding xmlns="http://schemas.xmlsoap.org/wsdl/soap/" style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetOrderStatus">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrderWrapper">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWrapper" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="CancelBookOrder">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetHeartBeat">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetHeartBeat" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="DeleteBookOrder">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#DeleteBookOrder" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetFareTollsDistance">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetFareTollsDistance" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetVehicleLocation">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocation" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetDriverLocation">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetDriverLocation" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendDriverMsg">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveExtrPayment">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveExtrPayment_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveExtrPayment_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderHistory">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrderWithCar">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWithCar" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="AddressCorrelation">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#AddressCorrelation" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderHistory_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetVehicleLocationWithTaxiNo">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNo" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="CancelBookOrder_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_5">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_5" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_5">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_5" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderHistory_5">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_5" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_5">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_5" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBannedZones">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBannedZones" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_6">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_6" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_6">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_6" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderHistory_6">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_6" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_6">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_6" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="CancelRun">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#CancelRun" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="CancelSROrder">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#CancelSROrder" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetAvailableVehicles">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetAvailableVehicles_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetAvailableVehicles_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetAvailableVehicles_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrderByConfirmationNo_7">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_7" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetBookOrder_7">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_7" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderHistory_7">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_7" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrderStatus_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrdersStatus">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrdersStatus_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrdersStatus_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrdersStatus_4">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_4" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetOrdersStatus_5">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_5" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetRun">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetRun" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetVehicleLocationWithTaxiNoComp">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNoComp" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_7">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_7" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_8">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_8" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveRun">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveRun" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveTripValues">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveTripValues" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendDriverMsg_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentAuth">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentNotification">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentNotification" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="UpdateJobPaymentType">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobPaymentType" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateFare">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateFare_8">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_8" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_9">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_9" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateFare_9">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_9" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateFare_10">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_10" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateDistance">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateDistance_2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="EstimateDistance_3">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_3" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="RideCurrentFare">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#RideCurrentFare" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendP2DCall">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendP2DCall" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_10">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_10" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_11">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_11" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_12">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_12" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="GetVehicleCandidates">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleCandidates" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="UpdateJobToVehicle">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobToVehicle" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SendMsg_3dPartyPaymentAuth2">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth2" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="UpdateDestinationAddress">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#UpdateDestinationAddress" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_13">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_13" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+    <operation name="SaveBookOrder_14">
+      <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_14" style="rpc"/>
+      <input>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </input>
+      <output>
+        <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WEBOrder_7Intf-IWEBOrder_7"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="IWEBOrder_7service">
+    <port name="IWEBOrder_7Port" binding="tns:IWEBOrder_7binding">
+      <address xmlns="http://schemas.xmlsoap.org/wsdl/soap/" location="http://web2012/IBSCab/IBSCab.dll/soap/IWEBOrder_7"/>
+    </port>
+  </service>
+</definitions>

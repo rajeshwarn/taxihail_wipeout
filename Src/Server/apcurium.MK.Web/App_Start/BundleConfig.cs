@@ -95,6 +95,7 @@ namespace apcurium.MK.Web
                 "~/views/PaymentDetailView.js",
                 "~/views/PaymentView.js",
                 "~/views/PaymentItemView.js",
+                "~/views/PaymentMinimalView.js",
                 "~/services/OrderService.js",
                 "~/services/DirectionInfoService.js",
                 "~/common/services/AuthService.js",

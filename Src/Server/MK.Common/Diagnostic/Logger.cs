@@ -2,19 +2,29 @@
 
 using System;
 using System.Diagnostics;
+using apcurium.MK.Common.Extensions;
 using log4net;
 
 #endregion
 
 namespace apcurium.MK.Common.Diagnostic
 {
-    public class Logger : ILogger
+	public class Logger : ILogger
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Logger));
         
         public void LogError(Exception ex)
         {
-            Log.Error(ex.Message + " " + ex.StackTrace);
+            LogError(ex, null, -1);
+        }
+
+        public void LogError(Exception ex, string method, int lineNumber)
+        {
+            var errorLocation = method.HasValueTrimmed() && lineNumber > -1
+                ? " at {0}:{1}".InvariantCultureFormat(method, lineNumber)
+                : string.Empty;
+
+            Log.Error(ex.Message + errorLocation + " " + ex.StackTrace);
             if (ex.InnerException != null)
             {
                 LogError(ex.InnerException);
@@ -60,14 +70,9 @@ namespace apcurium.MK.Common.Diagnostic
             });
         }
 
-        public string GetErrorLogPath()
+        public string[] GetLogFilesFullName()
         {
-            throw new NotImplementedException();
-        }
-
-        public void FlushNextWrite()
-        {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This call is only supported on mobile.");
         }
 
         private class Disposable : IDisposable
@@ -92,5 +97,10 @@ namespace apcurium.MK.Common.Diagnostic
                 return new Disposable(action);
             }
         }
-    }
+
+		public string GetLogFileName()
+		{
+			throw new NotSupportedException("This is supported only on mobile.");
+		}
+	}
 }

@@ -225,6 +225,28 @@
                                 </td>
                             </tr>
                         }
+                        @if (Model.HasApkCallbox)
+                        {
+                            <tr>
+                                <td>
+                                    <h2>Android Callbox</h2>
+                                    <a class="btn btn-link" title="@Model.ApkCallboxFilename" href="@Url.Action("Package", "Distribution", new {area = "", id, Model.Number, package = Model.ApkCallboxFilename}, Request.Url.Scheme)">Download Callbox for Android</a>
+                                    <p>Click on this link from an Android tablet</p>
+                                    <br />
+                                </td>
+                            </tr>
+                        }
+                        @if (Model.HasApkBlackBerry)
+                        {
+                            <tr>
+                                <td>
+                                    <h2>BlackBerry</h2>
+                                    <a class="btn btn-link" title="@Model.ApkBlackBerryFilename" href="@Url.Action("Package", "Distribution", new {area = "", id, Model.Number, package = Model.ApkBlackBerryFilename}, Request.Url.Scheme)">Download for BlackBerry</a>
+                                    <p>Click on this link from a BlackBerry device</p>
+                                    <br />
+                                </td>
+                            </tr>
+                        }
                         @if (Model.HasWebsite)
                         {
                             <tr>

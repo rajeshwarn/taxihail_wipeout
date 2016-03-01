@@ -61,6 +61,7 @@
     <Compile Include="UpdateServiceTypeSettings.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
+    <Compile Include="ChangeOrderStatusForManualRideLinq.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
     <Compile Include="CreateReportOrder.cs" />
     <Compile Include="DeletePromotion.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="UpdateCreditCardLabel.cs" />
     <Compile Include="UpdateDefaultCreditCard.cs" />
     <Compile Include="UpdateFees.cs" />
+    <Compile Include="UpdateOrderInTrip.cs" />
     <Compile Include="UpdateOrderNotificationDetail.cs" />
     <Compile Include="UpdateRoleToUserAccount.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />
@@ -128,7 +130,6 @@
     <Compile Include="DeleteTariff.cs" />
     <Compile Include="HideRatingType.cs" />
     <Compile Include="RateOrder.cs" />
-    <Compile Include="RegisterDeviceForPushNotifications.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />

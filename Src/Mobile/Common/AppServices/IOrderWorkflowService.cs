@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 
@@ -21,7 +22,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
-	    Task<bool> ValidateIsCardDeactivated();
+		Task ValidateTokenizedCardIfNecessary(bool isManualRideLinq, int? chargeTypeId, string kountSessionId);
+		
 		Task<bool> ValidatePromotionUseConditions();
 
 		void DisableBooking();
@@ -34,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ClearDestinationAddress();
 
-        Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
+		Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
 
 		Task SetPickupDate(DateTime? date);
 
@@ -52,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    Task<bool> ValidateChargeType();
 
-		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
+		Task<OrderRepresentation> ConfirmOrder();
 
 		Task SetVehicle (int? vehicleTypeId, ServiceType serviceType);
 
@@ -95,20 +97,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveLoadingAddress();
 
+		IObservable<bool> GetAndObserveDropOffSelectionMode();
+
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 
-		IObservable<string> GetAndObserveHashedMarket();
-
-		IObservable<bool> GetAndObserveIsUsingGeo();
-		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
+        IObservable<bool> GetAndObserveIsUsingGeo();
 
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
+
+		void SetDropOffSelectionMode(bool isDropOffSelectionMode);
 
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
 
-		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
+		Task<OrderRepresentation> GetLastActiveOrder();
 
         Task POIRefPickupList(string textMatch, int maxRespSize);
 
@@ -125,11 +128,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ShouldGoToAccountNumberFlow();
 
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null);
+
 		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
 
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 
-		Task<OrderValidationResult> ValidateOrder(CreateOrder order = null);
+        Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null);
 
 		void ConfirmValidationOrder ();
 
@@ -144,7 +148,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void CancelRebookOrder();
 
 		Task<bool> ShouldPromptForCvv();
+
 		bool ValidateAndSetCvv(string cvv);
+
+		IObservable<bool> GetAndObserveCanExecuteBookingOperation ();
+
+		Task<bool> UpdateDropOff(Guid orderId);
 	}
 }
 

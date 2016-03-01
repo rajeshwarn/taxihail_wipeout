@@ -1,18 +1,18 @@
-﻿using System;
+﻿using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-
 		protected static async Task<TResult> RunWithRetryAsync<TResult>(
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				try
 				{
-					var result = await Task.Run(action);
+					var result = await action().ConfigureAwait(false);
 					return result;
 				}
 				catch (Exception ex)
@@ -44,63 +44,59 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 
 
-		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
+		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TResult : class  where TService : class
         {
             var service = TinyIoCContainer.Current.Resolve<TService>();
 
             try
             {
-                using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-                {
-                    return await action(service)
-                            .ConfigureAwait(false);
-                }
+                return await action(service)
+                        .ConfigureAwait(false);
             }
             catch (Exception ex)
-            {                    
-                Logger.LogError(ex);
-				var handled = false;
+            {   
+                Logger.LogError(ex, method, lineNumber);
+				var handled = false; 
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 				}
 				else
 				{
-					errorHandler (ex);
-					handled = true;
+					try
+					{
+						errorHandler (ex);
+						handled = true;
+					}
+					catch
+					{
+                        
+					}
 				} 
-				if (!handled) {
+				if (!handled)
+                {
 					throw;
 				}
-                else
-                {
-                    // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
-                    // bad practice to rely on reflection should be replaced in future
-                    TResult result = CreateEmptyTypedArray<TResult>(null) as TResult;
+                // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
+                // bad practice to rely on reflection should be replaced in future
+                var result = CreateEmptyTypedArray<TResult>(null) as TResult;
 
-                    if (result == null)
-                        result = default(TResult);
-
-                    return result;
-				}
+                return result;
             }
         }
 
-		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TService : class
+		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TService : class
 		{
 			var service = TinyIoCContainer.Current.Resolve<TService>();
 
 			try
 			{
-				using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-				{
-					await action(service).ConfigureAwait(false);
-				}
+				await action(service).ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{                    
-				Logger.LogError(ex);
-				var handled = false;
+				Logger.LogError(ex, method, lineNumber);
+				bool handled;
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
@@ -110,10 +106,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					errorHandler (ex);
 					handled = true;
 				} 
-				if (!handled) {
+				if (!handled)
+                {
 					throw;
 				}
 			}
+		}
+
+		protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
+		{
+			observable.Subscribe(onNext, Logger.LogError);
 		}
 
         private ILogger _logger;
@@ -133,41 +135,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
+	    private static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
         {
             if (counter > 5)
+            {
                 return null;
+            }
 
             try
             {
-                Type genericType;
+                var genericType = type ?? typeof(T);
 
-                if (type != null)
-                    genericType = type;
-                else
-                    genericType = typeof(T);
-
-                if (genericType.IsInterface && genericType.IsGenericType && !genericType.IsGenericTypeDefinition)
+                if (!genericType.IsInterface || !genericType.IsGenericType || genericType.IsGenericTypeDefinition)
                 {
-                    Type[] typeInterfaces = genericType.GetInterfaces();
+                    return null;
+                }
+                    
+                var typeInterfaces = genericType.GetInterfaces();
 
-                    if (typeInterfaces.Where(t => t.Name == "IEnumerable").Count() > 0)
-                    {
-                        object result = null;
-
-                        if (!genericType.GenericTypeArguments[0].IsInterface)
-                        {
-                            return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
-                        }
-                        else
-                        {
-                            result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
-                            return Array.CreateInstance(result.GetType(), 0);
-                        }
-                    }
+                if (typeInterfaces.None(t => t.Name == "IEnumerable"))
+                {
+                    return null;
                 }
 
-                return null;
+                if (!genericType.GenericTypeArguments[0].IsInterface)
+                {
+                    return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
+                }
+
+                var result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
+                return Array.CreateInstance(result.GetType(), 0);
             }
             catch (Exception)
             {

@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup)
                 .For(v => v.UserInputDisabled)
                 .To(vm => vm.PickupInputDisabled);
-
+            
             set.Bind(viewPickup.AddressButton)
                 .For(ve => ve.AccessibilityLabel)
                 .To(vm => vm.PickupAddress.DisplayAddress);
@@ -146,15 +146,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowEta)
                 .WithConversion("BoolInverter");
-
-			set.Bind(viewEta)
-                .For(v => v.DisplayBaseRateInfo)
-                .To(vm => vm.DisplayBaseRateInfo);
-
+//
+//			set.Bind(viewEta)
+//                .For(v => v.DisplayBaseRateInfo)
+//                .To(vm => vm.DisplayBaseRateInfo);
+//
             set.Bind(viewEta)
-                .For(v => v.UserInputDisabled)
-                .To(vm => vm.CanShowRateBox)
-                .WithConversion("BoolInverter");
+                .For(v => v.UserInteractionEnabled)
+                .To(vm => vm.CanShowRateBox);
             
             set.Bind (viewEta)
                 .For (v => v.SelectedVehicle)

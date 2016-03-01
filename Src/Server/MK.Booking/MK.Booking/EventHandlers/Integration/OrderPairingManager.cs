@@ -2,7 +2,6 @@
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
@@ -13,6 +12,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using CMTPayment;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -52,18 +52,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-
             _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
             
             switch (@event.Status.IBSStatusId)
             {            
                 case VehicleStatuses.Common.Loaded:
                 {
-                    var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
-
-                    _logger.LogMessage("OrderPairingManager RideLinqPairingCode : " + orderStatus.RideLinqPairingCode ?? "No code");
-
-                    if (orderStatus.IsPrepaid)
+                    if (@event.Status.IsPrepaid)
                     {
                         // No need to pair, order was already paid
                         return;
@@ -74,32 +69,36 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        var paymentSettings = _serverSettings.GetPaymentSettings(order.CompanyKey);
-
-                        if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                            && paymentSettings.CmtPaymentSettings.UsePairingCode
-                            && !orderStatus.RideLinqPairingCode.HasValue())
-                        {
-                            return;
-                        }
-
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                        var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
+                        var errorMessageKey = "TripUnableToPairErrorText";
+
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
-                        if (!response.IsSuccessful)
+                        if (response.IgnoreResponse)
                         {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingFailed");
+                            // no need to interpret the response
+                            return;
                         }
-                        else
-                        {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingSuccess");
-                         }
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
+                        switch (response.ErrorCode)
+                        {
+                            case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+                                errorMessageKey = "CreditCardDeclinedOnPreauthorizationErrorText";
+                                break;
+                            case CmtErrorCodes.UnablePreauthorizeCreditCard:
+                                errorMessageKey = "CreditCardUnableToPreathorizeErrorText";
+                                break;
+                        }    
+                        
+                        var ibsStatusDescription = response.IsSuccessful ? "OrderStatus_PairingSuccess" : errorMessageKey;
+
+                        UpdateIBSStatusDescription(order.Id, order.ClientLanguageCode, ibsStatusDescription);
+
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful, errorMessageKey);
                     } 
                 }
                 break;

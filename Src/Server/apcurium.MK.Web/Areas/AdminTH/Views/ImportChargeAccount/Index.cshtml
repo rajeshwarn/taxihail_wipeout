@@ -1,45 +1,47 @@
 ﻿@model apcurium.MK.Booking.Api.Contract.Resources.IbsChargeAccountImportReport
-    
-<h3>
-    Charge Accounts Import Report
-</h3>
 
-@if (@ViewBag.Error != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
-}
-else
-{
-    if (Model.ReportLines.Any(x => x.Key == "new"))
+<div class="well clearfix form-horizontal">
+    <h3>
+        Charge Accounts Import Report
+    </h3>
+
+    @if (@ViewBag.Error != null)
     {
-        <h4 style="color: black;">@Model.ReportLines.Count(x => x.Key == "new") accounts imported</h4>
-        <div id="validationPanel" class="alert-success alert">
-            <ul>
-                @foreach (var line in Model.ReportLines.Where(x => x.Key == "new"))
-                {
-                    <li>@line.Value</li>
-                }
-            </ul>
-        </div>
+        <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
+    }
+    else
+    {
+        if (Model.ReportLines.Any(x => x.Key == "new"))
+        {
+            <h4 style="color: black;">@Model.ReportLines.Count(x => x.Key == "new") accounts imported</h4>
+            <div id="validationPanel" class="alert-success alert">
+                <ul>
+                    @foreach (var line in Model.ReportLines.Where(x => x.Key == "new"))
+                    {
+                        <li>@line.Value</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        if (Model.ReportLines.Any(x => x.Key == "existing"))
+        {
+            <h4 style="color: black;">@Model.ReportLines.Count(x => x.Key == "existing") accounts not imported</h4>
+            <div id="validationPanel" class="alert-danger alert">
+                <ul>
+                    @foreach (var line in Model.ReportLines.Where(x => x.Key == "existing"))
+                    {
+                        <li>@line.Value</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        if (!Model.ReportLines.Any())
+        {
+            <h4>No account to import</h4>
+        }
     }
 
-    if (Model.ReportLines.Any(x => x.Key == "existing"))
-    {
-        <h4 style="color: black;">@Model.ReportLines.Count(x => x.Key == "existing") accounts not imported</h4>
-        <div id="validationPanel" class="alert-danger alert">
-            <ul>
-                @foreach (var line in Model.ReportLines.Where(x => x.Key == "existing"))
-                {
-                    <li>@line.Value</li>
-                }
-            </ul>
-        </div>
-    }
-
-    if (!Model.ReportLines.Any())
-    {
-        <h4>No account to import</h4>
-    }
-}
-
-<a href="../../admin/#accounts" type="submit" class="btn btn-primary" method="post">Back</a>
+    <a href="../../admin/#accounts" type="submit" class="btn btn-primary" method="post">Back</a>
+</div>

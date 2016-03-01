@@ -43,8 +43,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<DefaultCreditCardUpdated>(NoAction);
             Handles<CreditCardLabelUpdated>(NoAction);
             Handles<PaymentProfileUpdated>(NoAction);
-            Handles<DeviceRegisteredForPushNotifications>(NoAction);
-            Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
             Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
@@ -267,9 +265,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void RemoveAllCreditCards()
+        public void RemoveAllCreditCards(bool forceUserDisconnect)
         {
-            Update(new AllCreditCardsRemoved());
+            Update(new AllCreditCardsRemoved
+            {
+                ForceUserDisconnect = forceUserDisconnect
+            });
         }
 
         public void AddRole(string rolename)
@@ -285,33 +286,6 @@ namespace apcurium.MK.Booking.Domain
             Update(new RoleUpdatedToUserAccount
             {
                 RoleName = rolename,
-            });
-        }
-
-        public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            Update(new DeviceRegisteredForPushNotifications
-            {
-                DeviceToken = deviceToken,
-                Platform = platform,
-            });
-        }
-
-        public void UnregisterDeviceForPushNotifications(string deviceToken)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            Update(new DeviceUnregisteredForPushNotifications
-            {
-                DeviceToken = deviceToken,
             });
         }
 
@@ -410,13 +384,18 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, Guid creditCardId)
         {
-            Update(new CreditCardDeactivated());
+            Update(new CreditCardDeactivated()
+            {
+                CreditCardId = creditCardId
+            });
+
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,
                 IBSOrderId = ibsOrderId,
+                CreditCardId = creditCardId,
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate,
@@ -424,11 +403,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SettleOverduePayment(Guid orderId)
+        public void SettleOverduePayment(Guid orderId, Guid creditCardId)
         {
             Update(new OverduePaymentSettled
             {
-                OrderId = orderId
+                OrderId = orderId,
+                CreditCardId = creditCardId
             });
         }
 

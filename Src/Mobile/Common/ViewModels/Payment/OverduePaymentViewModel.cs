@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -25,10 +25,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		    _accountService = accountService1;
 		}
 
-	    public void Init(string overduePayment)
-		{
-			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayment);
-		}
+		public void Init(string overduePayment)
+	    {
+			OverduePayment = overduePayment.FromJson<OverduePayment>();
+        }
 
 		private OverduePayment _overduePayment;
 		public OverduePayment OverduePayment
@@ -46,13 +46,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public decimal AmountDue
+	    public override void OnViewStarted(bool firstTime)
+	    {
+	        base.OnViewStarted(firstTime);
+
+	        if (!firstTime)
+	        {
+	            RaisePropertyChanged(() => HasCreditCard);
+                RaisePropertyChanged(() => Last4Digits);
+                RaisePropertyChanged(() => Company);
+	        }
+	    }
+
+	    public decimal AmountDue
 		{
 			get
 			{
 				return _overduePayment != null
 					? _overduePayment.OverdueAmount
 					: 0;
+			}
+		}
+
+	    public bool HasCreditCard
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard != null; }
+	    }
+
+	    public string Last4Digits
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard.SelectOrDefault(defaultCreditCard => defaultCreditCard.Last4Digits); }
+	    }
+
+	    public string Company
+	    {
+	        get { return _accountService.CurrentAccount.DefaultCreditCard.SelectOrDefault(defaultCreditCard => defaultCreditCard.CreditCardCompany); }
+	    }
+
+	    public bool CanShowOrderNumber
+		{
+			get
+			{
+				return Settings.ShowOrderNumber;
 			}
 		}
 
@@ -73,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             if (overduePaymentResult.IsSuccessful)
                             {
                                 // Fire and forget to update creditcard cache, we do not need to wait for this.
-                                Task.Run(() => _accountService.GetDefaultCreditCard());
+                                Task.Run(() => _accountService.GetDefaultCreditCard()).FireAndForget();
 
                                 var message = string.Format(localize["Overdue_Succeed_Message"],
                                     string.Format(new CultureInfo(Settings.PriceFormat), localize["CurrencyPriceFormat"], _overduePayment.OverdueAmount));
@@ -103,20 +138,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{
-					var serializedOverduePayment = _overduePayment.ToJson();
 					if(_appSettings.Data.MaxNumberOfCardsOnFile > 1)
 					{
 						ShowViewModel<CreditCardMultipleViewModel>(new 
-							{ 
-								paymentToSettle = serializedOverduePayment 
-							});
+						{
+                            hasPaymentToSettle = true 
+						});
 					}
 					else
 					{
 						ShowViewModel<CreditCardAddViewModel>(new 
-							{ 
-								paymentToSettle = serializedOverduePayment 
-							});
+						{
+                            hasPaymentToSettle = true 
+						});
 					}
 				});
 			}

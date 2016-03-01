@@ -127,18 +127,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() =>
 				{
-					if ((ParentViewModel.OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (ParentViewModel.OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded))
+					if ((ParentViewModel.OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (ParentViewModel.OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded) || (ParentViewModel.OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Unloaded))
 					{
 						this.Services().Message.ShowMessage(this.Services().Localize["CannotCancelOrderTitle"], this.Services().Localize["CannotCancelOrderMessage"]);
 						return;
 					}
 
 					var confirmationMessage = Settings.WarnForFeesOnCancel
-						&& (VehicleStatuses.CanCancelOrderStatus.Contains(ParentViewModel.OrderStatusDetail.IBSStatusId))
-						? string.Format(
-							this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
-							Settings.TaxiHail.ApplicationName)
-						: this.Services().Localize["StatusConfirmCancelRide"];
+						&& VehicleStatuses.CanCancelOrderStatusButCouldBeChargedFees.Contains(ParentViewModel.OrderStatusDetail.IBSStatusId)
+							? string.Format(this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"], Settings.TaxiHail.ApplicationName)
+							: this.Services().Localize["StatusConfirmCancelRide"];
 
 					this.Services().Message.ShowMessage(
 						string.Empty,
@@ -180,17 +178,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+
+		private bool _disableOutOfAppPayment;
+
+		public bool DisableOutOfAppPayment
+		{
+			get { return _disableOutOfAppPayment; }
+			set
+			{
+				_disableOutOfAppPayment = value;
+				RaisePropertyChanged(() => UnpairButtonText);
+			}
+		}
+
 		public ICommand Unpair
 		{
 			get
 			{
 				return this.GetCommand(() =>
 				{
+					var cancelOrPayInCarMessage = DisableOutOfAppPayment ? "UnpairCancel" : "UnpairPayInCar";
+
 					var message = ParentViewModel.Order.PromoCode.HasValue()
-						? this.Services().Localize["UnpairWarningMessageWithPromo"]
-						: this.Services().Localize["UnpairWarningMessage"];
-
-
+						? this.Services().Localize[cancelOrPayInCarMessage + "WarningMessageWithPromo"]
+						: this.Services().Localize[cancelOrPayInCarMessage + "WarningMessage"];
+						
 					this.Services().Message.ShowMessage(
 						this.Services().Localize["WarningTitle"],
 						message,
@@ -208,8 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                         _orderWasUnpaired = true;
 								        IsUnpairButtonVisible = false;
 
-									    var paymentSettings = await _paymentService.GetPaymentSettings();
-									    if (paymentSettings.CancelOrderOnUnpair)
+										if (DisableOutOfAppPayment)
 									    {
 										    // Cancel order
                                             var isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
@@ -255,6 +266,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public string UnpairButtonText
+		{
+			get
+			{ 
+				return DisableOutOfAppPayment ? this.Services().Localize["UnpairCancelOrder"] : this.Services().Localize["UnpairPayInCar"];
+			}
+		}
+
 		private bool _isUnpairButtonVisible;
 		public bool IsUnpairButtonVisible
 		{
@@ -263,6 +282,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_isUnpairButtonVisible = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsUnpairOrTipChangeButtonsVisible);
+				RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
 			}
 		}
 
@@ -274,7 +295,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_isCancelButtonVisible = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
 			}
+		}
+
+		public bool IsCancelOrTipChangeButtonsVisible
+		{
+			get { return IsCancelButtonVisible || CanEditAutoTip || IsUnpairButtonVisible; }
+		}
+
+		public bool IsUnpairOrTipChangeButtonsVisible
+		{
+			get { return IsUnpairButtonVisible || CanEditAutoTip; }
 		}
 
 		private bool _canEditAutoTip;
@@ -287,6 +319,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_canEditAutoTip = value;
 					RaisePropertyChanged();
+					RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
+					RaisePropertyChanged(() => IsUnpairOrTipChangeButtonsVisible);
 				}
 			}
 		}

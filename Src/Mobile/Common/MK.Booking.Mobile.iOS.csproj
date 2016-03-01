@@ -8,6 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,14 +28,12 @@
     <DefineConstants>CLIENT;MONOTOUCH</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -45,7 +43,6 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>MONOTOUCH</DefineConstants>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
@@ -58,25 +55,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\portable-win+net45+sl50+wp8+MonoAndroid+MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="System.Json" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -127,6 +117,12 @@
     <Reference Include="Cirrious.MvvmCross">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IAirportInformationService.cs" />
@@ -141,6 +137,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
+    <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
@@ -306,7 +303,6 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="AppServices\IOrderWorkflowService.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
-    <Compile Include="ViewModels\Map\MapBounds.cs" />
     <Compile Include="AppServices\Orders\OrderWorkflowService.cs" />
     <Compile Include="AppServices\Orders\OrderValidationException.cs" />
     <Compile Include="AppServices\Orders\OrderValidationError.cs" />
@@ -362,9 +358,19 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
-    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
     <Compile Include="AppServices\IRateApplicationService.cs" />
     <Compile Include="AppServices\Impl\RateApplicationService.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IVehicleTypeService.cs" />
+    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
+    <Compile Include="Infrastructure\IQuitApplicationService.cs" />
+    <Compile Include="AppServices\Orders\ManualPairingException.cs" />
+    <Compile Include="Models\OrderRepresentation.cs" />
+    <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
+    <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
+    <Compile Include="ViewModels\DebugViewModel.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -405,6 +411,7 @@
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
+    <None Include="Localization\FLAT RATE.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -423,6 +430,8 @@
     </None>
     <None Include="packages.config" />
     <None Include="Localization\Taxi.resx" />
+    <None Include="Localization\Bram City Taxi.resx" />
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

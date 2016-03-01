@@ -15,11 +15,14 @@ namespace apcurium.MK.Common.Extensions
         public static double ToDouble(this string instance)
         {
             double amount;
-            if (double.TryParse(instance, NumberStyles.Any, CultureInfo.CurrentUICulture, out amount))
-            {
-                return amount;
-            }
-            return 0;
+            return double.TryParse(instance, NumberStyles.Any, CultureInfo.CurrentUICulture, out amount) 
+                ? amount 
+                : 0;
+        }
+
+        public static int ToInt(this string instance)
+        {
+            return int.Parse(instance);
         }
 
         public static long ToLong(this string instance)
@@ -63,7 +66,6 @@ namespace apcurium.MK.Common.Extensions
             return bool.TryParse(instance, out isBoolean);
         }
 
-        //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {
             return string.Join(joinBy, items.ToArray());

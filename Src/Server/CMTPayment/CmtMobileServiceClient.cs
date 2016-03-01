@@ -1,7 +1,9 @@
 using System;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using CMTPayment.Authorization;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceHost;
@@ -10,10 +12,10 @@ namespace CMTPayment
 {
     public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxMobileBaseUrl
-                : cmtSettings.MobileBaseUrl, sessionId, packageInfo)
+                : cmtSettings.MobileBaseUrl, sessionId, packageInfo, connectivityService)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
@@ -21,9 +23,6 @@ namespace CMTPayment
             var credentialsForService = cmtSettings.GetCredentials(serviceType);
             ConsumerKey = credentialsForService.ConsumerKey;
             ConsumerSecretKey = credentialsForService.ConsumerSecretKey;
-
-            //todo - Bug accept all certificates
-            ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
         }
 
         protected string ConsumerKey { get; private set; }
@@ -59,6 +58,10 @@ namespace CMTPayment
         public T Post<T>(IReturn<T> request)
         {
             return Client.Post(request);
+        }
+        public HttpWebResponse Post<T>(string relativeOrAbsoluteUrl, IReturn<T> request)
+        {
+            return Client.Post<HttpWebResponse>(relativeOrAbsoluteUrl, request);
         }
 
         public T Put<T>(string requestUrl, IReturn<T> payload)

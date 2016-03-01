@@ -157,6 +157,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public bool CanChangeCreditCard
+		{
+			get
+			{
+				return this.Settings.ChangeCreditCardMidtrip;
+			}
+		}
+
         private int _creditCardSelected;
         public int CreditCardSelected
         {
@@ -233,9 +241,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                        var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
 	                        if (activeOrder != null)
 	                        {
-	                            var autoTipUpdated = activeOrder.Item1.IsManualRideLinq
-									? await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip) 
-									: await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
+								var autoTipUpdated = activeOrder.Order.IsManualRideLinq
+									? await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Order.Id, PaymentPreferences.Tip) 
+									: await _paymentService.UpdateAutoTip(activeOrder.Order.Id, PaymentPreferences.Tip);
 
 								if (autoTipUpdated)
 								{

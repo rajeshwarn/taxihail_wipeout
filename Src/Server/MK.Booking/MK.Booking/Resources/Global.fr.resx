@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
-    <value>Pour confirmer votre email, utilisez le lien suivant</value>
+    <value>Pour confirmer votre courriel, utilisez le lien suivant</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
-    <value>Votre adresse email est bien enregistré</value>
+    <value>Votre adresse courriel est bien enregistrée</value>
   </data>
   <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
     <value>Vous pouvez dès à présent vous connecter à l'application</value>
@@ -151,7 +151,7 @@
     <value>Votre chauffeur est en chemin</value>
   </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
-    <value>Adresse email à confirmer</value>
+    <value>Adresse courriel à confirmer</value>
   </data>
   <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
     <value>Votre adresse mail a bien été prise en compte</value>
@@ -211,7 +211,7 @@
     <value>Reçu</value>
   </data>
   <data name="Email_Body_RingCode" xml:space="preserve">
-    <value>?</value>
+    <value>Code de porte</value>
   </data>
   <data name="Email_Body_ThankYou" xml:space="preserve">
     <value>Merci!</value>
@@ -295,7 +295,7 @@
     <value>Annulé</value>
   </data>
   <data name="OrderStatus_wosDONE" xml:space="preserve">
-    <value>Réalisé</value>
+    <value>Complété</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Passager à bord</value>
@@ -304,7 +304,7 @@
     <value>Votre commande ne peut pas être prise en compte, merci de joindre le support</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Client ne s'est pas présenté</value>
+    <value>Votre chauffeur a indiqué que vous n'étiez pas au point de ramassage.</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
     <value>Planifié</value>
@@ -337,7 +337,10 @@
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
+  </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Votre chauffeur a indiqué que vous n'étiez pas au point de ramassage.</value>
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
@@ -361,7 +364,7 @@
     <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
-    <value>Éched de l'association. Payez au chauffeur.</value>
+    <value>Échec de l'association. Payez au chauffeur.</value>
   </data>
   <data name="Email_Body_FareBreakDown" xml:space="preserve">
     <value>Prix de la course</value>
@@ -373,13 +376,13 @@
     <value>La course sera payée en utilisant le mode de paiement choisi</value>
   </data>
   <data name="OrderStatus_BAILED" xml:space="preserve">
-    <value>BAIL BAIL BAIL !</value>
+    <value>Désolé, votre chauffeur s'est décommandé, nous vous trouvons un autre véhicule...</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
-    <value>Paiement In App</value>
+    <value>Paiement par l'application</value>
   </data>
   <data name="ChargeAccount" xml:space="preserve">
     <value>Compte</value>
@@ -406,7 +409,7 @@
     <value>Paiement en cours via l'application du passager...</value>
   </data>
   <data name="PaymentFailedToDriver" xml:space="preserve">
-    <value>Paiement in App a échoué!</value>
+    <value>Paiement par l'application a échoué!</value>
   </data>
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Commande #{0} montant original: {1}</value>
@@ -532,10 +535,7 @@
     <value>Message</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Cette adresse email est déjà utilisée</value>
-  </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>Le code de confirmation est incorrect.</value>
+    <value>Cette adresse courriel est déjà utilisée</value>
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
@@ -563,9 +563,6 @@
   </data>
   <data name="ServiceErrorDefaultMessage" xml:space="preserve">
     <value>Désolé, nous avons rencontré un problème. Merci de réessayer ultérieurement</value>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>Aucun compte n'a été trouvé pour cet email</value>
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>Désolé, votre session a expirée. Merci de réessayer ultérieurement</value>
@@ -634,7 +631,7 @@
     <value>Extra</value>
   </data>
   <data name="Email_Body_DriverId" xml:space="preserve">
-    <value>Driver #</value>
+    <value>Chauffeur #</value>
   </data>
   <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
     <value>Frais de réservation</value>
@@ -658,7 +655,7 @@
     <value>Frais de réservation</value>
   </data>
   <data name="Email_Body_RateClass" xml:space="preserve">
-    <value>Rate Code</value>
+    <value>Code de tarif</value>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>La carte de crédit a été refusée</value>
@@ -672,19 +669,49 @@
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
-<data name="EmailUsedMessage" xml:space="preserve">
+  <data name="PhoneBlackListed" xml:space="preserve">
+    <value>Le numéro de téléphone est sur une liste noire</value>
+  </data>
+  <data name="EmailUsedMessage" xml:space="preserve">
     <value>Ce courriel est déjà utilisé par un autre compte</value>
   </data>
-	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+  <data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
     <value>Il est impossible de changer le courriel du compte lié avec Facebook</value>
   </data>
-  <data name="CancelOrdeError" xml:space="preserve">
+  <data name="CancelOrderError" xml:space="preserve">
     <value>Il est trop tard pour annuler cette commande</value>
   </data>
-  <data name="PushNotification_NoShowWarning" xml:space="preserve">
-    <value>Votre véhicule attend depuis 10 minutes.  Veuillez contacter votre chauffeur si vous désirez qu'il patiente plus longtemps.</value>
+  <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>La commande ne peut pas être annulée car il n'y a pas d'IBSOrderID</value>
   </data>
-  <data name="PushNotification_InfoAboutGratuity" xml:space="preserve">
-    <value>Merci d'utiliser Mears. Si le service vous a plu, il vous est possible via l'application d'offrir au conducteur un pourboire additionnel.</value>
+  <data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Photo du chauffeur</value>
   </data>
-</root> 
+  <data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Plaque d'immatriculation</value>
+  </data>
+  <data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
+    <value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
+  </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>Aucun mode de paiement disponible.</value>
+  </data>
+  <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
+    <value>Désolé, les commandes futures ne sont pas disponibles.</value>
+  </data>
+  <data name="Email_Subject_OrderRefund" xml:space="preserve">
+    <value>{{ ApplicationName }} - Commande Remboursée</value>
+  </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total remboursé</value>
+  </data>
+  <data name="Email_Title_OrderRefund" xml:space="preserve">
+    <value>Commande Remboursée</value>
+  </data>
+</root>

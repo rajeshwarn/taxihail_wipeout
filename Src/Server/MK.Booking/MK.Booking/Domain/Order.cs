@@ -38,21 +38,23 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
             Handles<IbsOrderInfoAddedToOrder>(NoAction);
-            Handles<OrderCancelledBecauseOfError>(NoAction);
+            Handles<OrderCancelledBecauseOfError>(OnOrderCancelledBecauseOfError);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
-            Handles<OrderManuallyPairedForRideLinq>(NoAction);
-            Handles<OrderUnpairedFromManualRideLinq>(NoAction);
-            Handles<ManualRideLinqTripInfoUpdated>(NoAction);
+            Handles<OrderManuallyPairedForRideLinq>(OnOrderManuallyPairedForRideLinq);
+            Handles<OrderUnpairedFromManualRideLinq>(OnOrderUnpairedFromManualRideLinq);
+            Handles<ManualRideLinqTripInfoUpdated>(OnManualRideLinqTripInfoUpdated);
+            Handles<OrderStatusChangedForManualRideLinq>(OnOrderStatusChangedForManualRideLinq);
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
 		    Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
             Handles<GratuitySent>(NoAction);
+            Handles<OrderUpdatedInTrip>(NoAction);
             Handles<OrderGratuityUpdated>(NoAction);
         }
-
+        
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
@@ -63,7 +65,7 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
 			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId = null)
+            string chargeTypeEmail, int? ibsOrderId, string originatingIpAddress, string kountSessionId)
 		{
 			if ((settings == null) || pickupAddress == null ||
 				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -101,7 +103,10 @@ namespace apcurium.MK.Booking.Domain
                 PromotionId = promotionId,
                 IsFutureBooking = isFutureBooking,
                 ReferenceDataCompanyList = referenceDataCompanyList,
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                ChargeTypeEmail = chargeTypeEmail,
+                OriginatingIpAddress = originatingIpAddress,
+                KountSessionId = kountSessionId
 			});
 		}
 
@@ -109,7 +114,7 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
             bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId = null)
+            int? ibsOrderId, string originatingIpAddress, string kountSessionId)
 		{
 			Update(new OrderReportCreated
 			{
@@ -142,15 +147,18 @@ namespace apcurium.MK.Booking.Domain
                 PromotionId = promotionId,
                 IsFutureBooking = isFutureBooking,
                 ReferenceDataCompanyList = referenceDataCompanyList,
-                IBSOrderId = ibsOrderId
-			});
+                IBSOrderId = ibsOrderId,
+                OriginatingIpAddress = originatingIpAddress,
+                KountSessionId = kountSessionId
+            });
 		}
 
         public void AddIbsOrderInfo(int ibsOrderId)
         {
             Update(new IbsOrderInfoAddedToOrder
             {
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -158,13 +166,13 @@ namespace apcurium.MK.Booking.Domain
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-			string deviceName, int tripId, int driverId, double? accessFee, string lastFour)
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour, string originatingIpAddress, string kountSessionId, Guid? creditCardId)
 		{
 			Update(new OrderManuallyPairedForRideLinq
 			{
 				AccountId = accountId,
 				PairingDate = pairingDate,
-				UserAgent = userAgent,
+                UserAgent = userAgent,
 				ClientLanguageCode = clientLanguageCode,
 				ClientVersion = clientVersion,
 				PairingCode = pairingCode,
@@ -187,8 +195,11 @@ namespace apcurium.MK.Booking.Domain
 				TripId = tripId,
 				DriverId = driverId,
 				AccessFee = accessFee,
-				LastFour = lastFour
-			});
+				LastFour = lastFour,
+                OriginatingIpAddress = originatingIpAddress,
+                KountSessionId = kountSessionId,
+                CreditCardId = creditCardId
+            });
 		}
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
@@ -268,12 +279,13 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
+        public void CancelBecauseOfError(string errorCode, string errorDescription)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription
+                ErrorDescription = errorDescription,
+                CancelWasRequested = _status == OrderStatus.Canceled
             });
         }
 
@@ -286,10 +298,9 @@ namespace apcurium.MK.Booking.Domain
         {
             if (!_isRated)
             {
-                _isRated = true;
                 Update(new OrderRated
                 {
-					AccountId = accountId,
+                    AccountId = accountId,
                     Note = note,
                     RatingScores = ratingScores
                 });
@@ -298,7 +309,17 @@ namespace apcurium.MK.Booking.Domain
 
         public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
         {
-            if (status == null) throw new InvalidOperationException();
+            if (status == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (_status == OrderStatus.Canceled)
+            {
+                // Order was cancelled, we might have a race condition where OrderStatusUpdater would overwrite 
+                // the cancel status and continue polling the order forever
+                return;
+            }
 
             if (status.Status != _status || status.IBSStatusId != _ibsStatus || _fare != fare)
             {
@@ -312,6 +333,18 @@ namespace apcurium.MK.Booking.Domain
                     Surcharge = surcharge,
                     IsCompleted = status.Status == OrderStatus.Completed,
                     PreviousIBSStatusId = _ibsStatus,
+                });
+            }
+        }
+
+        public void ChangeStatusForManualRideLinq(OrderStatus status, DateTime lastTripPollingDateInUtc)
+        {
+            if (_status == OrderStatus.Created || _status == OrderStatus.WaitingForPayment)
+            {
+                Update(new OrderStatusChangedForManualRideLinq
+                {
+                    Status = status,
+                    LastTripPollingDateInUtc = lastTripPollingDateInUtc
                 });
             }
         }
@@ -455,6 +488,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdateOrderInTrip(UpdateOrderInTrip orderInTrip)
+        {
+            Update(new OrderUpdatedInTrip
+            {
+                OrderId = orderInTrip.OrderId,
+                DropOffAddress = orderInTrip.DropOffAddress
+            });
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             // special case for migration
@@ -490,6 +532,11 @@ namespace apcurium.MK.Booking.Domain
             _status = OrderStatus.Canceled;
         }
 
+        private void OnOrderCancelledBecauseOfError(OrderCancelledBecauseOfError obj)
+        {
+            _status = OrderStatus.Canceled;
+        }
+
         private void OnOrderRemoved(OrderRemovedFromHistory obj)
         {
             _status = OrderStatus.Removed;
@@ -497,7 +544,8 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderRated(OrderRated obj)
         {
-            _isRated = true;
+            // allows old non-working ratings from being re-rated
+            _isRated = obj.RatingScores.Any();
         }
 
         private void OnOrderTimedOut(OrderTimedOut obj)
@@ -513,6 +561,34 @@ namespace apcurium.MK.Booking.Domain
         private void OnNextDispatchCompanySwitchIgnored(DispatchCompanySwitchIgnored obj)
         {
             _isTimedOut = false;
+        }
+
+        private void OnOrderManuallyPairedForRideLinq(OrderManuallyPairedForRideLinq @event)
+        {
+            _status = OrderStatus.Created;
+        }
+
+        private void OnOrderUnpairedFromManualRideLinq(OrderUnpairedFromManualRideLinq @event)
+        {
+            _status = OrderStatus.Canceled;
+        }
+        
+        private void OnManualRideLinqTripInfoUpdated(ManualRideLinqTripInfoUpdated @event)
+        {
+            if (@event.EndTime.HasValue)
+            {
+                _status = OrderStatus.Completed;
+            }
+
+            if (@event.PairingError.HasValueTrimmed())
+            {
+                _status = OrderStatus.Canceled;
+            }
+        }
+
+        private void OnOrderStatusChangedForManualRideLinq(OrderStatusChangedForManualRideLinq @event)
+        {
+            _status = @event.Status;
         }
     }
 }

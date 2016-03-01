@@ -10,10 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Model = model;
 		}
 
-		public AccountChargeQuestion Model {
-			get;
-			private set;
-		}
+		public AccountChargeQuestion Model { get; private set; }
 
 		public string QuestionLabel
 		{
@@ -27,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public string QuestionPlaceholder
 		{
-			get{
+			get
+            {
 				return Model.MaxLength.HasValue ? 
 					string.Format (this.Services().Localize["AccountPaymentQuestionsPlaceHolder"], Model.MaxLength)
 						: string.Empty;

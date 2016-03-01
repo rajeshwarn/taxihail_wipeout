@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -31,6 +30,7 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Globalization;
 using apcurium.MK.Common.Enumeration;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private AddressAnnotation _destinationAnnotation;
         private readonly UIImageView _pickupCenterPin;
         private readonly UIImageView _dropoffCenterPin;
-        private UIImageView _mapBlurOverlay;
+        private UIView _mapBlurOverlay;
         private readonly List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
@@ -100,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		    return _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived
-		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded
+                   && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded
+                   && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Unloaded
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.MeterOffNotPayed
 		           && _orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Done;
 	    }
@@ -122,31 +123,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void Initialize()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
+
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var coordonates = new[] 
-            {
-                CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
-                CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
-            };
+            var initialPosition = locationService.GetInitialPosition();
 
-	        // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
-	        // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                var minLat = coordonates.Min(a => a.Coordinate.Latitude);
-                var maxLat = coordonates.Max(a => a.Coordinate.Latitude);
-                var minLon = coordonates.Min(a => a.Coordinate.Longitude);
-                var maxLon = coordonates.Max(a => a.Coordinate.Longitude);
+            var region = new MKCoordinateRegion(new CLLocationCoordinate2D(initialPosition.Latitude, initialPosition.Longitude), new MKCoordinateSpan(0.1, 0.1));
 
-                var center = new CLLocationCoordinate2D(((maxLat + minLat) / 2), (maxLon + minLon) / 2);
-
-                var region = new MKCoordinateRegion(center, new MKCoordinateSpan(0.1, 0.1));
-
-                Region = region;
-            }
-
+            Region = region;
             this.DelayBind(() => 
             {
                 var set = this.CreateBindingSet<OrderMapView, MapViewModel>();
@@ -186,12 +172,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
-            if (UIHelper.IsOS7orHigher)
-            {
-                PitchEnabled = false;
-                RotateEnabled = false;
-            }
-
+            PitchEnabled = false;
+            RotateEnabled = false;
             ZoomEnabled = false;
 
             if (_gesture == null)
@@ -567,11 +549,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                           : 0;
             annotationToUpdate.AddressType = annotationType;
 
-            AnimateAnnotationOnMap(annotationToUpdate, new Position
-                {
-                    Latitude = vehicle.Latitude,
-                    Longitude = vehicle.Longitude
-                });
+            AnimateAnnotationOnMap(annotationToUpdate, new Position { Latitude = vehicle.Latitude, Longitude = vehicle.Longitude });
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -616,24 +594,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private void SetEnabled(bool enabled)
+        private void ChangeBlurState(bool enabled)
         {
-            ScrollEnabled = enabled;
-            UserInteractionEnabled = enabled;                       
-
             if (_mapBlurOverlay == null)
             {
-                var size = UIScreen.MainScreen.Bounds.Size;
-	            _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(size.Width, size.Height)))
-	            {
-		            ContentMode = UIViewContentMode.ScaleToFill
-	            };
-	            AddSubview(_mapBlurOverlay);
+                if (UIHelper.IsOS8orHigher)
+                {
+                    _mapBlurOverlay = new UIVisualEffectView(UIBlurEffect.FromStyle(UIBlurEffectStyle.Light)) 
+                    {
+                        Frame = new CGRect(new CGPoint(0, 0), new CGSize(UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height))
+                    };
+                    AddSubview(_mapBlurOverlay);
+                }
+                else
+                {
+                    _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(UIScreen.MainScreen.Bounds.Size.Width, UIScreen.MainScreen.Bounds.Size.Height)))
+                    {
+                        ContentMode = UIViewContentMode.ScaleToFill
+                    };
+                    AddSubview(_mapBlurOverlay);
+                }
             }
 
             if (!enabled)
             {
-                _mapBlurOverlay.Image = ImageHelper.CreateBlurImageFromView(this);    
+                if (_mapBlurOverlay is UIImageView)
+                {
+                    ((UIImageView)_mapBlurOverlay).Image = ImageHelper.CreateBlurImageFromView(this); 
+                }
 
                 _mapBlurOverlay.Alpha = 0;
                 _mapBlurOverlay.Hidden = false;
@@ -643,6 +631,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 Animate(0.3f, () => _mapBlurOverlay.Alpha = 0, () => _mapBlurOverlay.Hidden = true);
             }
+        }
+
+        private void SetEnabled(bool enabled)
+        {
+            ScrollEnabled = enabled;
+            UserInteractionEnabled = enabled;                       
+
+            ChangeBlurState(enabled);
 
 			InitOverlays ();
         }
@@ -735,21 +731,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             var showOrientedPins = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue;
-            
-	        // Update Marker and Animate it to see it move on the map
+
+            _automatedMapChanged = true;
+
+            // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null && value.Longitude.HasValue && value.Latitude.HasValue)
             {
                 var taxiLocationPin = (AddressAnnotation)_taxiLocationPin;
 
 				taxiLocationPin.Degrees = value.CompassCourse ?? 0;
-
+                
 	            taxiLocationPin.ShowOrientation = showOrientedPins;
 
-                AnimateAnnotationOnMap(taxiLocationPin, new Position()
-                    {
-                        Latitude = value.Latitude.Value,
-                        Longitude = value.Longitude.Value
-                    });
+                AnimateAnnotationOnMap(taxiLocationPin, new Position { Latitude = value.Latitude.Value, Longitude = value.Longitude.Value });
 
 	            return;
             }

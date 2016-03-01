@@ -10,6 +10,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     public interface IOrderStatusUpdateDao
     {
         OrderStatusUpdateDetail GetLastUpdate();
-        void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime );
+        void UpdateLastUpdate(string updaterUniqueId, DateTime updateTime, DateTime? cycleStartTime);
     }
 }

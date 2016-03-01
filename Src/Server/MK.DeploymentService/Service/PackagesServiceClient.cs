@@ -1,15 +1,13 @@
 ﻿#region
 
 using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
-using CustomerPortal.Web.Entities;
-using Microsoft.Build.Tasks;
-using MK.DeploymentService.Properties;
 
 #endregion
 
@@ -23,7 +21,7 @@ namespace MK.DeploymentService.Service
             {
                 using (var client = new HttpClient(new HttpClientHandler
                 {
-                    Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                 })
                 {
                     Timeout = TimeSpan.FromMinutes(10) //as the webserver
@@ -62,7 +60,7 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 client.BaseAddress = new Uri(url);
@@ -83,7 +81,7 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 client.BaseAddress = new Uri(url);
@@ -107,12 +105,11 @@ namespace MK.DeploymentService.Service
                 fileStream.Close();
             }
         }
-
-
+        
         private static string GetUrl()
         {
 // ReSharper disable once RedundantAssignment
-            var url = Settings.Default.CustomerPortalUrl;
+            var url = ConfigurationManager.AppSettings["CustomerPortalUrl"];
 
 //#if DEBUG
 //            url = "http://localhost:2287/api/";

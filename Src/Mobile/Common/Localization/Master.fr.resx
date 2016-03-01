@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -119,6 +119,15 @@
   </resheader>
   <data name="ApplicationName" xml:space="preserve">Taxi</data>
   <data name="GoogleMapKey" xml:space="preserve">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</data>
+  <data name="Callbox.ApplicationName" xml:space="preserve">
+    <value>TaxiHail Callbox</value>
+  </data>
+  <data name="AcceptButton" xml:space="preserve">
+    <value>Accepter</value>
+  </data>
+  <data name="AccountActivationMessage" xml:space="preserve">
+    <value>Vous allez recevoir un courriel de confirmation. Merci de cliquer sur le lien pour valider votre inscription</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
   </data>
@@ -445,6 +454,9 @@
   </data>
   <data name="InvalidAddressTitle" xml:space="preserve">
     <value>Invalid address</value>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="Now" xml:space="preserve">
     <value>Now</value>
@@ -1184,9 +1196,6 @@
   <data name="CreditCardCCV" xml:space="preserve">
     <value>CVV</value>
   </data>
-  <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip code</value>
-  </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cannot save credit card</value>
   </data>
@@ -1399,6 +1408,9 @@
   </data>
   <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
+  </data>
+  <data name="UnpairCancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
   </data>
   <data name="CmtRideLinqCancelChanges" xml:space="preserve">
     <value>Cancel</value>
@@ -1616,6 +1628,9 @@
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Driver Assigned</value>
   </data>
+  <data name="Notification_NoShowPush" xml:space="preserve">
+    <value>No show</value>
+  </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notifications</value>
   </data>
@@ -1628,7 +1643,7 @@
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Receipt (Email)</value>
   </data>
-   <data name="Notification_DriverBailedPush" xml:space="preserve">
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
     <value>Driver bailed</value>
   </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
@@ -1748,11 +1763,17 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessage" xml:space="preserve">
     <value>Are you sure you don’t want to pay with your credit card on file?</value>
   </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+  <data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="UnpairCancelWarningMessage" xml:space="preserve">
+    <value>Are you sure you want to cancel this order?</value>
+  </data>
+  <data name="UnpairCancelWarningMessageWithPromo" xml:space="preserve">
+    <value>If you decide to cancel, you will not be able to use the promotion.</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pay in car</value>
@@ -2000,6 +2021,9 @@
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
+  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
+    <value>You need to have an active credit card set as your default payment method</value>
+  </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
     <value>CVV Required</value>
   </data>
@@ -2029,10 +2053,10 @@
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Tip</value>
-    </data>
+  </data>
   <data name="StatusEditAutoPaymentButton" xml:space="preserve">
     <value>Payment</value>
-    </data>
+  </data>
   <data name="AirportsButton" xml:space="preserve">
     <value>Airports</value>
   </data>
@@ -2185,34 +2209,34 @@
   </data>
   <data name="SendMessageDriver" xml:space="preserve">
     <value>Send Message to Driver</value>
-   </data>
+  </data>
   <data name="PickupAddress" xml:space="preserve">
     <value>Pickup address</value>
   </data>
   <data name="Rating1" xml:space="preserve">
     <value>Awful</value>
-    </data>
+  </data>
   <data name="DestinationAddress" xml:space="preserve">
     <value>Destination address</value>
   </data>
   <data name="Rating2" xml:space="preserve">
     <value>Poor</value>
-    </data>
+  </data>
   <data name="Rating3" xml:space="preserve">
     <value>Average</value>
-    </data>
+  </data>
   <data name="TutorialActivityName" xml:space="preserve">
     <value>Tutorial</value>
   </data>
   <data name="Rating4" xml:space="preserve">
     <value>Good</value>
-    </data>
+  </data>
   <data name="HomeActivityName" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Rating5" xml:space="preserve">
     <value>Excellent</value>
-    </data>
+  </data>
   <data name="PasswordRecoveryActivityName" xml:space="preserve">
     <value>Password recovery</value>
   </data>
@@ -2291,6 +2315,15 @@
   <data name="OrderStatus_Medallion" xml:space="preserve">
     <value>Medallion</value>
   </data>
+  <data name="OrderStatus_AddDestination" xml:space="preserve">
+    <value>Add your destination</value>
+  </data>
+  <data name="OrderStatus_RemoveDestination" xml:space="preserve">
+    <value>Remove your destination</value>
+  </data>
+  <data name="ErrorChangeDropOff_Message" xml:space="preserve">
+    <value>Sorry, we couldn’t update your destination.</value>
+  </data>
   <data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -2298,28 +2331,28 @@
     <value>Car Number</value>
   </data>
   <data name="WaitingCarLandscapeActivityName" xml:space="preserve">
-      <value>Car Number</value>
+    <value>Car Number</value>
   </data>
   <data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
-      <value>Invalid flight number</value>
+    <value>Invalid flight number</value>
   </data>
   <data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
-      <value>An error occurred with the flight status provider. Airport code might not be set.</value>
+    <value>An error occurred with the flight status provider. Airport code might not be set.</value>
   </data>
   <data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
-      <value>Provided date is out of range.</value>
+    <value>Provided date is out of range.</value>
   </data>
   <data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
-      <value>An error occurred with the flight status provider.</value>
+    <value>An error occurred with the flight status provider.</value>
   </data>
   <data name="UpdateNoticeTitle" xml:space="preserve">
-      <value>Update Notice</value>
+    <value>Update Notice</value>
   </data>
   <data name="UpdateNoticeText" xml:space="preserve">
-      <value>Sorry, this version of the app is no longer supported. Please update the app</value>
+    <value>Sorry, this version of the app is no longer supported. Please update the app</value>
   </data>
   <data name="AccountLinkedWithFacebook" xml:space="preserve">
-      <value>Account is linked with Facebook account</value>
+    <value>Account is linked with Facebook account</value>
   </data>
   <data name="EmailUsedMessageTitle" xml:space="preserve">
     <value>Email already used</value>
@@ -2336,7 +2369,7 @@
   <data name="ManualPairing_TimeOut_Message" xml:space="preserve">
     <value>There is a connection error preventing us from providing the status of your ride.</value>
   </data>
-    <data name="RateMobileApplicationTitle" xml:space="preserve">
+  <data name="RateMobileApplicationTitle" xml:space="preserve">
     <value>Rate this application</value>
   </data>
   <data name="RateMobileApplicationText" xml:space="preserve">
@@ -2358,24 +2391,111 @@
     <value>URL to store page was not configured</value>
   </data>
   <data name="BaseRate_PerMileRate" xml:space="preserve">
-    <value>Per Mile Rate</value>
+	<value>Per Mile Rate</value>
   </data>
-    <data name="BaseRate_PerTenthMile" xml:space="preserve">
-    <value>{0} ({1} per tenth mile)</value>
+  	<data name="BaseRate_PerTenthMile" xml:space="preserve">
+		<value>{0} ({1} per tenth mile)</value>
+	</data>
+	<data name="BaseRate_BaseRate" xml:space="preserve">
+		<value>Base Rate (no miles)</value>
+	</data>
+	<data name="BaseRate_MinimumFare" xml:space="preserve">
+		<value>Minimum Fare</value>
+	</data>
+  	<data name="BaseRate_WaitTime" xml:space="preserve">
+		<value>Wait Time</value>
+	</data>
+  	<data name="BaseRate_PerMinute" xml:space="preserve">
+		<value>{0} per minute</value>
+	</data>
+  	<data name="BaseRate_PerQuarterMile" xml:space="preserve">
+		<value>{0} ({1} per 0.25 miles)</value>
+	</data>
+  	<data name="BaseRate_PerEightySeconds" xml:space="preserve">
+		<value>{0} per 80 seconds</value>
+	</data>
+ 	<data name="BaseRate_RateStructure" xml:space="preserve">
+    	<value>RATE STRUCTURE</value>
+  	</data>
+  	<data name="BookingGratuityText" xml:space="preserve">
+		<value>If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</value>
+	</data>
+	<data name="GratuitActivityName" xml:space="preserve">
+		<value>Gratuity</value>
+	</data>
+	<data name="Gratuity_Pay" xml:space="preserve">
+		<value>Give Gratuity</value>
+	</data>
+	<data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Server error</value>
+	</data>
+	<data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Your session has expired, please login again.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+		<value>No account with this email has been found.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+		<value>This email matches a Facebook account. Please login via Facebook.</value>
+	</data>
+	<data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+		<value>This email matches a Twitter account. Please login via Twitter.</value>
+	</data>
+	<data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+		<value>The confirmation code is incorrect.</value>
   </data>
-  <data name="BaseRate_BaseRate" xml:space="preserve">
-    <value>Base Rate (no miles)</value>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>Your session has expired, please login again.</value>
   </data>
-  <data name="BaseRate_MinimumFare" xml:space="preserve">
-    <value>Minimum Fare</value>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Server error</value>
   </data>
-    <data name="BaseRate_WaitTime" xml:space="preserve">
-    <value>Wait Time</value>
+  <data name="PairingProcessingErrorTitle" xml:space="preserve">
+    <value>Pairing payment problem</value>
   </data>
-    <data name="BaseRate_PerMinute" xml:space="preserve">
-    <value>{0} per minute</value>
+  <data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Sorry, there was a problem, please pay in the taxi</value>
   </data>
-  <data name="BaseRate_RateStructure" xml:space="preserve">
-      <value>RATE STRUCTURE</value>
-    </data>
+  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+  </data>
+  <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+  </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>No account with this email has been found.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_FacebookAccount" xml:space="preserve">
+    <value>This email matches a Facebook account. Please login via Facebook.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_TwitterAccount" xml:space="preserve">
+    <value>This email matches a Twitter account. Please login via Twitter.</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="LastFour" xml:space="preserve">
+    <value>Last 4 numbers:  </value>
+  </data>
+  <data name="InvalidCreditCardMessage" xml:space="preserve">
+  	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
+  </data>
+  <data name="CreditCompany" xml:space="preserve">
+    <value>Credit company: </value>
+  </data>
+  <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
+  	<value>Update Card</value>
+  </data>
+  <data name="SelectedCreditCard" xml:space="preserve">
+    <value>Currently selected credit card</value>
+  </data>
+  <data name="NoCreditCard" xml:space="preserve">
+    <value>No credit card selected</value>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Désolé, le mot de passe saisi n'est pas valide</value>
+  </data>
+  <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
+    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
+  </data>
 </root>

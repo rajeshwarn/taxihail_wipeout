@@ -10,7 +10,7 @@ using System.CodeDom.Compiler;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	[Register ("OrderOptionsControl")]
-	partial class OrderOptionsControl
+	public partial class OrderOptionsControl
 	{
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AddressTextBox viewDestination { get; set; }

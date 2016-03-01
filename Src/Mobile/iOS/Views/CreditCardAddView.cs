@@ -11,11 +11,12 @@ using apcurium.MK.Common.Configuration.Impl;
 using PaypalSdkTouch.Unified;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -33,8 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             { 
                 // CardIOToken is only used to know if the company wants it or not
                 return CardIOUtilities.CanReadCardWithCamera()
-                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken)
-                    && UIHelper.IsOS7orHigher; 
+                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
         }
 
@@ -127,7 +127,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnSaveCard)
                 .For("Title")
                 .To(vm => vm.CreditCardSaveButtonDisplay);
-            
+
+			set.Bind(btnSaveCard)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsAddingNewCard)
+				.WithConversion("BoolInverter");
+
             set.Bind(btnSaveCard)
                 .For("TouchUpInside")
 				.To(vm => vm.SaveCreditCardCommand);
@@ -154,9 +159,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
 
+			set.Bind(txtNameOnCard)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtZipCode)
                 .For(v => v.Text)
                 .To(vm => vm.Data.ZipCode);
+
+			set.Bind(txtZipCode)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
 			set.Bind(txtCardNumber)
 				.For(v => v.Text)
@@ -166,17 +179,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
 
+			set.Bind(txtCardNumber)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtExpMonth)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationMonthDisplay);
+
+			set.Bind(txtExpMonth)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(txtExpYear)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationYearDisplay);
 
+			set.Bind(txtExpYear)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtCvv)
 				.For(v => v.Text)
 				.To(vm => vm.Data.CCV);
+
+			set.Bind(txtCvv)
+				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(btnLinkPayPal)
                 .For(v => v.Hidden)
@@ -201,6 +230,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.SelectedSegment)
                 .To(vm => vm.Data.Label)
                 .WithConversion("CreditCardLabel");
+
+			set.Bind(segmentedLabel)
+				.For(v => v.Enabled)
+                .To(vm => vm.IsAddingNewCard);
 
 			set.Apply ();   
 
@@ -338,7 +371,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _payPalPayment = new PayPalCustomFuturePaymentViewController((PayPalConfiguration)Mvx.Resolve<IPayPalConfigurationService>().GetConfiguration(), _payPalPaymentDelegate);
             }
 
-            if (ViewModel.IsEditing)
+            if (!ViewModel.IsAddingNewCard)
             {
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["DeleteCreditCardTitle"],
@@ -359,7 +392,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {           
             if (_cardScanner == null)
             {
-                _cardScannerDelegate = new CardScannerDelegate(cardInfo => PopulateCreditCardName(cardInfo));
+                _cardScannerDelegate = new CardScannerDelegate(PopulateCreditCardName);
                 _cardScanner = new CardIOPaymentViewController(_cardScannerDelegate)
                 {
                     GuideColor = this.View.BackgroundColor,
@@ -426,14 +459,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 try
                 {
                     NSError error;
-                    var contentJSONData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
+                    var contentJsonData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
 
                     if (error != null)
                     {
                         throw new Exception(error.LocalizedDescription + " " + error.LocalizedFailureReason);
                     }
 
-                    var authResponse = JsonSerializer.DeserializeFromString<FuturePaymentAuthorization>(contentJSONData.ToString());
+                    var authResponse = contentJsonData.ToString().FromJson<FuturePaymentAuthorization>();
                     if (authResponse != null)
                     {
                         _futurePaymentAuthorized(authResponse.Response.Code);

@@ -6,6 +6,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -49,7 +50,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
 		{
 			using (var context = _contextFactory.Invoke())
 			{
-				return context.Query<RatingScoreDetails>().Where(r => r.AccountId == accountId).ToArray();
+			    IList<RatingScoreDetails> ratingScoreDetailsList = new List<RatingScoreDetails>();
+                var orderRatingDetailsList = context.Query<OrderRatingDetails>().Where(d => d.AccountId == accountId).ToList();
+
+			    foreach (var orderRatingDetails in orderRatingDetailsList)
+			    {
+                    ratingScoreDetailsList.AddRange(context.Query<RatingScoreDetails>().Where(r => r.OrderId == orderRatingDetails.OrderId).ToList());
+                }
+
+                return ratingScoreDetailsList;
 			}
 		}
     }

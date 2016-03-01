@@ -13,6 +13,7 @@ using apcurium.MK.Callbox.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Controls
 {
+	[Register("apcurium.mk.callbox.mobile.client.controls.ListViewCell")]
     public class HeaderedLayout : LinearLayout
     {
 

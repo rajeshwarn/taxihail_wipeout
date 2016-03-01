@@ -56,23 +56,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};  
 
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
-			btnForgotPassword.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnForgotPassword.SetTitle (Localize.GetValue ("LoginForgotPassword"), UIControlState.Normal);
+			btnForgotPassword.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
 
 			FlatButtonStyle.Clear.ApplyTo (btnSupport);
-			btnSupport.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            btnSupport.SetTitle (Localize.GetValue ("LoginSupport"), UIControlState.Normal);
+            btnSupport.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
 
-
-			btnSignIn.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-
-			btnForgotPassword.SetTitle (Localize.GetValue ("LoginForgotPassword"), UIControlState.Normal);
-			btnSupport.SetTitle (Localize.GetValue ("LoginSupport"), UIControlState.Normal);
-
-			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
-			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
-            btnSignUp.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-
-            var settings = this.Services().Settings;
-
+            btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
+			btnSignIn.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnSignIn.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             btnSignIn.TouchUpInside += (sender, e) => { 
                 var firstResponder = View.FindFirstResponder();
                 if(firstResponder != null)
@@ -81,34 +74,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
             };
 
+			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
+            btnSignUp.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnSignUp.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+
+            btnFbLogin.SetLeftImage("facebook_icon.png");
+            btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
+            btnFbLogin.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnFbLogin.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+
+            btnTwLogin.SetLeftImage("twitter_icon.png");
+            btnTwLogin.SetTitle (Localize.GetValue ("Twitter"), UIControlState.Normal);
+            btnTwLogin.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnTwLogin.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+
+            btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
+            btnServer.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnServer.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
+
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-            if (settings.FacebookEnabled)
-			{
-				btnFbLogin.SetLeftImage("facebook_icon.png");
-				btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
-                set.Bind(btnFbLogin)
-                    .For("TouchUpInside")
-                    .To(vm => vm.LoginFacebook);
-                btnFbLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-            }
-            btnFbLogin.Hidden = !settings.FacebookEnabled;
+            set.Bind(btnFbLogin)
+                .For("TouchUpInside")
+                .To(vm => vm.LoginFacebook);
+            set.Bind(btnFbLogin)
+                .For(v => v.Hidden)
+                .To(vm => vm.Settings.FacebookEnabled)
+                .WithConversion("BoolInverter");
 
-            if (settings.TwitterEnabled)
-			{
-				btnTwLogin.SetLeftImage("twitter_icon.png");
-				btnTwLogin.SetTitle (Localize.GetValue ("Twitter"), UIControlState.Normal);
-                set.Bind(btnTwLogin)
-                    .For("TouchUpInside")
-                    .To(vm => vm.LoginTwitter);
-                btnTwLogin.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
-            }
-            btnTwLogin.Hidden = !settings.TwitterEnabled;
-
-			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
-            btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            btnServer.Hidden = !settings.CanChangeServiceUrl;
-            btnServer.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+            set.Bind(btnTwLogin)
+                .For("TouchUpInside")
+                .To(vm => vm.LoginTwitter);
+            set.Bind(btnTwLogin)
+                .For(v => v.Hidden)
+                .To(vm => vm.Settings.TwitterEnabled)
+                .WithConversion("BoolInverter");
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
@@ -121,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(btnSupport)
 				.For("TouchUpInside")
 				.To(vm => vm.Support);
-
             set.Bind(btnSupport)
                 .For(v => v.Hidden)
                 .To(vm => vm.DisplayReportProblem)
@@ -130,6 +129,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnSignUp)
                 .For("TouchUpInside")
                 .To(vm => vm.SignUp);
+
+            set.Bind(btnServer)
+                .For("TouchUpInside")
+                .To(vm => vm.PromptChangeServerUrl);
+            set.Bind(btnServer)
+                .For(v => v.Hidden)
+                .To(vm => vm.Settings.CanChangeServiceUrl)
+                .WithConversion("BoolInverter");
 
             set.Bind(txtEmail)
                 .For(v => v.Text)
@@ -140,28 +147,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.Password);
 
             set.Apply();
-        }
-
-        async void ChangeServerTouchUpInside (object sender, EventArgs e)
-        {
-            try
-            {            
-                var serviceUrl = await this.Services().Message.ShowPromptDialog(
-                    "Server Url",
-                    string.Empty,
-                    () => { return; },
-                    false,
-                    this.Services().Settings.ServiceUrl);
-
-                if(serviceUrl != null)
-                {
-                    ViewModel.SetServerUrl(serviceUrl);
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
     }
 }

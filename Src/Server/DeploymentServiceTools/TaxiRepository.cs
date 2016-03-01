@@ -10,20 +10,18 @@ namespace DeploymentServiceTools
 {
     public class TaxiRepository
     {
-        private readonly string _exePath;
         private readonly string _sourceDirectory;
         private readonly bool _isGitHub;
 
-        public TaxiRepository(string exePath, string sourceDirectory, bool isGitHub)
+        public TaxiRepository(string sourceDirectory, bool isGitHub)
         {
-            _exePath = exePath;
             _sourceDirectory = sourceDirectory;
             _isGitHub = isGitHub;
         }
 
         public void FetchSource(string revisionNumber, Action<string> logger)
         {
-            var vsc = VersionControlToolsFactory.GetInstance(_exePath, _sourceDirectory, _isGitHub);
+            var vsc = VersionControlToolsFactory.GetInstance(_sourceDirectory, _isGitHub);
             if (!Directory.Exists(_sourceDirectory))
             {
                 logger("Full Clone");

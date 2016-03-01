@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Android.Locations;
+using Android.OS;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using MK.Common.iOS.Patterns;
+using Object = Java.Lang.Object;
+using TinyIoC;
+
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
+{
+    public class LocationListener : Object, ILocationListener
+    {
+        public LocationListener( LocationListenerManager manager )
+        {
+            Manager = manager;
+        }
+
+        protected LocationListenerManager Manager { get; set; }
+
+        public void OnLocationChanged(Location location)
+        {
+            Manager.OnLocationChanged(location);
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+            Manager.OnProviderDisabled(provider);
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+            Manager.OnProviderEnabled(provider);
+        }
+
+        public void OnStatusChanged(string provider, Availability status, Bundle extras)
+        {
+            Manager.OnStatusChanged( provider,  status,  extras);
+        }
+    }
+
+    public class LocationListenerManager : Object, IObservable<Position>
+    {
+        private readonly List<IObserver<Position>> _observers;
+        private readonly ICacheService _cacheService;
+
+        public LocationListenerManager()
+        {
+            _observers = new List<IObserver<Position>>();
+            GpsListener = new LocationListener(this);
+            NetworkListener = new LocationListener(this);
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ();
+        }
+
+        public LocationListener GpsListener { get; private set; }
+        public LocationListener NetworkListener { get; private set; }
+
+        public Position LastKnownPosition { get; set; }
+        public Position BestPosition { get; set; }
+
+        public void OnLocationChanged(Location location)
+        {
+            try
+            {
+                if (location == null)
+                {
+                    return;
+                }
+
+                var position = new Position()
+                {
+                    Time = location.Time.ToDateTime(),
+                    Error = location.Accuracy,
+                    Latitude = location.Latitude,
+                    Longitude = location.Longitude
+                };
+
+                foreach (var observer in _observers.ToList())
+                {
+                    observer.OnNext(position);
+                }
+
+                if (!BestPosition.IsBetterThan(position))
+                {
+                    BestPosition = position;
+                }
+
+                LastKnownPosition = position;
+
+                _cacheService.Set("UserLastKnownPosition", position);
+            }
+            catch 
+            {
+                //hack : crash randomly
+            }
+        }
+
+        public void OnProviderDisabled(string provider)
+        {
+        }
+
+        public void OnProviderEnabled(string provider)
+        {
+        }
+
+        public void OnStatusChanged(string provider, Availability status, Bundle extras)
+        {
+        }
+
+        public IDisposable Subscribe(IObserver<Position> observer)
+        {
+            _observers.Add(observer);
+            return new ActionDisposable(() => { _observers.Remove(observer); });
+        }
+    }
+}

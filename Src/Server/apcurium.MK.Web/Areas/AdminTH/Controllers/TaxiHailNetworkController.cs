@@ -101,12 +101,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         var order = 0;
                         if (form.AllKeys.Contains(orderKey))
                         {
-                            order = form[orderKey] == string.Empty ? i : int.Parse(form[orderKey]);
+                            order = form[orderKey].Split(',')[0] == string.Empty ? i : int.Parse(form[orderKey].Split(',')[0]); // Hotfix before MKTAXI-3933
                         }
 
                         preferences.Add(new CompanyPreference
                         {
-                            CompanyKey = form["idKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey],
+                            CompanyKey = form["idKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Split(',')[0], // Hotfix before MKTAXI-3933
                             CanAccept = form["acceptKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
                             CanDispatch = form["dispatchKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
                             Order = order
@@ -131,7 +131,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> Fees()
         {
             var fees = _feesDao.GetAll();
-            var feesPreferences = new MarketFees();
+            var feesPreferences = new MarketFeesModel();
 
             var localFees = fees.FirstOrDefault(f => !f.Market.HasValue());
             if (localFees == null)
@@ -198,7 +198,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Fees(MarketFees marketFees)
+        public async Task<ActionResult> Fees(MarketFeesModel marketFees)
         {
             _commandBus.Send(new UpdateFees
             {

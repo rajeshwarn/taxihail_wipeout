@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 }
             }
 
-            return _client.SearchPlaces(request.Name, request.Lat, request.Lng, request.Radius, language);
+            return _client.SearchPlaces(request.Name, request.Lat, request.Lng, language);
         }
     }
 }

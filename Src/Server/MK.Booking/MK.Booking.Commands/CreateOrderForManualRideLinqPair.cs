@@ -70,5 +70,11 @@ namespace apcurium.MK.Booking.Commands
         public double? AccessFee { get; set; }
 
         public string LastFour { get; set; }
+
+        public string OriginatingIpAddress { get; set; }
+
+        public string KountSessionId { get; set; }
+
+        public Guid? CreditCardId { get; set; }
     }
 }

@@ -1,0 +1,26 @@
+Archive-Manifest-Version: 1.1
+Archive-Created-By: blackberry-apkpackager version 2.0.6
+
+Package-Author: Apcurium
+Package-Author-Id: gYAAgHXEGWQoikjARm5xm4s6vaI
+Package-Name: com.apcurium.MK.TaxiHailDemo
+Package-Description: com.apcurium.MK.TaxiHailDemo
+Package-Id: testEDYrn5ujA051he5j8CyQxCA
+Package-Version: 1.0.150.0
+Package-Version-Id: testEOEOIrpO4mA6xeUXyLhGOgU
+Package-Type: application
+Package-Architecture: armle-v7
+
+Application-Name: TaxiHail
+Application-Description: TaxiHail
+Application-Id: testECsFrtn8PR2pLLHZatE98EU
+Application-Version: 1.0.150.0
+Application-Version-Id: testEOEOIrpO4mA6xeUXyLhGOgU
+
+Entry-Point-Name: TaxiHail
+Entry-Point-Icon: android/res/drawable/icon.png
+Entry-Point-Type: Qnx/Android
+Entry-Point: android://com.apcurium.MK.TaxiHailDemo?activity-name=md5b8d0bd87f9baa425d2029014a0c61486.SplashActivity
+Entry-Point-User-Actions: post_notification,use_camera,play_audio,access_internet,access_shared,read_geolocation
+Entry-Point-System-Actions: _sys_use_consumer_push
+

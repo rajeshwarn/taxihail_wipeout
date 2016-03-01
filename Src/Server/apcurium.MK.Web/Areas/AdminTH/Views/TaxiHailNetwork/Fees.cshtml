@@ -1,16 +1,15 @@
-﻿@model apcurium.MK.Web.Areas.AdminTH.Models.MarketFees
+﻿@model apcurium.MK.Web.Areas.AdminTH.Models.MarketFeesModel
 
-@if (@TempData["Info"] != null)
-{
-    <div class="alert alert-info" style="margin-top: 10px;">
-        @TempData["Info"]
-    </div>
-}
+<div class="well clearfix form-horizontal">
+    @if (@TempData["Info"] != null)
+    {
+        <div class="alert alert-info" style="margin-top: 10px;">
+            @TempData["Info"]
+        </div>
+    }
 
-@*<div id="validationPanel" class="alert-success alert" style="display: none"> </div>*@
+    @*<div id="validationPanel" class="alert-success alert" style="display: none"> </div>*@
 
-@using (Html.BeginForm("Fees", "TaxiHailNetwork", FormMethod.Post, new {id = "feesForm"}))
-{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -45,15 +44,15 @@
             </div>
         }
     </ul>
-    <br/>
+    <br />
+
     
-    var hasRoamingCompanies = Model.Fees.Any(m => m.Key != "Local");
 
     <legend>
         @Html.DisplayName("Roaming")
     </legend>
 
-    if (!hasRoamingCompanies)
+    @if (!(Model.Fees.Any(m => m.Key != "Local")))
     {
         <h4>There is no other company that is part of the Network.</h4>
     }
@@ -87,9 +86,9 @@
             </div>
 
             <div class="control-group">
-                @Html.LabelFor(x => x.Fees[market].NoShow, new {@class = "control-label"})
+                @Html.LabelFor(x => x.Fees[market].NoShow, new { @class = "control-label" })
                 <div class="controls">
-                    @Html.TextBoxFor(x => x.Fees[market].NoShow, new {@class = "input-block-level"})
+                    @Html.TextBoxFor(x => x.Fees[market].NoShow, new { @class = "input-block-level" })
                     @Html.ValidationMessageFor(x => x.Fees[market].NoShow)
                 </div>
             </div>
@@ -97,7 +96,8 @@
         }
     }
 
-    <div class="control-group btn-right-alignment">
-        <button type="submit" class="btn btn-primary span">Save</button>
+    <div class="control-group">
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
-}
+            
+</div>

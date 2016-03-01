@@ -105,6 +105,7 @@
       <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
@@ -128,12 +129,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
+    <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
+    <Compile Include="Helpers\CreateOrder\IbsNoteBuilder.cs" />
+    <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Services\OrderCreation\BaseCreateOrderService.cs" />
+    <Compile Include="Services\OrderCreation\ChargeAccountValidationResult.cs" />
+    <Compile Include="Services\OrderCreation\HailService.cs" />
+    <Compile Include="Services\OrderCreation\PayPalCheckoutService.cs" />
     <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
+    <Compile Include="Services\OrderUpdateService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
@@ -145,7 +154,6 @@
     <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
-    <Compile Include="Services\AdminAccountManagementService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
@@ -156,6 +164,7 @@
     <Compile Include="Services\NetworkRoamingService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />
     <Compile Include="Services\Payment\BraintreeClientPaymentService.cs" />
+    <Compile Include="Services\Payment\CmtPaymentPairingService.cs" />
     <Compile Include="Services\Payment\ProcessPaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
@@ -167,11 +176,12 @@
     <Compile Include="Services\PrivacyPolicyService.cs" />
     <Compile Include="Services\PromotionService.cs" />
     <Compile Include="Services\ServiceTypeService.cs" />
+    <Compile Include="Services\ServerStatusService.cs" />
     <Compile Include="Services\TermsAndConditionsService.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
-    <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\OrderCreation\CreateOrderService.cs" />
     <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
@@ -282,9 +292,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Jobs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

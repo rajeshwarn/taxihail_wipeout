@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
+using Newtonsoft.Json;
+using MK.Common.Serializer;
 
 namespace apcurium.MK.Common.Entity
 {
@@ -14,6 +16,7 @@ namespace apcurium.MK.Common.Entity
 
         public string StreetNumber { get; set; }
 
+        [JsonConverter(typeof(TolerantEnumConverter))]
         public AddressLocationType AddressLocationType { get; set; }
 
         public string Street { get; set; }
@@ -53,24 +56,27 @@ namespace apcurium.MK.Common.Entity
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
             var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-            if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
-            {
-                // StreetNumber Street, City, State ZipCode
-                var address = string.Join(", ", new[]
-                {
-                    string.Join(" ", new[] {StreetNumber, Street}),
-                    City,
-                    string.Join(" ", new[] {State, ZipCode})
-                });
+                new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
 
-                if (useBuildingName && !string.IsNullOrWhiteSpace(BuildingName))
-                {
-                    address = BuildingName + " - " + address;
-                }
-                return address;
+            if ((components.Length <= 1) || !StreetNumber.HasValueTrimmed() || !Street.HasValueTrimmed() || !City.HasValueTrimmed())
+            {
+                return FullAddress;
             }
-            return FullAddress;
+
+            // StreetNumber Street, City, State ZipCode
+            var address = string.Join(", ", string.Join(" ", StreetNumber, Street), City, string.Join(" ", State, ZipCode));
+
+            if (useBuildingName && BuildingName.HasValueTrimmed())
+            {
+                address = BuildingName + " - " + address;
+            }
+
+            if (FullAddress.HasValueTrimmed() && !FullAddress.Contains(City))
+            {
+                FullAddress = address;
+            }
+
+            return address;
         }
 
         public string GetFirstPortionOfAddress()

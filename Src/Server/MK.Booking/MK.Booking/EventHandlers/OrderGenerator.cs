@@ -28,10 +28,13 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<OrderStatusChangedForManualRideLinq>,
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderGratuityUpdated>
+        IEventHandler<OrderGratuityUpdated>,
+        IEventHandler<OrderUpdatedInTrip>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -120,7 +123,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyName = @event.CompanyName,
                     Market = @event.Market,
                     BookingFees = @event.BookingFees,
-                    TipIncentive = @event.TipIncentive
+                    TipIncentive = @event.TipIncentive,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId
                 };
 
                 if (@event.IsPrepaid)
@@ -152,6 +157,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
                         order.TipIncentive = @event.TipIncentive;
+                        order.OriginatingIpAddress = @event.OriginatingIpAddress;
+                        order.KountSessionId = @event.KountSessionId;
 
                         context.SaveChanges();
                     }
@@ -241,6 +248,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
                 {
                     Id = Guid.NewGuid(),
+                    AccountId = @event.AccountId,
                     OrderId = @event.SourceId,
                     Note = @event.Note,
                 });
@@ -250,7 +258,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
                         Id = Guid.NewGuid(),
-						AccountId = @event.AccountId,
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
                         RatingTypeId = ratingScore.RatingTypeId,
@@ -300,6 +307,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
 
+                    @event.Status.ChargeAmountsTimeOut = GetChargeAmountsTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                     @event.Status.FareAvailable = fareAvailable;
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
@@ -308,6 +317,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.Status != null) 
                     {
                         details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+                        details.ChargeAmountsTimeOut = GetChargeAmountsTimeoutIfNecessary(@event.Status, @event.EventDate);
 
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
@@ -383,7 +393,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
                 {
-                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
                     orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
@@ -485,8 +494,24 @@ namespace apcurium.MK.Booking.EventHandlers
             return null;
         }
 
+        private DateTime? GetChargeAmountsTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
+        {
+            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Unloaded)
+                            && !details.ChargeAmountsTimeOut.HasValue)
+            {
+                    // First timeout
+                    return eventDate.AddSeconds(_serverSettings.ServerData.ChargeAmountsTimeOut);
+            }
+            return details.ChargeAmountsTimeOut;
+        }
+
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
+            if (@event.CancelWasRequested)
+            {
+                return;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
@@ -503,7 +528,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderDetail
+                var orderDetail = new OrderDetail
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
@@ -511,13 +536,32 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
-                    Status = (int)OrderStatus.Created,
-                    IsRated = false,
+                    Status = (int) OrderStatus.Created,
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
-                    IsManualRideLinq = true
-                });
+                    IsManualRideLinq = true,
+                    OriginatingIpAddress = @event.OriginatingIpAddress,
+                    KountSessionId = @event.KountSessionId,
+                };
+                
+
+                if (@event.CreditCardId.HasValue)
+                {
+                    orderDetail.PaymentInformation = new PaymentInformationDetails()
+                    {
+                        CreditCardId = @event.CreditCardId,
+                        PayWithCreditCard = true
+                    };
+
+                    orderDetail.Settings = new BookingSettings()
+                    {
+                        ChargeType = ChargeTypes.CardOnFile.Display,
+                        ChargeTypeId = ChargeTypes.CardOnFile.Id
+                    };
+                }
+
+                context.Save(orderDetail);
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
@@ -602,7 +646,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (rideLinqDetails != null)
                 {
                     // Must set an endtime to end order on client side
-                    rideLinqDetails.EndTime = DateTime.UtcNow;
+                    rideLinqDetails.EndTime = @event.EventDate;
                     rideLinqDetails.IsCancelled = true;
                     
                     context.Save(rideLinqDetails);
@@ -623,6 +667,11 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Status = (int) OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
                     }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        order.Status = (int) OrderStatus.Canceled;
+                    }
+
                     order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
@@ -636,6 +685,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.EndTime.HasValue)
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
+                    }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        orderStatusDetails.Status = OrderStatus.Canceled;
                     }
 
                     context.Save(orderStatusDetails);
@@ -668,8 +721,43 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
                 rideLinqDetails.PairingError = @event.PairingError;
+                rideLinqDetails.LastLatitudeOfVehicle = @event.LastLatitudeOfVehicle;
+                rideLinqDetails.LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle;
 
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(OrderStatusChangedForManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)@event.Status;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    orderStatusDetails.Status = @event.Status;
+                    orderStatusDetails.LastTripPollingDateInUtc = @event.LastTripPollingDateInUtc;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    if (@event.Status == OrderStatus.TimedOut)
+                    {
+                        rideLinqDetails.EndTime = @event.EventDate;
+                    }
+                    
+                    rideLinqDetails.IsWaitingForPayment = @event.Status == OrderStatus.WaitingForPayment;
+                    context.Save(rideLinqDetails);
+                }
             }
         }
 
@@ -748,11 +836,40 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        // TODO remove this once CMT has real preauth
+        public void Handle(OrderUpdatedInTrip @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+
+                if (orderDetail == null)
+                {
+                    return;
+                }
+
+                orderDetail.DropOffAddress = @event.DropOffAddress;
+
+                context.Save(orderDetail);
+            }
+        }
+
         private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
             context.SaveChanges();
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+                if (orderDetail != null)
+                {
+                    orderDetail.IsRefunded = @event.IsSuccessful;
+                    context.Save(orderDetail);
+                }
+            }
         }
     }
 }

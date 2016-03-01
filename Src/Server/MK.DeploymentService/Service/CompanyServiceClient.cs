@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,7 +23,7 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 client.BaseAddress = new Uri(url);
@@ -38,7 +39,7 @@ namespace MK.DeploymentService.Service
 
         private static string GetUrl()
         {
-            var url = "http://customer.taxihail.com/api/";
+            var url = ConfigurationManager.AppSettings["CustomerPortalUrl"];
 //			#if DEBUG
 //			url = "http://localhost:2287/api/";
 //			#endif
@@ -52,7 +53,7 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 var r = client.GetAsync(url + @"company/" + id + @"/files?type=" + type);

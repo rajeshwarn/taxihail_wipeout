@@ -6,18 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
-using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
+using AutoMapper.Internal;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
-using ServiceStack.Common;
 using ServiceStack.ServiceModel.Extensions;
+using System.IO;
+using System.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -26,19 +29,85 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
+        private readonly IConfigurationChangeService _configurationChangeService;
 
         // GET: AdminTH/CompanySettings
-        public CompanySettingsController(ICacheClient cache, IServerSettings serverSettings, ICommandBus commandBus)
+        public CompanySettingsController(ICacheClient cache, IServerSettings serverSettings, ICommandBus commandBus, IConfigurationChangeService configurationChangeService)
             : base(cache, serverSettings)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
+            _configurationChangeService = configurationChangeService;
         }
 
         public ActionResult Index()
         {
             ValidateFakeIBS();
             return View(GetAvailableSettingsForUser());
+        }
+
+        // POST: AdminTH/CompanySettings/Update
+        [HttpPost]
+        [ValidateInput(false)]
+        public async Task<ActionResult> ExportToFile(FormCollection form)
+        {
+            var appSettings = form.ToDictionary();
+            appSettings.Remove("__RequestVerificationToken");
+
+            if (!ValidateSettingsValue(appSettings))
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (appSettings.Any())
+            {
+                var data = appSettings.ToJson(false);
+                DateTime date = DateTime.Now;
+                return File(new ASCIIEncoding().GetBytes(data), "text", "CompanySettings-" + date.ToShortDateString() + date.ToShortTimeString() + ".csf");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public async Task<ActionResult> ImportFromFile(HttpPostedFileBase file)
+        {
+            if (ModelState.IsValid)
+            {
+                if (file == null)
+                {
+                    TempData["Info"] = "Please select a file to upload";
+                }
+                else if (file.ContentLength > 0)
+                {
+                    string[] allowedFileExtensions = new string[] { ".csf" };
+
+                    if (!allowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+                    {
+                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", allowedFileExtensions);
+                    }
+                    else
+                    {
+                        StreamReader stream = new StreamReader(file.InputStream); 
+                        var fileContent = stream.ReadToEnd();
+                        stream.Close();
+                        Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
+                        if (fileSettings.Any())
+                        {
+                            SaveConfigurationChanges(fileSettings);
+                            SetAdminSettings(fileSettings);
+                        }
+
+                        TempData["Info"] = "Settings uploaded from file and updated";
+
+                        // Wait for settings to be updated before reloading the page
+                        await Task.Delay(2000);
+                    }
+                }
+            }
+  
+            return RedirectToAction("Index");
         }
 
         // POST: AdminTH/CompanySettings/Update
@@ -56,27 +125,69 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
-                // Only the superadmin should be able to change the availability option of the settings.
-                var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
-                if (isSuperAdmin)
-                {
-                    SetSettingsAvailableToAdmin(appSettings);
-                }
 
-                var command = new AddOrUpdateAppSettings
-                {
-                    AppSettings = appSettings,
-                    CompanyId = AppConstants.CompanyId
-                };
-                _commandBus.Send(command);
+                SaveConfigurationChanges(appSettings);
+                SetAdminSettings(appSettings);
             }
 
-            TempData["Info"] = "Settings updated.";
+            TempData["Info"] = "Settings updated";
 
             // Wait for settings to be updated before reloading the page
             await Task.Delay(2000);
 
             return RedirectToAction("Index");
+        }
+
+        private void SaveConfigurationChanges(Dictionary<string, string> appSettings)
+        {
+            var oldSettings = _serverSettings.ServerData.GetType().GetAllProperties()
+                .ToDictionary(s => s.Key, s => _serverSettings.ServerData.GetNestedPropertyValue(s.Key).ToNullSafeString());
+            var oldValues = new Dictionary<string, string>();
+            var newValues = new Dictionary<string, string>();
+
+            foreach (var oldSetting in oldSettings)
+            {
+                if (appSettings.ContainsKey(oldSetting.Key))
+                {
+                    var newValue = appSettings[oldSetting.Key].ToLowerInvariant();
+
+                    //Special case for nullable bool
+                    if (newValue == "null")
+                    {
+                        newValue = string.Empty;
+                    }
+                    var oldValue = oldSetting.Value != null ? oldSetting.Value.ToLowerInvariant() : string.Empty;
+
+                    if (oldValue != newValue)
+                    {
+                        oldValues.Add(oldSetting.Key, oldSetting.Value);
+                        newValues.Add(oldSetting.Key, appSettings[oldSetting.Key]);
+                    }
+                }
+            }
+
+            _configurationChangeService.Add(oldValues,
+                newValues,
+                ConfigurationChangeType.CompanySettings,
+                new Guid(AuthSession.UserAuthId),
+                AuthSession.UserAuthName);
+        }
+
+        private void SetAdminSettings(Dictionary<string, string> appSettings)
+        {
+            // Only the superadmin should be able to change the availability option of the settings.
+            var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
+            if (isSuperAdmin)
+            {
+                SetSettingsAvailableToAdmin(appSettings);
+            }
+
+            var command = new AddOrUpdateAppSettings
+            {
+                AppSettings = appSettings,
+                CompanyId = AppConstants.CompanyId
+            };
+            _commandBus.Send(command);
         }
 
         private bool ValidateSettingsValue(Dictionary<string, string> appSettings)
@@ -138,8 +249,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
 
-			bool disableImmediateBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value);
-            bool disableFutureBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value);
+			var disableImmediateBooking = appSettings.ContainsKey("DisableImmediateBooking") ?
+                bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value) 
+                : false;
+
+            var disableFutureBooking = appSettings.ContainsKey("DisableFutureBooking") ?
+                bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value) 
+                : false;
 
             if (disableImmediateBooking && disableFutureBooking)
             {
@@ -186,12 +302,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin.ToString();
         }
 
-        private CompanySettings GetAvailableSettingsForUser()
+        private CompanySettingsModel GetAvailableSettingsForUser()
         {
             var settings = _serverSettings.ServerData.GetType().GetAllProperties().OrderBy(s => s.Key);
 
             var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
-            var companySettings = new CompanySettings(_serverSettings, isSuperAdmin);
+            var companySettings = new CompanySettingsModel(_serverSettings, isSuperAdmin);
             
             foreach (var setting in settings)
             {

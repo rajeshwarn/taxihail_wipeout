@@ -55,13 +55,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             base.OnStop();
 			ViewModel.OnViewStopped();
         }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-			ViewModel.OnViewUnloaded();
-        }
-
     }
 
     public abstract class BaseListActivity : ListActivity

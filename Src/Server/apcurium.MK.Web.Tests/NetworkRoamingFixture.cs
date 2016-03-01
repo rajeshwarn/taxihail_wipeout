@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
         }
 
         [TestFixtureSetUp]
@@ -33,7 +33,19 @@ namespace apcurium.MK.Web.Tests
         public async void when_getting_the_company_market()
         {
             var market = await _sut.GetHashedCompanyMarket(99.99, -99.99);
-            Assert.AreEqual(CryptographyHelper.GetHashString(string.Empty), market);
+            
+            Assert.AreEqual(string.Empty, market);
+        }
+
+        [Test]
+        public async void when_getting_the_company_market_settings()
+        {
+            var market = await _sut.GetCompanyMarketSettings(99.99, -99.99);
+
+            Assert.AreEqual(string.Empty, market.HashedMarket);
+            Assert.AreEqual(false, market.EnableDriverBonus);
+            Assert.AreEqual(false, market.DisableOutOfAppPayment);
+            Assert.AreEqual(false, market.OverrideEnableAppFareEstimates);
         }
     }
 }

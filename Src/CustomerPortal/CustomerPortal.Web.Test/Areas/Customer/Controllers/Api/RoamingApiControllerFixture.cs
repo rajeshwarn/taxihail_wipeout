@@ -5,7 +5,11 @@ using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Test.Helpers;
 using CustomerPortal.Web.Test.Helpers.Repository;
+using MongoDB.Driver;
+using MongoRepository;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -32,14 +36,14 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _bobTaxiCompany;
         private Company _blacklistedTaxiCompany;
         private Company _taxiWhenBlacklistedProhibitedCompany;
-
+        
         [SetUp]
         public void Setup()
         {
             NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
             CompanyRepository = new InMemoryRepository<Company>();
-
-            Sut = new RoamingApiController(NetworkRepository, CompanyRepository);
+            
+            Sut = new RoamingApiController(NetworkRepository, CompanyRepository, GetMockedMarketRepo());
 
             _chrisTaxi = new TaxiHailNetworkSettings
             {
@@ -398,6 +402,54 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         }
 
         [Test]
+        public void When_Getting_Company_Market_Settings_In_Unknown_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("abc", 10, -70);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.IsNull(result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(1, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(false, result.EnableDriverBonus);
+            Assert.AreEqual(null, result.ReceiptFooter);
+        }
+
+        [Test]
+        public void When_Getting_Company_Market_Settings_In_Home_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("ChrisTaxi", 45.423513, -73.653214);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.IsNull(result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(4, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(5, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(true, result.EnableDriverBonus);
+            Assert.AreEqual("my custom footer 1", result.ReceiptFooter);
+        }
+
+        [Test]
+        public void When_Getting_Company_Market_Settings_And_Changed_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("ChrisTaxi", 45.412042, -75.695321);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.AreEqual("SYD", result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(2, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(3, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(true, result.EnableDriverBonus);
+            Assert.AreEqual(null, result.ReceiptFooter);
+        }
+
+        [Test]
         public void When_Getting_Fleets_From_a_Market()
         {
             var response = Sut.GetMarketFleets("ChrisTaxi", "MTL");
@@ -449,6 +501,27 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("http://google.com", fleet.IbsUrl);
             Assert.AreEqual("Taxi", fleet.IbsUserName);
             Assert.AreEqual("test", fleet.IbsPassword);
+        }
+
+        private IRepository<Market> GetMockedMarketRepo()
+        {
+            var marketRepositoryMock = new Mock<IRepository<Market>>();
+
+            var serverMock = MongoMock.CreateMongoServer();
+            var databaseMock = MongoMock.CreateMongoDatabase(serverMock.Object);
+            var collectionMock = MongoMock.CreateMongoCollection<Market>(databaseMock.Object, "FooCollection");
+            var cursorMock = MongoMock.CreateMongoCursor(collectionMock.Object, new List<Market>
+            {
+                new Market { Name = "MTL", EnableDriverBonus = true, ReceiptFooter = "my custom footer 1", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } },
+                new Market { Name = "NYC", EnableDriverBonus = false, ReceiptFooter = "my custom footer 2", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 } },
+                new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 } },
+                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 } },
+                new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 } }
+            });
+            collectionMock.Setup(x => x.Find(It.IsAny<IMongoQuery>())).Returns(cursorMock.Object);
+            marketRepositoryMock.Setup(x => x.Collection).Returns(collectionMock.Object);
+
+            return marketRepositoryMock.Object;
         }
     }
 }

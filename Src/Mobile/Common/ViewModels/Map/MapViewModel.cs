@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -13,7 +12,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
 using Position = apcurium.MK.Booking.Mobile.Infrastructure.Position;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -58,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq || state == HomeViewModelState.DropOffAddressSelection)
 			{
 				IsMapDisabled = false;
 			}
@@ -176,7 +175,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool CanExecuteUserMovedMap()
 		{
-			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
+			var currentViewState = ((HomeViewModel)Parent).CurrentViewState;
+			return currentViewState == HomeViewModelState.Initial || currentViewState == HomeViewModelState.DropOffAddressSelection;
 		}
 	
 		public void DisableBooking()

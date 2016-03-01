@@ -6,14 +6,17 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 	public static class MessageHelper
-	{
-		
+	{		
         public static Task Show (string title, string message, string additionalActionTitle, Action additionalAction)
-        {
+		{
+			// to hide keyboard
+			UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
+
             var tcs = new TaskCompletionSource<object>();
 
             UIApplication.SharedApplication.InvokeOnMainThread (delegate {                                       
@@ -34,6 +37,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static Task Show (string title, string message)
         {
+			// to hide keyboard
+			UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
+
             var tcs = new TaskCompletionSource<object>();
 
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   
@@ -51,6 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static void Show (string message)
         {
+			// to hide keyboard
+			UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
+
             UIApplication.SharedApplication.InvokeOnMainThread (delegate {                              
                 LoadingOverlay.StopAnimatingLoading();
 
@@ -62,6 +71,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
         {
+			// to hide keyboard
+			UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
+
             var tcs = new TaskCompletionSource<object>();
 
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   
@@ -82,6 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
         {
+			// to hide keyboard
+			UIApplication.SharedApplication.SendAction (Selector.FromHandle(Selector.GetHandle("resignFirstResponder")), null, null, null);
+
             var tcs = new TaskCompletionSource<object>();
 
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   

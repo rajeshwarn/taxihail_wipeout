@@ -2,6 +2,9 @@
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel;
+using System.Linq;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -13,7 +16,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android).Wait();
         }
 
@@ -34,22 +37,34 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void RegisterDevice()
         {
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var deviceToken = Guid.NewGuid().ToString();
 
             await sut.Register(deviceToken, PushNotificationServicePlatform.Android);
 
-            Assert.Inconclusive("Need API to check that device was successfully registered");
+            using (var bookingDbContext = new BookingDbContext("MKWebDev"))
+            {
+                var registration = bookingDbContext.Set<DeviceDetail>()
+                                                    .FirstOrDefault(x => x.DeviceToken == deviceToken);
+
+                Assert.NotNull(registration);
+            }
         }
 
         [Test]
         public async void UnregisterDevice()
         {
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
             await sut.Unregister(_knownDeviceToken);
 
-            Assert.Inconclusive("Need API to check that device was successfully unregistered");
+            using (var bookingDbContext = new BookingDbContext("MKWebDev"))
+            {
+                var registration = bookingDbContext.Set<DeviceDetail>()
+                                                    .FirstOrDefault(x => x.DeviceToken == _knownDeviceToken);
+
+                Assert.Null(registration);
+            }
         }
     }
 }

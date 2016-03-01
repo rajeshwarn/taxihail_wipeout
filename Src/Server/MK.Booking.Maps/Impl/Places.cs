@@ -28,11 +28,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address GetPlaceDetail(string name, string placeId)
+        public async Task<Address> GetPlaceDetail(string name, string placeId)
         {
-            var place = _client.GetPlaceDetail(placeId);
+            var place =  await _client.GetPlaceDetailAsync(placeId);
 
-			var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 
             return result;
         }
@@ -43,13 +43,20 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 			//We remove the unspecified places since those will never be used with a filter.
 			return filteredAddress
-                .Where(address => address.AddressLocationType != AddressLocationType.Unspeficied)
+                .Where(address => address.AddressLocationType != AddressLocationType.Unspecified)
                 .ToArray();
         }
 
-		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
+		public Address[] SearchPlaces(string query, double? latitude, double? longitude, string currentLanguage)
         {
-            var defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
+            // the radius depends on what we want, if we have a query, then search larger, otherwise use nearby radius
+            var radius = query.HasValueTrimmed() 
+                ? _appSettings.Data.GeoLoc.SearchRadius <= 0 ? 45000 : _appSettings.Data.GeoLoc.SearchRadius
+                : _appSettings.Data.NearbyPlacesService.DefaultRadius <= 0 ? 500 : _appSettings.Data.NearbyPlacesService.DefaultRadius;
+
+            #if DEBUG
+            Console.WriteLine(string.Format("Places.SearchPlaces with query: {0} radius: {1}", query.HasValueTrimmed() ? query : "(none) [nearby]", radius));
+            #endif
 
 			latitude = (!latitude.HasValue || latitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLatitude : latitude;
 			longitude = (!longitude.HasValue || longitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLongitude : longitude;
@@ -57,14 +64,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             var popularAddresses = Enumerable.Empty<Address>();
             if (latitude.HasValue && longitude.HasValue)
             {
-                if (string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(query))
                 {
                     popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                         select a;
                 }
                 else
                 {
-                    var words = name.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    var words = query.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                     popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                         where
                             words.All(
@@ -77,36 +84,30 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses = popularAddresses.ForEach(p => p.AddressType = "popular");
             }
 
-			IEnumerable<GeoPlace> googlePlaces;
+            var places = !query.HasValueTrimmed() 
+                ? _client.GetNearbyPlaces(latitude, longitude, currentLanguage, radius) 
+                : _client.SearchPlaces(latitude, longitude, query, currentLanguage, radius);
 
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                googlePlaces =
-					_client.GetNearbyPlaces(latitude, longitude, currentLanguage, false,
-                        radius ?? defaultRadius);
-            }
-            else
-            {
-                var priceFormat = new RegionInfo(_appSettings.Data.PriceFormat);
-
-                googlePlaces =
-					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
-                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower());
-            }
+            var result = popularAddresses
+                .Concat(places.Select(ConvertToAddress));
 
             if (latitude.HasValue && longitude.HasValue)
             {
-                var places =
-                    popularAddresses.Concat(googlePlaces.Select(ConvertToAddress))
-                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude)).Take(15).ToArray();
+                result = result.OrderBy(p => AddressSortingHelper.GetRelevance(p, query, latitude, longitude));
+            }
 
-                return places;
-            }
-            else
+            // take top 15
+            result = result.Take(15);
+
+            #if DEBUG
+            Console.WriteLine("Places.SearchPlaces results");
+            foreach(var address in result)
             {
-                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).Take(15).ToArray();
-                return places;
+                Console.WriteLine(string.Format("    {0}", address.DisplayLine1));
             }
+            #endif
+
+            return result.ToArray();
         }
 
 		private Address ConvertToAddress(GeoPlace place)
@@ -119,7 +120,10 @@ namespace apcurium.MK.Booking.Maps.Impl
 				FullAddress = place.Address.FullAddress,
 				Latitude = place.Address.Latitude,
 				Longitude = place.Address.Longitude ,
-                AddressType = "place"
+                AddressType = "place",
+                City = place.Address.City,
+                State = place.Address.State,
+                ZipCode = place.Address.ZipCode
             };
 
             if (address.FullAddress.HasValue() &&
@@ -139,7 +143,26 @@ namespace apcurium.MK.Booking.Maps.Impl
                 }
             }
 
+            address.FullAddress = AddExtraFieldsToFullAddress(address);
+
             return address;
+        }
+
+        private string AddExtraFieldsToFullAddress(Address address)
+        {
+            var components =
+                new[] {address.FullAddress, address.City, address.State, address.ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            if ((components.Length > 1) && (address.FullAddress.HasValue()))
+            {
+                // Street, City, State ZipCode
+                return string.Join(", ", new[]
+                    {
+                        address.FullAddress,
+                        address.City,
+                        string.Join(" ", new[] {address.State, address.ZipCode})
+                    });
+            }
+            return address.FullAddress;
         }
     }
 }

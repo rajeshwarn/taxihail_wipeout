@@ -15,8 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public LocationManagerDelegate ()
         {
             Observers = new List<IObserver<Position>>();
+            _cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ();
         }
 
+        private readonly ICacheService _cacheService;
         List<IObserver<Position>> Observers {get; set;}
         public Position LastKnownPosition {get;set;}
         public Position BestPosition {get;set;}
@@ -32,25 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
-			try
-            {
-			    var logger = TinyIoCContainer.Current.Resolve<ILogger>();
-			    logger.LogMessage(string.Format("LocationsUpdated item found {0}", locations.Count()));
-    			foreach (var loc in locations) 
-                {
-    			    logger.LogMessage(string.Format(
-                        "Location update : Lat {0} - Lg {1} - H Accuracy {2} - V Accuracy {3} - T {4}", 
-                        loc.Coordinate.Latitude, 
-                        loc.Coordinate.Longitude, 
-                        loc.HorizontalAccuracy, 
-                        loc.VerticalAccuracy, 
-                        loc.Timestamp.ToDateTimeUtc().ToLocalTime().ToLongTimeString()));
-    			}
-			}
-			catch
-            {
-			}
-
             var newLocation = locations.Last();
 
             var position = new Position
@@ -72,6 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
 
             LastKnownPosition = position;
+
+            _cacheService.Set("UserLastKnownPosition", position);
         }
 
         public IDisposable Subscribe (IObserver<Position> observer)

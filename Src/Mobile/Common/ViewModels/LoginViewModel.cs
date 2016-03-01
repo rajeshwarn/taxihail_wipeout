@@ -22,15 +22,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITwitterService _twitterService;
 		private readonly ILocationService _locationService;
 		private readonly IAccountService _accountService;
+		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
+		private readonly IPaymentService _paymentService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocationService locationService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IRegisterWorkflowService registrationService)
+			IRegisterWorkflowService registrationService,
+			IPaymentService paymentService,
+			IVehicleTypeService vehicleTypeService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -39,6 +43,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_accountService = accountService;
 			_phoneService = phoneService;
+			_vehicleTypeService = vehicleTypeService;
+			_paymentService = paymentService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -77,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 
-            this.Services().ApplicationInfo.CheckVersionAsync();
+            this.Services().ApplicationInfo.CheckVersionAsync().FireAndForget();
 
             if (_executeOnStart != null)
             {
@@ -140,6 +146,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_signInCommand = (AsyncCommand)this.GetCommand(async () =>
 					{
 						_accountService.ClearCache();
+						_vehicleTypeService.ClearVehicleTypesCache();
+
 						await SignIn();
 					}, CanSignIn);
 				}
@@ -227,6 +235,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand PromptChangeServerUrl
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{
+					try
+					{            
+						var serviceUrl = await this.Services().Message.ShowPromptDialog(
+							"Server Url",
+							string.Empty,
+							() => { return; },
+							false,
+							this.Services().Settings.ServiceUrl);
+
+						if(serviceUrl != null)
+						{
+							SetServerUrl(serviceUrl);
+						}
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				});
+			}
+		}
+
         private async Task SignIn()
         {
             using(this.Services().Message.ShowProgress())
@@ -247,13 +283,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     switch (e.Failure)
                     {
                         case AuthFailure.InvalidServiceUrl:
-                        case AuthFailure.NetworkError:
-	                        {
-	                            var title = localize["NoConnectionTitle"];
-	                            var msg = localize["NoConnectionMessage"];
-	                            this.Services().Message.ShowMessage (title, msg);
-	                        }
-                            break;
                         case AuthFailure.InvalidUsernameOrPassword:
 	                        {
 	                            var title = localize["InvalidLoginMessageTitle"];
@@ -399,7 +428,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var settings = Container.Resolve<IAppSettings>();
 			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
 			{
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
 				if (serverUrl.Contains(staging) && settings.Data.AppleTestAccountUsed)
 				{
@@ -409,7 +438,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				//Change server Url to use the staging server.
 				// We must also change https to http since staging does not support HTTPS
-				serverUrl = serverUrl.Replace("https://", "http://").Replace(services, staging).Replace(api, staging);
+				serverUrl = serverUrl.Replace(services, staging).Replace(api, staging);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -420,9 +449,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (settings.Data.AppleTestAccountUsed)
 			{
 				//Reset back to normal server.
-				var serverUrl = settings.Data.ServiceUrl;
+                var serverUrl = settings.GetServiceUrl();
 
-				serverUrl = serverUrl.Replace("http://", "https://").Replace(staging, api);
+				serverUrl = serverUrl.Replace(staging, api);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -454,47 +483,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService.ClearReferenceData();
 		}
 
+        private async Task ShowNextView()
+        {
+            if (await NeedsToNavigateToAddCreditCard ())
+            {
+                if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
+                {
+                    ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
+                }
+                else
+                {
+                    ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
+                }
+                return;
+            }
+
+            ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
+            if (LoginSucceeded != null) 
+            {
+                LoginSucceeded (this, EventArgs.Empty);
+            }
+        }
+
 		private async Task OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			Action showNextView = async () => 
-            {
-				if (await NeedsToNavigateToAddCreditCard ()) {
-					if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
-					{
-						ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
-					}
-					else
-					{
-						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
-					}
-					return;
-				}
-
-				ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
-				if (LoginSucceeded != null) {
-					LoginSucceeded (this, EventArgs.Empty);
-				}
-			};
-
             // Load and cache company notification settings/payment settings
             // Resolve because the accountService injected in the constructor is not authorized here
-			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
-		    await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
-            await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+		    var accountService = Mvx.Resolve<IAccountService>();
+            await Task.WhenAll(
+                accountService.GetNotificationSettings(true, true).HandleErrors(),
+                accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
+                Mvx.Resolve<IPaymentService>().GetPaymentSettings(true).HandleErrors()
+            );
+
+            // Don't include it in the previous Task.WhenAll since we need to make sure PaymentSettings are refreshed before calling this
+            await Mvx.Resolve<IDeviceCollectorService>().GenerateNewSessionIdAndCollect().HandleErrors();
 
             // Log user session start
 			Mvx.Resolve<IMetricsService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{
-				showNextView ();
+                await ShowNextView();
 			}
 			else 
 			{
-				_executeOnStart = showNextView;
+                _executeOnStart = () => ShowNextView().FireAndForget();
 			}
         }
 
@@ -506,14 +543,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var isPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-            if (isPayInTaxiEnabled && Settings.CreditCardIsMandatory)
-			{
-				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
-				{
-					return true;
-				}
-			}
-			return false;
+		    if (!isPayInTaxiEnabled || !paymentSettings.CreditCardIsMandatory)
+		    {
+		        return false;
+		    }
+
+			// Do not use HasValidPaymentInfo here, we only must detect if we have a valid payment method.
+			return !_accountService.CurrentAccount.HasPaymentMethod;
 		}
 
         private async Task CheckFacebookAccount()

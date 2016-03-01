@@ -280,10 +280,12 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
                     Assert.AreEqual("1234", dto.Settings.AccountNumber);
                     Assert.AreEqual("0", dto.Settings.CustomerNumber);
+                    Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 }
             }
 
-            public void when_settings_updated_with_null_country_code()
+            [Test]
+            public void when_settings_updated_with_event_containing_email_then_account_dto_populated()
             {
                 Sut.Handle(new BookingSettingsUpdated
                 {
@@ -291,13 +293,14 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Name = "Robert",
                     ChargeTypeId = 123,
                     NumberOfTaxi = 3,
-                    Country = null,
+                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                     Phone = "123",
                     Passengers = 3,
                     ProviderId = 85,
                     VehicleTypeId = 69,
                     AccountNumber = "1234",
-                    CustomerNumber = "0"
+                    CustomerNumber = "0",
+                    Email = "new@email.com"
                 });
 
                 using (var context = new BookingDbContext(DbName))
@@ -305,7 +308,17 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     var dto = context.Find<AccountDetail>(_accountId);
 
                     Assert.NotNull(dto);
-                    Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("US")).CountryISOCode.Code, dto.Settings.Country.Code);
+                    Assert.AreEqual("Robert", dto.Settings.Name);
+                    Assert.AreEqual(123, dto.Settings.ChargeTypeId);
+                    Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
+                    Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code, dto.Settings.Country.Code);
+                    Assert.AreEqual("123", dto.Settings.Phone);
+                    Assert.AreEqual(3, dto.Settings.Passengers);
+                    Assert.AreEqual(85, dto.Settings.ProviderId);
+                    Assert.AreEqual(69, dto.Settings.VehicleTypeId);
+                    Assert.AreEqual("1234", dto.Settings.AccountNumber);
+                    Assert.AreEqual("0", dto.Settings.CustomerNumber);
+                    Assert.AreEqual("new@email.com", dto.Email);
                 }
             }
 

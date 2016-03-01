@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -207,6 +203,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var order = _orderDao.FindById(@event.SourceId);
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
+                var account = _accountDao.FindById(order.AccountId);
 
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
                 {
@@ -222,6 +219,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = order.AccountId,
                             OrderId = order.Id,
                             IBSOrderId = order.IBSOrderId,
+                            CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
@@ -252,6 +250,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (@event.EndTime.HasValue)
             {
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                var account = _accountDao.FindById(orderStatus.AccountId);
+
                 if (orderStatus != null)
                 {
                     // Check if card declined
@@ -266,6 +266,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = orderStatus.AccountId,
                             OrderId = orderStatus.OrderId,
                             IBSOrderId = orderStatus.IBSOrderId,
+                            CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
@@ -295,7 +296,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private void InitializeCmtServiceClient(ServiceType serviceType)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, serviceType, null, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

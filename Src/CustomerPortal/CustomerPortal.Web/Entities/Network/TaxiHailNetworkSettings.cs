@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CustomerPortal.Contract.Resources;
-using CustomerPortal.Web.Attributes;
 using CustomerPortal.Web.Properties;
 using MongoRepository;
-using System.Text.RegularExpressions;
 
 namespace CustomerPortal.Web.Entities.Network
 

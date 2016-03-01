@@ -11,5 +11,7 @@
         TestingNewVersion,
         DemoSystem,
         Inactive,
+        MonitoringProd,
+        MonitoringDemo,
     }
 }

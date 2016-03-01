@@ -14,7 +14,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <DeployExternal>False</DeployExternal>
-    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
@@ -38,12 +38,13 @@
     <AndroidSigningKeyPass>mkMearsTaxi0001.</AndroidSigningKeyPass>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -57,24 +58,31 @@
     <AndroidSigningStorePass>mkMearsTaxi0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKMearsTaxi</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkMearsTaxi0001.</AndroidSigningKeyPass>
-    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugType>full</DebugType>
-    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <Debugger>Xamarin</Debugger>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
+    <Reference Include="Square.OkHttp">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Android" />
@@ -235,66 +243,25 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="DeviceCollectorBindingsAndroid">
+      <HintPath>..\Libraries\Monodroid\DeviceCollectorBindingsAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Connectivity.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\BaseActivity.cs" />
-    <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
-    <Compile Include="Activities\Book\EditAutoTipActivity.cs" />
-    <Compile Include="Activities\Book\LocationListener.cs" />
-    <Compile Include="Activities\Book\LocationService.cs" />
-    <Compile Include="Activities\Book\PromotionActivity.cs" />
-    <Compile Include="Activities\ExtendedSplashActivity.cs" />
-    <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
-    <Compile Include="Activities\Setting\AboutActivity.cs" />
-    <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
-    <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
-    <Compile Include="Activities\TutorialActivity.cs" />
-    <Compile Include="Activities\WaitingCarLandscapeActivity.cs" />
-    <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
-    <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Animations\SlideAnimation.cs" />
-    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
-    <Compile Include="Binding\MvxButtonClickBinding.cs" />
-    <Compile Include="Cache\CacheItem.cs" />
-    <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
-    <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
-    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
-    <Compile Include="Controls\Widgets\AppBarButton.cs" />
-    <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
-    <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
-    <Compile Include="Controls\Widgets\OrderAirport.cs" />
-    <Compile Include="Controls\Widgets\OrderStatusView.cs" />
-    <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
-    <Compile Include="Converters\AppConverters.cs" />
-    <Compile Include="Diagnostic\Logger.cs" />
-    <Compile Include="Extensions\BundleExtentions.cs" />
-    <Compile Include="Helpers\AlertDialogHelper.cs" />
-    <Compile Include="Helpers\DrawHelper.cs" />
-    <Compile Include="Activities\History\HistoryDetailActivity.cs" />
-    <Compile Include="Activities\Account\LoginActivity.cs" />
-    <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="ListViewStructure\ListItemData.cs" />
-    <Compile Include="Messages\ActivityCompleted.cs" />
-    <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
-    <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
-    <Compile Include="PlatformIntegration\AndroidDeviceRateApplicationService.cs" />
-    <Compile Include="PlatformIntegration\MessageService.cs" />
-    <Compile Include="PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Setup.cs" />
-    <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
-    <Compile Include="Models\Activities.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
-    <Compile Include="Activities\SelectItemDialogActivity.cs" />
-    <Compile Include="PlatformIntegration\PhoneService.cs" />
     <AndroidResource Include="Resources\Drawable\flag.png" />
     <AndroidResource Include="Resources\Drawable\flag_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail.png" />
@@ -304,16 +271,11 @@
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
-    <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
-    <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
@@ -321,23 +283,13 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
-    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <AndroidResource Include="Resources\Drawable\notification_icon.png" />
-    <Compile Include="Animations\SlideDownAnimation.cs" />
     <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
     <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
-    <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <Compile Include="Binding\CustomBindings.cs" />
-    <Compile Include="Binding\TextViewBinding.cs" />
-    <Compile Include="Extensions\ViewExtensions.cs" />
-    <Compile Include="Extensions\LayoutParametersExtensions.cs" />
-    <Compile Include="Extensions\EditTextExtensions.cs" />
-    <Compile Include="Extensions\LocationTimeConverter.cs" />
-    <Compile Include="Activities\Book\RideSummaryActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Book_RideSummaryPage.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -347,19 +299,14 @@
     <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Activities\Account\TermsAndConditionsActivity.cs" />
     <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
-    <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
-    <Compile Include="Services\Social\FacebookService.cs" />
-    <Compile Include="Services\Social\TwitterService.cs" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\logo3.png" />
     <AndroidResource Include="Resources\Drawable\target_selected.png" />
-    <Compile Include="Localization\Localize.cs" />
     <AndroidResource Include="Resources\Drawable\favorites.png" />
     <AndroidResource Include="Resources\Drawable\history.png" />
     <AndroidResource Include="Resources\Values\Themes.xml">
@@ -372,11 +319,9 @@
     <AndroidResource Include="Resources\Layout\DialogCenter.axml" />
     <AndroidResource Include="Resources\Drawable\dialog_center.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_pressed.xml" />
-    <Compile Include="Controls\Widgets\EditTextEntry.cs" />
     <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
-    <Compile Include="Helpers\DensityHelper.cs" />
     <AndroidResource Include="Resources\Drawable\apc_logo_menu.png" />
     <AndroidResource Include="Resources\Drawable\button_action_black_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_gray_selector.xml" />
@@ -388,13 +333,6 @@
     <AndroidResource Include="Resources\Drawable\completed.png" />
     <AndroidResource Include="Resources\Drawable\scheduled.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="Controls\Widgets\ListViewCell.cs" />
-    <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
-    <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
-    <Compile Include="Controls\Widgets\EditTextNavigate.cs" />
-    <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
-    <Compile Include="Controls\Widgets\SlidingPanel.cs" />
-    <Compile Include="Controls\Widgets\HorizontalPager.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
@@ -402,12 +340,8 @@
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Activities\Account\CreateAccountActivity.cs" />
     <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerCellTextRight.axml" />
-    <Compile Include="Controls\Widgets\EditTextRightSpinner.cs" />
-    <Compile Include="Controls\Widgets\ListItemAdapter.cs" />
-    <Compile Include="Binding\EditTextRightSpinnerSelectedItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-xhdpi\active.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\amex.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\apc_logo_menu.png" />
@@ -456,15 +390,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\add_list.png" />
     <AndroidResource Include="Resources\Values\SetThemes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
-    <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Activities\History\HistoryListActivity.cs" />
-    <Compile Include="Activities\Location\LocationDetailActivity.cs" />
-    <Compile Include="Activities\Location\LocationListActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Home.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Controls\Widgets\IMvxBindable.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <AndroidResource Include="Resources\Drawable\menu_icon.png" />
@@ -491,16 +420,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
     <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
-    <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
-    <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
-    <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
     <AndroidResource Include="Resources\Drawable\destination_icon.png" />
     <AndroidResource Include="Resources\Drawable\hail_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_icon.png" />
-    <Compile Include="Controls\Widgets\OrderOptions.cs" />
     <Compile Include="Controls\Fragments\OrderMapFragment.cs" />
-    <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
-    <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
     <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
       <SubType>Designer</SubType>
@@ -519,21 +442,13 @@
     <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
     <Compile Include="Controls\Fragments\TouchableMap.cs" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
-    <Compile Include="Controls\Widgets\AppBar.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_label_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_label_text_selector.xml" />
-    <Compile Include="Controls\Widgets\AddressTextBox.cs" />
-    <Compile Include="Extensions\BoolExtensions.cs" />
-    <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
     <AndroidResource Include="Resources\Layout\Control_AddressTextBox.axml" />
     <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
-    <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
-    <Compile Include="Helpers\DrawableHelper.cs" />
-    <Compile Include="Controls\Widgets\OrderEdit.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <AndroidResource Include="Resources\Drawable\account.png" />
     <AndroidResource Include="Resources\Drawable\apartment.png" />
     <AndroidResource Include="Resources\Drawable\chargetype.png" />
@@ -551,18 +466,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\time.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
     <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
-    <Compile Include="Helpers\AnimationHelper.cs" />
     <AndroidResource Include="Resources\Drawable\places.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\places.png" />
     <AndroidResource Include="Resources\Layout\Control_AddressBar.axml" />
     <AndroidResource Include="Resources\Layout\Control_AddressLine.axml" />
     <AndroidResource Include="Resources\Layout\Control_AddressList.axml" />
     <AndroidResource Include="Resources\Layout\Control_AddressPicker.axml" />
-    <Compile Include="Controls\Widgets\Addresses\AddressLine.cs" />
-    <Compile Include="Controls\Widgets\Addresses\AddressList.cs" />
-    <Compile Include="Controls\Widgets\Addresses\AddressPicker.cs" />
-    <Compile Include="Controls\Widgets\Addresses\AddressTypeToDrawableConverter.cs" />
-    <Compile Include="Controls\Message\LoadingOverlay.cs" />
     <AndroidResource Include="Resources\Values\AddressLineAttributes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -576,23 +485,15 @@
     <AndroidResource Include="Resources\drawable-xhdpi\close_tutorial_button.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_black_circle.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_root_background_insets.xml" />
-    <Compile Include="Helpers\PlatformHelper.cs" />
     <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
-    <Compile Include="Controls\Behavior\TextFieldInHomeSubviewsBehavior.cs" />
     <AndroidResource Include="Resources\Drawable\baggage.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\baggage.png" />
-    <Compile Include="Activities\Account\UpdatedTermsAndConditionsActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
     <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
-    <Compile Include="Helpers\LayoutHelper.cs" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
-    <Compile Include="Activities\Location\AddressSearchActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
-    <Compile Include="Extensions\ViewServicesExtensions.cs" />
     <AndroidResource Include="Resources\drawable-xxhdpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\button_destination_image_selector.xml" />
@@ -600,15 +501,9 @@
     <AndroidResource Include="Resources\Drawable\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
-    <Compile Include="Dialog\EntryElementWithInputType.cs" />
-    <Compile Include="Activities\Book\InitializeOrderForAccountPaymentActivity.cs" />
-    <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
     <AndroidResource Include="Resources\Layout\View_InitializeOrderForAccountPayment.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Controls\Dialog\TaxiHailEntryElement.cs" />
-    <Compile Include="Activities\EditTextDialogActivity.cs" />
-    <Compile Include="TaxiHailAndroidLifetimeMonitor.cs" />
     <AndroidResource Include="Resources\drawable-ar\tutorial_screen07.png" />
     <AndroidResource Include="Resources\drawable-ar\tutorial_screen08.png" />
     <AndroidResource Include="Resources\drawable-ar\tutorial_screen03.png" />
@@ -632,12 +527,9 @@
     <AndroidResource Include="Resources\Layout\Control_VehicleType.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Controls\Widgets\VehicleTypeControl.cs" />
     <AndroidResource Include="Resources\Drawable\star_state.xml" />
-    <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
     <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
-    <Compile Include="Activities\Account\AccountConfirmationActivity.cs" />
     <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
     <AndroidResource Include="Resources\Drawable\blackcar_no_badge_selected.png" />
     <AndroidResource Include="Resources\Drawable\blackcar_no_badge.png" />
@@ -684,7 +576,6 @@
     <AndroidResource Include="Resources\Drawable\promo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
     <AndroidResource Include="Resources\Layout\View_OverduePayment.axml" />
-    <Compile Include="Activities\Setting\OverduePaymentActivity.cs" />
     <AndroidResource Include="Resources\Drawable\notification_background.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -694,26 +585,18 @@
     <AndroidResource Include="Resources\Drawable\button_rounded_positive.xml" />
     <AndroidResource Include="Resources\Drawable\button_selector_positive.xml" />
     <AndroidResource Include="Resources\Layout\CustomAlertDialogView.axml" />
-    <Compile Include="Controls\Dialog\CustomAlertDialog.cs" />
-    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
-    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
-    <Compile Include="Controls\Widgets\RoundedMvxImageView.cs" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
-    <Compile Include="Activities\Setting\CreditCardMultipleActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
-    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -733,6 +616,19 @@
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\Drawable\luxury_progress.png" />
+    <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml" />
+    <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
+    <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
+    <Compile Include="PlatformIntegration\PushHandlerService.cs" />
+    <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
+    <AndroidResource Include="Resources\Layout\SpinnerEmptyItem.axml" />
+    <AndroidResource Include="Resources\Layout\CustomToastView.axml" />
+    <AndroidResource Include="Resources\Layout\View_Debug.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -886,7 +782,8 @@
     <AndroidResource Include="Resources\Drawable\blackcar_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_icon.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="BeforeBuild">
     <!-- <Exec Command="..\..\LocalizationTool\GenerateAndroidResources.sh" WorkingDirectory=""  /> -->
     <!--<Exec Command="mono &quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" Condition="'$(Os)'=='Unix'" /> -->
@@ -951,15 +848,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Calabash\calabash.keystore" />
-    <None Include="Calabash\calabash_settings" />
-    <None Include="Calabash\features\my_first.feature" />
-    <None Include="Calabash\features\step_definitions\calabash_steps.rb" />
-    <None Include="Calabash\features\support\app_installation_hooks.rb" />
-    <None Include="Calabash\features\support\app_life_cycle_hooks.rb" />
-    <None Include="Calabash\features\support\env.rb" />
-    <None Include="Calabash\features\support\hooks.rb" />
-    <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -1011,6 +899,8 @@
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <None Include="PluginsHelp\ConnectivityReadme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
 </Project>

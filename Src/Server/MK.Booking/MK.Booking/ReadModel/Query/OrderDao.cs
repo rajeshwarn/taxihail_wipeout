@@ -51,19 +51,42 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IList<OrderStatusDetail> GetOrdersInProgress()
+        public IList<OrderStatusDetail> FindOrderStatusByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {
+                return context.Query<OrderStatusDetail>().Where(c => c.AccountId == accountId).ToList();
+            }
+        }
+        
+        /// <summary>
+        /// Returns all active orders (active in terms of the UpdateOrderStatusJob)
+        /// </summary>
+        /// <param name="forManualRideLinq"></param>
+        /// <returns></returns>
+        public IList<OrderStatusDetail> GetOrdersInProgress(bool forManualRideLinq)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (forManualRideLinq)
+                {
+                    return context.Set<OrderStatusDetail>()
+                        .Where(x => (x.Status == OrderStatus.Created
+                                  || x.Status == OrderStatus.WaitingForPayment)
+                               && x.IsManualRideLinq)
+                        .ToList();
+                }
+
                 var startDate = DateTime.Now.AddHours(-36);
 
-                var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where (order.Status == OrderStatus.Created
-                                        || order.Status == OrderStatus.Pending
-                                        || order.Status == OrderStatus.WaitingForPayment
-                                        || order.Status == OrderStatus.TimedOut) && (order.PickupDate >= startDate)
-                                     select order).ToList();
-                return currentOrders;
+                return context.Set<OrderStatusDetail>()
+                    .Where(x => (x.Status == OrderStatus.Created
+                                 || x.Status == OrderStatus.Pending
+                                 || x.Status == OrderStatus.WaitingForPayment
+                                 || x.Status == OrderStatus.TimedOut)
+                                && x.PickupDate >= startDate
+                                && !x.IsManualRideLinq)
+                    .ToList();
             }
         }
 

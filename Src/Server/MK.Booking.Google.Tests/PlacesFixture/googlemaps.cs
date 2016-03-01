@@ -17,7 +17,7 @@ namespace MK.Booking.Google.Tests.PlacesFixture
         [SetUp]
         public void Setup()
         {
-            Sut = new GoogleApiClient(new TestServerSettings(), new Logger());
+            Sut = new GoogleApiClient(new TestServerSettings(), new Logger(), null);
         }
 
     }

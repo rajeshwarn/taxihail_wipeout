@@ -1,0 +1,19 @@
+﻿@using apcurium.MK.Common.Enumeration
+@model ServiceStatusType
+
+@if (Model == ServiceStatusType.Healthy)
+{
+    <div style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: rgb(0,255,0)">&nbsp;</div>;
+}
+@if (Model == ServiceStatusType.ApiUnavailable)
+{
+    <div title="N/A" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: grey">&nbsp;</div>;
+}
+@if (Model == ServiceStatusType.NoConnection)
+{
+    <div title="Server not available" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: orangered">&nbsp;</div>;
+}
+@if (Model == ServiceStatusType.IssuesFound)
+{
+    <div title="Error" style="height: 15px; width: 15px; -webkit-border-radius: 100%; -moz-border-radius: 100%; -ms-border-radius: 100%; border-radius: 100%; background: red">&nbsp;</div>;
+}

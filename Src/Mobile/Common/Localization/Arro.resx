@@ -129,17 +129,8 @@
   <data name="StatusEta" xml:space="preserve">
     <value>is {0} {1} away</value>
   </data>
-  <data name="UnpairPayInCar" xml:space="preserve">
-    <value>Cancel this Order</value>
-  </data>
   <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>No</value>
-  </data>
-  <data name="UnpairWarningMessage" xml:space="preserve">
-    <value>Are you sure you want to cancel this order?</value>
-  </data>
-  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
-    <value>If you decide to cancel, you will not be able to use the promotion.</value>
   </data>
   <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Yes</value>

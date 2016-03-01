@@ -1,65 +1,127 @@
 using System;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using CMTPayment.Extensions;
-using ServiceStack.Common.Web;
+using apcurium.MK.Common;
+using CMTPayment.Authorization;
 using ServiceStack.ServiceHost;
+
+#if CLIENT
+using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+#else
+using CMTPayment.Extensions;
 using ServiceStack.Text;
+#endif
 
 namespace CMTPayment
 {
-    public class CmtPaymentServiceClient : BaseServiceClient
+    public partial class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, ServiceType serviceType, string sessionId, IPackageInfo packageInfo, ILogger logger)
+
+        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService, ServiceType serviceType)
             : base(cmtSettings.IsSandbox
                 ? cmtSettings.SandboxBaseUrl
-                : cmtSettings.BaseUrl, sessionId, packageInfo)
+                : cmtSettings.BaseUrl, sessionId, packageInfo, connectivityService)
         {
             _logger = logger;
-            Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            Client.LocalHttpWebRequestFilter = SignRequest;
-            Client.LocalHttpWebResponseFilter = LogErrorBody;
+
+            ClientSetup();
 
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.GetCredentials(serviceType).ConsumerKey;
             ConsumerSecretKey = cmtSettings.GetCredentials(serviceType).ConsumerSecretKey;
-		}
+        }
 
+        partial void ClientSetup();
 
         protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }
-
-        private void SignRequest(WebRequest request)
+#if CLIENT
+        public Task<T> GetAsync<T>(string requestUrl)
         {
-            var requestUri = request.RequestUri;
-            if (request.RequestUri.Host.Contains("runscope"))
-            {
-                var url = request.RequestUri.ToString().Replace("payment-cmtapi-com-hqy5tesyhuwv.runscope.net", "payment.cmtapi.com");
-                requestUri = new Uri(url);
-            }
+            SetOAuthHeader(requestUrl, "GET", ConsumerKey, ConsumerSecretKey);
 
-            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
-                ConsumerSecretKey,
-                "",
-                "",
-                request.Method,
-                requestUri,
-                null);
-            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
-            request.ContentType = ContentType.Json;
-
-
-            _logger.Maybe(() => _logger.LogMessage("CMT request header info : " + request.Headers.ToString()));
-            _logger.Maybe(() => _logger.LogMessage("CMT request info : " + request.ToJson()));
+            return Client.GetAsync<T>(requestUrl, LogSuccess, LogError, _logger);
         }
 
+        public Task<T> GetAsync<T>(IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+
+            return GetAsync<T>(url);
+        }
+
+        public Task<T> PostAsync<T>(string requestUrl, object content)
+        {
+            SetOAuthHeader(requestUrl, "POST", ConsumerKey, ConsumerSecretKey);
+
+            return Client.PostAsync<T>(requestUrl, content, LogSuccess, LogError, _logger);
+        }
+
+        public Task<T> PostAsync<T>(IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+
+            return PostAsync<T>(url, request);
+        }
+
+        public Task<T> DeleteAsync<T>(string requestUrl, object content)
+        {
+            SetOAuthHeader(requestUrl, "DELETE", ConsumerKey, ConsumerSecretKey);
+
+            return Client.DeleteAsync<T>(requestUrl, LogSuccess, LogError, _logger);
+        }
+
+        public Task<T> DeleteAsync<T>(IReturn<T> request)
+        {
+            var url = request.GetUrlFromRoute();
+            return DeleteAsync<T>(url, request);
+        }
+
+        private async void LogSuccess(HttpResponseMessage response)
+        {
+        #if DEBUG
+            try
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                _logger.LogMessage("CmtPaymentService {0}: {1}", response.RequestMessage.Method.Method, response.RequestMessage.RequestUri);
+                _logger.LogMessage("      Response: "+ result);
+            }
+            catch (Exception ex)
+            {
+                if (_logger != null)
+                {
+                    _logger.LogError(ex);
+                }
+            }
+        #endif 
+        }
+
+        private async void LogError(HttpResponseMessage response)
+        {
+        #if DEBUG
+            try
+            {
+                var result = await response.Content.ReadAsStringAsync();
+
+                _logger.LogMessage("Error while calling {0} : {1}" , response.RequestMessage.RequestUri, result);
+            }
+            catch (Exception ex)
+            {
+				if (_logger != null)
+				{
+					_logger.LogError(ex);
+				}
+            }
+        #endif 
+        }
+#else   
         public Task<T> GetAsync<T>(IReturn<T> request)
         {
             _logger.Maybe(() => _logger.LogMessage("CMT Get : " + request.ToJson()));
@@ -100,17 +162,6 @@ namespace CMTPayment
 
             });
         }
-
-        private void LogErrorBody(HttpWebResponse response)
-        {
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                _logger.LogMessage("CMT Response Status Code : " + response.StatusCode);
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    _logger.LogMessage("CMT Response Body : " + reader.ReadToEnd());   
-                }
-            }
-        }
+#endif
     }
 }

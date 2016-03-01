@@ -22,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 
         public static Action<TRequest> ToAction<TRequest, TResponse>(this Func<TRequest, TResponse> func)
         {
-            // TODO: conver to method group?
             return item => func(item);
         }
 

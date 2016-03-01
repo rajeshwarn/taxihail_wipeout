@@ -79,6 +79,7 @@
                 @Html.CheckBoxFor(m => m.CallBox, true) Callbox
                 @Html.CheckBoxFor(m => m.IosAdhoc, true) iOS(Adhoc)
                 @Html.CheckBoxFor(m => m.IosAppStore, true) iOS(AppStore)
+                @Html.CheckBoxFor(m => m.BlackBerry, true) BlackBerry
                
                 
             </div>
@@ -121,7 +122,9 @@
             if ($('#ServerId').find(":selected").text() == 'Production'
              || $('#ServerId').find(":selected").text() == 'ProductionV2'
              || $('#ServerId').find(":selected").text() == 'Prod3'
-             || $('#ServerId').find(":selected").text() == 'OVH'                ) {
+             || $('#ServerId').find(":selected").text() == 'TH AWS Prod 1'
+             || $('#ServerId').find(":selected").text() == 'TH AWS Prod 2'
+             || $('#ServerId').find(":selected").text() == 'OVH') {
                 if (confirm("Are you sure you want to deploy on a PRODUCTION server?"))
                     return true;
                 else

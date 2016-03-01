@@ -14,6 +14,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Security
                 var authResponse = (AuthResponse) base.Authenticate(authService, session, request);
                 return authResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var account = Dao.FindByEmail(request.UserName);
 

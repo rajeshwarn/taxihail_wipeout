@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Services
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId && v.ServiceType == request.ServiceType);
             var logoName = vehicleType != null ? vehicleType.LogoName : null;
             
-            IbsVehiclePosition[] vehicles;
+            IbsVehiclePosition[] ibsVehicles;
             string market = null;
 
             try
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Api.Services
                 && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.IBS)
             {
                 // LOCAL market IBS
-                vehicles = _ibsServiceProvider.Booking(null, request.ServiceType).GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+                ibsVehicles = _ibsServiceProvider.Booking(null, request.ServiceType).GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Api.Services
                     fleetIds: availableVehiclesFleetIds,
                     wheelchairAccessibleOnly: (vehicleType != null && vehicleType.IsWheelchairAccessible));
 
-                vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
+                ibsVehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,
                     Longitude = v.Longitude,
@@ -180,17 +180,32 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-            var availableVehicles = vehicles
-                .Select(v =>
+			var isAuthenticated = this.GetSession().IsAuthenticated;
+
+            var availableVehicles = new List<AvailableVehicle>();
+
+            foreach (var ibsVehicle in ibsVehicles)
+            {
+                var vehicle = new AvailableVehicle
                 {
-                    var availableVehicle = Mapper.Map<AvailableVehicle>(v);
+                    Latitude = ibsVehicle.Latitude,
+                    Longitude = ibsVehicle.Longitude,
+                    LogoName = logoName,
+                    Eta = ibsVehicle.Eta,
+                    VehicleType = ibsVehicle.VehicleType
+                };
 
-                    availableVehicle.LogoName = logoName;
+                if (isAuthenticated)
+                {
+                    vehicle.CompassCourse = ibsVehicle.CompassCourse ?? 0;
+                    vehicle.VehicleName = ibsVehicle.VehicleNumber;
+                    vehicle.FleetId = ibsVehicle.FleetId;
+                }
 
-                    return availableVehicle;
-                });
+                availableVehicles.Add(vehicle);
+            }
 
-            return new AvailableVehiclesResponse(availableVehicles);   
+            return new AvailableVehiclesResponse(availableVehicles);
         }
 
         public object Get(VehicleTypeRequest request)

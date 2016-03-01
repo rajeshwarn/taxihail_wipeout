@@ -3,6 +3,7 @@
     public enum PushNotificationServicePlatform
     {
         Apple,
-        Android
+        Android,
+        BlackBerry
     }
 }

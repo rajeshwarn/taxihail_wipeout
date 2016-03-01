@@ -186,24 +186,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
-        public void when_registering_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            _sut.When(new RegisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-                Platform = PushNotificationServicePlatform.Android
-            });
-
-            var @event = _sut.ThenHasSingle<DeviceRegisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(deviceToken, @event.DeviceToken);
-            Assert.AreEqual(PushNotificationServicePlatform.Android, @event.Platform);
-        }
-
-        [Test]
         public void when_removing_address_from_history_successfully()
         {
             var addressId = Guid.NewGuid();
@@ -213,29 +195,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(addressId, @event.AddressId);
-        }
-
-        [Test]
-        public void when_replacing_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            var oldDeviceToken = Guid.NewGuid().ToString();
-            _sut.When(new RegisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-                OldDeviceToken = oldDeviceToken,
-                Platform = PushNotificationServicePlatform.Android
-            });
-
-            var event1 = _sut.ThenHasOne<DeviceUnregisteredForPushNotifications>();
-            var event2 = _sut.ThenHasOne<DeviceRegisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, event1.SourceId);
-            Assert.AreEqual(oldDeviceToken, event1.DeviceToken);
-            Assert.AreEqual(_accountId, event2.SourceId);
-            Assert.AreEqual(deviceToken, event2.DeviceToken);
-            Assert.AreEqual(PushNotificationServicePlatform.Android, event2.Platform);
         }
 
         [Test]
@@ -250,22 +209,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var service = new PasswordService();
 
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
-        }
-
-        [Test]
-        public void when_unregistering_device_sucessfully()
-        {
-            var deviceToken = Guid.NewGuid().ToString();
-            _sut.When(new UnregisterDeviceForPushNotifications
-            {
-                AccountId = _accountId,
-                DeviceToken = deviceToken,
-            });
-
-            var @event = _sut.ThenHasSingle<DeviceUnregisteredForPushNotifications>();
-
-            Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(deviceToken, @event.DeviceToken);
         }
 
         [Test]
@@ -333,12 +276,14 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             var orderId = Guid.NewGuid();
             var transactionDate = DateTime.UtcNow;
+            var creditCardId = Guid.NewGuid();
 
             _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
                 OrderId = orderId,
                 IBSOrderId = 5544,
+                CreditCardId = creditCardId,
                 OverdueAmount = 42.25m,
                 TransactionDate = transactionDate,
                 TransactionId = "1337",
@@ -363,13 +308,20 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_settling_overdue_payment()
         {
             var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
 
-            _sut.When(new SettleOverduePayment { AccountId = _accountId, OrderId = orderId });
+            _sut.When(new SettleOverduePayment
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                CreditCardId = creditCardId
+            });
 
             var @event = _sut.ThenHasSingle<OverduePaymentSettled>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(creditCardId, @event.CreditCardId);
         }
     }
 }

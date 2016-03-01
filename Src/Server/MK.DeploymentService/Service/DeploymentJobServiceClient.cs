@@ -1,11 +1,11 @@
 ﻿#region
 
 using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using CustomerPortal.Web.Entities;
-using MK.DeploymentService.Properties;
 
 #endregion
 
@@ -22,14 +22,14 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 client.BaseAddress = new Uri(url);
 
                 try
                 {
-                    var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
+                    var r = client.GetAsync(@"deployments/" + ConfigurationManager.AppSettings["ServerName"] + @"/next").Result;
                     if (r.IsSuccessStatusCode)
                     {
                         return r.Content.ReadAsAsync<DeploymentJob>()
@@ -47,8 +47,8 @@ namespace MK.DeploymentService.Service
 
         private static string GetUrl()
         {
-// ReSharper disable once RedundantAssignment
-            var url = Settings.Default.CustomerPortalUrl;
+            // ReSharper disable once RedundantAssignment
+            var url = ConfigurationManager.AppSettings["CustomerPortalUrl"];
 
 //#if DEBUG
 //            url = "http://localhost:2287/api/";
@@ -65,7 +65,7 @@ namespace MK.DeploymentService.Service
                 var client =
                     new HttpClient(new HttpClientHandler
                     {
-                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                        Credentials = new NetworkCredential(ConfigurationManager.AppSettings["CustomerPortalUsername"], ConfigurationManager.AppSettings["CustomerPortalPassword"])
                     }))
             {
                 client.BaseAddress = new Uri(url);

@@ -28,6 +28,7 @@ namespace CustomerPortal.Web.Entities
             Android = false;
             CallBox = false;
             IosAdhoc = false;
+            BlackBerry = false;
             Status = "Requested";
         }
 
@@ -52,6 +53,7 @@ namespace CustomerPortal.Web.Entities
         public bool CallBox { get; set; }
         public bool IosAdhoc { get; set; }
         public bool IosAppStore { get; set; }
+        public bool BlackBerry { get; set; }
         public string ServerUrl { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
@@ -92,7 +94,11 @@ namespace CustomerPortal.Web.Entities
                     }
                     if (IosAppStore)
                     {
-                        action += "iOS(AppStore) ";
+                        action += "iOS(AppStore), ";
+                    }
+                    if (BlackBerry)
+                    {
+                        action += "BlackBerry ";
                     }
                 }
                 return action;

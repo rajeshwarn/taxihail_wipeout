@@ -1,5 +1,6 @@
 ﻿#region
 
+using apcurium.MK.Common.Cryptography;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,9 +26,13 @@ namespace apcurium.MK.Common.Configuration.Impl
         [Key]
         public Guid Id { get; set; }
 
+		[PropertyEncrypt]
         public string CompanyKey { get; set; }
 
+		[PropertyEncrypt]
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
+
+		[PropertyEncrypt]
         public PayPalServerSettings PayPalServerSettings { get; set; }
 
         [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
@@ -41,8 +46,11 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public int UnpairingTimeOut { get; protected set; }
 
+        /// <summary>
+        /// This setting is more a "IsWebPaymentEnabled", Braintree is prepaid, CMT is normal payment
+        /// </summary>
         public bool IsPrepaidEnabled { get; set; }
-        
+
         public bool AlwaysDisplayCoFOption { get; set; }
     }
 }

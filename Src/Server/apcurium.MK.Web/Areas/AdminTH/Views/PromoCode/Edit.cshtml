@@ -1,24 +1,23 @@
 ﻿@using apcurium.MK.Common.Enumeration
-@model apcurium.MK.Web.Areas.AdminTH.Models.PromoCode
+@model apcurium.MK.Web.Areas.AdminTH.Models.PromoCodeModel
 
-<h4 class="table-title">Update a Promo Code</h4>
-@if (@ViewBag.Error != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
-}
-@{
-    if (Model.IsExpired)
+<div class="well clearfix form-horizontal">
+    <h4 class="table-title">Update a Promo Code</h4>
+    @if (@ViewBag.Error != null)
     {
-        <div class="alert alert-warning" style="margin-top: 10px;">
-            This promotion has expired and is no longer active
-        </div>
+        <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
     }
-}
+    @{
+        if (Model.IsExpired)
+        {
+            <div class="alert alert-warning" style="margin-top: 10px;">
+                This promotion has expired and is no longer active
+            </div>
+        }
+    }
 
-@using (Html.BeginForm("Edit", "PromoCode", FormMethod.Post))
-{
     @Html.AntiForgeryToken()
-  
+
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Active)
     @Html.HiddenFor(x => x.CanModifyTriggerGoal)
@@ -41,7 +40,7 @@
             @Html.LabelFor(x => x.StartDate, new { @class = "control-label" })
             <div class="controls">
                 <div class="input-append date" id="StartDate" data-role='datepicker' data-date="">
-                    @Html.TextBoxFor(x => x.StartDate, new { @class = "input-small"})
+                    @Html.TextBoxFor(x => x.StartDate, new { @class = "input-small" })
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseStartDate">x</button>
@@ -63,37 +62,37 @@
     <div class="control-group">
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Sunday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Sunday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Sunday)) { <text> checked</text> }>
             Sunday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Monday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Monday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Monday)) { <text> checked</text> }>
             Monday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Tuesday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Tuesday)) { <text> checked</text> }>
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Tuesday)) { <text> checked</text> }>
             Tuesday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Wednesday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Wednesday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Wednesday)) { <text> checked</text> }>
             Wednesday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Thursday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Thursday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Thursday)) { <text> checked</text> }>
             Thursday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Friday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Friday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Friday)) { <text> checked</text> }>
             Friday
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name='DaysOfWeek[]' value="Saturday"
-                @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Saturday)) { <text> checked</text> }> 
+                    @if (Model.DaysOfWeek != null && Model.DaysOfWeek.Contains(DayOfWeek.Saturday)) { <text> checked</text> }>
             Saturday
         </label>
     </div>
@@ -197,15 +196,15 @@
     </div>
     <div class="clearfix" id="triggerDiv" data-toggle="popover" data-title="Trigger and goal cannot be modified because a user already started progress on the promotion.">
         <div class="control-group left-control-group" style="width: 55%">
-            @Html.LabelFor(x => x.TriggerSettings.Type, new {@class = "control-label"})
+            @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
             <div class="controls">
-                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new {@id = "triggerTypeDropDown"})
+                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
             </div>
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
             @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
-                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides", @class = "input-small"})
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
@@ -219,7 +218,7 @@
     </div>
 
     <div class="control-group btn-right-alignment">
-        <button type="submit" class="btn btn-primary span">Save</button>
+        <input type="submit" formaction='@Url.Action("Edit")' class="btn btn-primary span" value="Save" />
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
         @if (Model.Active)
         {
@@ -232,220 +231,220 @@
 
         @Html.ActionLink("Delete", "Delete", new { id = @Model.Id }, new { @class = "btn btn-danger span", @onclick = "return confirm('Are you sure you wish to delete this promotion?');" })
     </div>
-}
 
-<script type="text/javascript">
-    function _getTime($timepicker, date) {
-        var timepicker = $timepicker.data('timepicker');
+    <script type="text/javascript">
+        function _getTime($timepicker, date) {
+            var timepicker = $timepicker.data('timepicker');
 
-        if (!timepicker || timepicker.meridian === undefined) {
+            if (!timepicker || timepicker.meridian === undefined) {
+                return date;
+            }
+
+            var hour = timepicker.hour;
+
+            date = _.isDate(date) ? new Date(date) : new Date();
+
+            if (timepicker.meridian.toUpperCase() === "PM") {
+                if (hour < 12) {
+                    hour += 12;
+                }
+            } else if (timepicker.meridian.toUpperCase() === "AM") {
+                if (hour === 12) {
+                    hour = 0;
+                }
+            }
+
+            date.setHours(hour);
+            date.setMinutes(timepicker.minute);
+
             return date;
         }
 
-        var hour = timepicker.hour;
+        function ondatepickerchange(e) {
+            $('.datepicker').hide();
+        }
 
-        date = _.isDate(date) ? new Date(date) : new Date();
+        function ontimepickerchange(e) {
+            var startTime = this._getTime($('#StartTimeValue')),
+                endTime = this._getTime($('#EndTimeValue'));
 
-        if (timepicker.meridian.toUpperCase() === "PM") {
-            if (hour < 12) {
-                hour += 12;
-            }
-        } else if (timepicker.meridian.toUpperCase() === "AM") {
-            if (hour === 12) {
-                hour = 0;
+            if (endTime <= startTime) {
+                $('.next-day-warning').removeClass('hidden');
+            } else {
+                $('.next-day-warning').addClass('hidden');
             }
         }
 
-        date.setHours(hour);
-        date.setMinutes(timepicker.minute);
+        function onClearDateButtonPress(target) {
+            $('#' + target).datepicker("setValue", "");
+            $('[name=' + target + ']').val('');
+        }
 
-        return date;
-    }
+        function onTriggerTypeChanged(e) {
+            var dropDownValue = $('#triggerTypeDropDown')[0].value;
 
-    function ondatepickerchange(e) {
-        $('.datepicker').hide();
-    }
+            if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
+                $('#amountSpentTriggerGroup').addClass('hidden');
+                $('#publishedDatesGroup').addClass('hidden');
+                $('#rideCountTriggerGroup').removeClass('hidden');
+                $('#usageGroup').removeClass('hidden');
+            } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#publishedDatesGroup').addClass('hidden');
+                $('#amountSpentTriggerGroup').removeClass('hidden');
+                $('#usageGroup').removeClass('hidden');
+            } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#amountSpentTriggerGroup').addClass('hidden');
+                $('#publishedDatesGroup').addClass('hidden');
+                $('#usageGroup').addClass('hidden');
+            } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
+                $('#usageGroup').removeClass('hidden');
+                $('#amountSpentTriggerGroup').addClass('hidden');
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#publishedDatesGroup').addClass('hidden');
+            } else {
+                $('#publishedDatesGroup').removeClass('hidden');
+                $('#usageGroup').removeClass('hidden');
+                $('#amountSpentTriggerGroup').addClass('hidden');
+                $('#rideCountTriggerGroup').addClass('hidden');
+            }
+        }
 
-    function ontimepickerchange(e) {
-        var startTime = this._getTime($('#StartTimeValue')),
-            endTime = this._getTime($('#EndTimeValue'));
-
-        if (endTime <= startTime) {
-            $('.next-day-warning').removeClass('hidden');
-        } else {
+        $(document).ready(function () {
             $('.next-day-warning').addClass('hidden');
-        }
-    }
 
-    function onClearDateButtonPress(target) {
-        $('#' + target).datepicker("setValue", "");
-        $('[name=' + target + ']').val('');
-    }
-
-    function onTriggerTypeChanged(e) {
-        var dropDownValue = $('#triggerTypeDropDown')[0].value;
-
-        if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
-            $('#amountSpentTriggerGroup').addClass('hidden');
-            $('#publishedDatesGroup').addClass('hidden');
-            $('#rideCountTriggerGroup').removeClass('hidden');
-            $('#usageGroup').removeClass('hidden');
-        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
-            $('#rideCountTriggerGroup').addClass('hidden');
-            $('#publishedDatesGroup').addClass('hidden');
-            $('#amountSpentTriggerGroup').removeClass('hidden');
-            $('#usageGroup').removeClass('hidden');
-        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
-            $('#rideCountTriggerGroup').addClass('hidden');
-            $('#amountSpentTriggerGroup').addClass('hidden');
-            $('#publishedDatesGroup').addClass('hidden');
-            $('#usageGroup').addClass('hidden');
-        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
-            $('#usageGroup').removeClass('hidden');
-            $('#amountSpentTriggerGroup').addClass('hidden');
-            $('#rideCountTriggerGroup').addClass('hidden');
-            $('#publishedDatesGroup').addClass('hidden');
-        } else {
-            $('#publishedDatesGroup').removeClass('hidden');
-            $('#usageGroup').removeClass('hidden');
-            $('#amountSpentTriggerGroup').addClass('hidden');
-            $('#rideCountTriggerGroup').addClass('hidden');
-        }
-    }
-
-    $(document).ready(function () {
-        $('.next-day-warning').addClass('hidden');
-
-        @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
-        {
-            <text>
+            @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+    {
+        <text>
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
             </text>
-        }
-        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
-        {
-            <text>
+    }
+    else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
+    {
+        <text>
             $('#rideCountTriggerGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
             </text>
-        } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated) {
-            <text>
+    } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated) {
+        <text>
             $('#rideCountTriggerGroup').addClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
             </text>
-        } 
-        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport) {
-            <text>
+    }
+    else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport) {
+        <text>
             $('#usageGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             </text>
-        }
-        else {
-            <text>
+    }
+    else {
+        <text>
             $('#rideCountTriggerGroup').addClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             </text>
-        }
+    }
 
-        $('#triggerTypeDropDown').change(function (e) {
-            onTriggerTypeChanged(e);
-        });
-
-        $('[data-role=datepicker]').datepicker()
-            .on('changeDate.datepicker', function (e) {
-                ondatepickerchange(e);
+            $('#triggerTypeDropDown').change(function (e) {
+                onTriggerTypeChanged(e);
             });
 
-        $('[data-role=datepicker]').datepicker({
-            autoclose: true,
-            todayBtn: true,
-            todayHighlight: true
-        });
+            $('[data-role=datepicker]').datepicker()
+                .on('changeDate.datepicker', function (e) {
+                    ondatepickerchange(e);
+                });
 
-        $('[data-role=timepicker]').timepicker({
-            defaultTime: false,
-            disableFocus: true
-        }).on('changeTime.timepicker', function (e) {
-            ontimepickerchange(e);
-        });
+            $('[data-role=datepicker]').datepicker({
+                autoclose: true,
+                todayBtn: true,
+                todayHighlight: true
+            });
 
-        // Ensures that click in the date textbox fields also open the datepicker.
-        $('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
-            $('#' + e.target.id).datepicker('show');
-        });
+            $('[data-role=timepicker]').timepicker({
+                defaultTime: false,
+                disableFocus: true
+            }).on('changeTime.timepicker', function (e) {
+                ontimepickerchange(e);
+            });
 
-        $('#eraseStartDate').click(function (e) {
-            onClearDateButtonPress("StartDate");
-        });
-        $('#eraseEndDate').click(function () {
-            onClearDateButtonPress("EndDate");
-        });
-        $('#erasePublishedStartDate').click(function () {
-            onClearDateButtonPress("PublishedStartDate");
-        });
-        $('#erasePublishedEndDate').click(function () {
-            onClearDateButtonPress("PublishedEndDate");
-        });
+            // Ensures that click in the date textbox fields also open the datepicker.
+            $('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
+                $('#' + e.target.id).datepicker('show');
+            });
 
-        $('#eraseStartTime').click(function () {
-            $('#StartTimeValue').val('');
-            $('.next-day-warning').addClass('hidden');
-        });
-        $('#eraseEndTime').click(function () {
-            $('#EndTimeValue').val('');
-            $('.next-day-warning').addClass('hidden');
-        });
+            $('#eraseStartDate').click(function (e) {
+                onClearDateButtonPress("StartDate");
+            });
+            $('#eraseEndDate').click(function () {
+                onClearDateButtonPress("EndDate");
+            });
+            $('#erasePublishedStartDate').click(function () {
+                onClearDateButtonPress("PublishedStartDate");
+            });
+            $('#erasePublishedEndDate').click(function () {
+                onClearDateButtonPress("PublishedEndDate");
+            });
 
-        @if (Model.StartTime.HasValue)
-        {
-            <text>$('[data-role=timepicker][name=StartTimeValue]').data('timepicker').setTime('@Model.StartTimeValue');</text>
-        }
-        @if (Model.EndTime.HasValue)
-        {
-            <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
-        }
+            $('#eraseStartTime').click(function () {
+                $('#StartTimeValue').val('');
+                $('.next-day-warning').addClass('hidden');
+            });
+            $('#eraseEndTime').click(function () {
+                $('#EndTimeValue').val('');
+                $('.next-day-warning').addClass('hidden');
+            });
 
-        @if (Model.StartDate.HasValue)
-        {
-            var startDate = @Html.Raw(Json.Encode(Model.StartDate));
-            <text>$('#StartDate').datepicker('setValue', moment(@startDate).format('L'));</text>
-        }
-        @if (Model.EndDate.HasValue)
-        {
-            var endDate = @Html.Raw(Json.Encode(Model.EndDate));
-            <text>$('#EndDate').datepicker('setValue', moment(@endDate).format('L'));</text>
-        }
-        @if (Model.PublishedStartDate.HasValue)
-        {
-            var publishedStartDate = @Html.Raw(Json.Encode(Model.PublishedStartDate));
-            <text>$('#PublishedStartDate').datepicker('setValue', moment(@publishedStartDate).format('L'));</text>
-        }
-        @if (Model.PublishedEndDate.HasValue)
-        {
-            var publishedEndDate = @Html.Raw(Json.Encode(Model.PublishedEndDate));
-            <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).format('L'));</text>
-        }
+            @if (Model.StartTime.HasValue)
+    {
+        <text>$('[data-role=timepicker][name=StartTimeValue]').data('timepicker').setTime('@Model.StartTimeValue');</text>
+    }
+            @if (Model.EndTime.HasValue)
+    {
+        <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
+    }
 
-        @if (!Model.CanModifyTriggerGoal)
-        {
-            <text>
-        $('#triggerTypeDropDown').addClass('disabled');
-        $('#triggerTypeDropDown').attr('disabled', 'disabled');
-        $('#TriggerSettings_RideCount').addClass('disabled');
-        $('#TriggerSettings_RideCount').attr('disabled', 'disabled');
-        $('#TriggerSettings_AmountSpent').addClass('disabled');
-        $('#TriggerSettings_AmountSpent').attr('disabled', 'disabled');
-        $("#triggerDiv").popover({
-            trigger: 'hover',
-            container: 'body',
-            placement: 'left',
-            show: true
+            @if (Model.StartDate.HasValue)
+    {
+        var startDate = @Html.Raw(Json.Encode(Model.StartDate));
+        <text>$('#StartDate').datepicker('setValue', moment(@startDate).format('L'));</text>
+    }
+            @if (Model.EndDate.HasValue)
+    {
+        var endDate = @Html.Raw(Json.Encode(Model.EndDate));
+        <text>$('#EndDate').datepicker('setValue', moment(@endDate).format('L'));</text>
+    }
+            @if (Model.PublishedStartDate.HasValue)
+    {
+        var publishedStartDate = @Html.Raw(Json.Encode(Model.PublishedStartDate));
+        <text>$('#PublishedStartDate').datepicker('setValue', moment(@publishedStartDate).format('L'));</text>
+    }
+            @if (Model.PublishedEndDate.HasValue)
+    {
+        var publishedEndDate = @Html.Raw(Json.Encode(Model.PublishedEndDate));
+        <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).format('L'));</text>
+    }
+
+            @if (!Model.CanModifyTriggerGoal)
+    {
+        <text>
+            $('#triggerTypeDropDown').addClass('disabled');
+            $('#triggerTypeDropDown').attr('disabled', 'disabled');
+            $('#TriggerSettings_RideCount').addClass('disabled');
+            $('#TriggerSettings_RideCount').attr('disabled', 'disabled');
+            $('#TriggerSettings_AmountSpent').addClass('disabled');
+            $('#TriggerSettings_AmountSpent').attr('disabled', 'disabled');
+            $("#triggerDiv").popover({
+                trigger: 'hover',
+                container: 'body',
+                placement: 'left',
+                show: true
+            });
+            </text>
+    }
         });
-        </text>
-        }
-    });
-</script>
+    </script>
+</div>

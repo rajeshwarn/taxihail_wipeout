@@ -15,7 +15,8 @@
             android:paddingRight="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:gravity="start|center_vertical" />
+            android:gravity="start|center_vertical"
+            android:background="@android:color/transparent" />
         <apcurium.mk.booking.mobile.client.controls.SpinnerOtherSupport
             android:id="@+id/spinner"
             android:layout_width="1dp"

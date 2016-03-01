@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookingBarDropOffSelection"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarDropOffSelection">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hqR-yk-oWK" userLabel="Cancel" customClass="FlatButton">
+                    <rect key="frame" x="8" y="8" width="148" height="40"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="qmX-X7-7wd"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7l4-07-K5R" userLabel="Ok" customClass="FlatButton">
+                    <rect key="frame" x="164" y="8" width="148" height="40"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="zGR-7K-mRi"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="EGV-VM-Qqt"/>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="width" secondItem="7l4-07-K5R" secondAttribute="width" id="LQq-CE-4Ui"/>
+                <constraint firstItem="7l4-07-K5R" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Q6Q-vD-BeT"/>
+                <constraint firstAttribute="trailing" secondItem="7l4-07-K5R" secondAttribute="trailing" constant="8" id="Ryj-Lr-cW4"/>
+                <constraint firstItem="hqR-yk-oWK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lOo-4J-SDS"/>
+                <constraint firstItem="7l4-07-K5R" firstAttribute="leading" secondItem="hqR-yk-oWK" secondAttribute="trailing" constant="8" id="yYX-Za-gDO"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnCancel" destination="hqR-yk-oWK" id="GL6-jd-9tW"/>
+                <outlet property="btnOk" destination="7l4-07-K5R" id="gPl-0b-Oey"/>
+            </connections>
+        </view>
+    </objects>
+</document>

@@ -71,6 +71,8 @@
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
             TaxiHail.parameters.isChargeAccountPaymentEnabled = <%: IsChargeAccountPaymentEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isBraintreePrepaidEnabled = <%: IsBraintreePrepaidEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isCMTEnabled = <%: IsCMTEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isRideLinqCMTEnabled = <%: IsRideLinqCMTEnabled ? "true" : "false" %>;
             TaxiHail.parameters.maxNumberOfCreditCards = <%: MaxNumberOfCreditCards %>;
             TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
@@ -81,6 +83,7 @@
             TaxiHail.parameters.autoConfirmFleetChange = <%: AutoConfirmFleetChange ? "true" : "false" %>;
             TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
             TaxiHail.parameters.askForCVVAtBooking = <%: AskForCVVAtBooking ? "true" : "false" %>;
+            TaxiHail.parameters.disableAMEX = <%: DisableAMEX ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
@@ -93,6 +96,8 @@
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isCraftyClicksEnabled = "<%: IsCraftyClicksEnabled ? "true" : "false" %>";
             TaxiHail.parameters.webSiteRootPath = "<%: WebSiteRootPath %>";
+            TaxiHail.parameters.showOrderNumber = <%: ShowOrderNumber ? "true" : "false" %>;
+            TaxiHail.parameters.isPaymentOutOfAppDisabled = "<%: IsPaymentOutOfAppDisabled %>";
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
