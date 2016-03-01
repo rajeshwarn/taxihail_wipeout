@@ -4,6 +4,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -38,6 +39,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						await _accountService.ResetPassword(Email);
 						this.ReturnResult(Email);
                     }
+					catch(WebException e)
+					{
+						var title = this.Services().Localize["ServiceErrorCallTitle"];
+						var msg = e.Message;
+						if(String.Equals(e.Message, "NoNetwork"))
+						{
+							msg = this.Services().Localize["RideSettingsCannotLoadListMessage"];
+						}
+						this.Services().Message.ShowMessage(title, msg);
+					}
 					catch(Exception e)
                     {
                         var msg = this.Services().Localize["ServiceError" + e.Message];

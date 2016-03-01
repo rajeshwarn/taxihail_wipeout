@@ -1,15 +1,21 @@
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System;
+using apcurium.MK.Common;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class TermsAndConditionsViewModel : PageViewModel
 	{
 		private readonly ITermsAndConditionsService _termsService;
+        private readonly IConnectivityService _connectivityService;
 
-		public TermsAndConditionsViewModel(ITermsAndConditionsService termsService)
+
+        public TermsAndConditionsViewModel(ITermsAndConditionsService termsService, IConnectivityService connectivityService)
 		{
 			_termsService = termsService;
+            _connectivityService = connectivityService;
 		}
 
         public override async void OnViewStarted(bool firstTime)
@@ -17,8 +23,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.OnViewStarted(firstTime);
             using (this.Services().Message.ShowProgressNonModal())
             {
-                var terms = await _termsService.GetTerms();
-                TermsAndConditions = terms.Content;
+				try
+				{
+					var terms = await _termsService.GetTerms();
+                    TermsAndConditions = terms.Content;
+				}
+				catch(WebException e)
+				{
+                    // Happen when device is not connected
+                    _connectivityService.ShowToast();
+				}
+
             }
         }
 

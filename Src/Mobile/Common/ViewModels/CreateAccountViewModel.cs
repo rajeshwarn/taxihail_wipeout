@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
 using System.Globalization;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -177,6 +178,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							if (error.Trim().IsNullOrEmpty())
 							{
 								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
+							}
+							else if (String.Equals(error, "NoNetwork"))
+							{
+								error = this.Services().Localize["RideSettingsCannotLoadListMessage"];
 							}
 							if (this.Services().Localize[error] != error)
 							{
