@@ -228,7 +228,7 @@
   <string name="NetworkErrorTitle">لا يوجد إتصال بالشبكة</string>
   <string name="NoAptText">رقم الشقة</string>
   <string name="NoButton">لا</string>
-  <string name="NoConnectionMessage">لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</string>
+  <string name="NoConnectionMessage">The server cannot be contacted.</string>
   <string name="NoConnectionTitle">خطأ في الإتصال</string>
   <string name="NoCreditCardSelected">الرجاء اختيار بطاقة الائتمان</string>
   <string name="NoFareText">اختر وجهة للحصول على سعر تقريبي.</string>

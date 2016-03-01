@@ -112,8 +112,8 @@
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "CreditCardErrorTitle"="No podemos guardar su tarjeta de crédito";
 "CreditCardError_Label"="Cannot save credit card label. Please try again";
-"CreditCardExpMonth"="Fecha de expiración";
-"CreditCardExpYear"="Mes de expiración";
+"CreditCardExpMonth"="Mes de Expiración";
+"CreditCardExpYear"="Año de Expiración";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
 "CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
@@ -254,7 +254,7 @@
 "CreditCardExpiredTitle"="Tarjeta expirada.";
 "CardExpiredNonMandatoryMessage"="Su tarjeta de crédito ha expirado. Su cuenta está ahora configurada para pagar en el vehículo. Si usted desea continuar usando su tarjeta de crédito, puede hacer click en Actualizar.";
 "CreditCardExpiredUpdateNow"="Actualizar ahora";
-"NoConnectionMessage"="El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet";
+"NoConnectionMessage"="El servidor no puede ser contactado.";
 "NoConnectionTitle"="Error en conexión";
 "NoCreditCardSelected"="Por favor seleccione una tarjeta de crédito";
 "NoFareText"="Seleccione un destino para proveer estimado de costo";

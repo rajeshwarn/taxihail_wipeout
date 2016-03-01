@@ -56,7 +56,7 @@ namespace apcurium.MK.Common.Entity
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
             var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
 
             if ((components.Length <= 1) || !StreetNumber.HasValueTrimmed() || !Street.HasValueTrimmed() || !City.HasValueTrimmed())
             {
