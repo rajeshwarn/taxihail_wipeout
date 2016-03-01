@@ -26,10 +26,9 @@ namespace apcurium.MK.Web.Security
             AllowMultiple = true;
             _accountDao = UnityConfig.GetConfiguredContainer().Resolve<IAccountDao>();
             _cacheClient = UnityConfig.GetConfiguredContainer().Resolve<ICacheClient>();
-
-
-            Roles = new[] {Booking.Security.Roles.None};
         }
+
+        public string Role { get; set; } = RoleName.None;
 
         public bool AllowMultiple { get; }
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
@@ -63,7 +62,7 @@ namespace apcurium.MK.Web.Security
 
             var account = _accountDao.FindById(cachedSession.UserId);
 
-            if (Roles.Cast<int>().None(r => account.Roles >= r))
+            if (Role != RoleName.None && account.RoleNames.None(name => name == Role))
             {
                 context.ErrorResult = new AuthenticationFailureResult("User not authorized", context.Request);
             }
@@ -80,7 +79,5 @@ namespace apcurium.MK.Web.Security
             context.Result = new UnauthorizedResult(challenge, context.Request);
             return Task.FromResult(0);
         }
-
-        public Roles[] Roles { get; set; }
     }
 }

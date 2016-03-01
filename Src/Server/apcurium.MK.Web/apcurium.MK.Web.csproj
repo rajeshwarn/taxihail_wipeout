@@ -744,6 +744,7 @@
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
     <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
+    <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\Api\FlightInformationController.cs" />
