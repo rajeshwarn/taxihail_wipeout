@@ -2381,8 +2381,6 @@
   <data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
     <value>URL is missing</value>
   </data>
-  <data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
-  </data>
   <data name="BaseRate_PerMileRate" xml:space="preserve">
 	<value>Per Mile Rate</value>
   </data>
@@ -2477,9 +2475,6 @@
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
   	<value>Actualizar Tarjeta</value>
   	<comment>Update Card</comment>
-  </data>
-  <data name="ManualRideLinqDeactivatedCardOnFile" xml:space="preserve">
-    <comment>You need to have an active credit card set as your default payment method</comment>
   </data>
   <data name="LastFour" xml:space="preserve">
     <value>Los últimos 4 números:  </value>
