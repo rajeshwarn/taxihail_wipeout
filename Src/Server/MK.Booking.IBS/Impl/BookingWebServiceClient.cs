@@ -525,9 +525,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
                 promptsLength, defaultVehiculeTypeId, tipIncentive, tipPercent, fare, orderId);
 
-            var orderKey = new TBookOrderKey();
-            var vehicleComps = Mapper.Map<TVehicleComp[]>(vehicleCandidates);
-
+            var orderKey = -1;
+            
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Hail : " +
@@ -537,18 +536,18 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                // NOTE: vehicleComps not present on SaveBookOrder_14, key returned not proper type.
-                orderKey = service.SaveBookOrder_14(UserNameApp, PasswordApp, order, vehicleComps);
-                
-                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
+                // NOTE: vehicleComps parameter not present on SaveBookOrder_14
+                orderKey = service.SaveBookOrder_14(UserNameApp, PasswordApp, order);
+
+                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey + ", no orderGUID received (SaveBookOrder_14 returns only an integer)");
             });
 
             return new IbsHailResponse
             {
                 OrderKey = new IbsOrderKey
                 {
-                    TaxiHailOrderId = orderKey.GUID.HasValue() ? Guid.Parse(orderKey.GUID) : Guid.Empty,
-                    IbsOrderId = orderKey.OrderID
+                    TaxiHailOrderId = Guid.Empty,
+                    IbsOrderId = orderKey
                 }
             };
         }
