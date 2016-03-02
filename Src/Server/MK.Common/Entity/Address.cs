@@ -53,18 +53,48 @@ namespace apcurium.MK.Common.Entity
             get { return ConcatAddressComponents(true); }
         }
 
+        private string FirstSectionOfDisplayAddress
+        {
+            get
+            {
+                var firstSection = string.Join(" ", StreetNumber.ToSafeString(), Street.ToSafeString());
+                if (!firstSection.HasValueTrimmed())
+                {
+                    firstSection = FullAddress;
+                }
+
+                return firstSection;
+            }
+        }
+
+        public string LastSectionOfDisplayAddress
+        {
+            get
+            {
+                var lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
+                if (!lastSection.HasValueTrimmed())
+                {
+                    lastSection = string.Empty;
+                }
+
+                return lastSection;
+            }
+        }
+
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
-            var components =
-                new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            var addressSections =
+                new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
 
-            if ((components.Length <= 1) || !StreetNumber.HasValueTrimmed() || !Street.HasValueTrimmed() || !City.HasValueTrimmed())
+            if (LastSectionOfDisplayAddress.HasValueTrimmed() 
+                && FirstSectionOfDisplayAddress.Contains(LastSectionOfDisplayAddress))
             {
-                return FullAddress;
+                // special case where we only had a FullAddress that we added value to but we don't want to redo the loop again
+                return FirstSectionOfDisplayAddress;
             }
 
-            // StreetNumber Street, City, State ZipCode
-            var address = string.Join(", ", string.Join(" ", StreetNumber, Street), City, string.Join(" ", State, ZipCode));
+            // should return ("StreetNumber Street" or "FullAddress"), City, State ZipCode
+            var address = string.Join(", ", addressSections);
 
             if (useBuildingName && BuildingName.HasValueTrimmed())
             {
@@ -76,13 +106,13 @@ namespace apcurium.MK.Common.Entity
             // We also check that the street doesn't contain the city, ie: "11000 Garden Grove Blvd, Garden Grove, CA 92843"
             if (FullAddress.HasValueTrimmed())
             {
-                if (!FullAddress.Contains(City))
+                if (!FullAddress.Contains(City.ToSafeString()))
                 {
                     FullAddress = address;
                 }
                 else
                 {
-                    if (Street.Contains(City))
+                    if (Street.ToSafeString().Contains(City.ToSafeString()))
                     {
                         FullAddress = address;
                     }
@@ -143,7 +173,10 @@ namespace apcurium.MK.Common.Entity
 			{
 				if (AddressType == "place" || FriendlyName.HasValue())
 				{
-					return DisplayAddress;
+				    if (!DisplayAddress.Contains(FriendlyName))
+				    {
+                        return DisplayAddress;
+                    }
 				}
 
                 if (DisplayAddress == null)

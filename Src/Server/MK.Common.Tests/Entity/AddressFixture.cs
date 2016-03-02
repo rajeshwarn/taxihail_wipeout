@@ -44,7 +44,7 @@ namespace apcurium.MK.Common.Tests.Entity
         [Test]
         public void FullAddress_should_always_contain_city()
         {
-            var address = new Address
+            var address1 = new Address
             {
                 FriendlyName = "Costco Wholesale",
                 StreetNumber = "11000",
@@ -56,10 +56,28 @@ namespace apcurium.MK.Common.Tests.Entity
                 AddressType = "postal"
             };
 
-            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.DisplayAddress);
-            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.FullAddress);
-            Assert.AreEqual("Costco Wholesale", address.DisplayLine1);
-            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.DisplayLine2);
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address1.DisplayAddress);
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address1.FullAddress);
+            Assert.AreEqual("Costco Wholesale", address1.DisplayLine1);
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address1.DisplayLine2);
+
+            var address2 = new Address
+            {
+                FriendlyName = "Knotts Scary Farm",
+                StreetNumber = "",
+                Street = null,
+                City = "Buena Park",
+                FullAddress = "Knotts Scary Farm",
+                State = "CA",
+                ZipCode = "90620",
+                AddressType = "postal",
+                AddressLocationType = AddressLocationType.Unspecified
+            };
+
+            Assert.AreEqual("Knotts Scary Farm, Buena Park, CA 90620", address2.DisplayAddress);
+            Assert.AreEqual("Knotts Scary Farm, Buena Park, CA 90620", address2.FullAddress);
+            Assert.AreEqual("Knotts Scary Farm", address2.DisplayLine1);
+            Assert.AreEqual("Buena Park, CA 90620", address2.DisplayLine2);
         }
 
         [Test]
