@@ -100,6 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				KeyboardType = UIKeyboardType.EmailAddress
 			}.Bind (bindings, vm => vm.Data.Email);
 
+            emailEntryElement.IsInputEnabled = !ViewModel.HasSocialInfo;
 
             var phoneNumberInfo = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
 			var phoneEditorElement = new PhoneEditorElement(string.Empty, phoneNumberInfo, NavigationController, Localize.GetValue("CreateAccountPhonePlaceHolder"));
@@ -110,10 +111,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				phoneEditorElement
 			};
 
-			if (!ViewModel.HasSocialInfo) {
+			if (!ViewModel.HasSocialInfo)
+            {
 				constraintTableViewHeight.Constant += entryElementHeight * 2;
 
-				section.AddAll (new List<Element> { 
+				section.AddAll (new List<Element>
+                { 
 					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true)
 						.Bind(bindings, vm => vm.Data.Password), 
 					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true)

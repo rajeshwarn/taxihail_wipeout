@@ -48,19 +48,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Email = email,
                 Country = PhoneNumber.Country
 			};
-			#if DEBUG
-			Data.Email = "testaccount@net.net";
-			Data.Name = "test account" ;
-            Data.Country = new CountryISOCode("CA");
-			Data.Phone = "5147777777";
-			Data.Password = "password";
-			ConfirmPassword = "password";
-            PhoneNumber.Country = Data.Country;
-            PhoneNumber.PhoneNumber = Data.Phone;
-			#endif
-		}
+#if DEBUG
+         
+            // If we are using facebook id or twitterid we should not override the values provided by facebook or twitter.
+           
+            if (!facebookId.HasValue() && !twitterId.HasValue())
+            {
+                Data.Email = "testaccount@net.net";
+                Data.Name = "test account";
+                Data.Country = new CountryISOCode("CA");
+                Data.Password = "password";
+                ConfirmPassword = "password";
+                return;
+             }
+            
+             Data.Phone = "5147777777";
+             PhoneNumber.Country = Data.Country;
+             PhoneNumber.PhoneNumber = Data.Phone;
+#endif
+        }
 
-		private bool _termsAndConditionsAcknowledged;
+        private bool _termsAndConditionsAcknowledged;
+
 		public bool TermsAndConditionsAcknowledged 
 		{
 			get { return !Settings.ShowTermsAndConditions || _termsAndConditionsAcknowledged; }

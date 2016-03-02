@@ -20,6 +20,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isPassword = isPassword;
 		}
 
+        private bool _isInputEnabled = true;
+
+		public bool IsInputEnabled
+		{
+			get
+			{
+				return _isInputEnabled;
+			}
+			set
+			{
+				_isInputEnabled = value;
+
+				if (Entry != null)
+				{
+					UIApplication.SharedApplication.InvokeOnMainThread(() =>
+					{
+						Entry.Enabled = value;
+					});
+				}
+			}
+		}
+
 		protected override UITextField CreateTextField(CGRect frame)
 		{
             var textField = base.CreateTextField(frame.SetX(Padding).SetWidth(UIScreen.MainScreen.Bounds.Width - 2*Margin - 2*Padding));
@@ -33,7 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             textField.AdjustsFontSizeToFitWidth = true;
             textField.AccessibilityLabel = Placeholder;
 
-			if (_isPassword) 
+            textField.Enabled = _isInputEnabled;
+
+            if (_isPassword) 
             {
 				this.AutocapitalizationType = UITextAutocapitalizationType.None;
 			}
