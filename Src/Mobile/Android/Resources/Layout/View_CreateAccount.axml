@@ -55,7 +55,10 @@
                     <LinearLayout
                         android:background="@drawable/dialog_background"
                         android:id="@+id/registerContainer"
-                        android:padding="0dp"
+                        android:paddingTop="1dp"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
                         android:layout_alignParentBottom="true"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
