@@ -43,7 +43,7 @@
     "OrderNotInIbs": "Onbekende Order",
     "NearbyPlaces_LocationRequired": "Locatie nodig",
     "Search_Locations_NameRequired": "Naam nodig",
-    "EstimatedFareWarning": Let op: Het tarief dat door de App wordt bepaald is slechts een schatting. Het werkelijke tarief wordt bepaald door de taximeter in combinatie met van toepassing zijnde basistarieven en extra's. Het tarief  wordt aan het eind van de rit berekend.",
+    "EstimatedFareWarning": "Let op: Het tarief dat door de App wordt bepaald is slechts een schatting. Het werkelijke tarief wordt bepaald door de taximeter in combinatie met van toepassing zijnde basistarieven en extra's. Het tarief  wordt aan het eind van de rit berekend.",
     "Password required" : "Wachtwoord nodig",
     "Password are not the same": "De wachtwoorden komen niet overeen.",
     "Password length":    "Het wachtwoord moet een lengte hebben van tenminste zes tekens",
