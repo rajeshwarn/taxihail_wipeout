@@ -27,12 +27,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<TermsAndConditions> GetTerms()
         {
-    	    return UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions(),
-                error =>
-                {
-                    throw error;   
-                }
-            );
+            return UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions(),
+				error=>
+				{
+					throw error;
+				}
+			);
         }
 
 		public async Task CheckIfNeedsToShowTerms(Action<object, Action<bool>> actionToDoIfTrue, Action<bool, ZoomToStreetLevelPresentationHint> actionToDoOnReturn, bool initialLocateUserValue, ZoomToStreetLevelPresentationHint initialHintValue)
