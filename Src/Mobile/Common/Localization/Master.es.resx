@@ -571,11 +571,11 @@
     <value>Cannot save credit card label. Please try again</value>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
-    <value>Fecha de expiración</value>
+    <value>Mes de Expiración</value>
     <comment>Exp. Month</comment>
   </data>
   <data name="CreditCardExpYear" xml:space="preserve">
-    <value>Mes de expiración</value>
+    <value>Año de Expiración</value>
     <comment>Exp. Year</comment>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">

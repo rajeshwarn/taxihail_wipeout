@@ -446,6 +446,7 @@
     <None Include="Localization\ArroUAT.resx" />
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="TutorialContent\Tutorial-nl.json" />
+    <None Include="Localization\FLAT RATE.resx" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>
