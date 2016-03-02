@@ -279,7 +279,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (Status.FareAvailable)
 			    {
-					var paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll + Order.Surcharge;
+					var paymentAmount = Order.Fare.GetValueOrDefault() 
+						+ Order.Tip.GetValueOrDefault() 
+						+ Order.Tax.GetValueOrDefault() 
+						+ Order.Toll.GetValueOrDefault() 
+						+ Order.Surcharge.GetValueOrDefault();
 
 					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
 			    }
