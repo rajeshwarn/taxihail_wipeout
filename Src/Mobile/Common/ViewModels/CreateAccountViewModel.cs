@@ -49,21 +49,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Country = PhoneNumber.Country
 			};
 			#if DEBUG
+
 			// If we are using facebook id or twitterid we should not override the values provided by facebook or twitter.
-			if(facebookId.HasValue() || twitterId.HasValue())
+			if(!facebookId.HasValue() && !twitterId.HasValue())
 			{
-				Data.Phone = "5147777777";
-				PhoneNumber.Country = Data.Country;
-				PhoneNumber.PhoneNumber = Data.Phone;
-				return;
+                Data.Email = "testaccount@net.net";
+                Data.Name = "test account";
+                Data.Country = new CountryISOCode("CA");
+                Data.Password = "password";
+                ConfirmPassword = "password";
+                return;
 			}
 
-			Data.Email = "testaccount@net.net";
-			Data.Name = "test account" ;
-            Data.Country = new CountryISOCode("CA");
 			Data.Phone = "5147777777";
-			Data.Password = "password";
-			ConfirmPassword = "password";
             PhoneNumber.Country = Data.Country;
             PhoneNumber.PhoneNumber = Data.Phone;
 			#endif

@@ -20,17 +20,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isPassword = isPassword;
 		}
 
-		private bool _isUnputEnabled = true;
+		private bool _isInputEnabled = true;
 
 		public bool IsInputEnabled
 		{
 			get
 			{
-				return _isUnputEnabled;
+				return _isInputEnabled;
 			}
 			set
 			{
-				_isUnputEnabled = value;
+				_isInputEnabled = value;
 
 				if (Entry != null)
 				{
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             textField.AdjustsFontSizeToFitWidth = true;
             textField.AccessibilityLabel = Placeholder;
 
-			textField.Enabled = _isUnputEnabled;
+			textField.Enabled = _isInputEnabled;
 
 			if (_isPassword) 
             {
