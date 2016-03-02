@@ -279,16 +279,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (Status.FareAvailable)
 			    {
-					// this fix is due to info in database when [OrderDetail].[Fare] includes [OrderDetail].[Tip]
-					double? paymentAmount;
-					if (_clientPaymentSettings.PaymentMode == PaymentMethod.Cmt || _clientPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-					{
-						paymentAmount = Order.Fare;
-					}
-					else
-					{
-						paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
-					}
+					var paymentAmount = Order.Fare.GetValueOrDefault() 
+						+ Order.Tip.GetValueOrDefault() 
+						+ Order.Tax.GetValueOrDefault() 
+						+ Order.Toll.GetValueOrDefault() 
+						+ Order.Surcharge.GetValueOrDefault();
 
 					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
 			    }
