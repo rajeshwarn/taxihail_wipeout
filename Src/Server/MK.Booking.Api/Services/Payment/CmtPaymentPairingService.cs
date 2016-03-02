@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public object Post(CmtPaymentPairingRequest request)
         {
             _logger.LogMessage("Pairing info received for order {0} and PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
-            if (Guid.Empty == request.OrderUuid || request.PairingToken.HasValueTrimmed())
+            if (Guid.Empty == request.OrderUuid || !request.PairingToken.HasValueTrimmed())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
             }
