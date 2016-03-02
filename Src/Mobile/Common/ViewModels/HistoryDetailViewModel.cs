@@ -282,10 +282,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var paymentAmount = Order.Fare.GetValueOrDefault() 
 						+ Order.Tip.GetValueOrDefault() 
 						+ Order.Tax.GetValueOrDefault() 
-						+ Order.Toll.GetValueOrDefault() 
+						+ Order.Toll.GetValueOrDefault()
 						+ Order.Surcharge.GetValueOrDefault();
 
-					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
+					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
 			    }
 			    else if (Status.IsManualRideLinq)
 			    {
