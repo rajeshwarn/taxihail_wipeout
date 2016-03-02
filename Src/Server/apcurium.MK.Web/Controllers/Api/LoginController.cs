@@ -18,7 +18,7 @@ using MK.Common.DummyServiceStack;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/auth")]
+    [RoutePrefix("login")]
     public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api
         }
 
         [HttpPost]
-        [Route("credentialsfb")]
+        [Route("facebook")]
         public AuthResponse LoginFacebook(Auth request)
         {
             var account = _accountDao.FindByFacebookId(request.UserName);
@@ -54,7 +54,7 @@ namespace apcurium.MK.Web.Controllers.Api
         }
 
         [HttpPost]
-        [Route("credentialstw")]
+        [Route("twitter")]
         public AuthResponse LoginTwitter(Auth request)
         {
             var account = _accountDao.FindByTwitterId(request.UserName);
@@ -68,7 +68,7 @@ namespace apcurium.MK.Web.Controllers.Api
         }
         
         [HttpPost]
-        [Route("credentials")]
+        [Route("password")]
         public AuthResponse Login(Auth request)
         {
             var account = _accountDao.FindByEmail(request.UserName);

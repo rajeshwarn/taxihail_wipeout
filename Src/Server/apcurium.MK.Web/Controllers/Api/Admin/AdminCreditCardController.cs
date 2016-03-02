@@ -29,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             _commandBus = commandBus;
         }
 
-        [HttpDelete, Auth(Roles = new[] { Roles.Support, }), Route("deleteAllCreditCards/{accountId}")]
+        [HttpDelete, Auth(Role = RoleName.Support), Route("deleteAllCreditCards/{accountId}")]
         public HttpResponseMessage Delete(Guid accountId)
         {
             if (_creditCardDao.FindByAccountId(accountId).None())

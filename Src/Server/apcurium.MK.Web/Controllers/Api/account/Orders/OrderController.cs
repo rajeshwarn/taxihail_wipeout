@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -24,7 +25,7 @@ using CancelOrder = apcurium.MK.Booking.Api.Contract.Requests.CancelOrder;
 
 namespace apcurium.MK.Web.Controllers.Api.account
 {
-    [RoutePrefix("api/account/orders")]
+    [System.Web.Http.RoutePrefix("api/account/orders")]
     [Auth]
     public class OrderController : BaseApiController
     {
@@ -58,9 +59,9 @@ namespace apcurium.MK.Web.Controllers.Api.account
             _resources = new Booking.Resources.Resources(serverSettings);
         }
 
-        [HttpGet]
-        [Route("{orderId}")]
-        public Order GetOrder(Guid orderId)
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("{orderId}")]
+        public IHttpActionResult GetOrder(Guid orderId)
         {
             var orderDetail = _orderDao.FindById(orderId);
             var account = _accountDao.FindById(GetSession().UserId);
@@ -68,6 +69,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             if (orderDetail == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, "Order Not Found");
+
             }
 
             if (account.Id != orderDetail.AccountId)
@@ -91,11 +93,11 @@ namespace apcurium.MK.Web.Controllers.Api.account
                 result.PromoCode = promoUsed.Code;
             }
 
-            return result;
+            return Ok(result);
         }
 
-        [HttpDelete]
-        [Route("{orderId}")]
+        [System.Web.Http.HttpDelete]
+        [System.Web.Http.Route("{orderId}")]
         public object DeleteOrder(Guid orderId)
         {
             var orderDetail = _orderDao.FindById(orderId);
@@ -111,8 +113,8 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [HttpGet]
-        [Route("{OrderId}/calldriver")]
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("{OrderId}/calldriver")]
         public object InitiateCallToDriver(Guid orderId)
         {
             var order = _orderDao.FindById(orderId);
@@ -143,8 +145,8 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return false;
         }
 
-        [HttpPost]
-        [Route("{OrderId}/cancel")]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("{OrderId}/cancel")]
         public object CancelOrder(CancelOrder request)
         {
             var order = _orderDao.FindById(request.OrderId);

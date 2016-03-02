@@ -14,7 +14,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("admin"), Auth(Roles = new[] { Roles.Support })]
+    [RoutePrefix("admin"), Auth(Role = RoleName.Support)]
     public class DefaultFavoriteAddressController : BaseApiController
     {
         private readonly ICommandBus _commandBus;

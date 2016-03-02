@@ -18,13 +18,13 @@ namespace apcurium.MK.Web.App_Start
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/v2/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
 
             config.Routes.MapHttpRoute(
-                name: "OrderCountForAppRating",
-                routeTemplate: "api/account/ordercountforapprating",
+                name: "Legacy",
+                routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional },
                 constraints: null,
                 handler: new LegacyHttpClientHandler()
@@ -45,18 +45,32 @@ namespace apcurium.MK.Web.App_Start
         {
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                if (request.RequestUri.AbsolutePath.EndsWith("account/ordercountforapprating"))
+                if (request.RequestUri.OriginalString.Contains("api/v2"))
                 {
-                    var requestUri = new Uri(request.RequestUri.OriginalString.Replace("ordercountforapprating", "orders/ordercountforapprating"));
-
-                    request.RequestUri = requestUri;
-
                     return base.SendAsync(request, cancellationToken);
                 }
 
+                var requestUrl = request.RequestUri.OriginalString.Replace("api", "api/v2");
+
+                if (requestUrl.Contains("api/v2/auth"))
+                {
+                    requestUrl = requestUrl.Replace("auth", "login")
+                            .Replace("credentialsfb", "facebook")
+                            .Replace("credentialstw", "twitter")
+                            .Replace("credentials", "password");
+                }
+
+                if (requestUrl.Contains("api/v2/encryptedsettings"))
+                {
+                    requestUrl = requestUrl.Replace("encryptedsettings", "settings/encrypted");
+
+                }
+
+                request.RequestUri = new Uri(requestUrl);
 
                 return base.SendAsync(request, cancellationToken);
             }
+
         }
     }
 }

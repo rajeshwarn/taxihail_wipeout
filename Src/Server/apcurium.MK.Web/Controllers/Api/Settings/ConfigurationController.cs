@@ -24,6 +24,7 @@ using MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
+    [RoutePrefix("settings")]
     public class ConfigurationController : BaseApiController
     {
         private readonly ICacheClient _cacheClient;
@@ -39,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             _configDao = configDao;
         }
 
-        [HttpGet, Route("settings/reset")]
+        [HttpGet, Route("reset")]
         public bool ResetConfiguration()
         {
             _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
@@ -47,13 +48,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return true;
         }
 
-        [HttpGet, Route("settings")]
+        [HttpGet]
         public Dictionary<string, string> GetAppSettings(ConfigurationsRequest request)
         {
             return GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
         }
 
-        [HttpGet, Route("encryptedsettings")]
+        [HttpGet, Route("encrypted")]
         public Dictionary<string, string> GetEncryptedSettings(EncryptedConfigurationsRequest request)
         {
             var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
@@ -63,7 +64,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return data;
         }
 
-        [HttpPost, Auth(Roles = new []{ Roles.Admin }), Route("settings")]
+        [HttpPost, Auth(Role = RoleName.Admin), Route("settings")]
         public HttpResponseMessage UpdateSettings(ConfigurationsRequest request)
         {
             if (request.AppSettings.Any())
@@ -79,7 +80,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [HttpGet, Auth, Route("settings/notifications/{accountId:Guid?}")]
+        [HttpGet, Auth, Route("notifications/{accountId:Guid?}")]
         public NotificationSettings GetNotificationSettings(Guid? accountId)
         {
             if (accountId.HasValue)
@@ -92,7 +93,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return _configDao.GetNotificationSettings();
         }
 
-        [HttpPost, Auth, Route("settings/notifications/{accountId:Guid?}")]
+        [HttpPost, Auth, Route("notifications/{accountId:Guid?}")]
         public HttpResponseMessage UpdateNotificationSettings(Guid? accountId, NotificationSettingsRequest request)
         {
             if (accountId.HasValue)
@@ -121,7 +122,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [HttpGet, Auth, Route("settings/taxihailnetwork/{accountId:Guid?}")]
+        [HttpGet, Auth, Route("taxihailnetwork/{accountId:Guid?}")]
         public UserTaxiHailNetworkSettings GetUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
         {
             var userId = accountId ?? request.AccountId ?? GetSession().UserId;
@@ -129,7 +130,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return _configDao.GetUserTaxiHailNetworkSettings(userId) ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[] { } };
         }
 
-        [HttpPost, Auth, Route("settings/taxihailnetwork/{accountId:Guid?}")]
+        [HttpPost, Auth, Route("taxihailnetwork/{accountId:Guid?}")]
         public HttpResponseMessage UpdateUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
         {
             var userId = accountId ?? request.AccountId ?? GetSession().UserId;
