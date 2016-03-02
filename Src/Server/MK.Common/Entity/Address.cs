@@ -56,30 +56,40 @@ namespace apcurium.MK.Common.Entity
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
             var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-            if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
+                new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+
+            if ((components.Length <= 1) || !StreetNumber.HasValueTrimmed() || !Street.HasValueTrimmed() || !City.HasValueTrimmed())
             {
-                // StreetNumber Street, City, State ZipCode
-                var address = string.Join(", ", new[]
-                {
-                    string.Join(" ", new[] {StreetNumber, Street}),
-                    City,
-                    string.Join(" ", new[] {State, ZipCode})
-                });
+                return FullAddress;
+            }
 
-                if (useBuildingName && !string.IsNullOrWhiteSpace(BuildingName))
-                {
-                    address = BuildingName + " - " + address;
-                }
+            // StreetNumber Street, City, State ZipCode
+            var address = string.Join(", ", string.Join(" ", StreetNumber, Street), City, string.Join(" ", State, ZipCode));
 
-                if (!string.IsNullOrWhiteSpace(FullAddress) && !FullAddress.Contains(City))
+            if (useBuildingName && BuildingName.HasValueTrimmed())
+            {
+                address = BuildingName + " - " + address;
+            }
+
+            // Check if full address is really a full address
+            // If it doesn't contain the city, then we overwrite FullAddress with the value of DisplayAddress
+            // We also check that the street doesn't contain the city, ie: "11000 Garden Grove Blvd, Garden Grove, CA 92843"
+            if (FullAddress.HasValueTrimmed())
+            {
+                if (!FullAddress.Contains(City))
                 {
                     FullAddress = address;
                 }
-
-                return address;
+                else
+                {
+                    if (Street.Contains(City))
+                    {
+                        FullAddress = address;
+                    }
+                }
             }
-            return FullAddress;
+
+            return address;
         }
 
         public string GetFirstPortionOfAddress()

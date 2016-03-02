@@ -42,6 +42,27 @@ namespace apcurium.MK.Common.Tests.Entity
         }
 
         [Test]
+        public void FullAddress_should_always_contain_city()
+        {
+            var address = new Address
+            {
+                FriendlyName = "Costco Wholesale",
+                StreetNumber = "11000",
+                Street = "Garden Grove Blvd",
+                City = "Garden Grove",
+                FullAddress = "11000 Garden Grove Blvd",
+                State = "CA",
+                ZipCode = "92843",
+                AddressType = "postal"
+            };
+
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.DisplayAddress);
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.FullAddress);
+            Assert.AreEqual("Costco Wholesale", address.DisplayLine1);
+            Assert.AreEqual("11000 Garden Grove Blvd, Garden Grove, CA 92843", address.DisplayLine2);
+        }
+
+        [Test]
         public void remove_place_category_from_building_name()
         {
             var buildingName = "Gibeau (Orange) Julep (restaurant)";
