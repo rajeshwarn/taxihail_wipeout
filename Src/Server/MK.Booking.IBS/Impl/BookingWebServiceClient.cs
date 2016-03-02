@@ -539,14 +539,14 @@ namespace apcurium.MK.Booking.IBS.Impl
                 // NOTE: vehicleComps parameter not present on SaveBookOrder_14
                 orderKey = service.SaveBookOrder_14(UserNameApp, PasswordApp, order);
 
-                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey + ", no orderGUID received (SaveBookOrder_14 returns only an integer)");
+                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey + ", orderGUID: " + orderId);
             });
 
             return new IbsHailResponse
             {
                 OrderKey = new IbsOrderKey
                 {
-                    TaxiHailOrderId = Guid.Empty,
+                    TaxiHailOrderId = orderId,
                     IbsOrderId = orderKey
                 }
             };
