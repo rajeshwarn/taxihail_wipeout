@@ -89,7 +89,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 
-			var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogTop") {IsEmail = true};
+            // Used DialogCenter + paddingTop = 1dip because DialogTop caused a thiner separation line
+            var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogCenter") {IsEmail = true};
 			email.Bind(bindings, vm => vm.Data.Email);
 
 			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
@@ -110,9 +111,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, layoutCell) { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
 
+            if (!ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
+            {
+                layoutCell = "DialogBottom";
+            }
 
-			var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
-			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
+            var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, layoutCell) { Password = true };
+            passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
             var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom") { Numeric = true };
             payback.Bind(bindings, vm => vm.Data.PayBack);
