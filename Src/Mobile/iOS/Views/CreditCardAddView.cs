@@ -189,12 +189,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
 				.To(vm => vm.IsAddingNewCard);
 
+			set.Bind(txtExpMonth)
+				.For(v => v.HasRightArrow)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtExpYear)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationYearDisplay);
 
 			set.Bind(txtExpYear)
 				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtExpYear)
+				.For(v => v.HasRightArrow)
 				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(txtCvv)

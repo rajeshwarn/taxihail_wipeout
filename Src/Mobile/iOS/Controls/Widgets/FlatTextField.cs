@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    private void ShowOrHideRightArrow()
 	    {
-			if (HasRightArrow && Enabled)
+			if (HasRightArrow)
 	        {
 	            if (_rightArrow == null)
 	            {
