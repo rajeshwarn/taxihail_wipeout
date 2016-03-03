@@ -310,17 +310,19 @@
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="leading" id="U52-av-La4"/>
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="RPn-ad-Ae9" secondAttribute="trailing" constant="12" id="VMN-vP-nWz"/>
                                 <constraint firstItem="Tz3-UC-Wg8" firstAttribute="centerY" secondItem="DfD-Yo-WvS" secondAttribute="centerY" id="WV7-CP-2es"/>
-                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
                                 <constraint firstAttribute="centerX" secondItem="QOQ-sL-Vm6" secondAttribute="centerX" id="a5z-pL-AjY"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
                                 <constraint firstAttribute="trailing" secondItem="AHt-1S-sWk" secondAttribute="trailing" constant="8" id="bNU-99-u08"/>
-                                <constraint firstAttribute="bottom" secondItem="IeH-q4-qcf" secondAttribute="bottom" constant="15" id="c11-py-ZLk"/>
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
                                 <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="10" id="gqs-sv-Jo0"/>
-                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="iG0-nP-46y"/>
+                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="250" constant="20" id="WWg-KG-JKV"/>
+                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" priority="500" constant="5" id="iG0-nP-46y"/>
+                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="QOQ-sL-Vm6" secondAttribute="bottom" priority="750" constant="5" id="iG0-nP-46z"/>
+                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="QOQ-sL-Vm6" secondAttribute="bottom" constant="5" id="ig1-D0-dEt"/>
+                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="5" id="x9S-5X-F7o"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="centerY" secondItem="CKf-21-NCh" secondAttribute="centerY" id="oEJ-Aq-Nhy"/>
                                 <constraint firstAttribute="trailing" secondItem="CKf-21-NCh" secondAttribute="trailing" constant="8" id="osu-B2-tO2"/>
                                 <constraint firstItem="FJb-TD-Vwd" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="pKc-7Z-KbN"/>
@@ -331,7 +333,6 @@
                                 <constraint firstItem="K9H-24-O0F" firstAttribute="top" secondItem="FJb-TD-Vwd" secondAttribute="bottom" constant="6" id="vvK-v3-38k"/>
                                 <constraint firstAttribute="trailing" secondItem="3fV-2N-0Oy" secondAttribute="trailing" constant="8" id="wnz-dA-pcL"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="x5S-F6-EbY"/>
-                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="5" id="x9S-5X-F7o"/>
                                 <constraint firstAttribute="bottom" secondItem="sNz-rV-N8y" secondAttribute="bottom" priority="750" constant="15" id="yYy-hF-plZ"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="centerY" secondItem="AHt-1S-sWk" secondAttribute="centerY" id="ziR-t5-qse"/>
                             </constraints>
