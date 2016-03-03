@@ -511,7 +511,7 @@
 		<comment>Confirm Payment Information</comment>
 	</data>
 	<data name="CmtRideLinqConfirmPairViewConfirmPairDetailText" xml:space="preserve">
-		<value>Bevestig dat u in het voertuig zit met het opgegeven nummer, hieronder aangegeven. Door te  "Bevestigen", zal deze rit automatisch worden betaald via uw CreditCard die in ons bestand staat aangemeld.</value>
+		<value>Bevestig dat u in het voertuig zit met het opgegeven nummer, hieronder aangegeven. Door te \"Bevestigen\", zal deze rit automatisch worden betaald via uw CreditCard die in ons bestand staat aangemeld.</value>
 		<comment>Confirm that you are in the vehicle number indicated below.  By Tapping "Confirm", this ride will automatically be paid by your credit card on file.</comment>
 	</data>
 	<data name="CmtRideLinqErrorTitle" xml:space="preserve">
@@ -679,7 +679,7 @@
 		<comment>Credit Card</comment>
 	</data>
 	<data name="CreditCardAdded" xml:space="preserve">
-		<value>Uw Account is nu standaard ingesteld op betaling met CreditCard. U kunt nog steeds kiezen om ander te betalen in de taxi. Selecteer dan \ "Betaal in Taxi \ " in het bvestigingsscherm</value>
+		<value>Uw Account is nu standaard ingesteld op betaling met CreditCard. U kunt nog steeds kiezen om ander te betalen in de taxi. Selecteer dan \"Betaal in Taxi \" in het bvestigingsscherm</value>
 		<comment>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</comment>
 	</data>
 	<data name="CreditCardAdded_PayInCarDisabled" xml:space="preserve">
@@ -2789,15 +2789,15 @@
 		<comment>If you want, you can also set your destination.</comment>
 	</data>
 	<data name="Tuto05Bottom" xml:space="preserve">
-		<value>Of kies "Later" om uw ophaaldatum en tijd in te geven voor toekomstig moment </value>
+		<value>Of kies \"Later\" om uw ophaaldatum en tijd in te geven voor toekomstig moment </value>
 		<comment>Or Tap the Later button to schedule your pickup for a future time or date.</comment>
 	</data>
 	<data name="Tuto05Top" xml:space="preserve">
-		<value>Tik "Boek nu" en een Taxi zal zo spoedig mogelijk worden toegewezen.</value>
+		<value>Tik \"Boek nu\" en een Taxi zal zo spoedig mogelijk worden toegewezen.</value>
 		<comment>Tap Book Now and a vehicle will be assigned as soon as possible.</comment>
 	</data>
 	<data name="Tuto06Bottom" xml:space="preserve">
-		<value>Kies "Bevestigen" als u gereed bent om te vertrekken</value>
+		<value>Kies \"Bevestigen\" als u gereed bent om te vertrekken</value>
 		<comment>Tap Confirm when you are ready to go.</comment>
 	</data>
 	<data name="Tuto06Top" xml:space="preserve">
