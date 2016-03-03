@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditCardAddView">
@@ -12,6 +12,9 @@
                 <outlet property="btnSaveCard" destination="sNz-rV-N8y" id="ydn-h0-qyW"/>
                 <outlet property="btnScanCard" destination="WJg-Rj-tzy" id="T5p-kp-a1L"/>
                 <outlet property="btnUnlinkPayPal" destination="Fj6-xJ-Xhp" id="zg9-Mv-PlC"/>
+                <outlet property="imgAmex" destination="2Wp-Yu-0Vf" id="iCd-Zv-wks"/>
+                <outlet property="imgDiscover" destination="vF5-ds-6cV" id="ZJl-kg-VDa"/>
+                <outlet property="imgVisa" destination="G3R-vA-rrF" id="BgT-mH-Lyf"/>
                 <outlet property="lblCardNumber" destination="DfD-Yo-WvS" id="8a2-VX-TKW"/>
                 <outlet property="lblCvv" destination="Tz3-UC-Wg8" id="RsN-3z-3Io"/>
                 <outlet property="lblExpMonth" destination="Ipi-wL-ffn" id="fr8-gg-fIQ"/>
@@ -119,8 +122,73 @@
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r5O-Wq-Xe9" userLabel="Cards Supported">
+                            <rect key="frame" x="0.0" y="220" width="320" height="30"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3R-vA-rrF" userLabel="Visa" customClass="HideableView">
+                                    <rect key="frame" x="8" y="0.0" width="46" height="30"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="visa.png" translatesAutoresizingMaskIntoConstraints="NO" id="vgm-Qn-sOm">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="vgm-Qn-sOm" secondAttribute="bottom" id="1uS-Ak-jgj"/>
+                                        <constraint firstItem="vgm-Qn-sOm" firstAttribute="leading" secondItem="G3R-vA-rrF" secondAttribute="leading" id="KIM-LB-ANE"/>
+                                        <constraint firstItem="vgm-Qn-sOm" firstAttribute="top" secondItem="G3R-vA-rrF" secondAttribute="top" id="Kxw-WN-eh0"/>
+                                        <constraint firstAttribute="trailing" secondItem="vgm-Qn-sOm" secondAttribute="trailing" id="f9d-yR-427"/>
+                                        <constraint firstAttribute="width" constant="46" id="sSs-U6-5jm"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Wp-Yu-0Vf" userLabel="Amex" customClass="HideableView">
+                                    <rect key="frame" x="62" y="0.0" width="46" height="30"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="amex.png" translatesAutoresizingMaskIntoConstraints="NO" id="lch-iy-cLN">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="lch-iy-cLN" firstAttribute="leading" secondItem="2Wp-Yu-0Vf" secondAttribute="leading" id="5rm-gX-X7F"/>
+                                        <constraint firstAttribute="width" constant="46" id="84v-HK-ZCP"/>
+                                        <constraint firstAttribute="trailing" secondItem="lch-iy-cLN" secondAttribute="trailing" id="FYl-Qv-I2c"/>
+                                        <constraint firstItem="lch-iy-cLN" firstAttribute="top" secondItem="2Wp-Yu-0Vf" secondAttribute="top" id="oKq-gg-RHv"/>
+                                        <constraint firstAttribute="bottom" secondItem="lch-iy-cLN" secondAttribute="bottom" id="wPR-ZB-F2N"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vF5-ds-6cV" userLabel="Discover" customClass="HideableView">
+                                    <rect key="frame" x="116" y="0.0" width="46" height="30"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="discover.png" translatesAutoresizingMaskIntoConstraints="NO" id="V8X-0U-oDR">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="V8X-0U-oDR" secondAttribute="trailing" id="KTy-i3-g3i"/>
+                                        <constraint firstItem="V8X-0U-oDR" firstAttribute="top" secondItem="vF5-ds-6cV" secondAttribute="top" id="Q9e-sV-Xkp"/>
+                                        <constraint firstAttribute="width" constant="46" id="SNZ-kq-obG"/>
+                                        <constraint firstItem="V8X-0U-oDR" firstAttribute="leading" secondItem="vF5-ds-6cV" secondAttribute="leading" id="Y0l-cK-SId"/>
+                                        <constraint firstAttribute="bottom" secondItem="V8X-0U-oDR" secondAttribute="bottom" id="hbd-fX-gTz"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="vF5-ds-6cV" firstAttribute="leading" secondItem="r5O-Wq-Xe9" secondAttribute="leading" priority="250" constant="8" id="4el-hF-zcg"/>
+                                <constraint firstItem="2Wp-Yu-0Vf" firstAttribute="leading" secondItem="G3R-vA-rrF" secondAttribute="trailing" constant="8" id="6ym-TS-Fug"/>
+                                <constraint firstItem="G3R-vA-rrF" firstAttribute="top" secondItem="r5O-Wq-Xe9" secondAttribute="top" id="BYU-cO-IW5"/>
+                                <constraint firstAttribute="height" constant="30" id="CE2-rm-OL2"/>
+                                <constraint firstItem="2Wp-Yu-0Vf" firstAttribute="leading" secondItem="r5O-Wq-Xe9" secondAttribute="leading" priority="750" constant="8" id="Cls-Rx-1Hw"/>
+                                <constraint firstItem="vF5-ds-6cV" firstAttribute="top" secondItem="r5O-Wq-Xe9" secondAttribute="top" id="FGb-07-sK4"/>
+                                <constraint firstItem="vF5-ds-6cV" firstAttribute="leading" secondItem="G3R-vA-rrF" secondAttribute="trailing" priority="500" constant="8" id="GeA-jM-sh5"/>
+                                <constraint firstItem="G3R-vA-rrF" firstAttribute="leading" secondItem="r5O-Wq-Xe9" secondAttribute="leading" constant="8" id="U48-te-mQ4"/>
+                                <constraint firstItem="vF5-ds-6cV" firstAttribute="leading" secondItem="2Wp-Yu-0Vf" secondAttribute="trailing" constant="8" id="a7w-1G-hYr"/>
+                                <constraint firstAttribute="bottom" secondItem="vF5-ds-6cV" secondAttribute="bottom" id="eiA-jk-Gxl"/>
+                                <constraint firstAttribute="bottom" secondItem="2Wp-Yu-0Vf" secondAttribute="bottom" id="pnu-KK-RPo"/>
+                                <constraint firstItem="2Wp-Yu-0Vf" firstAttribute="top" secondItem="r5O-Wq-Xe9" secondAttribute="top" id="wcY-v9-AYL"/>
+                                <constraint firstAttribute="bottom" secondItem="G3R-vA-rrF" secondAttribute="bottom" id="xgC-CR-5Ia"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard">
-                            <rect key="frame" x="0.0" y="220" width="320" height="470"/>
+                            <rect key="frame" x="0.0" y="258" width="320" height="470"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
                                     <rect key="frame" x="8" y="10" width="185" height="17"/>
@@ -337,7 +405,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="690" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="728" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>
@@ -414,30 +482,33 @@
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="7lZ-HG-b4b"/>
                         <constraint firstAttribute="trailing" secondItem="hLR-a7-OyV" secondAttribute="trailing" id="B4L-MU-mqx"/>
                         <constraint firstAttribute="trailing" secondItem="agx-4W-Kx5" secondAttribute="trailing" id="BWb-2P-2aI"/>
+                        <constraint firstAttribute="trailing" secondItem="r5O-Wq-Xe9" secondAttribute="trailing" id="CDx-dS-V5e"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="DFQ-Go-g9x"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="leading" secondItem="4" secondAttribute="leading" constant="8" id="E68-3I-Duw"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" constant="15" id="HT2-JA-Lq3"/>
                         <constraint firstAttribute="width" secondItem="pfD-TX-kyS" secondAttribute="width" id="L66-Ld-gGQ"/>
+                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="r5O-Wq-Xe9" secondAttribute="bottom" constant="8" id="P9d-8X-mJj"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" constant="12" id="PlW-ps-Zce"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="4" secondAttribute="top" priority="200" constant="15" id="Q19-iw-kj2"/>
                         <constraint firstItem="jyp-DI-ki8" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="R6y-Ug-6Vm"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="950" constant="12" id="Rzt-ii-9mo"/>
                         <constraint firstAttribute="bottom" secondItem="hLR-a7-OyV" secondAttribute="bottom" priority="500" id="TVt-No-aeZ"/>
+                        <constraint firstItem="r5O-Wq-Xe9" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="Tvm-uk-PIl"/>
                         <constraint firstItem="jyp-DI-ki8" firstAttribute="top" secondItem="4" secondAttribute="top" constant="14" id="UAY-yj-sDZ"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="4" secondAttribute="top" priority="950" constant="15" id="Wrb-T3-Ila"/>
+                        <constraint firstItem="r5O-Wq-Xe9" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" constant="15" id="ZwX-gL-dOF"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="bottom" id="ai8-o9-D45"/>
+                        <constraint firstItem="r5O-Wq-Xe9" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="cQg-IS-Drf"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="cqP-sV-7Zx"/>
                         <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="ejy-cD-B95"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="hXH-xw-tA2"/>
                         <constraint firstAttribute="trailing" secondItem="jyp-DI-ki8" secondAttribute="trailing" id="iRH-Ta-pNC"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" priority="900" constant="14" id="jAc-JL-gWL"/>
-                        <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="agx-4W-Kx5" secondAttribute="bottom" priority="450" constant="15" id="k9b-2N-pCq"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="m3e-x7-oUg"/>
+                        <constraint firstItem="r5O-Wq-Xe9" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="350" constant="15" id="met-0K-Z65"/>
                         <constraint firstAttribute="bottom" secondItem="pfD-TX-kyS" secondAttribute="bottom" id="rmA-89-eqM"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" priority="500" constant="15" id="s3f-ae-rb2"/>
                         <constraint firstItem="agx-4W-Kx5" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" constant="14" id="uPX-LT-RK2"/>
                         <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="jyp-DI-ki8" secondAttribute="bottom" priority="300" constant="15" id="uVf-eb-ftL"/>
+                        <constraint firstItem="r5O-Wq-Xe9" firstAttribute="top" secondItem="4" secondAttribute="top" priority="250" constant="15" id="zfT-4g-3gV"/>
                     </constraints>
                 </scrollView>
             </subviews>
@@ -454,6 +525,9 @@
         </view>
     </objects>
     <resources>
+        <image name="amex.png" width="46" height="32"/>
+        <image name="discover.png" width="46" height="32"/>
         <image name="paypal.png" width="90" height="31"/>
+        <image name="visa.png" width="46" height="32"/>
     </resources>
 </document>
