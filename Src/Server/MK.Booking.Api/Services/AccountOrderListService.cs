@@ -14,9 +14,9 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AccountOrderListService : Service
+    public class AccountOrderListService : BaseApiService
     {
-		protected readonly IOrderDao _orderDao;
+        private readonly IOrderDao _orderDao;
 
 		private readonly IOrderRatingsDao _orderRatingsDao;
 
@@ -29,10 +29,9 @@ namespace apcurium.MK.Booking.Api.Services
 			_serverSettings = serverSettings;
         }
 
-        public object Get(AccountOrderListRequest request)
+        public AccountOrderListRequestResponse Get(AccountOrderListRequest request)
         {
-            var session = this.GetSession();
-            var orders = _orderDao.FindByAccountId(new Guid(session.UserAuthId))
+            var orders = _orderDao.FindByAccountId(Session.UserId)
                 .Where(x => !x.IsRemovedFromHistory)
                 .OrderByDescending(c => c.CreatedDate)
                 .Select(read => new OrderMapper().ToResource(read));
@@ -42,12 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
             return response;
         }
 
-        public object Get(OrderCountForAppRatingRequest request)
+        public int Get(OrderCountForAppRatingRequest request)
 		{
-			var acccountId = new Guid(this.GetSession().UserAuthId);
-
             // Count the number of orders for the account where the user left a minimum rating above the one defined in the settings (MinimumRideRatingScoreForAppRating)
-            var ordersAboveThreshold = from allRatings in _orderRatingsDao.GetRatingsByAccountId(acccountId)
+            var ordersAboveThreshold = from allRatings in _orderRatingsDao.GetRatingsByAccountId(Session.UserId)
                                        group allRatings by allRatings.OrderId into ordersRatings
                                        select ordersRatings.Average(rt => rt.Score) into averageOrderRating
                                        where averageOrderRating >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating

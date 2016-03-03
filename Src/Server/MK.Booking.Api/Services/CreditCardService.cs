@@ -1,10 +1,10 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -12,14 +12,12 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CreditCardService : Service
+    public class CreditCardService : BaseApiService
     {
         private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
@@ -34,88 +32,77 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public object Get(CreditCardRequest request)
+        public IList<ReadModel.CreditCardDetails> Get()
         {
-            var session = this.GetSession();
-            return _dao.FindByAccountId(new Guid(session.UserAuthId));
+            return _dao.FindByAccountId(Session.UserId);
         }
 
-		public object Get(CreditCardInfoRequest request)
+		public ReadModel.CreditCardDetails Get(CreditCardInfoRequest request)
 		{
 			return _dao.FindById(request.CreditCardId);
 		}
 
-        public object Post(CreditCardRequest request)
+        public void Post(CreditCardRequest request)
         {
-            var session = this.GetSession();
-
             request.Label = request.Label ?? CreditCardLabelConstants.Personal.ToString();
 
-            var command = new AddOrUpdateCreditCard {AccountId = new Guid(session.UserAuthId)};
+            var command = new AddOrUpdateCreditCard {AccountId = Session.UserId};
             Mapper.Map(request, command);
 
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public object Post(DefaultCreditCardRequest request)
+        public void Post(DefaultCreditCardRequest request)
         {
-            var session = this.GetSession();
-            var command = new UpdateDefaultCreditCard { AccountId = new Guid(session.UserAuthId) };
-            command.CreditCardId = request.CreditCardId;
+            var command = new UpdateDefaultCreditCard
+            {
+                AccountId = Session.UserId,
+                CreditCardId = request.CreditCardId
+            };
 
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public object Post(UpdateCreditCardLabelRequest request)
+        public void Post(UpdateCreditCardLabelRequest request)
         {
-            var session = this.GetSession();
-            var accountId = new Guid(session.UserAuthId);
-
             var creditCardDetails = _dao.FindById(request.CreditCardId);
             if (creditCardDetails == null)
             {
-                return new HttpError("Cannot find the credit card");
+                throw new HttpException("Cannot find the credit card");
             }
 
             var command = new UpdateCreditCardLabel
             {
-                AccountId = accountId,
+                AccountId = Session.UserId,
                 CreditCardId = request.CreditCardId,
                 Label = request.Label
             };
 
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            
         }
 
-        public object Delete(CreditCardRequest request)
+        public ReadModel.CreditCardDetails Delete(CreditCardRequest request)
         {
-            var session = this.GetSession();
-            var accountId = new Guid(session.UserAuthId);
-
-            var activeOrder = _orderDao.GetOrdersInProgressByAccountId(accountId);
+            var activeOrder = _orderDao.GetOrdersInProgressByAccountId(Session.UserId);
             if (activeOrder.Any())
             {
-                throw new HttpError("Can't delete credit card when an order is in progress");
+                throw new HttpException("Can't delete credit card when an order is in progress");
             }
 
-            var creditCards = _dao.FindByAccountId(accountId);
+            var creditCards = _dao.FindByAccountId(Session.UserId);
 
             var creditCardDetails = creditCards.FirstOrDefault(x => x.CreditCardId == request.CreditCardId);
             if (creditCardDetails == null)
             {
-                return new HttpError("Cannot find the credit card");
+                throw new HttpException("Cannot find the credit card");
             }
 
             var defaultCreditCard = creditCards.FirstOrDefault(x => x.CreditCardId != request.CreditCardId);
             var command = new DeleteAccountCreditCard
             {
-                AccountId = accountId,
+                AccountId = Session.UserId,
                 CreditCardId = request.CreditCardId,
                 NextDefaultCreditCardId = defaultCreditCard != null ? defaultCreditCard.CreditCardId : (Guid?)null,
             };
@@ -125,9 +112,9 @@ namespace apcurium.MK.Booking.Api.Services
             return defaultCreditCard;
         }
 
-		public object Delete(DeleteCreditCardsWithAccountRequest request)
+		public void Delete(DeleteCreditCardsWithAccountRequest request)
 		{
-			if (_dao.FindByAccountId(request.AccountID).Count > 0)
+			if (_dao.FindByAccountId(request.AccountID).Any())
 			{
 			    var paymentSettings = _serverSettings.GetPaymentSettings();
 
@@ -139,11 +126,9 @@ namespace apcurium.MK.Booking.Api.Services
 				    AccountIds = new[] { request.AccountID },
                     ForceUserDisconnect = forceUserDisconnect
 				});
-
-				return new HttpResult(HttpStatusCode.OK);
 			}
 
-			return new HttpError("Cannot find the credit card");
+			throw new HttpException("Cannot find the credit card");
 		}
     }
 }

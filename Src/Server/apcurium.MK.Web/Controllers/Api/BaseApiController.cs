@@ -31,6 +31,13 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpException((int)statusCode, message);
         }
 
+
+        public IHttpActionResult GenerateActionResult<T>(T content)
+        {
+            return Ok(content);
+        }
+
+
         public SessionEntity GetSession()
         {
             var sessionId = Request.Headers.Where(request =>

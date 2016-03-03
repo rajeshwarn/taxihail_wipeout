@@ -13,7 +13,6 @@ namespace apcurium.MK.Common.Http
         public string UserName { get; set; }
         public Guid UserId { get; set; }
 
-
         public bool IsAuthenticated()
         {
             return SessionId.HasValueTrimmed();

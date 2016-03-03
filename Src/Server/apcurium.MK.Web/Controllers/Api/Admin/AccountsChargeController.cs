@@ -24,136 +24,60 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("api/admin/accountscharge")]
     public class AccountsChargeController : BaseApiController
     {
-        private readonly IAccountChargeDao _dao;
-        private readonly ICommandBus _commandBus;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly AccountsChargeService _service;
 
         public AccountsChargeController(IAccountChargeDao dao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
-            _dao = dao;
-            _commandBus = commandBus;
-            _ibsServiceProvider = ibsServiceProvider;
+            _service = new AccountsChargeService(dao, commandBus, ibsServiceProvider)
+            {
+                Session = GetSession(),
+                HttpRequestContext = RequestContext
+            };
         }
 
         [HttpGet, Route("{accountNumber}"), Route("{accountNumber}/{customerNumber}/{hideAnswers}")]
-        public AccountChargeDetail GetAccountCharge(string accountNumber, string customerNumber, bool hideAnswers)
+        public IHttpActionResult GetAccountCharge(string accountNumber, string customerNumber, bool hideAnswers)
         {
-            var isAdmin = GetSession().HasPermission(RoleName.Admin);
-
-            var account = _dao.FindByAccountNumber(accountNumber);
-            if (account == null)
+            var result = _service.Get(new AccountChargeRequest
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
-            }
+                AccountNumber = accountNumber,
+                CustomerNumber = customerNumber,
+                HideAnswers = hideAnswers
+            });
 
-            // Validate with IBS to make sure the account/customer is still active
-            var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(accountNumber, customerNumber ?? "0");
-            if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
-            {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
-            }
-
-            if (hideAnswers || !isAdmin)
-            {
-                HideAnswers(account.Questions);
-            }
-
-            var currentUser = GetSession().UserId;
-            LoadCustomerAnswers(account.Questions, currentUser);
-
-            return account;
+            return GenerateActionResult(result);
         }
 
         [HttpGet, Route]
-        public IList<AccountChargeDetail> GetAccountCharge()
+        public IHttpActionResult GetAccountCharge()
         {
-            var allAccounts = _dao.GetAll();
+            var result = _service.Get(new AccountChargeRequest());
 
-            var isAdmin = GetSession().HasPermission(RoleName.Admin);
-
-            if (!isAdmin)
-            {
-                foreach (var account in allAccounts)
-                {
-                    HideAnswers(account.Questions);
-                }
-            }
-
-            return allAccounts;
+            return GenerateActionResult(result);
         }
 
-        [HttpPost, HttpPut, Route]
-        public object CreateOrUpdate(AccountChargeRequest request)
+        [HttpPost, Route]
+        public IHttpActionResult CreateAccountCharge([FromBody]AccountChargeRequest request)
         {
-            var existing = _dao.FindByAccountNumber(request.AccountNumber);
-            if (existing != null)
-            {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
-            }
+            var result = _service.Post(request);
 
-            var i = 0;
-
-            var addUpdateAccountCharge = new AddUpdateAccountCharge
-            {
-                AccountChargeId = Guid.NewGuid(),
-                Name = request.Name,
-                Number = request.AccountNumber,
-                Questions = request.Questions,
-                UseCardOnFileForPayment = request.UseCardOnFileForPayment,
-                CompanyId = AppConstants.CompanyId
-            };
-
-            foreach (var question in request.Questions)
-            {
-                question.Id = i++;
-                question.AccountId = addUpdateAccountCharge.AccountChargeId;
-            }
-
-            _commandBus.Send(addUpdateAccountCharge);
-
-            return new
-            {
-                Id = addUpdateAccountCharge.AccountChargeId
-            };
+            return GenerateActionResult(result);
         }
 
-        [HttpDelete, Route("{AccountNumber}")]
-        public HttpResponseMessage DeleteAccountCharge(string accountNumber)
+        [HttpPut, Route]
+        public IHttpActionResult UpdateAccountCharge([FromBody]AccountChargeRequest request)
         {
-            var existing = _dao.FindByAccountNumber(accountNumber);
-            if (existing == null)
-            {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
-            }
+            var result = _service.Put(request);
 
-            var deleteAccountCharge = new DeleteAccountCharge
-            {
-                AccountChargeId = existing.Id,
-                CompanyId = AppConstants.CompanyId
-            };
-
-            _commandBus.Send(deleteAccountCharge);
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return GenerateActionResult(result);
         }
 
-        private void HideAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers)
+        [HttpDelete, Route("{accountNumber}")]
+        public IHttpActionResult DeleteAccountCharge(string accountNumber)
         {
-            foreach (var accountChargeQuestion in questionsAndAnswers)
-            {
-                accountChargeQuestion.Answer = string.Empty;
-            }
-        }
+            _service.Delete(new AccountChargeRequest {AccountNumber = accountNumber});
 
-        private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid userId)
-        {
-            var priorAnswers = _dao.GetLastAnswersForAccountId(userId);
-            priorAnswers.ForEach(x =>
-            {
-                questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer)
-                    .ForEach(m => m.Answer = x.LastAnswer);
-            });
-
+            return Ok();
         }
     }
 }

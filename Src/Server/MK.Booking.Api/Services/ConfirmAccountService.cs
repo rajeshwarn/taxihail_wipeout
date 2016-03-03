@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Web;
+using System.Web.Routing;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -13,9 +15,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Helpers;
 
@@ -24,7 +23,7 @@ using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfirmAccountService : Service
+    public class ConfirmAccountService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
@@ -51,19 +50,19 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        public object Get(ConfirmAccountRequest request)
+        public string Get(ConfirmAccountRequest request)
         {
             var account = _accountDao.FindByEmail(request.EmailAddress);
             if (account == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+                throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
             }
 
             if (request.IsSMSConfirmation.HasValue && request.IsSMSConfirmation.Value)
             {
                 if (account.ConfirmationToken != request.ConfirmationToken)
                 {
-                    throw new HttpError(ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
+                    throw new HttpException(ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
                 }
 
                 _commandBus.Send(new ConfirmAccount
@@ -71,7 +70,8 @@ namespace apcurium.MK.Booking.Api.Services
                     AccountId = account.Id,
                     ConfimationToken = request.ConfirmationToken
                 });
-                return new HttpResult(HttpStatusCode.OK);
+
+                return string.Empty;
             }
             else
             {
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Api.Services
                 };
 
                 var body = _templateService.Render(template, templateData);
-                return new HttpResult(body, ContentType.Html);
+                return body;
             }
         }
 
@@ -104,25 +104,25 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (account == null)
 			{
-				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
             if (!_serverSettings.ServerData.AccountActivationDisabled)
             {
                 if (_serverSettings.ServerData.SMSConfirmationEnabled)
                 {
-					var countryCodeForSMS = account.Settings.Country;
-					var phoneNumberForSMS = account.Settings.Phone;
+					var countryCodeForSms = account.Settings.Country;
+					var phoneNumberForSms = account.Settings.Phone;
 
-					CountryCode countryCodeFromRequest = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.CountryCode));
+					var countryCodeFromRequest = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.CountryCode));
 
 					if (countryCodeFromRequest.IsValid()
 						&& request.PhoneNumber.HasValue()
                         && PhoneHelper.IsPossibleNumber(countryCodeFromRequest, request.PhoneNumber)
 						&& (account.Settings.Country.Code != countryCodeFromRequest.CountryISOCode.Code || account.Settings.Phone != request.PhoneNumber))
 					{
-						countryCodeForSMS = countryCodeFromRequest.CountryISOCode;
-						phoneNumberForSMS = request.PhoneNumber;
+						countryCodeForSms = countryCodeFromRequest.CountryISOCode;
+						phoneNumberForSms = request.PhoneNumber;
 
 						var updateBookingSettings = new UpdateBookingSettings()
 						{
@@ -149,8 +149,8 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         ClientLanguageCode = account.Language,
                         Code = account.ConfirmationToken,
-						CountryCode = countryCodeForSMS,
-						PhoneNumber = phoneNumberForSMS
+						CountryCode = countryCodeForSms,
+						PhoneNumber = phoneNumberForSms
                     });
                 }
                 else

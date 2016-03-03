@@ -2,14 +2,14 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -18,7 +18,7 @@ using CustomerPortal.Client;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CancelOrderService : Service
+    public class CancelOrderService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
@@ -54,19 +54,19 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public object Post(CancelOrder request)
+        public void Post(CancelOrder request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
 
             if (order == null)
             {
-                return new HttpResult(HttpStatusCode.NotFound);
+                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
             }
 
             if (account.Id != order.AccountId)
             {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
             if (order.IBSOrderId.HasValue)
@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                     _logger.LogMessage(errorMessage);
 
-                    throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
+                    throw new HttpError((int)HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
                 }
             }
             else
@@ -110,8 +110,6 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(command);
 
             UpdateStatusAsync(command.OrderId);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
         private void UpdateStatusAsync(Guid orderId)

@@ -132,7 +132,6 @@
     <Compile Include="Serialization\CsvCustomSerializer.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
-    <Compile Include="Services\IbsChargeAccountService.cs" />
     <Compile Include="Services\LogMetricsService.cs" />
     <Compile Include="Services\NetworkRoamingService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />

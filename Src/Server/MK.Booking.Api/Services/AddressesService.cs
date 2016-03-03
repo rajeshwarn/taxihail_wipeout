@@ -1,15 +1,15 @@
 ﻿#region
 
-using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AddressesService : Service
+    public class AddressesService : BaseApiService
     {
         public AddressesService(IAddressDao dao)
         {
@@ -18,10 +18,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected IAddressDao Dao { get; set; }
 
-        public object Get(Addresses request)
+        public IList<AddressDetails> Get()
         {
-            var session = this.GetSession();
-            return Dao.FindFavoritesByAccountId(new Guid(session.UserAuthId));
+            return Dao.FindFavoritesByAccountId(Session.UserId);
         }
     }
 }

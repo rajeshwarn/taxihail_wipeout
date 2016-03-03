@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
@@ -11,48 +10,29 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     [RoutePrefix("account")]
     public class AccountOrderController : BaseApiController
     {
-        private readonly IOrderDao _orderDao;
-
-        private readonly IOrderRatingsDao _orderRatingsDao;
-
-        private readonly IServerSettings _serverSettings;
+        private readonly AccountOrderListService _service;
 
         public AccountOrderController(IOrderDao orderDao, IOrderRatingsDao orderRatingsDao, IServerSettings serverSettings)
         {
-            _orderDao = orderDao;
-            _orderRatingsDao = orderRatingsDao;
-            _serverSettings = serverSettings;
+            _service = new AccountOrderListService(orderDao, orderRatingsDao, serverSettings)
+            {
+                Session = GetSession(),
+                HttpRequestContext = RequestContext
+            };
         }
 
         [HttpGet]
         [Route("ordercountforapprating")]
-        public int GetOrderCountForAppRating()
+        public IHttpActionResult GetOrderCountForAppRating()
         {
-            var accountId = GetSession().UserId;
-
-            // Count the number of orders for the account where the user left a minimum rating above the one defined in the settings (MinimumRideRatingScoreForAppRating)
-            var ordersAboveThreshold = from allRatings in _orderRatingsDao.GetRatingsByAccountId(accountId)
-                                       group allRatings by allRatings.OrderId into ordersRatings
-                                       select ordersRatings.Average(rt => rt.Score) into averageOrderRating
-                                       where averageOrderRating >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating
-                                       select averageOrderRating;
-
-            return ordersAboveThreshold.Count();
+            return GenerateActionResult(_service.Get(new OrderCountForAppRatingRequest()));
         }
 
         [HttpGet, NoCache]
         [Route("orders")]
-        public AccountOrderListRequestResponse GetOrderListForAccount()
+        public IHttpActionResult GetOrderListForAccount()
         {
-            var session = GetSession();
-            var orders = _orderDao.FindByAccountId(session.UserId)
-                .Where(x => !x.IsRemovedFromHistory)
-                .OrderByDescending(c => c.CreatedDate)
-                .Select(read => new OrderMapper().ToResource(read));
-
-            var response = new AccountOrderListRequestResponse();
-            response.AddRange(orders);
-            return response;
+            return GenerateActionResult(_service.Get(new AccountOrderListRequest()));
         }
 
     }

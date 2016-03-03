@@ -11,7 +11,7 @@ using System;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ApplicationInfoService : Service
+    public class ApplicationInfoService : BaseApiService
     {
         private readonly IServerSettings _serverSettings;
 
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
         }
 
-        public object Get(ApplicationInfoRequest request)
+        public ApplicationInfo Get()
         {
             if (_serverSettings.ServerData.DisableNewerVersionPopup)
             {

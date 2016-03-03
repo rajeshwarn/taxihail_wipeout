@@ -6,7 +6,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AppStartUpLogService : Service
+    public class AppStartUpLogService : BaseApiService
     {
         private readonly IAppStartUpLogDao _dao;
 

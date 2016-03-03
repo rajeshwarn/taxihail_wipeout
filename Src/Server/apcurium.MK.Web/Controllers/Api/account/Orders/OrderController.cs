@@ -1,34 +1,30 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-using apcurium.MK.Booking.Api.Contract.Http;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Security;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
-using CancelOrder = apcurium.MK.Booking.Api.Contract.Requests.CancelOrder;
 
 namespace apcurium.MK.Web.Controllers.Api.account
 {
-    [System.Web.Http.RoutePrefix("api/account/orders")]
+    [RoutePrefix("api/account/orders")]
     [Auth]
     public class OrderController : BaseApiController
     {
+        private readonly CancelOrderService _cancelOrderService;
+
+
+
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
@@ -44,23 +40,15 @@ namespace apcurium.MK.Web.Controllers.Api.account
 
         public OrderController(IAccountDao accountDao, IOrderDao orderDao, IOrderPaymentDao orderPaymentDao, IPromotionDao promotionDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IOrderRatingsDao orderRatingsDao, IServerSettings serverSettings, ITaxiHailNetworkServiceClient networkServiceClient, IIbsCreateOrderService ibsCreateOrderService, IUpdateOrderStatusJob updateOrderStatusJob)
         {
-            _accountDao = accountDao;
-            _orderDao = orderDao;
-            _orderPaymentDao = orderPaymentDao;
-            _promotionDao = promotionDao;
-            _commandBus = commandBus;
-            _ibsServiceProvider = ibsServiceProvider;
-            _orderRatingsDao = orderRatingsDao;
-            _serverSettings = serverSettings;
-            _networkServiceClient = networkServiceClient;
-            _ibsCreateOrderService = ibsCreateOrderService;
-            _updateOrderStatusJob = updateOrderStatusJob;
-
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _cancelOrderService = new CancelOrderService(commandBus, ibsServiceProvider, orderDao, accountDao, updateOrderStatusJob, serverSettings, networkServiceClient, ibsCreateOrderService, Logger)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
         }
 
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("{orderId}")]
+        [HttpGet]
+        [Route("{orderId}")]
         public IHttpActionResult GetOrder(Guid orderId)
         {
             var orderDetail = _orderDao.FindById(orderId);
@@ -96,8 +84,8 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return Ok(result);
         }
 
-        [System.Web.Http.HttpDelete]
-        [System.Web.Http.Route("{orderId}")]
+        [HttpDelete]
+        [Route("{orderId}")]
         public object DeleteOrder(Guid orderId)
         {
             var orderDetail = _orderDao.FindById(orderId);
@@ -113,8 +101,8 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("{OrderId}/calldriver")]
+        [HttpGet]
+        [Route("{orderId}/calldriver")]
         public object InitiateCallToDriver(Guid orderId)
         {
             var order = _orderDao.FindById(orderId);
@@ -145,76 +133,13 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return false;
         }
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("{OrderId}/cancel")]
-        public object CancelOrder(CancelOrder request)
+        [HttpPost]
+        [Route("{orderId}/cancel")]
+        public IHttpActionResult CancelOrder(Guid orderId)
         {
-            var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(GetSession().UserId);
+            _cancelOrderService.Post(new Booking.Api.Contract.Requests.CancelOrder {OrderId = orderId});
 
-            if (order == null)
-            {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-            }
-
-            if (account.Id != order.AccountId)
-            {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't cancel another account's order");
-            }
-
-            if (order.IBSOrderId.HasValue)
-            {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
-                var orderStatus = _orderDao.FindOrderStatusById(order.Id);
-
-                var marketSettings = _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
-
-                var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-                    && marketSettings.DisableOutOfAppPayment;
-
-                if (currentIbsAccountId.HasValue
-                    && (!orderStatus.IBSStatusId.HasValue()
-                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
-                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
-                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
-                        || orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
-                        || canCancelWhenPaired))
-                {
-                    _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId.Value, order.CompanyKey, order.Settings.Phone, account.Id);
-                }
-                else
-                {
-                    var errorReason = !currentIbsAccountId.HasValue
-                        ? string.Format("no IbsAccountId found for accountid {0} and companykey {1}", account.Id, order.CompanyKey)
-                        : string.Format("orderDetail.IBSStatusId is not in the correct state: {0}, state: {1}", orderStatus.IBSStatusId, orderStatus.IBSStatusId);
-                    var errorMessage = string.Format("Could not cancel order because {0}", errorReason);
-
-                    Logger.LogMessage(errorMessage);
-
-                    throw new HttpException((int)HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), new Exception(errorMessage));
-                }
-            }
-            else
-            {
-                Logger.LogMessage("We don't have an ibs order id yet, send a CancelOrder command so that when we receive the ibs order info, we can cancel it");
-            }
-            
-            var command = new Booking.Commands.CancelOrder { OrderId = request.OrderId };
-            _commandBus.Send(command);
-
-            UpdateStatusAsync(command.OrderId);
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
-        }
-
-        private void UpdateStatusAsync(Guid orderId)
-        {
-            new TaskFactory().StartNew(async () =>
-            {
-                //We have to wait for the order to be completed.
-                await Task.Delay(750);
-                _updateOrderStatusJob.CheckStatus(orderId);
-            });
+            return Ok();
         }
 
     }

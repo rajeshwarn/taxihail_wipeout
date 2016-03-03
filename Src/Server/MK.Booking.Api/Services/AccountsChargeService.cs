@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -15,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AccountsChargeService : Service
+    public class AccountsChargeService : BaseApiService
     {
         private readonly IAccountChargeDao _dao;
         private readonly ICommandBus _commandBus;
@@ -30,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(AccountChargeRequest request)
         {
-            bool isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
+            bool isAdmin = Session.HasPermission(RoleName.Admin);
 
             if (!request.AccountNumber.HasValue())
             {
@@ -51,14 +53,14 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _dao.FindByAccountNumber(request.AccountNumber);
                 if (account == null)
                 {
-                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                    throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
                 }
 
                 // Validate with IBS to make sure the account/customer is still active
                 var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber ?? "0");
                 if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
                 {
-                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                    throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
                 }
 
                 if (request.HideAnswers || !isAdmin)
@@ -66,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
                     HideAnswers(account.Questions);
                 }
 
-                var currentUser = new Guid(this.GetSession().UserAuthId);
+                var currentUser = Session.UserId;
                 LoadCustomerAnswers(account.Questions, currentUser);
 
                 return account;
@@ -83,14 +85,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid userId)
         {
-            IEnumerable<AccountChargeQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(userId);
+            var priorAnswers = _dao.GetLastAnswersForAccountId(userId);
             priorAnswers.ForEach(x =>
             {
                 var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer);
-                if (matches != null)
-                {
-                    matches.ForEach(m => m.Answer = x.LastAnswer);
-                }
+                matches.ForEach(m => m.Answer = x.LastAnswer);
             });
 
         }
@@ -100,7 +99,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing != null)
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
 
             var i = 0;
@@ -135,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (existing != null
                 && existing.Id != request.Id)
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
 
             var i = 0;
@@ -162,12 +161,12 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public object Delete(AccountChargeRequest request)
+        public void Delete(AccountChargeRequest request)
         {
             var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
             }
 
             var deleteAccountCharge = new DeleteAccountCharge
@@ -177,8 +176,6 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
             _commandBus.Send(deleteAccountCharge);
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }
