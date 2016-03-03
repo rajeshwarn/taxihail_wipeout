@@ -334,6 +334,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								this.Services().Message.ShowMessage(title, message);
 							}
 							break;
+						case AuthFailure.NetworkError:
+							{
+								var title = localize["InvalidLoginMessageTitle"];
+								var message = localize["NoConnectionMessage"];
+
+								this.Services().Message.ShowMessage(title, message);
+							}
+							break;
                     }
                 }
                 catch (Exception e)

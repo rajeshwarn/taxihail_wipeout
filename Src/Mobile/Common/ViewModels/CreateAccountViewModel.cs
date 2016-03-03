@@ -187,6 +187,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
 							}
+							else if(String.Equals(error, "NoNetwork"))
+							{
+									error = this.Services().Localize["NoConnectionMessage"];
+							}
 							if (this.Services().Localize[error] != error)
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize[error]);
