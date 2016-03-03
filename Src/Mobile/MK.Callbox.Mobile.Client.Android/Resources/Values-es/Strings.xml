@@ -51,7 +51,7 @@
   <string name="Close">Cerrar</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">Error en conexión</string>
-  <string name="NoConnectionMessage">El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</string>
+  <string name="NoConnectionMessage">La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</string>
   <string name="FavoriteLocationsTitle">Lugares favoritos</string>
   <string name="NearbyPlacesTitle">Lugares cercanos</string>
   <string name="BookItLaterButton">Mas Tarde</string>
@@ -380,8 +380,8 @@
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
   <string name="CreditCardType">Tipo de tarjeta</string>
-  <string name="CreditCardExpMonth">Fecha de expiración</string>
-  <string name="CreditCardExpYear">Mes de expiración</string>
+  <string name="CreditCardExpMonth">Mes de Expiración</string>
+  <string name="CreditCardExpYear">Año de Expiración</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
@@ -788,14 +788,15 @@
   <string name="PaypalAccount">PayPal account</string>
   <string name="UnpairPayInCarWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
   <string name="UnpairPayInCarWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
-  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
-  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
-  <string name="ManualRideLinqDeactivatedCardOnFile">You need to have an active credit card set as your default payment method</string>
-  <string name="LastFour">Last 4 numbers:  </string>
-  <string name="CreditCompany">Credit company: </string>
-  <string name="SelectedCreditCard">Currently selected credit card</string>
-  <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">Este email esta asociado a una cuenta de Facebook. Por favor ingrese via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</string>
+  <string name="ManualRideLinqDeactivatedCardOnFile">Necesita tener una tarjeta de crédito activa como método de pago por defecto</string>
+  <string name="LastFour">Los últimos 4 números:  </string>
+  <string name="CreditCompany">Compañía de Crédito: </string>
+  <string name="SelectedCreditCard">Tarjeta de crédito seleccionada actualmente</string>
+  <string name="NoCreditCard">No ha seleccionado una tarjeta de crédito</string>
   <string name="PaypalError_Title">Error de PayPal</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
+  <string name="Notification_NoShowPush">Pasajero no presentado</string>
 </resources>

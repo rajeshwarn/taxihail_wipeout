@@ -51,7 +51,7 @@
   <string name="Close">Fermer</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">Erreur de connexion</string>
-  <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
+  <string name="NoConnectionMessage">Echec de connexion.</string>
   <string name="FavoriteLocationsTitle">Lieu de départ / destination favoris</string>
   <string name="NearbyPlacesTitle">À proximité</string>
   <string name="BookItLaterButton">Plus tard</string>
@@ -798,4 +798,5 @@
   <string name="PaypalError_Title">Erreur PayPal</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
+  <string name="Notification_NoShowPush">No show</string>
 </resources>

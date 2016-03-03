@@ -231,7 +231,7 @@
 "NetworkErrorTitle"="Aucune connexion disponible";
 "NoAptText"="--";
 "NoButton"="Non";
-"NoConnectionMessage"="Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.";
+"NoConnectionMessage"="Echec de connexion.";
 "NoConnectionTitle"="Erreur de connexion";
 "NoCreditCardSelected"="Merci de sélectionner une carte de paiement";
 "NoFareText"="Vous devez saisir une destination pour obtenir une estimation du prix du trajet";
