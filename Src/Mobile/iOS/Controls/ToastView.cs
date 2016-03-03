@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     TranslatesAutoresizingMaskIntoConstraints = false,
                 };
 
-            var image = ImageHelper.GetImage("cancel");
+            var image = ImageHelper.GetImage("cancel.png");
             _buttonView.SetImage(image, UIControlState.Normal);
             _buttonView.TouchDown += (object sender, EventArgs e) => 
                 {
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, this, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
                     NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, image.Size.Width),
                     NSLayoutConstraint.Create(_buttonView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, image.Size.Height),
-                    NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, _dialogTopEdgeConstraint),
+                    NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this, NSLayoutAttribute.CenterY, 1f, 0),
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, this, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _buttonView, NSLayoutAttribute.Leading, 1f, -_dialogEdgeConstraint),
                 });

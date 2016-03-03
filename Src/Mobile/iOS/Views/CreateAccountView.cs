@@ -112,16 +112,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
 
 			if (!ViewModel.HasSocialInfo)
-            {
+			{
 				constraintTableViewHeight.Constant += entryElementHeight * 2;
 
-				section.AddAll (new List<Element>
-                { 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true)
+				section.AddAll(new List<Element>
+					{ 
+						new TaxiHailEntryElement(string.Empty, Localize.GetValue("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true)
 						.Bind(bindings, vm => vm.Data.Password), 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true)
+						new TaxiHailEntryElement(string.Empty, Localize.GetValue("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true)
 						.Bind(bindings, vm => vm.ConfirmPassword)
-				});
+					});
 			}
 
 			if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)

@@ -49,11 +49,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			});
 		}
 
-		public void GetConfirmationCode(CountryISOCode countryCode, string phoneNumber)
+		public async Task GetConfirmationCode(CountryISOCode countryCode, string phoneNumber)
         {
 			if (countryCode != null && phoneNumber.HasValue())
 			{
-				_accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
+				await _accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
 				{
 					Email = _account.Email,
 					CountryCode = countryCode.Code,
