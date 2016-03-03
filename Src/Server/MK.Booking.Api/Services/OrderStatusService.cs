@@ -1,10 +1,13 @@
 ﻿#region
 
 using System;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
@@ -39,6 +42,27 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
+        }
+
+        public object Get(ActiveOrderRequest request)
+        {
+            var account = _accountDao.FindById(Guid.Parse(this.GetSession().UserAuthId));
+
+            var orderStatusDetails = _orderDao.GetActiveOrderStatusDetails(account.Id);
+
+            if (orderStatusDetails == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "NoActiveOrder");
+            }
+            
+            var orderDetail = _orderDao.FindById(orderStatusDetails.OrderId);
+
+            return new ActivateOrderResponse
+            {
+                Order = new OrderMapper().ToResource(orderDetail),
+                OrderStatusDetail = orderStatusDetails
+            };
+
         }
 
         public object Get(ActiveOrderStatusRequest request)
