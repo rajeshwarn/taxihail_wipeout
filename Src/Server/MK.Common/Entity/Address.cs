@@ -86,7 +86,8 @@ namespace apcurium.MK.Common.Entity
             var addressSections =
                 new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
 
-            if (LastSectionOfDisplayAddress.HasValueTrimmed() 
+            if (FirstSectionOfDisplayAddress.HasValueTrimmed() 
+                && LastSectionOfDisplayAddress.HasValueTrimmed() 
                 && FirstSectionOfDisplayAddress.Contains(LastSectionOfDisplayAddress))
             {
                 // special case where we only had a FullAddress that we added value to but we don't want to redo the loop again
