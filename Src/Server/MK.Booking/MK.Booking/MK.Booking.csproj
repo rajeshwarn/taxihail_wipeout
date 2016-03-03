@@ -583,6 +583,7 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Global.nl.resx" />
     <EmbeddedResource Include="Resources\MearsTaxi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
