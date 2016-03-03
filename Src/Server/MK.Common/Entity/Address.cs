@@ -113,7 +113,7 @@ namespace apcurium.MK.Common.Entity
                 }
                 else
                 {
-                    if (Street.ToSafeString().Contains(City.ToSafeString()))
+                    if (Street.HasValueTrimmed() && Street.Contains(City.ToSafeString()))
                     {
                         FullAddress = address;
                     }
