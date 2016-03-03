@@ -53,33 +53,74 @@ namespace apcurium.MK.Common.Entity
             get { return ConcatAddressComponents(true); }
         }
 
-        private string ConcatAddressComponents(bool useBuildingName = false)
+        private string FirstSectionOfDisplayAddress
         {
-            var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-            if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
+            get
             {
-                // StreetNumber Street, City, State ZipCode
-                var address = string.Join(", ", new[]
+                var firstSection = string.Join(" ", StreetNumber.ToSafeString(), Street.ToSafeString());
+                if (!firstSection.HasValueTrimmed())
                 {
-                    string.Join(" ", new[] {StreetNumber, Street}),
-                    City,
-                    string.Join(" ", new[] {State, ZipCode})
-                });
-
-                if (useBuildingName && !string.IsNullOrWhiteSpace(BuildingName))
-                {
-                    address = BuildingName + " - " + address;
+                    firstSection = FullAddress;
                 }
 
-                if (!string.IsNullOrWhiteSpace(FullAddress) && !FullAddress.Contains(City))
+                return firstSection;
+            }
+        }
+
+        public string LastSectionOfDisplayAddress
+        {
+            get
+            {
+                var lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
+                if (!lastSection.HasValueTrimmed())
+                {
+                    lastSection = string.Empty;
+                }
+
+                return lastSection;
+            }
+        }
+
+        private string ConcatAddressComponents(bool useBuildingName = false)
+        {
+            var addressSections =
+                new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
+
+            if (FirstSectionOfDisplayAddress.HasValueTrimmed() 
+                && LastSectionOfDisplayAddress.HasValueTrimmed() 
+                && FirstSectionOfDisplayAddress.Contains(LastSectionOfDisplayAddress))
+            {
+                // special case where we only had a FullAddress that we added value to but we don't want to redo the loop again
+                return FirstSectionOfDisplayAddress;
+            }
+
+            // should return ("StreetNumber Street" or "FullAddress"), City, State ZipCode
+            var address = string.Join(", ", addressSections);
+
+            if (useBuildingName && BuildingName.HasValueTrimmed())
+            {
+                address = BuildingName + " - " + address;
+            }
+
+            // Check if full address is really a full address
+            // If it doesn't contain the city, then we overwrite FullAddress with the value of DisplayAddress
+            // We also check that the street doesn't contain the city, ie: "11000 Garden Grove Blvd, Garden Grove, CA 92843"
+            if (FullAddress.HasValueTrimmed())
+            {
+                if (!FullAddress.Contains(City.ToSafeString()))
                 {
                     FullAddress = address;
                 }
-
-                return address;
+                else
+                {
+                    if (Street.HasValueTrimmed() && Street.Contains(City.ToSafeString()))
+                    {
+                        FullAddress = address;
+                    }
+                }
             }
-            return FullAddress;
+
+            return address;
         }
 
         public string GetFirstPortionOfAddress()
@@ -133,7 +174,10 @@ namespace apcurium.MK.Common.Entity
 			{
 				if (AddressType == "place" || FriendlyName.HasValue())
 				{
-					return DisplayAddress;
+				    if (!DisplayAddress.Contains(FriendlyName))
+				    {
+                        return DisplayAddress;
+                    }
 				}
 
                 if (DisplayAddress == null)
