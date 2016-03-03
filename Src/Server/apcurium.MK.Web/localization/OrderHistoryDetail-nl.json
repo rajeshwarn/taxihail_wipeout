@@ -1,0 +1,17 @@
+﻿{
+    "Pickup Time" : "Ophaaltijd",
+    "Pickup" : "Ophalen",
+    "Destination" : "Bestemming",
+    "Estimate" : "Schatting",
+    "Rebook" : "Opniew Boeken",
+    "Delete" : "Verwijder",
+    "Cancel" : "Annuleer",
+    "View Status" : "Bekijk Status",
+    "Order details" : "Order Details",
+    "OrderStatus" : "OrderStatus",
+    "ibsOrderIdLabel" : "Ordernummer", 
+    "Send Receipt": "Verzend Betalingsbewijs",
+    "Sending...": "Verzenden...",
+    "Receipt Sent": "Betaalbewijs Verzonden",
+    "Cannot Send Receipt": "Kan geen Betaalbewijs versturen"
+}

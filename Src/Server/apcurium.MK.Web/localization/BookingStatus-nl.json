@@ -1,0 +1,22 @@
+﻿{
+    "Your Order": "Uw Boeking",
+    "ConfirmationNumber" : "Bevestigingsnummer #",
+    "Status": "Status",
+    "Cancel": "Annuleer",
+    "Call": "Bellen",
+    "Done": "Gereed",
+    "New Ride": "Nieuwe Rit",
+    "Processing": "Zoeken naar een Taxi voor u...",
+    "Call us at": "Bel ons op",
+    "ThankYouNoteFormat": "Dank dat u heeft gekozen om te boeken bij {{ApplicationName}}, We hopen u nogmaals te mogen bedienen.",
+    "Ride Complete": "Rit Voltooid",
+    "Send Receipt": "Verstuur Betaalbewijs",
+    "Sending...": "Versturen...",
+    "Cannot Send Receipt": "Kan betaalbewijs niet versturen",
+    "Driver Phone": "Telefoonnummer Chauffeur #",
+    "NetworkTimeOutPopupTitle":    "Wissel van TaxiBedrijf?",
+    "NetworkTimeOutPopupMessage":    "Vanwege de drukte zijn er op dit moment geen taxi's beschikbaar. Wilt u in boeken bij {0}?",
+    "NetworkTimeOutPopupAccept":    "Accepteren",
+    "NetworkTimeOutPopupRefuse":    "Negeren",
+    "NetworkTimeOutPopupAlways":    "Altijd Accepteren"
+}
