@@ -1883,6 +1883,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050210
 			public const int Notification_NearbyTaxiPush = 2131034640;
 			
+			// aapt resource value: 0x7f05031e
+			public const int Notification_NoShowPush = 2131034910;
+			
 			// aapt resource value: 0x7f050211
 			public const int Notification_PaymentConfirmationPush = 2131034641;
 			

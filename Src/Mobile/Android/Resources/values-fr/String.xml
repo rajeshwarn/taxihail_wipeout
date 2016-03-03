@@ -110,6 +110,7 @@
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter un mode de paiement à votre compte.</string>
   <string name="CreditCardInvalidCrediCardNumber">Le numéro de la carte ne semble pas être valide</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Désolé, nous ne supportons pas les cartes Amex</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">Nom du titulaire (tel qu\'il apparaît sur la carte)</string>
   <string name="CreditCardNumber">Numéro de la carte</string>
@@ -234,7 +235,7 @@
   <string name="NetworkErrorTitle">Aucune connexion disponible</string>
   <string name="NoAptText">--</string>
   <string name="NoButton">Non</string>
-  <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
+  <string name="NoConnectionMessage">Echec de connexion.</string>
   <string name="NoConnectionTitle">Erreur de connexion</string>
   <string name="NoCreditCardSelected">Merci de sélectionner une carte de paiement</string>
   <string name="NoFareText">Vous devez saisir une destination pour obtenir une estimation du prix du trajet</string>
@@ -335,7 +336,6 @@
   <string name="RingCode">Saisissez un code</string>
   <string name="RingCodeTextPlaceholder">Saisissez un code</string>
   <string name="Save">Enregistrer</string>
-  <string name="Modify">Modifier</string>
   <string name="SaveAddressEmptyFieldMessage">Désolé, les données ne semble pas valides. Merci de saisir les informations</string>
   <string name="SaveAddressEmptyFieldTitle">Merci de resaisir le nom</string>
   <string name="ScanCreditCard">Scanner la carte de paiement</string>
@@ -485,6 +485,7 @@
   <string name="EtaDurationUnitPlural">minutes</string>
   <string name="Notification_DriverAssignedPush">Chauffeur assigné</string>
   <string name="Notification_DriverBailedPush">Course refusée</string>
+  <string name="Notification_NoShowPush">No show</string>
   <string name="RateLastRide">Évaluer</string>
   <string name="Notification_Enabled">Notifications</string>
   <string name="StatusEta">et arrive dans {0} {1}</string>
@@ -766,4 +767,5 @@
   <string name="SelectedCreditCard">Carte de crédit sélectionnée: </string>
   <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

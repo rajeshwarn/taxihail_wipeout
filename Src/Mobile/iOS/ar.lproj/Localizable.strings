@@ -226,7 +226,7 @@
 "NetworkErrorTitle"="لا يوجد إتصال بالشبكة";
 "NoAptText"="رقم الشقة";
 "NoButton"="لا";
-"NoConnectionMessage"="لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.";
+"NoConnectionMessage"="The server cannot be contacted.";
 "NoConnectionTitle"="خطأ في الإتصال";
 "NoCreditCardSelected"="الرجاء اختيار بطاقة الائتمان";
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";

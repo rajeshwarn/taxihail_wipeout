@@ -191,6 +191,7 @@
     <Compile Include="Comparer\AccountDetailComparer.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Data\BestAvailableCompany.cs" />
+    <Compile Include="Data\IbsOrderParams.cs" />
     <Compile Include="Data\IBSOrderResult.cs" />
     <Compile Include="Data\TemporaryOrderCreationInfo.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
+    <Compile Include="Helpers\IbsHelper.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
@@ -585,6 +587,7 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Global.nl.resx" />
     <EmbeddedResource Include="Resources\MearsTaxi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

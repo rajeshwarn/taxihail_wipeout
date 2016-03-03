@@ -1,0 +1,865 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OrderStatus_CabDriverETA" xml:space="preserve">
+    <value>ETA: {0}</value>
+    <comment>ETA: {0}</comment>
+  </data>
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+    <value>Taxi {0} is aan u toegewezen</value>
+    <comment>Cab {0} is assigned to you</comment>
+  </data>
+  <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
+    <value>Het adres is ongeldig</value>
+    <comment>The address is not valid</comment>
+  </data>
+  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
+    <value>Taxi is op ophaalplaats</value>
+    <comment>Taxi is at pickup location</comment>
+  </data>
+  <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
+    <value>Chauffeur toegewezen</value>
+    <comment>Driver assigned</comment>
+  </data>
+  <data name="OrderStatus_wosCANCELLED" xml:space="preserve">
+    <value>Geannuleerd</value>
+    <comment>Cancelled</comment>
+  </data>
+  <data name="OrderStatus_wosCANCELLED_DONE" xml:space="preserve">
+    <value>Geannuleerd</value>
+    <comment>Cancelled</comment>
+  </data>
+  <data name="OrderStatus_wosDONE" xml:space="preserve">
+    <value>Voltooid</value>
+    <comment>Completed</comment>
+  </data>
+  <data name="OrderStatus_wosLOADED" xml:space="preserve">
+    <value>Passagier is in de taxi</value>
+    <comment>Passenger is in the taxi</comment>
+  </data>
+  <data name="OrderStatus_wosNone" xml:space="preserve">
+    <value>Ongeldige order, bel het service center</value>
+    <comment>Invalid order, please call dispatch center</comment>
+  </data>
+  <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
+    <comment>Your driver indicated you were not at the pickup location.</comment>
+  </data>
+  <data name="OrderStatus_wosSCHED" xml:space="preserve">
+    <value>Ingepland</value>
+    <comment>Scheduled</comment>
+  </data>
+  <data name="OrderStatus_wosWAITING" xml:space="preserve">
+    <value>Wachten op de toegewezen chauffeur</value>
+    <comment>Waiting for driver to be assigned</comment>
+  </data>
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Uw Taxi (#{0}) is gearriveerd</value>
+    <comment>Your Taxi (#{0}) has arrived</comment>
+  </data>
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>Taxi #{0} is aan u toegewezen</value>
+    <comment>Taxi #{0} has been assigned to you</comment>
+  </data>
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry er zijn geen auto's beschikbaar vanwege de grote vraag, probeer het later nogmaals.</value>
+    <comment>Sorry no cars are available due to high demand, please try later.</comment>
+  </data>
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry er zijn geen auto's beschikbaar vanwege de grote vraag, probeer het later nogmaals.</value>
+    <comment>Sorry no cars are available due to high demand, please try later.</comment>
+  </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
+    <comment>Sorry, your driver canceled. Finding you another taxi...</comment>
+  </data>
+  <data name="PushNotification_wosNOSHOW" xml:space="preserve">
+    <value>Your driver indicated you were not at the pickup location.</value>
+    <comment>Your driver indicated you were not at the pickup location.</comment>
+  </data>
+  <data name="PaymentConfirmationToDriver1" xml:space="preserve">
+    <value>De passagier heeft betaald</value>
+    <comment>The passenger has paid</comment>
+  </data>
+  <data name="PaymentConfirmationToDriver4" xml:space="preserve">
+    <value>Auth #{0}</value>
+    <comment>Auth #{0}</comment>
+  </data>
+  <data name="PairingConfirmationToDriver" xml:space="preserve">
+    <value>De ritbetaling zal gebeuren via de app</value>
+    <comment>Fare will be paid by the app</comment>
+  </data>
+  <data name="UnpairingConfirmationToDriver" xml:space="preserve">
+    <value>De passagier betaal in de taxi aan het einde van de rit</value>
+    <comment>The customer will be paying in the car at the end of the ride</comment>
+  </data>
+  <data name="Email_Subject_AccountConfirmation" xml:space="preserve">
+    <value>Welkom bij {{ ApplicationName }}</value>
+    <comment>Welcome to {{ ApplicationName }}</comment>
+  </data>
+  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Annuleringskosten</value>
+    <comment>{{ ApplicationName }} - Cancellation Fees</comment>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - No Show Kosten</value>
+    <comment>{{ ApplicationName }} - No Show Fees</comment>
+  </data>
+  <data name="Email_Subject_BookingConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Boekings bevestiging</value>
+    <comment>{{ ApplicationName }} - Booking confirmation</comment>
+  </data>
+  <data name="Email_Subject_PasswordReset" xml:space="preserve">
+    <value>{{ ApplicationName }} - Uw Password is opnieuw ingesteld</value>
+    <comment>{{ ApplicationName }} - Your password has been reset</comment>
+  </data>
+  <data name="Email_Subject_Receipt" xml:space="preserve">
+    <value>{{ ApplicationName }} -  Betaalbewijs</value>
+    <comment>{{ ApplicationName }} - Receipt</comment>
+  </data>
+  <data name="Email_Body_AccountConfirmationLine1" xml:space="preserve">
+    <value>Om uw emailadres te bevestigen, bezoek deze link:</value>
+    <comment>To confirm your email address, please visit this link:</comment>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine1" xml:space="preserve">
+    <value>Uw emailadres is succesvol bevestigd.</value>
+    <comment>Your email address has been confirmed successfully.</comment>
+  </data>
+  <data name="Email_Body_AccountConfirmationSuccessfulLine2" xml:space="preserve">
+    <value>U kunt nu inloggen in de applicatie.</value>
+    <comment>You can now sign into the application.</comment>
+  </data>
+  <data name="Email_Body_AptNumber" xml:space="preserve">
+    <value>Appartement nummer</value>
+    <comment>Apt&amp;nbsp;No.</comment>
+  </data>
+  <data name="Email_Body_AuthorizationNumber" xml:space="preserve">
+    <value>Autorisatie nummer :</value>
+    <comment>Authorization number :</comment>
+  </data>
+  <data name="Email_Body_BookingConfirmation" xml:space="preserve">
+    <value>Boeking bevestiging</value>
+    <comment>Booking confirmation</comment>
+  </data>
+  <data name="Email_Body_ChargeType" xml:space="preserve">
+    <value>Annuleringskosten</value>
+    <comment>Charge&amp;nbsp;Type</comment>
+  </data>
+  <data name="Email_Body_Date" xml:space="preserve">
+    <value>Date</value>
+    <comment>Date</comment>
+  </data>
+  <data name="Email_Body_Destination" xml:space="preserve">
+    <value>Bestemming</value>
+    <comment>Destination</comment>
+  </data>
+  <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
+    <value>EE-mail bevestiging nodig</value>
+    <comment>Email confirmation required</comment>
+  </data>
+  <data name="Email_Body_EmailConfirmationSuccessful" xml:space="preserve">
+    <value>E-mail adres bevestiging succesvol</value>
+    <comment>Email address confirmation successful</comment>
+  </data>
+  <data name="Email_Body_EstimatedFare" xml:space="preserve">
+    <value>Tarief schatting</value>
+    <comment>Estimated&amp;nbsp;Fare</comment>
+  </data>
+  <data name="Email_Body_Fare" xml:space="preserve">
+    <value>Prijs</value>
+    <comment>Rate</comment>
+  </data>
+  <data name="Email_Body_LargeBags" xml:space="preserve">
+    <value>Extra Bagage Toeslag</value>
+    <comment>Large&amp;nbsp;bags</comment>
+  </data>
+  <data name="Email_Body_Name" xml:space="preserve">
+    <value>Naam</value>
+    <comment>Name</comment>
+  </data>
+  <data name="Email_Body_Note" xml:space="preserve">
+    <value>Opmerkingen</value>
+    <comment>Note</comment>
+  </data>
+  <data name="Email_Body_OrderNo" xml:space="preserve">
+    <value>Ordernummer&amp;nbsp;#</value>
+    <comment>Order&amp;nbsp;#</comment>
+  </data>
+  <data name="Email_Body_TripId" xml:space="preserve">
+    <value>Ritnr #</value>
+    <comment>Trip #</comment>
+  </data>
+  <data name="Email_Body_PaidWith" xml:space="preserve">
+    <value>Betaald met</value>
+    <comment>Paid With</comment>
+  </data>
+  <data name="Email_Body_Passengers" xml:space="preserve">
+    <value>Passagiers</value>
+    <comment>Passengers</comment>
+  </data>
+  <data name="Email_Body_PasswordReset" xml:space="preserve">
+    <value>Wachtwoord Reset</value>
+    <comment>Password reset</comment>
+  </data>
+  <data name="Email_Body_PasswordResetLine1" xml:space="preserve">
+    <value>Uw wachtwoord is gereset</value>
+    <comment>Your password has been reset.</comment>
+  </data>
+  <data name="Email_Body_PasswordResetLine2" xml:space="preserve">
+    <value>Nieuw wachtwoord:</value>
+    <comment>New password:</comment>
+  </data>
+  <data name="Email_Body_PaymentInformation" xml:space="preserve">
+    <value>NBetalingsinformatie</value>
+    <comment>Payment Information</comment>
+  </data>
+  <data name="Email_Body_PhoneNumber" xml:space="preserve">
+    <value>Phone&amp;nbsp;Number</value>
+  </data>
+  <data name="Email_Body_PickupLocation" xml:space="preserve">
+    <value>Pickup&amp;nbsp;Location</value>
+  </data>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>Pickup&amp;nbsp;Time</value>
+  </data>
+  <data name="Email_Body_PickupTimeValue" xml:space="preserve">
+    <value>{{PickupDate}} at {{PickupTime}}</value>
+  </data>
+  <data name="Email_Body_Receipt" xml:space="preserve">
+    <value>Kwitantie</value>
+    <comment>Receipt</comment>
+  </data>
+  <data name="Email_Body_RingCode" xml:space="preserve">
+    <value>Ring&amp;nbsp;Code</value>
+  </data>
+  <data name="Email_Body_ThankYou" xml:space="preserve">
+    <value>Dank u!</value>
+    <comment>Thank you!</comment>
+  </data>
+  <data name="Email_Body_TheTeam" xml:space="preserve">
+    <value>Het {{ ApplicationName }} Team</value>
+    <comment>The {{ ApplicationName }} Team</comment>
+  </data>
+  <data name="Email_Body_Tip" xml:space="preserve">
+    <value>Fooi</value>
+    <comment>Tip</comment>
+  </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promotie Code</value>
+    <comment>Promo Code</comment>
+  </data>
+  <data name="Email_Body_Toll" xml:space="preserve">
+    <value>Tolkosten</value>
+    <comment>Tolls</comment>
+  </data>
+  <data name="Email_Body_TotalAmount" xml:space="preserve">
+    <value>Totaalbedrag</value>
+    <comment>Total Amount</comment>
+  </data>
+  <data name="Email_Body_TotalFare" xml:space="preserve">
+    <value>Total&amp;nbsp;Fare</value>
+  </data>
+  <data name="Email_Body_RideLinqLastFour" xml:space="preserve">
+    <value>Gebruikte CreditCard (laalste 4)</value>
+    <comment>Credit Card Used (Last 4)</comment>
+  </data>
+  <data name="Email_Body_TransactionId" xml:space="preserve">
+    <value>Transactie Id :</value>
+    <comment>Transaction Id :</comment>
+  </data>
+  <data name="Email_Body_TransactionTime" xml:space="preserve">
+    <value>Transaction&amp;nbsp;Time</value>
+  </data>
+  <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
+    <value>{{TransactionDate}} at {{TransactionTime}}</value>
+  </data>
+  <data name="Email_Body_VAT" xml:space="preserve">
+    <value>BTW</value>
+    <comment>VAT</comment>
+  </data>
+  <data name="Email_Body_Tax" xml:space="preserve">
+    <value>Belasting</value>
+    <comment>Tax</comment>
+  </data>
+  <data name="Email_Body_ImprovementSurcharge" xml:space="preserve">
+    <value>Vorderings kosten</value>
+    <comment>Imprv. Surcharge</comment>
+  </data>
+  <data name="Email_Body_VehicleNumber" xml:space="preserve">
+    <value>Voertuig #</value>
+    <comment>Vehicle #</comment>
+  </data>
+  <data name="Email_Body_VehicleType" xml:space="preserve">
+    <value>Merk Taxi</value>
+    <comment>Vehicle&amp;nbsp;Type</comment>
+  </data>
+  <data name="Email_Body_Driver" xml:space="preserve">
+    <value>Chauffeur</value>
+    <comment>Driver</comment>
+  </data>
+  <data name="Email_Body_VehicleModel" xml:space="preserve">
+    <value>Voertuig</value>
+    <comment>Vehicle</comment>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
+    <value>Uw Chauffeur</value>
+    <comment>Your Driver</comment>
+  </data>
+  <data name="Email_Body_Distance" xml:space="preserve">
+    <value>Afstand</value>
+    <comment>Distance</comment>
+  </data>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Uw verificatie code voor {0} is {1}</value>
+    <comment>Your verification code for {0} is {1}</comment>
+  </data>
+  <data name="PushNotification_NearbyTaxi" xml:space="preserve">
+    <value>Uw taxi is bijna op de opstapplaats</value>
+    <comment>Your vehicle is almost at pickup location</comment>
+  </data>
+  <data name="PushNotification_PaymentReceived" xml:space="preserve">
+    <value>Uw creditcard werd met succes gebruikt en een totaal van {0} is in rekening gebracht.. Dit bedrag omvat zowel de ritprijs en evt. de fooi.</value>
+    <comment>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</comment>
+  </data>
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
+    <value>Bevestig het Taxinummer om met uw Credit card te betalen.</value>
+    <comment>Please confirm vehicle to pay with card on file.</comment>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+    <value>De ritprijs # {0} zal automatisch worden betaald aan het einde van de rit met uw creditcard eindigend op {1} en  gebruikt uw standaard Fooi van {2}%</value>
+    <comment>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</comment>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>De ritprijs # {0} zal worden betaald aan het einde van de rit met behulp van uw creditcard in ons bestand bekend is en eindigt op {1}. Als je in de verkeerde taxi zit kies dan voor de Betalen in Taxi optie om ervoor te zorgen dat u niet dubbel betaald voor de rit.</value>
+    <comment>The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</comment>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>De ritprijs # {0} zal automatisch worden betaald aan het einde van de rit door uw gekoppelde PayPal-rekening en gebruikt uw standaard fooi van {1}%</value>
+    <comment>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%</comment>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>De ritprijs # {0} zal worden betaald aan het einde van de rit met behulp van uw PayPal-rekening. Als je in de verkeerde taxi zit, kies dan de Betaal in Taxi optie om ervoor te zorgen dat u niet dubbel betaald voor de rit.</value>
+    <comment>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</comment>
+  </data>
+  <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
+    <value>Koppeling is mislukt. Betaal de chauffeur</value>
+    <comment>Pairing failed. Pay to driver.</comment>
+  </data>
+  <data name="Email_Body_FareBreakDown" xml:space="preserve">
+    <value>Opbouw van het Tarief</value>
+    <comment>Fare breakdown</comment>
+  </data>
+  <data name="Email_Body_Route" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+    <value>Tarief zal worden betaald met behulp van de geselecteerde betaalmethode</value>
+    <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>Sorry: Uw chauffeur heeft de rit niet aangenomen. Wij zoeken een andere taxi voor u…</value>
+    <comment>Sorry, your driver canceled. Finding you another taxi...</comment>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Card on File</value>
+    <comment>Card on File</comment>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Charge Account</value>
+    <comment>Charge Account</comment>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Betaling in taxi</value>
+    <comment>Payment in Car</comment>
+  </data>
+  <data name="CurrencyPriceFormat" xml:space="preserve">
+    <value>{0:c}</value>
+  </data>
+  <data name="Email_Body_SubTotal" xml:space="preserve">
+    <value>Subtotaal</value>
+    <comment>Subtotal</comment>
+  </data>
+  <data name="PaymentConfirmationToDriver2" xml:space="preserve">
+    <value>Ritprijs: {0}   Fooi: {1}</value>
+    <comment>Fare: {0}   Tip: {1}</comment>
+  </data>
+  <data name="PaymentConfirmationToDriver3" xml:space="preserve">
+    <value>Totaal: {0}</value>
+    <comment>Total: {0}</comment>
+  </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>ETA displayed to client is {0} and {1} min</value>
+    <comment>ETA displayed to client is {0} and {1} min</comment>
+  </data>
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
+    <value>De betaling wordt verwerkt door de app…</value>
+    <comment>Payment being processed by the app...</comment>
+  </data>
+  <data name="PaymentFailedToDriver" xml:space="preserve">
+    <value>De betaling via de app is mislukt!</value>
+    <comment>Payment by the app has Failed!</comment>
+  </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Rit # {0} Oorspronkelijk bedrag: {1}</value>
+    <comment>Order #{0} Original amount: {1}</comment>
+  </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
+    <comment>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</comment>
+  </data>
+  <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
+    <value>De ritopdracht kan niet worden aangemaakt omdat de autorisatie check negatief is.</value>
+    <comment>The order cannot be created because your credit card failed the preauthorization check.</comment>
+  </data>
+  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+  </data>
+  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Vanwege de grote vraag zijn er nu geen taxi's beschikbaar. Wilt u uw rit boeken bij {0}?</value>
+    <comment>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</comment>
+  </data>
+  <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
+    <value>Wachten op de toegewezen chauffeur van {0}</value>
+    <comment>Waiting for driver from {0} to be assigned</comment>
+  </data>
+  <data name="Network_CannotCreateOrder" xml:space="preserve">
+    <value>Er is een probleem opgetreden terwijl u aan het proberen was een boeking te maken met {0}. Uw bestelling blijft actief.</value>
+    <comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
+    <value>This account is not supported in a different market.</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+    <value>You must select Card On File or PayPal to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+    <value>You must select PayPal to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>This promotion is not active</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
+    <value>This promotion is deleted</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Maximum number of uses has been reached for this promotion</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>This promotion does not applies to future booking</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>This promotion applies to future booking only</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>This promotion is not available for this day of the week</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>This promotion has not started yet</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>This promotion has expired</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>This promotion is not available at this time</value>
+  </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>Er is geen Taxibedrijf die deze regio bediend</value>
+    <comment>There is no company serving this region</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>You are not allowed to use this promotion</value>
+  </data>
+  <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
+    <value>Sorry, future booking is not available</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+  </data>
+  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - Nieuwe Actie Beschikbaar!</value>
+    <comment>{{ ApplicationName }} - New Promotion Available!</comment>
+  </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Gefeliciteerd! U bnet nu in de mogelijkheid de  "{0}" actie te gebruiken. Gebruik code {1} bij uw volgende rit om het te verzilveren.</value>
+    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>Boeking kan niet worden uitgevoerd. Probeerd u nogmaals of neem contact met ons op.</value>
+    <comment>Order cannot be created. Please try again or call us.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>Order cannot be created. The specified Pickup address lies outside the regular service area.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Order cannot be created. The specified Destination address lies outside the regular service area.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>Order cannot be created. Your account has been disabled.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>Order cannot be created. Your account is currently inactive.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+  </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Ongeldig klantnummer</value>
+    <comment>Invalid account number</comment>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Bericht</value>
+    <comment>Message</comment>
+  </data>
+  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>Dit emailadres is reeds in gebruik.</value>
+    <comment>This email is already in use.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>Er is geen CreditCard geregistreerd.</value>
+    <comment>No Credit Card On File.</comment>
+  </data>
+  <data name="CannotCreateOrder_NoChargeType" xml:space="preserve">
+    <value>No Payment Method Available.</value>
+    <comment>No Payment Method Available.</comment>
+  </data>
+  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>Geen PayPal account gekoppeld</value>
+    <comment>No PayPal account linked</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+    <value>Bestelling kan niet worden gemaakt, ongeldig provider. Neem contact op met {0} op {1} voor verdere assistentie.</value>
+    <comment>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+    <value>Bestelling kan niet worden geplaatst, Ongeldige provider.</value>
+    <comment>Order cannot be created, invalid provider.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>Geen tarief schatting beschikbaar voor deze rit. Neem contact op met {0} op {1} voor verdere assistentie.</value>
+    <comment>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>Geen tariefschatting beschikbaar voor deze rit.</value>
+    <comment>No fare estimate available for the ride.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+    <value>Bestelling kan niet worden gemaakt, geen provider opgegeven. Probeer het opnieuw of bel ons.</value>
+    <comment>Order cannot be created, no provider specified. Please try again or call us.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+    <value>Bestelling kan niet worden gemaakt, ongeldig voertuigtype. Probeer het opnieuw of bel ons.</value>
+    <comment>Order cannot be created, invalid vehicle type. Please try again or call us.</comment>
+  </data>
+  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+    <value>Er is een fout opgetreden. Probeer opnieuw.</value>
+    <comment>An error occurred. Please try again.</comment>
+  </data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>Uw sessie is verlopen, u kunt opnieuw inloggen om verder te gaan.</value>
+    <comment>Your session has expired, please login to continue.</comment>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Het huidige wachtwoord is niet geldig</value>
+    <comment>The current password is not valid.</comment>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Neem contact op met {0} op {1} voor verdere hulp.</value>
+    <comment>Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>De reservering kan niet worden uitgevoerd.</value>
+    <comment>The order cannot be created.</comment>
+  </data>
+  <data name="PayPalWebFareItemDescription" xml:space="preserve">
+    <value>Taxi Boeking</value>
+    <comment>Taxi booking</comment>
+  </data>
+  <data name="PayPalWebPaymentDescription" xml:space="preserve">
+    <value>Ritprijs {0}</value>
+    <comment>Taxi ride of amount {0}</comment>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Let op: Als u in de verkeerde taxi bent gestapt kies dan Betaal in de Taxi zodat u niet dubel betaald.</value>
+    <comment>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</comment>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
+    <value>Uw op rekening betaling is gedeactiveerd omdat de betaling van uw laatste rit is geweigerd. Om deze optie opnieuw te kunnen gebruiken, gaat u naar het betaal scherm om de betaling alsnog te voldoen.</value>
+    <comment>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</comment>
+  </data>
+  <data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
+    <value>Uw CreditCard geldigheid is verlopen. Pas uw Betalingsgegevens aan om door te kunnen gaan met deze wijze van betalen.</value>
+    <comment>Your card on file has expired. Please update your payment information to continue using it.</comment>
+  </data>
+  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+    <value>Uw &lt;b&gt; {{ CreditCardCompany }}&lt;/b&gt; creditcard eindigend met &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; is uitgeschakeld, omdat de betaling van uw laatste rit is geweigerd. Om de kaart weer te kunnen gebruiken, open {{ ApplicationName }} op uw smartphone en ga naar het Betaal </value>
+    <comment>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</comment>
+  </data>
+  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+    <value>{{ ApplicationName }} - Uw Creditcard is uitgeschakeld</value>
+    <comment>{{ ApplicationName }} - Your credit card has been deactivated</comment>
+  </data>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
+    <value>PayPal betaling is geannuleerd</value>
+    <comment>PayPal payment was cancelled</comment>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Payment is not enabled on the website. Please select another charge type.</value>
+  </data>
+  <data name="PayPalWebTipItemDescription" xml:space="preserve">
+    <value>Fooi ({0}%)</value>
+    <comment>Tip ({0}%)</comment>
+  </data>
+  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Reserveringskosten</value>
+    <comment>Booking Fees</comment>
+  </data>
+  <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
+    <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
+    <value>If your browser does not automatically redirect you after 10 seconds,</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
+    <value>click hier</value>
+    <comment>click here.</comment>
+  </data>
+  <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Toeslag</value>
+    <comment>Surcharge</comment>
+  </data>
+  <data name="Email_Body_Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Email_Body_DriverId" xml:space="preserve">
+    <value>Chauffeurs Id #</value>
+    <comment>Driver #</comment>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>U wordt belast voor het betalen van een vergoeding a {{FeeAmount}} voor de rit # {{IbsOrderId}}, omdat deze te laat geannuleerd werd.</value>
+    <comment>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled.</comment>
+  </data>
+  <data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>U moet een vergoeding betalen van {{FeeAmount}} voor de rit #{{IbsOrderId}} omdat u niet aanwezig was toen de chauffeur u kwam ophalen op {{Ophaaladres}}.</value>
+    <comment>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because you were absent when the driver tried to pick you up at {{PickUpAddress}}.</comment>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>Dit bedrag wordt automatisch afgeschreven van uw creditcard eindigend met {{Last4Digits}}.</value>
+    <comment>This amount will be automatically debited from your credit card ending with {{Last4Digits}}.</comment>
+  </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Reserverings kosten</value>
+    <comment>Booking Fees</comment>
+  </data>
+  <data name="Email_Body_RateClass" xml:space="preserve">
+    <value>Rate Code</value>
+    <comment>Rate Code</comment>
+  </data>
+  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>CreditCard is geweigerd</value>
+    <comment>Credit Card was declined</comment>
+  </data>
+  <data name="OrderStatus_PairingFailed" xml:space="preserve">
+    <value>Niet mogelijk om u te koppelen aan de Taxi. Gelieve uw Chauffeur aan het einde van de rit te betalen.</value>
+    <comment>Unable to pair you to the car. Please pay your driver at the end of the ride.</comment>
+  </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK je bent ingecheckt. De betaling zal automatisch plaats vinden aan het einde van uw rit.</value>
+    <comment>OK you're checked in. Payment will be automatic at the end of your trip.</comment>
+  </data>
+  <data name="PhoneNumberFormat" xml:space="preserve">
+    <value>Het telefoonnummer is ongelding.  Het moet minimaal uit {0} cijfers bestaan</value>
+    <comment>The phone number is invalid. It must have format {0}</comment>
+  </data>
+  <data name="PhoneBlackListed" xml:space="preserve">
+    <value>The phone number is black listed</value>
+    <comment>The phone number is black listed</comment>
+  </data>
+  <data name="EmailUsedMessage" xml:space="preserve">
+    <value>Dit emailadres wordt al gebruikt door een ander account</value>
+    <comment>This email is already used by another account</comment>
+  </data>
+  <data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+    <value>Kan het emailadres van een account niet veranderen als deze gekoppeld zit aan Facebook</value>
+    <comment>Cannot change the email of an account linked with Facebook</comment>
+  </data>
+  <data name="CancelOrderError" xml:space="preserve">
+    <value>Het is te laat om deze order te cancelen</value>
+    <comment>It is too late to cancel this order</comment>
+  </data>
+  <data name="CancelOrderError_NoIBSOrderId" xml:space="preserve">
+    <value>Cannot cancel order because of we don't have the IBSOrderID</value>
+  </data>
+  <data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Chauffeurs Foto</value>
+    <comment>Driver Photo</comment>
+  </data>
+  <data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Kenteken</value>
+    <comment>Vehicle Licence Plate</comment>
+  </data>
+  <data name="TripUnableToPairErrorText" xml:space="preserve">
+    <value>Sorry, Er is een probleem, Graag in de taxi betalen</value>
+    <comment>Sorry, there was a problem, please pay in the taxi</comment>
+  </data>
+  <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+  </data>
+  <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
+    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+  </data>
+  <data name="Email_Subject_OrderRefund" xml:space="preserve">
+    <value>{{ ApplicationName }} - Order Refund</value>
+  </data>
+  <data name="Email_Body_TotalRefund" xml:space="preserve">
+    <value>Total Refund</value>
+  </data>
+  <data name="Email_Title_OrderRefund" xml:space="preserve">
+    <value>Order Refund</value>
+  </data>
+</root>

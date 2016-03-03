@@ -163,7 +163,7 @@
     <value>Connection error</value>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</value>
+    <value>The server cannot be contacted.</value>
   </data>
   <data name="FavoriteLocationsTitle" xml:space="preserve">
     <value>Favorite locations</value>
