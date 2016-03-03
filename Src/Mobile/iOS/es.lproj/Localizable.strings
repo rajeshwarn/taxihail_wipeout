@@ -112,11 +112,13 @@
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "CreditCardErrorTitle"="No podemos guardar su tarjeta de crédito";
 "CreditCardError_Label"="Cannot save credit card label. Please try again";
-"CreditCardExpMonth"="Fecha de expiración";
-"CreditCardExpYear"="Mes de expiración";
+"CreditCardExpMonth"="Mes de Expiración";
+"CreditCardExpYear"="Año de Expiración";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "CreditCardLabel"="Etiqueta";
 "CreditCardName"="Nombre tal y como aparece en la tarjeta";
 "CreditCardNumber"="Número de tarjeta";

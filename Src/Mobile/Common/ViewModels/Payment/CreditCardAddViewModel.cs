@@ -670,6 +670,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if (Data.CreditCardCompany == Discover && PaymentSettings.DisableDiscover)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeDiscover"]);
+					return;
+				}
+
+				if ((Data.CreditCardCompany == Visa || Data.CreditCardCompany == VisaElectron || Data.CreditCardCompany == MasterCard) && PaymentSettings.DisableVisaMastercard)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeVisaMastercard"]);
+					return;
+				}
+
 				using (this.Services().Message.ShowProgress())
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());

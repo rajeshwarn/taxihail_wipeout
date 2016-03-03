@@ -357,7 +357,9 @@
 "CreditCardError_Label"="Cannot save credit card label. Please try again";
 "CreditCardRequiredFields"="All the fields are required";
 "CreditCardInvalidCrediCardNumber"="The Credit Card Number is invalid";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex card are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "ReminderTitle"="{0} Booked";
 "ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
