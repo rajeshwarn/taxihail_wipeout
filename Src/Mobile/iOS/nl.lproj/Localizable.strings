@@ -96,7 +96,7 @@
 "CmtConfirmPayment"="Bevestigen";
 "CmtRideLinqCancelChanges"="Annuleren";
 "CmtRideLinqConfirmPairView"="Bevestig Betalings instelling";
-"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Bevestig dat u in het voertuig zit met het opgegeven nummer, hieronder aangegeven. Door te  \"Bevestigen\", zal deze rit automatisch worden betaald via uw CreditCard die in ons bestand staat aangemeld.";
+"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Bevestig dat u in het voertuig zit met het opgegeven nummer, hieronder aangegeven. Door te  "Bevestigen", zal deze rit automatisch worden betaald via uw CreditCard die in ons bestand staat aangemeld.";
 "CmtRideLinqErrorTitle"="Error";
 "CmtRideLinqGenericErrorMessage"="Er is een Error opgetreden tijdens het koppelen. Controleer uw Creditcard informatie of probeer later opnieuw";
 "CmtRideLinqSaveChanges"="Opslaan";
@@ -138,7 +138,7 @@
 "CreateAccountTitleMr"="Dhr";
 "CreateAccountTitleMrs"="Mv";
 "CreditCard"="Credit card";
-"CreditCardAdded"="Uw Account is nu standaard ingesteld op betaling met CreditCard. U kunt nog steeds kiezen om ander te betalen in de taxi. Selecteer dan \"Betaal in Taxi \" in het bvestigingsscherm";
+"CreditCardAdded"="Uw Account is nu standaard ingesteld op betaling met CreditCard. U kunt nog steeds kiezen om ander te betalen in de taxi. Selecteer dan \ "Betaal in Taxi \ " in het bvestigingsscherm";
 "CreditCardAdded_PayInCarDisabled"="Uw account is nu standaard ingesteld als Betaling met uw creditcard";
 "CreditCardAddingActivityName"="CreditCard Toevoegen/Bijwerken";
 "CreditCardBookingSettingsError"="Er is een fout opgetreden tijdens het bijwerken van de boeking instellingen. Zorg ervoor dat het accountnummer in je profiel geldig is en probeer het opnieuw.";
@@ -665,9 +665,9 @@
 "Tuto03Top"="U kunt ook uw keuze selecteren door zelf het ophaaladres in te toetsen.";
 "Tuto04Bottom"="Op deze wijze krijgt u een schatting van de kosten voor deze rit.";
 "Tuto04Top"="Als u wil, kunt u zelf al uw bestemmingsadres invoeren.";
-"Tuto05Bottom"="Of kies \"Later\" om uw ophaaldatum en tijd in te geven voor toekomstig moment ";
-"Tuto05Top"="Tik \"Boek nu\" en een Taxi zal zo spoedig mogelijk worden toegewezen.";
-"Tuto06Bottom"="Kies \"Bevestigen\" als u gereed bent om te vertrekken";
+"Tuto05Bottom"="Of kies "Later" om uw ophaaldatum en tijd in te geven voor toekomstig moment ";
+"Tuto05Top"="Tik "Boek nu" en een Taxi zal zo spoedig mogelijk worden toegewezen.";
+"Tuto06Bottom"="Kies "Bevestigen" als u gereed bent om te vertrekken";
 "Tuto06Top"="Het bevestigingsscherm geeft u de mogelijkheid om uw reis gegevens te verifiëren en om een van uw voorkeuren te wijzigen voor deze rit.";
 "Tuto07Bottom"="Status updates worden gegeven wanneer de auto arriveert bij het ophaaladres, als u in de taxi stapt en aan het eind van de rit.";
 "Tuto07Top"="Op het Statusscherm vindt u een reserveringsnummer ter bevestiging van uw boeking. Zodra een voertuig is toegewezen, kunt u volgen binnen hoeveel tijd uw taxi bij u zal zijn.";
