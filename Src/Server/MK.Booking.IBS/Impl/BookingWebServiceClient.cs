@@ -650,7 +650,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Customer = passengerName,
                 Phone = CleanPhone(phone),
                 AccountNum = accountNumber,
-                EmailBackAdd = email
+                EmailBackAdd = email,
+                ContactEmail = email
             };
 
             if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
