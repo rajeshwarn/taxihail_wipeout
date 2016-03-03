@@ -5,7 +5,6 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -25,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IVehicleTypeService _vehicleTypeService;
 		private readonly IPhoneService _phoneService;
 		private readonly IRegisterWorkflowService _registrationService;
-		private readonly IPaymentService _paymentService;
+	    private readonly IBookingService _bookingService;
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
@@ -34,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			IRegisterWorkflowService registrationService,
 			IPaymentService paymentService,
-			IVehicleTypeService vehicleTypeService)
+			IVehicleTypeService vehicleTypeService, 
+            IBookingService bookingService)
         {
 			_registrationService = registrationService;
             _facebookService = facebookService;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_vehicleTypeService = vehicleTypeService;
-			_paymentService = paymentService;
+            _bookingService = bookingService;
         }
 
 	    public event EventHandler LoginSucceeded; 
@@ -506,14 +506,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return;
             }
 
-            ShowViewModelAndRemoveFromHistory<HomeViewModel> (new { locateUser = true });
+            await NavigateToHomeView();
+
             if (LoginSucceeded != null) 
             {
                 LoginSucceeded (this, EventArgs.Empty);
             }
         }
 
-		private async Task OnLoginSuccess()
+	    private async Task NavigateToHomeView()
+	    {
+	        var activeOrder = await _bookingService.GetActiveOrder();
+
+	        if (activeOrder == null)
+	        {
+	            ShowViewModelAndRemoveFromHistory<HomeViewModel>(new {locateUser = true});
+	        }
+	        else if (activeOrder.Order.IsManualRideLinq)
+	        {
+	            var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(activeOrder.Order.Id);
+
+	            ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
+	            {
+	                manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson(),
+	                locateUser = false
+	            });
+	        }
+	        else
+	        {
+	            ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
+	            {
+	                order = activeOrder.Order.ToJson(),
+	                orderStatusDetail = activeOrder.OrderStatus.ToJson(),
+	                locateUser = false
+	            });
+	        }
+	    }
+
+	    private async Task OnLoginSuccess()
         {
             _loginWasSuccesful = true;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;

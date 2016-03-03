@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isPassword = isPassword;
 		}
 
-        private bool _isInputEnabled = true;
+		private bool _isInputEnabled = true;
 
 		public bool IsInputEnabled
 		{
@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AdjustsFontSizeToFitWidth = true;
             textField.AccessibilityLabel = Placeholder;
+
+			textField.Enabled = _isInputEnabled;
 
             textField.Enabled = _isInputEnabled;
 

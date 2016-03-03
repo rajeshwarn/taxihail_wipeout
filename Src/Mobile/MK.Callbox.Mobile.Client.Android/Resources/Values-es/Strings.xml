@@ -51,7 +51,7 @@
   <string name="Close">Cerrar</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">Error en conexión</string>
-  <string name="NoConnectionMessage">El servidor no puede ser contactado.</string>
+  <string name="NoConnectionMessage">La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</string>
   <string name="FavoriteLocationsTitle">Lugares favoritos</string>
   <string name="NearbyPlacesTitle">Lugares cercanos</string>
   <string name="BookItLaterButton">Mas Tarde</string>
