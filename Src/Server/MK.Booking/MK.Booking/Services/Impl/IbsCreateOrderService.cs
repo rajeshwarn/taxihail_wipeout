@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
-            ServiceType serviceType, string companyKey,  int ibsAccountId, string name, string phone, string email, int passengers, int? vehicleTypeId, string ibsInformationNote, bool isFutureBooking,
+            ServiceType serviceType, string companyKey, int ibsAccountId, string name, string phone, string email, int passengers, int? vehicleTypeId, string ibsInformationNote, bool isFutureBooking,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
             int? requestProviderId, Fare fare, double? tipIncentive, int? tipPercent, bool isHailRequest = false, int? companyFleetId = null)
         {
@@ -108,6 +108,7 @@ namespace apcurium.MK.Booking.Services.Impl
             else
             {
                 createOrderResult = _ibsServiceProvider.Booking(companyKey, serviceType).CreateOrder(
+                    orderId,
                     providerId,
                     ibsAccountId,
                     name,
