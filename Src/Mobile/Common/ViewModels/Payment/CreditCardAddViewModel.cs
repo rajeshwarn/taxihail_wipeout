@@ -272,6 +272,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get 
 			{
 				var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+
+				if((PaymentSettings.DisableAMEX && type.Display == Amex) 
+					|| (PaymentSettings.DisableDiscover && type.Display == Discover)
+					|| (PaymentSettings.DisableVisaMastercard && (type.Display == Visa || type.Display == VisaElectron  || type.Display == MasterCard)))
+				{
+					return CreditCardCompanies.FirstOrDefault(x=>x.Display == CreditCardGeneric).Image;
+				}
+
 				return type == null ? null : type.Image;
 			}
 		}
