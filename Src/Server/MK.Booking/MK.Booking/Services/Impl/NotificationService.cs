@@ -270,8 +270,14 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(orderId);
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
 
+                if (!ShouldSendNotification(orderStatus.AccountId, x => x.ConfirmPairingPush))
+                {
+                    return;
+                }
+
+                var order = context.Find<OrderDetail>(orderId);
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
                 var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings(order.CompanyKey).IsUnpairingDisabled;
 
