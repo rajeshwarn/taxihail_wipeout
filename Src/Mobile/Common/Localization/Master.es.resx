@@ -1135,7 +1135,7 @@
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
     <value>La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</value>
-    <comment>The connection to the network is not available, please check your internet connection or try later</comment>
+    <comment>The connection to the network is not available, please check your internet connection or try later.</comment>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>Error en conexión</value>
