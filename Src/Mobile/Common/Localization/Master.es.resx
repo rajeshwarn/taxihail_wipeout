@@ -1135,8 +1135,8 @@
     <comment>Update now</comment>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value>El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</value>
-    <comment>The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</comment>
+    <value>La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</value>
+    <comment>The connection to the network is not available, please check your internet connection or try later.</comment>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>Error en conexión</value>
@@ -2989,11 +2989,11 @@
     <comment>The confirmation code is incorrect.</comment>
   </data>
   <data name="InvalidCreditCardMessage" xml:space="preserve">
-  	<value>Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</value>
-  	<comment>There was a problem with your current Payment Method. Please add a different card or update the information.</comment>
+    <value>Hubo un problema con su método de pago actual. Por favor agregue una nueva tarjeta o actualice la información.</value>
+    <comment>There was a problem with your current Payment Method. Please add a different card or update the information.</comment>
   </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
-  	<value>Actualizar Tarjeta</value>
-  	<comment>Update Card</comment>
+    <value>Actualizar Tarjeta</value>
+    <comment>Update Card</comment>
   </data>
 </root>
