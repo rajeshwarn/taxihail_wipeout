@@ -439,14 +439,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				var authResponse = await UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service
 					.Authenticate (email, password),
-					error => { throw error; /* Avoid trigerring global error handler */ });
+					error => 
+					{ 
+						throw error; /* Avoid trigerring global error handler */ 
+					}
+				);
                 SaveCredentials (authResponse);                
                 return await GetAccount ();
             }
-            catch(WebException)
+            catch(WebException e)
             {
                 // Happen when device is not connected
                 _connectivityService.ShowToast();
+				throw new AuthException ("No connection", AuthFailure.NetworkError, e);
             }
             catch(WebServiceException e)
             {
@@ -566,14 +571,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task ResetPassword (string email)
         {
-			return UseServiceClientAsync<IAccountServiceClient> (service => service.ResetPassword (email));  
+			return UseServiceClientAsync<IAccountServiceClient> (service => service.ResetPassword (email),
+				error =>
+				{
+					throw error;
+				}
+			);  
         }
 
 		public async Task Register (RegisterAccount data)
         {
             data.AccountId = Guid.NewGuid();
 			data.Language = _localize.CurrentLanguage;
-			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data)); 
+			await UseServiceClientAsync<IAccountServiceClient> (service => service.RegisterAccount (data),
+				error => 
+				{
+					throw error;
+				}
+			); 
         }
 
 		public Task DeleteFavoriteAddress (Guid addressId)

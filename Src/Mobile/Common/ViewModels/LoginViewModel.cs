@@ -273,9 +273,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					await HandleAppleCredentialsIfNeeded(Email, Password);
 					#endif
 
-					await _accountService.SignIn(Email, Password);   
-                    Password = string.Empty;                    
-					await OnLoginSuccess();
+					await _accountService.SignIn(Email, Password);
+					Password = string.Empty;                    
+					await OnLoginSuccess();	
                 }
                 catch (AuthException e)
                 {
@@ -330,6 +330,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								var title = localize["FacebookLoginErrorTitle"];
 								var message = localize["FacebookLoginErrorMessage"];
+
+								this.Services().Message.ShowMessage(title, message);
+							}
+							break;
+						case AuthFailure.NetworkError:
+							{
+								var title = localize["InvalidLoginMessageTitle"];
+								var message = localize["NoConnectionMessage"];
 
 								this.Services().Message.ShowMessage(title, message);
 							}
