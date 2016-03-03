@@ -9,7 +9,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfigurationResetService : Service
+    public class ConfigurationResetService : BaseApiService
     {
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
         }
 
-        public object Get(ConfigurationResetRequest request)
+        public bool Get()
         {
             _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
             _serverSettings.Reload();

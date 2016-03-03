@@ -13,7 +13,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class DefaultFavoriteAddressService : Service
+    public class DefaultFavoriteAddressService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
 
@@ -23,15 +23,15 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public IValidator<DefaultFavoriteAddress> Validator { get; set; }
+        //public IValidator<DefaultFavoriteAddress> Validator { get; set; }
         protected IDefaultAddressDao Dao { get; set; }
 
-        public object Get(DefaultFavoriteAddress request)
+        public DefaultFavoriteAddressResponse Get()
         {
             return new DefaultFavoriteAddressResponse(Dao.GetAll());
         }
 
-        public object Post(DefaultFavoriteAddress request)
+        public Guid Post(DefaultFavoriteAddress request)
         {
             var command = new AddDefaultFavoriteAddress();
 
@@ -40,10 +40,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            return new {command.Address.Id};
+            return command.Address.Id;
         }
 
-        public object Delete(DefaultFavoriteAddress request)
+        public void Delete(DefaultFavoriteAddress request)
         {
             var command = new RemoveDefaultFavoriteAddress
             {
@@ -52,11 +52,9 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
             _commandBus.Send(command);
-
-            return string.Empty;
         }
 
-        public object Put(DefaultFavoriteAddress request)
+        public void Put(DefaultFavoriteAddress request)
         {
             var command = new UpdateDefaultFavoriteAddress();
 
@@ -64,8 +62,6 @@ namespace apcurium.MK.Booking.Api.Services
             command.Address.Id = request.Id;
 
             _commandBus.Send(command);
-
-            return string.Empty;
         }
     }
 }

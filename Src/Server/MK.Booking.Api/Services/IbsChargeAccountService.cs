@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class IbsChargeAccountService : Service
+    public class IbsChargeAccountService : BaseApiService
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
 
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
             return accountValidation;
         }
 
-        public List<IbsChargeAccount> Get(IbsChargeAccountsRequest request)
+        public List<IbsChargeAccount> Get()
         {
             var accountsFromIbs = _ibsServiceProvider.ChargeAccount().GetAllAccount();
             var accounts = new List<IbsChargeAccount>();

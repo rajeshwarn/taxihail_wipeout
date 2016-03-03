@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.FlightStats;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-	public class FlightInformationService : Service
+	public class FlightInformationService : BaseApiService
 	{
 		private readonly IServerSettings _serverSettings;
 		private readonly HttpClient _client;
@@ -57,26 +56,26 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (flightStatsResponse == null)
 			{
-				throw new HttpError(HttpStatusCode.NotFound, "No flight found.");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No flight found.");
 			}
 
 			var error = flightStatsResponse.Error;
 
 			if (error != null)
 			{
-				throw new HttpError(HttpStatusCode.BadRequest, "OrderAirportView_" + error.ErrorCode);
+				throw new HttpException((int)HttpStatusCode.BadRequest, "OrderAirportView_" + error.ErrorCode);
 			}
 
 			if (flightStatsResponse.FlightStatuses == null ||  flightStatsResponse.FlightStatuses.None())
 			{
-				throw new HttpError(HttpStatusCode.NotFound, "No flight found.");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No flight found.");
 			}
 
 			var terminal = GetTerminal(flightStatsResponse.FlightStatuses, request.IsPickup, request.AirportId);
 
 			if (!terminal.HasValue())
 			{
-				throw new HttpError(HttpStatusCode.NoContent,"No terminal found.");
+				throw new HttpException((int)HttpStatusCode.NoContent,"No terminal found.");
 			}
 
 			return new FlightInformation

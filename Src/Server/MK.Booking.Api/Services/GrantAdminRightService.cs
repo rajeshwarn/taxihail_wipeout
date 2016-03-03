@@ -13,7 +13,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class GrantAdminRightService : Service
+    public class GrantAdminRightService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         protected IAccountDao Dao;

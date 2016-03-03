@@ -15,49 +15,21 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
     public class DriverController : BaseApiController
     {
-        private readonly IIbsOrderService _ibsOrderService;
-        private readonly ILogger _logger;
-        private readonly IOrderDao _orderDao;
-
+        private readonly DriverService _driverService;
         public DriverController(IIbsOrderService ibsOrderService, ILogger logger, IOrderDao orderDao)
         {
-            _ibsOrderService = ibsOrderService;
-            _logger = logger;
-            _orderDao = orderDao;
+            _driverService = new DriverService(ibsOrderService, logger, orderDao);
         }
 
         [HttpPost, Auth]
         [Route("/vehicle/{vehicleNumber}/message")]
-        public HttpResponseMessage SendMessageToDriver(string vehicleNumber, SendMessageToDriverRequest request)
+        public IHttpActionResult SendMessageToDriver(string vehicleNumber, SendMessageToDriverRequest request)
         {
-            try
-            {
-                string companyKey = null;
+            request.VehicleNumber = vehicleNumber;
 
-                if (request.OrderId != Guid.Empty)
-                {
-                    var order = _orderDao.FindById(request.OrderId);
-                    if (order == null)
-                    {
-                        throw GetException(HttpStatusCode.NotFound, "Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
-                    }
+            _driverService.Post(request);
 
-                    companyKey = order.CompanyKey;
-                }
-
-                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, companyKey);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogMessage(
-                    string.Format("An error occured when trying to send a message to the driver. Message: {0}, VehicleNumber: {1}",
-                    request.Message, request.VehicleNumber));
-                _logger.LogError(ex);
-
-                throw GetException(HttpStatusCode.InternalServerError, ex.Message);
-            }
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
     }
 }

@@ -16,41 +16,41 @@ namespace apcurium.MK.Web.Controllers.Api
     [Auth]
     public class OrderStatusController : BaseApiController
     {
-        private readonly OrderStatusHelper _orderStatusHelper;
-        private readonly IAccountDao _accountDao;
-        private readonly IOrderDao _orderDao;
+        private readonly OrderStatusService _orderStatusService;
+
+        private readonly ActiveOrderStatusService _activeOrderStatusService;
 
         public OrderStatusController(OrderStatusHelper orderStatusHelper, IAccountDao accountDao, IOrderDao orderDao)
         {
-            _orderStatusHelper = orderStatusHelper;
-            _accountDao = accountDao;
-            _orderDao = orderDao;
+            _orderStatusService = new OrderStatusService(orderStatusHelper)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
+
+            _activeOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
         }
 
         [HttpGet]
         [Route("{OrderId}/status/")]
-        public async Task<OrderStatusRequestResponse> GetOrderStatus(Guid orderId)
+        public async Task<IHttpActionResult> GetOrderStatus(Guid orderId)
         {
-            var session = GetSession();
+            var status = await _orderStatusService.Get(new OrderStatusRequest() {OrderId = orderId});
 
-            var status = await _orderStatusHelper.GetOrderStatus(orderId, session);
-
-            return Mapper.Map<OrderStatusRequestResponse>(status);
+            return GenerateActionResult(status);
         }
 
         [HttpGet]
         [Route("status/active")]
-        public ActiveOrderStatusRequestResponse GetActiveOrdersStatus()
+        public IHttpActionResult GetActiveOrdersStatus()
         {
-            var statuses = new ActiveOrderStatusRequestResponse();
-            var account = _accountDao.FindById(GetSession().UserId);
+            var status = _activeOrderStatusService.Get();
 
-            foreach (var status in _orderDao.GetOrdersInProgressByAccountId(account.Id))
-            {
-                statuses.Add(status);
-            }
-
-            return statuses;
+            return GenerateActionResult(status);
         }
     }
 }

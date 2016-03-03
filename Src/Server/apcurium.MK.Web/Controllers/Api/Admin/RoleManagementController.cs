@@ -19,85 +19,47 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("account")]
     public class RoleManagementController : BaseApiController
     {
-        private readonly ICommandBus _commandBus;
-        private IAccountDao _accountDao;
+        private readonly GrantAdminRightService _grantAdminRightService;
 
         public RoleManagementController(ICommandBus commandBus, IAccountDao accountDao)
         {
-            _commandBus = commandBus;
-            _accountDao = accountDao;
+            _grantAdminRightService = new GrantAdminRightService(accountDao, commandBus)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
         }
 
         [HttpPut, Auth(Role = RoleName.Admin), Route("grantadmin")]
-        public HttpResponseMessage GrantAdminRight(GrantAdminRightRequest request)
+        public IHttpActionResult GrantAdminRight(GrantAdminRightRequest request)
         {
-            var account = _accountDao.FindByEmail(request.AccountEmail);
-            if (account == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
-            }
+            _grantAdminRightService.Put(request);
 
-            _commandBus.Send(new UpdateRoleToUserAccount
-            {
-                AccountId = account.Id,
-                RoleName = RoleName.Admin
-            });
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
         [HttpPut, Auth(Role = RoleName.SuperAdmin), Route("grantsuperadmin")]
-        public HttpResponseMessage GrantSuperAdminRight(GrantSuperAdminRightRequest request)
+        public IHttpActionResult GrantSuperAdminRight(GrantSuperAdminRightRequest request)
         {
-            var account = _accountDao.FindByEmail(request.AccountEmail);
-            if (account == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
-            }
+            _grantAdminRightService.Put(request);
 
-            _commandBus.Send(new UpdateRoleToUserAccount
-            {
-                AccountId = account.Id,
-                RoleName = RoleName.SuperAdmin
-            });
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
         [HttpPut, Auth(Role = RoleName.Admin), Route("grantsupport")]
-        public HttpResponseMessage GrantSupportRight(GrantSupportRightRequest request)
+        public IHttpActionResult GrantSupportRight(GrantSupportRightRequest request)
         {
-            var account = _accountDao.FindByEmail(request.AccountEmail);
-            if (account == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
-            }
+            _grantAdminRightService.Put(request);
 
-            _commandBus.Send(new UpdateRoleToUserAccount
-            {
-                AccountId = account.Id,
-                RoleName = RoleName.Support
-            });
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
         [HttpPut, Auth(Role = RoleName.Admin), Route("revokeaccess")]
-        public HttpResponseMessage GrantRevokeAccessRight(RevokeAccessRequest request)
+        public IHttpActionResult GrantRevokeAccessRight(RevokeAccessRequest request)
         {
-            var account = _accountDao.FindByEmail(request.AccountEmail);
-            if (account == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
-            }
+            _grantAdminRightService.Put(request);
 
-            _commandBus.Send(new UpdateRoleToUserAccount
-            {
-                AccountId = account.Id,
-                RoleName = RoleName.None
-            });
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
     }

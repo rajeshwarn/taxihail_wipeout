@@ -5,14 +5,12 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
-using ServiceStack.FluentValidation;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ClientPopularAddressService : Service
+    public class ClientPopularAddressService : BaseApiService
     {
 
         public ClientPopularAddressService(IPopularAddressDao dao)
@@ -20,8 +18,8 @@ namespace apcurium.MK.Booking.Api.Services
            
             Dao = dao;
         }
-
-        public IValidator<ClientPopularAddress> Validator { get; set; }
+        //TODO MKTAXI-3915: Handle this
+        //public IValidator<ClientPopularAddress> Validator { get; set; }
         protected IPopularAddressDao Dao { get; set; }
 
         public object Get(ClientPopularAddress request)

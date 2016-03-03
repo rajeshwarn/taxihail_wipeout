@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
         }
 
-        public object Get()
+        public Address[] Get()
         {
 			var addresses = _dao.FindHistoricByAccountId(Session.UserId);
 

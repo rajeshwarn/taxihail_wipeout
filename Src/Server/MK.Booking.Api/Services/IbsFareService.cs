@@ -1,14 +1,10 @@
 ﻿#region
 
 using System;
-using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Enumeration;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
@@ -17,7 +13,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services 
 {
-    public class IbsFareService : Service
+    public class IbsFareService : BaseApiService
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;

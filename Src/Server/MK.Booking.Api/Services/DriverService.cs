@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class DriverService : Service
+    public class DriverService : BaseApiService
     {
         private readonly IIbsOrderService _ibsOrderService;
         private readonly ILogger _logger;
@@ -23,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services
 	        _orderDao = orderDao;
         }
 
-        public object Post(SendMessageToDriverRequest request)
+        public void Post(SendMessageToDriverRequest request)
         {
             try
             {
@@ -49,10 +48,8 @@ namespace apcurium.MK.Booking.Api.Services
                     request.Message, request.VehicleNumber));
                 _logger.LogError(ex);
 
-                throw new HttpError(HttpStatusCode.InternalServerError, ex.Message);
+                throw new HttpException((int)HttpStatusCode.InternalServerError, ex.Message);
             }
-            
-            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

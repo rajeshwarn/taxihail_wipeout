@@ -15,13 +15,16 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using MK.Common.Configuration;
 using System.Reflection;
+using System.Web;
+using System.Web.Http;
+using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Common.Cryptography;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfigurationsService : Service
+    public class ConfigurationsService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
@@ -34,12 +37,12 @@ namespace apcurium.MK.Booking.Api.Services
             _configDao = configDao;
         }
 
-        public object Get(ConfigurationsRequest request)
+        public IDictionary<string, string> Get(ConfigurationsRequest request)
         {
 			return GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
         }
 
-		public object Get(EncryptedConfigurationsRequest request)
+		public IDictionary<string, string> Get(EncryptedConfigurationsRequest request)
 		{
 			var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
 
@@ -48,12 +51,12 @@ namespace apcurium.MK.Booking.Api.Services
 			return data;
 		}
 
-		public Dictionary<string, string> GetConfigurationsRequestInternal(AppSettingsType appSettingsType, IDictionary<string, PropertyInfo> settings)
+		public IDictionary<string, string> GetConfigurationsRequestInternal(AppSettingsType appSettingsType, IDictionary<string, PropertyInfo> settings)
 		{
 			var result = new Dictionary<string, string>();
 
 			var isFromAdminPortal = appSettingsType == AppSettingsType.Webapp;
-			var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
+			var returnAllKeys = Session.HasPermission(RoleName.SuperAdmin);
 			var isTaxiHailPro = _serverSettings.ServerData.IsTaxiHailPro;
 
 			foreach (var setting in settings)
@@ -111,7 +114,7 @@ namespace apcurium.MK.Booking.Api.Services
 		}
 
 
-        public object Post(ConfigurationsRequest request)
+        public void Post(ConfigurationsRequest request)
         {
             if (request.AppSettings.Any())
             {
@@ -122,11 +125,9 @@ namespace apcurium.MK.Booking.Api.Services
                 };
                 _commandBus.Send(command);
             }
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Get(NotificationSettingsRequest request)
+        public NotificationSettings Get(NotificationSettingsRequest request)
         {
             if (request.AccountId.HasValue)
             {
@@ -138,13 +139,13 @@ namespace apcurium.MK.Booking.Api.Services
             return _configDao.GetNotificationSettings();
         }
 
-        public object Post(NotificationSettingsRequest request)
+        public void Post(NotificationSettingsRequest request)
         {
             if (!request.AccountId.HasValue)
             {
-                if (!SessionAs<AuthUserSession>().HasPermission(RoleName.Admin))
+                if (!Session.HasPermission(RoleName.Admin))
                 {
-                    return new HttpError(HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
+                    throw new HttpException((int)HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
                 }
 
                 _commandBus.Send(new AddOrUpdateNotificationSettings
@@ -162,15 +163,13 @@ namespace apcurium.MK.Booking.Api.Services
                     NotificationSettings = request.NotificationSettings
                 });
             }
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Get(UserTaxiHailNetworkSettingsRequest request)
+        public UserTaxiHailNetworkSettings Get(UserTaxiHailNetworkSettingsRequest request)
         {
             if (request.AccountId == null)
             {
-                return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Account Id cannot be null");
             }
 
             var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value) 
@@ -184,11 +183,11 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public object Post(UserTaxiHailNetworkSettingsRequest request)
+        public void Post(UserTaxiHailNetworkSettingsRequest request)
         {
             if (request.AccountId == null)
             {
-                return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Account Id cannot be null");
             }
 
             _commandBus.Send(new AddOrUpdateUserTaxiHailNetworkSettings
@@ -197,8 +196,6 @@ namespace apcurium.MK.Booking.Api.Services
                 IsEnabled = request.UserTaxiHailNetworkSettings.IsEnabled,
                 DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets
             });
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }

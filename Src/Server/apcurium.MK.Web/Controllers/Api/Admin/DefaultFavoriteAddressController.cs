@@ -17,59 +17,49 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("admin"), Auth(Role = RoleName.Support)]
     public class DefaultFavoriteAddressController : BaseApiController
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IDefaultAddressDao _defaultAddressDao;
-
+        private readonly DefaultFavoriteAddressService _defaultFavoriteAddressService;
+        
         public DefaultFavoriteAddressController(ICommandBus commandBus, IDefaultAddressDao defaultAddressDao)
         {
-            _commandBus = commandBus;
-            _defaultAddressDao = defaultAddressDao;
+            _defaultFavoriteAddressService = new DefaultFavoriteAddressService(defaultAddressDao, commandBus)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
         }
 
         [HttpGet, Route("addresses"), NoCache]
-        public DefaultFavoriteAddressResponse GetDefaultFavoriteAddress()
+        public IHttpActionResult GetDefaultFavoriteAddress()
         {
-            return new DefaultFavoriteAddressResponse(_defaultAddressDao.GetAll());
+            var result = _defaultFavoriteAddressService.Get();
+
+            return GenerateActionResult(result);
         }
 
         [HttpPost, Route("addresses"), NoCache]
-        public object AddDefaultFavoriteAddress(DefaultFavoriteAddress request)
+        public IHttpActionResult AddDefaultFavoriteAddress([FromBody]DefaultFavoriteAddress request)
         {
-            var command = new AddDefaultFavoriteAddress();
+            var result = _defaultFavoriteAddressService.Post(request);
 
-            Mapper.Map(request, command);
-            command.Address.Id = request.Id == Guid.Empty ? Guid.NewGuid() : request.Id;
-
-            _commandBus.Send(command);
-
-            return new { command.Address.Id };
+            return GenerateActionResult(new {Id = result});
         }
 
         [HttpPut, Route("addresses/{id}"), NoCache]
-        public HttpResponseMessage UpdateDefaultFavoriteAddress(Guid id, DefaultFavoriteAddress request)
+        public IHttpActionResult UpdateDefaultFavoriteAddress(Guid id, [FromBody]DefaultFavoriteAddress request)
         {
-            var command = new UpdateDefaultFavoriteAddress();
+            request.Id = id;
 
-            Mapper.Map(request, command);
-            command.Address.Id = request.Id;
+            _defaultFavoriteAddressService.Put(request);
 
-            _commandBus.Send(command);
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
         [HttpDelete, Route("addresses/{id}"), NoCache]
-        public HttpResponseMessage DeleteDefaultFavoriteAddress(Guid id)
+        public IHttpActionResult DeleteDefaultFavoriteAddress(Guid id)
         {
-            var command = new RemoveDefaultFavoriteAddress
-            {
-                Id = Guid.NewGuid(),
-                AddressId = id
-            };
-
-            _commandBus.Send(command);
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            _defaultFavoriteAddressService.Delete(new DefaultFavoriteAddress() {Id = id});
+            
+            return Ok();
         }
 
 

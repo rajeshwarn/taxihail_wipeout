@@ -6,14 +6,13 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Common.Web;
 using System.Net;
+using System.Web;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CurrentAccountService : Service
+    public class CurrentAccountService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly ICreditCardDao _creditCardDao;
@@ -26,17 +25,15 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
         }
 
-        public object Get(CurrentAccount request)
+        public CurrentAccountResponse Get(CurrentAccount request)
         {
-            var session = this.GetSession();
-            
             // Just in case someone was able to authenticate with a null session. 
-            if (!session.Id.HasValueTrimmed())
+            if (!Session.SessionId.HasValueTrimmed())
             {
-                throw new HttpError(HttpStatusCode.Forbidden, "NoSession");
+                throw new HttpException((int)HttpStatusCode.Forbidden, "NoSession");
             }
 
-            var account = _accountDao.FindById(new Guid(session.UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
 
             var creditCard = account.DefaultCreditCard.HasValue
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
@@ -89,18 +86,18 @@ namespace apcurium.MK.Booking.Api.Services
             return currentAccount;
         }
 
-		public object Get(CurrentAccountPhoneRequest currentAccountPhoneRequest)
+		public CurrentAccountPhoneResponse Get(CurrentAccountPhoneRequest currentAccountPhoneRequest)
 		{
 			var account = _accountDao.FindByEmail(currentAccountPhoneRequest.Email);
 
 			if (account == null)
 			{
-				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
 			if (account.IsConfirmed)
 			{
-				throw new HttpError(HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
+				throw new HttpException((int)HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
 			}
 
 			return new CurrentAccountPhoneResponse()

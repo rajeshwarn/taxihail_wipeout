@@ -3,6 +3,7 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
@@ -11,26 +12,31 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class PopularAddressController : BaseApiController
     {
-        private readonly IPopularAddressDao _popularAddressDao;
+        private readonly ClientPopularAddressService _clientPopularAddressService;
 
         public PopularAddressController(IPopularAddressDao popularAddressDao)
         {
-            _popularAddressDao = popularAddressDao;
+            _clientPopularAddressService = new ClientPopularAddressService(popularAddressDao)
+            {
+                HttpRequestContext = RequestContext,
+                Session = GetSession()
+            };
         }
 
         [HttpGet, NoCache, Route("popularaddresses")]
-        public ClientPopularAddressResponse GetClientPopularAddress()
+        public IHttpActionResult GetClientPopularAddress()
         {
-            var address = _popularAddressDao.GetAll()
-                .Select(Mapper.Map<Address>);
-
-            return new ClientPopularAddressResponse(address);
+            var result = _clientPopularAddressService.Get(new ClientPopularAddress());
+            
+            return GenerateActionResult(result);
         }
 
         [HttpGet, NoCache, Route("admin/popularaddresses")]
-        public AdminPopularAddressResponse GetAdminPopularAddress()
+        public IHttpActionResult GetAdminPopularAddress()
         {
-            return new AdminPopularAddressResponse(_popularAddressDao.GetAll());
+            var result = _clientPopularAddressService.Get(new AdminPopularAddress());
+
+            return GenerateActionResult(result);
         }
     }
 }
