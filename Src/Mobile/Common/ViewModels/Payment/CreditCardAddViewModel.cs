@@ -53,12 +53,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private const string Visa = "Visa";
 		private const string MasterCard = "MasterCard";
 		private const string Amex = "Amex";
+		private const string Discover = "Discover";
 		private const string CreditCardGeneric = "Credit Card Generic";
 		private const string VisaElectron = "Visa Electron";
 		private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
 		private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
 		private const string MasterPattern = "^5[1-5][0-9]{14}$";
 		private const string AmexPattern = "^3[47][0-9]{13}$";
+		//TODO find Discover Pattern
+		private const string DiscoverPattern = "";
 		private const int TipMaxPercent = 100;
 		#endregion
 
@@ -103,7 +106,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					new ListItem {Display = MasterCard, Id = 1},
 					new ListItem {Display = Amex, Id = 2},
 					new ListItem {Display = VisaElectron, Id = 3},
-					new ListItem {Display = CreditCardGeneric, Id = 4}
+					new ListItem {Display = Discover, Id = 4},
+					new ListItem {Display = CreditCardGeneric, Id = 5}
 				};
 
 				ExpirationYears = new List<ListItem>();
