@@ -78,14 +78,14 @@ namespace CMTPayment
             }
         }
 
-        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds, bool enableLogger = false)
+        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds, bool enableVerboseLogging = false)
         {
             // wait for trip to be updated
             var watch = new Stopwatch();
             watch.Start();
             var trip = GetTripInfo(pairingToken);
 
-            if (enableLogger)
+            if (enableVerboseLogging)
             {
                 if (trip == null)
                 {
@@ -107,7 +107,7 @@ namespace CMTPayment
                 Thread.Sleep(2000);
                 trip = GetTripInfo(pairingToken);
 
-                if (enableLogger)
+                if (enableVerboseLogging)
                 {
                     if (trip == null)
                     {
