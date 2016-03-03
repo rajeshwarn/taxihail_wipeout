@@ -78,12 +78,24 @@ namespace CMTPayment
             }
         }
 
-        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds)
+        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds, bool enableVerboseLogging = false)
         {
             // wait for trip to be updated
             var watch = new Stopwatch();
             watch.Start();
             var trip = GetTripInfo(pairingToken);
+
+            if (enableVerboseLogging)
+            {
+                if (trip == null)
+                {
+                    _logger.LogMessage("WaitingForTripInfo, trip not found on initial call");
+                }
+                else
+                {
+                    _logger.LogMessage("Trip info received: {0}", trip.ToJson());
+                }
+            }
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
@@ -94,6 +106,20 @@ namespace CMTPayment
 
                 Thread.Sleep(2000);
                 trip = GetTripInfo(pairingToken);
+
+                if (enableVerboseLogging)
+                {
+                    if (trip == null)
+                    {
+                        _logger.LogMessage(
+                            "WaitingForTripInfo, trip not found while in waiting loop. {0} seconds left until timeout",
+                            timeoutSeconds - watch.Elapsed.Seconds);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Trip info received: {0}", trip.ToJson());
+                    }
+                }
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {

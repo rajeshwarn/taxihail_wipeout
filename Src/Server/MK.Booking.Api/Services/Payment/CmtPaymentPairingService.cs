@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         /// </summary>
         public object Post(CmtPaymentPairingRequest request)
         {
-            _logger.LogMessage("Pairing info received for order {0} and PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
+            _logger.LogMessage("Pairing info received for order {0}, PairingToken {1} and a timeout of {2}", request.OrderUuid, request.PairingToken??"Unknown", request.TimeoutSeconds??DefaultTimeoutSeconds);
             if (Guid.Empty == request.OrderUuid || !request.PairingToken.HasValueTrimmed())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var tripInfoServiceHelper = GetTripInfoServiceHelper(orderStatusDetail.CompanyKey);
 
-            var tripInfo = tripInfoServiceHelper.WaitForTripInfo(request.PairingToken, request.TimeoutSeconds ?? DefaultTimeoutSeconds);
+            var tripInfo = tripInfoServiceHelper.WaitForTripInfo(request.PairingToken, request.TimeoutSeconds ?? DefaultTimeoutSeconds, enableVerboseLogging: true);
             
             _commandBus.Send(new PairForPayment
             {
@@ -89,7 +89,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CustomerId = account.Id,
                 CustomerName =  account.Name,
                 CardOnFileId = creditCard.Token,
-                TripRequestNumber = orderStatusDetail.IBSStatusId
+                TripRequestNumber = tripInfo.TripId.ToString(),
+                LastFourDigits = creditCard.Last4Digits
             };
         }
     }

@@ -8,5 +8,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
         public string CustomerName { get; set; }
         public string CardOnFileId { get; set; }
         public string TripRequestNumber { get; set; }
+
+        public string LastFourDigits { get; set; }
     }
 }

@@ -277,8 +277,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-			    if (Status.FareAvailable)
-			    {
+				if (Status.FareAvailable)
+				{
 					var paymentAmount = Order.Fare.GetValueOrDefault() 
 						+ Order.Tip.GetValueOrDefault() 
 						+ Order.Tax.GetValueOrDefault() 
@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						+ Order.Surcharge.GetValueOrDefault();
 
 					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
-			    }
+				}
 			    else if (Status.IsManualRideLinq)
 			    {
 			        return OrderStatus.Completed.ToString();
