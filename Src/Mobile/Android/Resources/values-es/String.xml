@@ -118,11 +118,11 @@
   <string name="CreditCardExpYear">Año de Expiración</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardInvalidCrediCardNumber">El número de tarjeta de crédito es inválido</string>
-  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.</string>
   <string name="CreditCardLabel">Etiqueta</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
-  <string name="CreditCardRemoveErrorMessage">Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes</string>
+  <string name="CreditCardRemoveErrorMessage">Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes.</string>
   <string name="CreditCardRemoveErrorTitle">No puede eliminar la tarjeta de crédito</string>
   <string name="CreditCardRequiredFields">Todos los campos requeridos</string>
   <string name="CreditCardType">Tipo de tarjeta</string>
@@ -417,7 +417,7 @@
   <string name="StreetNumberPlacesBt">Buscar lugares</string>
   <string name="StreetNumberSearchBt">Usar una dirección diferente</string>
   <string name="StreetNumberTitle">Detalles de la dirección</string>
-  <string name="Submit">Pagar en Efectivo y Terminar</string>
+  <string name="Submit">Terminar</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TabBook">De Alta</string>
   <string name="TabContacts">Contactos</string>
