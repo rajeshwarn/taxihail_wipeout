@@ -189,16 +189,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
 	    {
 		    using (var context = _contextFactory.Invoke())
 		    {
+                var today = DateTime.Now.Date;
 				return context
-				    .Query<OrderManualRideLinqDetail>()
-					.AsEnumerable()
+				    .Query<OrderManualRideLinqDetail>()					
 					.Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode) 
 						&& ridelinq.AccountId == accountId
 						&& ridelinq.StartTime.HasValue 
-						&& ridelinq.StartTime.Value.Date == DateTime.Now.Date
-					)
+						&& ridelinq.StartTime.Value.Date == today
+                    )
 					.OrderBy(ridelinq => ridelinq.StartTime)
-					.LastOrDefault();
+                    .ToList()
+                    .LastOrDefault();
 
 		    }
 	    }
