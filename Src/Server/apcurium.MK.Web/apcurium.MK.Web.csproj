@@ -741,6 +741,7 @@
     <Compile Include="Controllers\Api\Account\ManualRideLinqController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
+    <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
     <Compile Include="Controllers\Api\Account\RoleController.cs" />
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
@@ -759,6 +760,9 @@
     <Compile Include="Controllers\Api\OrderRatingController.cs" />
     <Compile Include="Controllers\Api\PopularAddressController.cs" />
     <Compile Include="Controllers\Api\PrivacyPolicyController.cs" />
+    <Compile Include="Controllers\Api\PromotionController.cs" />
+    <Compile Include="Controllers\Api\RatingTypesController.cs" />
+    <Compile Include="Controllers\Api\ReferenceDataController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
     <Compile Include="default.aspx.cs">

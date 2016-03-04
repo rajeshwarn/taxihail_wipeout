@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public bool Get()
         {
-            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
+            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CACHE_KEY));
             _serverSettings.Reload();
             return true;
         }

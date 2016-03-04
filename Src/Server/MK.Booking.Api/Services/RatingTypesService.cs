@@ -3,27 +3,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class RatingTypesService : Service
+    public class RatingTypesService : BaseApiService
     {
         private readonly IRatingTypeDao _dao;
         private readonly ICommandBus _commandBus;
@@ -34,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public object Get(RatingTypesRequest request)
+        public RatingTypeWrapper[] Get(RatingTypesRequest request)
         {
             var allRatingTypes = _dao.GetAll();
             var supportedLanguages = Enum.GetNames(typeof(SupportedLanguages));
@@ -71,7 +64,8 @@ namespace apcurium.MK.Booking.Api.Services
                         ? ratingTypes.Where(l => l.Language == request.ClientLanguage).ToArray() // Filter by lauguage
                         : ratingTypes.ToArray() // Return all
                 };
-            });
+            })
+            .ToArray();
         }
 
         public object Post(RatingTypesRequest request)
@@ -104,7 +98,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public object Put(RatingTypesRequest request)
+        public void Put(RatingTypesRequest request)
         {
             var commands = new List<UpdateRatingType>();
             var currentRatingTypes = _dao.GetById(request.Id);
@@ -125,19 +119,15 @@ namespace apcurium.MK.Booking.Api.Services
                 });
             }
             _commandBus.Send(commands);
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Delete(RatingTypesRequest request)
+        public void Delete(Guid ratingTypeId)
         {
             _commandBus.Send(new DeleteRatingType
             {
                 CompanyId = AppConstants.CompanyId,
-                RatingTypeId = request.Id
+                RatingTypeId = ratingTypeId
             });
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }

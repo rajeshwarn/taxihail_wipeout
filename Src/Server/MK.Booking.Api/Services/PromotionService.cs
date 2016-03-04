@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Enumeration;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class PromotionService : Service
+    public class PromotionService : BaseApiService
     {
         private readonly IPromotionDao _promotionDao;
 
@@ -18,9 +16,9 @@ namespace apcurium.MK.Booking.Api.Services
             _promotionDao = promotionDao;
         }
 
-        public object Get(ActivePromotions request)
+        public ActivePromotion[] Get()
         {
-            var accountId = new Guid(this.GetSession().UserAuthId);
+            var accountId = Session.UserId;
 
             return _promotionDao.GetUnlockedPromotionsForUser(accountId)
                 .Select(promotionDetail =>

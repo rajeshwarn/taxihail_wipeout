@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
@@ -16,17 +14,14 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceInterface;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ReferenceDataService : Service
+    public class ReferenceDataService : BaseApiService
     {
-        public const string CacheKey = "IBS.StaticData";
+        public const string CACHE_KEY = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsServiceProvider;
@@ -47,9 +42,9 @@ namespace apcurium.MK.Booking.Api.Services
             _pickupPointDao = pickupPointDao;
         }
 
-        public object Get(ReferenceDataRequest request)
+        public ReferenceData Get(ReferenceDataRequest request)
         {
-            var cacheKey = string.Format("{0}{1}", CacheKey, request.CompanyKey);
+            var cacheKey = string.Format("{0}{1}", CACHE_KEY, request.CompanyKey);
             var result = _cacheClient.Get<ReferenceData>(cacheKey);
 
             if (result == null)
@@ -145,15 +140,20 @@ namespace apcurium.MK.Booking.Api.Services
         {
             public override bool Equals(ListItem x, ListItem y)
             {
-                if (x == null && y == null) return true;
-                if (x == null || y == null) return false;
+                if (x == null && y == null)
+                {
+                    return true;
+                }
+                if (x == null || y == null)
+                {
+                    return false;
+                }
                 return x.Id == y.Id;
             }
 
             public override int GetHashCode(ListItem obj)
             {
-                if (obj == null) return 0;
-                return obj.Id.GetHashCode();
+                return obj == null ? 0 : obj.Id.GetHashCode();
             }
         }
     }
