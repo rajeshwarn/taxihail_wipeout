@@ -149,6 +149,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			Console.WriteLine(refData.PaymentsList.ToJson());
 			return refData.PaymentsList;
 		}
+			
+		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
+		{
+			if (market.IsLocalMarket)
+			{
+				return paymentList;
+			}
+
+			return market.DisableOutOfAppPayment
+				? paymentList.Where(i => i.Id != ChargeTypes.PaymentInCar.Id).ToList()
+				: EnsurePaymentInCarAvailableIfNeeded(paymentList);
+		}
 
 		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
 		{
@@ -157,26 +169,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return paymentList;
 			}
 
-			return paymentList
+			paymentList = paymentList
 				.Where(paymentMethod => paymentMethod.Id == ChargeTypes.PaymentInCar.Id)
 				.ToArray();
-		}
 
-		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
-		{
-			if (!market.IsLocalMarket)
-			{
-				return market.DisableOutOfAppPayment
-					? paymentList
-					: EnsurePaymentInCarAvailableIfNeeded(paymentList, market);
-			}
-
-			paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
+			paymentList = EnsurePaymentInCarAvailableIfNeeded(paymentList);
 
 			return paymentList;
 		}
 
-		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+		private IList<ListItem> EnsurePaymentInCarAvailableIfNeeded(IList<ListItem> paymentList)
 		{
 			if (paymentList.None(x => x.Id == ChargeTypes.PaymentInCar.Id))
 			{
