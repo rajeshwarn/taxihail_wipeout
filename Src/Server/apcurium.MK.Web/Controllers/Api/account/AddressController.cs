@@ -20,33 +20,29 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     [RoutePrefix("account/addresses"), Auth]
     public class AddressController : BaseApiController
     {
-        private readonly AddressesService _addressesService;
-        private readonly AddressHistoryService _addressHistoryService;
+        public AddressesService AddressesService { get; }
+        public AddressHistoryService AddressHistoryService { get;  }
+        public SaveAddressService SaveAddressService { get;  }
 
         public AddressController(IAddressDao addressDao, IAccountDao accountDao, ICommandBus commandBus)
         {
-            _addressesService = new AddressesService(addressDao);
+            AddressesService = new AddressesService(addressDao);
 
-            _addressHistoryService = new AddressHistoryService(addressDao,commandBus, accountDao );
-        }
+            AddressHistoryService = new AddressHistoryService(addressDao,commandBus, accountDao );
 
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_addressHistoryService, _addressesService);
+            SaveAddressService = new SaveAddressService(commandBus);
         }
 
         [HttpGet, Route]
         public IHttpActionResult GetAddresses()
         {
-            return GenerateActionResult(_addressesService.Get());
+            return GenerateActionResult(AddressesService.Get());
         }
 
         [HttpGet, Route("history")]
         public IHttpActionResult GetAddressHistory()
         {
-            var result = _addressHistoryService.Get();
+            var result = AddressHistoryService.Get();
 
             return GenerateActionResult(result);
         }
@@ -54,12 +50,35 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         [HttpDelete, Route("history/{addressId}")]
         public IHttpActionResult Delete(Guid addressId)
         {
-            _addressHistoryService.Delete(new AddressHistoryRequest() {AddressId = addressId});
+            AddressHistoryService.Delete(new AddressHistoryRequest() {AddressId = addressId});
 
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult CreateAddress([FromBody] SaveAddress request)
+        {
+            SaveAddressService.Post(request);
 
-        
+            return StatusCode(HttpStatusCode.Created);
+        }
+
+        [HttpPut, Route("{id}")]
+        public IHttpActionResult UpdateAddress([FromBody] SaveAddress request, Guid id)
+        {
+            request.Id = id;
+
+            SaveAddressService.Put(request);
+
+            return Ok();
+        }
+
+        [HttpDelete, Route("{id}")]
+        public IHttpActionResult DeleteAddress(Guid id)
+        {
+            SaveAddressService.Delete(id);
+
+            return Ok();
+        }
     }
 }

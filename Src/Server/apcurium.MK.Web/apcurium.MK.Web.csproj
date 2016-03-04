@@ -742,7 +742,6 @@
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
     <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
-    <Compile Include="Controllers\Api\Account\RoleController.cs" />
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
     <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
