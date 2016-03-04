@@ -60,8 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
 		private const string MasterPattern = "^5[1-5][0-9]{14}$";
 		private const string AmexPattern = "^3[47][0-9]{13}$";
-		//TODO find Discover Pattern
-		private const string DiscoverPattern = "";
+		private const string DiscoverPattern = "^6(?:011|5[0-9]{2})[0-9]{12}$";
 		private const int TipMaxPercent = 100;
 		#endregion
 
@@ -273,6 +272,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get 
 			{
 				var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+
+				if((PaymentSettings.DisableAMEX && type.Display == Amex) 
+					|| (PaymentSettings.DisableDiscover && type.Display == Discover)
+					|| (PaymentSettings.DisableVisaMastercard && (type.Display == Visa || type.Display == VisaElectron  || type.Display == MasterCard)))
+				{
+					return CreditCardCompanies.FirstOrDefault(x=>x.Display == CreditCardGeneric).Image;
+				}
+
 				return type == null ? null : type.Image;
 			}
 		}
@@ -663,6 +670,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if (Data.CreditCardCompany == Discover && PaymentSettings.DisableDiscover)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeDiscover"]);
+					return;
+				}
+
+				if ((Data.CreditCardCompany == Visa || Data.CreditCardCompany == VisaElectron || Data.CreditCardCompany == MasterCard) && PaymentSettings.DisableVisaMastercard)
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeVisaMastercard"]);
+					return;
+				}
+
 				using (this.Services().Message.ShowProgress())
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -809,9 +828,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 					else
 					{
-						var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-						if (i != null)
-							CreditCardType = (int)i;
+						var discoverRgx = new Regex(DiscoverPattern, RegexOptions.IgnoreCase);
+						matches = discoverRgx.Matches(cardNumber);
+						if (matches.Count > 0)
+						{
+							var id = CreditCardCompanies.Find(x => x.Display == Discover).Id;
+							if (id != null)
+								CreditCardType = (int)id;
+						}
+						else
+						{
+							var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+							if (i != null)
+								CreditCardType = (int)i;
+						}
 					}
 				}
 			}
