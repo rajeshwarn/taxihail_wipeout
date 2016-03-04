@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
@@ -24,13 +25,16 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 
         public AddressController(IAddressDao addressDao, IAccountDao accountDao, ICommandBus commandBus)
         {
-            _addressesService = new AddressesService(addressDao)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _addressesService = new AddressesService(addressDao);
 
             _addressHistoryService = new AddressHistoryService(addressDao,commandBus, accountDao );
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_addressHistoryService, _addressesService);
         }
 
         [HttpGet, Route]

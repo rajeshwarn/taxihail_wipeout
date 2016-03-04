@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -19,6 +20,13 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
         public DriverController(IIbsOrderService ibsOrderService, ILogger logger, IOrderDao orderDao)
         {
             _driverService = new DriverService(ibsOrderService, logger, orderDao);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_driverService);
         }
 
         [HttpPost, Auth]

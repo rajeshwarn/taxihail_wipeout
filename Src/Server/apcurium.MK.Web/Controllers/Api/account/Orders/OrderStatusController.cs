@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers;
@@ -22,17 +23,15 @@ namespace apcurium.MK.Web.Controllers.Api
 
         public OrderStatusController(OrderStatusHelper orderStatusHelper, IAccountDao accountDao, IOrderDao orderDao)
         {
-            _orderStatusService = new OrderStatusService(orderStatusHelper)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _orderStatusService = new OrderStatusService(orderStatusHelper);
 
-            _activeOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _activeOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao);
+        }
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_orderStatusService, _activeOrderStatusService);
         }
 
         [HttpGet]

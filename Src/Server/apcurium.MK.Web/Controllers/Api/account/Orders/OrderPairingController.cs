@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -21,11 +22,15 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 
         public OrderPairingController(IOrderDao orderDao, ICommandBus commandBus, IServerSettings serverSettings, IPaymentService paymentService)
         {
-            _orderPairingService = new OrderPairingService(orderDao, commandBus, serverSettings, paymentService)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _orderPairingService = new OrderPairingService(orderDao, commandBus, serverSettings, paymentService);
+
+            PrepareApiServices(_orderPairingService);
+        }
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_orderPairingService);
         }
 
 

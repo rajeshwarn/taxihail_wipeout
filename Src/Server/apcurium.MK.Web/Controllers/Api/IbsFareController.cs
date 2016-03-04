@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
@@ -19,11 +20,14 @@ namespace apcurium.MK.Web.Controllers.Api
 
         public IbsFareController(IVehicleTypeDao vehicleTypeDao, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider)
         {
-            _ibsFareService = new IbsFareService(ibsServiceProvider, serverSettings, vehicleTypeDao)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _ibsFareService = new IbsFareService(ibsServiceProvider, serverSettings, vehicleTypeDao);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_ibsFareService);
         }
 
         [HttpGet, Route("ibsfares")]

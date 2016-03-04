@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -29,6 +30,11 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             INotificationService notification)
         {
             _manualRidelinqOrderService = new ManualRidelinqOrderService(commandBus, orderDao, accountDao, creditcardDao, serverSettings, logger, notification);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
 
             PrepareApiServices(_manualRidelinqOrderService);
         }

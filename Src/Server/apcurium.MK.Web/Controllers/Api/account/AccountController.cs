@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Email;
@@ -27,13 +28,16 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
             ITemplateService templateService)
         {
-            _bookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _bookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
 
             _confirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService,serverSettings);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_bookingSettingsService, _confirmAccountService);
         }
 
         [HttpPut, Auth(Role = RoleName.Support), Route("update/{accountId}")]

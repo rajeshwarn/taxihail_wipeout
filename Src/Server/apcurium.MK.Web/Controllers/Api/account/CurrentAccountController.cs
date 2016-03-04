@@ -1,5 +1,6 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -15,11 +16,16 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 
         public CurrentAccountController(IServerSettings serverSettings, ICreditCardDao creditCardDao, IAccountDao accountDao)
         {
-            _currentAccountService = new CurrentAccountService(accountDao, creditCardDao, serverSettings)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _currentAccountService = new CurrentAccountService(accountDao, creditCardDao, serverSettings);
+
+            PrepareApiServices(_currentAccountService);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_currentAccountService);
         }
 
         [HttpGet, Auth, Route("account")]

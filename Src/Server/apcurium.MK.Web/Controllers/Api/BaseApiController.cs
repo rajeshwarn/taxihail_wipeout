@@ -4,6 +4,7 @@ using System.Net;
 using System.Web;
 using System.Web.Http;
 using apcurium.MK.Common.Caching;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
@@ -42,6 +43,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             
         }
+
+        protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();
 
         public SessionEntity Session
         {

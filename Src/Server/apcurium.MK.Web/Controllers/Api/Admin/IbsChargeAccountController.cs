@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.IBS;
@@ -14,11 +15,14 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 
         public IbsChargeAccountController(IIBSServiceProvider ibsServiceProvider)
         {
-            _ibsChargeAccountService = new IbsChargeAccountService(ibsServiceProvider)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _ibsChargeAccountService = new IbsChargeAccountService(ibsServiceProvider);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_ibsChargeAccountService);
         }
 
         [HttpGet, Route("{accountNumber}/{customerNumber}")]

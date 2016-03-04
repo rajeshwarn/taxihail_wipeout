@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
@@ -16,11 +17,14 @@ namespace apcurium.MK.Web.Controllers.Api
 
         public PopularAddressController(IPopularAddressDao popularAddressDao)
         {
-            _clientPopularAddressService = new ClientPopularAddressService(popularAddressDao)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _clientPopularAddressService = new ClientPopularAddressService(popularAddressDao);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_clientPopularAddressService);
         }
 
         [HttpGet, NoCache, Route("popularaddresses")]

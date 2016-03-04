@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
@@ -14,11 +15,14 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 
         public AccountOrderController(IOrderDao orderDao, IOrderRatingsDao orderRatingsDao, IServerSettings serverSettings)
         {
-            _service = new AccountOrderListService(orderDao, orderRatingsDao, serverSettings)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _service = new AccountOrderListService(orderDao, orderRatingsDao, serverSettings);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_service);
         }
 
         [HttpGet]

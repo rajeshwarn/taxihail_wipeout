@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -19,17 +20,16 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
 
         public ConfigurationController(ICacheClient cacheClient, IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
         {
-            _configurationResetService = new ConfigurationResetService(cacheClient, serverSettings)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _configurationResetService = new ConfigurationResetService(cacheClient, serverSettings);
 
-            _configurationsService = new ConfigurationsService(serverSettings, commandBus, configDao)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _configurationsService = new ConfigurationsService(serverSettings, commandBus, configDao);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_configurationsService, _configurationResetService);
         }
 
         [HttpGet, Route("reset")]

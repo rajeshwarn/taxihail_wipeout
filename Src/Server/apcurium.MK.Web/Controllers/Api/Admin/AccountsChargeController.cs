@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Extensions;
@@ -28,11 +29,14 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 
         public AccountsChargeController(IAccountChargeDao dao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
-            _service = new AccountsChargeService(dao, commandBus, ibsServiceProvider)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _service = new AccountsChargeService(dao, commandBus, ibsServiceProvider);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_service);
         }
 
         [HttpGet, Route("{accountNumber}"), Route("{accountNumber}/{customerNumber}/{hideAnswers}")]

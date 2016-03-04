@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
@@ -21,11 +22,14 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         
         public DefaultFavoriteAddressController(ICommandBus commandBus, IDefaultAddressDao defaultAddressDao)
         {
-            _defaultFavoriteAddressService = new DefaultFavoriteAddressService(defaultAddressDao, commandBus)
-            {
-                HttpRequestContext = RequestContext,
-                Session = GetSession()
-            };
+            _defaultFavoriteAddressService = new DefaultFavoriteAddressService(defaultAddressDao, commandBus);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_defaultFavoriteAddressService);
         }
 
         [HttpGet, Route("addresses"), NoCache]

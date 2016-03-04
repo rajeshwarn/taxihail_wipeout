@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -18,6 +19,13 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         public AdminCreditCardController(IServerSettings serverSettings, ICreditCardDao creditCardDao, ICommandBus commandBus, IOrderDao orderDao)
         {
             _creditCardService = new CreditCardService(creditCardDao,commandBus, orderDao, serverSettings);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_creditCardService);
         }
 
         [HttpDelete, Auth(Role = RoleName.Support), Route("deleteAllCreditCards/{accountId}")]

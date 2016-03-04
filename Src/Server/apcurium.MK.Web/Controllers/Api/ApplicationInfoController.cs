@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
@@ -22,16 +23,16 @@ namespace apcurium.MK.Web.Controllers.Api
 
         public ApplicationInfoController(IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
         {
-            _applicationInfoService = new ApplicationInfoService(serverSettings)
-            {
-                Session = GetSession(),
-                HttpRequestContext = RequestContext
-            };
+            _applicationInfoService = new ApplicationInfoService(serverSettings);
 
-            _appStartUpLogStartUpLogService = new AppStartUpLogService(appStartUpLogDao)
-            {
-                Session = GetSession()
-            };
+            _appStartUpLogStartUpLogService = new AppStartUpLogService(appStartUpLogDao);
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            PrepareApiServices(_appStartUpLogStartUpLogService, _applicationInfoService);
         }
 
         [HttpGet, Route("info")]
