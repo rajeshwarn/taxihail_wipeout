@@ -746,6 +746,7 @@
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
     <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
     <Compile Include="Controllers\Api\Admin\IbsChargeAccountController.cs" />
+    <Compile Include="Controllers\Api\Admin\NotificationAdministrationController.cs" />
     <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
@@ -755,6 +756,7 @@
     <Compile Include="Controllers\Api\Account\Orders\OrderStatusController.cs" />
     <Compile Include="Controllers\Api\LogMetricsController.cs" />
     <Compile Include="Controllers\Api\NetworkRoamingController.cs" />
+    <Compile Include="Controllers\Api\OrderRatingController.cs" />
     <Compile Include="Controllers\Api\PopularAddressController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />

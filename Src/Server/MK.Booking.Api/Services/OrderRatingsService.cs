@@ -9,13 +9,12 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderRatingsService : Service
+    public class OrderRatingsService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
 
@@ -27,45 +26,44 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected IOrderRatingsDao Dao { get; set; }
 
-        public object Get(OrderRatingsRequest request)
+        public OrderRatings Get(Guid orderId)
         {
-            var orderRatings = Dao.GetOrderRatingsByOrderId(request.OrderId);
-
-            return orderRatings;
+            return Dao.GetOrderRatingsByOrderId(orderId);
         }
 
-        public object Post(OrderRatingsRequest request)
+        public void Post(OrderRatingsRequest request)
         {
-			var accountId = new Guid(this.GetSession().UserAuthId);
+            var accountId = Session.UserId;
 
-            if (request.RatingScores != null)
+            if (request.RatingScores == null)
             {
-                // cleanup ratings in case we were sent duplicates
-                var ratingScoresCleanedUpForDuplicates = new List<RatingScore>();
-                foreach (var rating in request.RatingScores)
+                return;
+            }
+
+            // cleanup ratings in case we were sent duplicates
+            var ratingScoresCleanedUpForDuplicates = new List<RatingScore>();
+            foreach (var rating in request.RatingScores)
+            {
+                if (ratingScoresCleanedUpForDuplicates.None(x => x.Name == rating.Name))
                 {
-                    if (ratingScoresCleanedUpForDuplicates.None(x => x.Name == rating.Name))
-                    {
-                        ratingScoresCleanedUpForDuplicates.Add(rating);
-                    }
-                }
-
-                request.RatingScores = ratingScoresCleanedUpForDuplicates;
-
-                if (HasNoValidExistingRating(request.OrderId) && request.RatingScores.Any())
-                {
-                    var command = new RateOrder
-                    {
-                        AccountId = accountId,
-                        Note = request.Note,
-                        OrderId = request.OrderId,
-                        RatingScores = request.RatingScores
-                    };
-
-                    _commandBus.Send(command);
+                    ratingScoresCleanedUpForDuplicates.Add(rating);
                 }
             }
-            return string.Empty;
+
+            request.RatingScores = ratingScoresCleanedUpForDuplicates;
+
+            if (HasNoValidExistingRating(request.OrderId) && request.RatingScores.Any())
+            {
+                var command = new RateOrder
+                {
+                    AccountId = accountId,
+                    Note = request.Note,
+                    OrderId = request.OrderId,
+                    RatingScores = request.RatingScores
+                };
+
+                _commandBus.Send(command);
+            }
         }
 
         private bool HasNoValidExistingRating(Guid orderId)

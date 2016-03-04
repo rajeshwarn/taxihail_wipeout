@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.PushNotifications.Impl;
@@ -16,17 +17,13 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using SendReceipt = apcurium.MK.Booking.Commands.SendReceipt;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class NotificationAdministrationService : Service
+    public class NotificationAdministrationService : BaseApiService
     {
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
@@ -48,13 +45,13 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
         }
 
-        public object Post(PushNotificationAdministrationRequest request)
+        public void Post(PushNotificationAdministrationRequest request)
         {
             var account = _dao.FindByEmail(request.EmailAddress);
 
             if (account == null)
             {
-                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");
+                throw new HttpException((int)HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");
             }
 
             var devices = _daoDevice.FindByAccountId(account.Id);
@@ -62,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
             var deviceDetails = devices as DeviceDetail[] ?? devices.ToArray();
             if (devices == null || !deviceDetails.Any())
             {
-                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
+                throw new HttpException((int)HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
             }
 
             // We create a new instance each time as we need to start from a clean state to get meaningful error messages
@@ -78,14 +75,12 @@ namespace apcurium.MK.Booking.Api.Services
                 catch (Exception e)
                 {
                     _logger.LogError(e);
-                    throw new HttpError(HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message);
+                    throw new HttpException((int)HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message);
                 }
             }
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public object Post(TestEmailAdministrationRequest request)
+        public void Post(TestEmailAdministrationRequest request)
         {
             try
             {
@@ -114,7 +109,7 @@ namespace apcurium.MK.Booking.Api.Services
                             ? FareHelper.GetFareFromAmountInclTax(45m, _serverSettings.ServerData.VATPercentage)
                             : FareHelper.GetFareFromAmountInclTax(45m, 0);
                         var toll = 3;
-                        var tip = (double)45*((double)15/(double)100);
+                        var tip = 45*(5/(double)100);
                         var amountSavedByPromo = 10;
                         var extra = 2;
                         var surcharge = 5;
@@ -192,10 +187,8 @@ namespace apcurium.MK.Booking.Api.Services
             catch (Exception e)
             {
                 _logger.LogError(e);
-                throw new HttpError(HttpStatusCode.InternalServerError, e.Message);
+                throw new HttpException((int)HttpStatusCode.InternalServerError, e.Message);
             }
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
         public object Get(EmailTemplateNamesRequest request)
