@@ -22,6 +22,9 @@ using apcurium.MK.Common.Resources;
 using MK.Common.Exceptions;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -144,6 +147,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Logger.LogError(e);
                 throw;
             }
+        }
+
+        public async Task<OrderRepresentation> GetActiveOrder()
+        {
+            try
+            {
+                var orderData = await UseServiceClientAsync<OrderServiceClient, Tuple<Order, OrderStatusDetail>>(
+                    service => service.GetActiveOrder(),
+                    ex => { throw ex; });
+
+                return new OrderRepresentation(orderData.Item1, orderData.Item2);
+
+            }
+            catch (WebServiceException ex)
+            {
+                if (ex.StatusCode != (int) HttpStatusCode.NotFound)
+                {
+                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
+
+            return null;
         }
 
         public Guid GetUnratedLastOrder()

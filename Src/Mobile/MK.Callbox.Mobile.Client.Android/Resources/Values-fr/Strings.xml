@@ -810,4 +810,7 @@
   <string name="Gratuity_Pay">Give Gratuity</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
   <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="Notification_NoShowPush">No show</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

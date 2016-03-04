@@ -9,6 +9,8 @@
         public static string[] CanCancelOrderStatusButCouldBeChargedFees = { Common.Assigned, Common.Arrived };
         public static string[] CompletedStatuses = { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow, Common.Done, Common.Timeout };
 
+        public static string[] OrderActiveStatuses = { Common.Assigned, Common.Arrived, Common.Loaded, Common.Unloaded, Common.Waiting };
+
         public class Addresses
         {
             public const string AddressValidQry = "wosAddrValidQry";

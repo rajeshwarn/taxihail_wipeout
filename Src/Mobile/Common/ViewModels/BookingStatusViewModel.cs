@@ -115,18 +115,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.PrepareForNewOrder();
 			}
 
-			CenterMapOnPinsIfNeeded();
-
-			StatusInfoText = orderStatusDetail.IBSStatusId == null 
+            StatusInfoText = orderStatusDetail.IBSStatusId == null 
 				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
-			_subscriptions.Disposable = GetTimerObservable()
+            var forceCenterMap = orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded;
+
+
+            _subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
 				.Where(_ => !_isOrderRefreshing)
-				.SelectMany(async (_, cancellationToken) =>
+                .Do(_ =>
+                {
+                    if (!forceCenterMap)
+                    {
+                        return;
+                    }
+
+                    CenterMapOnPinsIfNeeded();
+                    forceCenterMap = false;
+                })
+                .SelectMany(async (_, cancellationToken) =>
 				{
 					_isOrderRefreshing = true;
 					await RefreshStatus(cancellationToken);
@@ -295,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Logger.LogError(ex);
             }
-        }
+        } 
 
         // Method used when we are restoring from background to zoom back to the order's location correctly.
         private void CenterMapOnPinsIfNeeded()

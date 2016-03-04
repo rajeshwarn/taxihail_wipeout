@@ -48,6 +48,7 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
+    <Compile Include="Requests\ActiveOrderRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\Addresses.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\ActivateOrderResponse.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\FlightInformation.cs" />

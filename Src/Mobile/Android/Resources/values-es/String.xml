@@ -134,6 +134,7 @@
   <string name="SendErrorLogButton">Send error log</string>
   <string name="Version">v{0}</string>
   <string name="ServerInfo">({0} v{1})</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="RideSettingsName">Name</string>
@@ -299,6 +300,7 @@
   <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
   <string name="Notes">Notes</string>
   <string name="NotesToDriveLabel">Notes to driver (Name of business, specific entrance, ...)</string>
+  <string name="Notification_NoShowPush">Pasajero no presentado</string>
   <string name="DriverBonusTitle">Driver Bonus:</string>
   <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
@@ -754,7 +756,6 @@
   <string name="RateMobileApplicationLater">Later</string>
   <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
-  <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="BaseRate_PerMileRate">Per Mile Rate</string>
   <string name="BaseRate_PerTenthMile">{0} ({1} per tenth mile)</string>
   <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
@@ -767,20 +768,22 @@
   <string name="BookingGratuityText">If you were happy with your service and would like to apply an additional gratuity for your driver, please select one of the options below</string>
   <string name="GratuitActivityName">Gratuity</string>
   <string name="Gratuity_Pay">Give Gratuity</string>
-  <string name="ServiceErrorCallTitle">Server error</string>
-  <string name="ServiceErrorUnauthorized">Your session has expired, please login again.</string>
+  <string name="ServiceErrorCallTitle">Mensaje</string>
+  <string name="ServiceErrorUnauthorized">Su sesión ha expirado, por favor ingrese nuevamente.</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
-  <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
-  <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
-  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">The confirmation code is incorrect.</string>
+  <string name="ServiceErrorResetPassword_FacebookAccount">Este email esta asociado a una cuenta de Facebook. Por favor ingrese via Facebook.</string>
+  <string name="ServiceErrorResetPassword_TwitterAccount">Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</string>
+  <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
   <string name="PairingProcessingErrorTitle">Pairing payment problem</string>
   <string name="TripUnableToPairErrorText">Sorry, there was a problem, please pay in the taxi</string>
   <string name="CreditCardDeclinedOnPreauthorizationErrorText">Sorry, your card could not be authorized. Please pay in the taxi</string>
   <string name="CreditCardUnanbleToPreathorizeErrorText">Sorry, there was an error processing your card. Please pay in the taxi</string>
-  <string name="LastFour">Last 4 numbers:  </string>
   <string name="InvalidCreditCardMessage">There was a problem with your current Payment Method. Please add a different card or update the information.</string>
-  <string name="CreditCompany">Credit company: </string>
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
-  <string name="SelectedCreditCard">Currently selected credit card</string>
-  <string name="NoCreditCard">No credit card selected</string>
+  <string name="LastFour">Los últimos 4 números:  </string>
+  <string name="CreditCompany">Compañía de Crédito: </string>
+  <string name="SelectedCreditCard">Tarjeta de crédito seleccionada actualmente</string>
+  <string name="NoCreditCard">No ha seleccionado una tarjeta de crédito</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

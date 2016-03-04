@@ -3,6 +3,8 @@
   <string name="ApplicationName">Taxi</string>
   <string name="GoogleMapKey">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
   <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
+  <string name="AcceptButton">Accept</string>
+  <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
@@ -33,7 +35,6 @@
   <string name="UpdatedTermsAndConditionsAcceptButton">Accept</string>
   <string name="TermsAndConditionsAcknowledgment">I acknowledge that I have read and understood the Terms and Conditions.</string>
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
-  <string name="AcceptButton">Accept</string>
   <string name="Error">Error</string>
   <string name="LocationServiceErrorTitle">Error</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
@@ -112,6 +113,7 @@
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="InvalidAddressTitle">Invalid address</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="Now">Now</string>
   <string name="Date">Date</string>
   <string name="Time">Time</string>
@@ -233,7 +235,6 @@
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="AccountActivationTitle">Confirmation Required</string>
-  <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
   <string name="searchHint">Search</string>
@@ -351,7 +352,6 @@
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
   <string name="CreditCardRemoveErrorMessage">You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
-  <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="CreditCardNumber">Card Number</string>
   <string name="CreditCardType">Type of Card</string>
@@ -502,6 +502,7 @@
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
   <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="Notification_DriverAssignedPush">Driver Assigned</string>
+  <string name="Notification_NoShowPush">No show</string>
   <string name="Notification_Enabled">Notifications</string>
   <string name="Notification_NearbyTaxiPush">Nearby Taxi</string>
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
@@ -783,4 +784,6 @@
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

@@ -107,7 +107,9 @@
 "Save"="Save";
 "Modify"="Modify";
 "Delete"="Delete";
-"InvalidAddressTextEdit"="Cannot validate adddress";
+"CreditCardInvalidCrediCardNumber"="رقم البطاقة الائتمانية خاطئة";
+"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardErrorInvalid"="Cannot validate the credit card";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "InvalidAddressTitle"="Invalid address";
 "Now"="Now";
@@ -359,8 +361,6 @@
 "CreditCardErrorTitle"="Cannot save credit card";
 "CreditCardError_Label"="Cannot save credit card label. Please try again";
 "CreditCardRequiredFields"="All the fields are required";
-"CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
-"CreditCardErrorInvalid"="Cannot validate the credit card";
 "ReminderTitle"="{0} Booked";
 "ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
 "ChargeTypeCreditCardFile"="Credit Card on File";
@@ -496,6 +496,7 @@
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "RateLastRide"="Rate";
 "Notification_ConfirmPairingPush"="Confirm Pairing";
+"Notification_NoShowPush"="No show";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "RateLastRideTitle"="Rate last ride?";
@@ -782,3 +783,4 @@
 "SelectedCreditCard"="Currently selected credit card";
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";
+"RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";

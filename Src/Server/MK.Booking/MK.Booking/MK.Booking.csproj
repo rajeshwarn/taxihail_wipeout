@@ -587,6 +587,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\MearsLuxury.en-luxury.resx" />
+    <EmbeddedResource Include="Resources\Global.nl.resx" />
     <EmbeddedResource Include="Resources\MearsTaxi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

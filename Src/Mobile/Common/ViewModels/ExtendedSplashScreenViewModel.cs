@@ -7,13 +7,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ExtendedSplashScreenViewModel : PageViewModel
     {
-        private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IBookingService _bookingService;
 
-
-        public ExtendedSplashScreenViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService)
+        public ExtendedSplashScreenViewModel(IBookingService bookingService)
         {
-            _orderWorkflowService = orderWorkflowService;
             _bookingService = bookingService;
         }
 
@@ -24,10 +21,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             //Task.Run(GetCurrentOrderAsync).FireAndForget();
         }
 
-
         private async Task GetCurrentOrderAsync()
         {
-            var currentOrder = await _orderWorkflowService.GetLastActiveOrder();
+            var currentOrder = await _bookingService.GetActiveOrder();
 
             if (currentOrder == null)
             {
@@ -40,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (currentOrder.Order.IsManualRideLinq)
             {
-				var orderManualRideLinqDetail = await Task.Run(() => _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Order.Id));
+				var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Order.Id);
 
                 ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
                 {

@@ -386,7 +386,7 @@
   <string name="CreditCardErrorTitle">Cannot save credit card</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
-  <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
+  <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="ReminderTitle">{0} Booked</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
@@ -810,4 +810,8 @@
   <string name="Gratuity_Pay">Give Gratuity</string>
   <string name="ServiceErrorResetPassword_FacebookAccount">This email matches a Facebook account. Please login via Facebook.</string>
   <string name="ServiceErrorResetPassword_TwitterAccount">This email matches a Twitter account. Please login via Twitter.</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="Notification_NoShowPush">No show</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

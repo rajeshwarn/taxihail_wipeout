@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
@@ -32,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<bool> CancelOrder(Guid orderId);
 
         Task<bool> SendReceipt(Guid orderId);
+
+        Task<OrderRepresentation> GetActiveOrder();
 
         bool HasLastOrder { get; }
 

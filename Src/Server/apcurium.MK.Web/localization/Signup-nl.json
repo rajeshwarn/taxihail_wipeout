@@ -1,0 +1,10 @@
+﻿{
+    "Email" : "E-mail",
+    "FullName" : "Volledige Naam",
+    "Phone" : "Mobiele Nummer",
+    "Password" : "Wachtwoord",
+    "ConfirmPassword" : "Bevestig",
+    "CreateBt" : "Aanmelden",
+    "SignupTitle": "Aanmelden",
+    "PayBack": "PayBack"
+}

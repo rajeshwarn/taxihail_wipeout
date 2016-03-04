@@ -109,7 +109,9 @@
   <string name="Save">Save</string>
   <string name="Modify">Modify</string>
   <string name="Delete">Delete</string>
-  <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
+  <string name="CreditCardInvalidCrediCardNumber">رقم البطاقة الائتمانية خاطئة</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="Now">Now</string>
@@ -361,8 +363,6 @@
   <string name="CreditCardErrorTitle">Cannot save credit card</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
-  <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
-  <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="ReminderTitle">{0} Booked</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
   <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
@@ -498,6 +498,7 @@
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
   <string name="RateLastRide">Rate</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
+  <string name="Notification_NoShowPush">No show</string>
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
   <string name="RateLastRideTitle">Rate last ride?</string>
@@ -783,4 +784,6 @@
   <string name="InvalidCreditCardUpdateCardButton">Update Card</string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>
