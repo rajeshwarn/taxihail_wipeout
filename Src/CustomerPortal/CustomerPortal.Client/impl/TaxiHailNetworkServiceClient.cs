@@ -58,12 +58,14 @@ namespace CustomerPortal.Client.Impl
             return Client.Post(string.Format(@"customer/{0}/network", companyId), preferences);
         }
 
-        public string GetCompanyMarket(double latitude, double longitude)
+        public async Task<string> GetCompanyMarket(double latitude, double longitude)
         {
-            return GetCompanyMarketSettings(latitude, longitude).Market;
+            var marketSettings = await GetCompanyMarketSettings(latitude, longitude);
+
+            return marketSettings.Market;
         }
 
-        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        public async Task<CompanyMarketSettingsResponse> GetCompanyMarketSettings(double latitude, double longitude)
         {
             CompanyMarketSettingsResponse response;
             if (_serverSettings.ServerData.Network.Enabled)
@@ -79,9 +81,7 @@ namespace CustomerPortal.Client.Impl
 
                 var queryString = BuildQueryString(@params);
 
-                response = Client.Get("customer/roaming/marketsettings" + queryString)
-                             .Deserialize<CompanyMarketSettingsResponse>()
-                             .Result;
+                response = await Client.Get("customer/roaming/marketsettings" + queryString).Deserialize<CompanyMarketSettingsResponse>();
             }
             else
             {
@@ -126,7 +126,7 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
-        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        public Task<IEnumerable<NetworkVehicleResponse>> GetMarketVehicleTypes(string companyId = null, string market = null)
         {
             if (companyId == null && market == null)
             {
@@ -140,8 +140,7 @@ namespace CustomerPortal.Client.Impl
                 };
 
             return Client.Get("customer/marketVehicleTypes" + BuildQueryString(@params))
-                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
-                         .Result;
+                         .Deserialize<IEnumerable<NetworkVehicleResponse>>();
         }
 
         public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)

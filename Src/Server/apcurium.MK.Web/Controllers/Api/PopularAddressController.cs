@@ -1,13 +1,9 @@
-﻿using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Entity;
-using AutoMapper;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
