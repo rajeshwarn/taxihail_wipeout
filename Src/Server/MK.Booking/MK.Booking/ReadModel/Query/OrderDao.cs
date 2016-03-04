@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-	    public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
+        public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {

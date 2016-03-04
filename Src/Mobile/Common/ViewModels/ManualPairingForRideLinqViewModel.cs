@@ -83,11 +83,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         using (this.Services().Message.ShowProgress())
                         {
 							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, _kountSessionId);
-
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, _kountSessionId);
-
 							_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 							this.ReturnResult(orderManualRideLinqDetail);
