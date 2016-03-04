@@ -506,8 +506,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Order pickup : " + JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " + JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey.OrderID = service.SaveBookOrder_14(UserNameApp, PasswordApp, order);
-                Logger.LogMessage("WebService Create Order, orderid received : " + orderKey.OrderID);
+                orderKey = service.SaveBookOrder_14(UserNameApp, PasswordApp, order, new TVehicleComp[0]);
+                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 
             var result = new IbsHailResponse
@@ -537,7 +537,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Hail pickup : " + JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Hail dest : " + JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
+                orderKey = service.SaveBookOrder_14(UserNameApp, PasswordApp, order, vehicleComps);
                 Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 
