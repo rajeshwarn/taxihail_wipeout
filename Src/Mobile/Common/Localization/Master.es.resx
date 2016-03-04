@@ -1764,7 +1764,7 @@
     <comment>Address Details</comment>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Pagar en Efectivo y Terminar</value>
+    <value>Terminar</value>
     <comment>Submit Rating</comment>
   </data>
   <data name="SupportEmail" xml:space="preserve">

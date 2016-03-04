@@ -329,7 +329,7 @@
   <string name="DriverBonusDescription">Ofertar un incentivo garantizado a los conductores puede incrementar las probabilidades de que lo atienda una unidad.</string>
   <string name="DriverBonusWarningTitle">Confirmar el Incentivo del Conductor</string>
   <string name="DriverBonusWarningMessage">El monto de incenctivo es adicional a la propina. Será cargado automaticamente al final del viaje. Continuar?</string>
-  <string name="Submit">Pagar en Efectivo y Terminar</string>
+  <string name="Submit">Terminar</string>
   <string name="ViewRatingBtn">Ver evaluaciones</string>
   <string name="View_BookRating">Califique su servicio</string>
   <string name="ResetPasswordSucessMessage">La contraseña ha sido restablecida exitosamente</string>
