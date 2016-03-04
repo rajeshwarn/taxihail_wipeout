@@ -1,0 +1,16 @@
+﻿{
+    "Settings": "Instellingen",
+    "Name": "Naam",
+    "Phone": "Mobiele Nummer",
+    "Passengers": "Passagiers",
+    "Vehicle Type": "Voertuigtype",
+    "Charge Type": "Vorderingstype",
+    "Cancel": "Annuleer",
+    "Saves changes":"Opslaan Wijzigingen",
+    "Loading" : "Laden",
+    "Changes were saved" : "Wijzigingen zijn opgeslagen",
+    "Edit Profile" : "Wijzig Profiel",
+    "Email" : "E-mail",
+    "Account #": "Bedrijfsaccountnummer # ",
+    "Account Rider #": "Account Passagier #"
+}

@@ -51,7 +51,7 @@
   <string name="Close">Cerrar</string>
   <string name="GenericTitle"></string>
   <string name="NoConnectionTitle">Error en conexión</string>
-  <string name="NoConnectionMessage">El servidor no puede ser contactado.</string>
+  <string name="NoConnectionMessage">La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</string>
   <string name="FavoriteLocationsTitle">Lugares favoritos</string>
   <string name="NearbyPlacesTitle">Lugares cercanos</string>
   <string name="BookItLaterButton">Mas Tarde</string>
@@ -380,8 +380,8 @@
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
   <string name="CreditCardType">Tipo de tarjeta</string>
-  <string name="CreditCardExpMonth">Fecha de expiración</string>
-  <string name="CreditCardExpYear">Mes de expiración</string>
+  <string name="CreditCardExpMonth">Mes de Expiración</string>
+  <string name="CreditCardExpYear">Año de Expiración</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
@@ -795,4 +795,6 @@
   <string name="ServiceErrorResetPassword_TwitterAccount">Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
   <string name="Notification_NoShowPush">Pasajero no presentado</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>
