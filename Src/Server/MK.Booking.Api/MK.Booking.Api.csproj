@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
     <Compile Include="Helpers\CreateOrder\IbsNoteBuilder.cs" />

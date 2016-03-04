@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Email;
@@ -21,29 +20,33 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     [RoutePrefix("account")]
     public class AccountController : BaseApiController
     {
-        private readonly BookingSettingsService _bookingSettingsService;
-        private readonly ConfirmAccountService _confirmAccountService;
+        public BookingSettingsService BookingSettingsService { get; }
+        public ConfirmAccountService ConfirmAccountService { get; }
+        public ResetPasswordService ResetPasswordService { get; }
+        public RegisterAccountService RegisterAccountService { get; }
+        
 
-        public AccountController(IAccountDao accountDao, IServerSettings serverSettings,
-            IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
-            ITemplateService templateService)
+        public AccountController(IAccountDao accountDao, 
+            IServerSettings serverSettings,
+            IAccountChargeDao accountChargeDao, 
+            ICommandBus commandBus,
+            IIBSServiceProvider ibsServiceProvider,
+            ITemplateService templateService,
+            IBlackListEntryService blackListEntryService)
         {
-            _bookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
+            BookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
 
-            _confirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService,serverSettings);
-        }
+            ConfirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService,serverSettings);
 
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
+            RegisterAccountService = new RegisterAccountService(commandBus, accountDao, serverSettings, blackListEntryService);
 
-            PrepareApiServices(_bookingSettingsService, _confirmAccountService);
+            ResetPasswordService = new ResetPasswordService(commandBus, accountDao);
         }
 
         [HttpPut, Auth(Role = RoleName.Support), Route("update/{accountId}")]
         public IHttpActionResult AccountUpdate(Guid accountId, BookingSettingsRequest bookingSettings)
         {
-            _bookingSettingsService.Put(new AccountUpdateRequest()
+            BookingSettingsService.Put(new AccountUpdateRequest()
                 {
                     AccountId = accountId,
                     BookingSettingsRequest = bookingSettings
@@ -55,9 +58,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         [HttpPut, Route("bookingsettings")]
         public IHttpActionResult AccountUpdate(BookingSettingsRequest request)
         {
-            _bookingSettingsService.Put(new AccountUpdateRequest()
+            BookingSettingsService.Put(new AccountUpdateRequest()
             {
-                AccountId = GetSession().UserId,
+                AccountId = Session.UserId,
                 BookingSettingsRequest = request
             });
 
@@ -67,15 +70,15 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         [HttpGet, Route("getconfirmationcode/{email}/{countryCode}/{phoneNumber}")]
         public IHttpActionResult GetConfirmationCode(string email, string countryCode, string phoneNumber)
         {
-            _confirmAccountService.Get(new ConfirmationCodeRequest() {PhoneNumber = phoneNumber, CountryCode = countryCode, Email = email});
+            ConfirmAccountService.Get(new ConfirmationCodeRequest() {PhoneNumber = phoneNumber, CountryCode = countryCode, Email = email});
 
             return Ok();
         }
 
         [HttpGet, Route("confirm/{emailAddress}/{confirmationToken}/{isSmsConfirmation:bool?}")]
-        public HttpResponseMessage ConfirmAccount(string emailAddress, string confirmationToken, bool? isSmsConfirmation)
+        public IHttpActionResult ConfirmAccount(string emailAddress, string confirmationToken, bool? isSmsConfirmation)
         {
-            var result = _confirmAccountService.Get(new ConfirmAccountRequest()
+            var result = ConfirmAccountService.Get(new ConfirmAccountRequest()
                 {
                     ConfirmationToken = confirmationToken,
                     EmailAddress = emailAddress,
@@ -84,18 +87,34 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 
             if (!result.HasValueTrimmed())
             {
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return Ok();
             }
 
             var stringContent = new StringContent(result);
 
             stringContent.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Text.Html);
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
+
+            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = stringContent
-            };
+            });
         }
 
+        [HttpPost, Route("register")]
+        public IHttpActionResult Register([FromBody] RegisterAccount request)
+        {
+            var result = RegisterAccountService.Post(request);
+
+            return GenerateActionResult(result);
+        }
+
+        [HttpPost, Route("resetpassword/{emailAddress}")]
+        public IHttpActionResult ResetPassword(string emailAddress)
+        {
+            ResetPasswordService.Post(emailAddress);
+
+            return Ok();
+        }
     }
 }

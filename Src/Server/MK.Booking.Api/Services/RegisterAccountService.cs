@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class RegisterAccountService : Service
+    public class RegisterAccountService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
@@ -35,17 +33,17 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public object Post(RegisterAccount request)
+        public Account Post(RegisterAccount request)
         {
             // Ensure user is not signed in
-            RequestContext.Get<IHttpRequest>().RemoveSession();
+            Session.RemoveSessionIfNeeded();
 
             if (_accountDao.FindByEmail(request.Email) != null)
             {
-                throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
             }
 
-            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
 
             if (PhoneHelper.IsPossibleNumber(countryCode, request.Phone))
             {
@@ -53,12 +51,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+                throw new HttpException(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
             }
 
             if (_blackListEntryService.GetAll().Any(e => e.PhoneNumber.Equals(request.Phone)))
             {
-                throw new HttpError(_resources.Get("PhoneBlackListed"));
+                throw new HttpException(_resources.Get("PhoneBlackListed"));
             }
 
             if (request.FacebookId.HasValue())
@@ -66,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Facebook registration
                 if (_accountDao.FindByFacebookId(request.FacebookId) != null)
                 {
-                    throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                    throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
                 }
                     
                 var command = new RegisterFacebookAccount();
@@ -83,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Twitter registration
                 if (_accountDao.FindByTwitterId(request.TwitterId) != null)
                 {
-                    throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                    throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
                 }
                     
                 var command = new RegisterTwitterAccount();

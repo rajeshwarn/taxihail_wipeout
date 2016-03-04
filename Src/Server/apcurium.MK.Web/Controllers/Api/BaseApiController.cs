@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Http.Results;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
