@@ -613,6 +613,7 @@
     <AndroidResource Include="Resources\Layout\View_Debug.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\values-nl\String.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\discover.png" />
     <AndroidResource Include="Resources\Drawable\discover.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\visa_electron.png" />

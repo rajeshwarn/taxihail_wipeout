@@ -795,4 +795,6 @@
   <string name="ServiceErrorResetPassword_TwitterAccount">Ce courriel correspond à un compte Twitter. S\'il vous plaît connectez vous via Twitter.</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
   <string name="Notification_NoShowPush">No show</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Désolé, nous ne supportons pas les cartes Amex</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

@@ -90,8 +90,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 
             // Used DialogCenter + paddingTop = 1dip because DialogTop caused a thiner separation line
-            var email = new EntryElement (null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null,  "DialogCenter") {IsEmail = true};
-			email.Bind(bindings, vm => vm.Data.Email);
+            var email = new EntryElement(null, this.Services().Localize["CreateAccountEmailPlaceHolder"], null, "DialogCenter") { IsEmail = true };
+
+            email.Bind(bindings, vm => vm.Data.Email);
 
 			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);

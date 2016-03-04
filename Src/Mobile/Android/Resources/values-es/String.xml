@@ -114,10 +114,11 @@
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
-  <string name="CreditCardExpMonth">Fecha de expiración</string>
-  <string name="CreditCardExpYear">Mes de expiración</string>
+  <string name="CreditCardExpMonth">Mes de Expiración</string>
+  <string name="CreditCardExpYear">Año de Expiración</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardInvalidCrediCardNumber">El número de tarjeta de crédito es inválido</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
   <string name="CreditCardLabel">Etiqueta</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
@@ -243,7 +244,6 @@
   <string name="March">Mar (03)</string>
   <string name="May">May (05)</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
-  <string name="Modify">Modificar</string>
   <string name="NbPassenger">({0} pasajero)</string>
   <string name="NbPassengers">({0} pasajeros)</string>
   <string name="NearbyPlacesTitle">Lugares cercanos</string>
@@ -256,7 +256,7 @@
   <string name="CreditCardExpiredTitle">Tarjeta expirada.</string>
   <string name="CardExpiredNonMandatoryMessage">Su tarjeta de crédito ha expirado. Su cuenta está ahora configurada para pagar en el vehículo. Si usted desea continuar usando su tarjeta de crédito, puede hacer click en Actualizar.</string>
   <string name="CreditCardExpiredUpdateNow">Actualizar ahora</string>
-  <string name="NoConnectionMessage">El servidor no puede ser contactado.</string>
+  <string name="NoConnectionMessage">La conexión a la red no esta disponible, verifique su conexión a internet o intente mas tarde</string>
   <string name="NoConnectionTitle">Error en conexión</string>
   <string name="NoCreditCardSelected">Por favor seleccione una tarjeta de crédito</string>
   <string name="NoFareText">Seleccione un destino para proveer estimado de costo</string>
@@ -766,4 +766,5 @@
   <string name="SelectedCreditCard">Tarjeta de crédito seleccionada actualmente</string>
   <string name="NoCreditCard">No ha seleccionado una tarjeta de crédito</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

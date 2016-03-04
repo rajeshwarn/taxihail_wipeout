@@ -106,7 +106,6 @@
   <string name="ApartmentLabel">Apartment</string>
   <string name="EntryCodeLabel">Entry code</string>
   <string name="Save">Save</string>
-  <string name="Modify">Modify</string>
   <string name="Delete">Delete</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
@@ -360,6 +359,7 @@
   <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="CreditCardInvalidCrediCardNumber">The Credit Card Number is invalid</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="ReminderTitle">{0} Booked</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
@@ -771,4 +771,5 @@
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
   <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
+  <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>
