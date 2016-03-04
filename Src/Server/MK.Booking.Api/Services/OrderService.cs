@@ -3,7 +3,6 @@
 using System;
 using System.Net;
 using System.Web;
-using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;

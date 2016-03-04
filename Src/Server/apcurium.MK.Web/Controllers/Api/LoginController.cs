@@ -3,6 +3,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Http;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
@@ -18,7 +19,7 @@ using MK.Common.DummyServiceStack;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("login")]
+    [RoutePrefix("login"), NoCache]
     public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();

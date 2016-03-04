@@ -1,15 +1,13 @@
-using System.Net;
+
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class PrivacyPolicyService : Service
+    public class PrivacyPolicyService : BaseApiService
     {
         private readonly ICompanyDao _dao;
         private readonly ICommandBus _commandBus;
@@ -20,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public object Get(PrivacyPolicyRequest request)
+        public object Get()
         {
             return new
             {
@@ -28,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public object Post(PrivacyPolicyRequest request)
+        public void Post(PrivacyPolicyRequest request)
         {
             var command = new UpdatePrivacyPolicy
             {
@@ -37,7 +35,6 @@ namespace apcurium.MK.Booking.Api.Services
             };
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

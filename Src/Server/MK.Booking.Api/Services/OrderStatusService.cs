@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers;

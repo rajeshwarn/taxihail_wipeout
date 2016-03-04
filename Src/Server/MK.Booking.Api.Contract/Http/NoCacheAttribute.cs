@@ -3,14 +3,10 @@
 #if CLIENT
 using System;
 #else
-using System;
 using System.Web.Mvc;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 #endif
+
 #endregion
-
-
 
 namespace apcurium.MK.Booking.Api.Contract.Http
 {

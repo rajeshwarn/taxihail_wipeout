@@ -1,17 +1,15 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderUpdateService : Service
+    public class OrderUpdateService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
@@ -24,12 +22,12 @@ namespace apcurium.MK.Booking.Api.Services
             _ibsServiceProvider = ibsServiceProvider;
         }
 
-        public object Post(OrderUpdateRequest request)
+        public bool Post(OrderUpdateRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
             if (order == null || !order.IBSOrderId.HasValue)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
+                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
             var success = _ibsServiceProvider.Booking(order.CompanyKey).UpdateDropOffInTrip(order.IBSOrderId.Value, order.Id, request.DropOffAddress);

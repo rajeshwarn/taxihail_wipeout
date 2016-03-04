@@ -1,21 +1,17 @@
 ﻿#region
 
 using System;
-using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.FluentValidation;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class PopularAddressService : Service
+    public class PopularAddressService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
 
@@ -25,7 +21,8 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public IValidator<PopularAddress> Validator { get; set; }
+        //TODO MKTAXI-3915: Handle this
+        //public IValidator<PopularAddress> Validator { get; set; }
         protected IPopularAddressDao Dao { get; set; }
 
         public object Post(PopularAddress request)
@@ -40,28 +37,26 @@ namespace apcurium.MK.Booking.Api.Services
             return new {command.Address.Id};
         }
 
-        public object Delete(PopularAddress request)
+        public void Delete(Guid addressId)
         {
             var command = new RemovePopularAddress
             {
                 Id = Guid.NewGuid(),
-                AddressId = request.Id
+                AddressId = addressId
             };
 
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public object Put(PopularAddress request)
+        public void Put(PopularAddress request)
         {
             var command = new UpdatePopularAddress();
             Mapper.Map(request, command);
             command.Address.Id = request.Id;
 
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
+
+        
     }
 }
