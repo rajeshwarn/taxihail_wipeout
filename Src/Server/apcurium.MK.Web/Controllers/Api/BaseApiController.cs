@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -15,6 +16,20 @@ namespace apcurium.MK.Booking.Api.Services
     public class BaseApiController : ApiController
     {
         private readonly ICacheClient _cacheClient = UnityContainer.Instance.Resolve<ICacheClient>();
+
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            var services = GetType()
+                .GetProperties()
+                .Where(p => typeof (BaseApiService).IsAssignableFrom(p.PropertyType))
+                .Select(p => p.GetValue(this))
+                .Cast<BaseApiService>();
+
+            PrepareApiServices(services.ToArray());
+        }
 
         protected HttpException GetException(HttpStatusCode statusCode, string message)
         {
@@ -40,8 +55,6 @@ namespace apcurium.MK.Booking.Api.Services
                 baseApiService.HttpRequest = Request;
                 baseApiService.HttpRequestContext = RequestContext;
             }
-
-            
         }
 
         protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();
