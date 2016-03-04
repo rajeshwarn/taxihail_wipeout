@@ -126,9 +126,26 @@
 					<LinearLayout
 						android:layout_width="fill_parent"
 					    android:layout_height="wrap_content"
-					    android:orientation="horizontal"
-					    local:MvxBind="Visibility PaymentSettings.DisableVisaMastercard, Converter=InvertedVisibility">
-					    <ImageView
+					    android:orientation="horizontal">
+                        <LinearLayout
+							android:layout_width="wrap_content"
+						    android:layout_height="wrap_content"
+						    android:orientation="horizontal"
+						    local:MvxBind="Visibility PaymentSettings.DisableVisaMastercard, Converter=InvertedVisibility">
+		                    <ImageView
+		                        android:src="@drawable/visa"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+	                        <ImageView
+		                        android:src="@drawable/visa_electron"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+		                    <ImageView
+		                        android:src="@drawable/mastercard"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <ImageView
 	                        android:src="@drawable/amex"
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
@@ -138,25 +155,6 @@
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
 	                        local:MvxBind="Visibility PaymentSettings.DisableDiscover, Converter=InvertedVisibility"/>
-	                    
-                        <LinearLayout
-							android:layout_width="fill_parent"
-						    android:layout_height="wrap_content"
-						    android:orientation="horizontal"
-						    local:MvxBind="Visibility PaymentSettings.DisableVisaMastercard, Converter=InvertedVisibility">
-		                    <ImageView
-		                        android:src="@drawable/visa"
-		                        android:layout_width="wrap_content"
-		                        android:layout_height="wrap_content"/>
-		                    <ImageView
-		                        android:src="@drawable/mastercard"
-		                        android:layout_width="wrap_content"
-		                        android:layout_height="wrap_content"/>
-		                    <ImageView
-		                        android:src="@drawable/visa_electron"
-		                        android:layout_width="wrap_content"
-		                        android:layout_height="wrap_content"/>
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView
