@@ -35,6 +35,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private ClientPaymentSettings _paymentSettings;
 
+        private bool CardIOIsEnabled
+        {
+            get 
+            { 
+                // CardIOToken is only used to know if the company wants it or not
+                return CardIOActivity.CanReadCardWithCamera()
+                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
+            }
+        }
+
         protected override async void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
@@ -66,17 +76,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
 
-            var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
-
             var spinnerExpMonth = FindViewById<EditTextSpinner>(Resource.Id.ExpMonthSpinner);
             var spinnerExpYear = FindViewById<EditTextSpinner>(Resource.Id.ExpYearSpinner);
 
             spinnerExpMonth.OnTouch += (sender, e) => HideKeyboard(spinnerExpMonth.WindowToken);
             spinnerExpYear.OnTouch += (sender, e) => HideKeyboard(spinnerExpYear.WindowToken);
 
-            if (CardIOActivity.CanReadCardWithCamera()
-                // CardIOToken is only used to know if the company wants it or not
-                && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken) && ViewModel.CanScanCreditCard)
+            if (CardIOIsEnabled)
             {
                 _scanIntent = new Intent(this, typeof(CardIOActivity));
                 _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
@@ -84,12 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
 
+                var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
                 btnScanCard.Click += (sender, e) => ScanCard();
-                btnScanCard.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                btnScanCard.Visibility = ViewStates.Gone; 
             }
         }
 
