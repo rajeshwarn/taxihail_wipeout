@@ -1,30 +1,6 @@
 ﻿using System;
 using ObjCRuntime;
 
-namespace Card.IO
-{
-    [Native]
-    public enum CreditCardType : long
-    {
-        Unknown = 0,
-        Unrecognized = 0,
-        Ambiguous = 1,
-        Amex = 51 /*'3'*/,
-        JCB = 74 /*'J'*/,
-        Visa = 52 /*'4'*/,
-        Mastercard = 53 /*'5'*/,
-        Discover = 54 /*'6'*/
-    }
-
-    [Native]
-    public enum DetectionMode : long
-    {
-        CardImageAndNumber = 0,
-        CardImageOnly,
-        Automatic
-    }
-}
-
 namespace PaypalSdkTouch.Unified
 {
     [Native]
