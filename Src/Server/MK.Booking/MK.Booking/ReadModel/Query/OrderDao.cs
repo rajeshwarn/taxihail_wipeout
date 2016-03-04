@@ -206,23 +206,25 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-	    public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
-	    {
-		    using (var context = _contextFactory.Invoke())
-		    {
-				return context
-				    .Query<OrderManualRideLinqDetail>()
-					.AsEnumerable()
-					.Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode) 
-						&& ridelinq.AccountId == accountId
-						&& ridelinq.StartTime.HasValue 
-						&& ridelinq.StartTime.Value.Date == DateTime.Now.Date
-					)
-					.OrderBy(ridelinq => ridelinq.StartTime)
-					.LastOrDefault();
+        public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var today = DateTime.Now.Date;
+                return context
+                    .Query<OrderManualRideLinqDetail>()
+                    .Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode)
+                        && ridelinq.AccountId == accountId)
+                    .ToList()
+                    .Where(ridelinq => ridelinq.StartTime.HasValue
+                        && ridelinq.StartTime.Value.Date.Year == today.Year
+                        && ridelinq.StartTime.Value.Date.Month == today.Month
+                        && ridelinq.StartTime.Value.Date.Day == today.Day)
+                    .OrderBy(ridelinq => ridelinq.StartTime)
+                    .LastOrDefault();
 
-		    }
-	    }
+            }
+        }
 
         public VehicleIdMappingDetail GetVehicleMapping(Guid orderId)
         {
