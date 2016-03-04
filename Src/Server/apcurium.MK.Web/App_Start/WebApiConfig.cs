@@ -66,6 +66,16 @@ namespace apcurium.MK.Web.App_Start
 
                 }
 
+                if (requestUrl.Contains("account/manualridelinq") && (requestUrl.EndsWith("/status") || requestUrl.EndsWith("/unpair") || requestUrl.EndsWith("/pair")))
+                {
+                    requestUrl = requestUrl
+                        .Replace("/status", "")
+                        .Replace("/unpair", "")
+                        .Replace("/pair", "")
+                        .Replace("/pairing/tip", "/tip");
+
+                }
+
                 request.RequestUri = new Uri(requestUrl);
 
                 return base.SendAsync(request, cancellationToken);

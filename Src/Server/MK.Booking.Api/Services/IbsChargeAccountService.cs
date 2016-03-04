@@ -3,9 +3,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Common.Configuration;
 using AutoMapper;
-using ServiceStack.ServiceInterface;
 using System.Collections.Generic;
 
 #endregion

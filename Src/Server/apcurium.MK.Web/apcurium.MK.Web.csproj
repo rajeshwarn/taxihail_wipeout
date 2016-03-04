@@ -738,6 +738,7 @@
     <Compile Include="Controllers\Api\Account\AddressController.cs" />
     <Compile Include="Controllers\Api\Account\CreditCardController.cs" />
     <Compile Include="Controllers\Api\Account\CurrentAccountController.cs" />
+    <Compile Include="Controllers\Api\Account\ManualRideLinqController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
     <Compile Include="Controllers\Api\Account\RoleController.cs" />
@@ -752,6 +753,7 @@
     <Compile Include="Controllers\Api\IbsFareController.cs" />
     <Compile Include="Controllers\Api\LoginController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderStatusController.cs" />
+    <Compile Include="Controllers\Api\LogMetricsController.cs" />
     <Compile Include="Controllers\Api\PopularAddressController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
@@ -762,7 +764,6 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="helpers\HiddenExtensions.cs" />
     <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />

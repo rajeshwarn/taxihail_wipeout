@@ -1,0 +1,35 @@
+﻿using System.Web.Http;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Web.Security;
+using Infrastructure.Messaging;
+
+namespace apcurium.MK.Web.Controllers.Api
+{
+    public class LogMetricsController : BaseApiController
+    {
+        private readonly LogMetricsService _logMetricsService;
+
+        public LogMetricsController(ICommandBus commandBus, IAccountDao accountDao, IOrderDao orderDao)
+        {
+            _logMetricsService = new LogMetricsService(commandBus, accountDao, orderDao);
+        }
+
+        [HttpPost, Auth, Route("account/logstartup")]
+        public IHttpActionResult LogApplicationStartUp([FromBody] LogApplicationStartUpRequest request)
+        {
+            _logMetricsService.Post(request);
+
+            return Ok();
+        }
+        [HttpPost, Auth, Route("order/logeta")]
+        public IHttpActionResult LogApplicationStartUp([FromBody] LogOriginalEtaRequest request)
+        {
+            _logMetricsService.Post(request);
+
+            return Ok();
+        }
+
+    }
+}

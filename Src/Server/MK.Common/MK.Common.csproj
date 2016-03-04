@@ -148,6 +148,7 @@
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\ReturnExtensions.cs" />
+    <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />

@@ -100,6 +100,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.4\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
@@ -112,18 +113,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
     <Compile Include="Helpers\CreateOrder\IbsNoteBuilder.cs" />
     <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Services\AccountOrderListService.cs" />
+    <Compile Include="Services\AccountsChargeService.cs" />
+    <Compile Include="Services\AddressesService.cs" />
+    <Compile Include="Services\AddressHistoryService.cs" />
+    <Compile Include="Services\AppStartUpLogService.cs" />
+    <Compile Include="Services\BaseApiService.cs" />
+    <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\CancelOrderService.cs" />
+    <Compile Include="Services\ClientPopularAddressService.cs" />
+    <Compile Include="Services\ConfigurationResetService.cs" />
+    <Compile Include="Services\ConfigurationsService.cs" />
+    <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\CreditCardService.cs" />
+    <Compile Include="Services\CurrentAccountService.cs" />
+    <Compile Include="Services\DefaultFavoriteAddressService.cs" />
+    <Compile Include="Services\DriverService.cs" />
+    <Compile Include="Services\FlightInformationService.cs" />
+    <Compile Include="Services\GrantAdminRightService.cs" />
+    <Compile Include="Services\IbsChargeAccountService.cs" />
     <Compile Include="Services\OrderCreation\BaseCreateOrderService.cs" />
     <Compile Include="Services\OrderCreation\ChargeAccountValidationResult.cs" />
     <Compile Include="Services\OrderCreation\HailService.cs" />
     <Compile Include="Services\OrderCreation\PayPalCheckoutService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
+    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\OrderUpdateService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
