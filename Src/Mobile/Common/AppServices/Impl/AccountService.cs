@@ -88,7 +88,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		private async Task UpdateChargeTypes(MarketSettings marketSettings)
 		{
-			_chargeTypesListSubject.OnNext(await GetChargeTypes(marketSettings) ?? new ListItem[0]);
+			var chargeTypes = await GetChargeTypes(marketSettings) ?? new ListItem[0];
+			Console.WriteLine(chargeTypes.ToJson());
+			_chargeTypesListSubject.OnNext(chargeTypes);
 		}
 
 		public async Task<ReferenceData> GetReferenceData()
@@ -134,7 +136,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				// you haven't selected a charge type when trying to book and not a message
 				// saying "hey you need a card, add it now"
 				// TLDR: it's easier to understand for the user this way
-				Console.WriteLine(refData.PaymentsList.ToJson());
 				return refData.PaymentsList;
 			}
 
@@ -146,7 +147,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 			}
 
-			Console.WriteLine(refData.PaymentsList.ToJson());
 			return refData.PaymentsList;
 		}
 			
