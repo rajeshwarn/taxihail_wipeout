@@ -39,9 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         {
             get 
             { 
-                // CardIOToken is only used to know if the company wants it or not
-                return CardIOActivity.CanReadCardWithCamera()
-                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
+                return CardIOActivity.CanReadCardWithCamera(); 
             }
         }
 

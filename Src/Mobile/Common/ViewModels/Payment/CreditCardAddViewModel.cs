@@ -419,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return IsAddingNewCard;
+				return IsAddingNewCard && Settings.CardIOToken.HasValueTrimmed();
 			}
 		}
 
