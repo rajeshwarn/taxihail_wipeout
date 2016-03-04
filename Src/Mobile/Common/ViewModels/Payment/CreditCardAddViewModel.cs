@@ -255,6 +255,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => CreditCardTypeName);
 				RaisePropertyChanged(() => CreditCardImagePath);
+
+   			    if (CreditCardCompanies[CreditCardType].Display == Amex && PaymentSettings.DisableAMEX)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
+					return;
+				}
+
+				if (CreditCardCompanies[CreditCardType].Display == Discover && PaymentSettings.DisableDiscover)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeDiscover"]);
+					return;
+				}
+
+				if ((CreditCardCompanies[CreditCardType].Display == Visa || CreditCardCompanies[CreditCardType].Display == VisaElectron || CreditCardCompanies[CreditCardType].Display == MasterCard) && PaymentSettings.DisableVisaMastercard)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeVisaMastercard"]);
+					return;
+				}
 			}
 		}
 
@@ -661,24 +679,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
-					return;
-				}
-
-				if (Data.CreditCardCompany == Amex && PaymentSettings.DisableAMEX)
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
-					return;
-				}
-
-				if (Data.CreditCardCompany == Discover && PaymentSettings.DisableDiscover)
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeDiscover"]);
-					return;
-				}
-
-				if ((Data.CreditCardCompany == Visa || Data.CreditCardCompany == VisaElectron || Data.CreditCardCompany == MasterCard) && PaymentSettings.DisableVisaMastercard)
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeVisaMastercard"]);
 					return;
 				}
 
