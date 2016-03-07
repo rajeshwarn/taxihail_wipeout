@@ -531,7 +531,8 @@
     <comment>The order cannot be created because your credit card failed the preauthorization check.</comment>
   </data>
   <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
-    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+    <value>De order kan niet worden gemaakt omdat uw PayPal-rekening niet door de pre autorisatie check komt.</value>
+    <comment>The order cannot be created because your PayPal account failed the preauthorization check.</comment>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>Vanwege de grote vraag zijn er nu geen taxi's beschikbaar. Wilt u uw rit boeken bij {0}?</value>
@@ -546,59 +547,76 @@
     <comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
-    <value>This account is not supported in a different market.</value>
+    <value>Dit account wordt niet ondersteund in een andere markt.</value>
+    <comment>This account is not supported in a different market.</comment>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
-    <value>This account is not supported by the web site.</value>
+    <value>Dit account wordt niet ondersteund door de website.</value>
+    <comment>This account is not supported by the web site.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
-    <value>You must select Card On File to use a promotion.</value>
+    <value>U moet uw creditCard selecteren voordat u de promotie kunt gebruiken.</value>
+    <comment>You must select Card On File to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
-    <value>You must select Card On File or PayPal to use a promotion.</value>
+    <value>U moet uw CreditCard of PayPal selecterenvoordat u de promotie kunt gebruiken.</value>
+    <comment>You must select Card On File or PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
-    <value>You must select PayPal to use a promotion.</value>
+    <value>U moet PayPal selecteren voordat u de promotie kunt gebruiken.</value>
+    <comment>You must select PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
-    <value>There is no promotion associated to this code</value>
+    <value>Er is geen promotie gekoppeld aan deze code</value>
+    <comment>There is no promotion associated to this code</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
-    <value>This promotion is not active</value>
+    <value>Deze promotie is niet actief</value>
+    <comment>This promotion is not active</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
-    <value>This promotion is deleted</value>
+    <value>Deze promotie is verwijderd</value>
+    <comment>This promotion is deleted</comment>
   </data>
   <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
-    <value>Maximum number of uses has been reached for this promotion</value>
+    <value>Het maximum aantal keren dat u de promotie kon gebruiken in bereikt</value>
+    <comment>Maximum number of uses has been reached for this promotion</comment>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
-    <value>This promotion does not applies to future booking</value>
+    <value>Deze promotie is niet van toepassing op toekomstige boekingen</value>
+    <comment>This promotion does not applies to future booking</comment>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
-    <value>This promotion applies to future booking only</value>
+    <value>Deze promotie is alleen van toepassing op een toekomstige reservering</value>
+    <comment>This promotion applies to future booking only</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
-    <value>This promotion is not available for this day of the week</value>
+    <value>Deze promotie is niet beschikbaar op deze dag van de week</value>
+    <comment>This promotion is not available for this day of the week</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
-    <value>This promotion has not started yet</value>
+    <value>Deze promotie is niet niet gestart</value>
+    <comment>This promotion has not started yet</comment>
   </data>
   <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
-    <value>This promotion has expired</value>
+    <value>Deze promotie is verlopen</value>
+    <comment>This promotion has expired</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
-    <value>This promotion is not available at this time</value>
+    <value>Deze promotie is niet beschikbaar op dit moment</value>
+    <comment>This promotion is not available at this time</comment>
   </data>
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>Er is geen Taxibedrijf die deze regio bediend</value>
     <comment>There is no company serving this region</comment>
   </data>
   <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
-    <value>You are not allowed to use this promotion</value>
+    <value>Het is niet toegestaan deze promotie te gebruiken</value>
+    <comment>You are not allowed to use this promotion</comment>
   </data>
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Sorry, future booking is not available</value>
+    <comment>Sorry, future booking is not available</comment>
   </data>
   <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
     <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
@@ -739,14 +757,16 @@
     <comment>{{ ApplicationName }} - Your credit card has been deactivated</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
+    <value>Je hebt een tariefschatting nodig om uw rit vooraf betalen. Selecteer een bestemmingsadres om een schatting te krijgen.</value>
+    <comment>You need an estimated fare to prepay your ride. Please select a destination address to get one.</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal betaling is geannuleerd</value>
     <comment>PayPal payment was cancelled</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
-    <value>Payment is not enabled on the website. Please select another charge type.</value>
+    <value>Deze betaalwijze is niet ingeschakeld op de website. Selecteer een andere betaalwijze.</value>
+    <comment>Payment is not enabled on the website. Please select another charge type.</comment>
   </data>
   <data name="PayPalWebTipItemDescription" xml:space="preserve">
     <value>Fooi ({0}%)</value>

@@ -119,7 +119,7 @@
   </resheader>
 
 	<data name="AboutActivityName" xml:space="preserve">
-		<value>Info systeem</value>
+		<value>Systeem info</value>
 		<comment>About</comment>
 	</data>
 	<data name="AcceptButton" xml:space="preserve">
@@ -335,7 +335,7 @@
 		<comment>Airport</comment>
 	</data>
 	<data name="BookingRateActivityName" xml:space="preserve">
-		<value>Booking rate</value>
+		<value>Booking kosten</value>
 		<comment>Booking rate</comment>
 	</data>
 	<data name="BookingService_MobileBookingNote" xml:space="preserve">
@@ -479,7 +479,7 @@
 		<comment>Close</comment>
 	</data>
 	<data name="CloseTutorial" xml:space="preserve">
-		<value>Sluit instructiescherm</value>
+		<value>Sluit Uitleg</value>
 		<comment>Close Tutorial</comment>
 	</data>
 	<data name="CmtCancelPayment" xml:space="preserve">
@@ -487,7 +487,7 @@
 		<comment>Cancel</comment>
 	</data>
 	<data name="CmtCardNumber" xml:space="preserve">
-		<value>Payment Method:</value>
+		<value>Betalingswijze:</value>
 		<comment>Payment Method:</comment>
 	</data>
 	<data name="CmtCarNumber" xml:space="preserve">
@@ -827,7 +827,7 @@
 		<comment>Pickup date and time</comment>
 	</data>
 	<data name="DateTimePickerSetButton" xml:space="preserve">
-		<value>bestellen</value>
+		<value>Bestellen</value>
 		<comment>Book</comment>
 	</data>
 	<data name="DateToday" xml:space="preserve">
@@ -883,7 +883,7 @@
 		<comment>Destination not specified</comment>
 	</data>
 	<data name="DestinationTextPlaceholder" xml:space="preserve">
-    <value>Destination street address</value>
+    <value>Bestemmings Adres</value>
 		<comment>Destination street address</comment>
 	</data>
 	<data name="DestinationViewDestinationLabel" xml:space="preserve">
@@ -891,7 +891,7 @@
 		<comment>Destination:</comment>
 	</data>
 	<data name="DialCodeSelectorTitle" xml:space="preserve">
-		<value>Toegangscode</value>
+		<value>Landnummer</value>
 		<comment>Dial Code</comment>
 	</data>
 	<data name="Done" xml:space="preserve">
@@ -907,11 +907,11 @@
 		<comment>Don't have an account?</comment>
 	</data>
 	<data name="DriverBonusDescription" xml:space="preserve">
-		<value>Het aanbieden van een bonus voor bestuurders kan uw kansen op het krijgen van een taxi te stimuleren.</value>
+		<value>Het aanbieden van een bonus voor chauffeurs kan uw kansen op het krijgen van een taxi stimuleren.</value>
 		<comment>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</comment>
 	</data>
 	<data name="DriverBonusTitle" xml:space="preserve">
-		<value>Chauffeurs Bonus</value>
+		<value>Chauffeurs Bonus:</value>
 		<comment>Driver Bonus:</comment>
 	</data>
 	<data name="DriverBonusWarningMessage" xml:space="preserve">
@@ -951,7 +951,7 @@
 		<comment>Medallion:</comment>
 	</data>
 	<data name="Edit" xml:space="preserve">
-		<value>Bewerk</value>
+		<value>Bewerken</value>
 		<comment>Edit</comment>
 	</data>
 	<data name="EmailLabel" xml:space="preserve">
@@ -1048,7 +1048,7 @@
 		<comment>mins</comment>
 	</data>
 	<data name="EtaLessThanAMinute" xml:space="preserve">
-		<value>Dichtstbijzijnde taxi is op minder dan een minuut afstand</value>
+		<value>Dichtstbijzijnde taxi is op minder dan één minuut afstand</value>
 		<comment>Nearest taxi is less than a minute away</comment>
 	</data>
 	<data name="EtaNotAvailable" xml:space="preserve">
@@ -1109,7 +1109,7 @@
 		<comment>Update required</comment>
 	</data>
 	<data name="HistoryActivityName" xml:space="preserve">
-		<value>History</value>
+		<value>Historie</value>
 		<comment>History</comment>
 	</data>
 	<data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
@@ -1437,7 +1437,7 @@
 		<comment>Forgot your password?</comment>
 	</data>
 	<data name="LoginForgotPasswordDetail" xml:space="preserve">
-		<value>Vul uw emailadres in en wij sturen u een niet Wachtwoord</value>
+		<value>Vul uw emailadres in en wij sturen u een nieuw Wachtwoord</value>
 		<comment>Enter your email and we'll send you a new one.</comment>
 	</data>
 	<data name="LoginSupport" xml:space="preserve">
@@ -1581,7 +1581,7 @@
 		<comment>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</comment>
 	</data>
 	<data name="MarketChangedMessageTitle" xml:space="preserve">
-		<value>Huisnummer / Toegangsdetected</value>
+		<value>Nieuw Servicegebied gedetecteerd</value>
 		<comment>New service area detected</comment>
 	</data>
 	<data name="May" xml:space="preserve">
@@ -1605,7 +1605,7 @@
 		<comment>http://www.mobile-knowledge.com/</comment>
 	</data>
 	<data name="Modify" xml:space="preserve">
-		<value>Wijzigen</value>
+		<value>Aanpassen</value>
 		<comment>Modify</comment>
 	</data>
 	<data name="NbPassenger" xml:space="preserve">
@@ -1753,11 +1753,11 @@
 		<comment>Payment Confirmation</comment>
 	</data>
 	<data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
-    <value>Promotions unlocked (Email)</value>
+    <value>Promotie openen</value>
 		<comment>Promotions unlocked (Email)</comment>
 	</data>
 	<data name="Notification_PromotionUnlockedPush" xml:space="preserve">
-    <value>Promotions unlocked (Push)</value>
+    <value>Promotie openen</value>
 		<comment>Promotions unlocked (Push)</comment>
 	</data>
 	<data name="Notification_ReceiptEmail" xml:space="preserve">
@@ -1769,11 +1769,11 @@
 		<comment>Vehicle at Pickup</comment>
 	</data>
 	<data name="NotificationSettingsActivityName" xml:space="preserve">
-		<value>kennisgeving instelling</value>
+		<value>Notificatie instelling</value>
 		<comment>Notification setting</comment>
 	</data>
 	<data name="NotNow" xml:space="preserve">
-		<value>Nu niet</value>
+		<value>Niet nu</value>
 		<comment>Not now</comment>
 	</data>
 	<data name="November" xml:space="preserve">
@@ -1937,7 +1937,7 @@
 		<comment>Payment</comment>
 	</data>
 	<data name="PanelMenuViewPromotionsText" xml:space="preserve">
-		<value>Acties</value>
+		<value>Promoties</value>
 		<comment>Promotions</comment>
 	</data>
 	<data name="PanelMenuViewReportProblemText" xml:space="preserve">
@@ -2045,7 +2045,7 @@
 		<comment>Payment In Car</comment>
 	</data>
 	<data name="PaymentLoadError" xml:space="preserve">
-		<value>Unable to load the payment details. Please try again later.</value>
+		<value>Onmogelijk om de betaling details te laden. Probeer later nogmaals.</value>
 		<comment>Unable to load the payment details. Please try again later.</comment>
 	</data>
 	<data name="PaymentViewMeterAmountText" xml:space="preserve">
@@ -2093,11 +2093,11 @@
 		<comment>You cannot book this ride since an order is already pending. View the order status?</comment>
 	</data>
 	<data name="PendingOrderView" xml:space="preserve">
-		<value>View</value>
+		<value>Bekijken</value>
 		<comment>View</comment>
 	</data>
 	<data name="PickupAddress" xml:space="preserve">
-		<value>ophaaladres</value>
+		<value>Ophaaladres</value>
 		<comment>Pickup address</comment>
 	</data>
 	<data name="PickupDateDisplay" xml:space="preserve">
@@ -2193,7 +2193,7 @@
 		<comment>Progress :</comment>
 	</data>
 	<data name="PromotionActivityName" xml:space="preserve">
-		<value>Actie</value>
+		<value>Promotie</value>
 		<comment>Promotion</comment>
 	</data>
 	<data name="PromotionButton" xml:space="preserve">
@@ -2277,7 +2277,7 @@
 		<comment>Refine an address</comment>
 	</data>
 	<data name="Register" xml:space="preserve">
-		<value>Rigistreer</value>
+		<value>Registreer</value>
 		<comment>Register</comment>
 	</data>
 	<data name="ReminderDetails" xml:space="preserve">
@@ -2453,11 +2453,11 @@
 		<comment>Send mail...</comment>
 	</data>
 	<data name="SendErrorLogButton" xml:space="preserve">
-		<value>Stuur Error log</value>
+		<value>Verstuur Error log</value>
 		<comment>Send error log</comment>
 	</data>
 	<data name="SendMessageDriver" xml:space="preserve">
-		<value>Stuur bericht aan Chauffeur</value>
+		<value>Verstuur bericht aan Chauffeur</value>
 		<comment>Send Message to Driver</comment>
 	</data>
 	<data name="SendMessageErrorMessage" xml:space="preserve">
@@ -2821,7 +2821,7 @@
 		<comment>You can review your order history at any time, and even rebook a previous trip with the push of a button</comment>
 	</data>
 	<data name="TutorialActivityName" xml:space="preserve">
-		<value>Tutorial</value>
+		<value>Korte Uitleg</value>
 		<comment>Tutorial</comment>
 	</data>
 	<data name="Twitter" xml:space="preserve">
@@ -2857,11 +2857,11 @@
 		<comment>Pay in Car</comment>
 	</data>
 	<data name="UnpairPayInCarWarningMessage" xml:space="preserve">
-		<value>Are you sure you don't want to pay with your credit card on file?</value>
+		<value>Bent u zeker dat u niet wilt betalen met uw creditcard?</value>
 		<comment>Are you sure you don't want to pay with your credit card on file?</comment>
 	</data>
 	<data name="UnpairPayInCarWarningMessageWithPromo" xml:space="preserve">
-		<value>If you decide to pay in car, you will not be able to use the promotion</value>
+		<value>Als u besluit om in de taxi te betalen, Kunt u de promotie helaas niet gebruiken</value>
 		<comment>If you decide to pay in car, you will not be able to use the promotion</comment>
 	</data>
 	<data name="UnpairWarningCancelButton" xml:space="preserve">
