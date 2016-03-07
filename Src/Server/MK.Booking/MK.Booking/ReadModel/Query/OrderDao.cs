@@ -201,7 +201,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         && ridelinq.StartTime.Value.Date.Day == today.Day)
                     .OrderBy(ridelinq => ridelinq.StartTime)
                     .LastOrDefault();
-
             }
         }
 
