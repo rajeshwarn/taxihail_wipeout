@@ -251,6 +251,7 @@
     <Compile Include="Entities\Network\Market.cs" />
     <Compile Include="Extensions\MarketCollectionExtensions.cs" />
     <Compile Include="Areas\Admin\Models\CompanyStatusModel.cs" />
+    <Compile Include="Helpers\LinkHeaderParser.cs" />
     <Compile Include="Services\Impl\ServiceStatusUpdater.cs" />
     <Compile Include="Services\IServiceStatusUpdater.cs" />
     <Compile Include="Services\SourceControlFactory.cs" />
