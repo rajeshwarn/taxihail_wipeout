@@ -7,7 +7,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using CMTPayment;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -23,10 +22,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
 
-        // We need to wait until we get a trip info. If Cmt does not give us a timeout, use this default value.
-        private const long DefaultTimeoutSeconds = 30; 
-
-
         public CmtPaymentPairingService(IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, ILogger logger, ICommandBus commandBus, IServerSettings serverSettings)
         {
             _orderDao = orderDao;
@@ -37,18 +32,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _serverSettings = serverSettings;
         }
 
-        private CmtTripInfoServiceHelper GetTripInfoServiceHelper(string companyKey)
-        {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null, null);
-            return new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
-        }
-
         /// <summary>
         /// This endpoint is used by Cmt to send us the pairing token.
         /// </summary>
         public object Post(CmtPaymentPairingRequest request)
         {
-            _logger.LogMessage("Pairing info received for order {0}, PairingToken {1} and a timeout of {2}", request.OrderUuid, request.PairingToken??"Unknown", request.TimeoutSeconds??DefaultTimeoutSeconds);
+            _logger.LogMessage("Pairing info received for order {0}, PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
             if (Guid.Empty == request.OrderUuid || !request.PairingToken.HasValueTrimmed())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
@@ -69,19 +58,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
 
             var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.Value);
-
-            var tripInfoServiceHelper = GetTripInfoServiceHelper(orderStatusDetail.CompanyKey);
-
-            var tripInfo = tripInfoServiceHelper.WaitForTripInfo(request.PairingToken, request.TimeoutSeconds ?? DefaultTimeoutSeconds, enableVerboseLogging: true);
             
             _commandBus.Send(new PairForPayment
             {
                 OrderId = request.OrderUuid,
                 Medallion = orderStatusDetail.VehicleNumber,
-                DriverId = tripInfo.DriverId.ToString(),
-                PairingToken = tripInfo.PairingToken,
+                DriverId = orderStatusDetail.DriverInfos.DriverId,
+                PairingToken = request.PairingToken,
                 TokenOfCardToBeUsedForPayment = creditCard.Token,
-                AutoTipPercentage = tripInfo.AutoTipPercentage
+                AutoTipPercentage = account.DefaultTipPercent??_serverSettings.ServerData.DefaultTipPercentage
             });
             
             return new CmtPaymentPairingResponse
@@ -89,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CustomerId = account.Id,
                 CustomerName =  account.Name,
                 CardOnFileId = creditCard.Token,
-                TripRequestNumber = tripInfo.TripId.ToString(),
+                TripRequestNumber = orderStatusDetail.IBSOrderId.ToString(),
                 LastFourDigits = creditCard.Last4Digits
             };
         }
