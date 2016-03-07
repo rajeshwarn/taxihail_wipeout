@@ -33,6 +33,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init()
 		{
 			_kountSessionId = _deviceCollectorService.GetSessionId();
+
+			// For the RideLinQ "street pick" feature, we need to use the user and not the pin position
+			_orderWorkflowService.SetAddressToUserLocation().FireAndForget();
 		}
 
         public string PairingCodeLeft
@@ -79,16 +82,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
+								Logger.LogMessage("PairWithRideLinq 1");
 							await _orderWorkflowService.ValidateTokenizedCardIfNecessary(true, null, _kountSessionId);
-
-                            // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
-                            await _orderWorkflowService.SetAddressToUserLocation();
-
+								Logger.LogMessage("PairWithRideLinq 2");
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
+								Logger.LogMessage("PairWithRideLinq 3");
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
+								Logger.LogMessage("PairWithRideLinq 4");
 							var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress, _kountSessionId);
-
+								Logger.LogMessage("PairWithRideLinq 5");
 							_deviceCollectorService.GenerateNewSessionIdAndCollect();
+								Logger.LogMessage("PairWithRideLinq 6");
 
 							this.ReturnResult(orderManualRideLinqDetail);
                         }
