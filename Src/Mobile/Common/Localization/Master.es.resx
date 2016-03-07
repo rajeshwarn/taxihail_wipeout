@@ -516,7 +516,8 @@
     <value>({0} v{1})</value>
   </data>
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
-    <value>Sorry, Amex cards are not supported</value>
+    <value>Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.</value>
+    <comment>Sorry, Amex cards are not supported</comment>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>The server cannot be contacted, try again later.</value>

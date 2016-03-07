@@ -714,4 +714,7 @@
   <data name="Email_Title_OrderRefund" xml:space="preserve">
     <value>Commande Remboursée</value>
   </data>
+  <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
+    <value>Vous devez fournir un code de pays, ex: CA, US, ...</value>
+  </data>
 </root>

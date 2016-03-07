@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             view.BackgroundColor = Theme.CompanyColor;
             lblMedallionTitle.TextColor = Theme.LabelTextColor;
+            lblMedallionTitle.Text = Localize.GetValue("OrderStatus_Medallion");
             lblMedallion.TextColor = Theme.LabelTextColor;
 
             btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
