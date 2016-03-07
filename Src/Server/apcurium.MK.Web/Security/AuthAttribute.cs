@@ -28,6 +28,16 @@ namespace apcurium.MK.Web.Security
             _cacheClient = UnityConfig.GetConfiguredContainer().Resolve<ICacheClient>();
         }
 
+        /// <summary>
+        /// Lowest level to access endpoint
+        /// </summary>
+        /// <remarks> 
+        /// By default every users have access. 
+        /// 
+        /// If we choose restrict to support, the admin and superadmin will have access also.
+        /// If we choose to restrict to admin, the superadmin will have access also.
+        /// If we choose to restrict to superadmin, only the superadmin will have access
+        /// </remarks>
         public string Role { get; set; } = RoleName.None;
 
         public bool AllowMultiple { get; }

@@ -741,6 +741,7 @@
     <Compile Include="Controllers\Api\Account\ManualRideLinqController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
+    <Compile Include="Controllers\Api\Account\Orders\ReceiptController.cs" />
     <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
@@ -749,6 +750,7 @@
     <Compile Include="Controllers\Api\Admin\NotificationAdministrationController.cs" />
     <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
     <Compile Include="Controllers\Api\Admin\RuleAdministrationController.cs" />
+    <Compile Include="Controllers\Api\Admin\TariffController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\Api\FlightInformationController.cs" />
@@ -763,7 +765,10 @@
     <Compile Include="Controllers\Api\PromotionController.cs" />
     <Compile Include="Controllers\Api\RatingTypesController.cs" />
     <Compile Include="Controllers\Api\ReferenceDataController.cs" />
+    <Compile Include="Controllers\Api\SearchLocationController.cs" />
+    <Compile Include="Controllers\Api\ServerStatusController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
+    <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>

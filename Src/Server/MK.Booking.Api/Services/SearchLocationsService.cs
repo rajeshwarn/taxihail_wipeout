@@ -1,21 +1,21 @@
 ﻿#region
 
-using System;
 using System.Globalization;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class SearchLocationsService : Service
+    public class SearchLocationsService : BaseApiService
     {
         private readonly IAddresses _client;
         private readonly IAccountDao _accountDao;
@@ -26,25 +26,24 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
         }
 
-        public object Post(SearchLocationsRequest request)
+        public Task<Address[]> Post(SearchLocationsRequest request)
         {
-            if (request == null || string.IsNullOrEmpty(request.Name))
+            if (!request.Name.HasValueTrimmed())
             {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
+                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
             }
 
             var language = CultureInfo.CurrentUICulture.Name;
-            if (this.GetSession() != null
-                && this.GetSession().UserAuthId != null)
+            if (Session.IsAuthenticated())
             {
-                var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+                var account = _accountDao.FindById(Session.UserId);
                 if (account != null && account.Language.HasValue())
                 {
                     language = account.Language;
                 }
             }
            
-            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), language, request.GeoResult);
+            return _client.SearchAsync(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), language, request.GeoResult);
         }
     }
 }

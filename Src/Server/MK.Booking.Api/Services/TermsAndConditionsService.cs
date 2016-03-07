@@ -1,8 +1,6 @@
-﻿using System.Net;
+﻿using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -11,7 +9,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TermsAndConditionsService : Service
+    public class TermsAndConditionsService : BaseApiService
     {
         private readonly ICompanyDao _dao;
         private readonly ICommandBus _commandBus;
@@ -22,37 +20,35 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public object Get(TermsAndConditionsRequest request)
+
+        public bool IsNotModified()
         {
             var company = _dao.Get();
 
-            if (company.Version != null
-                && Request.Headers[HttpHeaders.IfNoneMatch] == company.Version)
-            {
-                return new HttpResult(HttpStatusCode.NotModified, HttpStatusCode.NotModified.ToString()); 
-            }
 
-            var shouldForceDisplayOfTermsOnClient = true;
-            if(company.Version != null)
-            {
-                Response.AddHeader(HttpHeaders.ETag, company.Version);
-            }
-            else
-            {
-                // version is null, so the terms and conditions have never been triggered
-                // don't force them to the user at startup
-                shouldForceDisplayOfTermsOnClient = false;
-            }
+            return company.Version.HasValueTrimmed() && HttpRequest.Headers.IfNoneMatch.Any(p => p.Tag == company.Version);
+        }
+
+        public string GetCompanyVersion()
+        {
+            var company = _dao.Get();
+
+            return company.Version;
+        }
+
+        public TermsAndConditions Get()
+        {
+            var company = _dao.Get();
 
             var result = new TermsAndConditions
                 {
                     Content = company.TermsAndConditions.ToSafeString(),
-                    Updated = shouldForceDisplayOfTermsOnClient
+                    Updated = company.Version.HasValueTrimmed()
                 };
             return result;
         }
 
-        public object Post(TermsAndConditionsRequest request)
+        public void Post(TermsAndConditionsRequest request)
         {
             var command = new UpdateTermsAndConditions
             {
@@ -60,19 +56,15 @@ namespace apcurium.MK.Booking.Api.Services
                 TermsAndConditions = request.TermsAndConditions
             };
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public object Post(RetriggerTermsAndConditionsRequest request)
+        public void RetriggerTermsAndConditions()
         {
             var command = new RetriggerTermsAndConditions
             {
                 CompanyId = AppConstants.CompanyId
             };
             _commandBus.Send(command);
-
-            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

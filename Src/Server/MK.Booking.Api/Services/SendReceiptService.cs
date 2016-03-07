@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using apcurium.MK.Booking.Api.Contract.Requests;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
@@ -12,17 +13,13 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using CMTPayment.Pair;
-using ServiceStack.Common.Utils;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class SendReceiptService : Service
+    public class SendReceiptService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly IPromotionDao _promotionDao;
@@ -61,31 +58,27 @@ namespace apcurium.MK.Booking.Api.Services
             _geocoding = geocoding;
             _commandBus = commandBus;
         }
-
-        public object Post(SendReceipt request)
+        
+        public async Task Post(Guid orderId, string recipientEmail)
         {
-            return Post(new SendReceiptAdmin { OrderId = request.OrderId });
-        }
-        public object Post(SendReceiptAdmin request)
-        {
-            var order = _orderDao.FindById(request.OrderId);
+            var order = _orderDao.FindById(orderId);
             if (order == null || !order.IBSOrderId.HasValue)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
+                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
             AccountDetail account;
             // if the admin is requesting the receipt then it won't be for the logged in user
-            if (!request.RecipientEmail.IsNullOrEmpty())
+            if (recipientEmail.IsNullOrEmpty())
             {
                 account = _accountDao.FindById(order.AccountId);
             }
             else
             {
-                account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+                account = _accountDao.FindById(Session.UserId);
                 if (account.Id != order.AccountId)
                 {
-                    throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
+                    throw new HttpException((int)HttpStatusCode.Unauthorized, "Not your order");
                 }
             }
 
@@ -94,14 +87,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!ibsAccountId.HasValue)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
+                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
             var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
-            var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
 
             double? fareAmount;
             double? tollAmount = null;
@@ -125,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Services
                 bookingFees = Convert.ToDouble(orderPayment.BookingFees);
 
                 // promotion can only be used with in app payment
-                promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
+                promotionUsed = _promotionDao.FindByOrderId(orderId);
 
                 creditCard = orderPayment.CardToken.HasValue()
                     ? _creditCardDao.FindByToken(orderPayment.CardToken)
@@ -165,7 +158,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
-                var tripInfo = GetTripInfo(pairingInfo.PairingToken);
+                var tripInfo = await GetTripInfo(pairingInfo.PairingToken);
                 if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                 {
                     // this is for CMT RideLinq only, no VAT
@@ -195,7 +188,7 @@ namespace apcurium.MK.Booking.Api.Services
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
                         RateAtTripStart = tripInfo.RateAtTripStart,
                         Tolls = tripInfo.TollHistory,
-                        TipIncentive = (order.TipIncentive.HasValue) ? order.TipIncentive.Value : 0
+                        TipIncentive = order.TipIncentive ?? 0
                     };
                 }
                 else
@@ -246,16 +239,14 @@ namespace apcurium.MK.Booking.Api.Services
                     promotionUsed,
                     creditCard,
                     cmtRideLinqFields);
-            if (!request.RecipientEmail.IsNullOrEmpty())
+            if (!recipientEmail.IsNullOrEmpty())
             {
-                sendReceiptCommand.EmailAddress = request.RecipientEmail;
+                sendReceiptCommand.EmailAddress = recipientEmail;
             }
             _commandBus.Send(sendReceiptCommand);
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        private Trip GetTripInfo(string pairingToken)
+        private Task<Trip> GetTripInfo(string pairingToken)
         {
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
             var cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);

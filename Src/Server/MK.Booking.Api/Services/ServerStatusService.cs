@@ -22,7 +22,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ServerStatusService : Service
+    public class ServerStatusService : BaseApiService
     {
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsProvider;
@@ -45,12 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
             _statusUpdaterDao = statusUpdaterDao;
         }
 
-        public object Get(ServerStatusRequest request)
-        {
-            return GetServiceStatus().Result;
-        }
-
-        private async Task<ServiceStatus> GetServiceStatus()
+        public async Task<ServiceStatus> GetServiceStatus()
         {
             // Setup tests variable
             var useGeo = _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo ||
@@ -80,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
             var sqlTest = RunTest(async () => await orderStatusUpdateDetailTest, "SQL");
 
             var mapiTest = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                ? RunTest(() => Task.Run(() => RunMapiTest()), "CMT MAPI")
+                ? RunTest(async () => await RunMapiTest(), "CMT MAPI")
                 : Task.FromResult(false);
 
             var papiTest = useCmtPapi
@@ -152,12 +147,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         }
 
-        private void RunMapiTest()
+        private async Task RunMapiTest()
         {
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
             var cmtTripInfoHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 
-            var tripInfo = cmtTripInfoHelper.GetTripInfo("0");
+            var tripInfo = await cmtTripInfoHelper.GetTripInfo("0");
 
             if (tripInfo == null ||  tripInfo.HttpStatusCode == (int) HttpStatusCode.BadRequest && tripInfo.ErrorCode.HasValue)
             {
