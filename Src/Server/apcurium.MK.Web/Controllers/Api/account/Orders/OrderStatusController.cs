@@ -12,7 +12,7 @@ using AutoMapper;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/account/orders")]
+    [RoutePrefix("api/v2/accounts/orders")]
     [NoCache]
     [Auth]
     public class OrderStatusController : BaseApiController

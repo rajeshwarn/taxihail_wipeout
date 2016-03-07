@@ -1,23 +1,22 @@
 ﻿#region
 
 using System;
-using System.Threading;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TestOnlyReqGetTestAccountService : Service
+    public class TestOnlyReqGetTestAccountService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _dao;
@@ -38,15 +37,15 @@ namespace apcurium.MK.Booking.Api.Services
             get { return "password1"; }
         }
 
-        public object Get(TestOnlyReqGetTestAccount request)
+        public async Task<AccountDetail> Get(string index)
         {
-            //This method can only be used for unit test.  
-            if ((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) != EndpointAttributes.Localhost)
+            //This method can only be used for unit test. 
+            if (!HttpRequestContext.IsLocal)
             {
-                throw HttpError.NotFound("This method can only be called from the server");
+                throw new HttpException((int)HttpStatusCode.NotFound, "This method can only be called from the server");
             }
 
-            var testEmail = String.Format(TestUserEmail, request.Index);
+            var testEmail = string.Format(TestUserEmail, index);
             var testAccount = _dao.FindByEmail(testEmail);
 
             if (testAccount != null)
@@ -71,7 +70,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            Thread.Sleep(400);
+            await Task.Delay(400);
             // Confirm account immediately
             _commandBus.Send(new ConfirmAccount
             {

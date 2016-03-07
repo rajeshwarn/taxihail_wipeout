@@ -12,6 +12,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
 using UnityContainer = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -39,10 +40,20 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpException((int)statusCode, message);
         }
 
+        private JsonSerializerSettings GetSerializerSettings()
+        {
+            return new JsonSerializerSettings()
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                ContractResolver = new CustomCamelCasePropertyNamesContractResolver(),
+            };
+        }
 
         public IHttpActionResult GenerateActionResult<T>(T content)
         {
-            return Ok(content);
+            return Json(content, GetSerializerSettings());
         }
 
         protected void PrepareApiServices(params BaseApiService[] targets)

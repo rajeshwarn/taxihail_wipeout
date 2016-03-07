@@ -76,6 +76,11 @@ namespace apcurium.MK.Web.App_Start
 
                 }
 
+                if (requestUrl.Contains("account/"))
+                {
+                    requestUrl = requestUrl.Replace("account/", "accounts/");
+                }
+
                 request.RequestUri = new Uri(requestUrl);
 
                 return base.SendAsync(request, cancellationToken);

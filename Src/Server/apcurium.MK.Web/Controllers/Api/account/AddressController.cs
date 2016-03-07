@@ -17,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/account/addresses"), Auth]
+    [RoutePrefix("api/v2/accounts/addresses"), Auth]
     public class AddressController : BaseApiController
     {
         public AddressesService AddressesService { get; }

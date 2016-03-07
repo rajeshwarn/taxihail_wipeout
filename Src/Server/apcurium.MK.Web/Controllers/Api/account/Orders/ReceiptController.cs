@@ -12,7 +12,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/account/orders/")]
+    [RoutePrefix("api/v2/accounts/orders/")]
     public class ReceiptController : BaseApiController
     {
         public SendReceiptService SendReceiptService { get; }

@@ -17,13 +17,15 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/account")]
+    [RoutePrefix("api/v2/accounts")]
     public class AccountController : BaseApiController
     {
         public BookingSettingsService BookingSettingsService { get; }
         public ConfirmAccountService ConfirmAccountService { get; }
         public ResetPasswordService ResetPasswordService { get; }
         public RegisterAccountService RegisterAccountService { get; }
+
+        public UpdatePasswordService UpdatePasswordService { get; }
         
 
         public AccountController(IAccountDao accountDao, 
@@ -41,6 +43,8 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             RegisterAccountService = new RegisterAccountService(commandBus, accountDao, serverSettings, blackListEntryService);
 
             ResetPasswordService = new ResetPasswordService(commandBus, accountDao);
+
+            UpdatePasswordService = new UpdatePasswordService(commandBus, accountDao);
         }
 
         [HttpPut, Auth(Role = RoleName.Support), Route("update/{accountId}")]
@@ -115,6 +119,12 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             ResetPasswordService.Post(emailAddress);
 
             return Ok();
+        }
+
+
+        public IHttpActionResult UpdatePassword()
+        {
+            
         }
     }
 }

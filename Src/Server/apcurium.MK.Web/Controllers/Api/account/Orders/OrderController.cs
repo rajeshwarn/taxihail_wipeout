@@ -13,7 +13,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.account
 {
-    [RoutePrefix("api/v2/account/orders")]
+    [RoutePrefix("api/v2/accounts/orders")]
     [Auth]
     public class OrderController : BaseApiController
     {

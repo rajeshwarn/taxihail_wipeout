@@ -769,6 +769,7 @@
     <Compile Include="Controllers\Api\ServerStatusController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
+    <Compile Include="Controllers\Api\TestOnlyEndpointController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>

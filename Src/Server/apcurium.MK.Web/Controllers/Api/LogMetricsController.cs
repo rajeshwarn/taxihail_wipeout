@@ -25,7 +25,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PrepareApiServices(_logMetricsService);
         }
 
-        [HttpPost, Auth, Route("account/logstartup")]
+        [HttpPost, Auth, Route("accounts/logstartup")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogApplicationStartUpRequest request)
         {
             _logMetricsService.Post(request);
