@@ -10,17 +10,15 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 using System.Text;
+using System.Web;
 using apcurium.MK.Booking.ReadModel;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.Admin
 {
-    public class ExportDataService : Service
+    public class ExportDataService : BaseApiService
     {
         private readonly IAccountDao _accountDao;
         private readonly IServerSettings _serverSettings;
@@ -42,7 +40,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             var offset = new TimeSpan(_serverSettings.ServerData.IBS.TimeDifference);
 
             var startDate = request.StartDate ?? DateTime.MinValue;
-            var endDate = request.EndDate.HasValue ? request.EndDate.Value.AddDays(1) : DateTime.MaxValue;// Add one day to include the current day since it ends at midnight
+            var endDate = request.EndDate.HasValue 
+                ? request.EndDate.Value.AddDays(1) 
+                : DateTime.MaxValue;// Add one day to include the current day since it ends at midnight
+
             var accountId = request.AccountId;
 
             switch (request.Target)
@@ -81,7 +82,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                            };
                 case DataType.Orders:
 
-                    var orders = (accountId.HasValue()) ? _reportDao.GetOrderReportsByAccountId((Guid)accountId) : _reportDao.GetOrderReports(startDate, endDate);
+                    var orders = accountId.HasValue
+                        ? _reportDao.GetOrderReportsByAccountId(accountId.Value) 
+                        : _reportDao.GetOrderReports(startDate, endDate);
 
                     var exportedOrderReports = new List<Dictionary<string, string>>();
 
@@ -191,58 +194,71 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 case DataType.Promotions:
                     var exportedPromotions = new List<Dictionary<string, string>>();
 
-                    var promotions = _promotionsDao.GetAll().Where(x => (!x.StartDate.HasValue || (x.StartDate.HasValue && x.StartDate.Value <= endDate))
-                       && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value >= startDate))).ToArray();
+                    var promotions = _promotionsDao.GetAll()
+                        .Where(x => (!x.StartDate.HasValue || (x.StartDate.Value <= endDate)) && (!x.EndDate.HasValue || (x.EndDate.Value >= startDate)))
+                       .ToArray();
 
-                    for (int i = 0; i < promotions.Length; i++)
+                    foreach (var promotion in promotions)
                     {
-                        var promo = new Dictionary<string, string>();
-                        promo["Name"] = promotions[i].Name;
-                        promo["Description"] = promotions[i].Description;
-                        promo["StartDate"] = promotions[i].StartDate.HasValue ? promotions[i].StartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
-                        promo["StartTime"] = promotions[i].StartTime.HasValue ? promotions[i].StartTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
-                        promo["EndDate"] = promotions[i].EndDate.HasValue ? promotions[i].EndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
-                        promo["EndTime"] = promotions[i].EndTime.HasValue ? promotions[i].EndTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
-                        var days = (string[])JsonSerializer.DeserializeFromString(promotions[i].DaysOfWeek, typeof(string[]));
+                        var promo = new Dictionary<string, string>
+                        {
+                            ["Name"] = promotion.Name,
+                            ["Description"] = promotion.Description,
+                            ["StartDate"] = promotion.StartDate.HasValue
+                                ? promotion.StartDate.Value.ToString("d", CultureInfo.InvariantCulture)
+                                : null,
+                            ["StartTime"] = promotion.StartTime.HasValue
+                                ? promotion.StartTime.Value.ToString("t", CultureInfo.InvariantCulture)
+                                : null,
+                            ["EndDate"] = promotion.EndDate.HasValue
+                                ? promotion.EndDate.Value.ToString("d", CultureInfo.InvariantCulture)
+                                : null,
+                            ["EndTime"] = promotion.EndTime.HasValue
+                                ? promotion.EndTime.Value.ToString("t", CultureInfo.InvariantCulture)
+                                : null
+                        };
+
+                        var days = promotion.DaysOfWeek.FromJsonSafe<string[]>();
                         var daysOfWeek = Enum.GetNames(typeof(System.DayOfWeek));
 
                         var daysText = new StringBuilder();
 
-                        for (int i1 = 0; i1 < daysOfWeek.Length; i1++)
+                        for (var i1 = 0; i1 < daysOfWeek.Length; i1++)
                         {
-                            if (days.Contains(daysOfWeek[i1]))
+                            if (!days.Contains(daysOfWeek[i1]))
                             {
-                                if (daysText.Length > 0)
-                                {
-                                    daysText.Append(", ");
-                                }
-
-                                daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
+                                continue;
                             }
+                            if (daysText.Length > 0)
+                            {
+                                daysText.Append(", ");
+                            }
+
+                            daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
                         }
 
                         promo["Days"] = daysText.ToString();
-                        promo["Applies To"] = ((promotions[i].AppliesToCurrentBooking ? "Current booking" : "") + (promotions[i].AppliesToFutureBooking ? " Future booking" : "")).TrimStart();
-                        promo["Discount"] = promotions[i].DiscountValue.ToString() + (promotions[i].DiscountType == Common.Enumeration.PromoDiscountType.Cash ? " $" : " %");
+                        promo["Applies To"] = ((promotion.AppliesToCurrentBooking ? "Current booking" : "") + (promotion.AppliesToFutureBooking ? " Future booking" : "")).TrimStart();
+                        promo["Discount"] = promotion.DiscountValue.ToString() + (promotion.DiscountType == Common.Enumeration.PromoDiscountType.Cash ? " $" : " %");
 
-                        if (promotions[i].TriggerSettings.Type != Common.Enumeration.PromotionTriggerTypes.CustomerSupport)
+                        if (promotion.TriggerSettings.Type != Common.Enumeration.PromotionTriggerTypes.CustomerSupport)
                         {
-                            promo["Maximum Usage Per User"] = promotions[i].MaxUsagePerUser.ToString();
-                            promo["Maximum Usage"] = promotions[i].MaxUsage.ToString();
+                            promo["Maximum Usage Per User"] = promotion.MaxUsagePerUser.ToString();
+                            promo["Maximum Usage"] = promotion.MaxUsage.ToString();
                         }
 
-                        promo["Promo Code"] = promotions[i].Code;
-                        promo["Published Start Date"] = promotions[i].PublishedStartDate.HasValue ? promotions[i].PublishedStartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
-                        promo["Published End Date"] = promotions[i].PublishedEndDate.HasValue ? promotions[i].PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+                        promo["Promo Code"] = promotion.Code;
+                        promo["Published Start Date"] = promotion.PublishedStartDate.HasValue ? promotion.PublishedStartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+                        promo["Published End Date"] = promotion.PublishedEndDate.HasValue ? promotion.PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
 
-                        switch (promotions[i].TriggerSettings.Type)
+                        switch (promotion.TriggerSettings.Type)
                         {
                             case Common.Enumeration.PromotionTriggerTypes.AccountCreated:
                                 promo["Trigger"] = "Account created";
                                 break;
 
                             case Common.Enumeration.PromotionTriggerTypes.AmountSpent:
-                                promo["Trigger"] = "Amount spent " + promotions[i].TriggerSettings.AmountSpent.ToString(); ;
+                                promo["Trigger"] = "Amount spent " + promotion.TriggerSettings.AmountSpent.ToString(); ;
                                 break;
 
                             case Common.Enumeration.PromotionTriggerTypes.CustomerSupport:
@@ -250,7 +266,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 break;
 
                             case Common.Enumeration.PromotionTriggerTypes.RideCount:
-                                promo["Trigger"] = "Ride count " + promotions[i].TriggerSettings.RideCount.ToString();
+                                promo["Trigger"] = "Ride count " + promotion.TriggerSettings.RideCount.ToString();
                                 break;
                         }
 
@@ -260,7 +276,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     return exportedPromotions;
             }
 
-            return new HttpResult(HttpStatusCode.NotFound);
+            throw new HttpException((int)HttpStatusCode.NotFound, "Not found");
         }
     }
 }

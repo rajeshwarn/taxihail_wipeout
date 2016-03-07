@@ -11,13 +11,12 @@ using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.Admin
 {
-    public class ExclusionsService : Service
+    public class ExclusionsService : BaseApiService
     {
         private readonly ICacheClient _cacheClient;
         private readonly ICommandBus _commandBus;
@@ -30,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             _cacheClient = cacheClient;
         }
 
-        public object Get(ExclusionsRequest request)
+        public ExclusionsRequestResponse Get()
         {
             var excludedVehicleTypeId = _serverSettings.ServerData.IBS.ExcludedVehicleTypeId.SelectOrDefault(s => s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
@@ -46,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             };
         }
 
-        public object Post(ExclusionsRequest request)
+        public void Post(ExclusionsRequest request)
         {
             var settings = new Dictionary<string, string>
             {
@@ -66,9 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
             var command = new AddOrUpdateAppSettings {AppSettings = settings, CompanyId = AppConstants.CompanyId};
             _commandBus.Send(command);
-            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
-
-            return null;
+            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CACHE_KEY));
         }
     }
 }

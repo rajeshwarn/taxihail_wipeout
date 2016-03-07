@@ -747,6 +747,7 @@
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
     <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
+    <Compile Include="Controllers\Api\Admin\ExclusionsController.cs" />
     <Compile Include="Controllers\Api\Admin\IbsChargeAccountController.cs" />
     <Compile Include="Controllers\Api\Admin\NotificationAdministrationController.cs" />
     <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
