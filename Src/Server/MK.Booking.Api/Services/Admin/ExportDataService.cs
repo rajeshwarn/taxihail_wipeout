@@ -12,7 +12,6 @@ using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using System.Text;
 using System.Web;
-using apcurium.MK.Booking.ReadModel;
 
 #endregion
 
@@ -41,242 +40,217 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
             var startDate = request.StartDate ?? DateTime.MinValue;
             var endDate = request.EndDate.HasValue 
-                ? request.EndDate.Value.AddDays(1) 
-                : DateTime.MaxValue;// Add one day to include the current day since it ends at midnight
+                ? request.EndDate.Value.AddDays(1) // Add one day to include the current day since it ends at midnight
+                : DateTime.MaxValue;
 
             var accountId = request.AccountId;
 
             switch (request.Target)
             {
                 case DataType.Accounts:
-                    var accounts = _accountDao.GetAll().Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).ToList();
-                    var startUpLogs = _appStartUpLogDao.GetAll().ToList();
-
-                    // We join each accound details with their "last launch details"
-                    return from a in accounts
-                           join s in startUpLogs on a.Id equals s.UserId into matchingLog
-                           from m in matchingLog.DefaultIfEmpty()
-                           select new
-                           {
-                               a.Id,
-                               a.IBSAccountId,
-                               CreateDate = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("d", CultureInfo.InvariantCulture),
-                               CreateTime = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("t", CultureInfo.InvariantCulture),
-                               a.Settings.Name,
-                               a.Settings.Phone,
-                               a.Email,
-                               a.DefaultCreditCard,
-                               a.DefaultTipPercent,
-                               a.Language,
-                               a.TwitterId,
-                               a.FacebookId,
-                               a.HasAdminAccess,
-                               a.IsConfirmed,
-                               a.DisabledByAdmin,
-                               a.Settings.PayBack,
-                               LastLaunch = (m == null ? null : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, m.DateOccured).ToString(CultureInfo.InvariantCulture)),
-                               Platform = (m == null ? null : m.Platform),
-                               PlatformDetails = (m == null ? null : m.PlatformDetails),
-                               ApplicationVersion = (m == null ? null : m.ApplicationVersion),
-                               ServerVersion = (m == null ? null : m.ServerVersion)
-                           };
+                    return PrepareAccountData(startDate, endDate);
                 case DataType.Orders:
-
-                    var orders = accountId.HasValue
-                        ? _reportDao.GetOrderReportsByAccountId(accountId.Value) 
-                        : _reportDao.GetOrderReports(startDate, endDate);
-
-                    var exportedOrderReports = new List<Dictionary<string, string>>();
-
-                    orders.ForEach(orderReport =>
-                    {
-                        var orderReportEntry = new Dictionary<string, string>();
-
-                        orderReportEntry["Account.AccountId"] = orderReport.Account.AccountId.ToString();
-                        orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
-                        orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
-                        orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
-                        orderReportEntry["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString();
-                        orderReportEntry["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString();
-                        orderReportEntry["Account.PayBack "] = orderReport.Account.PayBack;
-
-                        orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
-                        orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;
-                        orderReportEntry["Order.Market"] = orderReport.Order.Market;
-                        orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
-                        orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
-                        orderReportEntry["Charge Account with Card on File Payment"] = orderReport.Order.IsChargeAccountPaymentWithCardOnFile.ToString();
-                        orderReportEntry["Order.IsPrepaid"] = orderReport.Order.IsPrepaid.ToString();
-                        orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.HasValue
-                       ? orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture)
-                       : string.Empty;
-                        orderReportEntry["Order.PickupTime"] = orderReport.Order.PickupDateTime.HasValue
-                       ? orderReport.Order.PickupDateTime.Value.ToString("t", CultureInfo.InvariantCulture)
-                       : string.Empty;
-                        orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.HasValue
-                       ? orderReport.Order.CreateDateTime.Value.Add(offset).ToString("d", CultureInfo.InvariantCulture)
-                       : string.Empty;
-                        orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.HasValue
-                       ? orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture)
-                       : string.Empty;
-                        orderReportEntry["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress;
-                        orderReportEntry["Order.DropOffAddress"] = orderReport.Order.DropOffAddress.DisplayAddress;
-                        orderReportEntry["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString();
-                        orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
-                        orderReportEntry["Order.OriginalEta"] = orderReport.Order.OriginalEta.ToString();
-                        orderReportEntry["Order.Error"] = orderReport.Order.Error;
-
-                        orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
-                        orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();
-                        orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
-
-                        orderReportEntry["Payment.Id"] = orderReport.Payment.PaymentId.ToString();
-                        orderReportEntry["Payment.DriverId"] = orderReport.Payment.DriverId;
-                        orderReportEntry["Payment.Medallion"] = orderReport.Payment.Medallion;
-                        orderReportEntry["Payment.Last4Digits"] = orderReport.Payment.Last4Digits.IsNullOrEmpty() ? string.Empty : string.Format("'{0}'", orderReport.Payment.Last4Digits);
-                        orderReportEntry["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString();
-                        orderReportEntry["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString();
-                        orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
-                        orderReportEntry["Payment.Type"] = orderReport.Payment.Type.ToString();
-                        orderReportEntry["Payment.Provider"] = orderReport.Payment.Provider.ToString();
-                        orderReportEntry["Payment.FirstPreAuthTransactionId"] = orderReport.Payment.FirstPreAuthTransactionId.ToSafeString();
-                        orderReportEntry["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString();
-                        orderReportEntry["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode;
-                        orderReportEntry["Payment.CardToken"] = orderReport.Payment.CardToken;
-                        orderReportEntry["Payment.PayPalPayerId"] = orderReport.Payment.PayPalPayerId;
-                        orderReportEntry["Payment.PayPalToken"] = orderReport.Payment.PayPalToken;
-                        orderReportEntry["Payment.MdtTip"] = orderReport.Payment.MdtTip.ToString();
-                        orderReportEntry["Payment.MdtToll"] = orderReport.Payment.MdtToll.ToString();
-                        orderReportEntry["Payment.MdtFare"] = orderReport.Payment.MdtFare.ToString();
-                        orderReportEntry["Payment.BookingFees"] = orderReport.Payment.BookingFees.ToString();
-                        orderReportEntry["Payment.CmtPairingToken"] = orderReport.Payment.PairingToken;
-                        orderReportEntry["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString();
-                        orderReportEntry["Payment.WasUnpaired"] = orderReport.Payment.WasUnpaired.ToString();
-                        orderReportEntry["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString();
-                        orderReportEntry["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString();
-                        orderReportEntry["Payment.IsRefunded"] = orderReport.Payment.IsRefunded.ToString();
-                        orderReportEntry["Payment.WasChargedNoShowFee"] = orderReport.Payment.WasChargedNoShowFee.ToString();
-                        orderReportEntry["Payment.WasChargedCancellationFee"] = orderReport.Payment.WasChargedCancellationFee.ToString();
-                        orderReportEntry["Payment.WasChargedBookingFee"] = orderReport.Payment.WasChargedBookingFee.ToString();
-                        orderReportEntry["Payment.Error"] = orderReport.Payment.Error;
-
-                        orderReportEntry["Promotion.Code"] = orderReport.Promotion.Code;
-                        orderReportEntry["Promotion.WasApplied"] = orderReport.Promotion.WasApplied.ToString();
-                        orderReportEntry["Promotion.WasRedeemed"] = orderReport.Promotion.WasRedeemed.ToString();
-                        orderReportEntry["Promotion.SavedAmount"] = orderReport.Promotion.SavedAmount.ToString();
-
-                        orderReportEntry["VehicleInfos.Number"] = orderReport.VehicleInfos.Number;
-                        orderReportEntry["VehicleInfos.Type"] = orderReport.VehicleInfos.Type;
-                        orderReportEntry["VehicleInfos.Make"] = orderReport.VehicleInfos.Make;
-                        orderReportEntry["VehicleInfos.Model"] = orderReport.VehicleInfos.Model;
-                        orderReportEntry["VehicleInfos.Color"] = orderReport.VehicleInfos.Color;
-                        orderReportEntry["VehicleInfos.Registration"] = orderReport.VehicleInfos.Registration;
-                        orderReportEntry["VehicleInfos.DriverId"] = orderReport.VehicleInfos.DriverId;
-                        orderReportEntry["VehicleInfos.DriverFirstName"] = orderReport.VehicleInfos.DriverFirstName;
-                        orderReportEntry["VehicleInfos.DriverLastName"] = orderReport.VehicleInfos.DriverLastName;
-
-                        orderReportEntry["Client.OperatingSystem"] = orderReport.Client.OperatingSystem;
-                        orderReportEntry["Client.UserAgent"] = orderReport.Client.UserAgent;
-                        orderReportEntry["Client.Version"] = orderReport.Client.Version;
-
-                        var rating =  orderReport.Rating.FromJsonSafe<Dictionary<string, string>>() ?? new Dictionary<string, string>();
-
-                        foreach (var rate in rating)
-                        {
-                            orderReportEntry["Rating." + rate.Key] = rate.Value;
-                        }
-
-                        exportedOrderReports.Add(orderReportEntry);
-                    });
-
-                    return exportedOrderReports;
-
+                    return PrepareOrdersData(accountId, startDate, endDate, offset);
                 case DataType.Promotions:
-                    var exportedPromotions = new List<Dictionary<string, string>>();
+                    return PreparePromotionsData(endDate, startDate);
+                default:
+                    throw new HttpException((int)HttpStatusCode.NotFound, "Not found");
+            }
+        }
 
-                    var promotions = _promotionsDao.GetAll()
-                        .Where(x => (!x.StartDate.HasValue || (x.StartDate.Value <= endDate)) && (!x.EndDate.HasValue || (x.EndDate.Value >= startDate)))
-                       .ToArray();
+        private object PreparePromotionsData(DateTime endDate, DateTime startDate)
+        {
+            var exportedPromotions = new List<Dictionary<string, string>>();
 
-                    foreach (var promotion in promotions)
+            var promotions = _promotionsDao.GetAll().Where(x => (!x.StartDate.HasValue || (x.StartDate.Value <= endDate)) && (!x.EndDate.HasValue || (x.EndDate.Value >= startDate))).ToArray();
+
+            foreach (var promotion in promotions)
+            {
+                var promo = new Dictionary<string, string>
+                {
+                    ["Name"] = promotion.Name, ["Description"] = promotion.Description, ["StartDate"] = promotion.StartDate.HasValue ? promotion.StartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null, ["StartTime"] = promotion.StartTime.HasValue ? promotion.StartTime.Value.ToString("t", CultureInfo.InvariantCulture) : null, ["EndDate"] = promotion.EndDate.HasValue ? promotion.EndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null, ["EndTime"] = promotion.EndTime.HasValue ? promotion.EndTime.Value.ToString("t", CultureInfo.InvariantCulture) : null
+                };
+
+                var days = promotion.DaysOfWeek.FromJsonSafe<string[]>();
+                var daysOfWeek = Enum.GetNames(typeof (DayOfWeek));
+
+                var daysText = new StringBuilder();
+
+                for (var i1 = 0; i1 < daysOfWeek.Length; i1++)
+                {
+                    if (!days.Contains(daysOfWeek[i1]))
                     {
-                        var promo = new Dictionary<string, string>
-                        {
-                            ["Name"] = promotion.Name,
-                            ["Description"] = promotion.Description,
-                            ["StartDate"] = promotion.StartDate.HasValue
-                                ? promotion.StartDate.Value.ToString("d", CultureInfo.InvariantCulture)
-                                : null,
-                            ["StartTime"] = promotion.StartTime.HasValue
-                                ? promotion.StartTime.Value.ToString("t", CultureInfo.InvariantCulture)
-                                : null,
-                            ["EndDate"] = promotion.EndDate.HasValue
-                                ? promotion.EndDate.Value.ToString("d", CultureInfo.InvariantCulture)
-                                : null,
-                            ["EndTime"] = promotion.EndTime.HasValue
-                                ? promotion.EndTime.Value.ToString("t", CultureInfo.InvariantCulture)
-                                : null
-                        };
-
-                        var days = promotion.DaysOfWeek.FromJsonSafe<string[]>();
-                        var daysOfWeek = Enum.GetNames(typeof(System.DayOfWeek));
-
-                        var daysText = new StringBuilder();
-
-                        for (var i1 = 0; i1 < daysOfWeek.Length; i1++)
-                        {
-                            if (!days.Contains(daysOfWeek[i1]))
-                            {
-                                continue;
-                            }
-                            if (daysText.Length > 0)
-                            {
-                                daysText.Append(", ");
-                            }
-
-                            daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
-                        }
-
-                        promo["Days"] = daysText.ToString();
-                        promo["Applies To"] = ((promotion.AppliesToCurrentBooking ? "Current booking" : "") + (promotion.AppliesToFutureBooking ? " Future booking" : "")).TrimStart();
-                        promo["Discount"] = promotion.DiscountValue.ToString() + (promotion.DiscountType == Common.Enumeration.PromoDiscountType.Cash ? " $" : " %");
-
-                        if (promotion.TriggerSettings.Type != Common.Enumeration.PromotionTriggerTypes.CustomerSupport)
-                        {
-                            promo["Maximum Usage Per User"] = promotion.MaxUsagePerUser.ToString();
-                            promo["Maximum Usage"] = promotion.MaxUsage.ToString();
-                        }
-
-                        promo["Promo Code"] = promotion.Code;
-                        promo["Published Start Date"] = promotion.PublishedStartDate.HasValue ? promotion.PublishedStartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
-                        promo["Published End Date"] = promotion.PublishedEndDate.HasValue ? promotion.PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
-
-                        switch (promotion.TriggerSettings.Type)
-                        {
-                            case Common.Enumeration.PromotionTriggerTypes.AccountCreated:
-                                promo["Trigger"] = "Account created";
-                                break;
-
-                            case Common.Enumeration.PromotionTriggerTypes.AmountSpent:
-                                promo["Trigger"] = "Amount spent " + promotion.TriggerSettings.AmountSpent.ToString(); ;
-                                break;
-
-                            case Common.Enumeration.PromotionTriggerTypes.CustomerSupport:
-                                promo["Trigger"] = "Customer support";
-                                break;
-
-                            case Common.Enumeration.PromotionTriggerTypes.RideCount:
-                                promo["Trigger"] = "Ride count " + promotion.TriggerSettings.RideCount.ToString();
-                                break;
-                        }
-
-                        exportedPromotions.Add(promo);
+                        continue;
+                    }
+                    if (daysText.Length > 0)
+                    {
+                        daysText.Append(", ");
                     }
 
-                    return exportedPromotions;
+                    daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
+                }
+
+                promo["Days"] = daysText.ToString();
+                promo["Applies To"] = ((promotion.AppliesToCurrentBooking ? "Current booking" : "") + (promotion.AppliesToFutureBooking ? " Future booking" : "")).TrimStart();
+                promo["Discount"] = promotion.DiscountValue + (promotion.DiscountType == Common.Enumeration.PromoDiscountType.Cash ? " $" : " %");
+
+                if (promotion.TriggerSettings.Type != Common.Enumeration.PromotionTriggerTypes.CustomerSupport)
+                {
+                    promo["Maximum Usage Per User"] = promotion.MaxUsagePerUser.ToString();
+                    promo["Maximum Usage"] = promotion.MaxUsage.ToString();
+                }
+
+                promo["Promo Code"] = promotion.Code;
+                promo["Published Start Date"] = promotion.PublishedStartDate.HasValue ? promotion.PublishedStartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+                promo["Published End Date"] = promotion.PublishedEndDate.HasValue ? promotion.PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+
+                switch (promotion.TriggerSettings.Type)
+                {
+                    case Common.Enumeration.PromotionTriggerTypes.AccountCreated:
+                        promo["Trigger"] = "Account created";
+                        break;
+
+                    case Common.Enumeration.PromotionTriggerTypes.AmountSpent:
+                        promo["Trigger"] = "Amount spent " + promotion.TriggerSettings.AmountSpent;
+                        break;
+
+                    case Common.Enumeration.PromotionTriggerTypes.CustomerSupport:
+                        promo["Trigger"] = "Customer support";
+                        break;
+
+                    case Common.Enumeration.PromotionTriggerTypes.RideCount:
+                        promo["Trigger"] = "Ride count " + promotion.TriggerSettings.RideCount;
+                        break;
+                }
+
+                exportedPromotions.Add(promo);
             }
 
-            throw new HttpException((int)HttpStatusCode.NotFound, "Not found");
+            return exportedPromotions;
+        }
+
+        private object PrepareOrdersData(Guid? accountId, DateTime startDate, DateTime endDate, TimeSpan offset)
+        {
+            var orders = accountId.HasValue ? _reportDao.GetOrderReportsByAccountId(accountId.Value) : _reportDao.GetOrderReports(startDate, endDate);
+
+            var exportedOrderReports = new List<Dictionary<string, string>>();
+
+            orders.ForEach(orderReport =>
+            {
+                var orderReportEntry = new Dictionary<string, string>
+                {
+                    ["Account.AccountId"] = orderReport.Account.AccountId.ToString(),
+                    ["Account.Name"] = orderReport.Account.Name.Trim(),
+                    ["Account.Phone"] = orderReport.Account.Phone.Trim(),
+                    ["Account.Email"] = orderReport.Account.Email.Trim(),
+                    ["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString(),
+                    ["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString(),
+                    ["Account.PayBack "] = orderReport.Account.PayBack,
+                    ["Order.CompanyName"] = orderReport.Order.CompanyName,
+                    ["Order.CompanyKey"] = orderReport.Order.CompanyKey,
+                    ["Order.Market"] = orderReport.Order.Market,
+                    ["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString(),
+                    ["Order.ChargeType"] = orderReport.Order.ChargeType,
+                    ["Charge Account with Card on File Payment"] =
+                        orderReport.Order.IsChargeAccountPaymentWithCardOnFile.ToString(),
+                    ["Order.IsPrepaid"] = orderReport.Order.IsPrepaid.ToString(),
+                    ["Order.PickupDate"] = orderReport.Order.PickupDateTime.HasValue
+                            ? orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture)
+                            : string.Empty,
+                    ["Order.PickupTime"] = orderReport.Order.PickupDateTime.HasValue
+                            ? orderReport.Order.PickupDateTime.Value.ToString("t", CultureInfo.InvariantCulture)
+                            : string.Empty,
+                    ["Order.CreateDate"] = orderReport.Order.CreateDateTime.HasValue
+                            ? orderReport.Order.CreateDateTime.Value.Add(offset)
+                                .ToString("d", CultureInfo.InvariantCulture)
+                            : string.Empty,
+                    ["Order.CreateTime"] = orderReport.Order.CreateDateTime.HasValue
+                            ? orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture)
+                            : string.Empty,
+                    ["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress,
+                    ["Order.DropOffAddress"] = orderReport.Order.DropOffAddress.DisplayAddress,
+                    ["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString(),
+                    ["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString(),
+                    ["Order.OriginalEta"] = orderReport.Order.OriginalEta.ToString(),
+                    ["Order.Error"] = orderReport.Order.Error,
+                    ["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString(),
+                    ["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString(),
+                    ["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString(),
+                    ["Payment.Id"] = orderReport.Payment.PaymentId.ToString(),
+                    ["Payment.DriverId"] = orderReport.Payment.DriverId,
+                    ["Payment.Medallion"] = orderReport.Payment.Medallion,
+                    ["Payment.Last4Digits"] = orderReport.Payment.Last4Digits.IsNullOrEmpty()
+                            ? string.Empty
+                            : string.Format("'{0}'", orderReport.Payment.Last4Digits),
+                    ["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString(),
+                    ["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString(),
+                    ["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString(),
+                    ["Payment.Type"] = orderReport.Payment.Type.ToString(),
+                    ["Payment.Provider"] = orderReport.Payment.Provider.ToString(),
+                    ["Payment.FirstPreAuthTransactionId"] = orderReport.Payment.FirstPreAuthTransactionId.ToSafeString(),
+                    ["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString(),
+                    ["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode,
+                    ["Payment.CardToken"] = orderReport.Payment.CardToken,
+                    ["Payment.PayPalPayerId"] = orderReport.Payment.PayPalPayerId,
+                    ["Payment.PayPalToken"] = orderReport.Payment.PayPalToken,
+                    ["Payment.MdtTip"] = orderReport.Payment.MdtTip.ToString(),
+                    ["Payment.MdtToll"] = orderReport.Payment.MdtToll.ToString(),
+                    ["Payment.MdtFare"] = orderReport.Payment.MdtFare.ToString(),
+                    ["Payment.BookingFees"] = orderReport.Payment.BookingFees.ToString(),
+                    ["Payment.CmtPairingToken"] = orderReport.Payment.PairingToken,
+                    ["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString(),
+                    ["Payment.WasUnpaired"] = orderReport.Payment.WasUnpaired.ToString(),
+                    ["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString(),
+                    ["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString(),
+                    ["Payment.IsRefunded"] = orderReport.Payment.IsRefunded.ToString(),
+                    ["Payment.WasChargedNoShowFee"] = orderReport.Payment.WasChargedNoShowFee.ToString(),
+                    ["Payment.WasChargedCancellationFee"] = orderReport.Payment.WasChargedCancellationFee.ToString(),
+                    ["Payment.WasChargedBookingFee"] = orderReport.Payment.WasChargedBookingFee.ToString(),
+                    ["Payment.Error"] = orderReport.Payment.Error,
+                    ["Promotion.Code"] = orderReport.Promotion.Code,
+                    ["Promotion.WasApplied"] = orderReport.Promotion.WasApplied.ToString(),
+                    ["Promotion.WasRedeemed"] = orderReport.Promotion.WasRedeemed.ToString(),
+                    ["Promotion.SavedAmount"] = orderReport.Promotion.SavedAmount.ToString(),
+                    ["VehicleInfos.Number"] = orderReport.VehicleInfos.Number,
+                    ["VehicleInfos.Type"] = orderReport.VehicleInfos.Type,
+                    ["VehicleInfos.Make"] = orderReport.VehicleInfos.Make,
+                    ["VehicleInfos.Model"] = orderReport.VehicleInfos.Model,
+                    ["VehicleInfos.Color"] = orderReport.VehicleInfos.Color,
+                    ["VehicleInfos.Registration"] = orderReport.VehicleInfos.Registration,
+                    ["VehicleInfos.DriverId"] = orderReport.VehicleInfos.DriverId,
+                    ["VehicleInfos.DriverFirstName"] = orderReport.VehicleInfos.DriverFirstName,
+                    ["VehicleInfos.DriverLastName"] = orderReport.VehicleInfos.DriverLastName,
+                    ["Client.OperatingSystem"] = orderReport.Client.OperatingSystem,
+                    ["Client.UserAgent"] = orderReport.Client.UserAgent,
+                    ["Client.Version"] = orderReport.Client.Version
+                };
+
+                var rating = orderReport.Rating.FromJsonSafe<Dictionary<string, string>>() ?? new Dictionary<string, string>();
+
+                foreach (var rate in rating)
+                {
+                    orderReportEntry["Rating." + rate.Key] = rate.Value;
+                }
+
+                exportedOrderReports.Add(orderReportEntry);
+            });
+
+            return exportedOrderReports;
+        }
+
+        private object PrepareAccountData(DateTime startDate, DateTime endDate)
+        {
+            var accounts = _accountDao.GetAll().Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).ToList();
+            var startUpLogs = _appStartUpLogDao.GetAll().ToList();
+
+            // We join each account details with their "last launch details"
+            return from a in accounts
+                join s in startUpLogs on a.Id equals s.UserId into matchingLog
+                from m in matchingLog.DefaultIfEmpty()
+                select new
+                {
+                    a.Id, a.IBSAccountId, CreateDate = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("d", CultureInfo.InvariantCulture), CreateTime = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("t", CultureInfo.InvariantCulture), a.Settings.Name, a.Settings.Phone, a.Email, a.DefaultCreditCard, a.DefaultTipPercent, a.Language, a.TwitterId, a.FacebookId, a.HasAdminAccess, a.IsConfirmed, a.DisabledByAdmin, a.Settings.PayBack, LastLaunch = (m == null ? null : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, m.DateOccured).ToString(CultureInfo.InvariantCulture)), Platform = (m == null ? null : m.Platform), PlatformDetails = (m == null ? null : m.PlatformDetails), ApplicationVersion = (m == null ? null : m.ApplicationVersion), ServerVersion = (m == null ? null : m.ServerVersion)
+                };
         }
     }
 }
