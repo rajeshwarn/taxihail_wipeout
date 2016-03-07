@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Calculator;
@@ -9,7 +10,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Impl;
 using log4net;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Maps.Geo;
 using CustomerPortal.Contract.Response;
 
@@ -17,7 +17,7 @@ using CustomerPortal.Contract.Response;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ValidateOrderService : Service
+    public class ValidateOrderService : BaseApiService
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateOrderService));
 
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
         }
 
-        public object Post(ValidateOrderRequest request)
+        public async Task<OrderValidationResult> Post(ValidateOrderRequest request)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
@@ -53,17 +53,24 @@ namespace apcurium.MK.Booking.Api.Services
                 ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId, request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
                 : null;
 
-            CompanyMarketSettingsResponse marketSettings = null;
+            CompanyMarketSettingsResponse marketSettings;
 
             try
             {
                 // Find market
-                marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                marketSettings = await _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
             catch (Exception ex)
             {
                 Log.Info("Unable to fetch market");
                 Log.Error(ex);
+
+                return new OrderValidationResult()
+                {
+                    HasError = true,
+                    Message = "Unable to fetch market"
+                };
+
             }
 
             if (request.ForError)
@@ -74,9 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = marketSettings.EnableFutureBooking 
-                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
-                    : true;
+                var disableFutureBooking = !marketSettings.EnableFutureBooking || _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null;
 
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
 
@@ -97,9 +102,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var hasWarning = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = marketSettings.EnableFutureBooking 
-                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
-                    : true;
+                var disableFutureBooking = !marketSettings.EnableFutureBooking || _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null;
 
                 return new OrderValidationResult
                 {

@@ -4,31 +4,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using AutoMapper;
 using CMTServices;
+using CMTServices.Responses;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
-using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class VehicleService : Service
+    public class VehicleService : BaseApiService
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IVehicleTypeDao _dao;
@@ -58,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public AvailableVehiclesResponse Post(AvailableVehicles request)
+        public async Task<AvailableVehiclesResponse> Post(AvailableVehicles request)
         {
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             var logoName = vehicleType != null ? vehicleType.LogoName : null;
@@ -68,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+                market = await _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
             }
             catch
             {
@@ -172,7 +170,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-			var isAuthenticated = this.GetSession().IsAuthenticated;
+			var isAuthenticated = Session.IsAuthenticated();
 
             var availableVehicles = new List<AvailableVehicle>();
 
@@ -200,17 +198,17 @@ namespace apcurium.MK.Booking.Api.Services
             return new AvailableVehiclesResponse(availableVehicles);
         }
 
-        public object Get(VehicleTypeRequest request)
+        public object Get(Guid id)
         {
-            if (request.Id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 return _dao.GetAll();
             }
 
-            var vehicleType = _dao.FindById(request.Id);
+            var vehicleType = _dao.FindById(id);
             if (vehicleType == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
             
             return vehicleType;
@@ -259,7 +257,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindById(request.Id);
             if (existing == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
 
             var command = new AddUpdateVehicleType
@@ -297,12 +295,12 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public object Delete(VehicleTypeRequest request)
+        public void DeleteVehicleType(Guid id)
         {
-            var existing = _dao.FindById(request.Id);
+            var existing = _dao.FindById(id);
             if (existing == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
 
             var command = new DeleteVehicleType
@@ -315,14 +313,12 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (_serverSettings.ServerData.Network.Enabled)
             {
-                _taxiHailNetworkServiceClient.DeleteMarketVehicleMapping(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Id)
+                _taxiHailNetworkServiceClient.DeleteMarketVehicleMapping(_serverSettings.ServerData.TaxiHail.ApplicationKey, id)
                     .HandleErrors();
             }
-            
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Get(UnassignedNetworkVehicleTypeRequest request)
+        public async Task<object[]> GetUnassignedNetworkVehicleType(int? networkVehicleId)
         {
             try
             {
@@ -334,12 +330,12 @@ namespace apcurium.MK.Booking.Api.Services
                     .ToArray();
 
                 //We remove from consideration the current vehicle type id.
-                if (request.NetworkVehicleId.HasValue)
+                if (networkVehicleId.HasValue)
                 {
-                    allAssigned = allAssigned.Where(x => x != request.NetworkVehicleId.Value).ToArray();
+                    allAssigned = allAssigned.Where(x => x != networkVehicleId.Value).ToArray();
                 }
 
-                var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+                var networkVehicleType = await _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
                 //We filter out every market vehicle type that are currently in use.
                 return networkVehicleType
@@ -347,8 +343,8 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => new
                     {
                         Id = x.ReferenceDataVehicleId,
-                        Name = x.Name,
-                        MaxNumberPassengers = x.MaxNumberPassengers
+                        x.Name,
+                        x.MaxNumberPassengers
                     })
                     .ToArray();
             }
@@ -360,52 +356,54 @@ namespace apcurium.MK.Booking.Api.Services
             }   
         }
 
-        public object Get(UnassignedReferenceDataVehiclesRequest request)
+        public object GetUnassignedReferenceDataVehicles(int? vehicleBeingEdited)
         {
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            var referenceData = _referenceDataService.Get(new ReferenceDataRequest());
             var allAssigned = _dao.GetAll().Select(x => x.ReferenceDataVehicleId).ToList();
-            if (request.VehicleBeingEdited.HasValue)
+            if (vehicleBeingEdited.HasValue)
             {
-                allAssigned = allAssigned.Where(x => x != request.VehicleBeingEdited.Value).ToList();
+                allAssigned = allAssigned.Where(x => x != vehicleBeingEdited.Value).ToList();
             }
 
-            return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
+            return referenceData.VehiclesList
+                .Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display })
+                .ToArray();
         }
 
-	    public object Get(TaxiLocationRequest request)
+	    public async Task<object> Get(TaxiLocationRequest request)
 	    {
 			var order = _orderDao.FindById(request.OrderId);
 		    if (order == null)
 		    {
-				return new HttpResult(HttpStatusCode.NotFound, "No order found.");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No order found.");
 		    }
 
-			var market = GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+			var market = await GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
 			var geoService = GetAvailableVehiclesServiceClient(market) as CmtGeoServiceClient;
 
 		    if (geoService == null)
 		    {
-				return new HttpResult(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
+				throw new HttpException((int)HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
 		    }
 
 		    var taxiLocation = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude, request.Medallion);
 
 			if (taxiLocation == null)
 		    {
-				return new HttpResult(HttpStatusCode.NotFound, "No vehicle found.");
+				throw new HttpException((int)HttpStatusCode.NotFound, "No vehicle found.");
 		    }
 
 		    return taxiLocation;
 
 	    }
 
-	    private string GetCompanyMarket(double latitude, double longitude)
+	    private async Task<string> GetCompanyMarket(double latitude, double longitude)
 	    {
 		    var market = string.Empty;
 		    try
 		    {
-				market = _taxiHailNetworkServiceClient.GetCompanyMarket(latitude, longitude);
+				market = await _taxiHailNetworkServiceClient.GetCompanyMarket(latitude, longitude);
 		    }
 		    catch
 		    {
@@ -415,25 +413,25 @@ namespace apcurium.MK.Booking.Api.Services
 		    return market;
 	    }
 
-	    public object Post(EtaForPickupRequest request)
+	    public async Task<EtaForPickupResponse> Post(EtaForPickupRequest request)
         {
             if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
             {
-                return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
             }
 
-		    var market = GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
+		    var market = await GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
 
             if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode != LocalAvailableVehiclesModes.Geo)
             {
                 // Local market validation
-                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
             }
 
             if (market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode != ExternalAvailableVehiclesModes.Geo)
             {
                 // External market validation
-                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless 'External Available Mode' is set to Geo");
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Api cannot be used unless 'External Available Mode' is set to Geo");
             }
             
             var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient(market);
