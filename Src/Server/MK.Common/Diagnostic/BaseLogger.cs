@@ -224,7 +224,7 @@ namespace apcurium.MK.Common.Diagnostic
 
                     var fileIO = new FileInfo(GetLogFileName());
 
-                    if (fileIO.Length + messageWithUserName.Length > LogFileMaximumSize)
+                    if (fileIO.Exists && fileIO.Length + messageWithUserName.Length > LogFileMaximumSize)
                     {
 #if DEBUG
                         Console.WriteLine("**********************  Log is too long, removing older entries.");
