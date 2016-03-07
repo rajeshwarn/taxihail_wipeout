@@ -22,7 +22,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/admin/accountscharge")]
+    [RoutePrefix("api/v2/admin/accountscharge")]
     public class AccountsChargeController : BaseApiController
     {
         private readonly AccountsChargeService _service;
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route]
+        [HttpGet]
         public IHttpActionResult GetAccountCharge()
         {
             var result = _service.Get(new AccountChargeRequest());
@@ -60,7 +60,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route]
+        [HttpPost]
         public IHttpActionResult CreateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = _service.Post(request);
@@ -68,7 +68,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Route]
+        [HttpPut]
         public IHttpActionResult UpdateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = _service.Put(request);

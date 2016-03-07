@@ -17,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("account/addresses"), Auth]
+    [RoutePrefix("api/v2/account/addresses"), Auth]
     public class AddressController : BaseApiController
     {
         public AddressesService AddressesService { get; }
@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             SaveAddressService = new SaveAddressService(commandBus);
         }
 
-        [HttpGet, Route]
+        [HttpGet]
         public IHttpActionResult GetAddresses()
         {
             return GenerateActionResult(AddressesService.Get());

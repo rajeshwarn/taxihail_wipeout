@@ -8,6 +8,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
+    [RoutePrefix("api/v2")]
     public class PrivacyPolicyController : BaseApiController
     {
         public PrivacyPolicyService PrivacyPolicyService { get; }

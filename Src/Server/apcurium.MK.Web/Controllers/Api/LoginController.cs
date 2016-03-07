@@ -19,7 +19,7 @@ using MK.Common.DummyServiceStack;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("login"), NoCache]
+    [RoutePrefix("api/v2/login"), NoCache]
     public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();

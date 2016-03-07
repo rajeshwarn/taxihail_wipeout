@@ -9,7 +9,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [NoCache]
+    [NoCache, RoutePrefix("api/v2/account")]
     public class CurrentAccountController : BaseApiController
     {
         private readonly CurrentAccountService _currentAccountService;
@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             PrepareApiServices(_currentAccountService);
         }
 
-        [HttpGet, Auth, Route("account")]
+        [HttpGet, Auth]
         public IHttpActionResult GetCurrentAccount()
         {
             var result = _currentAccountService.Get(new CurrentAccount());
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("account/phone/{email}")]
+        [HttpGet, Route("phone/{email}")]
         public IHttpActionResult GetAccountPhone(string email)
         {
             var result = _currentAccountService.Get(new CurrentAccountPhoneRequest() {Email = email});

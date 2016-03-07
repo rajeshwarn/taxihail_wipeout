@@ -10,7 +10,7 @@ using Infrastructure.Messaging;
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
 
-    [RoutePrefix("api/admin/tariffs")]
+    [RoutePrefix("api/v2/admin/tariffs")]
     public class TariffController : BaseApiController
     {
         public TariffsService TariffsService { get; }

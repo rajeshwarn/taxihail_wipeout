@@ -6,7 +6,7 @@ using CustomerPortal.Client;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("roaming")]
+    [RoutePrefix("api/v2/roaming")]
     public class NetworkRoamingController : BaseApiController
     {
         public NetworkRoamingService NetworkRoamingService { get; }

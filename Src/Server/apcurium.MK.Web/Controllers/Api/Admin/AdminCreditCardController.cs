@@ -11,7 +11,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("admin")]
+    [RoutePrefix("api/v2/admin")]
     public class AdminCreditCardController : BaseApiController
     {
         private readonly CreditCardService _creditCardService;

@@ -9,7 +9,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("ratingtypes")]
+    [RoutePrefix("api/v2/ratingtypes")]
     public class RatingTypesController : BaseApiController
     {
         public RatingTypesService RatingTypesService { get; set; }

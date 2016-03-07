@@ -10,6 +10,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
+    [RoutePrefix("api/v2")]
     public class PopularAddressController : BaseApiController
     {
         public ClientPopularAddressService ClientPopularAddressService { get; }

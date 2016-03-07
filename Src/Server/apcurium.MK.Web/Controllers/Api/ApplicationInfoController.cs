@@ -14,7 +14,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("app")]
+    [RoutePrefix("api/v2/app")]
     public class ApplicationInfoController : BaseApiController
     {
         private readonly ApplicationInfoService _applicationInfoService;

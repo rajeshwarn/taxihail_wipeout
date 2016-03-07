@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
+    [RoutePrefix("api/v2")]
     public class ReferenceDataController : BaseApiController
     {
         public ReferenceDataService ReferenceDataService { get; }

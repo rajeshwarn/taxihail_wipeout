@@ -14,7 +14,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("admin"), Auth(Role = RoleName.Admin)]
+    [RoutePrefix("api/v2/admin"), Auth(Role = RoleName.Admin)]
     public class NotificationAdministrationController : BaseApiController
     {
         public NotificationAdministrationService NotificationAdministrationService { get; }

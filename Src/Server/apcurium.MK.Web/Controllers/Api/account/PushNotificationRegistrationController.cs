@@ -6,7 +6,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("account/pushnotifications"), Auth]
+    [RoutePrefix("api/v2/account/pushnotifications"), Auth]
     public class PushNotificationRegistrationController : BaseApiController
     {
         public PushNotificationRegistrationService PushNotificationRegistrationService { get; }

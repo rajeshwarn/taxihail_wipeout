@@ -15,7 +15,7 @@ using Microsoft.Practices.Unity;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("account/manualridelinq")]
+    [RoutePrefix("api/v2/account/manualridelinq")]
     public class ManualRideLinqController : BaseApiController
     {
         private readonly ManualRidelinqOrderService _manualRidelinqOrderService;

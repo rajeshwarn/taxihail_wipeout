@@ -7,7 +7,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/searchlocation")]
+    [RoutePrefix("api/v2/searchlocation")]
     public class SearchLocationController : BaseApiController
     {
         public SearchLocationsService SearchLocationsService { get; }

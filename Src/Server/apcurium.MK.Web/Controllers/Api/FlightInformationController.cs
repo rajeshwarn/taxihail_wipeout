@@ -7,6 +7,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
+    [RoutePrefix("api/v2/flightInfo")]
     public class FlightInformationController : BaseApiController
     {
         private readonly FlightInformationService _flightInformationService;
@@ -24,7 +25,6 @@ namespace apcurium.MK.Web.Controllers.Api
         }
 
         [HttpPost, Auth]
-        [Route("flightInfo")]
         public IHttpActionResult GetFlightInformation(FlightInformationRequest request)
         {
             var result = _flightInformationService.Post(request);

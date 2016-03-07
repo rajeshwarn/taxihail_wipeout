@@ -10,7 +10,7 @@ using CustomerPortal.Client;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [Route("api/status")]
+    [RoutePrefix("api/v2/status")]
     public class ServerStatusController : BaseApiController
     {
         public ServerStatusService ServerStatusService { get; }

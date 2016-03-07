@@ -12,7 +12,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
-    [RoutePrefix("settings")]
+    [RoutePrefix("api/v2/settings")]
     public class ConfigurationController : BaseApiController
     {
         private readonly ConfigurationResetService _configurationResetService;

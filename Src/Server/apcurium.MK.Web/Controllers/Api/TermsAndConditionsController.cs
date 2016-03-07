@@ -12,7 +12,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/termsandconditions")]
+    [RoutePrefix("api/v2/termsandconditions")]
     public class TermsAndConditionsController : BaseApiController
     {
         public TermsAndConditionsService TermsAndConditionsService { get; }

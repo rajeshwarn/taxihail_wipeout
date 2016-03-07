@@ -17,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("account")]
+    [RoutePrefix("api/v2/account")]
     public class RoleManagementController : BaseApiController
     {
         private readonly GrantAdminRightService _grantAdminRightService;

@@ -8,6 +8,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
+    [RoutePrefix("api/v2")]
     public class LogMetricsController : BaseApiController
     {
         private readonly LogMetricsService _logMetricsService;

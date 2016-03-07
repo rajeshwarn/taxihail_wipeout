@@ -8,7 +8,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("ratings"), Auth]
+    [RoutePrefix("api/v2/ratings"), Auth]
     public class OrderRatingController : BaseApiController
     {
         public OrderRatingsService OrderRatingsService { get; }

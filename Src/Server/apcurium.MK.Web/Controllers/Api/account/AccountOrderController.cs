@@ -8,7 +8,7 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("account")]
+    [RoutePrefix("api/v2/account")]
     public class AccountOrderController : BaseApiController
     {
         private readonly AccountOrderListService _service;

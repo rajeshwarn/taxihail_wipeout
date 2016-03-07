@@ -9,7 +9,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("admin/rules")]
+    [RoutePrefix("api/v2/admin/rules")]
     public class RuleAdministrationController : BaseApiController
     {
         public RuleActivateService RuleActivateService { get; }

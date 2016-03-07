@@ -14,6 +14,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
+    [RoutePrefix("api/v2/vehicle")]
     public class DriverController : BaseApiController
     {
         private readonly DriverService _driverService;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
         }
 
         [HttpPost, Auth]
-        [Route("/vehicle/{vehicleNumber}/message")]
+        [Route("{vehicleNumber}/message")]
         public IHttpActionResult SendMessageToDriver(string vehicleNumber, SendMessageToDriverRequest request)
         {
             request.VehicleNumber = vehicleNumber;

@@ -8,7 +8,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("admin/ibschargeaccount")]
+    [RoutePrefix("api/v2/admin/ibschargeaccount")]
     public class IbsChargeAccountController : BaseApiController
     {
         private readonly IbsChargeAccountService _ibsChargeAccountService;
