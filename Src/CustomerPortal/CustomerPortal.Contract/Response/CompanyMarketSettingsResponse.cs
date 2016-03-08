@@ -29,5 +29,7 @@ namespace CustomerPortal.Contract.Response
         public bool EnableAppFareEstimates { get; set; }
 
         public Tariff MarketTariff { get; set; }
+
+        public bool ShowCallDriver { get; set; }
     }
 }
