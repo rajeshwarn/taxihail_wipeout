@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -26,16 +29,13 @@ using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Maps.Geo;
 using CustomerPortal.Contract.Response;
-using apcurium.MK.Common.Configuration.Impl;
+using PaymentMethod = apcurium.MK.Common.Configuration.Impl.PaymentMethod;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
-    public abstract class BaseCreateOrderService : Service
+    public abstract class BaseCreateOrderService : BaseApiService
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
-        protected CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
+        protected async Task<CreateOrder> BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var marketSettings = await _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_SettingsRequired);
             }
 
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
+            var referenceData = _referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
 
             request.PickupDate = pickupDate;
 
@@ -266,7 +266,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             ValidateProvider(request, referenceData, market.HasValue(), createReportOrder);
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
-            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+            var orderCommand = Mapper.Map<CreateOrder>(request);
             
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
@@ -321,8 +321,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var fare = FareHelper.GetFareFromEstimate(request.Estimate);
 
             orderCommand.AccountId = account.Id;
-            orderCommand.UserAgent = Request.UserAgent;
-            orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
+            orderCommand.UserAgent = HttpRequest.GetUserAgent();
+            orderCommand.ClientVersion = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault();
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
@@ -416,15 +416,15 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 AccountId = account.Id,
                 OrderId = request.Id,
                 EstimatedFare = request.Estimate.Price,
-                UserAgent = Request.UserAgent,
-                ClientVersion = Request.Headers.Get("ClientVersion"),
+                UserAgent = HttpRequest.GetUserAgent(),
+                ClientVersion = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault(),
                 TipIncentive = request.TipIncentive
             };
         }
 
         private void ValidateAppVersion(string clientLanguage, CreateReportOrder createReportOrder)
         {
-            var appVersionString = base.Request.Headers.Get("ClientVersion");
+            var appVersionString = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault();
             var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
 
             if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
@@ -693,7 +693,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private Guid? GetPendingOrder()
         {
-            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
+            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(Session.UserId);
 
             var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
             if (latestActiveOrder != null)
@@ -740,7 +740,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private void ThrowAndLogException(CreateReportOrder createReportOrder, ErrorCode errorCodeType, string errorMessage = null)
         {
-            var createOrderException = new HttpError(HttpStatusCode.BadRequest, errorCodeType.ToString(), errorMessage);
+            var createOrderException = new HttpException((int)HttpStatusCode.BadRequest, errorCodeType.ToString()/*, errorMessage*/);
 
             createReportOrder.Error = createOrderException.ToString();
             _commandBus.Send(createReportOrder);

@@ -3,8 +3,10 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
@@ -23,14 +25,12 @@ using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
+    [RoutePrefix("api/v2/account/orders")]
     public class CreateOrderService : BaseCreateOrderService
     {
         private readonly IAccountDao _accountDao;
@@ -80,24 +80,24 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
-        public object Post(CreateOrderRequest request)
+        public async Task<object> Post(CreateOrderRequest request)
         {
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
 
             // Needed when we get a webapp request.
             if (request.FromWebApp && request.Id == Guid.Empty)
             {
                 request.Id = Guid.NewGuid();
             }
-
+            
             var createReportOrder = CreateReportOrder(request, account);
 
-            var createOrderCommand = BuildCreateOrderCommand(request, account, createReportOrder);
+            var createOrderCommand = await BuildCreateOrderCommand(request, account, createReportOrder);
 
             // Initialize PayPal if user is using PayPal web
             var paypalWebPaymentResponse = PaymentHelper.InitializePayPalCheckoutIfNecessary(
                 createOrderCommand.AccountId, createOrderCommand.IsPrepaid, createOrderCommand.OrderId,
-                request, createOrderCommand.BookingFees, createOrderCommand.CompanyKey, createReportOrder, Request.AbsoluteUri);
+                request, createOrderCommand.BookingFees, createOrderCommand.CompanyKey, createReportOrder, HttpRequest.RequestUri.AbsoluteUri);
 
             _commandBus.Send(createOrderCommand);
 
@@ -157,11 +157,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             };
         }
 
-        public object Post(SwitchOrderToNextDispatchCompanyRequest request)
+        public async Task<object> Post(SwitchOrderToNextDispatchCompanyRequest request)
         {
             _logger.LogMessage("Switching order to another IBS : " + request.ToJson());
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
             var order = _orderDao.FindById(request.OrderId);
             var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
 
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 		        return orderStatusDetail;
 	        }
 
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+            var market = await _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
             var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
 
@@ -220,7 +220,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             };
 
             var fare = FareHelper.GetFareFromEstimate(new RideEstimate { Price = order.EstimatedFare });
-            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
+            var newReferenceData = _referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
 
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver
@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 _logger.LogMessage(networkErrorMessage);
                 _logger.LogError(ex);
 
-                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+                throw new HttpException((int)HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
             ValidateProvider(newOrderRequest, newReferenceData, market.HasValue(), null);
@@ -280,20 +280,18 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             };
         }
 
-        public object Post(IgnoreDispatchCompanySwitchRequest request)
+        public void Post(IgnoreDispatchCompanySwitchRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
             if (order == null)
             {
-                return new HttpResult(HttpStatusCode.NotFound);
+                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
             }
 
             _commandBus.Send(new IgnoreDispatchCompanySwitch
             {
                 OrderId = request.OrderId
             });
-
-            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

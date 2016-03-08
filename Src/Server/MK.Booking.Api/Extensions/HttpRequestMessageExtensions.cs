@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.ServiceModel.Channels;
 using System.Web;
+using System.Web.Http.Controllers;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -28,6 +29,14 @@ namespace apcurium.MK.Common.Extensions
             return null;
         }
 
+        public static string GetBaseUrl(this HttpRequestMessage request)
+        {
+            var uri = request.RequestUri;
+
+            return request.RequestUri.AbsoluteUri
+                .Replace(uri.AbsoluteUri, string.Empty)
+                .Replace(uri.Query, string.Empty);
+        }
 
         public static string GetUserAgent(this HttpRequestMessage request)
         {

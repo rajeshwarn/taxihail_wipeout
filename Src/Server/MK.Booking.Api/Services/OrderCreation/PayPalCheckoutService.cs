@@ -10,13 +10,10 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
-    public class PayPalCheckoutService : Service
+    public class PayPalCheckoutService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
@@ -43,12 +40,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _resources = new Resources.Resources(_serverSettings);
         }
 
-        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
+        public string Get(ExecuteWebPaymentAndProceedWithOrder request)
         {
             _logger.LogMessage("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
 
             var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
-            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+            var orderInfo = temporaryInfo.SerializedOrderCreationInfo.FromJsonSafe<TemporaryOrderCreationInfo>();
 
             if (request.Cancel || orderInfo == null)
             {
@@ -97,28 +94,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Build url used to redirect the web client to the booking status view
-            string baseUrl;
+            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue() 
+                ? _serverSettings.ServerData.BaseUrl 
+                : HttpRequest.GetBaseUrl();
 
-            if (_serverSettings.ServerData.BaseUrl.HasValue())
-            {
-                baseUrl = _serverSettings.ServerData.BaseUrl;
-            }
-            else
-            {
-                baseUrl = Request.AbsoluteUri
-                    .Replace(Request.PathInfo, string.Empty)
-                    .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
-                    .Replace(Request.QueryString.ToString(), string.Empty)
-                    .Replace("?", string.Empty);
-            }
-
-            var redirectUrl = string.Format("{0}#status/{1}", baseUrl, request.OrderId);
-
-            return new HttpResult
-            {
-                StatusCode = HttpStatusCode.Redirect,
-                Headers = { { HttpHeaders.Location, redirectUrl } }
-            };
+            return string.Format("{0}#status/{1}", baseUrl, request.OrderId);
         }
     }
 }

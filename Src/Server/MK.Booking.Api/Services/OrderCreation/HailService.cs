@@ -1,5 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Calculator;
@@ -11,13 +12,11 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -65,16 +64,16 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _resources = resources;
         }
 
-        public object Post(HailRequest request)
+        public async Task<object> Post(HailRequest request)
         {
             _logger.LogMessage(string.Format("Starting Hail. Request : {0}", request.ToJson()));
 
             var createOrderRequest = Mapper.Map<CreateOrderRequest>(request);
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
             var createReportOrder = CreateReportOrder(createOrderRequest, account);
 
-            var createOrderCommand = BuildCreateOrderCommand(createOrderRequest, account, createReportOrder);
+            var createOrderCommand = await BuildCreateOrderCommand(createOrderRequest, account, createReportOrder);
 
             var result = _ibsCreateOrderService.CreateIbsOrder(createOrderCommand.OrderId, createOrderCommand.PickupAddress,
                 createOrderCommand.DropOffAddress, createOrderCommand.Settings.AccountNumber, createOrderCommand.Settings.CustomerNumber,
@@ -94,22 +93,22 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             return result.HailResult;
         }
 
-        public object Post(ConfirmHailRequest request)
+        public OrderStatusDetail Post(ConfirmHailRequest request)
         {
             if (request.OrderKey.IbsOrderId < 0)
             {
-                throw new HttpError(string.Format("Cannot confirm hail because IBS returned error code {0}", request.OrderKey.IbsOrderId));
+                throw new HttpException(string.Format("Cannot confirm hail because IBS returned error code {0}", request.OrderKey.IbsOrderId));
             }
 
             if (request.VehicleCandidate == null)
             {
-                throw new HttpError("You need to specify a vehicle in order to confirm the hail.");
+                throw new HttpException("You need to specify a vehicle in order to confirm the hail.");
             }
 
             var orderDetail = _orderDao.FindById(request.OrderKey.TaxiHailOrderId);
             if (orderDetail == null)
             {
-                throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
+                throw new HttpException(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
             }
 
             _logger.LogMessage(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
@@ -123,7 +122,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
                 _logger.LogMessage(errorMessage);
 
-                return new HttpResult(HttpStatusCode.InternalServerError, errorMessage);
+                throw new HttpException((int)HttpStatusCode.InternalServerError, errorMessage);
             }
 
             _logger.LogMessage("Hail request confirmed");

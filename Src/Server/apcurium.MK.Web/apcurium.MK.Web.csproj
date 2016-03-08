@@ -739,8 +739,11 @@
     <Compile Include="Controllers\Api\Account\CreditCardController.cs" />
     <Compile Include="Controllers\Api\Account\CurrentAccountController.cs" />
     <Compile Include="Controllers\Api\Account\ManualRideLinqController.cs" />
+    <Compile Include="Controllers\Api\Account\Orders\CreateOrderController.cs" />
+    <Compile Include="Controllers\Api\Account\Orders\HailController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
+    <Compile Include="Controllers\Api\Account\Orders\PayPalCheckoutController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\ReceiptController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\ValidateOrderController.cs" />
     <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
