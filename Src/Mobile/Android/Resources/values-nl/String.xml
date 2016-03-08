@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="AboutActivityName">Info systeem</string>
+  <string name="AboutActivityName">Systeem info</string>
   <string name="AcceptButton">Accepteren</string>
   <string name="AccountActivationMessage">Een email is verstuurd. Gebruik de link in uw email om uw emailadres te bevestigen</string>
   <string name="AccountActivationTitle">Bevestiging gevraagd</string>
@@ -54,7 +54,7 @@
   <string name="BookingAirportPUDatelbl">Ophaal datum</string>
   <string name="BookingAirportPUPointslbl">Ophaal Plek</string>
   <string name="BookingAirportTitle">Luchthaven</string>
-  <string name="BookingRateActivityName">Booking rate</string>
+  <string name="BookingRateActivityName">Booking kosten</string>
   <string name="BookingService_MobileBookingNote">Geboekt via een mobiel apparaat.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Naam gebouw {0}.</string>
   <string name="BookItButton">Boek Nu</string>
@@ -90,9 +90,9 @@
   <string name="ChargeTypeLabel">Betalings keuze</string>
   <string name="ChooseProviderDialogTitle">Kies Taxibedrijf</string>
   <string name="Close">Sluiten</string>
-  <string name="CloseTutorial">Sluit instructiescherm</string>
+  <string name="CloseTutorial">Sluit Uitleg</string>
   <string name="CmtCancelPayment">Annuleren</string>
-  <string name="CmtCardNumber">Payment Method:</string>
+  <string name="CmtCardNumber">Betalingswijze:</string>
   <string name="CmtCarNumber">Taxi Nummer</string>
   <string name="CmtChangePaymentInfo">Verander betaling instellingen</string>
   <string name="CmtConfirmPayment">Bevestigen</string>
@@ -177,7 +177,7 @@
   <string name="DateTimePickerPickInvalidDateTitle">Ongeldige datum / tijd</string>
   <string name="DateTimePickerPickTime">Selecteer uw ophaaltijd</string>
   <string name="DateTimePickerPickTitle">Ophaal datum en tijd</string>
-  <string name="DateTimePickerSetButton">bestellen</string>
+  <string name="DateTimePickerSetButton">Bestellen</string>
   <string name="DateToday">Vandaag</string>
   <string name="December">Dec (12)</string>
   <string name="DefaultCreditCard_Label">(STANDAARD)</string>
@@ -191,14 +191,14 @@
   <string name="DestinationAddress">Adres bestemming</string>
   <string name="DestinationMapTitle">Bestemmings locatie</string>
   <string name="DestinationNotSpecifiedText">Bestemming niet gespecificeerd</string>
-  <string name="DestinationTextPlaceholder">Destination street address</string>
+  <string name="DestinationTextPlaceholder">Bestemmings Adres</string>
   <string name="DestinationViewDestinationLabel">Bestemming:</string>
-  <string name="DialCodeSelectorTitle">Toegangscode</string>
+  <string name="DialCodeSelectorTitle">Landnummer</string>
   <string name="Done">Bevestigen</string>
   <string name="DontAsk">Vraag niet meer</string>
   <string name="DontHaveAnAccountLabel">Heeft u geen account?</string>
-  <string name="DriverBonusDescription">Het aanbieden van een bonus voor bestuurders kan uw kansen op het krijgen van een taxi te stimuleren.</string>
-  <string name="DriverBonusTitle">Chauffeurs Bonus</string>
+  <string name="DriverBonusDescription">Het aanbieden van een bonus voor chauffeurs kan uw kansen op het krijgen van een taxi stimuleren.</string>
+  <string name="DriverBonusTitle">Chauffeurs Bonus:</string>
   <string name="DriverBonusWarningMessage">Bonus komt bovenop de fooi. Het zal automatisch in rekening worden gebracht aan het einde van de rit. Doorgaan?</string>
   <string name="DriverBonusWarningTitle">Bevestig Chauffeurs Bonus</string>
   <string name="DriverInfoColor">Kleur:</string>
@@ -208,7 +208,7 @@
   <string name="DriverInfoModel">Model:</string>
   <string name="DriverInfoTaxiType">Taxi type:</string>
   <string name="DriverInfoVehicleMedallion">Vergunningsnummer:</string>
-  <string name="Edit">Bewerk</string>
+  <string name="Edit">Bewerken</string>
   <string name="EmailLabel">Email</string>
   <string name="EmailUsedMessage">Dit emailadres wordt reeds gebruikt door een ander account</string>
   <string name="EmailUsedMessageTitle">Emailadres reeds in gebruik</string>
@@ -232,7 +232,7 @@
   <string name="Eta">Dichtstbijzijnde taxi is {0} {1} van u vandaan</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
-  <string name="EtaLessThanAMinute">Dichtstbijzijnde taxi is op minder dan een minuut afstand</string>
+  <string name="EtaLessThanAMinute">Dichtstbijzijnde taxi is op minder dan één minuut afstand</string>
   <string name="EtaNotAvailable">Geen voertuig beschikbaar</string>
   <string name="EtaNoTaxiAvailable">Sorry, geen taxi\'s momenteel in de buurt beschikbaar.</string>
   <string name="Facebook">Meld je aan met facebook</string>
@@ -247,7 +247,7 @@
   <string name="GenericTitle">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
   <string name="GooglePlayServicesNotAvailableMessage">Wij verzoeken u Google Play te updaten ivm gebruik van deze applicatie.</string>
   <string name="GooglePlayServicesNotAvailableTitle">Update gewenst</string>
-  <string name="HistoryActivityName">History</string>
+  <string name="HistoryActivityName">Historie</string>
   <string name="HistoryDetailAptRingCodeLabel">Huisnummer / Toegangscode</string>
   <string name="HistoryDetailAuthorizationLabel">Autorisatie</string>
   <string name="HistoryDetailBuildingNameLabel">Naam gebouw:</string>
@@ -329,7 +329,7 @@
   <string name="LocationViewTitle">Mijn Locaties</string>
   <string name="LoginActivityName">Login</string>
   <string name="LoginForgotPassword">Wachtwoord vergeten?</string>
-  <string name="LoginForgotPasswordDetail">Vul uw emailadres in en wij sturen u een niet Wachtwoord</string>
+  <string name="LoginForgotPasswordDetail">Vul uw emailadres in en wij sturen u een nieuw Wachtwoord</string>
   <string name="LoginSupport">Hulp Nodig?</string>
   <string name="LoginViewEmailPlaceHolder">Email</string>
   <string name="LoginViewPasswordPlaceHolder">Wachtwoord</string>
@@ -365,13 +365,13 @@
   <string name="ManualUnPairingForRideLinQ_Error_Message">An error occured when trying to unpair. Please try again.</string>
   <string name="March">Mrt (03)</string>
   <string name="MarketChangedMessage">U verlaat uw servicegebied. Besluit u toch een taxi te bestellen dan kan het zijn dat een taxi uit deze regio zal worden gekoppeld aan uw reservering.</string>
-  <string name="MarketChangedMessageTitle">Huisnummer / Toegangsdetected</string>
+  <string name="MarketChangedMessageTitle">Nieuw Servicegebied gedetecteerd</string>
   <string name="May">Mei (05)</string>
   <string name="MenuButton">Menu</string>
   <string name="MessageActivityName">Bericht</string>
   <string name="MessageToDriverTitle">Bericht aan Chauffeur</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
-  <string name="Modify">Wijzigen</string>
+  <string name="Modify">Aanpassen</string>
   <string name="NbPassenger">({0} passagier)</string>
   <string name="NbPassengers">({0} passangiers)</string>
   <string name="NearbyPlacesTitle">Nabijgelegen plaatsen</string>
@@ -408,12 +408,12 @@
   <string name="Notification_NearbyTaxiPush">Dichtstbijzijnde Taxi</string>
   <string name="Notification_NoShowPush">No show</string>
   <string name="Notification_PaymentConfirmationPush">Betalings Bevestiging</string>
-  <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
-  <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
+  <string name="Notification_PromotionUnlockedEmail">Promotie openen</string>
+  <string name="Notification_PromotionUnlockedPush">Promotie openen</string>
   <string name="Notification_ReceiptEmail">betaalbewijs (Email)</string>
   <string name="Notification_VehicleAtPickupPush">Taxi op ophaaladres</string>
-  <string name="NotificationSettingsActivityName">kennisgeving instelling</string>
-  <string name="NotNow">Nu niet</string>
+  <string name="NotificationSettingsActivityName">Notificatie instelling</string>
+  <string name="NotNow">Niet nu</string>
   <string name="November">Nov (11)</string>
   <string name="Now">Nu</string>
   <string name="October">Okt (10)</string>
@@ -454,7 +454,7 @@
   <string name="PanelMenuViewNotificationsText">Notificaties</string>
   <string name="PanelMenuViewOrderHistoryText">Historie</string>
   <string name="PanelMenuViewPaymentInfoText">Bekijk CreditCard info</string>
-  <string name="PanelMenuViewPromotionsText">Acties</string>
+  <string name="PanelMenuViewPromotionsText">Promoties</string>
   <string name="PanelMenuViewReportProblemText">Raporteer een probleem</string>
   <string name="PanelMenuViewSignOutPopupLogout">Uitloggen</string>
   <string name="PanelMenuViewSignOutPopupMessage">Weet u zeker dat u wilt Uitloggen</string>
@@ -481,7 +481,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Betalings Mogelijkheden</string>
   <string name="PaymentDetails.TipAmountLabel">Fooi:</string>
   <string name="PaymentInCar">Betaling in taxi</string>
-  <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
+  <string name="PaymentLoadError">Onmogelijk om de betaling details te laden. Probeer later nogmaals.</string>
   <string name="PaymentViewMeterAmountText">Meter Prijs:</string>
   <string name="PaymentViewTipText">Fooi:</string>
   <string name="PaymentViewTotalText">Tataal</string>
@@ -493,8 +493,8 @@
   <string name="PayPalUnlinkError">Het is niet gelukt om uw PayPal account te ontkoppelen</string>
   <string name="PendingOrderCancel">Annuleren</string>
   <string name="PendingOrderMessage">U kunt deze rit niet boeken omdat er reeds een bestelling in behandeling is. Deze reservering / Status bekijken?</string>
-  <string name="PendingOrderView">View</string>
-  <string name="PickupAddress">ophaaladres</string>
+  <string name="PendingOrderView">Bekijken</string>
+  <string name="PickupAddress">Ophaaladres</string>
   <string name="PickupDateDisplay">Reservering voor {0:ddd, MMM d} at {0:h:mm tt}</string>
   <string name="PickupDateTextPlaceholder">Datum: Vandaag</string>
   <string name="PickupMapTitle">Ophaal Locatie</string>
@@ -518,7 +518,7 @@
   <string name="PromoMustUseCardOnFileMessage">Om een promo code te gebruiken, moet u betalen zoals u heeft ingesteld in uw account.</string>
   <string name="PromoMustUseCardOnFileWarningMessage">Houdt u er rekening mee dat de korting alleen wordt toegepast indien de betaling wordt gedaan via de app.</string>
   <string name="PromoProgress">Verwerking :</string>
-  <string name="PromotionActivityName">Actie</string>
+  <string name="PromotionActivityName">Promotie</string>
   <string name="PromotionButton">Tap to Enter or View Promo Code</string>
   <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
   <string name="PromotionViewNoPromotionLabel">Geen acties beschikbaar</string>
@@ -539,7 +539,7 @@
   <string name="Rebook">opnieuw reserveren</string>
   <string name="ReceiptSent">betaalbewijs verzonden</string>
   <string name="RefineAddressTitle">Verfijn een Adres</string>
-  <string name="Register">Rigistreer</string>
+  <string name="Register">Registreer</string>
   <string name="ReminderDetails">Herinnering: Een taxi zal u ophalen van {0} om {1} op {2}.</string>
   <string name="ReminderTitle">{0} Geboekt</string>
   <string name="RemoveCreditCardMessage">Weet u zeker dat u deze CreditCard wilt verwijderen</string>
@@ -583,8 +583,8 @@
   <string name="searchHint">Zoeken</string>
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="SendEmail">Email verzenden….</string>
-  <string name="SendErrorLogButton">Stuur Error log</string>
-  <string name="SendMessageDriver">Stuur bericht aan Chauffeur</string>
+  <string name="SendErrorLogButton">Verstuur Error log</string>
+  <string name="SendMessageDriver">Verstuur bericht aan Chauffeur</string>
   <string name="SendMessageErrorMessage">Error bevestigd aan Chauffeur. Betaling geannuleerd</string>
   <string name="SendMessageToDriverErrorMessage">Er is een fout opgetreden tijdens het contact leggen met de chauffeur. Probeer het later nogmaals</string>
   <string name="SendReceipt">Verzend betalingsbewijs</string>
@@ -675,7 +675,7 @@
   <string name="Tuto07Top">Op het Statusscherm vindt u een reserveringsnummer ter bevestiging van uw boeking. Zodra een voertuig is toegewezen, kunt u volgen binnen hoeveel tijd uw taxi bij u zal zijn.</string>
   <string name="Tuto08Bottom">We hopen dat u deze applicatie handig en doeltreffend vindt</string>
   <string name="Tuto08Top">U kunt uw boeking/reservering geschiedenis op elk gewenst moment terug kijken en zelfs opnieuw een eerder geboekte rit met één druk op de knop opnieuw boeken.</string>
-  <string name="TutorialActivityName">Tutorial</string>
+  <string name="TutorialActivityName">Korte Uitleg</string>
   <string name="Twitter">Login met Twitter</string>
   <string name="UnexpectedError">Onverwachtse error</string>
   <string name="UnlinkPayPal">Ontkoppel PayPal</string>
@@ -684,8 +684,8 @@
   <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
   <string name="UnpairErrorMessage">Er is een fout opgetreden tijdens het ontkoppelen, Probeer het later opnieuw.</string>
   <string name="UnpairPayInCar">Betalen in Taxi</string>
-  <string name="UnpairPayInCarWarningMessage">Are you sure you don\'t want to pay with your credit card on file?</string>
-  <string name="UnpairPayInCarWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="UnpairPayInCarWarningMessage">Bent u zeker dat u niet wilt betalen met uw creditcard?</string>
+  <string name="UnpairPayInCarWarningMessageWithPromo">Als u besluit om in de taxi te betalen, Kunt u de promotie helaas niet gebruiken</string>
   <string name="UnpairWarningCancelButton">Annuleren</string>
   <string name="UnpairWarningOkButton">Betalen in Taxi</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account en Pasaagiersnummer moeten ingevuld zijn als u betalingswijze: Op rekening ingesteld heeft.</string>
