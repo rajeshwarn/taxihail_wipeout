@@ -862,4 +862,7 @@
   <data name="Email_Title_OrderRefund" xml:space="preserve">
     <value>Order Refund</value>
   </data>
+  <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
+    <value>You must provide a country code, ex: CA, US, ...</value>
+  </data>
 </root>

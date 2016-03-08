@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common
 {
@@ -194,8 +195,13 @@ namespace apcurium.MK.Common
 
         public string GetPhoneExample()
         {
-            libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(CountryISOCode.Code);
-            string phoneNumberExampleText = phoneNumberExample.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164);
+            if (CountryISOCode == null || !CountryISOCode.Code.HasValueTrimmed())
+            {
+                CountryISOCode = new CountryISOCode("CA");
+            }
+
+            var phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(CountryISOCode.Code);
+            var phoneNumberExampleText = phoneNumberExample.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164);
             return phoneNumberExampleText.Replace("+" + CountryDialCode, string.Empty);
         }
 

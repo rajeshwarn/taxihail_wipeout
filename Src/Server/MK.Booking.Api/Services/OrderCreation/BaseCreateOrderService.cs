@@ -103,8 +103,13 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
-            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+            if (request.Settings.Country == null || !request.Settings.Country.Code.HasValueTrimmed())
+            {
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                    string.Format(_resources.Get("PhoneNumberCountryNotProvided", request.ClientLanguageCode)));
+            }
 
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
             if (PhoneHelper.IsPossibleNumber(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
