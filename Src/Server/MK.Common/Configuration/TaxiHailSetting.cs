@@ -432,7 +432,6 @@ namespace MK.Common.Configuration
         public bool HideRebookOrder { get; protected set; }
 
 		[PropertyEncrypt]
-        [Hidden]
         [SendToClient]
         [Display(Name = "Card IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
         public string CardIOToken { get; protected set; }

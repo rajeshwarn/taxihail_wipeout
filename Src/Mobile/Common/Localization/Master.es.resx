@@ -587,7 +587,8 @@
     <comment>The Credit Card Number is invalid</comment>
   </data>
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
-    <value>Sorry, Amex cards are not supported</value>
+    <value>Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.</value>
+    <comment>Sorry, Amex cards are not supported</comment>
   </data>
   <data name="CreditCardLabel" xml:space="preserve">
     <value>Etiqueta</value>
@@ -601,7 +602,7 @@
     <comment>Card Number</comment>
   </data>
   <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
-    <value>Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes</value>
+    <value>Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes.</value>
     <comment>You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</comment>
   </data>
   <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
@@ -1764,7 +1765,7 @@
     <comment>Address Details</comment>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Pagar en Efectivo y Terminar</value>
+    <value>Terminar</value>
     <comment>Submit Rating</comment>
   </data>
   <data name="SupportEmail" xml:space="preserve">
