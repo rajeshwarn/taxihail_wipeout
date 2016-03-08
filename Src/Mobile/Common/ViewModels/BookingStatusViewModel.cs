@@ -596,7 +596,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				return Settings.ShowCallDriver 
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
