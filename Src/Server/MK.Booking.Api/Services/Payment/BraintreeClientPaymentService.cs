@@ -10,12 +10,11 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Braintree;
 using BraintreeEncryption.Library;
-using ServiceStack.ServiceInterface;
 using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class BraintreeClientPaymentService : Service
+    public class BraintreeClientPaymentService : BaseApiService
     {
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -33,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 tokenizeRequest.PaymentMethodNonce);
         }
 
-        public object Get(GenerateClientTokenBraintreeRequest request)
+        public string Get()
         {
             try
             {

@@ -746,6 +746,7 @@
     <Compile Include="Controllers\Api\Account\Orders\PayPalCheckoutController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\ReceiptController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\ValidateOrderController.cs" />
+    <Compile Include="Controllers\Api\Account\OverduePaymentsController.cs" />
     <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
     <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
     <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
@@ -759,6 +760,8 @@
     <Compile Include="Controllers\Api\Admin\TariffController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BraintreeClientPaymentController.cs" />
+    <Compile Include="Controllers\Api\CmtPaymentPairingController.cs" />
     <Compile Include="Controllers\Api\Maps\DirectionsController.cs" />
     <Compile Include="Controllers\Api\FlightInformationController.cs" />
     <Compile Include="Controllers\Api\IbsFareController.cs" />
@@ -772,6 +775,7 @@
     <Compile Include="Controllers\Api\OrderRatingController.cs" />
     <Compile Include="Controllers\Api\PopularAddressController.cs" />
     <Compile Include="Controllers\Api\PrivacyPolicyController.cs" />
+    <Compile Include="Controllers\Api\ProcessPaymentController.cs" />
     <Compile Include="Controllers\Api\PromotionController.cs" />
     <Compile Include="Controllers\Api\RatingTypesController.cs" />
     <Compile Include="Controllers\Api\ReferenceDataController.cs" />
@@ -779,6 +783,7 @@
     <Compile Include="Controllers\Api\ServerStatusController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\Settings\DefaultGeoLocationController.cs" />
+    <Compile Include="Controllers\Api\Settings\PaymentSettingsController.cs" />
     <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\Api\TestOnlyEndpointController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />

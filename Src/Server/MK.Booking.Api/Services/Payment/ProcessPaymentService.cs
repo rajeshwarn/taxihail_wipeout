@@ -1,18 +1,15 @@
-using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class ProcessPaymentService : Service
+    public class ProcessPaymentService : BaseApiService
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IPaymentService _paymentService;
@@ -39,31 +36,27 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
-            var session = this.GetSession();
-
-            return _payPalServiceFactory.GetInstance().LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
+            return _payPalServiceFactory.GetInstance().LinkAccount(Session.UserId, request.AuthCode);
         }
 
         public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
         {
-            var session = this.GetSession();
-
-            return _payPalServiceFactory.GetInstance().UnlinkAccount(new Guid(session.UserAuthId));
+            return _payPalServiceFactory.GetInstance().UnlinkAccount(Session.UserId);
         }
 
-        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
+        public DeleteTokenizedCreditcardResponse Delete(string cardToken)
         {
-            return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
+            return _paymentService.DeleteTokenizedCreditcard(cardToken);
         }
 
-        public BasePaymentResponse Post(UnpairingForPaymentRequest request)
+        public async Task<BasePaymentResponse> Post(UnpairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
             var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
 
-            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+            if (ibsAccountId.HasValue && order.IBSOrderId.HasValue &&  UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
             {
-                var response = _paymentService.Unpair(order.CompanyKey, request.OrderId);
+                var response = await _paymentService.Unpair(order.CompanyKey, request.OrderId);
                 if (response.IsSuccessful)
                 {
                     _paymentService.VoidPreAuthorization(order.CompanyKey, request.OrderId);

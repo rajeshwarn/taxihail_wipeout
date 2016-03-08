@@ -15,7 +15,6 @@ using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Resources.Payment;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
@@ -24,13 +23,13 @@ using AutoMapper.Internal;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class PaymentSettingsService : Service
+    public class PaymentSettingsService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
-        private readonly IPayPalServiceFactory _paylServiceFactory;
+        private readonly IPayPalServiceFactory _paypalServiceFactory;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IConfigurationChangeService _configurationChangeService;
 
@@ -38,20 +37,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IConfigurationDao configurationDao,
             ILogger logger,
             IServerSettings serverSettings,
-            IPayPalServiceFactory paylServiceFactory,
+            IPayPalServiceFactory paypalServiceFactory,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IConfigurationChangeService configurationChangeService)
         {
             _logger = logger;
             _serverSettings = serverSettings;
-            _paylServiceFactory = paylServiceFactory;
+            _paypalServiceFactory = paypalServiceFactory;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _configurationChangeService = configurationChangeService;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
         }
 
-        public PaymentSettingsResponse Get(PaymentSettingsRequest request)
+        public PaymentSettingsResponse Get()
         {
             return new PaymentSettingsResponse
             {
@@ -59,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-		public Dictionary<string, string> Get(EncryptedPaymentSettingsRequest request)
+		public Dictionary<string, string> GetEncrypted()
 		{
 			var paymentSettings = _configurationDao.GetPaymentSettings();
 
@@ -91,7 +90,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return new KeyValuePair<string, string>(propertyName, settingStringValue);
         }
 
-        public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
+        public ServerPaymentSettingsResponse GetServerSettings()
         {
             var settings = _configurationDao.GetPaymentSettings();
             return new ServerPaymentSettingsResponse
@@ -142,33 +141,35 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             foreach (var oldSetting in oldSettingsDictionary)
             {
-                if (newSettingsDictionary.ContainsKey(oldSetting.Key))
+                if (!newSettingsDictionary.ContainsKey(oldSetting.Key))
                 {
-                    var newValue = newSettingsDictionary[oldSetting.Key];
+                    continue;
+                }
+                var newValue = newSettingsDictionary[oldSetting.Key];
 
-                    if (oldSetting.Value != newValue)
-                    {
-                        //Special case for Amounts if not formatted the same way
-                        double oldAmount;
-                        double newAmount;
-                        double.TryParse(oldSetting.Value, out oldAmount);
-                        double.TryParse(newValue, out newAmount);
-                        if ((oldAmount == 0 && newAmount == 0) || Math.Abs(oldAmount - newAmount) > 0)
-                        {
-                            oldValues.Add(oldSetting.Key, oldSetting.Value);
-                            newValues.Add(oldSetting.Key, newSettingsDictionary[oldSetting.Key]);
-                        }
-                    }
+                if (oldSetting.Value == newValue)
+                {
+                    continue;
+                }
+                //Special case for Amounts if not formatted the same way
+                double oldAmount;
+                double newAmount;
+                double.TryParse(oldSetting.Value, out oldAmount);
+                double.TryParse(newValue, out newAmount);
+                if ((oldAmount == 0 && newAmount == 0) || Math.Abs(oldAmount - newAmount) > 0)
+                {
+                    oldValues.Add(oldSetting.Key, oldSetting.Value);
+                    newValues.Add(oldSetting.Key, newSettingsDictionary[oldSetting.Key]);
                 }
             }
             
-            var authSession = this.GetSession();
+            var authSession =Session;
 
             _configurationChangeService.Add(oldValues, 
                 newValues, 
-                ConfigurationChangeType.PaymentSetttings, 
-                new Guid(authSession.UserAuthId), 
-                authSession.UserAuthName);
+                ConfigurationChangeType.PaymentSetttings,
+                authSession.UserId, 
+                authSession.UserName);
 
         }
 
@@ -182,7 +183,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
+                if (_paypalServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
@@ -208,7 +209,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
+                if (_paypalServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
                 {
                     return new TestServerPaymentSettingsResponse
                     {

@@ -10,11 +10,10 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class OverduePaymentService : Service
+    public class OverduePaymentService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
         private readonly IOverduePaymentDao _overduePaymentDao;
@@ -45,10 +44,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _serverSettings = serverSettings;
         }
 
-        public object Get(OverduePaymentRequest request)
+        public OverduePaymentDetail Get()
         {
-            var session = this.GetSession();
-            var accountId = new Guid(session.UserAuthId);
+            var accountId = Session.UserId;
 
             var overduePayment = _overduePaymentDao.FindNotPaidByAccountId(accountId);
             if (overduePayment != null)
@@ -60,10 +58,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return overduePayment;
         }
 
-        public object Post(SettleOverduePaymentRequest request)
+        public SettleOverduePaymentResponse Post()
         {
-            var session = this.GetSession();
-            var accountId = new Guid(session.UserAuthId);
+            var accountId = Session.UserId;
 
             var overduePayment = _overduePaymentDao.FindNotPaidByAccountId(accountId);
             if (overduePayment == null)

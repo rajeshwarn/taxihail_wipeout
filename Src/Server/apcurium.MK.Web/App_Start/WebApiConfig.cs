@@ -81,6 +81,11 @@ namespace apcurium.MK.Web.App_Start
                     requestUrl = requestUrl.Replace("account/", "accounts/");
                 }
 
+                if (requestUrl.Contains("payments/settleoverduepayment"))
+                {
+                    requestUrl = requestUrl.Replace("payments/settleoverduepayment", "accounts/settleoverduepayment");
+                }
+
                 request.RequestUri = new Uri(requestUrl);
 
                 return base.SendAsync(request, cancellationToken);
