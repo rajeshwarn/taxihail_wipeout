@@ -77,13 +77,11 @@
             if (TaxiHail.parameters.showCallDriver == true) {
                 var driverInfos = status.get('driverInfos');
                 if (driverInfos !== undefined) {
-                    if (driverInfos.mobilePhone) {
-                        this.$('#callDispatchButton').addClass('hidden');
-                        if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
-                            this.$('#callDriverButton').removeClass('hidden');
-                        } else {
-                            this.$('#callDriverButton').addClass('hidden');
-                        }
+                    this.$('#callDispatchButton').addClass('hidden');
+                    if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
+                        this.$('#callDriverButton').removeClass('hidden');
+                    } else {
+                        this.$('#callDriverButton').addClass('hidden');
                     }
                 }
             }
