@@ -16,8 +16,6 @@ namespace CustomerPortal.Web.Entities.Network
 
         public string Id { get; set; }
 
-        [Required]
-        [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region { get; set; }
 
         [Required]
