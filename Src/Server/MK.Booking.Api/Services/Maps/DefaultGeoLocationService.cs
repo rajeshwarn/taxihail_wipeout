@@ -1,16 +1,14 @@
 ﻿#region
 
-using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.Maps
 {
-    public class DefaultGeoLocationService : Service
+    public class DefaultGeoLocationService : BaseApiService
     {
         private readonly IServerSettings _serverSettings;
 
@@ -19,7 +17,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             _serverSettings = serverSettings;
         }
 
-        public object Get(DefaultGeoLocationRequest request)
+        public Address Get()
         {
             return new Address
             {

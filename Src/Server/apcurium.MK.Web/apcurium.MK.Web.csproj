@@ -756,11 +756,15 @@
     <Compile Include="Controllers\Api\Admin\TariffController.cs" />
     <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\Maps\DirectionsController.cs" />
     <Compile Include="Controllers\Api\FlightInformationController.cs" />
     <Compile Include="Controllers\Api\IbsFareController.cs" />
     <Compile Include="Controllers\Api\LoginController.cs" />
     <Compile Include="Controllers\Api\Account\Orders\OrderStatusController.cs" />
     <Compile Include="Controllers\Api\LogMetricsController.cs" />
+    <Compile Include="Controllers\Api\Maps\GeocodingController.cs" />
+    <Compile Include="Controllers\Api\Maps\PlacesController.cs" />
+    <Compile Include="Controllers\Api\Maps\PostalCodeController.cs" />
     <Compile Include="Controllers\Api\NetworkRoamingController.cs" />
     <Compile Include="Controllers\Api\OrderRatingController.cs" />
     <Compile Include="Controllers\Api\PopularAddressController.cs" />
@@ -771,6 +775,7 @@
     <Compile Include="Controllers\Api\SearchLocationController.cs" />
     <Compile Include="Controllers\Api\ServerStatusController.cs" />
     <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
+    <Compile Include="Controllers\Api\Settings\DefaultGeoLocationController.cs" />
     <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\Api\TestOnlyEndpointController.cs" />
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />

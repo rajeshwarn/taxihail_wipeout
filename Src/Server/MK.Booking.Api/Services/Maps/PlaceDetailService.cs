@@ -4,13 +4,12 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.Maps
 {
-    public class PlaceDetailService : Service
+    public class PlaceDetailService : BaseApiService
     {
         private readonly IPlaces _client;
 

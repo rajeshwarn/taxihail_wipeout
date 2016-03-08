@@ -1,33 +1,28 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using apcurium.MK.Booking.Api.Client;
+using System.Threading.Tasks;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using ServiceStack.Common.Extensions;
-using ServiceStack.ServiceInterface;
 using Infrastructure.Messaging;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
-using ServiceStack.Common.Web;
 using Tariff = apcurium.MK.Common.Entity.Tariff;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services.Maps
 {
-    public class DirectionsService : Service
+    public class DirectionsService : BaseApiService
     {
         private readonly IDirections _client;
         private readonly IServerSettings _serverSettings;
@@ -48,14 +43,15 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             _networkServiceClient = networkServiceClient;
         }
 
-        public object Get(DirectionsRequest request)
+        public async Task<DirectionInfo> Get(DirectionsRequest request)
         {
             if (!request.OriginLat.HasValue || !request.OriginLng.HasValue)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, "MissingPosition", "An original longitude and latitude is required");
+                //TODO MKTAXI-3918: Handle exceptions
+                throw new HttpException((int)HttpStatusCode.BadRequest, "MissingPosition"/*, "An original longitude and latitude is required"*/);
             }
 
-            var marketTariff = GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);
+            var marketTariff = await GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);
 
             var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
                 request.DestinationLng, request.VehicleTypeId, request.Date,false, marketTariff);
@@ -69,50 +65,51 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 TripDurationInSeconds = (int?)result.Duration
             };
 
-            if (_serverSettings.ServerData.ShowEta
-                && request.OriginLat.HasValue
-                && request.OriginLng.HasValue)
+            if (!_serverSettings.ServerData.ShowEta)
             {
-                try
+                return directionInfo;
+            }
+
+            try
+            {
+                // Get available vehicles                
+                var availableVehicles = await _vehicleService.Post(new AvailableVehicles
                 {
-                    // Get available vehicles                
-                    var availableVehicles = _vehicleService.Post(new AvailableVehicles
-                    {
-                        Latitude = request.OriginLat.Value,
-                        Longitude = request.OriginLng.Value,
-                        VehicleTypeId = null
-                    }).ToArray();
+                    Latitude = request.OriginLat.Value,
+                    Longitude = request.OriginLng.Value,
+                    VehicleTypeId = null
+                });
 
-                    // Get nearest available vehicle
-                    var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
-                        request.OriginLng.Value,
-                        availableVehicles);
+                // Get nearest available vehicle
+                var nearestAvailableVehicle = GetNearestAvailableVehicle(
+                    request.OriginLat.Value,
+                    request.OriginLng.Value,
+                    availableVehicles.ToArray());
 
-                    if (nearestAvailableVehicle != null)
-                    {
-                        // Get eta
-                        var etaDirectionInfo =
-                            _client.GetEta(nearestAvailableVehicle.Latitude,
-                                nearestAvailableVehicle.Longitude,
-                                request.OriginLat.Value,
-                                request.OriginLng.Value);
-
-                        directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
-                        directionInfo.EtaDuration = (int?)etaDirectionInfo.Duration;
-                    }
-                }
-                catch (Exception ex)
+                if (nearestAvailableVehicle != null)
                 {
-                    _logger.LogMessage("Direction Service: Error trying to get ETA: " + ex.Message, ex);
+                    // Get eta
+                    var etaDirectionInfo =
+                        _client.GetEta(nearestAvailableVehicle.Latitude,
+                            nearestAvailableVehicle.Longitude,
+                            request.OriginLat.Value,
+                            request.OriginLng.Value);
+
+                    directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
+                    directionInfo.EtaDuration = (int?)etaDirectionInfo.Duration;
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Direction Service: Error trying to get ETA: " + ex.Message, ex);
             }
 
             return directionInfo;
         }
 
-        private Tariff GetMarketTariff(double latitude, double longitude)
+        private async Task<Tariff> GetMarketTariff(double latitude, double longitude)
         {
-            var marketSettings = _networkServiceClient.GetCompanyMarketSettings(latitude, longitude);
+            var marketSettings = await _networkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
             if (!marketSettings.Market.HasValueTrimmed() || !marketSettings.EnableAppFareEstimates)
             {
