@@ -72,7 +72,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
-            ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.discover.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[5].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
 
             var spinnerExpMonth = FindViewById<EditTextSpinner>(Resource.Id.ExpMonthSpinner);
             var spinnerExpYear = FindViewById<EditTextSpinner>(Resource.Id.ExpYearSpinner);
