@@ -77,15 +77,11 @@
     <Compile Include="DummyServiceStack\IReturn.cs" />
     <Compile Include="DummyServiceStack\RouteAttribute.cs" />
     <Compile Include="CoordinateSystemOrientation.cs" />
-    <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\AssignedVehicleMarkets.cs" />
-    <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
-    <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
-    <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
@@ -93,7 +89,6 @@
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />
-    <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
     <Compile Include="Exceptions\WebServiceException.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
@@ -102,7 +97,6 @@
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\ReturnExtensions.cs" />
     <Compile Include="Helpers\AirlineComparer.cs" />
-    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="Serializer\GuidJSonConverter.cs" />
     <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
@@ -123,8 +117,6 @@
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="VehicleStatuses.cs" />
-    <Compile Include="Enumeration\AppSettingsType.cs" />
-    <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Configuration\IAppSettings.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
@@ -136,7 +128,6 @@
     <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="IIPAddressManager.cs" />
-    <Compile Include="IConnectivityService.cs" />
     <Compile Include="CustomNativeMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

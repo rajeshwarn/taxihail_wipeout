@@ -1097,6 +1097,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050183
 			public const int CreditCardInvalidCrediCardNumber = 2131034499;
 			
+			// aapt resource value: 0x7f05031f
+			public const int CreditCardInvalidCrediCardTypeAmex = 2131034911;
+			
 			// aapt resource value: 0x7f050179
 			public const int CreditCardLabel = 2131034489;
 			
@@ -2365,6 +2368,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f0500ab
 			public const int RideSettingsEmailTitle = 2131034283;
+			
+			// aapt resource value: 0x7f050320
+			public const int RideSettingsLastCreditCardDeletion = 2131034912;
 			
 			// aapt resource value: 0x7f050274
 			public const int RideSettingsLoadError = 2131034740;

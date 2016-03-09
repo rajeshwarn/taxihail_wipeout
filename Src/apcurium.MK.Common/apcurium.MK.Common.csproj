@@ -49,6 +49,13 @@
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
+    <Compile Include="Entity\Airline.cs" />
+    <Compile Include="Entity\DayOfTheWeek.cs" />
+    <Compile Include="Entity\PickupPoint.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
+    <Compile Include="Enumeration\AppSettingsType.cs" />
+    <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
+    <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\SmtpDeliveryMethod.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CountryCode.cs" />
@@ -76,7 +83,9 @@
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="ICacheService.cs" />
+    <Compile Include="IConnectivityService.cs" />
     <Compile Include="IPackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
@@ -121,7 +130,7 @@
     <Reference Include="PCLCrypto">
       <HintPath>..\packages\PCLCrypto.1.0.86\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
     </Reference>
-	<Reference Include="LibPhoneNumber">
+    <Reference Include="LibPhoneNumber">
       <HintPath>Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
   </ItemGroup>
