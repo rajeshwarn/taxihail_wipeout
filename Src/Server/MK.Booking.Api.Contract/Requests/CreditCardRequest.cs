@@ -3,13 +3,11 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/creditcards/{CreditCardId}", "DELETE")]
     [Route("/account/creditcards", "GET,POST")]
     public class CreditCardRequest : IReturn<CreditCardDetails>

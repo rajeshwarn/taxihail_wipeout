@@ -1,18 +1,13 @@
 ﻿#region
 
 using apcurium.MK.Booking.Api.Contract.Http;
-using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Security;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
-    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
     [Route("/admin/exclusions", "GET, POST")]
     public class ExclusionsRequest
     {

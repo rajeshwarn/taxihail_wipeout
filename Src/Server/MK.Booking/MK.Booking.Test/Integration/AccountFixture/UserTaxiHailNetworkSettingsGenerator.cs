@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {

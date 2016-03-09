@@ -6,8 +6,6 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.FluentValidation;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
@@ -23,6 +21,7 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
+        //TODO MKTAXI-3918
         //public IValidator<DefaultFavoriteAddress> Validator { get; set; }
         protected IDefaultAddressDao Dao { get; set; }
 

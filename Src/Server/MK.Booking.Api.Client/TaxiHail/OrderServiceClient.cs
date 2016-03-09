@@ -5,21 +5,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 
 #endregion
 

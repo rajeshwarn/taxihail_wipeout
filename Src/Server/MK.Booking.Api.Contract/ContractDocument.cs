@@ -12,23 +12,21 @@ namespace apcurium.MK.Booking.Api.Contract
     {
         public ContractDocumentReport[] Build()
         {
-            var result = new List<ContractDocumentReport>();
             var assembly = GetType().Assembly;
             var types = assembly.GetTypes();
 
-            foreach (var type in types)
-            {
-                var att = type.GetCustomAttributes(typeof(RouteAttribute), true).OfType<RouteAttribute>();
-                foreach (var restServiceAttribute in att)
-                {
-                    result.Add(new ContractDocumentReport
+            return types
+                .SelectMany(type => type
+                    .GetCustomAttributes(typeof(RouteAttribute), true)
+                    .OfType<RouteAttribute>()
+                    .Select(restServiceAttribute => new ContractDocumentReport()
                     {
-                        Path = restServiceAttribute.Path,
-                        Verbs = restServiceAttribute.Verbs
-                    });
-                }
-            }
-            return result.OrderBy(r => r.Path).ToArray();
+                        Path = restServiceAttribute.Address,
+                        Verbs = restServiceAttribute.Method
+                    })
+                )
+                .OrderBy(r => r.Path)
+                .ToArray();
         }
     }
 

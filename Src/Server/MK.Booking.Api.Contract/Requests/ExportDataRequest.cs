@@ -1,13 +1,8 @@
 ﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Security;
 using System;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
-    [AuthorizationRequired(ApplyTo.Post, RoleName.Support)]
     [Route("/admin/export/{Target}", "POST")]
     public class ExportDataRequest
     {

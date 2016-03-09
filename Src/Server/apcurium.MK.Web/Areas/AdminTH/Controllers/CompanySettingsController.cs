@@ -17,9 +17,9 @@ using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using AutoMapper.Internal;
 using Infrastructure.Messaging;
-using System.IO;
 using System.Web;
 using apcurium.MK.Common.Caching;
+using apcurium.MK.Web.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // POST: AdminTH/CompanySettings/Update
         [HttpPost]
         [ValidateInput(false)]
-        public async Task<ActionResult> ExportToFile(FormCollection form)
+        public ActionResult ExportToFile(FormCollection form)
         {
             var appSettings = form.ToDictionary();
             appSettings.Remove("__RequestVerificationToken");
@@ -80,16 +80,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
                 else if (file.ContentLength > 0)
                 {
-                    string[] AllowedFileExtensions = new string[] { ".csf" };
+                    var allowedFileExtensions = new[] { ".csf" };
 
-                    if (!AllowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+                    if (!allowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
                     {
-                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", AllowedFileExtensions);
+                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", allowedFileExtensions);
                     }
                     else
                     {
                         var fileContent = System.IO.File.ReadAllText(file.FileName);
-                        Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
+                        var fileSettings = fileContent.FromJson<Dictionary<string, string>>();
                         if (fileSettings.Any())
                         {
                             SaveConfigurationChanges(fileSettings);
@@ -166,8 +166,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _configurationChangeService.Add(oldValues,
                 newValues,
                 ConfigurationChangeType.CompanySettings,
-                new Guid(AuthSession.UserAuthId),
-                AuthSession.UserAuthName);
+                AuthSession.UserId,
+                AuthSession.UserName);
         }
 
         private void SetAdminSettings(Dictionary<string, string> appSettings)

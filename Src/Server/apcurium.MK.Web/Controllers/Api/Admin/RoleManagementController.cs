@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Controllers;
-using System.Web.Security;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Web.Security;

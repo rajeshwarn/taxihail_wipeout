@@ -1,11 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Mobile.Infrastructure;

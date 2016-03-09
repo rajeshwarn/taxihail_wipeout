@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Post(CancelOrder request)
+        public async Task Post(CancelOrder request)
         {
             var order = _orderDao.FindById(request.OrderId);
             var account = _accountDao.FindById(Session.UserId);
@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
                 var orderStatus = _orderDao.FindOrderStatusById(order.Id);
 
-                var marketSettings = _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+                var marketSettings = await _networkServiceClient.GetCompanyMarketSettings(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
             
                 var canCancelWhenPaired = orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
                     && marketSettings.DisableOutOfAppPayment;
@@ -98,7 +98,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                     _logger.LogMessage(errorMessage);
 
-                    throw new HttpError((int)HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
+                    //TODO MKTAXI-3918: handle this
+                    throw new HttpException((int)HttpStatusCode.BadRequest, _resources.Get("CancelOrderError")/*, errorMessage*/);
                 }
             }
             else

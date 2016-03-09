@@ -166,8 +166,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     return paypalWebPaymentResponse;
                 }
 
-                
-                var createOrderException = new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+                //TODO MKTAXI-3918: handle this
+                var createOrderException = new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString()/*, paypalWebPaymentResponse.Message*/);
 
                 createReportOrder.Error = createOrderException.ToString();
                 _commandBus.Send(createReportOrder);

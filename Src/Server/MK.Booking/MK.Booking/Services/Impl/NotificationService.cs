@@ -1152,11 +1152,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private string GetMarketReceiptFooter(double latitude, double longitude)
+        private async Task<string> GetMarketReceiptFooter(double latitude, double longitude)
         {
             try
             {
-                var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
+                var marketSettings = await _taxiHailNetworkServiceClient.GetCompanyMarketSettings(latitude, longitude);
 
                 if (marketSettings == null || !marketSettings.ReceiptFooter.HasValueTrimmed())
                 {

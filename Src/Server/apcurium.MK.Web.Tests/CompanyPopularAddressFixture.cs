@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -45,12 +46,12 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddAddress()
+        public async Task AddAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var addressId = Guid.NewGuid();
-            sut.AddPopularAddress(new PopularAddress
+            await sut.AddPopularAddress(new PopularAddress
             {
                 Id = addressId,
                 Address = new Address
@@ -65,7 +66,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var addresses = sut.GetPopularAddresses();
+            var addresses = await sut.GetPopularAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
             var address = addresses.Single(x => x.Id == addressId);
@@ -86,33 +87,33 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void GetAddressList()
+        public async Task GetAddressList()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            var addresses = sut.GetPopularAddresses();
+            var addresses = await sut.GetPopularAddresses();
 
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
         }
 
         [Test]
-        public void RemoveAddress()
+        public async Task RemoveAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            sut.RemovePopularAddress(_knownAddressId);
+            await sut.RemovePopularAddress(_knownAddressId);
 
-            var addresses = sut.GetPopularAddresses();
+            var addresses = await sut.GetPopularAddresses();
             Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
-        public void UpdateAddress()
+        public async Task UpdateAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            sut.UpdatePopularAddress(new PopularAddress
+            await sut.UpdatePopularAddress(new PopularAddress
             {
                 Id = _knownAddressId,
                 Address = new Address
@@ -127,7 +128,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var address = sut.GetPopularAddresses().Single(x => x.Id == _knownAddressId);
+            var address = (await sut.GetPopularAddresses()).Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier popular", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);

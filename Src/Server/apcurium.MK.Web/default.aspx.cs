@@ -1,11 +1,9 @@
 ﻿#region
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
@@ -15,7 +13,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.ServiceLocation;
-using ServiceStack.Text;
 using System.Web;
 using apcurium.MK.Common;
 using System.Globalization;
@@ -96,7 +93,7 @@ namespace apcurium.MK.Web
             DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             DefaultPhoneNumber = config.ServerData.DefaultPhoneNumberDisplay;
-            IsAuthenticated = base.UserSession.IsAuthenticated;
+            IsAuthenticated = base.UserSession.IsAuthenticated();
             FacebookAppId = config.ServerData.FacebookAppId;
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;
@@ -187,8 +184,8 @@ namespace apcurium.MK.Web
             ReferenceData = referenceData.ToString();
 
             var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
-            var vehicleTypes = (IList<VehicleTypeDetail>)vehicleService.Get(new VehicleTypeRequest());
-            VehicleTypes = JsonSerializer.SerializeToString(vehicleTypes, vehicleTypes.GetType());
+            var vehicleTypes = (IList<VehicleTypeDetail>)vehicleService.Get(Guid.Empty);
+            VehicleTypes = vehicleTypes.ToJson();
             CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
 
             var defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);

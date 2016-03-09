@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
@@ -58,9 +59,9 @@ namespace apcurium.MK.Web.Controllers.Api.account
 
         [HttpPost]
         [Route("{orderId}/cancel")]
-        public IHttpActionResult CancelOrder(Guid orderId)
+        public async Task<IHttpActionResult> CancelOrder(Guid orderId)
         {
-            CancelOrderService.Post(new CancelOrder {OrderId = orderId});
+            await CancelOrderService.Post(new CancelOrder {OrderId = orderId});
 
             return Ok();
         }

@@ -8,11 +8,6 @@ using apcurium.MK.Common.Extensions;
 using System;
 using apcurium.MK.Common;
 
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
-
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient

@@ -23,20 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            RemoveByPatternIfPossible(UserAuthIdPattern.InvariantCultureFormat(@event.SourceId));
-        }
-
-        private void RemoveByPatternIfPossible(string pattern)
-        {
-            var service = _cacheService as IRemoveByPattern;
-
-            if (service == null)
-            {
-                return;
-            }
-
-
-            service.RemoveByPattern(pattern);
+            _cacheService.RemoveByPattern(UserAuthIdPattern.InvariantCultureFormat(@event.SourceId));
         }
 
     }

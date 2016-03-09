@@ -13,10 +13,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
-
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient

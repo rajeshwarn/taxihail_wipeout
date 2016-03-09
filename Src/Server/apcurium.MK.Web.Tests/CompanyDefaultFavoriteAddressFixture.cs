@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -45,12 +46,12 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownAddressId = Guid.NewGuid();
 
         [Test]
-        public void AddAddress()
+        public async Task AddAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
             var addressId = Guid.NewGuid();
-            sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
+            await sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = addressId,
                 Address = new Address
@@ -65,7 +66,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var addresses = sut.GetDefaultFavoriteAddresses();
+            var addresses = await sut.GetDefaultFavoriteAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
             var address = addresses.Single(x => x.Id == addressId);
@@ -86,33 +87,33 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void GetAddressList()
+        public async Task GetAddressList()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            var addresses = sut.GetDefaultFavoriteAddresses();
+            var addresses = await sut.GetDefaultFavoriteAddresses();
 
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
         }
 
         [Test]
-        public void RemoveAddress()
+        public async Task RemoveAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            sut.RemoveDefaultFavoriteAddress(_knownAddressId);
+            await sut.RemoveDefaultFavoriteAddress(_knownAddressId);
 
-            var addresses = sut.GetDefaultFavoriteAddresses();
+            var addresses = await sut.GetDefaultFavoriteAddresses();
             Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
-        public void UpdateAddress()
+        public async Task UpdateAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
+            await sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = _knownAddressId,
                 Address = new Address
@@ -127,7 +128,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var address = sut.GetDefaultFavoriteAddresses().Single(x => x.Id == _knownAddressId);
+            var address = (await sut.GetDefaultFavoriteAddresses()).Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);

@@ -10,7 +10,8 @@ using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Test.Integration;
-using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
+
 #endregion
 
 namespace apcurium.MK.Booking.Test.ExportFixture
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             RaiseOrderRated();
 
             var orderReportDetail = OrderReportDetail;
-            var rating = (JsonSerializer.DeserializeFromString(orderReportDetail.Rating, typeof(Dictionary<string, string>)) as Dictionary<string, string>) ?? new Dictionary<string, string>();
+            var rating = orderReportDetail.Rating.FromJsonSafe<Dictionary<string, string>> () ?? new Dictionary<string, string>();
 
             Assert.AreEqual(orderReportDetail.Account.Name, AccountName);
             Assert.AreEqual(orderReportDetail.Client.OperatingSystem, OperatingSystem);
@@ -97,7 +98,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             Assert.AreEqual(orderReportDetail.Promotion.Code, PromoCode);
             Assert.AreEqual(orderReportDetail.Promotion.WasRedeemed, true);
             Assert.AreEqual(orderReportDetail.Promotion.SavedAmount, 100);
-            Assert.AreEqual(rating["Safety"], "2");
+            Assert.AreEqual(rating["safety"], "2");
         }
 
         [TestFixtureTearDown]

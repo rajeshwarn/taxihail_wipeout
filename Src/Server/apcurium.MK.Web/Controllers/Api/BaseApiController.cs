@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Results;
+using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -33,11 +34,6 @@ namespace apcurium.MK.Booking.Api.Services
                 .Cast<BaseApiService>();
 
             PrepareApiServices(services.ToArray());
-        }
-
-        protected HttpException GetException(HttpStatusCode statusCode, string message)
-        {
-            return new HttpException((int)statusCode, message);
         }
 
         private JsonSerializerSettings GetSerializerSettings()
@@ -87,14 +83,12 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (!sessionId.HasValueTrimmed())
                 {
-                    return new SessionEntity();
+                    return null;
                 }
 
-                var urn = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
+                var key = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
 
-                var cachedSession = _cacheClient.Get<SessionEntity>(urn);
-
-                return cachedSession;
+                return _cacheClient.Get<SessionEntity>(key);
             }
         }
     }

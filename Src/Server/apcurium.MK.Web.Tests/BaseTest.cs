@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         protected static readonly AppHost AppHost;
-        protected string BaseUrl { get { return "http://localhost:6903/"; } }
+        protected string BaseUrl { get { return "http://localhost:6903"; } }
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }
         protected string TestAdminAccountPassword { get { return "password1"; } }
@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
 
         public virtual void TestFixtureSetup()
         {
-            AppHost.Start(BaseUrl);
+            //AppHost.Start(BaseUrl);
             var task = !AsAdmin ? AccountService.GetTestAccount(0) : AccountService.GetAdminTestAccount(0);
             task.Wait();
             TestAccount = task.Result;
@@ -87,7 +87,7 @@ namespace apcurium.MK.Web.Tests
 
         public virtual void TestFixtureTearDown()
         {
-            AppHost.Stop();
+            //AppHost.Stop();
         }
 
         protected  string GetTempEmail()

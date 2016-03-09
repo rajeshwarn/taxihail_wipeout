@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using System.Globalization;
 using System.Net;
 using System.Web;
@@ -9,8 +8,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 

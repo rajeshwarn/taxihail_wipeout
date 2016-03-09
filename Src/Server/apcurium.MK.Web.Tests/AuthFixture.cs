@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Web.Tests
 {

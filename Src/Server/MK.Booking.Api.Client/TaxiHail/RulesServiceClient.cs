@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Http.Extensions;
 
 #endregion
 
@@ -18,41 +20,41 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public void CreateRule(Rule rule)
+        public Task CreateRule(Rule rule)
         {
-            var req = string.Format("/admin/rules");
-             Client.Post<string>(req, rule);
+            var req = "/admin/rules";
+             return Client.Post(req, rule);
         }
 
-        public void UpdateRule(Rule rule)
+        public Task UpdateRule(Rule rule)
         {
             var req = string.Format("/admin/rules/" + rule.Id);
-            Client.Put<string>(req, rule);
+            return Client.Put(req, rule);
         }
 
 
-        public void DeleteRule(Guid ruleId)
+        public Task DeleteRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId);
-            Client.Delete<string>(req);
+            return Client.Delete(req);
         }
 
-        public IList<Rule> GetRules()
+        public Task<IList<Rule>> GetRules()
         {
-            var req = string.Format("/admin/rules");
-            return Client.Get<IList<Rule>>(req);
+            var req = "/admin/rules";
+            return Client.Get(req).Deserialize<IList<Rule>>();
         }
 
-        public void ActivateRule(Guid ruleId)
+        public Task ActivateRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId + "/activate");
-            Client.Post<string>(req, new RuleActivateRequest {RuleId = ruleId});
+            return Client.Post(req, new RuleActivateRequest {RuleId = ruleId});
         }
 
-        public void DeactivateRule(Guid ruleId)
+        public Task DeactivateRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId + "/deactivate");
-            Client.Post<string>(req, new RuleDeactivateRequest {RuleId = ruleId});
+            return Client.Post(req, new RuleDeactivateRequest {RuleId = ruleId});
         }
     }
 }

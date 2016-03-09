@@ -1,13 +1,12 @@
 ﻿#region
 
 using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
@@ -24,33 +23,38 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public object Put(GrantAdminRightRequest request)
+        public void Put(GrantAdminRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
+            if (account == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
+            }
 
             _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.Admin
             });
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Put(GrantSuperAdminRightRequest request)
+        public void Put(GrantSuperAdminRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
+            if (account == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
+            }
+
 
             _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.SuperAdmin
             });
-            return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public object Put(GrantSupportRightRequest request)
+        public void Put(GrantSupportRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account != null)
@@ -60,12 +64,12 @@ namespace apcurium.MK.Booking.Api.Services
                     AccountId = account.Id,
                     RoleName = RoleName.Support
                 });
-                return new HttpResult(HttpStatusCode.OK, "OK");
+                return;
             }
 
-            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+            throw new HttpException((int)HttpStatusCode.BadRequest, "Account not found");
         }
-        public object Put(RevokeAccessRequest request)
+        public void Put(RevokeAccessRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account != null)
@@ -75,10 +79,10 @@ namespace apcurium.MK.Booking.Api.Services
                     AccountId = account.Id,
                     RoleName = RoleName.None
                 });
-                return new HttpResult(HttpStatusCode.OK, "OK");
+                return;
             }
 
-            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+            throw new HttpException((int)HttpStatusCode.BadRequest, "Account not found");
         }
     }
 }

@@ -4,10 +4,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;

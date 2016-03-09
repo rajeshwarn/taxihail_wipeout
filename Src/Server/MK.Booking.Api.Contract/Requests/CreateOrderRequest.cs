@@ -9,7 +9,6 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/orders", "POST")]
     public class CreateOrderRequest : BaseDto
     {

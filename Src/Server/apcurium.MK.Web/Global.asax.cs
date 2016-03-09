@@ -2,27 +2,23 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
-using System.Web.Routing;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.IoC;
-using apcurium.MK.Web;
 using apcurium.MK.Web.App_Start;
 using log4net;
 using log4net.Config;
-using MK.Common.Configuration;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
+
+
 
 #endregion
 

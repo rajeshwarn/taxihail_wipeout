@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,8 +34,6 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
-using ServiceStack.Messaging.Rcon;
-using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
 #endregion
@@ -625,7 +622,7 @@ namespace DatabaseInitializer
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent);
+                result = paramFileContent.FromJsonSafe<DatabaseInitializerParams>();
             }
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 

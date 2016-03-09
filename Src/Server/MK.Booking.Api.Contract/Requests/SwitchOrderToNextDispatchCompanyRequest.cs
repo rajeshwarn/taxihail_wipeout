@@ -3,7 +3,6 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/orders/{OrderId}/switchDispatchCompany", "POST")]
     public class SwitchOrderToNextDispatchCompanyRequest : BaseDto
     {

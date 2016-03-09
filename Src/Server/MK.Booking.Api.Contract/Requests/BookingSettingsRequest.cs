@@ -1,15 +1,12 @@
 ﻿#region
 
-using System;
 using apcurium.MK.Common;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/bookingsettings", "PUT")]
     public class BookingSettingsRequest : BaseDto
     {

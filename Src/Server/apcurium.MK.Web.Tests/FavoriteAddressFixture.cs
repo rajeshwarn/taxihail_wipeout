@@ -3,8 +3,8 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {

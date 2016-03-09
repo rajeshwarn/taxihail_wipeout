@@ -2,19 +2,9 @@
 
 using System;
 using System.Configuration;
-using apcurium.MK.Booking.Api.Security;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Security;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.IoC;
 using Funq;
-using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
-using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 #endregion
@@ -28,7 +18,7 @@ namespace apcurium.MK.Web.SelfHost
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
             var appHost = new AppHost();
-            //appHost.Init();
+            appHost.Init();
             //appHost.Start(listeningOn);
 
 // ReSharper disable once LocalizableElement
@@ -44,6 +34,11 @@ namespace apcurium.MK.Web.SelfHost
         {
         }
 
+        public void Init()
+        {
+            Configure(null);
+        }
+
         public void Configure(Container containerFunq)
         {
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
@@ -52,6 +47,7 @@ namespace apcurium.MK.Web.SelfHost
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             var container = UnityServiceLocator.Instance;
+
             //containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
 
             //Plugins.Add(new AuthFeature(() => new AuthUserSession(),

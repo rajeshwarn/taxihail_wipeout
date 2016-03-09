@@ -7,9 +7,11 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
-using ServiceStack.Text;
 using apcurium.MK.Common;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Extensions;
+using apcurium.MK.Common.Extensions;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -49,15 +51,15 @@ namespace apcurium.MK.Web.admin
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
-            IsAuthenticated = base.UserSession.IsAuthenticated;
+            IsAuthenticated = base.UserSession.IsAuthenticated();
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
             IsAdmin = UserSession.HasPermission(RoleName.Admin);
-			CurrentAccountID = UserSession.UserAuthId;
+			CurrentAccountID = UserSession.UserId.ToString();
 
             IsNetworkEnabled = config.ServerData.Network.Enabled;
 
             var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
-            Languages = JsonSerializer.SerializeToString(languages, languages.GetType());
+            Languages = languages.ToJson();
 
             var filters = config.ServerData.GeoLoc.SearchFilter.Split('&');
             GeolocSearchFilter = filters.Length > 0
@@ -72,7 +74,7 @@ namespace apcurium.MK.Web.admin
             }
 
 
-			CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
+			CountryCodes = JsonConvert.SerializeObject(CountryCode.CountryCodes);
 
 			CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
 

@@ -50,14 +50,14 @@ namespace apcurium.MK.Web.Tests
             } };
         }
 
-        public string GetCompanyMarket(double latitude, double longitude)
+        public Task<string> GetCompanyMarket(double latitude, double longitude)
         {
-            return string.Empty;
+            return Task.FromResult(string.Empty);
         }
 
-        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        public Task<CompanyMarketSettingsResponse> GetCompanyMarketSettings(double latitude, double longitude)
         {
-            return new CompanyMarketSettingsResponse();
+            return Task.FromResult(new CompanyMarketSettingsResponse());
         }
 
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
@@ -70,7 +70,7 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
-        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        public Task<IEnumerable<NetworkVehicleResponse>> GetMarketVehicleTypes(string companyId = null, string market = null)
         {
             throw new NotImplementedException();
         }

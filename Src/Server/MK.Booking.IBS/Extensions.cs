@@ -3,6 +3,7 @@
 using System;
 using System.Net.Http.Headers;
 using System.Text;
+using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
 
 #endregion
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.IBS
 
         public static T FromJson<T>(this string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            return json.FromJsonSafe<T>();
         }
         public static HttpRequestHeaders Set(this HttpRequestHeaders headers, string key, string value)
         {

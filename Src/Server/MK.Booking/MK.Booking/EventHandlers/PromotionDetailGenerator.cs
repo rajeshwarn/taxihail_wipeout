@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     EndDate = @event.EndDate,
                     StartTime = @event.StartTime,
                     EndTime = @event.EndTime,
-                    DaysOfWeek = @event.DaysOfWeek.ToJson(),
+                    DaysOfWeek = @event.DaysOfWeek.Select(daysOfWeek => daysOfWeek.ToString()).ToArray().ToJson(),
                     AppliesToCurrentBooking = @event.AppliesToCurrentBooking,
                     AppliesToFutureBooking = @event.AppliesToFutureBooking,
                     DiscountValue = @event.DiscountValue,
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.EndDate = @event.EndDate;
                 promotionDetail.StartTime = @event.StartTime;
                 promotionDetail.EndTime = @event.EndTime;
-                promotionDetail.DaysOfWeek = @event.DaysOfWeek.ToJson();
+                promotionDetail.DaysOfWeek = @event.DaysOfWeek.Select(daysOfWeek => daysOfWeek.ToString()).ToArray().ToJson();
                 promotionDetail.AppliesToCurrentBooking = @event.AppliesToCurrentBooking;
                 promotionDetail.AppliesToFutureBooking = @event.AppliesToFutureBooking;
                 promotionDetail.DiscountValue = @event.DiscountValue;

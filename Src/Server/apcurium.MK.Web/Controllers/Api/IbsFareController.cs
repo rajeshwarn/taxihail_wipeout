@@ -13,7 +13,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/ibsfare")]
+    [RoutePrefix("api/v2")]
     public class IbsFareController : BaseApiController
     {
         private readonly IbsFareService _ibsFareService;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PrepareApiServices(_ibsFareService);
         }
 
-        [HttpGet, Route("ibsfares")]
+        [HttpGet, Route("ibsfare")]
         public IHttpActionResult GetIbsFare([FromUri]IbsFareRequest request)
         {
             var result = _ibsFareService.Get(request);
@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet)]
+        [HttpGet, Route("ibsdistance")]
         public IHttpActionResult Get([FromUri]IbsDistanceRequest request)
         {
             var result = _ibsFareService.Get(request);

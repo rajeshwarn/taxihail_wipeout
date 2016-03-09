@@ -321,11 +321,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         [HttpPost]
-        public ActionResult RefundOrder(AccountManagementModel accountManagementModel)
+        public async Task<ActionResult> RefundOrder(AccountManagementModel accountManagementModel)
         {
             if (ModelState.IsValid)
             {
-                var refundPaymentResponse = _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
+                var refundPaymentResponse = await _paymentService.RefundPayment(null, accountManagementModel.RefundOrderId);
 
                 if (refundPaymentResponse.IsSuccessful)
                 {
@@ -337,8 +337,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         refundPaymentResponse.Last4Digits,
                         orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
-                        AuthSession.UserAuthName,
-                        order.ClientLanguageCode);
+                        AuthSession.UserName,
+                        order.SelectOrDefault(o => o.ClientLanguageCode));
 
                     AddNote(accountManagementModel, NoteType.Refunded, accountManagementModel.RefundOrderNotePopupContent);
                     TempData["UserMessage"] = "order refunded, note added, email sent";
@@ -366,8 +366,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var accountNoteEntry = new AccountNoteEntry
             {
                 AccountId = accountManagementModel.Id,
-                WriterAccountId = new Guid(AuthSession.UserAuthId),
-                WriterAccountEmail = AuthSession.UserAuthName,
+                WriterAccountId = AuthSession.UserId,
+                WriterAccountEmail = AuthSession.UserName,
                 Type = noteType,
                 CreationDate = DateTime.Now,
                 Note = noteContent

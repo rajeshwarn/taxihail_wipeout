@@ -121,10 +121,14 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-
-        public IHttpActionResult UpdatePassword()
+        [HttpPost, Auth, Route("{accountId}/updatePassword")]
+        public IHttpActionResult UpdatePassword(Guid accountId, [FromBody]UpdatePassword request)
         {
-            
+            request.AccountId = accountId;
+
+            UpdatePasswordService.Post(request);
+
+            return Ok();
         }
     }
 }

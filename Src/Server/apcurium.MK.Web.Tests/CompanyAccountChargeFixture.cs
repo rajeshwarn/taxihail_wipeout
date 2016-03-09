@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -85,7 +86,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void UpdatedAccountCharge()
+        public async Task UpdatedAccountCharge()
         {
             var request = new AccountChargeRequest
             {
@@ -102,18 +103,18 @@ namespace apcurium.MK.Web.Tests
                 }
             };
 
-            var account = _sut.GetAccountCharge(request.AccountNumber);
+            var account = await _sut.GetAccountCharge(request.AccountNumber);
             if (account == null)
             {
-                _sut.CreateAccountCharge(request);
+                await _sut.CreateAccountCharge(request);
             }
 
             request.Id = account.Id;
             request.Name = "VIP2";
 
-            _sut.UpdateAccountCharge(request);
+            await _sut.UpdateAccountCharge(request);
 
-            account = _sut.GetAccountCharge(request.AccountNumber);
+            account = await _sut.GetAccountCharge(request.AccountNumber);
 
             Assert.AreEqual(account.Name, request.Name);
         }

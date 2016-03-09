@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />

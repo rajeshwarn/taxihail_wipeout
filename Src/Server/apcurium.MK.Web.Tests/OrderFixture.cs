@@ -13,8 +13,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using CustomerPortal.Client;
 using Microsoft.Practices.Unity;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests

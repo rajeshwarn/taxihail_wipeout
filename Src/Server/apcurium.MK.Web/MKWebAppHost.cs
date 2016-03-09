@@ -1,31 +1,9 @@
 ﻿#region
 
-using System;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.Api.Security;
-using apcurium.MK.Booking.Api.Serialization;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.IoC;
 using Funq;
-using Infrastructure.Messaging;
 using log4net;
-using Microsoft.Practices.Unity;
-using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
-using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Web.App_Start;
-using Microsoft.Owin;
 using Owin;
+
 #endregion
 
 
@@ -82,13 +60,13 @@ namespace apcurium.MK.Web
             //            }
             //        });
 
-                    SetConfig(new EndpointHostConfig
-                    {
-                        GlobalResponseHeaders =
-                        {
-                            {"Access-Control-Allow-Origin", "*"},
-                            {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
-                        },
+                    //SetConfig(new EndpointHostConfig
+                    //{
+                    //    GlobalResponseHeaders =
+                    //    {
+                    //        {"Access-Control-Allow-Origin", "*"},
+                    //        {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
+                    //    },
 
             //EnableFeatures = Feature.All.Remove(Feature.Metadata)
             //        });

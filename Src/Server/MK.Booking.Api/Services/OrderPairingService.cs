@@ -11,8 +11,6 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration.Impl;
 
 #endregion

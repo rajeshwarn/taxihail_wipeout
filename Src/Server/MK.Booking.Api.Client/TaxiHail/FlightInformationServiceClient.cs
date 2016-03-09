@@ -1,11 +1,6 @@
 ﻿using System.Threading.Tasks;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;

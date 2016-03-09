@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -33,7 +34,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private Mock<IOrderDao> _orderDaoMock;
         private Mock<IAccountDao> _accountDaoMock;
         private Mock<IGeocoding> _geocodingMock;
-        private EventSourcingTestHelper<Order> sut;
+        private EventSourcingTestHelper<Order> _sut;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -73,7 +74,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [SetUp]
         public void Setup()
         {
-            sut = new EventSourcingTestHelper<Order>();
+            _sut = new EventSourcingTestHelper<Order>();
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
@@ -83,7 +84,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var taxihailNetworkServiceClientMock = new Mock<ITaxiHailNetworkServiceClient>();
             taxihailNetworkServiceClientMock
                 .Setup(x => x.GetCompanyMarketSettings(It.IsAny<double>(), It.IsAny<double>()))
-                .Returns(new CompanyMarketSettingsResponse());
+                .Returns(Task.FromResult(new CompanyMarketSettingsResponse()));
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
@@ -101,13 +102,13 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            sut.Setup(new EmailCommandHandler(notificationService));
+            _sut.Setup(new EmailCommandHandler(notificationService));
         }
 
         [Test]
         public void when_sending_receipt_email()
         {
-            sut.When(new SendReceipt
+            _sut.When(new SendReceipt
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
@@ -132,7 +133,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void given_cc_payment_when_sending_receipt_email()
         {
-            sut.When(new SendReceipt
+            _sut.When(new SendReceipt
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
@@ -162,7 +163,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void given_paypal_payment_when_sending_receipt_email()
         {
-            sut.When(new SendReceipt
+            _sut.When(new SendReceipt
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,

@@ -13,14 +13,14 @@ namespace apcurium.MK.Booking.Api.Serialization
 {
     public class CsvCustomSerializer
     {
-        public static void SerializeToStream<T>(IRequestContext requestContext, T response, Stream stream)
-        {
-            if (response is List<Dictionary<string, string>>)
-            {
-                var responseSpe = response as List<Dictionary<string, string>>;
-                SerializeDictionaryToStream(responseSpe, stream);
-            }
-        }
+        //public static void SerializeToStream<T>(IRequestContext requestContext, T response, Stream stream)
+        //{
+        //    if (response is List<Dictionary<string, string>>)
+        //    {
+        //        var responseSpe = response as List<Dictionary<string, string>>;
+        //        SerializeDictionaryToStream(responseSpe, stream);
+        //    }
+        //}
 
         private static void SerializeDictionaryToStream(List<Dictionary<string, string>> response, Stream stream)
         {

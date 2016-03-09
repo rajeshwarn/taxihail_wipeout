@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Configuration;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Http.Exceptions;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -173,7 +171,7 @@ namespace apcurium.MK.Web.Tests
             var fbAccount = await GetNewFacebookAccount();
             await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-
+            
             Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
         }
 
@@ -187,7 +185,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = await asc.CreateTestAccount();
             await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
+            Assert.Throws<ServiceResponseException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
         }
 
         [Test]
@@ -334,7 +332,7 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             });
 
-            Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(account.Email, "p@55w0rddddddddd"));
+            Assert.DoesNotThrow(async () => await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(account.Email, "p@55w0rddddddddd"));
         }
 
         [Test]

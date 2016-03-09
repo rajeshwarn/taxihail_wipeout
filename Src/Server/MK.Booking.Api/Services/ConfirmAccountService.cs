@@ -5,7 +5,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Web;
-using System.Web.Routing;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -82,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
                 });
 
                 // Determine the root path to the app 
-                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+                var root = ApplicationPathResolver.GetApplicationPath(HttpRequestContext);
 
                 var template = _templateService.Find("AccountConfirmationSuccess", account.Language);
                 var templateData = new

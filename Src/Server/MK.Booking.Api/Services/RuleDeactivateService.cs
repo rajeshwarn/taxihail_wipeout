@@ -4,13 +4,12 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class RuleDeactivateService : Service
+    public class RuleDeactivateService : BaseApiService
     {
         private readonly ICommandBus _commandBus;
 

@@ -2,13 +2,11 @@
 
 using System;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/accounts/{AccountId}/updatePassword", "POST")]
     public class UpdatePassword : BaseDto
     {

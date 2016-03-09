@@ -2,7 +2,10 @@
 
 using System.Web.UI;
 using apcurium.MK.Common.Caching;
-using Funq;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Web.App_Start;
+using Microsoft.Practices.Unity;
 
 #endregion
 
@@ -10,52 +13,44 @@ namespace apcurium.MK.Web
 {
     public class PageBase : Page
     {
-        private Container _container;
-        private ISession _session;
-        private AuthUserSession _userSession;
+        private IUnityContainer _container;
+        private SessionEntity _userSession;
 
-        public Container Container
+        public IUnityContainer Container
         {
-            get { return _container ?? (_container = AppHostBase.Instance.Container); }
+            get { return _container ?? (_container = UnityConfig.GetConfiguredContainer()); }
         }
 
         protected string SessionKey
         {
             get
             {
-                var sessionId = SessionFeature.GetSessionId();
-                return sessionId == null ? null : SessionFeature.GetSessionKey(sessionId);
+                var sessionId = Request.Cookies.Get("ss-pid").SelectOrDefault(cookie => cookie.Value);
+
+                return "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
             }
         }
 
-        protected AuthUserSession UserSession
+        protected SessionEntity UserSession
         {
             get
             {
-                if (_userSession != null) return _userSession;
-                if (SessionKey != null)
-                    _userSession = Cache.Get<AuthUserSession>(SessionKey);
-                else
-                    SessionFeature.CreateSessionIds();
+                if (_userSession != null)
+                {
+                    return _userSession;
+                }
 
-                var unAuthorizedSession = new AuthUserSession();
-                return _userSession ?? (_userSession = unAuthorizedSession);
+                _userSession = SessionKey != null 
+                    ? Cache.Get<SessionEntity>(SessionKey) 
+                    : new SessionEntity();
+
+                return _userSession;
             }
         }
 
         public new ICacheClient Cache
         {
             get { return Container.Resolve<ICacheClient>(); }
-        }
-
-        public ISessionFactory SessionFactory
-        {
-            get { return Container.Resolve<ISessionFactory>(); }
-        }
-
-        public new ISession Session
-        {
-            get { return _session ?? (_session = SessionFactory.GetOrCreateSession()); }
         }
 
         public void ClearSession()

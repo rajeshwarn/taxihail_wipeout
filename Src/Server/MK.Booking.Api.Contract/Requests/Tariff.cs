@@ -3,22 +3,12 @@
 using System;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Security;
-#endif
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
-#if !CLIENT
-    [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
-#endif
     [Route("/admin/tariffs", "GET, POST")]
     [Route("/admin/tariffs/{Id}", "PUT, DELETE")]
     public class Tariff

@@ -1,7 +1,6 @@
 ﻿using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using RestSharp.Extensions;
 using Twilio;
 using apcurium.MK.Common.Extensions;
 

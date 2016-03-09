@@ -41,7 +41,7 @@ namespace apcurium.MK.Common.Extensions
             {
                 return FromJson<TResult>(source);
             }
-            catch
+            catch(Exception ex)
             {
                 return default(TResult);
             }

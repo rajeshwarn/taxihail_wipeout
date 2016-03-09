@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -9,7 +10,6 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
-using ServiceStack.Common.Extensions;
 
 #endregion
 

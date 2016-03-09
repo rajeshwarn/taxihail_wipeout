@@ -6,9 +6,6 @@ using apcurium.MK.Common;
 
 #if CLIENT
 using MK.Common.Exceptions;
-#else
-using apcurium.MK.Booking.Api.Client.Extensions;
-using ServiceStack.ServiceClient.Web;
 #endif
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -19,6 +16,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Tokenize;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {

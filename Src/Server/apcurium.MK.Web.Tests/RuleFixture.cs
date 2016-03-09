@@ -8,8 +8,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -58,12 +58,14 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        private static void CreateDefaultRules(RulesServiceClient sut)
+        private static async Task CreateDefaultRules(RulesServiceClient sut)
         {
-            if (sut.GetRules().None(r => (r.Category == RuleCategory.WarningRule) && (r.Type == RuleType.Default)))
+            var rules = await sut.GetRules();
+
+            if (rules.None(r => (r.Category == RuleCategory.WarningRule) && (r.Type == RuleType.Default)))
             {
                 // Default rate does not exist for this company 
-                sut.CreateRule(new Rule
+                await sut.CreateRule(new Rule
                 {
                     Type = RuleType.Default,
                     Category = RuleCategory.WarningRule,
@@ -77,10 +79,10 @@ namespace apcurium.MK.Web.Tests
                 });
             }
 
-            if (sut.GetRules().None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
+            if (rules.None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
             {
                 // Default rate does not exist for this company 
-                sut.CreateRule(new Rule
+                await sut.CreateRule(new Rule
                 {
                     Type = RuleType.Default,
                     Category = RuleCategory.DisableRule,
@@ -92,13 +94,13 @@ namespace apcurium.MK.Web.Tests
             }
         }
         
-        private void DeleteAllRules(RulesServiceClient sut)
+        private async Task DeleteAllRules(RulesServiceClient sut)
         {
-            var rules = sut.GetRules();
+            var rules = await sut.GetRules();
 
             foreach (var rule in rules)
             {
-                sut.DeleteRule(rule.Id);
+                await sut.DeleteRule(rule.Id);
             }
         }
 
@@ -212,32 +214,32 @@ namespace apcurium.MK.Web.Tests
         }
         
         [Test]
-        public void ActivateDeactivate()
+        public async Task ActivateDeactivate()
         {
             var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            sut.ActivateRule(_knownRuleId);
+            await sut.ActivateRule(_knownRuleId);
 
-            var rule = sut.GetRules().Single(x => x.Id == _knownRuleId);
+            var rule = (await sut.GetRules()).Single(x => x.Id == _knownRuleId);
             Assert.IsTrue(rule.IsActive);
 
-            sut.DeactivateRule(_knownRuleId);
-            rule = sut.GetRules().Single(x => x.Id == _knownRuleId);
+            await sut.DeactivateRule(_knownRuleId);
+            rule = (await sut.GetRules()).Single(x => x.Id == _knownRuleId);
             Assert.IsFalse(rule.IsActive);
 
-            sut.ActivateRule(_knownRuleId);
-            rule = sut.GetRules().Single(x => x.Id == _knownRuleId);
+            await sut.ActivateRule(_knownRuleId);
+            rule = (await sut.GetRules()).Single(x => x.Id == _knownRuleId);
             Assert.IsTrue(rule.IsActive);
         }
 
         [Test]
-        public void AddRule()
+        public async Task AddRule()
         {
             var ruleId = Guid.NewGuid();
             var activeFromDateRef = DateTime.Today.AddDays(14);
             var name = "AddRuleTest" + Guid.NewGuid();
 
             var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            sut.CreateRule(new Rule
+            await sut.CreateRule(new Rule
             {
                 Id = ruleId,
                 Name = name,
@@ -255,7 +257,7 @@ namespace apcurium.MK.Web.Tests
                 Message = "DisableRuleMessage"
             });
 
-            var rules = sut.GetRules();
+            var rules = await sut.GetRules();
 
             Assert.AreEqual(1, rules.Count(x => x.Id == ruleId));
             var rule = rules.Single(x => x.Id == ruleId);
@@ -279,7 +281,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void TestAllRulesPriorities()
+        public async Task TestAllRulesPriorities()
         {
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int) activeFromDateRef.DayOfWeek;
@@ -328,7 +330,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void TestDateRuleIsApplied()
+        public async Task TestDateRuleIsApplied()
         {
             var ruleId = Guid.NewGuid();
             var activeFromDateRef = DateTime.Now;
@@ -336,7 +338,7 @@ namespace apcurium.MK.Web.Tests
             var mess = "DateRuleTestMessage";
             var dayOfTheWeek = 1 << (int) DateTime.Now.DayOfWeek;
             var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            rules.CreateRule(new Rule
+            await rules.CreateRule(new Rule
             {
                 Id = ruleId,
                 Name = name,
@@ -381,7 +383,7 @@ namespace apcurium.MK.Web.Tests
         }
         
         [Test]
-        public async void TestDefaultRule_Disable_NoZone()
+        public async Task TestDefaultRule_Disable_NoZone()
         {
             var rule = CreateRule(r =>
             {
@@ -397,7 +399,7 @@ namespace apcurium.MK.Web.Tests
         }
         
         [Test]
-        public async void TestDefaultRule_Priority_NoZone()
+        public async Task TestDefaultRule_Priority_NoZone()
         {
             CreateRule(r =>
             {
@@ -442,7 +444,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void TestDefaultRule_ValidZone_With_Rule_ZoneRequired()
+        public async Task TestDefaultRule_ValidZone_With_Rule_ZoneRequired()
         {
             var rule = CreateRule(r =>
             {
@@ -459,7 +461,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void TestDefaultRule_NoZone_With_Rule_ZoneRequired()
+        public async Task TestDefaultRule_NoZone_With_Rule_ZoneRequired()
         {
             var rule = CreateRule(r =>
             {
@@ -481,7 +483,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void TestDefaultRule_NoZoneonDropoff_With_Rule_ZoneRequired()
+        public async Task TestDefaultRule_NoZoneonDropoff_With_Rule_ZoneRequired()
         {
             var rule = CreateRule(r =>
             {
@@ -725,12 +727,12 @@ namespace apcurium.MK.Web.Tests
         public async void TestWarningRuleIsApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            CreateDefaultRules(rules);
-            var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
+            await CreateDefaultRules(rules);
+            var rule = (await rules.GetRules()).Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
             rule.AppliesToFutureBooking = true;
             rule.IsActive = true;
-            rules.UpdateRule(rule);
+            await rules.UpdateRule(rule);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
@@ -761,9 +763,9 @@ namespace apcurium.MK.Web.Tests
         public async void TestWarningRuleIsNotApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            CreateDefaultRules(rules);
-            var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
-            rules.DeactivateRule(rule.Id);
+            await CreateDefaultRules(rules);
+            var rule = (await rules.GetRules()).Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
+            await rules.DeactivateRule(rule.Id);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
@@ -791,14 +793,14 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void UpdateRule()
+        public async Task UpdateRule()
         {
             var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var newMessage = "UpdateRuleTest" + Guid.NewGuid();
             var newName = "UpdateRuleTest" + Guid.NewGuid();
             var activeFromDateRef = DateTime.Today.AddDays(20);
 
-            var rule = sut.GetRules().Single(r => r.Id == _knownRuleId);
+            var rule = (await sut.GetRules()).Single(r => r.Id == _knownRuleId);
 
             rule.Message = newMessage;
             rule.Name = newName;
@@ -814,9 +816,9 @@ namespace apcurium.MK.Web.Tests
             rule.EndTime = new DateTime(2000, 1, 1, 21, 19, 9);
             rule.IsActive = false;
             
-            sut.UpdateRule(rule);
+            await sut.UpdateRule(rule);
 
-            rule = sut.GetRules().Single(r => r.Id == _knownRuleId);
+            rule = (await sut.GetRules()).Single(r => r.Id == _knownRuleId);
             Assert.AreEqual(newMessage, rule.Message);
             Assert.AreEqual(newName, rule.Name);
             Assert.AreEqual(true, rule.AppliesToFutureBooking);

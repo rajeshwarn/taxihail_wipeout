@@ -3,21 +3,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Http.Extensions;
 using AccountCharge = apcurium.MK.Booking.Api.Contract.Resources.AccountCharge;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-
-    //TODO MKTAXI-3370: Refactor this to use async/await
     public class AdministrationServiceClient : BaseServiceClient
     {
         public AdministrationServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService)
@@ -25,132 +23,125 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public void GrantAdminAccess(GrantAdminRightRequest request)
+        public Task GrantAdminAccess(GrantAdminRightRequest request)
         {
-            var req = string.Format("/account/grantadmin");
-            Client.Put<string>(req, request);
+            var req = "/account/grantadmin";
+            return Client.Put(req, request);
         }
 
-        public void GrantSupportAccess(GrantSupportRightRequest request)
+        public Task GrantSupportAccess(GrantSupportRightRequest request)
         {
-            var req = string.Format("/account/grantsupport");
-            Client.Put<string>(req, request);
+            var req = "/account/grantsupport";
+            return Client.Put(req, request);
         }
 
-        public IList<Address> GetDefaultFavoriteAddresses()
+        public Task<IList<Address>> GetDefaultFavoriteAddresses()
         {
-            var req = string.Format("/admin/addresses");
-            var addresses = Client.Get<IList<Address>>(req);
-            return addresses;
+            var req = "/admin/addresses";
+            return Client.Get(req).Deserialize<IList<Address>>();
         }
 
-        public void AddDefaultFavoriteAddress(DefaultFavoriteAddress address)
+        public Task AddDefaultFavoriteAddress(DefaultFavoriteAddress address)
         {
-            var req = string.Format("/admin/addresses");
-            Client.Post<string>(req, address);
+            var req = "/admin/addresses";
+            return Client.Post(req, address);
         }
 
-        public void UpdateDefaultFavoriteAddress(DefaultFavoriteAddress address)
+        public Task UpdateDefaultFavoriteAddress(DefaultFavoriteAddress address)
         {
             var req = string.Format("/admin/addresses/{0}", address.Id);
-            Client.Put<string>(req, address);
+            return Client.Put(req, address);
         }
 
-        public void RemoveDefaultFavoriteAddress(Guid addressId)
+        public Task RemoveDefaultFavoriteAddress(Guid addressId)
         {
             var req = string.Format("/admin/addresses/{0}", addressId);
-            Client.Delete<string>(req);
+            return Client.Delete(req);
         }
 
 
-        public void AddPopularAddress(PopularAddress address)
+        public Task AddPopularAddress(PopularAddress address)
         {
-            var req = string.Format("/admin/popularaddresses");
-            Client.Post<string>(req, address);
+            var req = "/admin/popularaddresses";
+            return Client.Post(req, address);
         }
 
-        public void UpdatePopularAddress(PopularAddress address)
+        public Task UpdatePopularAddress(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses/{0}", address.Id);
-            Client.Put<string>(req, address);
+            return Client.Put(req, address);
         }
 
-        public void RemovePopularAddress(Guid addressId)
+        public Task RemovePopularAddress(Guid addressId)
         {
             var req = string.Format("/admin/popularaddresses/{0}", addressId);
-            Client.Delete<string>(req);
+            return Client.Delete(req);
         }
 
-        public IList<Address> GetPopularAddresses()
+        public Task<IList<Address>> GetPopularAddresses()
         {
-            var req = string.Format("/popularaddresses");
-            var addresses = Client.Get<IList<Address>>(req);
-            return addresses;
+            var req = "/popularaddresses";
+            return Client.Get(req).Deserialize<IList<Address>>();
         }
 
-        public IEnumerable GetAllAppSettings()
+        public Task<IEnumerable> GetAllAppSettings()
         {
-            var req = string.Format("/settings");
-            var address = Client.Get<IEnumerable>(req);
-            return address;
+            var req = "/settings";
+            return Client.Get(req).Deserialize<IEnumerable>();
         }
 
-        public void AddOrUpdateAppSettings(ConfigurationsRequest appReq)
+        public Task AddOrUpdateAppSettings(ConfigurationsRequest appReq)
         {
-            var req = string.Format("/settings");
-            Client.Post<string>(req, appReq);
+            var req = "/settings";
+            return Client.Post(req, appReq);
         }
 
-        public string CreateAccountCharge(AccountChargeRequest request)
+        public Task<string> CreateAccountCharge(AccountChargeRequest request)
         {
-            var req = string.Format("/admin/accountscharge");
-            return Client.Post<string>(req, request);
+            var req = "/admin/accountscharge";
+            return Client.Post(req, request).Deserialize<string>();
         }
 
-        public AccountCharge[]  GetAccountsCharge()
+        public Task<AccountCharge[]>  GetAccountsCharge()
         {
-            var req = string.Format("/admin/accountscharge");
-            return Client.Get<AccountCharge[]>(req);
+            var req = "/admin/accountscharge";
+            return Client.Get(req).Deserialize<AccountCharge[]>();
         }
 
-        public AccountCharge GetAccountCharge(string accountNumber)
+        public Task<AccountCharge> GetAccountCharge(string accountNumber)
         {
             var req = string.Format("/admin/accountscharge/" + accountNumber);
-            var result = Client.Get<AccountCharge>(req);
-            return result;
+            return Client.Get(req).Deserialize<AccountCharge>();
         }
 
-        public void UpdateAccountCharge(AccountChargeRequest request)
+        public Task UpdateAccountCharge(AccountChargeRequest request)
         {
-            var req = string.Format("/admin/accountscharge");
-            Client.Put<string>(req, request);
+            var req = "/admin/accountscharge";
+            return Client.Put(req, request);
         }
 
-        public void DeleteAccountCharge(string accountNumber)
+        public Task DeleteAccountCharge(string accountNumber)
         {
             var req = string.Format("/admin/accountscharge/" + accountNumber);
-            Client.Delete<string>(req);
+            return Client.Delete(req);
         }
 
-        public IbsChargeAccount GetChargeAccount(string accountNumber, string customerNumber)
+        public Task<IbsChargeAccount> GetChargeAccount(string accountNumber, string customerNumber)
         {
             var req = string.Format("/admin/ibschargeaccount/{0}/{1}", accountNumber, customerNumber);
-            var result = Client.Get<IbsChargeAccount>(req);
-            return result;
+            return Client.Get(req).Deserialize<IbsChargeAccount>();
         }
 
-        public IbsChargeAccountValidation ValidateChargeAccount(IbsChargeAccountValidationRequest validationRequest)
+        public Task<IbsChargeAccountValidation> ValidateChargeAccount(IbsChargeAccountValidationRequest validationRequest)
         {
-            var req = string.Format("/admin/ibschargeaccount/");
-            var result = Client.Post<IbsChargeAccountValidation>(req, validationRequest);
-            return result;
+            var req = "/admin/ibschargeaccount/";
+            return Client.Post(req, validationRequest).Deserialize<IbsChargeAccountValidation>();
         }
 
-        public IEnumerable<IbsChargeAccount> GetAllChargeAccount()
+        public Task<IEnumerable<IbsChargeAccount>> GetAllChargeAccount()
         {
-            var req = string.Format("/admin/ibschargeaccount/all");
-            var result = Client.Get<IEnumerable<IbsChargeAccount>>(req);
-            return result;
+            var req = "/admin/ibschargeaccount/all";
+            return Client.Get(req).Deserialize<IEnumerable<IbsChargeAccount>>();
         }
     }
 }

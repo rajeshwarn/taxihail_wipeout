@@ -2,8 +2,8 @@
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Extensions;
 using NUnit.Framework;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -52,8 +52,8 @@ namespace apcurium.MK.Web.Tests
         {
             var dict = new Dictionary<string, string> {{"key", "value"}};
 
-            var serialization = JsonSerializer.SerializeToString(dict);
-            var desrializedDict = JsonSerializer.DeserializeFromString<Dictionary<string, string>>(serialization);
+            var serialization = dict.ToJson();
+            var desrializedDict = serialization.FromJsonSafe<Dictionary<string, string>>();
 
             Assert.That(desrializedDict.Count, Is.EqualTo(1));
 

@@ -10,6 +10,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
 
@@ -34,7 +35,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Index()
         {
-            if (AuthSession.IsAuthenticated)
+            if (AuthSession.IsAuthenticated())
             {
                 try
                 {

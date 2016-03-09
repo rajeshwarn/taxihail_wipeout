@@ -7,12 +7,10 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
+using MK.Common.Exceptions;
 
 #if CLIENT
 using MK.Common.Exceptions;
-#else
-using apcurium.MK.Booking.Api.Client.Extensions;
-using ServiceStack.ServiceClient.Web;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.Payments

@@ -10,8 +10,6 @@ using apcurium.MK.Common.Extensions;
 using MK.Common.DummyServiceStack;
 #if CLIENT
 using apcurium.MK.Common.Extensions;
-#else
-using apcurium.MK.Booking.Api.Client.Extensions;
 #endif
 
 #endregion

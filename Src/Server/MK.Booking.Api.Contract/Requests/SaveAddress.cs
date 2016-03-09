@@ -3,13 +3,11 @@
 using System;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [Route("/account/addresses", "POST")]
     [Route("/account/addresses/{Id}", "PUT, DELETE")]
     public class SaveAddress

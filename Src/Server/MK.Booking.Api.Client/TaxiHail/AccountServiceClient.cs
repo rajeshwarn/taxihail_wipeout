@@ -10,11 +10,6 @@ using MK.Common.Configuration;
 using System.Linq;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
-
-
-#if !CLIENT
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -31,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<Account> GetMyAccount()
         {
-            var result = Client.GetAsync<Account>("/account", logger: Logger);
+            var result = Client.GetAsync<Account>("/accounts", logger: Logger);
             return result;
         }
 
@@ -41,24 +36,24 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		/// <returns></returns>
 		public Task<CurrentAccountPhoneResponse> GetAccountPhoneNumber(CurrentAccountPhoneRequest currentAccountPhoneRequest)
 		{
-			var uri = string.Format("/account/phone/{0}", currentAccountPhoneRequest.Email);
+			var uri = string.Format("/accounts/phone/{0}", currentAccountPhoneRequest.Email);
             return Client.GetAsync<CurrentAccountPhoneResponse>(uri, logger: Logger);
 		}
 
         public Task RegisterAccount(RegisterAccount account)
         {
-            return Client.PostAsync<Account>("/account/register", account, logger: Logger);
+            return Client.PostAsync<Account>("/accounts/register", account, logger: Logger);
         }
 
         public Task GetConfirmationCode(ConfirmationCodeRequest request)
         {
-            var uri = string.Format("/account/getconfirmationcode/{0}/{1}/{2}", request.Email, request.CountryCode, request.PhoneNumber);
+            var uri = string.Format("/accounts/getconfirmationcode/{0}/{1}/{2}", request.Email, request.CountryCode, request.PhoneNumber);
             return Client.GetAsync<string>(uri, logger: Logger);
         }
 
         public Task ConfirmAccount(ConfirmAccountRequest request)
         {
-			var uri = string.Format ("/account/confirm/{0}/{1}/{2}", 
+			var uri = string.Format ("/accounts/confirm/{0}/{1}/{2}", 
 									request.EmailAddress, 
 									request.ConfirmationToken, 
 									request.IsSMSConfirmation);
@@ -67,44 +62,44 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task UpdateBookingSettings(BookingSettingsRequest settings)
         {
-            return Client.PutAsync<string>("/account/bookingsettings", settings, logger: Logger);
+            return Client.PutAsync<string>("/accounts/bookingsettings", settings, logger: Logger);
         }
 
         public Task<IEnumerable<Address>> GetFavoriteAddresses()
         {
-            var req = string.Format("/account/addresses");
+            var req = "/accounts/addresses";
             var addresses = Client.GetAsync<IEnumerable<Address>>(req, logger: Logger);
             return addresses;
         }
 
         public Task<IList<Address>> GetHistoryAddresses(Guid accountId)
         {
-            var req = string.Format("/account/addresses/history");
+            var req = "/accounts/addresses/history";
             var addresses = Client.GetAsync<IList<Address>>(req, logger: Logger);
             return addresses;
         }
 
         public Task AddFavoriteAddress(SaveAddress address)
         {
-            var req = string.Format("/account/addresses");
+            var req = "/accounts/addresses";
             return Client.PostAsync<string>(req, address, logger: Logger);
         }
 
         public Task UpdateFavoriteAddress(SaveAddress address)
         {
-            var req = string.Format("/account/addresses/{0}", address.Id);
+            var req = string.Format("/accounts/addresses/{0}", address.Id);
             return Client.PutAsync<string>(req, address, logger: Logger);
         }
 
         public Task RemoveFavoriteAddress(Guid addressId)
         {
-            var req = string.Format("/account/addresses/{0}", addressId);
+            var req = string.Format("/accounts/addresses/{0}", addressId);
             return Client.DeleteAsync<string>(req, logger: Logger);
         }
 
         public Task ResetPassword(string emailAddress)
         {
-            var req = string.Format("/account/resetpassword/{0}", emailAddress);
+            var req = string.Format("/accounts/resetpassword/{0}", emailAddress);
             return Client.PostAsync<string>(req, new object(), logger: Logger);
         }
 
@@ -117,28 +112,28 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task RemoveAddress(Guid addressId)
         {
-            var req = string.Format("/account/addresses/history/{0}", addressId);
+            var req = string.Format("/accounts/addresses/history/{0}", addressId);
             return Client.DeleteAsync<string>(req, logger: Logger);
         }
 
         public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
-            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards", logger: Logger);
+            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/accounts/creditcards", logger: Logger);
         }
 
         public Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest)
         {
-            return Client.PostAsync<string>("/account/creditcard/updatedefault", defaultCreditCardRequest, logger: Logger);
+            return Client.PostAsync<string>("/accounts/creditcard/updatedefault", defaultCreditCardRequest, logger: Logger);
         }
 
         public Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest)
         {
-            return Client.PostAsync<string>("/account/creditcard/updatelabel", updateCreditCardLabelRequest, logger: Logger);
+            return Client.PostAsync<string>("/accounts/creditcard/updatelabel", updateCreditCardLabelRequest, logger: Logger);
         }
 
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {
-            return Client.PostAsync<string>("/account/creditcards", creditCardRequest, logger: Logger);
+            return Client.PostAsync<string>("/accounts/creditcards", creditCardRequest, logger: Logger);
         }
 
         public async Task UpdateCreditCard(CreditCardRequest creditCardRequest)
@@ -146,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             // unregister previous card(s) except the current token in case the token did not change
             await UnregisterTokenizedCards (creditCardRequest.CreditCardId);
 
-            await Client.PostAsync<string> ("/account/creditcards", creditCardRequest, logger: Logger);
+            await Client.PostAsync<string> ("/accounts/creditcards", creditCardRequest, logger: Logger);
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(Guid accountId)
@@ -177,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             await UnregisterTokenizedCards (creditCardId, creditCardToken);
 
-            var req = string.Format("/account/creditcards/{0}", creditCardId);
+            var req = string.Format("/accounts/creditcards/{0}", creditCardId);
             return await Client.DeleteAsync<CreditCardDetails>(req, logger: Logger);
         }
 
@@ -208,25 +203,25 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<Account> GetTestAccount(int index)
         {
-            var result = Client.GetAsync<Account>("/account/test/" + index, logger: Logger);
+            var result = Client.GetAsync<Account>("/accounts/test/" + index, logger: Logger);
             return result;
         }
 
         public Task<Account> GetAdminTestAccount(int index)
         {
-            var result = Client.GetAsync<Account>("/account/test/admin/" + index, logger: Logger);
+            var result = Client.GetAsync<Account>("/accounts/test/admin/" + index, logger: Logger);
             return result;
         }
 
         public Task<Account> CreateTestAccount()
         {
-            var result = Client.GetAsync<Account>("/account/test/" + Guid.NewGuid(), logger: Logger);
+            var result = Client.GetAsync<Account>("/accounts/test/" + Guid.NewGuid(), logger: Logger);
             return result;
         }
 
         public Task<Account> CreateTestAdminAccount()
         {
-            var result = Client.GetAsync<Account>("/account/test/admin/" + Guid.NewGuid(), logger: Logger);
+            var result = Client.GetAsync<Account>("/accounts/test/admin/" + Guid.NewGuid(), logger: Logger);
             return result;
         }
     }

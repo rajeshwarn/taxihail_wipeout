@@ -5,8 +5,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using MK.Common.Exceptions;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {

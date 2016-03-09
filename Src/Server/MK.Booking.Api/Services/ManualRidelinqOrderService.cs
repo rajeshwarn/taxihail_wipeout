@@ -95,12 +95,14 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (creditCard == null)
 		        {
-			        throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_NoCardOnFile.ToString(), _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
+                    //TODO MKTAXI-3918: handle this
+                    throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_NoCardOnFile.ToString()/*, _resources.Get("ManualRideLinq_NoCardOnFile", account.Language)*/);
 		        }
 
 		        if (creditCard.IsDeactivated)
 		        {
-			        throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(), _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
+                    //TODO MKTAXI-3918: handle this
+                    throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString()/*, _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language)*/);
 		        }
 
 		        // Send pairing request to CMT API

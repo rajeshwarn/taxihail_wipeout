@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -11,19 +11,13 @@ using MK.Common.Configuration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using MK.Common.Exceptions;
-#if CLIENT
-using MK.Common.Exceptions;
-using System.Net.Http;
-#else
-using apcurium.MK.Booking.Api.Client.Extensions;
-#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class CompanyServiceClient : BaseServiceClient
     {
-        private const string CacheKey_Terms = "Terms";
-        private const string CacheKey_TermsVersion = "TermsVersion";
+        private const string CacheKeyTerms = "Terms";
+        private const string CacheKeyTermsVersion = "TermsVersion";
 
         private readonly ICacheService _cacheService;
 
@@ -33,7 +27,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _cacheService = cacheService;
         }
 
-#if CLIENT
         private void HandleResponseHeader(HttpResponseMessage response)
         {
 			try 
@@ -43,18 +36,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				if (version.HasValueTrimmed())
 				{
 					//put in the cache the etag
-					_cacheService.Set(CacheKey_TermsVersion, version);
+					_cacheService.Set(CacheKeyTermsVersion, version);
 				}
 			}
 			catch
 			{
+			    // ignored
 			}
         }
 
         private void AddVersionInformation(HttpClient client)
         {
             //get the etag from the cache and add it to the headers
-            var version = _cacheService.Get<string>(CacheKey_TermsVersion);
+            var version = _cacheService.Get<string>(CacheKeyTermsVersion);
             if (version == null)
             {
                 return;
@@ -67,49 +61,20 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             client.DefaultRequestHeaders.TryAddWithoutValidation("If-None-Match", version);
         }
-#else
-        private void HandleResponseHeader(HttpWebResponse response)
-        {
-			try 
-			{
-				var version = response.Headers.GetValues(HttpHeaders.ETag).FirstOrDefault();
-				if (version.HasValueTrimmed())
-				{
-					//put in the cache the etag
-					_cacheService.Set(CacheKey_TermsVersion, version);
-				}
-			}
-			catch 
-			{
-			}
-        }
-        private void AddVersionInformation(HttpWebRequest request)
-        {
-            //get the etag from the cache and add it to the headers
-            var version = _cacheService.Get<string>(CacheKey_TermsVersion);
-            if (version != null)
-            {
-                request.Headers.Set(HttpHeaders.IfNoneMatch, version);
-            }
-        }
-#endif
+
         public async Task<TermsAndConditions> GetTermsAndConditions()
         {
             try
             {
                 TermsAndConditions termsAndConditions;
-#if CLIENT
-                using(var client = Client)
+
+                using (var client = Client)
                 {
                     AddVersionInformation(client);
                     termsAndConditions = await client.GetAsync<TermsAndConditions>("/termsandconditions", HandleResponseHeader);
                 }
-#else
-                Client.LocalHttpWebRequestFilter += AddVersionInformation;
-                Client.LocalHttpWebResponseFilter += HandleResponseHeader;
-                termsAndConditions = await Client.GetAsync<TermsAndConditions>("/termsandconditions");
-#endif
-                _cacheService.Set(CacheKey_Terms, termsAndConditions);
+
+                _cacheService.Set(CacheKeyTerms, termsAndConditions);
 
                 return termsAndConditions;
             }
@@ -136,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             //get the object from the cache and deserialize
-            var terms = _cacheService.Get<TermsAndConditions>(CacheKey_Terms);
+            var terms = _cacheService.Get<TermsAndConditions>(CacheKeyTerms);
 
             if (terms == null)
             {
