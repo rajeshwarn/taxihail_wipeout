@@ -1601,5 +1601,8 @@
     <AndroidResource Include="..\Android\Resources\Layout\Control_BaseRate.axml">
       <Link>Resources\Layout\Control_BaseRate.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\textview_rounded_border.xml">
+      <Link>Resources\Drawable\textview_rounded_border.xml</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>
