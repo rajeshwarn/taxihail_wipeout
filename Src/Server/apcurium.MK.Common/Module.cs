@@ -3,6 +3,7 @@ using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Services;
 using Microsoft.Practices.Unity;
 using PCLCrypto;
 using ServiceStack.CacheAccess;
@@ -36,6 +37,7 @@ namespace apcurium.MK.Common
             container.RegisterInstance<ICryptographicEngine>(WinRTCrypto.CryptographicEngine);
             container.RegisterInstance<ISymmetricKeyAlgorithmProviderFactory>(WinRTCrypto.SymmetricKeyAlgorithmProvider);
             container.RegisterInstance<IHashAlgorithmProviderFactory>(WinRTCrypto.HashAlgorithmProvider);
+            container.RegisterType<ICryptographyService, CryptographyService>();
         }
     }
 }
