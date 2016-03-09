@@ -3,8 +3,8 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
