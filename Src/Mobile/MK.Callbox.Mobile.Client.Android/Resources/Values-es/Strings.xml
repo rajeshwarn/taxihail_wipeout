@@ -329,7 +329,7 @@
   <string name="DriverBonusDescription">Ofertar un incentivo garantizado a los conductores puede incrementar las probabilidades de que lo atienda una unidad.</string>
   <string name="DriverBonusWarningTitle">Confirmar el Incentivo del Conductor</string>
   <string name="DriverBonusWarningMessage">El monto de incenctivo es adicional a la propina. Será cargado automaticamente al final del viaje. Continuar?</string>
-  <string name="Submit">Pagar en Efectivo y Terminar</string>
+  <string name="Submit">Terminar</string>
   <string name="ViewRatingBtn">Ver evaluaciones</string>
   <string name="View_BookRating">Califique su servicio</string>
   <string name="ResetPasswordSucessMessage">La contraseña ha sido restablecida exitosamente</string>
@@ -374,7 +374,7 @@
   <string name="View_CreditCard">Pago</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardRemoveErrorTitle">No puede eliminar la tarjeta de crédito</string>
-  <string name="CreditCardRemoveErrorMessage">Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes</string>
+  <string name="CreditCardRemoveErrorMessage">Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">No se puede eliminar tu tarjeta de crédito cuando una reservación está programada o en curso.</string>
   <string name="CreditCardLabel">Etiqueta</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
@@ -795,6 +795,6 @@
   <string name="ServiceErrorResetPassword_TwitterAccount">Este email esta asociado a una cuenta de Twitter. Por favor ingrese via Twitter.</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Su contraseña y confirmación no concuerdan</string>
   <string name="Notification_NoShowPush">Pasajero no presentado</string>
-  <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="CreditCardInvalidCrediCardTypeAmex">Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
 </resources>

@@ -15,7 +15,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -44,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private bool _isFromPromotionsView;
 		private bool _isFromCreditCardListView;
-		private bool _isAddingNew;
 		private Guid _creditCardId;
 		private int _numberOfCreditCards;
 		private string _kountSessionId;
@@ -78,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			bool hasPaymentToSettle = false, 
 			bool isFromPromotionsView = false, 
 			bool isFromCreditCardListView = false, 
-			bool isAddingNew = false, 
 			Guid creditCardId = default(Guid))
 		{
 			ShowInstructions = showInstructions;
@@ -86,7 +83,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			_isFromPromotionsView = isFromPromotionsView;
 			_isFromCreditCardListView = isFromCreditCardListView;
-			_isAddingNew = isAddingNew;
 			_creditCardId = creditCardId;
 
 		    _hasPaymentToSettle = hasPaymentToSettle;
@@ -149,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
 				}
 
-				if (creditCard == null || _isAddingNew)
+				if (creditCard == null)
 				{
 					IsAddingNewCard = true;
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
@@ -382,6 +378,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					_isAddingNewCard = value;
 					RaisePropertyChanged();
+                    RaisePropertyChanged(() => CanScanCreditCard);
+                    RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
 				}
 			}
@@ -450,7 +448,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return _isAddingNew || IsMandatory;
+				return IsAddingNewCard && Settings.CardIOToken.HasValueTrimmed();
 			}
 		}
 
@@ -458,7 +456,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return !_isAddingNew && _isFromCreditCardListView && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
+				return !IsAddingNewCard && _isFromCreditCardListView && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
 			}
 		}
 
@@ -646,7 +644,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				Data.CreditCardCompany = CreditCardTypeName;
 
-				if(!Data.CCV.HasValue() && Data.Label != _originalLabel && !_isAddingNew)
+				if(!Data.CCV.HasValue() && Data.Label != _originalLabel && !IsAddingNewCard)
 				{
 					using(this.Services().Message.ShowProgress())
 					{

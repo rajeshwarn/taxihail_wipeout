@@ -846,4 +846,7 @@
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Lo sentimos, la reservación de viajes no esta disponible</value>
   </data>
+  <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
+    <value>You must provide a country code, ex: CA, US, ...</value>
+  </data>
 </root>
