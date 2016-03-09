@@ -595,7 +595,6 @@
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
-    <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -604,7 +603,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
-    <Compile Include="Controls\Widgets\BaseRateControl.cs" />
     <AndroidResource Include="Resources\Layout\Control_BaseRate.axml" />
     <AndroidResource Include="Resources\Drawable\down_arrow_light.png" />
     <AndroidResource Include="Resources\Drawable\up_arrow_light.png" />
@@ -629,6 +627,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\values-nl\String.xml" />
+    <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

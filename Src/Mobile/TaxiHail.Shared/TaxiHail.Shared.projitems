@@ -152,6 +152,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Message\CustomToast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\ConnectivityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Activities\DebugActivity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\VehicleTypeSubControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\BaseRateControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

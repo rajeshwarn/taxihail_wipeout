@@ -1580,5 +1580,26 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_Debug.axml">
       <Link>Resources\Layout\View_Debug.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\down_arrow_light.png">
+      <Link>Resources\Drawable\down_arrow_light.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\up_arrow_light.png">
+      <Link>Resources\Drawable\up_arrow_light.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\down_arrow_light.png">
+      <Link>Resources\drawable-xhdpi\down_arrow_light.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\up_arrow_light.png">
+      <Link>Resources\drawable-xhdpi\up_arrow_light.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\luxury_progress.png">
+      <Link>Resources\Drawable\luxury_progress.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleTypeSub.xml">
+      <Link>Resources\Layout\Control_VehicleTypeSub.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_BaseRate.axml">
+      <Link>Resources\Layout\Control_BaseRate.axml</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>
