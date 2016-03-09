@@ -18,6 +18,8 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsPaymentOutOfAppDisabled = OutOfAppPaymentDisabled.None;
             AskForCVVAtBooking = false;
             DisableAMEX = false;
+            DisableVisaMastercard = false;
+            DisableDiscover = false;
             CancelOrderOnUnpair = false;
             CreditCardIsMandatory = false;
     }
@@ -48,6 +50,10 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool AskForCVVAtBooking { get; set; }
 
         public bool DisableAMEX { get; set; }
+
+        public bool DisableVisaMastercard { get; set; }
+
+        public bool DisableDiscover { get; set; }
 
         public bool CancelOrderOnUnpair { get; set; }
 

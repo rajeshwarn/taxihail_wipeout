@@ -84,6 +84,8 @@
             TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
             TaxiHail.parameters.askForCVVAtBooking = <%: AskForCVVAtBooking ? "true" : "false" %>;
             TaxiHail.parameters.disableAMEX = <%: DisableAMEX ? "true" : "false" %>;
+            TaxiHail.parameters.disableVisaMastercard = <%: DisableVisaMastercard ? "true" : "false" %>;
+            TaxiHail.parameters.disableDiscover = <%: DisableDiscover ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
