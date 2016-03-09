@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -30,15 +31,15 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _blacklistedTaxiCompany;
 
         const string BaseUrl = "http://localhost/CustomerPortal.Web/";
-
-
+        
         [SetUp]
         public void Setup()
         {
             NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
             CompanyRepository = new InMemoryRepository<Company>();
+            MarketRepository = new InMemoryRepository<Market>();
 
-            Sut = new NetworkApiController(NetworkRepository, CompanyRepository);
+            Sut = new NetworkApiController(NetworkRepository, CompanyRepository, MarketRepository);
 
             _chrisTaxi = new TaxiHailNetworkSettings()
             {
@@ -46,11 +47,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 WhiteListedFleetIds = "123456,564321", // And excluding PilouTaxi and TomTaxi
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.513314} // MTL BTM Right
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
@@ -65,12 +61,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 FleetId = 123456,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.41129,Longitude = -73.51331} // MTL BTM Right
-
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
@@ -84,12 +74,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
-                FleetId = 564321,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.474307,Longitude = -73.58412} // Home
-                }
+                FleetId = 564321
             };
 
             _tomTaxi = new TaxiHailNetworkSettings()
@@ -99,11 +84,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "CHI",
                 IsInNetwork = true,
                 FleetId = 99999,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 5000000,Longitude = -73.656990},  
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.43874,Longitude = -73.58412}
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -119,11 +99,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "NYC",
                 FleetId = 44444,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.496042}
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -138,12 +113,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
-                BlackListedFleetIds = "10101019, 666, 010101",
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.498094,Longitude = -73.62233} //Station cote des neiges
-                }
+                BlackListedFleetIds = "10101019, 666, 010101"
             };
 
             _blacklistedTaxi = new TaxiHailNetworkSettings()
@@ -151,17 +121,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TaxiBlacklisted",
                 IsInNetwork = true,
                 Market = "SYD",
-                FleetId = 666,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
-                }
+                FleetId = 666
             };
            
-
-
-
             _chrisTaxiCompany = new Company()
             {
                 Id = "ChrisTaxi",
@@ -266,8 +228,27 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             CompanyRepository.Add(_pilouTaxiCompany);
             CompanyRepository.Add(_lastTaxiCompany);
             CompanyRepository.Add(_blacklistedTaxiCompany);
+
+            MarketRepository.DeleteAll();
+            MarketRepository.Add(new Market { Id = Guid.NewGuid().ToString(), Name = "MTL", Region = new MapRegion {
+                    CoordinateStart = new MapCoordinate {Latitude = 45.514466, Longitude = -73.846313}, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate {Latitude = 45.411296, Longitude = -73.513314} // MTL BTM Right
+                }});
+            MarketRepository.Add(new Market { Id = Guid.NewGuid().ToString(), Name = "CHI", Region = new MapRegion {
+                    CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.474307, Longitude = -73.58412 } // Home
+                }});
+            MarketRepository.Add(new Market { Id = Guid.NewGuid().ToString(), Name = "NYC", Region = new MapRegion {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.496042 }
+                }});
+            MarketRepository.Add(new Market { Id = Guid.NewGuid().ToString(), Name = "SYD", Region = new MapRegion {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                }});
         }
 
+        public InMemoryRepository<Market> MarketRepository { get; set; }
         public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
         public InMemoryRepository<Company> CompanyRepository { get; set; }
         public NetworkApiController Sut { get; set; }

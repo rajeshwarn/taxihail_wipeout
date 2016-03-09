@@ -133,7 +133,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Longitude = longitude
             };
 
-            var markets = _marketRepository.ToArray();
+            var markets = _marketRepository.Collection.FindAll().ToArray();
 
             var marketOfTheUserPosition = markets.FirstOrDefault(x => x.Region.Contains(userPosition));
             if (marketOfTheUserPosition != null)
