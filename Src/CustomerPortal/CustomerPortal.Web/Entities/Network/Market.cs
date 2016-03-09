@@ -14,6 +14,7 @@ namespace CustomerPortal.Web.Entities.Network
             Vehicles = new List<Vehicle>();
             DispatcherSettings = new DispatcherSettings();
             MarketTariff = new Tariff();
+            Region = new MapRegion();
         }
 
         public string Id { get; set; }
@@ -22,7 +23,6 @@ namespace CustomerPortal.Web.Entities.Network
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }

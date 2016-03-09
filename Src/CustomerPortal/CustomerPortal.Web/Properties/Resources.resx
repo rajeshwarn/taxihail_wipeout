@@ -236,10 +236,10 @@ These keywords will be used by the store to find your app. For example when a cu
     <value>Unique Device Identification Number (UDID)</value>
   </data>
   <data name="CoordinateStartTaxiHailNetwork" xml:space="preserve">
-    <value>Start</value>
+    <value>Lower Left</value>
   </data>
   <data name="CoordinateEndTaxiHailNetwork" xml:space="preserve">
-    <value>End</value>
+    <value>Upper Right</value>
   </data>
   <data name="RegionTaxiHailNetworkLabel" xml:space="preserve">
     <value>Region</value>

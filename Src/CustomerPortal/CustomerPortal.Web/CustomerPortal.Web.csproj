@@ -510,6 +510,7 @@
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\maplabel.js" />
     <Content Include="Views\Shared\_SettingsLayout.cshtml" />
     <Content Include="Areas\Admin\SettingsDataSrc\Common.json" />
     <Content Include="Areas\Admin\SettingsDataSrc\MKWebDev.json" />
