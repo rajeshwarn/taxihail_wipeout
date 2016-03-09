@@ -16,10 +16,7 @@ namespace CustomerPortal.Web.Test.Helpers.Repository
     {
         private readonly List<T> _db = new List<T>();
 
-        public MongoCollection<T> Collection
-        {
-            get;
-        }
+        public MongoCollection<T> Collection { get; private set; }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
