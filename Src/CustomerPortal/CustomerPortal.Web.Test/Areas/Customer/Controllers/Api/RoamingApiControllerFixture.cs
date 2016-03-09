@@ -478,13 +478,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     }},
                 new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 }, Region = new MapRegion
                     {
-                        CoordinateStart = new MapCoordinate { Latitude = 10, Longitude = -73.889451 },
-                        CoordinateEnd = new MapCoordinate { Latitude = 12, Longitude = -73.496042 }
+                        CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
                     }},
                 new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 }, Region = new MapRegion
                     {
-                        CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                        CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                        CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
                     }},
                 new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 }, Region = new MapRegion
                     {
