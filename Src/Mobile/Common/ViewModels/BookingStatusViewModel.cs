@@ -56,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _didCheckForAppRating;
 
+		private bool _showCallDriver;
+
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public BookingStatusViewModel(
@@ -89,6 +91,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
             _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
+
+			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+		}
+
+		private void MarketChanged(MarketSettings marketSettings)
+		{
+			_showCallDriver = marketSettings.ShowCallDriver;
 		}
 
         /// <summary>
@@ -595,7 +604,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				return Settings.ShowCallDriver 
+				return _showCallDriver
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
