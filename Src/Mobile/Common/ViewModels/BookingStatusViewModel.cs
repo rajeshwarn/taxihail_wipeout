@@ -98,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private void MarketChanged(MarketSettings marketSettings)
 		{
 			_showCallDriver = marketSettings.ShowCallDriver;
+			RaisePropertyChanged(() => IsCallTaxiVisible);
 		}
 
         /// <summary>
