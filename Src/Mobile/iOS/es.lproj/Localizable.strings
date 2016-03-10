@@ -132,7 +132,7 @@
 "SendErrorLogButton"="Send error log";
 "Version"="v{0}";
 "ServerInfo"="({0} v{1})";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "RideSettingsCannotLoadListTitle"="Server error";
 "RideSettingsName"="Name";

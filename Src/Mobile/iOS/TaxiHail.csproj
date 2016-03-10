@@ -693,7 +693,6 @@
     <BundleResource Include="Resources\down_arrow_light%402x.png" />
     <BundleResource Include="Resources\up_arrow_light.png" />
     <BundleResource Include="Resources\up_arrow_light%402x.png" />
-    <Compile Include="Views\ExtendedSplashScreen.cs" />
     <BundleResource Include="Resources\blackcar_icon.png" />
     <BundleResource Include="Resources\blackcar_icon%402x.png" />
     <Compile Include="Views\BookingBottomBar\BookingBarAirportBooking.cs" />
