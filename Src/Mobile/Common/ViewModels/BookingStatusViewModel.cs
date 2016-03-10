@@ -493,33 +493,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
         {
             if (manualRideLinqDetails == null)
-		{
-                return;
-		}
-
-            try
-		{
-			ManualRideLinqDetail = manualRideLinqDetails;
-
-			ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
-
-			var localize = this.Services().Localize;
-
-			if (!_canAutoFollowTaxi)
 			{
-				_canAutoFollowTaxi = true;
-				_autoFollowTaxi = true;
+                return;
 			}
 
-		    if (manualRideLinqDetails.PairingError.HasValue())
-		    {
-                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
-		    }
+            try
+			{
+				ManualRideLinqDetail = manualRideLinqDetails;
 
-		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
-		}
+				ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
+
+				var localize = this.Services().Localize;
+
+				if (!_canAutoFollowTaxi)
+				{
+					_canAutoFollowTaxi = true;
+					_autoFollowTaxi = true;
+				}
+
+			    if (manualRideLinqDetails.PairingError.HasValue())
+			    {
+	                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
+			    }
+
+			    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
+			}
             catch (Exception ex)
-		{
+			{
                 Logger.LogMessage("An error occurred while refreshing the manual RideLinQ details");
                 Logger.LogError(ex);
             }
