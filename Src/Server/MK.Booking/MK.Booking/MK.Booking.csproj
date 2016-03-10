@@ -355,6 +355,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Capital Taxi Ottawa.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\AAAYellow.Designer.cs">
+      <DependentUpon>AAAYellow.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Central Niagara.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -550,6 +555,10 @@
     <EmbeddedResource Include="Resources\Capital Taxi Ottawa.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Capital Taxi Ottawa1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AAAYellow.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AAAYellow.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Central Niagara.resx">
       <Generator>ResXFileCodeGenerator</Generator>
