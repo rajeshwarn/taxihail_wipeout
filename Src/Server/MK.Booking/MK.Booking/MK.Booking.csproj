@@ -496,6 +496,7 @@
     <EmbeddedResource Include="Resources\AAAYellow.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AAAYellow.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ArroDemo.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
