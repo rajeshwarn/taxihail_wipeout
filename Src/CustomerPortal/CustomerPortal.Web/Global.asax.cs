@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -21,8 +20,10 @@ using System.Web.Security;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Extensions;
 using CustomerPortal.Web.Services;
 using CustomerPortal.Web.Services.Impl;
 using log4net.Config;
@@ -36,12 +37,12 @@ namespace CustomerPortal.Web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
-
+    
     public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
-            XmlConfigurator.Configure();
+            XmlConfigurator.Configure(new FileInfo(Server.MapPath("~/log4net.xml")));
 
             AreaRegistration.RegisterAllAreas();
 
@@ -87,6 +88,7 @@ namespace CustomerPortal.Web
             EnsureDefaultSettingsAreInit();
 
             MigrateNetworkVehiclesToMarketRepresentation();
+            MigrateCompanyRegionToMarketRegion();
 
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
@@ -97,7 +99,7 @@ namespace CustomerPortal.Web
                 StartStatusUpdater(TimeSpan.FromMilliseconds(100));
             }
         }
-
+        
         private static bool _statusUpdaterRunning;
         private static readonly ILogger Logger = new Logger();
         private static readonly IServiceStatusUpdater UpdaterService = new ServiceStatusUpdater(Logger);
@@ -137,6 +139,72 @@ namespace CustomerPortal.Web
                     //Restarting StatusUpdater in 3 minutes
                     StartStatusUpdater(TimeSpan.FromMinutes(3));
                 });
+        }
+
+        private static void MigrateCompanyRegionToMarketRegion()
+        {
+            var thNetworkSettingsRepo = new MongoRepository<TaxiHailNetworkSettings>();
+            
+            var allTaxiHailNetworkSettingsNotMigrated = thNetworkSettingsRepo
+                .Where(x => x.Region != null).ToList();
+
+            if (allTaxiHailNetworkSettingsNotMigrated.None())
+            {
+                Logger.LogMessage("All compagnies migrated");
+                return;
+            }
+
+            var companiesByMarket = allTaxiHailNetworkSettingsNotMigrated
+                .GroupBy(x => x.Market, taxihailNetworkSettings => taxihailNetworkSettings);
+
+            var marketRepo = new MongoRepository<Market>();
+
+            foreach (var grouping in companiesByMarket.OrderBy(x => x.Key))
+            {
+                Logger.LogMessage("Market: {0}", grouping.Key);
+
+                var eligibleNetworkSettings = grouping.Where(x => x.IsInNetwork).ToList();
+                var allLats = eligibleNetworkSettings.SelectMany(x => new [] { x.Region.CoordinateStart.Latitude, x.Region.CoordinateEnd.Latitude }).Distinct().ToList();
+                var allLngs = eligibleNetworkSettings.SelectMany(x => new[] { x.Region.CoordinateStart.Longitude, x.Region.CoordinateEnd.Longitude }).Distinct().ToList();
+
+                if (allLngs.Any() && allLngs.Any())
+                {
+                    var lowerLeftForMarket = new MapCoordinate { Latitude = allLats.Min(x => x), Longitude = allLngs.Min(x => x) };
+                    var upperRightForMarket = new MapCoordinate { Latitude = allLats.Max(x => x), Longitude = allLngs.Max(x => x) };
+
+                    var market = marketRepo.GetMarket(grouping.Key);
+                    market.Region = new MapRegion { CoordinateStart = lowerLeftForMarket, CoordinateEnd = upperRightForMarket };
+                    marketRepo.Update(market);
+
+                    Logger.LogMessage("Calculated: LowerLeft: Lat: {0} Lng {1} UpperRight: Lat: {2} Lng {3}",
+                        lowerLeftForMarket.Latitude, lowerLeftForMarket.Longitude, upperRightForMarket.Latitude, upperRightForMarket.Longitude);
+                }
+                else
+                {
+                    Logger.LogMessage("No calculated region for this market since there's no company marked as IsInNetwork");
+                }
+
+                foreach (var taxihailNetworkSettings in grouping.OrderBy(x => x.Id))
+                {
+                    var lowerLeft = new MapCoordinate
+                    {
+                        Latitude = Math.Min(taxihailNetworkSettings.Region.CoordinateStart.Latitude, taxihailNetworkSettings.Region.CoordinateEnd.Latitude),
+                        Longitude = Math.Min(taxihailNetworkSettings.Region.CoordinateStart.Longitude, taxihailNetworkSettings.Region.CoordinateEnd.Longitude)
+                    };
+                    var upperRight = new MapCoordinate
+                    {
+                        Latitude = Math.Max(taxihailNetworkSettings.Region.CoordinateStart.Latitude, taxihailNetworkSettings.Region.CoordinateEnd.Latitude),
+                        Longitude = Math.Max(taxihailNetworkSettings.Region.CoordinateStart.Longitude, taxihailNetworkSettings.Region.CoordinateEnd.Longitude)
+                    };
+
+                    Logger.LogMessage("    Company: {0} (LowerLeft: Lat: {1} Lng {2} UpperRight: Lat: {3} Lng {4}){5}", taxihailNetworkSettings.Id,
+                        lowerLeft.Latitude, lowerLeft.Longitude, upperRight.Latitude, upperRight.Longitude, taxihailNetworkSettings.IsInNetwork ? " [IsInNetwork]" : string.Empty);
+
+                    taxihailNetworkSettings.Region = null;
+                }
+
+                thNetworkSettingsRepo.Update(grouping);
+            }
         }
 
         private static void MigrateNetworkVehiclesToMarketRepresentation()

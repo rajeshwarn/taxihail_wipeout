@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
                         MarketTariff = marketSettings.MarketTariff,
                         DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment,
                         ShowCallDriver = marketSettings.ShowCallDriver
-                    }
+                }
                 : new MarketSettings();
         }
 

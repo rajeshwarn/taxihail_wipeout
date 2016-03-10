@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Web.Properties;
 using MongoRepository;
 
 namespace CustomerPortal.Web.Entities.Network
@@ -13,12 +14,16 @@ namespace CustomerPortal.Web.Entities.Network
             Vehicles = new List<Vehicle>();
             DispatcherSettings = new DispatcherSettings();
             MarketTariff = new Tariff();
+            Region = new MapRegion();
         }
 
         public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public MapRegion Region { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }
 

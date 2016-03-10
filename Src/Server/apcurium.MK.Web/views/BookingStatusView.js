@@ -66,6 +66,16 @@
                 }, this)
             });
 
+            var position = this.model.attributes.pickupAddress;
+            var showCallDriver = false;
+            $.ajax({
+                url: "api/roaming/marketsettings?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                type: "GET",
+                dataType: "json",
+                success: _.bind(function (data) {
+                        showCallDriver = data.showCallDriver;
+                    }, this)
+            });
             
             // Close popover if it is open
             // Otherwise it will stay there forever
@@ -85,11 +95,11 @@
             var ibsStatusId = status.get('ibsStatusId');
 
             if (showCallDriver == true) {
-                    this.$('#callDispatchButton').addClass('hidden');
-                    if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
-                        this.$('#callDriverButton').removeClass('hidden');
-                    } else {
-                        this.$('#callDriverButton').addClass('hidden');
+                this.$('#callDispatchButton').addClass('hidden');
+                if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
+                    this.$('#callDriverButton').removeClass('hidden');
+                } else {
+                    this.$('#callDriverButton').addClass('hidden');
                 }
             }
 

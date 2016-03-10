@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _showCallDriver;
 
-		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
+        public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
@@ -92,8 +92,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
             _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
 
-			Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
-		}
+            Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+        }
 
 		private void MarketChanged(MarketSettings marketSettings)
 		{
