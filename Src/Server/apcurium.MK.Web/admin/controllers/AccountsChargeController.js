@@ -34,7 +34,7 @@
 
         edit: function(number) {
 
-            var model = this.accounts.find(function(m) { return m.get('number') == number; });
+            var model = this.accounts.find(function (m) { return m.get('accountNumber') == number; });
             model.set('isNew', false);
             
             return new TaxiHail.AddAccountChargeView({
