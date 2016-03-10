@@ -4,13 +4,13 @@
     "Phone": "Mobiele Nummer",
     "Passengers": "Passagiers",
     "Vehicle Type": "Voertuigtype",
-    "Charge Type": "Vorderingstype",
+    "Charge Type": "Betaalwijze",
     "Cancel": "Annuleer",
     "Saves changes":"Opslaan Wijzigingen",
     "Loading" : "Laden",
     "Changes were saved" : "Wijzigingen zijn opgeslagen",
     "Edit Profile" : "Wijzig Profiel",
     "Email" : "E-mail",
-    "Account #": "Bedrijfsaccountnummer # ",
+    "Account #": "Bedrijfsaccount # ",
     "Account Rider #": "Account Passagier #"
 }
