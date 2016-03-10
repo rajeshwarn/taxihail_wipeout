@@ -43,6 +43,8 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "App Fare Estimates Enabled")]
         public bool EnableAppFareEstimates { get; set; }
 
+        public bool ShowCallDriver { get; set; }
+
         public Tariff MarketTariff { get; set; }
 
         public IEnumerable<SelectListItem> CompaniesOrMarket { get; set; }

@@ -66,6 +66,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
                 ReceiptFooter = marketModel.ReceiptFooter,
                 EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
+                ShowCallDriver = marketModel.ShowCallDriver,
                 MarketTariff = marketModel.MarketTariff
             });
         }
@@ -251,7 +252,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             string futureBookingReservationProvider,
             int futureBookingTimeThresholdInMinutes,
             bool disableOutOfAppPayment,
-            bool enableAppFareEstimates, 
+            bool enableAppFareEstimates,
+            bool showCallDriver,
             Tariff marketTariff)
         {
             try
@@ -271,6 +273,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+
+                marketToEdit.ShowCallDriver = showCallDriver;
 
                 marketTariff.Type = (int) TariffType.Market;
                 marketToEdit.MarketTariff = marketTariff;
