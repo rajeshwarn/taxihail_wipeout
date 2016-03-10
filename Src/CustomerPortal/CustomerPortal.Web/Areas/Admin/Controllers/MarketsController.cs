@@ -36,8 +36,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult MarketIndex(string market)
         {
-            return View(GetMarketModel(market));   
-                ShowCallDriver = marketModel.ShowCallDriver,
+            return View(GetMarketModel(market));
         }
 
         public ActionResult CreateMarket()
@@ -258,8 +257,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
-
-                marketToEdit.ShowCallDriver = showCallDriver;
 
                 marketToEdit.ShowCallDriver = showCallDriver;
 
