@@ -1,5 +1,5 @@
 ﻿{
-    "Confirm Information": "Bevestig Rit",
+    "Confirm Information": "Bevestig informatie",
     "Pickup Time": "Ophaal Tijd",
     "Pickup": "Ophaaladres",
     "Destination": "Bestemming",
@@ -9,12 +9,12 @@
     "Phone": "Mobiel Nummer",
     "Passengers": "Passangiers",
     "Vehicle Type": "Voertuig Type",
-    "Charge Type": "Betaalwijze",
-    "Apt No.": "Apt No.",
+    "Charge Type": "Betalingswijze",
+    "Apt No.": "Appartement No",
     "Entry Code": "Toegangs Code",
     "Notes": "Opmerkingen",
     "Book Now!": "Boek Nu!",
     "Cancel": "Annuleer",
-    "Edit": "Instellingen bewerken",
+    "Edit": "Bewerken",
     "Save": "Opslaan"
 }

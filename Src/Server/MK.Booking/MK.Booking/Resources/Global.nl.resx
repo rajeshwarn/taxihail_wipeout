@@ -258,7 +258,7 @@
     <comment>Booking confirmation</comment>
   </data>
   <data name="Email_Body_ChargeType" xml:space="preserve">
-    <value>Annuleringskosten</value>
+    <value>Betaalwijze</value>
     <comment>Charge&amp;nbsp;Type</comment>
   </data>
   <data name="Email_Body_Date" xml:space="preserve">
@@ -330,16 +330,20 @@
     <comment>Payment Information</comment>
   </data>
   <data name="Email_Body_PhoneNumber" xml:space="preserve">
-    <value>Phone&amp;nbsp;Number</value>
+    <value>Telefoonnummer</value>
+    <comment>Phone&amp;nbsp;Number</comment>
   </data>
   <data name="Email_Body_PickupLocation" xml:space="preserve">
-    <value>Pickup&amp;nbsp;Location</value>
+    <value>Ophaal Adres</value>
+    <comment>Pickup&amp;nbsp;Location</comment>
   </data>
   <data name="Email_Body_PickupTime" xml:space="preserve">
-    <value>Pickup&amp;nbsp;Time</value>
+    <value>Ophaal Tijd</value>
+    <comment>Pickup&amp;nbsp;Time</comment>
   </data>
   <data name="Email_Body_PickupTimeValue" xml:space="preserve">
-    <value>{{PickupDate}} at {{PickupTime}}</value>
+    <value>{{PickupDate}} en {{PickupTime}}</value>
+    <comment>{{PickupDate}} at {{PickupTime}}</comment>
   </data>
   <data name="Email_Body_Receipt" xml:space="preserve">
     <value>Kwitantie</value>
@@ -347,6 +351,7 @@
   </data>
   <data name="Email_Body_RingCode" xml:space="preserve">
     <value>Ring&amp;nbsp;Code</value>
+    <comment>Ring&amp;nbsp;Code</comment>
   </data>
   <data name="Email_Body_ThankYou" xml:space="preserve">
     <value>Dank u!</value>
@@ -361,7 +366,8 @@
     <comment>Tip</comment>
   </data>
   <data name="Email_Body_TipIncentive" xml:space="preserve">
-    <value>Driver Bonus</value>
+    <value>Chauffeurs Bonus</value>
+    <comment>Driver Bonus</comment>
   </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promotie Code</value>
@@ -376,7 +382,8 @@
     <comment>Total Amount</comment>
   </data>
   <data name="Email_Body_TotalFare" xml:space="preserve">
-    <value>Total&amp;nbsp;Fare</value>
+    <value>Totaal&nbsp;RitPrijs</value>
+    <comment>Total&amp;nbsp;Fare</comment>
   </data>
   <data name="Email_Body_RideLinqLastFour" xml:space="preserve">
     <value>Gebruikte CreditCard (laalste 4)</value>
@@ -387,10 +394,12 @@
     <comment>Transaction Id :</comment>
   </data>
   <data name="Email_Body_TransactionTime" xml:space="preserve">
-    <value>Transaction&amp;nbsp;Time</value>
+    <value>Transactie&nbsp;Tijd</value>
+    <comment>Transaction&amp;nbsp;Time</comment>
   </data>
   <data name="Email_Body_TransactionTimeValue" xml:space="preserve">
-    <value>{{TransactionDate}} at {{TransactionTime}}</value>
+    <value>{{TransactionDate}} en {{TransactionTime}}</value>
+    <comment>{{TransactionDate}} at {{TransactionTime}}</comment>
   </data>
   <data name="Email_Body_VAT" xml:space="preserve">
     <value>BTW</value>
@@ -480,11 +489,11 @@
     <comment>Sorry, your driver canceled. Finding you another taxi...</comment>
   </data>
   <data name="CardOnFile" xml:space="preserve">
-    <value>Card on File</value>
+    <value>CreditCard</value>
     <comment>Card on File</comment>
   </data>
   <data name="ChargeAccount" xml:space="preserve">
-    <value>Charge Account</value>
+    <value>Op Rekening</value>
     <comment>Charge Account</comment>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -507,7 +516,7 @@
     <comment>Total: {0}</comment>
   </data>
   <data name="EtaMessageToDriver" xml:space="preserve">
-    <value>ETA displayed to client is {0} and {1} min</value>
+    <value>ETA wat de passagier ziet is {0} en {1} min</value>
     <comment>ETA displayed to client is {0} and {1} min</comment>
   </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
@@ -519,11 +528,11 @@
     <comment>Payment by the app has Failed!</comment>
   </data>
   <data name="PaymentItemDescription" xml:space="preserve">
-    <value>Rit # {0} Oorspronkelijk bedrag: {1}</value>
+    <value>Rit #{0} Oorspronkelijk bedrag: {1}</value>
     <comment>Order #{0} Original amount: {1}</comment>
   </data>
   <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
-    <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
+    <value>De order kan niet worden geplaatst als u deze versie van de app gebruikt. Voer een upgrade van de app uit om een rit te boeken.</value>
     <comment>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</comment>
   </data>
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
@@ -531,7 +540,8 @@
     <comment>The order cannot be created because your credit card failed the preauthorization check.</comment>
   </data>
   <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
-    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+    <value>De order kan niet worden gemaakt omdat uw PayPal-rekening niet door de pre autorisatie check komt.</value>
+    <comment>The order cannot be created because your PayPal account failed the preauthorization check.</comment>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>Vanwege de grote vraag zijn er nu geen taxi's beschikbaar. Wilt u uw rit boeken bij {0}?</value>
@@ -546,65 +556,84 @@
     <comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
-    <value>This account is not supported in a different market.</value>
+    <value>Dit account wordt niet ondersteund in een andere markt.</value>
+    <comment>This account is not supported in a different market.</comment>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
-    <value>This account is not supported by the web site.</value>
+    <value>Dit account wordt niet ondersteund door de website.</value>
+    <comment>This account is not supported by the web site.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
-    <value>You must select Card On File to use a promotion.</value>
+    <value>U moet uw creditCard selecteren voordat u de promotie kunt gebruiken.</value>
+    <comment>You must select Card On File to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
-    <value>You must select Card On File or PayPal to use a promotion.</value>
+    <value>U moet uw CreditCard of PayPal selecterenvoordat u de promotie kunt gebruiken.</value>
+    <comment>You must select Card On File or PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
-    <value>You must select PayPal to use a promotion.</value>
+    <value>U moet PayPal selecteren voordat u de promotie kunt gebruiken.</value>
+    <comment>You must select PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
-    <value>There is no promotion associated to this code</value>
+    <value>Er is geen promotie gekoppeld aan deze code</value>
+    <comment>There is no promotion associated to this code</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
-    <value>This promotion is not active</value>
+    <value>Deze promotie is niet actief</value>
+    <comment>This promotion is not active</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
-    <value>This promotion is deleted</value>
+    <value>Deze promotie is verwijderd</value>
+    <comment>This promotion is deleted</comment>
   </data>
   <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
-    <value>Maximum number of uses has been reached for this promotion</value>
+    <value>Het maximum aantal keren dat u de promotie kon gebruiken in bereikt</value>
+    <comment>Maximum number of uses has been reached for this promotion</comment>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
-    <value>This promotion does not applies to future booking</value>
+    <value>Deze promotie is niet van toepassing op toekomstige boekingen</value>
+    <comment>This promotion does not applies to future booking</comment>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
-    <value>This promotion applies to future booking only</value>
+    <value>Deze promotie is alleen van toepassing op een toekomstige reservering</value>
+    <comment>This promotion applies to future booking only</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
-    <value>This promotion is not available for this day of the week</value>
+    <value>Deze promotie is niet beschikbaar op deze dag van de week</value>
+    <comment>This promotion is not available for this day of the week</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
-    <value>This promotion has not started yet</value>
+    <value>Deze promotie is niet niet gestart</value>
+    <comment>This promotion has not started yet</comment>
   </data>
   <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
-    <value>This promotion has expired</value>
+    <value>Deze promotie is verlopen</value>
+    <comment>This promotion has expired</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
-    <value>This promotion is not available at this time</value>
+    <value>Deze promotie is niet beschikbaar op dit moment</value>
+    <comment>This promotion is not available at this time</comment>
   </data>
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>Er is geen Taxibedrijf die deze regio bediend</value>
     <comment>There is no company serving this region</comment>
   </data>
   <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
-    <value>You are not allowed to use this promotion</value>
+    <value>Het is niet toegestaan deze promotie te gebruiken</value>
+    <comment>You are not allowed to use this promotion</comment>
   </data>
   <data name="CannotCreateOrder_FutureBookingNotAllowed" xml:space="preserve">
     <value>Sorry, future booking is not available</value>
+    <comment>Sorry, future booking is not available</comment>
   </data>
   <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
-    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+    <value>Gefeliciteerd! U komt in aanmerking voor "{{ PromotionName }}" Promotie. Gebruik code <b>{{ PromotionCode }}</b> als u uw volgende rit boekt om deze te verzilveren.</value>
+    <comment>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</comment>
   </data>
   <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
-    <value>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+    <value>Deze promotie is geldig tot {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+    <comment>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</comment>
   </data>
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - Nieuwe Actie Beschikbaar!</value>
@@ -619,25 +648,32 @@
     <comment>Order cannot be created. Please try again or call us.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
-    <value>Order cannot be created. The specified Pickup address lies outside the regular service area.</value>
+    <value>Order kan niet worden gemaakt. Het gespecificeerde ophaaladres ligt buiten het servicegebied</value>
+    <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
-    <value>Order cannot be created. The specified Destination address lies outside the regular service area.</value>
+    <value>Order kan niet worden gemaakt. De gespecificeerde bestemmingligt buiten het servicegebied.</value>
+    <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
-    <value>Order cannot be created. Your account has been disabled.</value>
+    <value>Order kan niet worden gemaakt. Uw account is uitgeschakeld.</value>
+    <comment>Order cannot be created. Your account has been disabled.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>Order cannot be created. Your account is currently inactive.</value>
+    <value>Order kan niet worden gemaakt. Uw account is momenteel niet actief.</value>
+    <comment>Order cannot be created. Your account is currently inactive.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
+    <value>Order kan niet worden gemaakt. De accountgegevens zijn ongeldig. Probeer het opnieuw.</value>
+    <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
   </data>
   <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <value>Onze excuses, maar helaas hebben we geen reserveringsruimte beschikbaar voor het door u opgegeven tijdvak.</value>
+    <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
   </data>
   <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
-    <value>Processing your order...</value>
+    <value>Uw order is in behandeling...</value>    
+    <comment>Processing your order...</comment>
   </data>
   <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
     <value>Ongeldig klantnummer</value>
@@ -739,14 +775,16 @@
     <comment>{{ ApplicationName }} - Your credit card has been deactivated</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
+    <value>Je hebt een tariefschatting nodig om uw rit vooraf betalen. Selecteer een bestemmingsadres om een schatting te krijgen.</value>
+    <comment>You need an estimated fare to prepay your ride. Please select a destination address to get one.</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal betaling is geannuleerd</value>
     <comment>PayPal payment was cancelled</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
-    <value>Payment is not enabled on the website. Please select another charge type.</value>
+    <value>Deze betaalwijze is niet ingeschakeld op de website. Selecteer een andere betaalwijze.</value>
+    <comment>Payment is not enabled on the website. Please select another charge type.</comment>
   </data>
   <data name="PayPalWebTipItemDescription" xml:space="preserve">
     <value>Fooi ({0}%)</value>
@@ -760,7 +798,8 @@
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
   <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
-    <value>If your browser does not automatically redirect you after 10 seconds,</value>
+    <value>Als uw Browser u niet automatisch doorlinkt na 10 seconden</value>
+    <comment>If your browser does not automatically redirect you after 10 seconds,</comment>
   </data>
   <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
     <value>click hier</value>
@@ -797,7 +836,7 @@
     <comment>Booking Fees</comment>
   </data>
   <data name="Email_Body_RateClass" xml:space="preserve">
-    <value>Rate Code</value>
+    <value>Beoordelings Code</value>
     <comment>Rate Code</comment>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
@@ -848,10 +887,12 @@
     <comment>Sorry, there was a problem, please pay in the taxi</comment>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+    <value>SExcuses, uw CreditCard kan niet worden geautoriseerd.  Gelieve te betalen in de taxi</value>
+    <comment>Sorry, your card could not be authorized. Please pay in the taxi</comment>
   </data>
   <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
-    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+    <value>Excuses, Er is een ERROR opgetreden tijdens het verwerken an uw CreditCard betaling. Gelieve te betalen in de taxi</value>
+    <comment>Sorry, there was an error processing your card. Please pay in the taxi</comment>
   </data>
   <data name="Email_Subject_OrderRefund" xml:space="preserve">
     <value>{{ ApplicationName }} - Order Refund</value>
