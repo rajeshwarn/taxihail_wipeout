@@ -116,11 +116,13 @@
 "CreditCardExpYear"="Año de Expiración";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
-"CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardInvalidCrediCardTypeAmex"="Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "CreditCardLabel"="Etiqueta";
 "CreditCardName"="Nombre tal y como aparece en la tarjeta";
 "CreditCardNumber"="Número de tarjeta";
-"CreditCardRemoveErrorMessage"="Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes";
+"CreditCardRemoveErrorMessage"="Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes.";
 "CreditCardRemoveErrorTitle"="No puede eliminar la tarjeta de crédito";
 "CreditCardRequiredFields"="Todos los campos requeridos";
 "CreditCardType"="Tipo de tarjeta";
@@ -415,7 +417,7 @@
 "StreetNumberPlacesBt"="Buscar lugares";
 "StreetNumberSearchBt"="Usar una dirección diferente";
 "StreetNumberTitle"="Detalles de la dirección";
-"Submit"="Pagar en Efectivo y Terminar";
+"Submit"="Terminar";
 "SupportEmail"="techsupport@apcurium.com";
 "TabBook"="De Alta";
 "TabContacts"="Contactos";

@@ -24,11 +24,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				try
 				{
 	                var terms = await _termsService.GetTerms();
-					TermsAndConditions = terms.Content;
+	                TermsAndConditions = terms.Content;
 				}
 				catch(WebException e)
 				{
-					// Happen when device is not connected
+					//Happens when the device is not connected
 					_connectivityService.ShowToast();
 				}
             }

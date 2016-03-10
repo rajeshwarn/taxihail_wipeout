@@ -8,8 +8,6 @@ using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
-using MongoDB.Bson;
-using MongoDB.Driver.Builders;
 using MongoRepository;
 
 namespace CustomerPortal.Web.Areas.Admin.Controllers
@@ -38,41 +36,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult MarketIndex(string market)
         {
-            // Find all vehicle type for this market
-            var marketModel = Repository.GetMarket(market);
-            if (marketModel == null)
-            {
-                return View(new MarketModel());
-            }
-
-            // get companies in this market that are network enabled to be used as the future booking company
-            var companiesInNetworkWithThisMarket = new MongoRepository<TaxiHailNetworkSettings>()
-                .Where(x => x.IsInNetwork && x.Market == market)
-                .Select(x => new SelectListItem {Text = x.Id, Value = x.Id })
-                .ToList();
-            // add an empty default value
-            companiesInNetworkWithThisMarket.Insert(0, new SelectListItem { Text = "No company (will cause error if using future booking)", Value = string.Empty });
-            
-            return View(new MarketModel
-            {
-                Market = market,
-                DispatcherSettings = marketModel.DispatcherSettings,
-                Vehicles = marketModel.Vehicles,
-                EnableDriverBonus = marketModel.EnableDriverBonus,
-                EnableFutureBooking = marketModel.EnableFutureBooking,
-                FutureBookingReservationProvider = marketModel.FutureBookingReservationProvider,
-                FutureBookingTimeThresholdInMinutes = marketModel.FutureBookingTimeThresholdInMinutes,
-                CompaniesOrMarket = companiesInNetworkWithThisMarket,
-                DisableOutOfAppPayment = marketModel.DisableOutOfAppPayment,
-                ReceiptFooter = marketModel.ReceiptFooter,
-                EnableAppFareEstimates = marketModel.EnableAppFareEstimates,
-                MarketTariff = marketModel.MarketTariff
-            });
+            return View(GetMarketModel(market));   
+                ShowCallDriver = marketModel.ShowCallDriver,
         }
 
         public ActionResult CreateMarket()
         {
-            return View(new MarketModel());
+            return View(GetMarketModel());
         }
 
         [HttpPost]
@@ -84,13 +54,21 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 ViewBag.Error = "A market with that name already exists.";
 
-                return View(new MarketModel());
+                return View(marketModel);
+            }
+
+            if (!IsRegionValid(marketModel.Region))
+            {
+                ViewBag.Error = "You must specify a valid region for the market";
+
+                return View(marketModel);
             }
 
             Repository.Add(new Market
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = marketModel.Market
+                Name = marketModel.Market,
+                Region = marketModel.Region
             });
 
             return RedirectToAction("MarketIndex", marketModel);
@@ -137,9 +115,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult EditDispatcherSettings(MarketModel marketModel)
         {
+            Market marketRepresentation;
             try
             {
-                var marketRepresentation = Repository.GetMarket(marketModel.Market);
+                marketRepresentation = Repository.GetMarket(marketModel.Market);
                 marketRepresentation.DispatcherSettings = marketModel.DispatcherSettings;
                 Repository.Update(marketRepresentation);
             }
@@ -150,7 +129,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(marketModel);
             }
 
-            return RedirectToAction("MarketIndex", new MarketModel { Market = marketModel.Market });
+            return RedirectToAction("MarketIndex", GetMarketModel(marketRepresentation));
         }
 
         public ActionResult CreateVehicle(string market)
@@ -181,7 +160,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", GetMarketModel(networkVehicle.Market));
         }
 
         public ActionResult EditVehicle(string market, string id)
@@ -222,7 +201,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", GetMarketModel(networkVehicle.Market));
         }
 
         public ActionResult DeleteVehicle(string market, string id)
@@ -239,7 +218,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 ViewBag.Error = "An error occured. Unable to delete the vehicle.";
             }
 
-            return RedirectToAction("MarketIndex", new MarketModel { Market = market });
+            return RedirectToAction("MarketIndex", GetMarketModel(market));
         }
 
         [ValidateInput(false)]
@@ -251,11 +230,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             string futureBookingReservationProvider,
             int futureBookingTimeThresholdInMinutes,
             bool disableOutOfAppPayment,
-            bool enableAppFareEstimates, 
-            Tariff marketTariff)
+            bool enableAppFareEstimates,
+            bool showCallDriver,
+            Tariff marketTariff,
+            MapRegion region)
         {
             try
             {
+                if (!IsRegionValid(region))
+                {
+                    ViewBag.Error = "You must specify a valid region for the market";
+                    return RedirectToAction("MarketIndex", GetMarketModel(market));
+                }
+
                 var marketToEdit = Repository.GetMarket(market);
                 if (marketToEdit == null)
                 {
@@ -272,8 +259,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
 
+                marketToEdit.ShowCallDriver = showCallDriver;
+
+                marketToEdit.ShowCallDriver = showCallDriver;
+
                 marketTariff.Type = (int) TariffType.Market;
                 marketToEdit.MarketTariff = marketTariff;
+
+                marketToEdit.Region = region;
 
                 Repository.Update(marketToEdit);
             }
@@ -283,6 +276,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        private bool IsRegionValid(MapRegion region)
+        {
+            return region != null
+                    && region.CoordinateStart != null
+                    && region.CoordinateEnd != null
+                    && region.CoordinateStart.Latitude != 0
+                    && region.CoordinateStart.Longitude != 0
+                    && region.CoordinateEnd.Latitude != 0
+                    && region.CoordinateEnd.Longitude != 0;
         }
 
         private int GenerateNextSequentialNetworkVehicleId()
@@ -303,6 +307,53 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return nextNetworkVehicleId;
+        }
+
+        private MarketModel GetMarketModel(string marketName)
+        {
+            return GetMarketModel(Repository.GetMarket(marketName));
+        }
+
+        private MarketModel GetMarketModel(Market market = null)
+        {
+            var otherMarkets = market == null 
+                ? Repository.Collection.FindAll().ToList() 
+                : Repository.Collection.FindAll().Where(x => x.Name != market.Name).ToList();
+            
+            var marketModel = new MarketModel
+            {
+                OtherMarkets = otherMarkets
+            };
+
+            if (market == null)
+            {
+                return marketModel;
+            }
+
+            // get companies in this market that are network enabled to be used as the future booking company
+            var companiesInNetworkWithThisMarket = new MongoRepository<TaxiHailNetworkSettings>()
+                .Where(x => x.IsInNetwork && x.Market == market.Name)
+                .Select(x => new SelectListItem { Text = x.Id, Value = x.Id })
+                .ToList();
+            // add an empty default value
+            companiesInNetworkWithThisMarket.Insert(0, new SelectListItem { Text = "No company (will cause error if using future booking)", Value = string.Empty });
+            
+            marketModel.Market = market.Name;
+            marketModel.DispatcherSettings = market.DispatcherSettings;
+            marketModel.Vehicles = market.Vehicles;
+            marketModel.EnableDriverBonus = market.EnableDriverBonus;
+            marketModel.EnableFutureBooking = market.EnableFutureBooking;
+            marketModel.FutureBookingReservationProvider = market.FutureBookingReservationProvider;
+            marketModel.FutureBookingTimeThresholdInMinutes = market.FutureBookingTimeThresholdInMinutes;
+            marketModel.CompaniesOrMarket = companiesInNetworkWithThisMarket;
+            marketModel.DisableOutOfAppPayment = market.DisableOutOfAppPayment;
+            marketModel.ReceiptFooter = market.ReceiptFooter;
+            marketModel.EnableAppFareEstimates = market.EnableAppFareEstimates;
+            marketModel.MarketTariff = market.MarketTariff;
+            marketModel.ShowCallDriver = market.ShowCallDriver;
+            marketModel.Region = market.Region;
+
+            return marketModel;
         }
     }
 }

@@ -251,6 +251,7 @@
     <Compile Include="Entities\Network\Market.cs" />
     <Compile Include="Extensions\MarketCollectionExtensions.cs" />
     <Compile Include="Areas\Admin\Models\CompanyStatusModel.cs" />
+    <Compile Include="Helpers\LinkHeaderParser.cs" />
     <Compile Include="Services\Impl\ServiceStatusUpdater.cs" />
     <Compile Include="Services\IServiceStatusUpdater.cs" />
     <Compile Include="Services\SourceControlFactory.cs" />
@@ -501,11 +502,15 @@
     <Content Include="Images\THNetwork.png" />
     <Content Include="Images\versions.png" />
     <Content Include="Images\warn.jpg" />
-    <Content Include="log4net.xml" />
+    <Content Include="log4net.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\maplabel.js" />
     <Content Include="Views\Shared\_SettingsLayout.cshtml" />
     <Content Include="Areas\Admin\SettingsDataSrc\Common.json" />
     <Content Include="Areas\Admin\SettingsDataSrc\MKWebDev.json" />

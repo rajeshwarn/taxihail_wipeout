@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                     {
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
+						ShowViewModel<CreditCardAddViewModel>(new { isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
                     });
             }
         }

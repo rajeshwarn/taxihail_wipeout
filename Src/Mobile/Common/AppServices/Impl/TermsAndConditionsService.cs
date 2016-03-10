@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Task<TermsAndConditions> GetTerms()
         {
             return UseServiceClientAsync<CompanyServiceClient, TermsAndConditions>(service => service.GetTermsAndConditions(),
-				error => 
+				error=>
 				{
 					throw error;
 				}

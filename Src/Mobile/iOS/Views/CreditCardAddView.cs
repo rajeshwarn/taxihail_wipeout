@@ -32,9 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             get 
             { 
-                // CardIOToken is only used to know if the company wants it or not
-                return Utilities.CanReadCardWithCamera()
-                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
+                return Utilities.CanReadCardWithCamera(); 
             }
         }
 
@@ -152,7 +150,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanSetCreditCardAsDefault)
                 .WithConversion("BoolInverter");
-            
+
+            set.Bind(btnScanCard)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanScanCreditCard)
+                .WithConversion("BoolInverter");
+
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
@@ -241,6 +244,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
                 .To(vm => vm.IsAddingNewCard);
 
+            set.Bind(imgVisa)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableVisaMastercard);
+
+            set.Bind(imgAmex)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableAMEX);
+
+            set.Bind(imgDiscover)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableDiscover);
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
@@ -267,16 +282,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ConfigureCreditCardSection()
         {
-            if (CardIOIsEnabled && ViewModel.CanScanCreditCard)
+            if (CardIOIsEnabled)
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
                 btnScanCard.TouchUpInside += (sender, e) => ScanCard();
             }
-            else
-            {
-                btnScanCard.RemoveFromSuperview();
-            }
+
             FlatButtonStyle.Silver.ApplyTo(btnCardDefault);
             // Configure CreditCard section
             FlatButtonStyle.Green.ApplyTo(btnSaveCard);
@@ -317,7 +329,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "amex.png";
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+            ViewModel.CreditCardCompanies[4].Image = "discover.png";
+            ViewModel.CreditCardCompanies[5].Image = "credit_card_generic.png";
 
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);

@@ -273,9 +273,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					await HandleAppleCredentialsIfNeeded(Email, Password);
 					#endif
 
-					await _accountService.SignIn(Email, Password);   
-                    Password = string.Empty;                    
-					await OnLoginSuccess();
+					await _accountService.SignIn(Email, Password);
+					Password = string.Empty;                    
+					await OnLoginSuccess();	
                 }
                 catch (AuthException e)
                 {

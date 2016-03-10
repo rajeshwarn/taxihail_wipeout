@@ -87,7 +87,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private async Task UpdateChargeTypes(MarketSettings marketSettings)
         {
-            _chargeTypesListSubject.OnNext(await GetChargeTypes(marketSettings) ?? new ListItem[0]);
+			var chargeTypes = await GetChargeTypes(marketSettings) ?? new ListItem[0];
+			Console.WriteLine(chargeTypes.ToJson());
+			_chargeTypesListSubject.OnNext(chargeTypes);
         }
 
         private async Task<IList<ListItem>> GetChargeTypes(MarketSettings marketSettings)
@@ -120,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 // you haven't selected a charge type when trying to book and not a message
                 // saying "hey you need a card, add it now"
                 // TLDR: it's easier to understand for the user this way
-                Console.WriteLine(refData.PaymentsList.ToJson());
                 return refData.PaymentsList;
             }
             
@@ -132,32 +133,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
             }
             
-            Console.WriteLine(refData.PaymentsList.ToJson());
             return refData.PaymentsList;
         }
-
-        private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
+			
+		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
 		{
 			if (market.IsLocalMarket)
 			{
 				return paymentList;
 			}
 
-			return paymentList
-				.Where(paymentMethod => paymentMethod.Id == ChargeTypes.PaymentInCar.Id)
-				.ToArray();
+			return market.DisableOutOfAppPayment
+				? paymentList.Where(i => i.Id != ChargeTypes.PaymentInCar.Id).ToList()
+				: EnsurePaymentInCarAvailableIfNeeded(paymentList);
 		}
 
-		private IList<ListItem> HandlePaymentInCarForCmt(IList<ListItem> paymentList, MarketSettings market)
+		private IList<ListItem> EnforceExternalMarketPaymentInCarIfNeeded(IList<ListItem> paymentList, MarketSettings market)
 		{
-			if (!market.IsLocalMarket)
+			if (market.IsLocalMarket)
 			{
-				return market.DisableOutOfAppPayment
-					? paymentList
-					: EnsurePaymentInCarAvailableIfNeeded(paymentList);
+				return paymentList;
 			}
 
-			paymentList.Remove(x => x.Id == ChargeTypes.PaymentInCar.Id);
+			paymentList = paymentList
+				.Where(paymentMethod => paymentMethod.Id == ChargeTypes.PaymentInCar.Id)
+				.ToArray();
+
+			paymentList = EnsurePaymentInCarAvailableIfNeeded(paymentList);
 
 			return paymentList;
 		}
@@ -572,7 +574,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Task ResetPassword (string email)
         {
 			return UseServiceClientAsync<IAccountServiceClient> (service => service.ResetPassword (email),
-				error => 
+				error =>
 				{
 					throw error;
 				}
@@ -583,7 +585,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             data.AccountId = Guid.NewGuid();
 			data.Language = _localize.CurrentLanguage;
-			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data),
+			await UseServiceClientAsync<IAccountServiceClient> (service => service.RegisterAccount (data),
 				error => 
 				{
 					throw error;
