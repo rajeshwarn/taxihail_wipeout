@@ -17,10 +17,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Index(string id)
         {
-            var allMarkets = new MongoRepository<Market>()
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem { Text = x.Name, Value = x.Name })
-                .ToList();
+            var allMarkets = new MongoRepository<Market>().OrderBy(x => x.Name).ToList();
 
             var company = new MongoRepository<Company>().First(x => x.Id == id);
             if (company != null)

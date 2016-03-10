@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Test.Helpers;
 using CustomerPortal.Web.Test.Helpers.Repository;
+using MongoDB.Driver;
+using MongoRepository;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -30,15 +35,14 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _blacklistedTaxiCompany;
 
         const string BaseUrl = "http://localhost/CustomerPortal.Web/";
-
-
+        
         [SetUp]
         public void Setup()
         {
             NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
             CompanyRepository = new InMemoryRepository<Company>();
 
-            Sut = new NetworkApiController(NetworkRepository, CompanyRepository);
+            Sut = new NetworkApiController(NetworkRepository, CompanyRepository, GetMockedMarketRepo());
 
             _chrisTaxi = new TaxiHailNetworkSettings()
             {
@@ -46,11 +50,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 WhiteListedFleetIds = "123456,564321", // And excluding PilouTaxi and TomTaxi
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.513314} // MTL BTM Right
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
@@ -65,12 +64,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 FleetId = 123456,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.41129,Longitude = -73.51331} // MTL BTM Right
-
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
@@ -84,12 +77,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
-                FleetId = 564321,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.474307,Longitude = -73.58412} // Home
-                }
+                FleetId = 564321
             };
 
             _tomTaxi = new TaxiHailNetworkSettings()
@@ -99,11 +87,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "CHI",
                 IsInNetwork = true,
                 FleetId = 99999,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 5000000,Longitude = -73.656990},  
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.43874,Longitude = -73.58412}
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -119,11 +102,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "NYC",
                 FleetId = 44444,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.496042}
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -138,12 +116,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
-                BlackListedFleetIds = "10101019, 666, 010101",
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.498094,Longitude = -73.62233} //Station cote des neiges
-                }
+                BlackListedFleetIds = "10101019, 666, 010101"
             };
 
             _blacklistedTaxi = new TaxiHailNetworkSettings()
@@ -151,17 +124,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TaxiBlacklisted",
                 IsInNetwork = true,
                 Market = "SYD",
-                FleetId = 666,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
-                }
+                FleetId = 666
             };
            
-
-
-
             _chrisTaxiCompany = new Company()
             {
                 Id = "ChrisTaxi",
@@ -312,7 +277,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             var results = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(1, results.Count);
 
             // Should Not return ChrisTaxi nor TonyTaxi
             Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "ChrisTaxi"));
@@ -329,48 +294,10 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             var results = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            Assert.AreEqual(5, results.Count);
+            Assert.AreEqual(0, results.Count);
 
             // Should Not return BlacklistedTaxi
             Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "TaxiBlacklisted"));
-        }
-
-
-        [Test]
-        public void When_Regions_Overlap()
-        {
-            var response = Sut.Get(_lastTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-        }
-
-        [Test]
-        public void When_Regions_Overlap_Same_Latitude()
-        {
-            var response = Sut.Get(_pilouTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-        }
-
-        [Test]
-        public void When_Regions_Overlap_Same_Longitude()
-        {
-            var response = Sut.Get(_tonyTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-        }
-
-        [Test]
-        public void When_Regions_No_Overlap()
-        {
-            //Should return nothing
-            var response = Sut.Get(_chrisTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
         }
 
         [Test]
@@ -403,12 +330,12 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var json = response.Content.ReadAsStringAsync().Result;
             var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
-            Assert.NotNull(tony,"Precondition Failed");
-            Assert.False(tony.CompanyPreference.CanAccept, "Precondition Failed");
-            Assert.False(tony.CompanyPreference.CanDispatch, "Precondition Failed");
+            var chrisBis = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _chrisTaxiBis.Id);
+            Assert.NotNull(chrisBis,"Precondition Failed");
+            Assert.True(chrisBis.CompanyPreference.CanAccept, "Precondition Failed");
+            Assert.True(chrisBis.CompanyPreference.CanDispatch, "Precondition Failed");
 
-            tony.CompanyPreference.CanAccept = tony.CompanyPreference.CanDispatch = true;
+            chrisBis.CompanyPreference.CanAccept = chrisBis.CompanyPreference.CanDispatch = false;
 
             response = Sut.Post(_chrisTaxi.Id, chrisPreferences.Select(x=>x.CompanyPreference).ToArray());
             Assert.True(response.IsSuccessStatusCode);
@@ -418,10 +345,51 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             json = response.Content.ReadAsStringAsync().Result;
             chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
 
-            tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
-            Assert.NotNull(tony);
-            Assert.True(tony.CompanyPreference.CanAccept);
-            Assert.True(tony.CompanyPreference.CanDispatch);
+            chrisBis = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _chrisTaxiBis.Id);
+            Assert.NotNull(chrisBis);
+            Assert.False(chrisBis.CompanyPreference.CanAccept);
+            Assert.False(chrisBis.CompanyPreference.CanDispatch);
+        }
+
+        private IRepository<Market> GetMockedMarketRepo()
+        {
+            var marketRepositoryMock = new Mock<IRepository<Market>>();
+
+            var serverMock = MongoMock.CreateMongoServer();
+            var databaseMock = MongoMock.CreateMongoDatabase(serverMock.Object);
+            var collectionMock = MongoMock.CreateMongoCollection<Market>(databaseMock.Object, "FooCollection");
+            var cursorMock = MongoMock.CreateMongoCursor(collectionMock.Object, new List<Market>
+            {
+                new Market { Name = "MTL", EnableDriverBonus = true, ReceiptFooter = "my custom footer 1", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
+                    }},
+                new Market { Name = "NYC", EnableDriverBonus = false, ReceiptFooter = "my custom footer 2", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.496042 }
+                    }},
+                new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                    }},
+                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
+                    }},
+                new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.474307, Longitude = -73.58412 } // Home
+                    }}
+            });
+            collectionMock.Setup(x => x.Find(It.IsAny<IMongoQuery>())).Returns(cursorMock.Object);
+            collectionMock.Setup(x => x.FindAll()).Returns(cursorMock.Object);
+            marketRepositoryMock.Setup(x => x.Collection).Returns(collectionMock.Object);
+            return marketRepositoryMock.Object;
         }
     }
 }
