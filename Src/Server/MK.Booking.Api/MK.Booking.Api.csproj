@@ -60,6 +60,14 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -79,6 +87,10 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -113,6 +125,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Api\account\AccountController.cs" />
+    <Compile Include="Controllers\Api\account\AccountOrderController.cs" />
+    <Compile Include="Controllers\Api\account\AddressController.cs" />
+    <Compile Include="Controllers\Api\account\CreditCardController.cs" />
+    <Compile Include="Controllers\Api\account\CurrentAccountController.cs" />
+    <Compile Include="Controllers\Api\account\ManualRideLinqController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\CreateOrderController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\HailController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\OrderController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\OrderPairingController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\OrderStatusController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\PayPalCheckoutController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\ReceiptController.cs" />
+    <Compile Include="Controllers\Api\account\Orders\ValidateOrderController.cs" />
+    <Compile Include="Controllers\Api\account\OverduePaymentsController.cs" />
+    <Compile Include="Controllers\Api\account\PushNotificationRegistrationController.cs" />
+    <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
+    <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
+    <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
+    <Compile Include="Controllers\Api\Admin\ExclusionsController.cs" />
+    <Compile Include="Controllers\Api\Admin\ExportDataController.cs" />
+    <Compile Include="Controllers\Api\Admin\IbsChargeAccountController.cs" />
+    <Compile Include="Controllers\Api\Admin\NotificationAdministrationController.cs" />
+    <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
+    <Compile Include="Controllers\Api\Admin\RuleAdministrationController.cs" />
+    <Compile Include="Controllers\Api\Admin\TariffController.cs" />
+    <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
+    <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BraintreeClientPaymentController.cs" />
+    <Compile Include="Controllers\Api\CmtPaymentPairingController.cs" />
+    <Compile Include="Controllers\Api\FlightInformationController.cs" />
+    <Compile Include="Controllers\Api\IbsFareController.cs" />
+    <Compile Include="Controllers\Api\LoginController.cs" />
+    <Compile Include="Controllers\Api\LogMetricsController.cs" />
+    <Compile Include="Controllers\Api\Maps\DirectionsController.cs" />
+    <Compile Include="Controllers\Api\Maps\GeocodingController.cs" />
+    <Compile Include="Controllers\Api\Maps\PlacesController.cs" />
+    <Compile Include="Controllers\Api\Maps\PostalCodeController.cs" />
+    <Compile Include="Controllers\Api\NetworkRoamingController.cs" />
+    <Compile Include="Controllers\Api\OrderRatingController.cs" />
+    <Compile Include="Controllers\Api\PopularAddressController.cs" />
+    <Compile Include="Controllers\Api\PrivacyPolicyController.cs" />
+    <Compile Include="Controllers\Api\ProcessPaymentController.cs" />
+    <Compile Include="Controllers\Api\PromotionController.cs" />
+    <Compile Include="Controllers\Api\RatingTypesController.cs" />
+    <Compile Include="Controllers\Api\ReferenceDataController.cs" />
+    <Compile Include="Controllers\Api\SearchLocationController.cs" />
+    <Compile Include="Controllers\Api\ServerStatusController.cs" />
+    <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
+    <Compile Include="Controllers\Api\Settings\DefaultGeoLocationController.cs" />
+    <Compile Include="Controllers\Api\Settings\PaymentSettingsController.cs" />
+    <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
+    <Compile Include="Controllers\Api\TestOnlyEndpointController.cs" />
+    <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
+    <Compile Include="Controllers\Api\Vehicle\VehicleController.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
@@ -121,6 +188,8 @@
     <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Security\AuthAttribute.cs" />
+    <Compile Include="Security\AuthenticationFailureResult.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\AccountsChargeService.cs" />
     <Compile Include="Services\AddressesService.cs" />

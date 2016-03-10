@@ -733,61 +733,6 @@
     <Compile Include="Areas\ApcuriumServiceController.cs" />
     <Compile Include="Attributes\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Attributes\SkipAuthenticationAttribute.cs" />
-    <Compile Include="Controllers\Api\Account\AccountController.cs" />
-    <Compile Include="Controllers\Api\Account\AccountOrderController.cs" />
-    <Compile Include="Controllers\Api\Account\AddressController.cs" />
-    <Compile Include="Controllers\Api\Account\CreditCardController.cs" />
-    <Compile Include="Controllers\Api\Account\CurrentAccountController.cs" />
-    <Compile Include="Controllers\Api\Account\ManualRideLinqController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\CreateOrderController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\HailController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\OrderController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\OrderPairingController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\PayPalCheckoutController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\ReceiptController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\ValidateOrderController.cs" />
-    <Compile Include="Controllers\Api\Account\OverduePaymentsController.cs" />
-    <Compile Include="Controllers\Api\Account\PushNotificationRegistrationController.cs" />
-    <Compile Include="Controllers\Api\Admin\AccountsChargeController.cs" />
-    <Compile Include="Controllers\Api\Admin\AdminCreditCardController.cs" />
-    <Compile Include="Controllers\Api\Admin\DefaultFavoriteAddressController.cs" />
-    <Compile Include="Controllers\Api\Admin\ExclusionsController.cs" />
-    <Compile Include="Controllers\Api\Admin\ExportDataController.cs" />
-    <Compile Include="Controllers\Api\Admin\IbsChargeAccountController.cs" />
-    <Compile Include="Controllers\Api\Admin\NotificationAdministrationController.cs" />
-    <Compile Include="Controllers\Api\Admin\RoleManagementController.cs" />
-    <Compile Include="Controllers\Api\Admin\RuleAdministrationController.cs" />
-    <Compile Include="Controllers\Api\Admin\TariffController.cs" />
-    <Compile Include="Controllers\Api\ApplicationInfoController.cs" />
-    <Compile Include="Controllers\Api\BaseApiController.cs" />
-    <Compile Include="Controllers\Api\BraintreeClientPaymentController.cs" />
-    <Compile Include="Controllers\Api\CmtPaymentPairingController.cs" />
-    <Compile Include="Controllers\Api\Maps\DirectionsController.cs" />
-    <Compile Include="Controllers\Api\FlightInformationController.cs" />
-    <Compile Include="Controllers\Api\IbsFareController.cs" />
-    <Compile Include="Controllers\Api\LoginController.cs" />
-    <Compile Include="Controllers\Api\Account\Orders\OrderStatusController.cs" />
-    <Compile Include="Controllers\Api\LogMetricsController.cs" />
-    <Compile Include="Controllers\Api\Maps\GeocodingController.cs" />
-    <Compile Include="Controllers\Api\Maps\PlacesController.cs" />
-    <Compile Include="Controllers\Api\Maps\PostalCodeController.cs" />
-    <Compile Include="Controllers\Api\NetworkRoamingController.cs" />
-    <Compile Include="Controllers\Api\OrderRatingController.cs" />
-    <Compile Include="Controllers\Api\PopularAddressController.cs" />
-    <Compile Include="Controllers\Api\PrivacyPolicyController.cs" />
-    <Compile Include="Controllers\Api\ProcessPaymentController.cs" />
-    <Compile Include="Controllers\Api\PromotionController.cs" />
-    <Compile Include="Controllers\Api\RatingTypesController.cs" />
-    <Compile Include="Controllers\Api\ReferenceDataController.cs" />
-    <Compile Include="Controllers\Api\SearchLocationController.cs" />
-    <Compile Include="Controllers\Api\ServerStatusController.cs" />
-    <Compile Include="Controllers\Api\Settings\ConfigurationController.cs" />
-    <Compile Include="Controllers\Api\Settings\DefaultGeoLocationController.cs" />
-    <Compile Include="Controllers\Api\Settings\PaymentSettingsController.cs" />
-    <Compile Include="Controllers\Api\TermsAndConditionsController.cs" />
-    <Compile Include="Controllers\Api\TestOnlyEndpointController.cs" />
-    <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
-    <Compile Include="Controllers\Api\Vehicle\VehicleController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -809,8 +754,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AuthAttribute.cs" />
-    <Compile Include="Security\AuthenticationFailureResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
