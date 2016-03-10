@@ -184,12 +184,6 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\portable-win+net45+sl50+wp8+MonoAndroid+MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -255,6 +249,12 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.3\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
@@ -300,6 +300,7 @@
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
     <None Include="Resources\luxury_progress.png" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarAirportBooking.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarConfirmation.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarEdit.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarManualRideLinQ.xib" />
@@ -423,7 +424,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
@@ -486,6 +486,7 @@
     <Compile Include="Controls\Widgets\Dot.cs" />
     <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
     <Compile Include="Controls\Widgets\AppBarView.cs" />
+    <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
     <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
@@ -622,6 +623,7 @@
     </Compile>
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Views\EditAutoTipView.cs" />
     <Compile Include="Controls\Widgets\ExtendedTextFieldView.cs" />
     <Compile Include="Views\EditAutoTipView.designer.cs">
@@ -676,6 +678,7 @@
     <BundleResource Include="Resources\nearby_oriented_passenger%402x.png" />
     <BundleResource Include="Resources\nearby_oriented_passenger%403x.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubView.cs" />
+    <Compile Include="Views\ExtendedSplashScreen.cs" />
     <Compile Include="Views\Payments\CreditCardMultipleView.cs" />
     <Compile Include="Views\Payments\CreditCardMultipleView.designer.cs">
       <DependentUpon>CreditCardMultipleView.cs</DependentUpon>
@@ -747,6 +750,8 @@
     <BundleResource Include="Resources\cancel%402x.png" />
     <Compile Include="Views\DebugView.cs" />
     <BundleResource Include="nl.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\discover.png" />
+    <BundleResource Include="Resources\discover%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
