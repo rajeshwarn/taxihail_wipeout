@@ -557,10 +557,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Capital Taxi Ottawa1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\AAAYellow.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AAAYellow.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Central Niagara.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Central Niagara.Designer.cs</LastGenOutput>
