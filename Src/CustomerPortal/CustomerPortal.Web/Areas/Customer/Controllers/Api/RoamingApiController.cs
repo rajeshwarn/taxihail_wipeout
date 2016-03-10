@@ -299,7 +299,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 FutureBookingTimeThresholdInMinutes = market.FutureBookingTimeThresholdInMinutes,
                 EnableAppFareEstimates = market.EnableAppFareEstimates,
                 MarketTariff = market.MarketTariff,
-                DisableOutOfAppPayment = market.DisableOutOfAppPayment
+                DisableOutOfAppPayment = market.DisableOutOfAppPayment,
+                ShowCallDriver = market.ShowCallDriver
             };
         }
     }

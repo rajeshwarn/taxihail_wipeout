@@ -369,6 +369,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(false, result.EnableDriverBonus);
             Assert.AreEqual(null, result.ReceiptFooter);
+            Assert.AreEqual(false, result.ShowCallDriver);
         }
 
         [Test]
@@ -385,6 +386,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(true, result.EnableDriverBonus);
             Assert.AreEqual("my custom footer 1", result.ReceiptFooter);
+            Assert.AreEqual(false, result.ShowCallDriver);
         }
 
         [Test]
@@ -401,6 +403,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(true, result.EnableDriverBonus);
             Assert.AreEqual(null, result.ReceiptFooter);
+            Assert.AreEqual(true, result.ShowCallDriver);
         }
 
         [Test]
@@ -481,7 +484,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                         CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
                         CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
                     }},
-                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 }, Region = new MapRegion
+                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 }, ShowCallDriver = true, Region = new MapRegion
                     {
                         CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
                         CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }

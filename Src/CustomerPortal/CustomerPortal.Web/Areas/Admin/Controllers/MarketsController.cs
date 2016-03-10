@@ -36,6 +36,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult MarketIndex(string market)
         {
             return View(GetMarketModel(market));
+                ShowCallDriver = marketModel.ShowCallDriver,
         }
 
         public ActionResult CreateMarket()
@@ -228,7 +229,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             string futureBookingReservationProvider,
             int futureBookingTimeThresholdInMinutes,
             bool disableOutOfAppPayment,
-            bool enableAppFareEstimates, 
+            bool enableAppFareEstimates,
+            bool showCallDriver,
             Tariff marketTariff,
             MapRegion region)
         {
@@ -255,6 +257,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.DisableOutOfAppPayment = disableOutOfAppPayment;
                 marketToEdit.ReceiptFooter = receiptFooter;
                 marketToEdit.EnableAppFareEstimates = enableAppFareEstimates;
+
+                marketToEdit.ShowCallDriver = showCallDriver;
 
                 marketTariff.Type = (int) TariffType.Market;
                 marketToEdit.MarketTariff = marketTariff;

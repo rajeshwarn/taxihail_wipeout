@@ -43,6 +43,8 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableAppFareEstimates { get; set; }
 
+        public bool ShowCallDriver { get; set; }
+
         public Tariff MarketTariff { get; set; }
     }
 

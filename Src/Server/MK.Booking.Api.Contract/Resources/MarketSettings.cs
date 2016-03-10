@@ -26,5 +26,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         {
             get { return !HashedMarket.HasValue(); }
         }
+
+        public bool ShowCallDriver { get; set; }
     }
 }

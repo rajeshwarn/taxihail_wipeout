@@ -147,6 +147,18 @@
             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
             <br/>
 
+            <h5>Show Call Driver</h5>
+            <span>If true, show button on the status screen to call the driver</span>
+            @Html.DropDownListFor(
+            x => x.ShowCallDriver,
+            new[]
+            {
+                new SelectListItem { Text = "Yes", Value = bool.TrueString, Selected = @Model.ShowCallDriver},
+                new SelectListItem { Text = "No", Value = bool.FalseString, Selected = !@Model.ShowCallDriver }
+            },
+            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
+
             <h4>Receipt Footer</h4>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
             <br/>

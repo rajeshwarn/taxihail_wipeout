@@ -244,6 +244,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
                 .To(vm => vm.IsAddingNewCard);
 
+            set.Bind(imgVisa)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableVisaMastercard);
+
+            set.Bind(imgAmex)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableAMEX);
+
+            set.Bind(imgDiscover)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableDiscover);
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
@@ -317,7 +329,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "amex.png";
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+            ViewModel.CreditCardCompanies[4].Image = "discover.png";
+            ViewModel.CreditCardCompanies[5].Image = "credit_card_generic.png";
 
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
