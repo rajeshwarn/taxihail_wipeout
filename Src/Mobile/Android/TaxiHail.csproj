@@ -630,6 +630,9 @@
     <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
     <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\discover.png" />
+    <AndroidResource Include="Resources\Drawable\discover.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\visa_electron.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

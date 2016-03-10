@@ -109,6 +109,8 @@
 "Delete"="Delete";
 "CreditCardInvalidCrediCardNumber"="رقم البطاقة الائتمانية خاطئة";
 "CreditCardInvalidCrediCardTypeAmex"="Sorry, Amex cards are not supported";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "InvalidAddressTitle"="Invalid address";

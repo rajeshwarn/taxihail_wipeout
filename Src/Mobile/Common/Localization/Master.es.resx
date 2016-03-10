@@ -522,6 +522,13 @@
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>The server cannot be contacted, try again later.</value>
   </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Sorry, Visa, Mastercard and Visa Electron cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Sorry, Discover cards are not supported</value>
+  </data>
+  </data>
   <data name="RideSettingsCannotLoadListTitle" xml:space="preserve">
     <value>Server error</value>
   </data>

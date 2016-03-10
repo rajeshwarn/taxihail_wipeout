@@ -121,6 +121,41 @@
                             local:MvxBind="Enabled IsAddingNewCard; Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter='Inverted'"
                             style="@style/BlackTextLabel" />
                     </RadioGroup>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+					    android:layout_height="wrap_content"
+					    android:orientation="horizontal">
+                        <LinearLayout
+							android:layout_width="wrap_content"
+						    android:layout_height="wrap_content"
+						    android:orientation="horizontal"
+						    local:MvxBind="Visibility PaymentSettings.DisableVisaMastercard, Converter=InvertedVisibility">
+		                    <ImageView
+		                        android:src="@drawable/visa"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+	                        <ImageView
+		                        android:src="@drawable/visa_electron"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+		                    <ImageView
+		                        android:src="@drawable/mastercard"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <ImageView
+	                        android:src="@drawable/amex"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        local:MvxBind="Visibility PaymentSettings.DisableAMEX, Converter=InvertedVisibility"/>
+					    <ImageView
+	                        android:src="@drawable/discover"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        local:MvxBind="Visibility PaymentSettings.DisableDiscover, Converter=InvertedVisibility"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

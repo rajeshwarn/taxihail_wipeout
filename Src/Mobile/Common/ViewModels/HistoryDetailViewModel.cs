@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 				RaisePropertyChanged(() => Order); 
 				RaisePropertyChanged(() => ConfirmationTxt); 
+				RaisePropertyChanged(() => ShowConfirmationTxt); 
 				RaisePropertyChanged(() => RequestedTxt); 
 				RaisePropertyChanged(() => OriginTxt); 
 				RaisePropertyChanged(() => AptRingTxt); 
@@ -201,13 +202,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        public bool CanShowConfirmationTxt
-        {
-            get
-            {          
-                return Settings.ShowOrderNumber;
-            }
-        }
+		public bool ShowConfirmationTxt
+		{
+			get
+			{          
+				return Settings.ShowOrderNumber 
+					&& Order != null 
+					&& Order.IBSOrderId.HasValue;
+			}
+		}
 
         private string _authorizationNumber;
         public string AuthorizationNumber 

@@ -735,6 +735,7 @@
       <DependentUpon>DropOffSelectionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
+    <Compile Include="Binding\MvxUIViewHiddenExTargetBinding.cs" />
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.cs" />
     <Compile Include="Views\BookingBottomBar\BookingBarDropOffSelection.designer.cs">

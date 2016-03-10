@@ -79,6 +79,8 @@ namespace apcurium.MK.Web
         protected bool AlwaysDisplayCoFOption { get; private set; }
         protected bool AskForCVVAtBooking { get; private set; }
         protected bool DisableAMEX { get; private set; }
+        protected bool DisableVisaMastercard { get; private set; }
+        protected bool DisableDiscover { get; private set; }
         protected int AvailableVehicleRefreshRate { get; private set; }
         protected bool IsCraftyClicksEnabled { get; private set; }
         protected string WebSiteRootPath { get; private set; }
@@ -142,6 +144,8 @@ namespace apcurium.MK.Web
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
             AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;
             DisableAMEX = paymentSettings.DisableAMEX;
+            DisableVisaMastercard = paymentSettings.DisableVisaMastercard;
+            DisableDiscover = paymentSettings.DisableDiscover;
 
             MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
