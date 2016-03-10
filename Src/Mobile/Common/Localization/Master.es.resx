@@ -528,7 +528,6 @@
   <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
     <value>Sorry, Discover cards are not supported</value>
   </data>
-  </data>
   <data name="RideSettingsCannotLoadListTitle" xml:space="preserve">
     <value>Server error</value>
   </data>
