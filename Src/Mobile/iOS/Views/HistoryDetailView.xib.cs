@@ -3,8 +3,6 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -66,31 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnViewRating.SetTitle(Localize.GetValue("ViewRatingBtn"), UIControlState.Normal);
 
 			btnSendReceipt.SetTitle(Localize.GetValue("HistoryViewSendReceiptButton"), UIControlState.Normal);
-
-			if (ViewModel.Settings.HideDestination)
-			{
-				lblDestination.RemoveFromSuperview();
-				txtDestination.RemoveFromSuperview();
-			}
-
-            if (!ViewModel.CanShowConfirmationTxt)
-            {
-                txtOrder.RemoveFromSuperview();
-                lblOrder.RemoveFromSuperview();
-            }
-
-            ViewModel.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == "PromoCode")
-                {
-                    if(!ViewModel.PromoCode.HasValue())
-                    {
-                        lblPromo.RemoveFromSuperview();
-                        txtPromo.RemoveFromSuperview();
-                    }
-                }
-            };
-
+            			
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
 			set.Bind(btnRebook)
@@ -148,14 +122,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
 
+            set.Bind(lblOrder)
+                .For("HiddenEx")
+                .To(vm => vm.ShowConfirmationTxt)
+                .WithConversion("BoolInverter");
+
 			set.Bind(txtOrder)
 				.For(v => v.Text)
 				.To(vm => vm.ConfirmationTxt);
-
+            set.Bind(txtOrder)
+                .For("HiddenEx")
+                .To(vm => vm.ShowConfirmationTxt)
+                .WithConversion("BoolInverter");
+            
+            set.Bind(lblDestination)
+                .For("HiddenEx")
+                .To(vm => vm.Settings.HideDestination);
+            
 			set.BindSafe(txtDestination)
-				    .For(v => v.Text)
-				    .To(vm => vm.DestinationTxt);
-
+			    .For(v => v.Text)
+			    .To(vm => vm.DestinationTxt);
+            set.BindSafe(txtDestination)
+                .For("HiddenEx")
+                .To(vm => vm.Settings.HideDestination);
+            
 			set.Bind(txtPickup)
 				.For(v => v.Text)
 				.To(vm => vm.OriginTxt);
@@ -189,9 +179,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.PickUpDateTxt);
 
+            set.Bind(lblPromo)
+                .For("HiddenEx")
+                .To(vm => vm.PromoCode)
+                .WithConversion("NoValueToTrueConverter");
+
             set.BindSafe(txtPromo)
                 .For(v => v.Text)
                 .To(vm => vm.PromoCode);
+            set.BindSafe(txtPromo)
+                .For("HiddenEx")
+                .To(vm => vm.PromoCode)
+                .WithConversion("NoValueToTrueConverter");
 
 			set.Apply();
 		}
