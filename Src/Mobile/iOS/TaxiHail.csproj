@@ -714,6 +714,7 @@
       <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HideableView.cs" />
+    <Compile Include="Binding\MvxUIViewHiddenExTargetBinding.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
