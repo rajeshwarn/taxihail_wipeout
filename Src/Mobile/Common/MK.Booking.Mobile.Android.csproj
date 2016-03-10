@@ -44,12 +44,6 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.1.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -91,6 +85,12 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+    </Reference>
     <Reference Include="Cirrious.MvvmCross.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
     </Reference>
@@ -107,7 +107,7 @@
       <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -121,8 +121,6 @@
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
-    <Compile Include="AppServices\IRateApplicationService.cs" />
-    <Compile Include="AppServices\IVehicleTypeService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
@@ -233,7 +231,6 @@
     <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
-    <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
     <Compile Include="ViewModels\Map\TaxiLocation.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
@@ -356,26 +353,24 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="BindingConverter\DialCodeConverter.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
-    <Compile Include="Localization\Taxi.Designer.cs">
-      <DependentUpon>Taxi.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="BindingConverter\IndexedItemConverter.cs" />
+    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IVehicleTypeService.cs" />
+    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
     <Compile Include="Infrastructure\IQuitApplicationService.cs" />
     <Compile Include="AppServices\Orders\ManualPairingException.cs" />
     <Compile Include="Models\OrderRepresentation.cs" />
     <Compile Include="Infrastructure\IDeviceCollectorService.cs" />
     <Compile Include="AppServices\Orders\InvalidCreditCardException.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
-    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
-    <Compile Include="AppServices\Impl\VehicleTypeService.cs" />
-    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
-    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="BindingConverter\IndexedItemConverter.cs" />
     <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -445,15 +440,11 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\UTOG.resx" />
-    <EmbeddedResource Include="Localization\Taxi.resx">
-      <SubType>Designer</SubType>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Taxi.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="Localization\ArroUAT.resx" />
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="TutorialContent\Tutorial-nl.json" />
     <None Include="Localization\FLAT RATE.resx" />
+    <None Include="Localization\Taxi.resx" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>
