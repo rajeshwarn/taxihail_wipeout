@@ -740,6 +740,8 @@
     <BundleResource Include="Resources\cancel%402x.png" />
     <Compile Include="Views\DebugView.cs" />
     <BundleResource Include="nl.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\discover.png" />
+    <BundleResource Include="Resources\discover%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

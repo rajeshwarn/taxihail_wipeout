@@ -450,6 +450,12 @@
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
     <value>Désolé, nous ne supportons pas les cartes Amex</value>
   </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Désolé, nous ne supportons pas les cartes Discover</value>
+  </data>
   <data name="CreditCardLabel" xml:space="preserve">
     <value>Label</value>
   </data>

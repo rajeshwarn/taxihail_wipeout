@@ -117,6 +117,8 @@
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "CreditCardInvalidCrediCardNumber"="El número de tarjeta de crédito es inválido";
 "CreditCardInvalidCrediCardTypeAmex"="Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "CreditCardLabel"="Etiqueta";
 "CreditCardName"="Nombre tal y como aparece en la tarjeta";
 "CreditCardNumber"="Número de tarjeta";

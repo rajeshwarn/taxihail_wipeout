@@ -51,12 +51,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private const string Visa = "Visa";
 		private const string MasterCard = "MasterCard";
 		private const string Amex = "Amex";
+		private const string Discover = "Discover";
 		private const string CreditCardGeneric = "Credit Card Generic";
 		private const string VisaElectron = "Visa Electron";
 		private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
 		private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
 		private const string MasterPattern = "^5[1-5][0-9]{14}$";
 		private const string AmexPattern = "^3[47][0-9]{13}$";
+		private const string DiscoverPattern = "^6(?:011|5[0-9]{2})[0-9]{12}$";
 		private const int TipMaxPercent = 100;
 		#endregion
 
@@ -99,7 +101,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					new ListItem {Display = MasterCard, Id = 1},
 					new ListItem {Display = Amex, Id = 2},
 					new ListItem {Display = VisaElectron, Id = 3},
-					new ListItem {Display = CreditCardGeneric, Id = 4}
+					new ListItem {Display = Discover, Id = 4},
+					new ListItem {Display = CreditCardGeneric, Id = 5}
 				};
 
 				ExpirationYears = new List<ListItem>();
@@ -248,6 +251,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => CreditCardTypeName);
 				RaisePropertyChanged(() => CreditCardImagePath);
+
+   			    if (CreditCardCompanies[CreditCardType].Display == Amex && PaymentSettings.DisableAMEX)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
+					return;
+				}
+
+				if (CreditCardCompanies[CreditCardType].Display == Discover && PaymentSettings.DisableDiscover)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeDiscover"]);
+					return;
+				}
+
+				if ((CreditCardCompanies[CreditCardType].Display == Visa || CreditCardCompanies[CreditCardType].Display == VisaElectron || CreditCardCompanies[CreditCardType].Display == MasterCard) && PaymentSettings.DisableVisaMastercard)
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeVisaMastercard"]);
+					return;
+				}
 			}
 		}
 
@@ -265,6 +286,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get 
 			{
 				var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+
+				if((PaymentSettings.DisableAMEX && type.Display == Amex) 
+					|| (PaymentSettings.DisableDiscover && type.Display == Discover)
+					|| (PaymentSettings.DisableVisaMastercard && (type.Display == Visa || type.Display == VisaElectron  || type.Display == MasterCard)))
+				{
+					return CreditCardCompanies.FirstOrDefault(x=>x.Display == CreditCardGeneric).Image;
+				}
+
 				return type == null ? null : type.Image;
 			}
 		}
@@ -651,12 +680,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
-				if (Data.CreditCardCompany == Amex && PaymentSettings.DisableAMEX)
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardTypeAmex"]);
-					return;
-				}
-
 				using (this.Services().Message.ShowProgress())
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -803,9 +826,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 					else
 					{
-						var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
-						if (i != null)
-							CreditCardType = (int)i;
+						var discoverRgx = new Regex(DiscoverPattern, RegexOptions.IgnoreCase);
+						matches = discoverRgx.Matches(cardNumber);
+						if (matches.Count > 0)
+						{
+							var id = CreditCardCompanies.Find(x => x.Display == Discover).Id;
+							if (id != null)
+								CreditCardType = (int)id;
+						}
+						else
+						{
+							var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+							if (i != null)
+								CreditCardType = (int)i;
+						}
 					}
 				}
 			}

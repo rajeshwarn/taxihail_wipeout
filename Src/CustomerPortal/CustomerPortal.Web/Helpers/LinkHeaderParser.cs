@@ -10,7 +10,9 @@ namespace CustomerPortal.Web.Helpers
         {
             var parser = new WebLinkParser();
             var list = parser.Parse(linkHeader);
-            return list.FirstOrDefault(x => x.Relation == "next")?.Url;
+            var nextLink = list.FirstOrDefault(x => x.Relation == "next");
+
+            return nextLink != null ? nextLink.Url : null;
         }
         
         public IList<LinkResult> Parse(string linkHeader)
