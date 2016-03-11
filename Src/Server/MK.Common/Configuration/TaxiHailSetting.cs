@@ -91,6 +91,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             HideTHNetworkAppMenu = true;
+            //On Arro, this should be false.
             ShowOrderNumber = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
