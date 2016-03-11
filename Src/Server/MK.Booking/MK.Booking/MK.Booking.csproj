@@ -537,6 +537,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\GroveTransit.resx" />
     <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aeroport Taxi.Designer.cs</LastGenOutput>

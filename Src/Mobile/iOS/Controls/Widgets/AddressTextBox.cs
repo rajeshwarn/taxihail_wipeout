@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public Action<string> AddressUpdated;
 
         private FlatTextField StreetNumberTextView { get; set; }
-        public FlatTextField AddressTextView { get; set; }
+        private FlatTextField AddressTextView { get; set; }
         public UIButton AddressButton { get; set; }
         private UIActivityIndicatorView LoadingWheel  { get; set; }
         private UIView VerticalDivider { get; set; }
@@ -279,6 +280,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        private Address _currentAddress;
+        public Address CurrentAddress
+        {
+            get { return _currentAddress; }
+            set
+            {
+                _currentAddress = value;
+                if (AddressTextView != null && _currentAddress != null)
+                {
+                    AddressTextView.Text = _currentAddress.DisplayAddress;
+                }
+            }
+        }
+
         private void Resize()
         {
             AddressTextView.UserInteractionEnabled = IsSelected;
@@ -298,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void SetBehavior()
         {
             //Order is important
-            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
+            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, () => CurrentAddress, number => 
             {
                 if (AddressUpdated != null)
                 {
