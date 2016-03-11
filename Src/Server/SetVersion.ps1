@@ -266,21 +266,6 @@ if ($r.Success)
 		git push
 		git push origin "$args"
 	  echo " ";
-
-		echo "Updating customer portal list...";
-		$UpdatePortalList = Invoke-WebRequest https://customer.taxihail.com/Admin/Deployment/UpdateVersions?createType=1
-		echo $UpdatePortalList
-		$PortalUpdated = Select-String -Pattern "StatusCode        : 200" -InputObject $UpdatePortalList -Quiet;
-		if($PortalUpdated)
-	  {
-		  echo "Customer Portal list updated";
-	  }
-	  else
-	  {
-		  echo "ERROR: Unable to update customer portal list";
-	  }
-
-	  echo " ";
 		echo "Done!";
 	  echo " ";
   }
