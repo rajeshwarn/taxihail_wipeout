@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 
 		    OrderId = id;
-		    using (this.Services ().Message.ShowProgress ())
+		    using (this.Services().Message.ShowProgress ())
 		    {
 		        await LoadOrder();
 		        await LoadStatus();
@@ -280,19 +280,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				if (Status.FareAvailable)
+				if (Status.FareAvailable || Status.IsManualRideLinq)
 				{
-					var paymentAmount = Order.Fare.GetValueOrDefault() 
-						+ Order.Tip.GetValueOrDefault() 
-						+ Order.Tax.GetValueOrDefault() 
-						+ Order.Toll.GetValueOrDefault()
-						+ Order.Surcharge.GetValueOrDefault();
-
-					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
-				}
-				else if (Status.IsManualRideLinq)
-				{
-					return OrderStatus.Completed.ToString();
+					var paymentAmount = Order.Fare.GetValueOrDefault()
+					                   + Order.Tip.GetValueOrDefault()
+					                   + Order.Tax.GetValueOrDefault()
+					                   + Order.Toll.GetValueOrDefault()
+					                   + Order.Surcharge.GetValueOrDefault();
+				
+					if (Status.FareAvailable)
+					{
+						return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
+					}
+					else if (Status.IsManualRideLinq)
+					{
+						return string.Format("{0} ({1})", OrderStatus.Completed.ToString(), CultureProvider.FormatCurrency(paymentAmount));
+					}
 				}
 
 				return Status.IBSStatusDescription;
