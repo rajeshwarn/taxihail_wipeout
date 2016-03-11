@@ -401,6 +401,7 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Localization\Master.nl.resx" />
+    <EmbeddedResource Include="Localization\GroveTransit.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
