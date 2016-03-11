@@ -1,6 +1,5 @@
 using System;
 using UIKit;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
