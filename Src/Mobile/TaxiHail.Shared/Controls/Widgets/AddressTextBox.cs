@@ -9,6 +9,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public event EventHandler AddressClicked;
 
         private Color _selectedColor;
-		public EditTextWithAccessibility AddressTextView;
+		private EditTextWithAccessibility _addressTextView;
 		private EditTextWithAccessibility _streetNumberTextView;
         private LinearLayout _loadingWheel;
         private ImageView _dot;
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _selectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
 
 			_streetNumberTextView = (EditTextWithAccessibility)layout.FindViewById(Resource.Id.StreetNumberTextView);
-			AddressTextView = (EditTextWithAccessibility)layout.FindViewById(Resource.Id.AddressTextView);
+            _addressTextView = (EditTextWithAccessibility)layout.FindViewById(Resource.Id.AddressTextView);
             _loadingWheel = (LinearLayout)layout.FindViewById(Resource.Id.ProgressBar);
             _dot = (ImageView)layout.FindViewById(Resource.Id.Dot);
             _horizontalDivider = layout.FindViewById(Resource.Id.HorizontalDivider);
@@ -53,12 +54,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _streetNumberTextView.InputType = _streetNumberTextView.InputType | InputTypes.ClassNumber;
 			_streetNumberTextView.ContentDescription = ContentDescription + " " + this.Services().Localize["StreetNumber"];
 
-            AddressTextView.SetSelectAllOnFocus(true);
-            AddressTextView.SetSingleLine(true);
-            AddressTextView.InputType = InputTypes.ClassText | InputTypes.TextFlagNoSuggestions;
-            AddressTextView.ImeOptions = ImeAction.Go;
-			AddressTextView.Hint = ContentDescription;
-			AddressTextView.ContentDescription = ContentDescription;
+            _addressTextView.SetSelectAllOnFocus(true);
+            _addressTextView.SetSingleLine(true);
+            _addressTextView.InputType = InputTypes.ClassText | InputTypes.TextFlagNoSuggestions;
+            _addressTextView.ImeOptions = ImeAction.Go;
+            _addressTextView.Hint = ContentDescription;
+            _addressTextView.ContentDescription = ContentDescription;
 
 
             SetBehavior();
@@ -100,6 +101,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
+
+        private Address _currentAddress;
+        public Address CurrentAddress
+        {
+            get { return _currentAddress; }
+            set
+            {
+                _currentAddress = value;
+                if (_addressTextView != null && _currentAddress != null)
+                {
+                    _addressTextView.Text = _currentAddress.DisplayAddress;
+                }
+            }
+        }
+
 
         private bool? _isDestination;  //Needs to be nullable because by default it's false and the code in the setter was never called for the pickup.
         public bool IsDestination
@@ -153,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void SetBehavior()
         {
             //Order is important
-            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, _streetNumberTextView, number => 
+            NumberAndAddressTextFieldBehavior.ApplyTo(_addressTextView, _streetNumberTextView, () => CurrentAddress, number => 
             {
                 if (AddressUpdated != null)
                 {
@@ -161,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             });
 
-            AddressTextView.Click += (sender, e) => 
+            _addressTextView.Click += (sender, e) => 
             {
                 if(!UserInputDisabled && AddressClicked!= null)
                 {
