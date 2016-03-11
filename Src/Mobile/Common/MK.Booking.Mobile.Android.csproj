@@ -401,7 +401,6 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Localization\Master.nl.resx" />
-    <EmbeddedResource Include="Localization\GroveTransit.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
@@ -421,7 +420,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\ArroUAT.resx" />
     <None Include="TutorialContent\Tutorial-nl.json" />
-    <None Include="Localization\FLAT RATE.resx" />
+    <None Include="Localization\ArroNT.resx" />
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>
