@@ -107,8 +107,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
 
-            set.Bind (_viewDestination.AddressTextView)
-                .To (vm => vm.DestinationAddress.DisplayAddress);
+            set.Bind (_viewDestination)
+                .For (v => v.CurrentAddress)
+                .To (vm => vm.DestinationAddress);
 
             set.Bind (_viewDestination)
                 .For ("AddressClicked")
