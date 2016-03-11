@@ -406,6 +406,7 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Localization\Master.nl.resx" />
+    <EmbeddedResource Include="Localization\GroveTransit.resx" />
     <EmbeddedResource Include="Localization\yoolka.resx" />
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
