@@ -1126,7 +1126,11 @@ namespace apcurium.MK.Booking.Jobs
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
-                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
+                    var orderPairingDetail = _orderDao.FindOrderPairingById(orderDetail.Id);
+
+                    description = orderPairingDetail.SelectOrDefault(orderPairing => orderPairingDetail.PairingToken.HasValueTrimmed() && !orderPairingDetail.WasUnpaired)
+                        ? _resources.Get("OrderStatus_PairingSuccess", _languageCode)
+                        : _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
 
