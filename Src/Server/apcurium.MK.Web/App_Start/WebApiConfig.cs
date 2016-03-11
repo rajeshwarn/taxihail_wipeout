@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Routing;
 using apcurium.MK.Booking.Api.Contract;
+using apcurium.MK.Booking.Api.Controllers;
 
 namespace apcurium.MK.Web.App_Start
 {
@@ -41,56 +43,6 @@ namespace apcurium.MK.Web.App_Start
         }
 
 
-        private class LegacyHttpClientHandler : HttpClientHandler
-        {
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                if (request.RequestUri.OriginalString.Contains("api/v2"))
-                {
-                    return base.SendAsync(request, cancellationToken);
-                }
-
-                var requestUrl = request.RequestUri.OriginalString.Replace("api", "api/v2");
-
-                if (requestUrl.Contains("api/v2/auth"))
-                {
-                    requestUrl = requestUrl.Replace("auth", "login")
-                            .Replace("credentialsfb", "facebook")
-                            .Replace("credentialstw", "twitter")
-                            .Replace("credentials", "password");
-                }
-
-                if (requestUrl.Contains("api/v2/encryptedsettings"))
-                {
-                    requestUrl = requestUrl.Replace("encryptedsettings", "settings/encrypted");
-
-                }
-
-                if (requestUrl.Contains("account/manualridelinq") && (requestUrl.EndsWith("/status") || requestUrl.EndsWith("/unpair") || requestUrl.EndsWith("/pair")))
-                {
-                    requestUrl = requestUrl
-                        .Replace("/status", "")
-                        .Replace("/unpair", "")
-                        .Replace("/pair", "")
-                        .Replace("/pairing/tip", "/tip");
-
-                }
-
-                if (requestUrl.Contains("account/"))
-                {
-                    requestUrl = requestUrl.Replace("account/", "accounts/");
-                }
-
-                if (requestUrl.Contains("payments/settleoverduepayment"))
-                {
-                    requestUrl = requestUrl.Replace("payments/settleoverduepayment", "accounts/settleoverduepayment");
-                }
-
-                request.RequestUri = new Uri(requestUrl);
-
-                return base.SendAsync(request, cancellationToken);
-            }
-
-        }
+        
     }
 }

@@ -15,13 +15,7 @@ namespace apcurium.MK.Web
 
         public void Configuration(IAppBuilder app)
         {
-            
-
-            
-
-            //ConfigureAuth(app);
-
-            
+            ConfigureAuth(app);
         }
 
         public void Configure(Container containerFunq)

@@ -8,10 +8,8 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Web.App_Start;
 using apcurium.MK.Web.Security;
 using Infrastructure.Messaging;
-using Microsoft.Practices.Unity;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {

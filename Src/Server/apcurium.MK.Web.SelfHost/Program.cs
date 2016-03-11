@@ -1,10 +1,18 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
+using System.Web;
+using System.Web.Http;
+using apcurium.MK.Booking.Api.Controllers;
 using apcurium.MK.Booking.Services;
 using Funq;
+using Microsoft.Owin.Host.HttpListener;
+using Microsoft.Owin.Hosting;
 using Microsoft.Practices.Unity;
+using Owin;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 #endregion
@@ -18,61 +26,53 @@ namespace apcurium.MK.Web.SelfHost
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
             var appHost = new AppHost();
-            appHost.Init();
-            //appHost.Start(listeningOn);
+
+            WebApp.Start(listeningOn, builder => appHost.Configure());
 
 // ReSharper disable once LocalizableElement
             Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
             Console.ReadKey();
         }
     }
-
-    //TODO MKTAXI-3370: Handle apphost here
-    public class AppHost //: AppHostHttpListenerBase
+    
+    public class AppHost
     {
-        public AppHost() //: base("Mobile Knowledge Web Services", typeof (CurrentAccountService).Assembly)
+        public AppHost()
         {
         }
 
         public void Init()
         {
-            Configure(null);
+            OwinServerFactory.Initialize(new Dictionary<string, object>());
+            WebApp.Start("http://localhost:6901/api/", builder => Configure(builder));
         }
 
-        public void Configure(Container containerFunq)
+        private void Register(HttpConfiguration config)
+        {
+            config.MapHttpAttributeRoutes();
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/v2/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Legacy",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null,
+                handler: new LegacyHttpClientHandler()
+            );
+        }
+
+        public void Configure(IAppBuilder builder)
         {
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var notificationService = UnityServiceLocator.Instance.Resolve<INotificationService>();
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            var container = UnityServiceLocator.Instance;
-
-            //containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
-
-            //Plugins.Add(new AuthFeature(() => new AuthUserSession(),
-            //    new IAuthProvider[]
-            //    {
-            //        new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
-            //            UnityContainerExtensions.Resolve<IAccountDao>(container),
-            //            UnityContainerExtensions.Resolve<IPasswordService>(container),
-            //            UnityContainerExtensions.Resolve<IServerSettings>(container)),
-            //        new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
-            //        new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
-            //    }));
-            //Plugins.Add(new ValidationFeature());
-            //containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
-
-            
-
-            //SetConfig(new EndpointHostConfig
-            //{
-            //    GlobalResponseHeaders =
-            //    {
-            //        {"Access-Control-Allow-Origin", "*"},
-            //        {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
-            //    },
-            //});
+            builder.;
         }
     }
 }
