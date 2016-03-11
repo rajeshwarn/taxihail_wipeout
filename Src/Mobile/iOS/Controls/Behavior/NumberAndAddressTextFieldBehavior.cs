@@ -1,54 +1,61 @@
 using System;
 using UIKit;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
     public class NumberAndAddressTextFieldBehavior
     {
-        public static void ApplyTo(UITextField address, UITextField number, Action<string> streetNumberOfAddressUpdated)
+        public static void ApplyTo(UITextField addressTextField, UITextField numberTextField, Func<Address> currentAddress, Action<string> streetNumberOfAddressUpdated)
         {
-            number.Text = "";
-            number.EditingDidBegin += (s, e) => FocusOnNumber(number, address);
-            number.EditingDidEnd += (sender, e) => 
+            numberTextField.Text = "";
+            numberTextField.EditingDidBegin += (s, e) => FocusOnNumber(addressTextField, numberTextField, currentAddress);
+            numberTextField.EditingDidEnd += (sender, e) => 
             {
-                var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
+                var currentAddressValue = currentAddress();
+                currentAddressValue.ChangeStreetNumber(numberTextField.Text);
+
+                var newFullAddress = currentAddressValue.DisplayAddress;
                 if (streetNumberOfAddressUpdated != null)
                 {
-                    streetNumberOfAddressUpdated(number.Text);
+                    streetNumberOfAddressUpdated(numberTextField.Text);
                 }
-                address.Text = newFullAddress;
-                number.Text = "";
+                addressTextField.Text = newFullAddress;
+                numberTextField.Text = "";
             };
         }
 
-        private static void FocusOnNumber(UITextField streetNumber, UITextField address)
+        private static void FocusOnNumber(UITextField addressTextField, UITextField numberTextField, Func<Address> currentAddress)
         {
-            if (address.Text == null)
+            if (addressTextField.Text == null)
             {
                 return;
             }
 
-            var splitPoint = address.Text.IndexOf(' ');
-
-            if (splitPoint == -1) { return; }
-
-            var value = address.Text.Substring(0, splitPoint);
+            var currentAddressValue = currentAddress();
+            var streetNumber = currentAddressValue != null
+                ? currentAddressValue.StreetNumber
+                : string.Empty;
 
             int dummy;
-            if(!int.TryParse(value,out dummy)) { return; }
+            if(!int.TryParse(streetNumber, out dummy)) 
+            { 
+                return; 
+            }
 
-            streetNumber.Text = value;
+            numberTextField.Text = streetNumber;
 
             //setting the text here resets the font and unless you change it to another 
             //font before setting the correct font, the change won't be visible
-            var originalFont = streetNumber.Font;
-            streetNumber.Font = UIFont.SystemFontOfSize(10);
-            streetNumber.Font = originalFont;
+            var originalFont = numberTextField.Font;
+            numberTextField.Font = UIFont.SystemFontOfSize(10);
+            numberTextField.Font = originalFont;
 
-            streetNumber.SelectAll(streetNumber);
+            numberTextField.SelectAll(numberTextField);
 
-            address.Text = address.Text.Substring(splitPoint).Trim();
+            // remove the street number from the other textfield 
+            addressTextField.Text = addressTextField.Text.Replace(streetNumber, string.Empty).Trim();
         }
     }
 }
