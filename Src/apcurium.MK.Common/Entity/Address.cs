@@ -57,7 +57,10 @@ namespace apcurium.MK.Common.Entity
         {
             get
             {
-                var firstSection = string.Join(" ", StreetNumber.ToSafeString(), Street.ToSafeString());
+                var firstSection = string.Join(" ", IsReversedFormat() 
+                    ? new[] { Street.ToSafeString(), StreetNumber.ToSafeString() } 
+                    : new[] { StreetNumber.ToSafeString(), Street.ToSafeString() });
+
                 if (!firstSection.HasValueTrimmed())
                 {
                     firstSection = FullAddress;
@@ -94,7 +97,7 @@ namespace apcurium.MK.Common.Entity
                 return FirstSectionOfDisplayAddress;
             }
 
-            // should return ("StreetNumber Street" or "FullAddress"), City, State ZipCode
+            // should return ("StreetNumber Street" or "Street StreetNumber" or "FullAddress"), City, State ZipCode
             var address = string.Join(", ", addressSections);
 
             if (useBuildingName && BuildingName.HasValueTrimmed())
@@ -228,6 +231,32 @@ namespace apcurium.MK.Common.Entity
             return FullAddress.HasValue()
                 && Longitude != 0
                 && Latitude != 0;
+        }
+
+        /// <summary>
+        /// Determines if the address should be displayed in reversed order (Mexico, Netherlands)
+        /// </summary>
+        /// <returns><c>true</c> if this instance is reversed format; otherwise, <c>false</c>.</returns>
+        private bool IsReversedFormat()
+        {
+            var reversed = false;
+
+            try
+            {
+                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.InvariantCultureIgnoreCase);
+                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.InvariantCultureIgnoreCase);
+
+                if(indexOfStreet >= 0 && indexOfStreetNumber >= 0)
+                {
+                    // we succesfully found the 2 indexes in FullAddress
+                    reversed = indexOfStreet < indexOfStreetNumber;
+                }
+            }
+            catch
+            {
+            }
+
+            return reversed;
         }
     }
 }

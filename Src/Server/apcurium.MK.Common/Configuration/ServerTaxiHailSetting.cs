@@ -176,11 +176,11 @@ namespace apcurium.MK.Common.Configuration
         public bool IsWebSocialMediaVisible { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Social Media URL (Website)", Description = "Adds the link to the Facebook address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Facebook  URL (Website)", Description = "Adds the link to the Facebook address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaFacebookURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Social Media URL (Website)", Description = "Adds the link to the Twitter address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Twitter  URL (Website)", Description = "Adds the link to the Twitter address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaTwitterURL { get; protected set; }
 
         [CustomizableByCompany]

@@ -151,8 +151,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
 
-			set.Bind (_viewPickup.AddressTextView)
-                .To (vm => vm.PickupAddress.DisplayAddress);
+			set.Bind (_viewPickup)
+                .For (v => v.CurrentAddress)
+                .To (vm => vm.PickupAddress);
 
 			set.Bind(_viewPickup)
 				.For(v => v.UserInputDisabled)
@@ -175,8 +176,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
 
-			set.Bind (_viewDestination.AddressTextView)
-                .To (vm => vm.DestinationAddress.DisplayAddress);
+			set.Bind (_viewDestination)
+                .For (v => v.CurrentAddress)
+                .To (vm => vm.DestinationAddress);
 
 			set.Bind (_viewVehicleType)
                 .For (v => v.EstimatedFare)

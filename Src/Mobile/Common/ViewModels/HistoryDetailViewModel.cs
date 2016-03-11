@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 				RaisePropertyChanged(() => Order); 
 				RaisePropertyChanged(() => ConfirmationTxt); 
+				RaisePropertyChanged(() => ShowConfirmationTxt); 
 				RaisePropertyChanged(() => RequestedTxt); 
 				RaisePropertyChanged(() => OriginTxt); 
 				RaisePropertyChanged(() => AptRingTxt); 
@@ -200,13 +201,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        public bool CanShowConfirmationTxt
-        {
-            get
-            {          
-                return Settings.ShowOrderNumber;
-            }
-        }
+		public bool ShowConfirmationTxt
+		{
+			get
+			{          
+				return Settings.ShowOrderNumber 
+					&& Order != null 
+					&& Order.IBSOrderId.HasValue;
+			}
+		}
 
         private string _authorizationNumber;
         public string AuthorizationNumber 
@@ -277,27 +280,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-			    if (Status.FareAvailable)
-			    {
-					// this fix is due to info in database when [OrderDetail].[Fare] includes [OrderDetail].[Tip]
-					double? paymentAmount;
-					if (_clientPaymentSettings.PaymentMode == PaymentMethod.Cmt || _clientPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-					{
-						paymentAmount = Order.Fare;
-					}
-					else
-					{
-						paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
-					}
+				if (Status.FareAvailable)
+				{
+					var paymentAmount = Order.Fare.GetValueOrDefault() 
+						+ Order.Tip.GetValueOrDefault() 
+						+ Order.Tax.GetValueOrDefault() 
+						+ Order.Toll.GetValueOrDefault()
+						+ Order.Surcharge.GetValueOrDefault();
 
-					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
-			    }
-			    else if (Status.IsManualRideLinq)
-			    {
-			        return OrderStatus.Completed.ToString();
-			    }
+					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
+				}
+				else if (Status.IsManualRideLinq)
+				{
+					return OrderStatus.Completed.ToString();
+				}
 
-                return Status.IBSStatusDescription;
+				return Status.IBSStatusDescription;
 			}
 		}
 

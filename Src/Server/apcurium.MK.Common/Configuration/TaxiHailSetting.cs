@@ -89,7 +89,7 @@ namespace apcurium.MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             HideTHNetworkAppMenu = true;
-            ShowOrderNumber = false;
+            ShowOrderNumber = true;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
