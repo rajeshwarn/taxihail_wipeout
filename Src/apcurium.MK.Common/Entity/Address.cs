@@ -243,8 +243,8 @@ namespace apcurium.MK.Common.Entity
 
             try
             {
-                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.InvariantCultureIgnoreCase);
-                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.InvariantCultureIgnoreCase);
+                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.CurrentCultureIgnoreCase);
+                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.CurrentCultureIgnoreCase);
 
                 if(indexOfStreet >= 0 && indexOfStreetNumber >= 0)
                 {
