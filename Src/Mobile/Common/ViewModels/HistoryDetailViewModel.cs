@@ -290,12 +290,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
 				}
-			    else if (Status.IsManualRideLinq)
-			    {
-			        return OrderStatus.Completed.ToString();
-			    }
+				else if (Status.IsManualRideLinq)
+				{
+					return OrderStatus.Completed.ToString();
+				}
 
-                return Status.IBSStatusDescription;
+				return Status.IBSStatusDescription;
 			}
 		}
 
