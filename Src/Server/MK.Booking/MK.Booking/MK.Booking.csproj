@@ -485,6 +485,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\GroveTransit.resx" />
     <EmbeddedResource Include="Resources\Arro.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
