@@ -408,7 +408,6 @@
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
-    <None Include="Localization\FLAT RATE.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -422,8 +421,7 @@
     <None Include="Localization\ArroUAT.resx" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
-    <None Include="Localization\GroveTransit.resx" />
-    <None Include="Localization\yoolka.resx" />
+    <None Include="Localization\ArroNT.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
