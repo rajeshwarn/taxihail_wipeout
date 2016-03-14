@@ -26,7 +26,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Route("{deviceToken}")]
+        [HttpDelete, Route("{deviceToken}")]
         public IHttpActionResult DeletePushNotificationRegistration(string deviceToken)
         {
             PushNotificationRegistrationService.Delete(deviceToken);

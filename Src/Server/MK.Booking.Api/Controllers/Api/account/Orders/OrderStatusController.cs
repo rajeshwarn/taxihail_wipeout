@@ -35,7 +35,7 @@ namespace apcurium.MK.Web.Controllers.Api
         }
 
         [HttpGet]
-        [Route("{OrderId}/status/")]
+        [Route("{OrderId}/status")]
         public async Task<IHttpActionResult> GetOrderStatus(Guid orderId)
         {
             var status = await _orderStatusService.Get(new OrderStatusRequest() {OrderId = orderId});

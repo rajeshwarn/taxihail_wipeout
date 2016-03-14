@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api
             OrderRatingsService = new OrderRatingsService(orderRatingDao, commandBus);
         }
 
-        [HttpGet, Route("{orderId")]
+        [HttpGet, Route("{orderId}")]
         public IHttpActionResult GetOrderRatings(Guid orderId)
         {
             var result = OrderRatingsService.Get(orderId);

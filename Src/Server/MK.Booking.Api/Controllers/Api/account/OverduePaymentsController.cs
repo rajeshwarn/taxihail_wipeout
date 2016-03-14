@@ -14,7 +14,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("/api/v2/accounts")]
+    [RoutePrefix("api/v2/accounts")]
     public class OverduePaymentsController : BaseApiController
     {
         public OverduePaymentService OverduePaymentService { get; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Controllers
 {
-    public class LegacyHttpClientHandler : HttpClientHandler
+    public class LegacyHttpClientHandler : DelegatingHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

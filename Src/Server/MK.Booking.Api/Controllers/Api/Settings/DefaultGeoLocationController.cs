@@ -15,6 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             DefaultGeoLocationService = new DefaultGeoLocationService(serverSettings);
         }
 
+        [HttpGet]
         public IHttpActionResult GetDefaultGeoLocation()
         {
             var result = DefaultGeoLocationService.Get();

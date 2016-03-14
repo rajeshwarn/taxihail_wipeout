@@ -6,11 +6,17 @@ using System.Configuration;
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Routing;
 using apcurium.MK.Booking.Api.Controllers;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.IoC;
 using Funq;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
+using Microsoft.Owin.Security.Cookies;
 using Microsoft.Practices.Unity;
 using Owin;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
@@ -25,11 +31,12 @@ namespace apcurium.MK.Web.SelfHost
         {
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
-            var appHost = new AppHost();
+            WebApp.Start<AppHost>(new StartOptions(listeningOn)
+            {
+                ServerFactory = "Microsoft.Owin.Host.HttpListener"
+            });
 
-            WebApp.Start(listeningOn, builder => appHost.Configure());
-
-// ReSharper disable once LocalizableElement
+            // ReSharper disable once LocalizableElement
             Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
             Console.ReadKey();
         }
@@ -37,42 +44,48 @@ namespace apcurium.MK.Web.SelfHost
     
     public class AppHost
     {
+        private class DirectRouteResolver : DefaultDirectRouteProvider
+        {
+            private readonly Func<ILogger> _getLogger = () => UnityServiceLocator.Instance.Resolve<ILogger>();
+
+            protected override IReadOnlyList<RouteEntry> GetActionDirectRoutes(HttpActionDescriptor actionDescriptor, IReadOnlyList<IDirectRouteFactory> factories,
+                IInlineConstraintResolver constraintResolver)
+            {
+                try
+                {
+                    return base.GetActionDirectRoutes(actionDescriptor, factories, constraintResolver);
+                }
+                catch (Exception ex)
+                {
+                    _getLogger().LogError(ex);
+                    throw;
+                }
+            }
+        }
+
         public AppHost()
         {
         }
-
-        public void Init()
+        private HttpConfiguration MapRoutes(HttpConfiguration config)
         {
-            OwinServerFactory.Initialize(new Dictionary<string, object>());
-            WebApp.Start("http://localhost:6901/api/", builder => Configure(builder));
+            config.MapHttpAttributeRoutes(new DirectRouteResolver());
+
+            config.MessageHandlers.Add(new LegacyHttpClientHandler());
+
+            config.DependencyResolver = new UnityContainerAdapter(UnityServiceLocator.Instance, UnityServiceLocator.Instance.Resolve<ILogger>());
+
+            return config;
         }
 
-        private void Register(HttpConfiguration config)
-        {
-            config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/v2/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "Legacy",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional },
-                constraints: null,
-                handler: new LegacyHttpClientHandler()
-            );
-        }
-
-        public void Configure(IAppBuilder builder)
+        public void Configuration(IAppBuilder builder)
         {
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var notificationService = UnityServiceLocator.Instance.Resolve<INotificationService>();
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            builder.;
+            builder.UseWebApi(MapRoutes(new HttpConfiguration()))
+               .UseCookieAuthentication(new CookieAuthenticationOptions());
         }
     }
 }

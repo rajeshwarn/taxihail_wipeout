@@ -1,5 +1,8 @@
 ﻿#region
 
+using System;
+using System.Collections.Generic;
+using System.Web.Http.Dependencies;
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
 
@@ -7,7 +10,7 @@ using Microsoft.Practices.Unity;
 
 namespace apcurium.MK.Common.IoC
 {
-    public class UnityContainerAdapter //TODO MKTAXI-3370: is this still needed?
+    public class UnityContainerAdapter : IDependencyResolver
     {
         private readonly IUnityContainer _container;
         private readonly ILogger _logger;
@@ -48,6 +51,32 @@ namespace apcurium.MK.Common.IoC
                 _logger.LogMessage("Warning: Failed resolution for " + typeof (T).Name);
                 return default(T);
             }
+        }
+
+        public void Dispose()
+        {
+            _container.Dispose();
+        }
+
+        public IDependencyScope BeginScope()
+        {
+            return this;
+        }
+
+        public object GetService(Type serviceType)
+        {
+            var service =  _container.IsRegistered(serviceType) 
+                ? _container.Resolve(serviceType) 
+                : null;
+
+            return service;
+        }
+
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            return _container.IsRegistered(serviceType)
+                ? _container.ResolveAll(serviceType)
+                : new object[0];
         }
     }
 }

@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.IoC;
 using Infrastructure.Messaging;
+using Microsoft.Practices.Unity;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -17,8 +20,11 @@ namespace apcurium.MK.Web.Controllers.Api
         public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; }
         public TestOnlyReqGetTestAdminAccountService TestOnlyReqGetTestAdminAccountService { get; set; }
 
-        public TestOnlyEndpointController(IAccountDao accountDao, ICommandBus commandBus)
+        public TestOnlyEndpointController()
         {
+            var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
+            var commandBus = UnityServiceLocator.Instance.Resolve<ICommandBus>();
+
             TestOnlyReqGetTestAccountService = new TestOnlyReqGetTestAccountService(accountDao, commandBus);
             TestOnlyReqGetTestAdminAccountService = new TestOnlyReqGetTestAdminAccountService(accountDao, commandBus);
         }
@@ -31,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("/admin/{index}}")]
+        [HttpGet, Route("admin/{index}")]
         public async Task<IHttpActionResult> GetAdminTestAccount(string index)
         {
             var result = await TestOnlyReqGetTestAdminAccountService.Get(index);

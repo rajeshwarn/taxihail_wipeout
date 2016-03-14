@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using log4net.Config;
+using Microsoft.Owin.Hosting;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -46,8 +47,7 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        protected static readonly AppHost AppHost;
-        protected string BaseUrl { get { return "http://localhost:6903"; } }
+        protected string BaseUrl { get { return "http://localhost:6903/api"; } }
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }
         protected string TestAdminAccountPassword { get { return "password1"; } }
@@ -58,8 +58,10 @@ namespace apcurium.MK.Web.Tests
         static BaseTest()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));
-            AppHost = new AppHost();
-            AppHost.Init();
+            WebApp.Start<AppHost>(new StartOptions("http://*:6903/")
+            {
+                ServerFactory = "Microsoft.Owin.Host.HttpListener"
+            });
         }
 
         protected IPaymentServiceClient GetFakePaymentClient()

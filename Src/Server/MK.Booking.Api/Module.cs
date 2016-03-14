@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Providers;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -56,6 +57,13 @@ namespace apcurium.MK.Booking.Api
                         ? new OrderStatusIbsMock(orderDao, c.Resolve<OrderStatusUpdater>(), serverSettings)
                         : new OrderStatusHelper(orderDao, serverSettings);
                 }));
+
+            GetType().Assembly
+                .GetTypes()
+                .Where(controller => controller.IsSubclassOf(typeof (BaseApiController)))
+                .Where(controller => !controller.IsAbstract)
+                .ForEach(controller => container.RegisterType(controller));
+
         }
         
         private void RegisterMaps()

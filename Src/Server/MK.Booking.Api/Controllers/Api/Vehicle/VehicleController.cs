@@ -19,7 +19,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("api/v2")]
     public class VehicleController : BaseApiController
     {
         public VehicleService VehicleService { get; }
