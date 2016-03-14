@@ -8,7 +8,10 @@ using Java.Util;
 using TinyIoC;
 using TimeZone = Java.Util.TimeZone;
 using Uri = Android.Net.Uri;
+
+#if !CALLBOX
 using PaypalSdkDroid.CardPayment;
+#endif
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -114,7 +117,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public bool CanUseCardIO()
         {
+            #if !CALLBOX
             return CardIOActivity.CanReadCardWithCamera(); 
+            #else
+            return false;
+            #endif
         }
             
         private long GetDateTimeMS(DateTime date)
