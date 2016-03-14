@@ -6,11 +6,11 @@ using DeploymentServiceTools;
 using log4net;
 using System.IO;
 using System.Diagnostics;
-using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
+using System.Reactive.Disposables;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -455,6 +455,19 @@ namespace MK.DeploymentService.Mobile
             UpdateJob("Run Localization tool for Callbox Finished");
         }
 
+        private IDisposable StartStopwatch (string message)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            UpdateJob(message);
+
+            return Disposable.Create (() => 
+            {
+                stopwatch.Stop();
+                UpdateJob(message + string.Format(" done ({0}min {1}sec)", stopwatch.Elapsed.Minutes, stopwatch.Elapsed.Seconds));
+            });
+        }
+
 		private void BuildMobile (string sourceDirectory)
 		{			
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
@@ -462,21 +475,19 @@ namespace MK.DeploymentService.Mobile
             RestoreNuGetPackages(sourceMobileFolder);
 
 			if (_job.IosAdhoc)
-            {		
-				UpdateJob("Build iOS AdHoc");
-
-                _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AdHoc|iPhone", sourceMobileFolder));
-
-                UpdateJob("Build iOS AdHoc done");
+            {		       
+                using(StartStopwatch("Build iOS AdHoc"))
+                {
+                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AdHoc|iPhone", sourceMobileFolder));
+                }
 			}
 
 			if (_job.IosAppStore)
             {	
-				UpdateJob("Build iOS AppStore");
-
-                _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AppStore|iPhone", sourceMobileFolder));
-
-                UpdateJob("Build iOS AppStore done");
+                using (StartStopwatch("Build iOS AppStore"))
+                {
+                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AppStore|iPhone", sourceMobileFolder));
+                }
 			}
 
             if (!_job.Android && !_job.CallBox && !_job.BlackBerry)
@@ -486,20 +497,18 @@ namespace MK.DeploymentService.Mobile
 				
             if (_job.Android)
             {
-                UpdateJob("Building Android");
-
-                _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/Android/TaxiHail.csproj", "Release", sourceMobileFolder));
-
-                UpdateJob("Build Android done");
+                using (StartStopwatch("Building Android"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/Android/TaxiHail.csproj", "Release", sourceMobileFolder));
+                }
             }
 
             if (_job.BlackBerry)
             {
-                UpdateJob("Building BlackBerry");
-
-                _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/TaxiHail.BlackBerry/TaxiHail.BlackBerry.csproj", "Release", sourceMobileFolder));
-
-                UpdateJob("Build BlackBerry done");
+                using (StartStopwatch("Building BlackBerry"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/TaxiHail.BlackBerry/TaxiHail.BlackBerry.csproj", "Release", sourceMobileFolder));
+                }
 
                 UpdateJob("Copying BlackBerry Apk For Packaging .Bar");
                 var releaseBlackBerryDir = Path.Combine (sourceMobileFolder, "TaxiHail.BlackBerry", "bin", "Release");
@@ -527,11 +536,10 @@ namespace MK.DeploymentService.Mobile
 
             if (_job.CallBox)
             {
-                UpdateJob("Building Callbox");
-
-                _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/MK.Callbox.Mobile.Client.Android/MK.Callbox.Mobile.Client.Android.csproj", "Release", sourceMobileFolder));
-
-                UpdateJob("Build Callbox done");
+                using (StartStopwatch("Building Callbox"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/MK.Callbox.Mobile.Client.Android/MK.Callbox.Mobile.Client.Android.csproj", "Release", sourceMobileFolder));
+                }
             }
 		}
 
