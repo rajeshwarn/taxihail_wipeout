@@ -8,6 +8,7 @@ using Java.Util;
 using TinyIoC;
 using TimeZone = Java.Util.TimeZone;
 using Uri = Android.Net.Uri;
+using PaypalSdkDroid.CardPayment;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -19,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public Context Context { get; set; }
-
 
         public void Call(string phoneNumber)
         {
@@ -110,6 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 var logger = TinyIoCContainer.Current.Resolve<ILogger>();
                 logger.LogError(e);
             }
+        }
+
+        public bool CanUseCardIO()
+        {
+            return CardIOActivity.CanReadCardWithCamera(); 
         }
             
         private long GetDateTimeMS(DateTime date)

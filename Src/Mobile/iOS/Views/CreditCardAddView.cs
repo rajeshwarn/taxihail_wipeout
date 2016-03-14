@@ -28,14 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private PayPalCustomFuturePaymentViewController _payPalPayment;
         private PayPalDelegate _payPalPaymentDelegate;
 
-        private bool CardIOIsEnabled
-        {
-            get 
-            { 
-                return Utilities.CanReadCardWithCamera(); 
-            }
-        }
-
         private bool PayPalIsEnabled
         {
             get { return _payPalSettings.IsEnabled; }
@@ -60,10 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ChangeRightBarButtonFontToBold();
 
-            if (CardIOIsEnabled)
-            {
-                Utilities.Preload();
-            }
+            Utilities.Preload();
         }
 
         public override async void ViewDidLoad ()
@@ -262,12 +251,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ConfigureCreditCardSection()
         {
-            if (CardIOIsEnabled)
-            {
-                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
-                btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
-                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
-            }
+            FlatButtonStyle.Silver.ApplyTo(btnScanCard);
+            btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
+            btnScanCard.TouchUpInside += (sender, e) => ScanCard();
 
             FlatButtonStyle.Silver.ApplyTo(btnCardDefault);
             // Configure CreditCard section
