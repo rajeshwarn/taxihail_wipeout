@@ -91,10 +91,21 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
                         orderReportEntry["Account.AccountId"] = orderReport.Account.AccountId.ToString();
 
-                        orderReportEntry["Account.Name"] = orderReport.Account.Name?.Trim();
-                        orderReportEntry["Account.Phone"] = orderReport.Account.Phone?.Trim();
-                        orderReportEntry["Account.Email"] = orderReport.Account.Email?.Trim();
+                        if (!string.IsNullOrEmpty(orderReport.Account.Name))
+                        {
+                            orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
+                        }
 
+                        if (!string.IsNullOrEmpty(orderReport.Account.Phone))
+                        {
+                            orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
+                        }
+
+                        if (!string.IsNullOrEmpty(orderReport.Account.Email))
+                        {
+                            orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
+                        }
+                        
                         orderReportEntry["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString();
                         orderReportEntry["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString();
                         orderReportEntry["Account.PayBack "] = orderReport.Account.PayBack;
