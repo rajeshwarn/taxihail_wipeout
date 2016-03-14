@@ -287,15 +287,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					                   + Order.Tax.GetValueOrDefault()
 					                   + Order.Toll.GetValueOrDefault()
 					                   + Order.Surcharge.GetValueOrDefault();
+
+					var statusString = String.Empty;
 				
 					if (Status.FareAvailable)
 					{
-						return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount));
+						statusString = Status.IBSStatusDescription;
 					}
 					else if (Status.IsManualRideLinq)
 					{
-						return string.Format("{0} ({1})", OrderStatus.Completed.ToString(), CultureProvider.FormatCurrency(paymentAmount));
+						statusString = OrderStatus.Completed.ToString();
 					}
+
+					return string.Format("{0} ({1})", statusString, CultureProvider.FormatCurrency(paymentAmount));
 				}
 
 				return Status.IBSStatusDescription;
