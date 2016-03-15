@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var req = "/account/grantadmin";
             return Client.Put(req, request);
+
         }
 
         public Task GrantSupportAccess(GrantSupportRightRequest request)

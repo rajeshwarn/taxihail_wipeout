@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Microsoft.Practices.Unity;
 
@@ -55,7 +56,7 @@ namespace apcurium.MK.Common.IoC
 
         public void Dispose()
         {
-            _container.Dispose();
+            
         }
 
         public IDependencyScope BeginScope()
@@ -65,11 +66,9 @@ namespace apcurium.MK.Common.IoC
 
         public object GetService(Type serviceType)
         {
-            var service =  _container.IsRegistered(serviceType) 
-                ? _container.Resolve(serviceType) 
-                : null;
-
-            return service;
+            return _container.IsRegistered(serviceType)
+                    ? _container.Resolve(serviceType)
+                    : null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

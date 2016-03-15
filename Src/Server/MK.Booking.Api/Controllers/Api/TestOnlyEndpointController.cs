@@ -20,19 +20,16 @@ namespace apcurium.MK.Web.Controllers.Api
         public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; }
         public TestOnlyReqGetTestAdminAccountService TestOnlyReqGetTestAdminAccountService { get; set; }
 
-        public TestOnlyEndpointController()
+        public TestOnlyEndpointController(IAccountDao accountDao, ICommandBus commandBus, ICreditCardDao creditCardDao)
         {
-            var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
-            var commandBus = UnityServiceLocator.Instance.Resolve<ICommandBus>();
-
-            TestOnlyReqGetTestAccountService = new TestOnlyReqGetTestAccountService(accountDao, commandBus);
-            TestOnlyReqGetTestAdminAccountService = new TestOnlyReqGetTestAdminAccountService(accountDao, commandBus);
+            TestOnlyReqGetTestAccountService = new TestOnlyReqGetTestAccountService(accountDao, commandBus, creditCardDao);
+            TestOnlyReqGetTestAdminAccountService = new TestOnlyReqGetTestAdminAccountService(accountDao, commandBus, creditCardDao);
         }
 
         [HttpGet, Route("{index}")]
         public async Task<IHttpActionResult> GetTestAccount(string index)
         {
-            var result = await TestOnlyReqGetTestAccountService.Get(index);
+            var result = await TestOnlyReqGetTestAccountService.GetTestAccount(index);
 
             return GenerateActionResult(result);
         }
@@ -40,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api
         [HttpGet, Route("admin/{index}")]
         public async Task<IHttpActionResult> GetAdminTestAccount(string index)
         {
-            var result = await TestOnlyReqGetTestAdminAccountService.Get(index);
+            var result = await TestOnlyReqGetTestAdminAccountService.GetTestAdmin(index);
 
             return GenerateActionResult(result);
         }

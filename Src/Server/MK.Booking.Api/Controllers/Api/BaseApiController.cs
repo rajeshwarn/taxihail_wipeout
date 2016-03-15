@@ -69,26 +69,31 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();
 
+
+        private SessionEntity _session;
         public SessionEntity Session
         {
             get
             {
-                var sessionId = Request.Headers.Where(request =>
-                    request.Key.Equals("Cookie", StringComparison.InvariantCultureIgnoreCase) &&
-                    request.Value.Any(val => val == "ss-opt=perm")
-                )
-                .Select(request => request.Value.FirstOrDefault(p => p.StartsWith("ss-pid")))
-                .Select(pid => pid.Split('=').Last())
-                .FirstOrDefault();
+                if (_session != null)
+                {
+                    return _session;
+                }
+
+                var sessionId = Request.Headers.GetCookies()
+                    .SelectMany(cookieContainer => cookieContainer.Cookies)
+                    .Where(cookie => cookie.Name == "ss-pid")
+                    .Select(cookie => cookie.Value)
+                    .FirstOrDefault();
 
                 if (!sessionId.HasValueTrimmed())
                 {
-                    return null;
+                    return _session = new SessionEntity();
                 }
 
                 var key = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
 
-                return _cacheClient.Get<SessionEntity>(key);
+                return _session = _cacheClient.Get<SessionEntity>(key);
             }
         }
     }

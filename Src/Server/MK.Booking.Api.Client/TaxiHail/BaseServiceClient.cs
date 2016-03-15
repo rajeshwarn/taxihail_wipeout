@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
@@ -64,11 +65,34 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 BaseAddress = baseAddress,
                 Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
+
+            if (_sessionId.HasValueTrimmed())
+            {
+                client.DefaultRequestHeaders.Add("Cookie", "ss-opt=perm; ss-pid=" + _sessionId);
+            }
+
+            return client;
         }
 #else
         private HttpClient CreateHttpClient(Uri baseAddress)
         {
-            return new HttpClient()
+            var cookieContainer = new CookieContainer();
+
+            var basicHttpHandler = new HttpClientHandler()
+            {
+                CookieContainer = cookieContainer,
+                UseCookies = true
+            };
+
+            if (_sessionId.HasValueTrimmed())
+            {
+                var escapedSession = Uri.EscapeDataString(_sessionId);
+
+                cookieContainer.Add(baseAddress, new Cookie("ss-opt", "perm"));
+                cookieContainer.Add(baseAddress, new Cookie("ss-pid", escapedSession));
+            }
+
+            return new HttpClient(basicHttpHandler)
             {
                 BaseAddress = baseAddress,
                 Timeout = new TimeSpan(0, 0, 2, 0, 0)
@@ -85,11 +109,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             {
                 client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);
             }
-
-            if (_sessionId.HasValueTrimmed())
-            {
-                client.DefaultRequestHeaders.Add("Cookie", "ss-opt=perm; ss-pid=" + _sessionId);
-            }
+            
             client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
             client.DefaultRequestHeaders.AcceptCharset.ParseAdd("utf-8");
             client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip");

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Web.Http;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Email;
@@ -17,14 +18,13 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/accounts")]
     public class AccountController : BaseApiController
     {
         public BookingSettingsService BookingSettingsService { get; }
         public ConfirmAccountService ConfirmAccountService { get; }
         public ResetPasswordService ResetPasswordService { get; }
         public RegisterAccountService RegisterAccountService { get; }
-
+        public CurrentAccountService CurrentAccountService { get; }
         public UpdatePasswordService UpdatePasswordService { get; }
         
 
@@ -34,7 +34,8 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             ICommandBus commandBus,
             IIBSServiceProvider ibsServiceProvider,
             ITemplateService templateService,
-            IBlackListEntryService blackListEntryService)
+            IBlackListEntryService blackListEntryService,
+            ICreditCardDao creditCardDao)
         {
             BookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
 
@@ -45,9 +46,11 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             ResetPasswordService = new ResetPasswordService(commandBus, accountDao);
 
             UpdatePasswordService = new UpdatePasswordService(commandBus, accountDao);
+
+            CurrentAccountService = new CurrentAccountService(accountDao, creditCardDao, serverSettings);
         }
 
-        [HttpPut, Auth(Role = RoleName.Support), Route("update/{accountId}")]
+        [HttpPut, Auth(Role = RoleName.Support), Route("api/v2/accounts/update/{accountId}")]
         public IHttpActionResult AccountUpdate(Guid accountId, BookingSettingsRequest bookingSettings)
         {
             BookingSettingsService.Put(new AccountUpdateRequest()
@@ -59,7 +62,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPut, Route("bookingsettings")]
+        [HttpPut, Route("api/v2/accounts/bookingsettings")]
         public IHttpActionResult AccountUpdate(BookingSettingsRequest request)
         {
             BookingSettingsService.Put(new AccountUpdateRequest()
@@ -71,7 +74,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpGet, Route("getconfirmationcode/{email}/{countryCode}/{phoneNumber}")]
+        [HttpGet, Route("api/v2/accounts/getconfirmationcode/{email}/{countryCode}/{phoneNumber}")]
         public IHttpActionResult GetConfirmationCode(string email, string countryCode, string phoneNumber)
         {
             ConfirmAccountService.Get(new ConfirmationCodeRequest() {PhoneNumber = phoneNumber, CountryCode = countryCode, Email = email});
@@ -79,7 +82,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpGet, Route("confirm/{emailAddress}/{confirmationToken}/{isSmsConfirmation:bool?}")]
+        [HttpGet, Route("api/v2/accounts/confirm/{emailAddress}/{confirmationToken}/{isSmsConfirmation:bool?}")]
         public IHttpActionResult ConfirmAccount(string emailAddress, string confirmationToken, bool? isSmsConfirmation)
         {
             var result = ConfirmAccountService.Get(new ConfirmAccountRequest()
@@ -105,7 +108,23 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             });
         }
 
-        [HttpPost, Route("register")]
+        [HttpGet, Auth, NoCache, Route("api/v2/accounts")]
+        public IHttpActionResult GetCurrentAccount()
+        {
+            var result = CurrentAccountService.Get(new CurrentAccount());
+
+            return GenerateActionResult(result);
+        }
+
+        [HttpGet, NoCache, Route("api/v2/accounts/phone/{email}")]
+        public IHttpActionResult GetAccountPhone(string email)
+        {
+            var result = CurrentAccountService.Get(new CurrentAccountPhoneRequest() { Email = email });
+
+            return GenerateActionResult(result);
+        }
+
+        [HttpPost, Route("api/v2/accounts/register")]
         public IHttpActionResult Register([FromBody] RegisterAccount request)
         {
             var result = RegisterAccountService.Post(request);
@@ -113,7 +132,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("resetpassword/{emailAddress}")]
+        [HttpPost, Route("api/v2/accounts/resetpassword/{emailAddress}")]
         public IHttpActionResult ResetPassword(string emailAddress)
         {
             ResetPasswordService.Post(emailAddress);
@@ -121,7 +140,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Auth, Route("{accountId}/updatePassword")]
+        [HttpPost, Auth, Route("api/v2/accounts/{accountId}/updatePassword")]
         public IHttpActionResult UpdatePassword(Guid accountId, [FromBody]UpdatePassword request)
         {
             request.AccountId = accountId;

@@ -14,7 +14,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/accounts")]
     public class OverduePaymentsController : BaseApiController
     {
         public OverduePaymentService OverduePaymentService { get; }
@@ -33,7 +32,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             OverduePaymentService = new OverduePaymentService(commandBus, overduePaymentDao, accountDao, orderDao,orderPaymentDao,promotionDao,paymentService,serverSettings);
         }
 
-        [Route("overduepayment"), HttpGet, Auth]
+        [HttpGet, Auth, Route("~/api/v2/accounts/overduepayment")]
         public IHttpActionResult GetOverduePayment()
         {
             var result = OverduePaymentService.Get();
@@ -41,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [Route("settleoverduepayment"), HttpPost, Auth]
+        [Route("~/api/v2/accounts/settleoverduepayment"), HttpPost, Auth]
         public IHttpActionResult SettleOverduePayment()
         {
             var result = OverduePaymentService.Post();

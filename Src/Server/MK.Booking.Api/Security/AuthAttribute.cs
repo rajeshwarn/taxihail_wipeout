@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,12 +44,11 @@ namespace apcurium.MK.Web.Security
         public bool AllowMultiple { get; }
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            var sessionId = context.Request.Headers.Where(request =>
-                    request.Key.Equals("Cookie", StringComparison.InvariantCultureIgnoreCase) &&
-                    request.Value.Any(val => val == "ss-opt=perm")
-                )
-                .Select(request => request.Value.FirstOrDefault(p => p.StartsWith("ss-pid")))
-                .Select(pid => pid.Split('=').Last())
+            var sessionId = context.Request.Headers.GetCookies()
+                .SelectMany(cookieContainer => cookieContainer.Cookies)
+                .Where(cookie => cookie.Name == "ss-pid")
+                .Select(cookie => cookie.Value)
+                .Select(Uri.UnescapeDataString)
                 .FirstOrDefault();
 
             if (!sessionId.HasValueTrimmed())
@@ -82,11 +82,6 @@ namespace apcurium.MK.Web.Security
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {
-            var challenge = new[]
-            {
-                new AuthenticationHeaderValue("Basic")
-            };
-            context.Result = new UnauthorizedResult(challenge, context.Request);
             return Task.FromResult(0);
         }
     }

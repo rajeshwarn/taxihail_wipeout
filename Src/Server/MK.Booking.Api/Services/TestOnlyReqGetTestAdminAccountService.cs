@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -16,29 +17,21 @@ using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TestOnlyReqGetTestAdminAccountService : BaseApiService
+    public class TestOnlyReqGetTestAdminAccountService : TestOnlyReqGetTestAccountService
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IAccountDao _dao;
 
-        public TestOnlyReqGetTestAdminAccountService(IAccountDao dao, ICommandBus commandBus)
+        public TestOnlyReqGetTestAdminAccountService(IAccountDao dao, ICommandBus commandBus, ICreditCardDao creditCardDao) : base(dao, commandBus, creditCardDao)
         {
-            _dao = dao;
-            _commandBus = commandBus;
+
         }
 
-        protected string TestUserEmail
+        protected new string TestUserEmail
         {
             get { return "apcurium.testadmin{0}@apcurium.com"; }
         }
 
-        protected string TestUserPassword
-        {
-            get { return "password1"; }
-        }
 
-
-        public async Task<AccountDetail> Get(string index)
+        public async Task<Account> GetTestAdmin(string index)
         {
             //This method can only be used for unit test. 
             if (!HttpRequestContext.IsLocal)
@@ -48,10 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             var testEmail = string.Format(TestUserEmail, index);
 
-            var testAccount = _dao.FindByEmail(testEmail);
+            var testAccount = Dao.FindByEmail(testEmail);
             if (testAccount != null)
             {
-                return testAccount;
+                return MapAccount(testAccount);
             }
 
             var command = new RegisterAccount
@@ -67,17 +60,17 @@ namespace apcurium.MK.Booking.Api.Services
                 IsAdmin = true
             };
 
-            _commandBus.Send(command);
+            CommandBus.Send(command);
 
             await Task.Delay(400);
             // Confirm account immediately
-            _commandBus.Send(new ConfirmAccount
+            CommandBus.Send(new ConfirmAccount
             {
                 AccountId = command.AccountId,
                 ConfimationToken = command.ConfimationToken
             });
 
-            _commandBus.Send(new AddOrUpdateCreditCard
+            CommandBus.Send(new AddOrUpdateCreditCard
             {
                 AccountId = command.AccountId,
                 CreditCardCompany = "Visa",
@@ -90,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Label = CreditCardLabelConstants.Personal.ToString()
             });
 
-            return _dao.FindByEmail(testEmail);
+            return MapAccount(Dao.FindByEmail(testEmail));
         }
     }
 }

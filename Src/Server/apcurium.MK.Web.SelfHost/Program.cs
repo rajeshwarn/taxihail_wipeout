@@ -10,6 +10,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
 using apcurium.MK.Booking.Api.Controllers;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
 using Funq;
@@ -66,26 +67,29 @@ namespace apcurium.MK.Web.SelfHost
         public AppHost()
         {
         }
-        private HttpConfiguration MapRoutes(HttpConfiguration config)
+        private HttpConfiguration MapRoutes(HttpConfiguration config, IUnityContainer container)
         {
             config.MapHttpAttributeRoutes(new DirectRouteResolver());
 
-            config.MessageHandlers.Add(new LegacyHttpClientHandler());
-
-            config.DependencyResolver = new UnityContainerAdapter(UnityServiceLocator.Instance, UnityServiceLocator.Instance.Resolve<ILogger>());
+            config.MessageHandlers.Add(new LegacyHttpClientHandler());      
+            
+            config.DependencyResolver = new UnityContainerAdapter(container, container.Resolve<ILogger>());
 
             return config;
         }
 
         public void Configuration(IAppBuilder builder)
         {
-            new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
+            var container = UnityServiceLocator.Instance;
+
+            new Module().Init(container, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var notificationService = UnityServiceLocator.Instance.Resolve<INotificationService>();
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            builder.UseWebApi(MapRoutes(new HttpConfiguration()))
+            builder.UseWebApi(MapRoutes(new HttpConfiguration(), container))
                .UseCookieAuthentication(new CookieAuthenticationOptions());
+            
         }
     }
 }

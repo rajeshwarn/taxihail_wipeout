@@ -63,7 +63,6 @@ namespace apcurium.MK.Booking.Api
                 .Where(controller => controller.IsSubclassOf(typeof (BaseApiController)))
                 .Where(controller => !controller.IsAbstract)
                 .ForEach(controller => container.RegisterType(controller));
-
         }
         
         private void RegisterMaps()

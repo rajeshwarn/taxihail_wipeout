@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -10,11 +11,11 @@ namespace apcurium.MK.Booking.Api.Controllers
 {
     public class LegacyHttpClientHandler : DelegatingHandler
     {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.RequestUri.OriginalString.Contains("api/v2"))
             {
-                return base.SendAsync(request, cancellationToken);
+                return await base.SendAsync(request, cancellationToken);
             }
 
             var requestUrl = request.RequestUri.OriginalString.Replace("api", "api/v2");
@@ -43,19 +44,31 @@ namespace apcurium.MK.Booking.Api.Controllers
 
             }
 
+            if (requestUrl.Contains("settleoverduepayment"))
+            {
+                requestUrl = requestUrl.Replace("/settleoverduepayment", "/overduepayment/settleoverduepayment");
+            }
+
             if (requestUrl.Contains("account/"))
             {
                 requestUrl = requestUrl.Replace("account/", "accounts/");
             }
 
-            if (requestUrl.Contains("payments/settleoverduepayment"))
+            if (requestUrl.Contains("creditCard/"))
             {
-                requestUrl = requestUrl.Replace("payments/settleoverduepayment", "accounts/settleoverduepayment");
+                requestUrl = requestUrl.Replace("creditCard/", "creditCards/");
             }
 
             request.RequestUri = new Uri(requestUrl);
 
-            return base.SendAsync(request, cancellationToken);
+            var responseMessage = await base.SendAsync(request, cancellationToken);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                return responseMessage;
+            }
+
+            return responseMessage;
         }
 
     }

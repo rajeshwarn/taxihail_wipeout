@@ -157,7 +157,6 @@
     <Compile Include="Controllers\Api\account\AccountOrderController.cs" />
     <Compile Include="Controllers\Api\account\AddressController.cs" />
     <Compile Include="Controllers\Api\account\CreditCardController.cs" />
-    <Compile Include="Controllers\Api\account\CurrentAccountController.cs" />
     <Compile Include="Controllers\Api\account\ManualRideLinqController.cs" />
     <Compile Include="Controllers\Api\account\Orders\CreateOrderController.cs" />
     <Compile Include="Controllers\Api\account\Orders\HailController.cs" />

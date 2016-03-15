@@ -19,7 +19,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/account")]
+    [RoutePrefix("api/v2/account/creditcards")]
     public class CreditCardController : BaseApiController
     {
         private readonly CreditCardService _creditCardService;
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             PrepareApiServices(_creditCardService);
         }
 
-        [HttpGet, Auth, Route("creditcards")]
+        [HttpGet, Auth]
         public IHttpActionResult GetCreditCards()
         {
             var result = _creditCardService.Get();
@@ -44,14 +44,14 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("creditcardinfo/{creditCardId}")]
+        [HttpGet, Auth, Route("~/api/v2/account/creditcardinfo/{creditCardId}")]
         public IHttpActionResult GetCreditCardInfo(Guid creditCardId)
         {
             var result = _creditCardService.Get(new CreditCardInfoRequest() {CreditCardId = creditCardId});
 
             return GenerateActionResult(result);
         }
-        [HttpPost, Auth, Route("creditcards")]
+        [HttpPost, Auth]
         public IHttpActionResult Post([FromBody]CreditCardRequest request)
         {
             _creditCardService.Post(request);
@@ -59,7 +59,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Auth, Route("creditcard/updatedefault")]
+        [HttpPost, Auth, Route("updatedefault")]
         public IHttpActionResult Post(DefaultCreditCardRequest request)
         {
             _creditCardService.Post(request);
@@ -67,7 +67,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Auth, Route("creditcard/updatelabel")]
+        [HttpPost, Auth, Route("updatelabel")]
         public IHttpActionResult Post(UpdateCreditCardLabelRequest request)
         {
             _creditCardService.Post(request);
@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpDelete, Auth, Route("creditcards/{creditCardId}")]
+        [HttpDelete, Auth, Route("{creditCardId}")]
         public IHttpActionResult DeleteCreditCard(Guid creditCardId)
         {
             _creditCardService.Delete(new CreditCardRequest() {CreditCardId = creditCardId});

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
@@ -47,6 +48,7 @@ namespace apcurium.MK.Web.Tests
             await sut.RegisterAccount(newAccount);
 
             var auth = await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).AuthenticateFacebook(newAccount.FacebookId);
+            sut = new AccountServiceClient(BaseUrl, auth.SessionId, new DummyPackageInfo(), null, null);
             var account = await sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
@@ -116,7 +118,7 @@ namespace apcurium.MK.Web.Tests
 
         [Test]
         [Ignore("It now relies on a payment setting which we can't really change here since this is client side and we don't have a service client for server payment settings")]
-        public void Update_Booking_Settings_With_Invalid_Charge_Account_Test_Then_Exception_Thrown()
+        public async Task Update_Booking_Settings_With_Invalid_Charge_Account_Test_Then_Exception_Thrown()
         {
             var settings = new BookingSettingsRequest
             {
@@ -134,7 +136,19 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            Assert.Throws<WebServiceException>(async () => await sut.UpdateBookingSettings(settings));
+            try
+            {
+                await sut.UpdateBookingSettings(settings);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
@@ -166,17 +180,28 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_granting_admin_access()
+        public async Task when_granting_admin_access()
         {
             var fbAccount = await GetNewFacebookAccount();
             await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            
-            Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
+
+            try
+            {
+                await sut.GrantAdminAccess(new GrantAdminRightRequest {AccountEmail = fbAccount.Email});
+            }
+            catch (Exception ex)
+            {
+                Assert.DoesNotThrow(() =>
+                {
+                    throw ex;
+                });
+            }
+            Assert.Pass();
         }
 
         [Test]
-        public async void when_granting_admin_access_with_incorrect_rights()
+        public async Task when_granting_admin_access_with_incorrect_rights()
         {
             var asc = new AccountServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
 
@@ -185,11 +210,24 @@ namespace apcurium.MK.Web.Tests
             var newAccount = await asc.CreateTestAccount();
             await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            Assert.Throws<ServiceResponseException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email }));
+            
+            try
+            {
+                await sut.GrantAdminAccess(new GrantAdminRightRequest { AccountEmail = fbAccount.Email });
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_registering_2_account_with_same_email()
+        public async Task when_registering_2_account_with_same_email()
         {
             var email = GetTempEmail();
 
@@ -214,11 +252,24 @@ namespace apcurium.MK.Web.Tests
                 Name = "First Name Test",
                 Password = "password"
             };
-            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
+
+            try
+            {
+                await sut.RegisterAccount(newAccount2);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "CreateAccount_AccountAlreadyExist");
+            }
+            
+            Assert.Fail("CreateAccount_AccountAlreadyExist");
         }
 
         [Test]
-        public async void when_registering_2_account_with_same_facebookId()
+        public async Task when_registering_2_account_with_same_facebookId()
         {
             var facebookId = Guid.NewGuid();
 
@@ -244,11 +295,24 @@ namespace apcurium.MK.Web.Tests
                 FacebookId = facebookId.ToString()
             };
 
-            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
+            try
+            {
+                await sut.RegisterAccount(newAccount2);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "CreateAccount_AccountAlreadyExist");
+                throw;
+            }
+
+            Assert.Fail("CreateAccount_AccountAlreadyExist");
         }
 
         [Test]
-        public async void when_registering_2_account_with_same_twitterId()
+        public async Task when_registering_2_account_with_same_twitterId()
         {
             var twitterId = Guid.NewGuid();
 
@@ -274,11 +338,24 @@ namespace apcurium.MK.Web.Tests
                 TwitterId = twitterId.ToString()
             };
 
-            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
+            try
+            {
+                await sut.RegisterAccount(newAccount2);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "CreateAccount_AccountAlreadyExist");
+                throw;
+            }
+
+            Assert.Fail("CreateAccount_AccountAlreadyExist");
         }
 
         [Test]
-        public async void when_registering_a_new_account()
+        public async Task when_registering_a_new_account()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var newAccount = new RegisterAccount
@@ -293,11 +370,25 @@ namespace apcurium.MK.Web.Tests
             };
             await sut.RegisterAccount(newAccount);
 
-            Assert.Throws<WebServiceException>(async () => await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, newAccount.Password));
+            var authService = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
+
+            try
+            {
+                await authService.Authenticate(newAccount.Email, newAccount.Password);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_resetting_account_password()
+        public async Task when_resetting_account_password()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -306,20 +397,45 @@ namespace apcurium.MK.Web.Tests
 
             await sut.ResetPassword(newAccount.Email);
 
-            Assert.Throws<WebServiceException>(async () => await sut.GetMyAccount());
+            try
+            {
+                await sut.GetMyAccount();
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public void when_resetting_password_with_unknown_email_address()
+        public async Task when_resetting_password_with_unknown_email_address()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            var exception = Assert.Throws<WebServiceException>(async () => await sut.ResetPassword("this.is.not@my.email.addre.ss"));
-            Assert.AreEqual(500, exception.StatusCode);
+            try
+            {
+                await sut.ResetPassword("this.is.not@my.email.addre.ss");
+            }
+            catch (Exception ex)
+            {
+                var exception = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+
+                Assert.AreEqual(500, exception.StatusCode);
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_updating_account_password()
+        public async Task when_updating_account_password()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -332,12 +448,24 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             });
 
-            Assert.DoesNotThrow(async () => await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(account.Email, "p@55w0rddddddddd"));
+            try
+            {
+                await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(account.Email, "p@55w0rddddddddd");
+            }
+            catch (Exception ex)
+            {
+                Assert.DoesNotThrow(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Pass();
         }
 
         [Test]
         [Ignore]
-        public async void when_updating_account_password__user_is_logout()
+        public async Task when_updating_account_password__user_is_logout()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -351,11 +479,24 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
             await sut.UpdatePassword(request);
-            Assert.Throws<WebServiceException>(async () => await sut.GetFavoriteAddresses());
+
+            try
+            {
+                await sut.GetFavoriteAddresses();
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_updating_account_password_with_wrong_current_password()
+        public async Task when_updating_account_password_with_wrong_current_password()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -369,7 +510,19 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
 
-            Assert.Throws<WebServiceException>(async () => await sut.UpdatePassword(request));
+            try
+            {
+                await sut.UpdatePassword(request);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
 
         [Test]
@@ -398,7 +551,20 @@ namespace apcurium.MK.Web.Tests
                 CurrentPassword = password,
                 NewPassword = "p@55w0rddddddddd"
             };
-            Assert.Throws<WebServiceException>(async () => await sut.UpdatePassword(request));
+
+            try
+            {
+                await sut.UpdatePassword(request);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+            }
+
+            Assert.Fail();
         }
     }
 }

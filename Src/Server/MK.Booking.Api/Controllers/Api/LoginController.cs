@@ -144,7 +144,7 @@ namespace apcurium.MK.Web.Controllers.Api
             var authResponse = new AuthResponse()
             {
                 SessionId = sessionId,
-                UserName = account.Email
+                UserName = account.FacebookId ?? account.TwitterId ?? account.Email
             };
 
             var urn = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
