@@ -9,7 +9,7 @@ using log4net;
 
 namespace apcurium.MK.Common.Diagnostic
 {
-	public class Logger : ILogger
+    public class Logger : ILogger
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Logger));
         
