@@ -86,7 +86,7 @@
                 title: this.localize('Remove Account'),
                 message: this.localize('modal.removeAccount.message')
             }).on('ok', function () {
-                this.model.destroy({ url: TaxiHail.parameters.apiRoot + '/admin/accountscharge/' + this.model.get('number') });
+                this.model.destroy({ url: TaxiHail.parameters.apiRoot + '/admin/accountscharge/' + this.model.get('accountNumber') });
                 TaxiHail.app.navigate('accounts', { trigger: true });
             }, this);
         },
