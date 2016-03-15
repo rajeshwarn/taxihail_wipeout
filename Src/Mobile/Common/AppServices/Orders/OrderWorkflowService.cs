@@ -983,13 +983,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return false;
 			}
 
-			var serviceType = await _serviceTypeSubject.Take(1).ToTask();
-			if (serviceType == ServiceType.Luxury
-				&& !hasCardOnFile)
-			{
-				return false;
-			}
-
 			return true;
 		}
 
