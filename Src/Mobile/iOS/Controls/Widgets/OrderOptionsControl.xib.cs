@@ -148,11 +148,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowEta)
                 .WithConversion("BoolInverter");
-//
-//			set.Bind(viewEta)
-//                .For(v => v.DisplayBaseRateInfo)
-//                .To(vm => vm.DisplayBaseRateInfo);
-//
+
+			set.Bind(viewEta)
+                .For(v => v.DisplayBaseRateInfo)
+                .To(vm => vm.DisplayBaseRateInfo);
+
             set.Bind(viewEta)
                 .For(v => v.UserInteractionEnabled)
                 .To(vm => vm.CanShowRateBox);
