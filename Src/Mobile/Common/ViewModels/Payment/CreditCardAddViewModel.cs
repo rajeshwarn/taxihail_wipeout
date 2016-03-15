@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IAccountService _accountService;
 		private readonly IDeviceCollectorService _deviceCollectorService;
 		private readonly INetworkRoamingService _networkRoamingService;
+		private readonly IPhoneService _phoneService;
 
 		private bool _hasPaymentToSettle;
 		private CreditCardLabelConstants _originalLabel;
@@ -33,17 +34,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			IPaymentService paymentService, 
 			IAccountService accountService,
 			IDeviceCollectorService deviceCollectorService,
+			IPhoneService phoneService,
 			INetworkRoamingService networkRoamingService)
 			: base(locationService, paymentService, accountService)
 		{
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
 			_deviceCollectorService = deviceCollectorService;
+			_phoneService = phoneService;
 		}
 
 		private bool _isFromPromotionsView;
 		private bool _shouldShowReview;
 		private bool _isFromCreditCardListView;
+		private bool _isAddingNew;
 		private Guid _creditCardId;
 		private int _numberOfCreditCards;
 		private string _kountSessionId;
@@ -77,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			bool hasPaymentToSettle = false, 
 			bool isFromPromotionsView = false, 
 			bool isFromCreditCardListView = false, 
+			bool isAddingNew = false, 
 			Guid creditCardId = default(Guid),
 			bool shouldShowReview = false)
 		{
@@ -90,6 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_isFromPromotionsView = isFromPromotionsView;
 			_shouldShowReview = shouldShowReview;
 			_isFromCreditCardListView = isFromCreditCardListView;
+			_isAddingNew = isAddingNew;
 			_creditCardId = creditCardId;
 
 		    _hasPaymentToSettle = hasPaymentToSettle;
@@ -142,9 +148,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					var creditCards = (await _accountService.GetCreditCards()).ToList();
 					_numberOfCreditCards = creditCards.Count;
 
-					creditCard = _creditCardId == default(Guid)
-						? await _accountService.GetDefaultCreditCard()
-						: creditCards.First(c => c.CreditCardId == _creditCardId);
+					if(!_isAddingNew)
+					{
+						creditCard = _creditCardId == default(Guid)
+							? await _accountService.GetDefaultCreditCard()
+							: creditCards.First(c => c.CreditCardId == _creditCardId);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -455,7 +464,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return IsAddingNewCard && Settings.CardIOToken.HasValueTrimmed();
+				return _phoneService.CanUseCardIO() && IsAddingNewCard && Settings.CardIOToken.HasValueTrimmed();
 			}
 		}
 

@@ -676,7 +676,7 @@
     <value>The phone number is invalid. It must have format {0}</value>
   </data>
   <data name="PhoneBlackListed" xml:space="preserve">
-    <value>The phone number is black listed</value>
+    <value>Sorry, you are not allowed to create an account. Please contact support for assistance</value>
   </data>
   <data name="EmailUsedMessage" xml:space="preserve">
     <value>This email is already used by another account</value>

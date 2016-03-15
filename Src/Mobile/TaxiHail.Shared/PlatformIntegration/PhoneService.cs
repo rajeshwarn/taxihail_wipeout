@@ -8,6 +8,10 @@ using TinyIoC;
 using TimeZone = Java.Util.TimeZone;
 using Uri = Android.Net.Uri;
 
+#if !CALLBOX
+using PaypalSdkDroid.CardPayment;
+#endif
+
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PhoneService : IPhoneService
@@ -18,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public Context Context { get; set; }
-
 
         public void Call(string phoneNumber)
         {
@@ -109,6 +112,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 var logger = TinyIoCContainer.Current.Resolve<ILogger>();
                 logger.LogError(e);
             }
+        }
+
+        public bool CanUseCardIO()
+        {
+            #if !CALLBOX
+            return CardIOActivity.CanReadCardWithCamera(); 
+            #else
+            return false;
+            #endif
         }
             
         private long GetDateTimeMS(DateTime date)

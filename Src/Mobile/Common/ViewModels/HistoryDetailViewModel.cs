@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 
 		    OrderId = id;
-		    using (this.Services ().Message.ShowProgress ())
+		    using (this.Services().Message.ShowProgress ())
 		    {
 		        await LoadOrder();
 		        await LoadStatus();
@@ -281,27 +281,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-			    if (Status.FareAvailable)
-			    {
-					// this fix is due to info in database when [OrderDetail].[Fare] includes [OrderDetail].[Tip]
-					double? paymentAmount;
-					if (_clientPaymentSettings.PaymentMode == PaymentMethod.Cmt || _clientPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+				if (Status.FareAvailable || Status.IsManualRideLinq)
+				{
+					var paymentAmount = Order.Fare.GetValueOrDefault()
+					                   + Order.Tip.GetValueOrDefault()
+					                   + Order.Tax.GetValueOrDefault()
+					                   + Order.Toll.GetValueOrDefault()
+					                   + Order.Surcharge.GetValueOrDefault();
+
+					var statusString = String.Empty;
+				
+					if (Status.FareAvailable)
 					{
-						paymentAmount = Order.Fare;
+						statusString = Status.IBSStatusDescription;
 					}
-					else
+					else if (Status.IsManualRideLinq)
 					{
-						paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+						statusString = OrderStatus.Completed.ToString();
 					}
 
-					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
-			    }
-			    else if (Status.IsManualRideLinq)
-			    {
-			        return OrderStatus.Completed.ToString();
-			    }
+					return string.Format("{0} ({1})", statusString, CultureProvider.FormatCurrency(paymentAmount));
+				}
 
-                return Status.IBSStatusDescription;
+				return Status.IBSStatusDescription;
 			}
 		}
 
