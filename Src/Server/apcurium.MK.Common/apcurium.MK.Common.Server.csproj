@@ -131,6 +131,7 @@
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
+    <Compile Include="Diagnostic\Log4NetTraceListener.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Entity\OrderHailResult.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />

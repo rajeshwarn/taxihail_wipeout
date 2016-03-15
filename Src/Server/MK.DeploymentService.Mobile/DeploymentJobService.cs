@@ -6,23 +6,23 @@ using DeploymentServiceTools;
 using log4net;
 using System.IO;
 using System.Diagnostics;
-using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
+using System.Reactive.Disposables;
 
 namespace MK.DeploymentService.Mobile
 {
 	public class DeploymentJobService
 	{
-
-		private Timer _timer;
+        private readonly Timer _timer;
 		private readonly ILog _logger;
-		DeploymentJob _job;
-		private MonoBuilder _builder;
-		private CustomerPortalRepository _customerPortalRepository;
-		public bool _isWorking = false;
+        private readonly MonoBuilder _builder;
+        private readonly CustomerPortalRepository _customerPortalRepository;
+
+        private DeploymentJob _job;
+        private bool _isWorking = false;
 
 		public DeploymentJobService ()
 		{
@@ -37,73 +37,72 @@ namespace MK.DeploymentService.Mobile
 			_timer.Change (0, 10000);
 		}
 
+        public void Stop()
+        {
+            _timer.Change (Timeout.Infinite, Timeout.Infinite);
+        }
+
 		private void TimerOnElapsed (object state)
 		{
-			if (!_isWorking){
+			if (!_isWorking)
+            {
 				_isWorking = true;
 				CheckAndRunJobWithBuild ();
 				_isWorking = false;
 			}
 		}
-
-		void UpdateJob (string details = null, JobStatus? jobStatus = null)
-		{
-			_logger.Debug (details);
-
-			new DeploymentJobServiceClient ().UpdateStatus (_job.Id, details, jobStatus);
-
-		}
-
+        	
 		private void CheckAndRunJobWithBuild ()
 		{
-			try {
+			try 
+            {
 				var job = new DeploymentJobServiceClient ().GetNext ();
 
 				if (job == null)
-					return;
-
+                {
+                    return;
+                }
+			    
 				_job = job;
 
-				try {
-
+				try 
+                {
 					_logger.Debug ("Begin work on " + job.Company.CompanyName);
 
 					UpdateJob ("Starting at " + DateTime.Now, JobStatus.Inprogress);
 
-                    var sourceDirectoryConfig =  System.Configuration.ConfigurationManager.AppSettings["CheckoutDir"];
+                    var sourceDirectoryConfig = ConfigurationManager.AppSettings["CheckoutDir"];
 
 					var sourceDirectory = string.IsNullOrEmpty(sourceDirectoryConfig)
 						? Path.Combine (Path.GetTempPath (), "TaxiHailSourceNewService")
 						: sourceDirectoryConfig;
 
 					var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
-					if (Directory.Exists (releaseiOSAdHocDir))
-						Directory.Delete (releaseiOSAdHocDir, true);
-
+                    if (Directory.Exists (releaseiOSAdHocDir)) { Directory.Delete (releaseiOSAdHocDir, true); }
+                    var releaseiOSAdHocObjDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "obj", "iPhone", "AdHoc");
+                    if (Directory.Exists (releaseiOSAdHocObjDir)) { Directory.Delete (releaseiOSAdHocObjDir, true); }
+						
 					var releaseiOSAppStoreDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AppStore");
-					if (Directory.Exists (releaseiOSAppStoreDir))
-						Directory.Delete (releaseiOSAppStoreDir, true);
+                    if (Directory.Exists (releaseiOSAppStoreDir)) { Directory.Delete (releaseiOSAppStoreDir, true); }
+                    var releaseiOSAppStoreObjDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "obj", "iPhone", "AppStore");
+                    if (Directory.Exists (releaseiOSAppStoreObjDir)) { Directory.Delete (releaseiOSAppStoreObjDir, true); }	
 
 					var releaseAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
-					if (Directory.Exists (releaseAndroidDir))
-						Directory.Delete (releaseAndroidDir, true);
-
+                    if (Directory.Exists (releaseAndroidDir)) { Directory.Delete (releaseAndroidDir, true); }
+						
                     var releaseBlackBerryApkDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
-                    if (Directory.Exists (releaseBlackBerryApkDir))
-                        Directory.Delete (releaseBlackBerryApkDir, true);
-
+                    if (Directory.Exists (releaseBlackBerryApkDir)) { Directory.Delete (releaseBlackBerryApkDir, true); }
+                        
                     var releaseBlackBerryBarDir = Path.Combine (sourceDirectory, "Src", "BBTools", "Outputs");
-                    if (Directory.Exists (releaseBlackBerryBarDir))
-                        Directory.Delete (releaseBlackBerryBarDir, true);
-
+                    if (Directory.Exists (releaseBlackBerryBarDir)) { Directory.Delete (releaseBlackBerryBarDir, true); }
+                        
 					var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
-					if (Directory.Exists (releaseCallboxAndroidDir))
-						Directory.Delete (releaseCallboxAndroidDir, true);
-
-					if (!Directory.Exists (sourceDirectory))
-						Directory.CreateDirectory( sourceDirectory);
-
+                    if (Directory.Exists (releaseCallboxAndroidDir)) { Directory.Delete (releaseCallboxAndroidDir, true); }
+						
+                    if (!Directory.Exists (sourceDirectory)) { Directory.CreateDirectory( sourceDirectory); }
+						
 					DownloadAndInstallProfileIfNecessary();
+
                     var isGitHub = bool.Parse(ConfigurationManager.AppSettings["IsGitHubSourceControl"]);
                     var taxiRepo = new TaxiRepository (sourceDirectory,  isGitHub);
 
@@ -117,44 +116,23 @@ namespace MK.DeploymentService.Mobile
 					BuildMobile (sourceDirectory);
 
 					UpdateJob ("Deploy");
-                    var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryApkDir, releaseBlackBerryBarDir);
+                    var deploymentInfo = Deploy (_job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryApkDir, releaseBlackBerryBarDir);
 
 					CreateNewVersionInCustomerPortal(deploymentInfo);
-					UpdateJob ("Done", JobStatus.Success);
-
+                    UpdateJob (string.Format("Done (ended at {0})", DateTime.Now), JobStatus.Success);
 
 					_logger.Debug ("Deployment finished without error");
-
-				} catch (Exception e) {
-					_logger.Error (e.Message);
-					UpdateJob (e.Message, JobStatus.Error);
 				}
-			} catch (Exception e) {
+                catch (Exception e) 
+                {
+					_logger.Error (e.Message);
+                    UpdateJob (string.Format("{0} (ended at {1})", e.Message, DateTime.Now), JobStatus.Error);
+				}
+			} 
+            catch (Exception e) 
+            {
 				_logger.Error (e.Message);
 			}
-		}
-
-
-		private void CreateNewVersionInCustomerPortal(DeployInfo deployment)
-		{
-			UpdateJob("Creating new version in Customer Portal");
-
-
-		    var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, 
-                                                                        _job.Revision.Tag, 
-																		_job.ServerUrl, 
-																		deployment);
-			UpdateJob (message);
-		}
-
-		void DeleteTempAppStoreFile (string ipaPath)
-		{
-			if (Directory.Exists (ipaPath)) {
-				var file =  Directory.EnumerateFiles(ipaPath, "*appstore.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
-					File.Delete (file);
-
-			}
-
 		}
 
 		private async void DownloadAndInstallProfileIfNecessary()
@@ -162,20 +140,24 @@ namespace MK.DeploymentService.Mobile
 			if (_job.IosAdhoc || _job.IosAppStore)
 			{
 				var appId = _job.Company.CompanySettings.Any(s => s.Key == "Package") 
-				            ? _job.Company.CompanySettings.First(s => s.Key == "Package").Value
-				            : null;
+    	            ? _job.Company.CompanySettings.First(s => s.Key == "Package").Value
+    	            : null;
+                
 				if (string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Username)
-				   || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) {
+				    || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) 
+                {
 					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
 
-				if (appId == null) {
+				if (appId == null) 
+                {
 					UpdateJob("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
 					return;
 				}
 
-				if (_job.IosAdhoc) {
+				if (_job.IosAdhoc) 
+                {
 					UpdateJob ("Downloading/installing Adhoc provisioning profile");
 					var message = await _customerPortalRepository.DownloadProfile (
 						             _job.Company.AppleAppStoreCredentials.Username, 
@@ -186,7 +168,8 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob (message);
 				}
 
-				if (_job.IosAppStore) {
+				if (_job.IosAppStore) 
+                {
 					UpdateJob ("Downloading/installing AppStore provisioning profile");
 					var message = await _customerPortalRepository.DownloadProfile (
 						_job.Company.AppleAppStoreCredentials.Username, 
@@ -199,55 +182,18 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		public void Stop()
+        private DeployInfo Deploy (Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath, string barPath)
 		{
-			_timer.Change (Timeout.Infinite, Timeout.Infinite);
-		}
-
-		private string GetAndroidFile(string apkPath)
-		{
-            return Directory.Exists (apkPath) 
-                ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
-                : null;
-
-        }
-      
-        private string GetBlackBerryApkFile(string apkPath)
-        {
-            if (Directory.Exists (apkPath)) {
-                return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
-            }
-            return null;
-        }
-
-        private string GetBlackBerryBarFile(string barPath)
-        {
-            if (Directory.Exists (barPath)) {
-                return Directory.EnumerateFiles (barPath, "*.bar", SearchOption.TopDirectoryOnly).FirstOrDefault ();
-            }
-            return null;
-        }
-
-	    private string GetiOSFile(string ipaPath)
-	    {
-	        return Directory.Exists (ipaPath) 
-                ? Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault() 
-                : null;
-	    }
-
-
-        DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath, string barPath)
-		{
-
 			var result = new DeployInfo ();
 		    if (!_job.Android && !_job.CallBox && !_job.IosAdhoc && !_job.IosAppStore && !_job.BlackBerry)
 		    {
 		        return result;
 		    }
 
-		    var targetDirWithoutFileName = Path.Combine (ConfigurationManager.AppSettings ["DeployDir"], 
-		        company.CompanyKey,
-		        string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
+		    var targetDirWithoutFileName = Path.Combine (
+                ConfigurationManager.AppSettings ["DeployDir"], 
+		        company.CompanyKey, 
+                string.Format ("{0}.{1}", _job.Revision.Tag, _job.Revision.Commit));
 
 		    if (!Directory.Exists (targetDirWithoutFileName))
 		    {
@@ -259,8 +205,8 @@ namespace MK.DeploymentService.Mobile
 		    if (_job.Android)
 		    {
 		        _logger.DebugFormat ("Copying Apk");
-		        var apkFile = GetAndroidFile(apkPath);
 
+		        var apkFile = GetAndroidFile(apkPath);
 		        if (apkFile != null)
 		        {
 		            var fileInfo = new FileInfo (apkFile); 
@@ -272,7 +218,6 @@ namespace MK.DeploymentService.Mobile
 		            File.Copy (apkFile, targetDir);
 
 		            result.AndroidApkFileName = fileInfo.Name;
-
 		        } 
 		        else
 		        {
@@ -283,9 +228,8 @@ namespace MK.DeploymentService.Mobile
             if (_job.BlackBerry) 
             {
                 _logger.DebugFormat ("Copying BlackBerry Apk");
-                var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
-                var barFile = GetBlackBerryBarFile(barPath);
 
+                var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
                 if (apkBlackBerryFile != null) 
                 {
                     var fileInfo = new FileInfo (apkBlackBerryFile); 
@@ -296,16 +240,15 @@ namespace MK.DeploymentService.Mobile
                         File.Delete (targetDir);
                     }
                     File.Copy (apkBlackBerryFile, targetDir);
-
                     result.BlackBerryApkFileName = newName;
-
                 } 
                 else 
                 {
                     throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
 
-                if (barPath != null) 
+                var barFile = GetBlackBerryBarFile(barPath);
+                if (barFile != null) 
                 {
                     var fileInfo = new FileInfo (barFile); 
                     var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
@@ -314,10 +257,9 @@ namespace MK.DeploymentService.Mobile
                         File.Delete (targetDir);
                     }
                     File.Copy (barFile, targetDir);
-
-                    result.BlackBerryBarFileName= fileInfo.Name;
-
-                } else 
+                    result.BlackBerryBarFileName = fileInfo.Name;
+                } 
+                else 
                 {
                     throw new Exception ("Can't find the BAR BlackBerry file in the release dir");
                 }
@@ -326,6 +268,7 @@ namespace MK.DeploymentService.Mobile
 		    if (_job.CallBox)
 		    {
 		        _logger.DebugFormat ("Copying CallBox Apk");
+
 		        var apkFile = GetAndroidFile(apkPathCallBox);
 		        if (apkFile != null)
 		        {
@@ -347,17 +290,18 @@ namespace MK.DeploymentService.Mobile
 		    if (_job.IosAdhoc)
 		    {
 		        _logger.DebugFormat ("Uploading and copying IPA AdHoc");
+
 		        var ipaFile = GetiOSFile(ipaAdHocPath);
 		        if (ipaFile != null)
 		        {
-
 		            var fileInfo = new FileInfo (ipaFile); 
 		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-		            if (File.Exists (targetDir))
-		                File.Delete (targetDir);
+                    if (File.Exists(targetDir))
+                    {
+                        File.Delete (targetDir);
+                    }
 		            File.Copy (ipaFile, targetDir);
 		            result.iOSAdhocFileName = fileInfo.Name;
-
 		        } 
 		        else
 		        {
@@ -368,15 +312,17 @@ namespace MK.DeploymentService.Mobile
 		    if (_job.IosAppStore)
 		    {
 		        _logger.DebugFormat ("Uploading and copying IPA AppStore");
+
 		        var ipaFile = GetiOSFile(ipaAppStorePath);
 		        if (ipaFile != null)
 		        {
-
 		            var fileInfo = new FileInfo (ipaFile); 
 		            var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
 		            var targetDir = Path.Combine (targetDirWithoutFileName, newName);
-		            if (File.Exists (targetDir))
-		                File.Delete (targetDir);
+                    if (File.Exists(targetDir))
+                    {
+                        File.Delete(targetDir);
+                    }
 		            File.Copy (ipaFile, targetDir);
 		            result.iOSAppStoreFileName = newName;
 		        } 
@@ -392,10 +338,7 @@ namespace MK.DeploymentService.Mobile
 		private void Customize (string sourceDirectory, DeploymentJob job)
 		{
 			var company = job.Company;
-			var taxiHailEnv = job.Server;
-			UpdateJob ("Service Url : " + job.ServerUrl);
-
-			_logger.DebugFormat ("Build Config Tool Customization");
+			UpdateJob("Service Url : " + job.ServerUrl);
 			UpdateJob("Customize - Build Config Tool Customization");
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
@@ -403,7 +346,7 @@ namespace MK.DeploymentService.Mobile
 			if (_builder.ProjectIsInSolution (sln, projectName))
             {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
-				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
+                _builder.BuildProjectUsingMdTool (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			}
             else
             {
@@ -414,16 +357,15 @@ namespace MK.DeploymentService.Mobile
 			if (_builder.ProjectIsInSolution (sln, projectName))
             {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
-				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
+                _builder.BuildProjectUsingMdTool (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			}
             else
             {
 				UpdateJob ("Skipping NinePatch because it does not exist on this version");
 			}
 			
-
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Release");
-			_builder.BuildProject (string.Format ("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory, "Src", "ConfigTool")));
+            _builder.BuildProjectUsingMdTool (string.Format ("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory, "Src", "ConfigTool")));
 
 			UpdateJob ("Run Config Tool Customization");
 
@@ -441,7 +383,7 @@ namespace MK.DeploymentService.Mobile
             }
 
 			UpdateJob("Customization Finished");
-			UpdateJob ("Run Localization tool for Android");
+			UpdateJob("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo {
 				FileName = "mono",
@@ -462,8 +404,7 @@ namespace MK.DeploymentService.Mobile
                 UpdateJob(outputAndroid);
             }
 
-			UpdateJob ("Run Localization tool for Android Finished");
-
+			UpdateJob("Run Localization tool for Android Finished");
 			UpdateJob("Run Localization tool for iOS");
 
             localizationToolRun = new ProcessStartInfo
@@ -487,7 +428,6 @@ namespace MK.DeploymentService.Mobile
             }
 
 			UpdateJob("Run Localization tool for iOS Finished");
-
 
 		    if (!job.CallBox)
 		    {
@@ -519,110 +459,68 @@ namespace MK.DeploymentService.Mobile
             UpdateJob("Run Localization tool for Callbox Finished");
         }
 
+        private IDisposable StartStopwatch (string message)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            UpdateJob(message);
+
+            return Disposable.Create (() => 
+            {
+                stopwatch.Stop();
+                UpdateJob(message + string.Format(" done ({0}min {1}sec)", stopwatch.Elapsed.Minutes, stopwatch.Elapsed.Seconds));
+            });
+        }
+
 		private void BuildMobile (string sourceDirectory)
 		{			
-			//Build
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 
-			_logger.DebugFormat ("Restore NuGet Packages");
-			var restoreProcess = ProcessEx.GetProcess (
-                "nuget", 
-                string.Format ("restore \"{0}/TaxiHail.sln\"", sourceMobileFolder),
-                sourceMobileFolder);
-
-            using (var exeProcess = Process.Start(restoreProcess))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    UpdateJob("Error during restore NuGet Packages");
-                    //throw new Exception ("Error during Restore NuGet Packages, " + output);
-                }
-                UpdateJob("Restore NuGet Packages Successful");
-            }
-
-			_logger.DebugFormat ("Build Solution");
+            RestoreNuGetPackages(sourceMobileFolder);
 
 			if (_job.IosAdhoc)
-            {			
-
-				_logger.DebugFormat ("Build iOS AdHoc");
-				UpdateJob ("Build iOS AdHoc");
-				var buildArgs = string.Format ("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",
-					"AdHoc|iPhone",
-					sourceMobileFolder);
-
-				_builder.BuildProject (buildArgs);
-
-
-				_logger.Debug ("Build iOS AdHoc done");
+            {		       
+                using(StartStopwatch("Build iOS AdHoc"))
+                {
+                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AdHoc|iPhone", sourceMobileFolder));
+                }
 			}
 
 			if (_job.IosAppStore)
             {	
-				_logger.DebugFormat ("Build iOS AppStore");
-				UpdateJob ("Build iOS AppStore");
-				var buildArgs = string.Format ("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",				                             
-					"AppStore|iPhone",
-					sourceMobileFolder);
-
-				_builder.BuildProject (buildArgs);
-
-
-				_logger.Debug ("Build iOS AppStore done");
+                using (StartStopwatch("Build iOS AppStore"))
+                {
+                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AppStore|iPhone", sourceMobileFolder));
+                }
 			}
 
             if (!_job.Android && !_job.CallBox && !_job.BlackBerry)
-				return;
-
-			const string configAndroid = "Release";
-
-			var projectLists = new List<string> {
-				"MK.Common.Android",
-				"MK.Booking.Google.Android", 
-				"MK.Booking.Maps.Android", 
-				"MK.Booking.Api.Contract.Android", 
-				"MK.Booking.Api.Client.Android",
-				"MK.Booking.Mobile.Android",
-                "GoogleMaps.M4B",
-                "MapBox.Sdk"
-            };
-
-			if (_job.Android)
             {
-                UpdateJob ("Building project Android");
-
-                _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
-
-                var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
-					configAndroid,
-					sourceMobileFolder);
-				_builder.BuildProject (buildClient);
-
-				_logger.Debug ("Build Android done");
-			}
+                return;
+            }
+				
+            if (_job.Android)
+            {
+                using (StartStopwatch("Building Android"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/Android/TaxiHail.csproj", "Release", sourceMobileFolder));
+                }
+            }
 
             if (_job.BlackBerry)
             {
-                _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.BlackBerry.sln", sourceMobileFolder));
+                using (StartStopwatch("Building BlackBerry"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/TaxiHail.BlackBerry/TaxiHail.BlackBerry.csproj", "Release", sourceMobileFolder));
+                }
 
-                UpdateJob ("Building project BlackBerry");
-
-                _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.BlackBerry.sln", sourceMobileFolder));
-
-                var buildClient = string.Format ("build \"--project:TaxiHail.BlackBerry\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.BlackBerry.sln\"",
-                    configAndroid,
-                    sourceMobileFolder);
-                _builder.BuildProject (buildClient);
-
-                _logger.Debug ("Build BlackBerry done");
-
-                _logger.DebugFormat ("Copying BlackBerry Apk For Packaging .Bar");
-                var releaseBlackBerryDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
+                UpdateJob("Copying BlackBerry Apk For Packaging .Bar");
+                var releaseBlackBerryDir = Path.Combine (sourceMobileFolder, "TaxiHail.BlackBerry", "bin", "Release");
                 var bbToolsPath = Path.Combine (sourceDirectory, "Src", "BBTools");
                 var apkBlackBerryFile = GetBlackBerryApkFile(releaseBlackBerryDir);
 
-                if (apkBlackBerryFile != null) {
+                if (apkBlackBerryFile != null) 
+                {
                     var fileInfo = new FileInfo (apkBlackBerryFile); 
                     var targetDir = Path.Combine (bbToolsPath, "Outputs", fileInfo.Name);
                     if (File.Exists(targetDir))
@@ -633,41 +531,20 @@ namespace MK.DeploymentService.Mobile
 
                     var barFile = fileInfo.Name.Replace(".apk",".bar");
                     _builder.SignAndGenerateBlackBerryProject(bbToolsPath, barFile);
-
-                } else {
+                } 
+                else 
+                {
                     throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
-
-
             }
 
-		    if (!_job.CallBox)
-		    {
-                return;
-            }
-
-            if (!_job.Android)
+            if (_job.CallBox)
             {
-                projectLists = new List<string> {
-                    "MK.Common.Android",
-                    "MK.Booking.MapDataProvider.Android",
-                    "MK.Booking.Api.Contract.Android",
-                    "MK.Booking.Api.Client.Android",
-                    "MK.Booking.Mobile.Android",
-                };
+                using (StartStopwatch("Building Callbox"))
+                {
+                    _builder.BuildProjectUsingXBuild(string.Format("/t:SignAndroidPackage /p:Configuration={0} {1}/MK.Callbox.Mobile.Client.Android/MK.Callbox.Mobile.Client.Android.csproj", "Release", sourceMobileFolder));
+                }
             }
-
-            _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
-
-            UpdateJob ("Callbox project");
-			var args = string.Format ("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-				"MK.Callbox.Mobile.Client.Android",
-				configAndroid,
-				sourceMobileFolder);
-
-			_builder.BuildProject (args);
-
-			_logger.Debug ("Build Android CallBox done");
 		}
 
 		private static string GetSettingsFilePath (string sourceDirectory, string companyName)
@@ -681,12 +558,17 @@ namespace MK.DeploymentService.Mobile
 			var reader = new JsonTextReader (new StreamReader (jsonSettingsFile));
 			while (reader.Read ())
             {
-				if (reader.Value == null)
-					continue;
+                if (reader.Value == null)
+                {
+                    continue;
+                }
 
-				if (reader.TokenType == JsonToken.PropertyName) {
+				if (reader.TokenType == JsonToken.PropertyName) 
+                {
 					sb.Append (string.Format ("{0}: ", reader.Value));
-				} else {
+				} 
+                else 
+                {
 					sb.AppendLine (reader.Value.ToString ());
 				}
 			}
@@ -695,5 +577,73 @@ namespace MK.DeploymentService.Mobile
                 outfile.Write(sb.ToString());
             }
 		}
+
+        private void RestoreNuGetPackages(string sourceMobileFolder)
+        {
+            UpdateJob ("Restore NuGet Packages");
+
+            var restoreProcess = ProcessEx.GetProcess ("nuget", string.Format ("restore \"{0}/TaxiHail.sln\"", sourceMobileFolder), sourceMobileFolder);
+
+            using (var exeProcess = Process.Start(restoreProcess))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    UpdateJob("Error during restore NuGet Packages");
+                }
+                UpdateJob("Restore NuGet Packages Successful");
+            }
+        }
+
+        private void UpdateJob (string details = null, JobStatus? jobStatus = null)
+        {
+            _logger.Debug (details);
+
+            new DeploymentJobServiceClient ().UpdateStatus (_job.Id, details, jobStatus);
+        }
+
+        private string GetAndroidFile(string apkPath)
+        {
+            return Directory.Exists (apkPath) 
+                ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
+                : null;
+        }
+
+        private string GetBlackBerryApkFile(string apkPath)
+        {
+            return Directory.Exists (apkPath)
+                ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
+                : null;
+        }
+
+        private string GetBlackBerryBarFile(string barPath)
+        {
+            return Directory.Exists(barPath)
+                ? Directory.EnumerateFiles(barPath, "*.bar", SearchOption.TopDirectoryOnly).FirstOrDefault()
+                : null;
+        }
+
+        private string GetiOSFile(string ipaPath)
+        {
+            return Directory.Exists (ipaPath) 
+                ? Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault() 
+                : null;
+        }
+
+        private void CreateNewVersionInCustomerPortal(DeployInfo deployment)
+        {
+            UpdateJob("Creating new version in Customer Portal");
+            var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, deployment);
+            UpdateJob (message);
+        }
+
+        private void DeleteTempAppStoreFile (string ipaPath)
+        {
+            if (Directory.Exists (ipaPath)) 
+            {
+                var file =  Directory.EnumerateFiles(ipaPath, "*appstore.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                File.Delete (file);
+            }
+        }
 	}
 }
