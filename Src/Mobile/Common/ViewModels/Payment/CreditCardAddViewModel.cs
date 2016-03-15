@@ -88,9 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
-			Instructions = shouldShowReview 
-				? this.Services().Localize["CreditCardInstructionsForLuxury"]
-				: this.Services().Localize["CreditCardInstructions"];
+			Instructions = this.Services().Localize["CreditCardInstructions"];
 
 			_isFromPromotionsView = isFromPromotionsView;
 			_shouldShowReview = shouldShowReview;

@@ -1118,23 +1118,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				
 				var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
-				if (serviceType == ServiceType.Luxury)
-				{
-					goToCreditCardAdd();
-				}
-				else
-				{
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
-						this.Services().Localize["AddACardButton"],
-						() => {
-							ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
-							ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
-						},
-						this.Services().Localize["Cancel"],
-						() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
-				}
-			
+
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
+					this.Services().Localize["AddACardButton"],
+					() => {
+						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
+						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
+					},
+					this.Services().Localize["Cancel"],
+					() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
 			}
         }
 
