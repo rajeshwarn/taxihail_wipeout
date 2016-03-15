@@ -79,10 +79,14 @@ namespace MK.DeploymentService.Mobile
 
 					var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
                     if (Directory.Exists (releaseiOSAdHocDir)) { Directory.Delete (releaseiOSAdHocDir, true); }
+                    var releaseiOSAdHocObjDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "obj", "iPhone", "AdHoc");
+                    if (Directory.Exists (releaseiOSAdHocObjDir)) { Directory.Delete (releaseiOSAdHocObjDir, true); }
 						
 					var releaseiOSAppStoreDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AppStore");
                     if (Directory.Exists (releaseiOSAppStoreDir)) { Directory.Delete (releaseiOSAppStoreDir, true); }
-						
+                    var releaseiOSAppStoreObjDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "obj", "iPhone", "AppStore");
+                    if (Directory.Exists (releaseiOSAppStoreObjDir)) { Directory.Delete (releaseiOSAppStoreObjDir, true); }	
+
 					var releaseAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
                     if (Directory.Exists (releaseAndroidDir)) { Directory.Delete (releaseAndroidDir, true); }
 						
