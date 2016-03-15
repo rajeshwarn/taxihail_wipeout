@@ -1,16 +1,13 @@
-using System;
 using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.CrossCore;
@@ -34,14 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         private const int LinkPayPalAccountRequestCode = 481516234;
 
         private ClientPaymentSettings _paymentSettings;
-
-        private bool CardIOIsEnabled
-        {
-            get 
-            { 
-                return CardIOActivity.CanReadCardWithCamera(); 
-            }
-        }
 
         protected override async void OnViewModelSet()
 		{
@@ -81,17 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             spinnerExpMonth.OnTouch += (sender, e) => HideKeyboard(spinnerExpMonth.WindowToken);
             spinnerExpYear.OnTouch += (sender, e) => HideKeyboard(spinnerExpYear.WindowToken);
 
-            if (CardIOIsEnabled)
-            {
-                _scanIntent = new Intent(this, typeof(CardIOActivity));
-                _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
-                _scanIntent.PutExtra(CardIOActivity.ExtraHideCardioLogo, true);
-                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
-                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
+            _scanIntent = new Intent(this, typeof(CardIOActivity));
+            _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
+            _scanIntent.PutExtra(CardIOActivity.ExtraHideCardioLogo, true);
+            _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
+            _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
 
-                var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
-                btnScanCard.Click += (sender, e) => ScanCard();
-            }
+            var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
+            btnScanCard.Click += (sender, e) => ScanCard();
         }
 
         private void HideKeyboard(IBinder windowToken)

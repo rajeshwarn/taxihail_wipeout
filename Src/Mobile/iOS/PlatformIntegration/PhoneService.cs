@@ -10,6 +10,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.CrossCore.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using Card.IO;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -109,6 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 //iOS 5 code
                 AddEvent (title, addInfo, startDate, alertDate);
             }
+        }
+
+        public bool CanUseCardIO()
+        {
+            return Utilities.CanReadCardWithCamera();
         }
 
         private void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
