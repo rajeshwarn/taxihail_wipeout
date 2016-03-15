@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid(),
                 Note = "Tomato Sandwich",
                 PickupDate = DateTime.Now,
-                Settings = new SendBookingConfirmationEmail.BookingSettings(),
+                Settings = new SendBookingConfirmationEmail.InternalBookingSettings(),
                 ClientLanguageCode = "fr"
             });
 
