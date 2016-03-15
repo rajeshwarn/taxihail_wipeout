@@ -91,17 +91,17 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
                         orderReportEntry["Account.AccountId"] = orderReport.Account.AccountId.ToString();
 
-                        if (!string.IsNullOrEmpty(orderReport.Account.Name))
+                        if (orderReport.Account.Name.HasValue())
                         {
                             orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
                         }
 
-                        if (!string.IsNullOrEmpty(orderReport.Account.Phone))
+                        if (orderReport.Account.Phone.HasValue())
                         {
                             orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
                         }
 
-                        if (!string.IsNullOrEmpty(orderReport.Account.Email))
+                        if (orderReport.Account.Email.HasValue())
                         {
                             orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
                         }
