@@ -115,14 +115,14 @@ namespace MK.DeploymentService.Mobile
                     var deploymentInfo = Deploy (_job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryApkDir, releaseBlackBerryBarDir);
 
 					CreateNewVersionInCustomerPortal(deploymentInfo);
-					UpdateJob ("Done", JobStatus.Success);
+                    UpdateJob (string.Format("Done (ended at {0})", DateTime.Now), JobStatus.Success);
 
 					_logger.Debug ("Deployment finished without error");
 				}
                 catch (Exception e) 
                 {
 					_logger.Error (e.Message);
-					UpdateJob (e.Message, JobStatus.Error);
+                    UpdateJob (string.Format("{0} (ended at {1})", e.Message, DateTime.Now), JobStatus.Error);
 				}
 			} 
             catch (Exception e) 
