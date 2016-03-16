@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -293,83 +294,128 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                string authorizationCode = null;
-                string commitTransactionId = transactionId;
-
                 var orderDetail = _orderDao.FindById(orderId);
                 if (orderDetail == null)
                 {
                     throw new Exception("Order not found");
                 }
 
-                var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                if (orderStatus == null)
+                var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
+                var commitTransactionId = transactionId;
+
+                if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
-                    throw new Exception("Order status not found");
+                    var pairingToken = orderDetail.IsManualRideLinq
+                        ? _orderDao.GetManualRideLinqById(orderId).PairingToken
+                        : _orderDao.FindOrderPairingById(orderId).PairingToken;
+
+                    var request = new CmtRideLinqAuthorizationRequest
+                    {
+                        PairingToken = pairingToken,
+                        CofToken = creditCard.Token
+                    };
+
+                    _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Request: {0}", request.ToJson());
+
+                    var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken), request);
+                   
+                    if (response != null && response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return new CommitPreauthorizedPaymentResponse
+                        {
+                            IsSuccessful = true,
+                            AuthorizationCode = authorizationCode,
+                            Message = authResponse.ResponseMessage,
+                            TransactionId = commitTransactionId,
+                            TransactionDate = (DateTime?)authResponse.AuthorizationDate
+                        };
+                    }
+                    else
+                    {
+                        var responseText = string.Empty;
+                        if (response != null)
+                        {
+                            using (var reader = new System.IO.StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                            {
+                                responseText = reader.ReadToEnd();
+                            }
+                        }
+                        _logger.LogMessage("Response was: {0}", responseText);
+
+                        return new CommitPreauthorizedPaymentResponse
+                        {
+                            IsSuccessful = false,
+                            TransactionId = transactionId
+                        };
+                    }
                 }
-
-                var orderPayment = _paymentDao.FindByOrderId(orderId, companyKey);
-                if (orderPayment == null)
+                else
                 {
-                    throw new Exception("Order payment not found");
-                }
+                    string authorizationCode = null;
+                   
+                    var orderStatus = _orderDao.FindOrderStatusById(orderId);
+                    if (orderStatus == null)
+                    {
+                        throw new Exception("Order status not found");
+                    }
+                    
+                    var deviceId = orderStatus.VehicleNumber;
+                    var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
+                    var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
+                    var tripId = orderStatus.IBSOrderId.Value;
+                    var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
+                    var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() 
+                        ? orderStatus.ReferenceNumber 
+                        : orderDetail.IBSOrderId.ToString();
 
-                var deviceId = orderStatus.VehicleNumber;
-                var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
-                var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
-                var tripId = orderStatus.IBSOrderId.Value;
-                var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
-                var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
-                                                    orderStatus.ReferenceNumber :
-                                                    orderDetail.IBSOrderId.ToString();
+                    var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderId);
+                    var cvv = tempPaymentInfo != null ? tempPaymentInfo.Cvv : null;
 
-                var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderId);
-                var cvv = tempPaymentInfo != null ? tempPaymentInfo.Cvv : null;
+                    var authRequest = new AuthorizationRequest
+                    {
+                        FleetToken = fleetToken,
+                        DeviceId = deviceId,
+                        Amount = (int)(amount * 100),
+                        CardOnFileToken = creditCard.Token,
+                        CustomerReferenceNumber = customerReferenceNumber,
+                        DriverId = driverId,
+                        EmployeeId = employeeId,
+                        ShiftUuid = orderDetail.Id.ToString(),
+                        Fare = (int)(meterAmount * 100),
+                        Tip = (int)(tipAmount * 100),
+                        TripId = tripId,
+                        ConvenienceFee = 0,
+                        Extras = 0,
+                        Surcharge = 0,
+                        Tax = 0,
+                        Tolls = 0,
+                        Cvv2 = cvv
+                    };
 
-                var authRequest = new AuthorizationRequest
-                {
-                    FleetToken = fleetToken,
-                    DeviceId = deviceId,
-                    Amount = (int)(amount * 100),
-                    CardOnFileToken = orderPayment.CardToken,
-                    CustomerReferenceNumber = customerReferenceNumber,
-                    DriverId = driverId,
-                    EmployeeId = employeeId,
-                    ShiftUuid = orderDetail.Id.ToString(),
-                    Fare = (int)(meterAmount * 100),
-                    Tip = (int)(tipAmount * 100),
-                    TripId = tripId,
-                    ConvenienceFee = 0,
-                    Extras = 0,
-                    Surcharge = 0,
-                    Tax = 0,
-                    Tolls = 0,
-                    Cvv2 = cvv
-                };
+                    // remove temp payment info
+                    _orderDao.DeleteTemporaryPaymentInfo(orderId);
 
-                // remove temp payment info
-                _orderDao.DeleteTemporaryPaymentInfo(orderId);
+                    var authResponse = Authorize(authRequest);
 
-                var authResponse = Authorize(authRequest);
+                    var isSuccessful = authResponse.ResponseCode == 1;
+                    var isCardDeclined = authResponse.ResponseCode == 607;
 
-                var isSuccessful = authResponse.ResponseCode == 1;
-                var isCardDeclined = authResponse.ResponseCode == 607;
+                    if (isSuccessful)
+                    {
+                        commitTransactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
+                        authorizationCode = authResponse.AuthorizationCode;
+                    }
 
-                if (isSuccessful)
-                {
-                    commitTransactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
-                    authorizationCode = authResponse.AuthorizationCode;
-                }
-
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessful = isSuccessful,
-                    AuthorizationCode = authorizationCode,
-                    Message = authResponse.ResponseMessage,
-                    TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined,
-                    TransactionDate = isSuccessful ? (DateTime?)authResponse.AuthorizationDate : null
-                };
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = isSuccessful,
+                        AuthorizationCode = authorizationCode,
+                        Message = authResponse.ResponseMessage,
+                        TransactionId = commitTransactionId,
+                        IsDeclined = isCardDeclined,
+                        TransactionDate = isSuccessful ? (DateTime?)authResponse.AuthorizationDate : null
+                    };
+                } 
             }
             catch (Exception ex)
             {
