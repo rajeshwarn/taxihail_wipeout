@@ -16,7 +16,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/account/orders")]
     public class PayPalCheckoutController : BaseApiController
     {
         public PayPalCheckoutService PayPalCheckoutService { get; }
@@ -31,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             PayPalCheckoutService = new PayPalCheckoutService(commandBus, logger, orderDao, accountDao, payPalServiceFactory, serverSettings);
         }
 
-        [HttpGet, Route("{orderId}/proceed"), Auth]
+        [HttpGet, Route("api/v2/accounts/orders/{orderId}/proceed"), Auth]
         public IHttpActionResult ExecuteWebPaymentAndProceedWithOrder(ExecuteWebPaymentAndProceedWithOrder request)
         {
             var result = PayPalCheckoutService.Get(request);

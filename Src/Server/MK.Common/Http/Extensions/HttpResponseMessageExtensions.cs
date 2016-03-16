@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Common.Http.Extensions
@@ -13,7 +14,7 @@ namespace apcurium.MK.Common.Http.Extensions
             var json = await response.Content.ReadAsStringAsync()
                 .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<T>(json, serializerSettings);
+            return json.FromJsonSafe<T>();
         }
     }
 }

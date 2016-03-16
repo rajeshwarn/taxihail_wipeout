@@ -17,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/accounts/addresses"), Auth]
+    [Auth]
     public class AddressController : BaseApiController
     {
         public AddressesService AddressesService { get; }
@@ -33,13 +33,13 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             SaveAddressService = new SaveAddressService(commandBus);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/accounts/addresses")]
         public IHttpActionResult GetAddresses()
         {
             return GenerateActionResult(AddressesService.Get());
         }
 
-        [HttpGet, Route("history")]
+        [HttpGet, Route("api/v2/accounts/addresses/history")]
         public IHttpActionResult GetAddressHistory()
         {
             var result = AddressHistoryService.Get();
@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Route("history/{addressId}")]
+        [HttpDelete, Route("api/v2/accounts/addresses/history/{addressId}")]
         public IHttpActionResult Delete(Guid addressId)
         {
             AddressHistoryService.Delete(new AddressHistoryRequest() {AddressId = addressId});
@@ -55,7 +55,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/accounts/addresses")]
         public IHttpActionResult CreateAddress([FromBody] SaveAddress request)
         {
             SaveAddressService.Post(request);
@@ -63,7 +63,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return StatusCode(HttpStatusCode.Created);
         }
 
-        [HttpPut, Route("{id}")]
+        [HttpPut, Route("api/v2/accounts/addresses/{id}")]
         public IHttpActionResult UpdateAddress([FromBody] SaveAddress request, Guid id)
         {
             request.Id = id;
@@ -73,7 +73,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpDelete, Route("{id}")]
+        [HttpDelete, Route("api/v2/accounts/addresses/{id}")]
         public IHttpActionResult DeleteAddress(Guid id)
         {
             SaveAddressService.Delete(id);

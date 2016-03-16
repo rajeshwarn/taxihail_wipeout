@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
@@ -12,11 +14,9 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class ProcessPaymentController : BaseApiController
     {
         public ProcessPaymentService ProcessPaymentService { get; }
-        public CmtPaymentPairingService CmtPaymentPairingService { get; }
 
         public ProcessPaymentController(IPayPalServiceFactory payPalServiceFactory,
             IPaymentService paymentService,
@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Controllers.Api
             ProcessPaymentService = new ProcessPaymentService(payPalServiceFactory, paymentService, accountDao, orderDao, ibsServiceProvider, serverSettings);
         }
 
-        [HttpPost, Auth, Route("paypal/link")]
+        [HttpPost, Auth, Route("api/v2/paypal/link")]
         public IHttpActionResult LinkPaypal(LinkPayPalAccountRequest request)
         {
             var result = ProcessPaymentService.Post(request);
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("paypal/unlink")]
+        [HttpPost, Auth, Route("api/v2/paypal/unlink")]
         public IHttpActionResult UnlinkPaypal(UnlinkPayPalAccountRequest request)
         {
             var result = ProcessPaymentService.Post(request);
@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Auth, Route("payments/deleteToken/{cardToken}")]
+        [HttpDelete, Auth, Route("api/v2/payments/deleteToken/{cardToken}")]
         public IHttpActionResult DeleteCreditCard(string cardToken)
         {
             var result = ProcessPaymentService.Delete(cardToken);
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("payments/unpair")]
+        [HttpPost, Auth, Route("api/v2/payments/unpair")]
         public async Task<IHttpActionResult> UnpairingForPayment(UnpairingForPaymentRequest request)
         {
             var result = await ProcessPaymentService.Post(request);

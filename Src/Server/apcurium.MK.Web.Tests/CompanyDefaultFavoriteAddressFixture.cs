@@ -3,7 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Http.Exceptions;
+using Microsoft.Practices.Unity;
+using Container = apcurium.MK.Common.IoC.UnityServiceLocator;
 using MK.Common.Exceptions;
 using NUnit.Framework;
 
@@ -30,20 +34,23 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            _knownAddressId = Guid.NewGuid();
+            
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
-                Id = (_knownAddressId = Guid.NewGuid()),
+                Id = _knownAddressId,
                 Address = new Address
                 {
+                    Id = _knownAddressId,
                     FriendlyName = "La Boite à Jojo le barjo",
                     FullAddress = "1234 rue Saint-Denis",
                     Latitude = 45.515065,
                     Longitude = -73.558064
                 }
-            });
+            }).Wait();
         }
 
-        private Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId;
 
         [Test]
         public async Task AddAddress()
@@ -79,11 +86,25 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddInvalidAddress()
+        public async Task AddInvalidAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            Assert.Throws<WebServiceException>(() => sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress()));
+            try
+            {
+                await sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress());
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
@@ -128,7 +149,9 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var address = (await sut.GetDefaultFavoriteAddresses()).Single(x => x.Id == _knownAddressId);
+            var addresses = await sut.GetDefaultFavoriteAddresses();
+
+            var address = addresses.Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);
@@ -140,27 +163,34 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void UpdateAddressWithInvalidData()
+        public async Task UpdateAddressWithInvalidData()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            var ex =  Assert.Throws<WebServiceException>(() => sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
+            try
+            {
+                await sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
                     {
-                        FriendlyName =
-                            "Chez François Cuvelier",
+                        FriendlyName = "Chez François Cuvelier",
                         Apartment = "3939",
-                        FullAddress =
-                            "1234 rue Saint-Hubert",
+                        FullAddress = "1234 rue Saint-Hubert",
                         RingCode = "3131",
                         Latitude = double.NaN,
                         Longitude = double.NaN
                     }
-                }));
+                });
+            }
+            catch (Exception ex)
+            {
+                Assert.IsAssignableFrom<ServiceResponseException>(ex);
 
-            Assert.AreEqual("InclusiveBetween", ex.Message);
+                return;
+            }
+
+            Assert.Fail();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Exceptions;
 using Newtonsoft.Json;
 
@@ -15,25 +16,39 @@ namespace apcurium.MK.Common.Http.Extensions
 #endif
         public static Task<HttpResponseMessage> Get(this HttpClient client, string relativeUrl)
         {
-            return client.Send(HttpMethod.Get, new Uri(relativeUrl, UriKind.Relative));
+            return client.Send(HttpMethod.Get, GetForEndpointIfNeeded(client, relativeUrl));
         }
 
         public static Task<HttpResponseMessage> Post<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
         {
-            return client.Send(HttpMethod.Post, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content));
+            return client.Send(HttpMethod.Post, GetForEndpointIfNeeded(client, relativeUrl), content.ToJson());
         }
 
         public static Task<HttpResponseMessage> Put<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
         {
-            return client.Send(HttpMethod.Put, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content));
+            return client.Send(HttpMethod.Put, GetForEndpointIfNeeded(client, relativeUrl), content.ToJson());
         }
 
         public static Task<HttpResponseMessage> Delete(this HttpClient client, string relativeUrl)
         {
-            return client.Send(HttpMethod.Delete, new Uri(relativeUrl, UriKind.Relative));
+            return client.Send(HttpMethod.Delete, GetForEndpointIfNeeded(client, relativeUrl));
         }
 
-        private static async Task<HttpResponseMessage> Send(this HttpClient client, HttpMethod method, Uri requestUri, string jsonPayload = null)
+        private static string GetForEndpointIfNeeded(this HttpClient client, string url)
+        {
+            if (url.StartsWith("http") || client.BaseAddress == null)
+            {
+                return url;
+            }
+
+            var currentRelativeUrl = client.BaseAddress.LocalPath;
+
+            return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+                ? currentRelativeUrl + url
+                    : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
+        }
+
+        private static async Task<HttpResponseMessage> Send(this HttpClient client, HttpMethod method, string requestUri, string jsonPayload = null)
         {
             var request = new HttpRequestMessage(method, requestUri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

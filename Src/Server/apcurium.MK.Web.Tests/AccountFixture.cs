@@ -146,6 +146,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -196,6 +198,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
             Assert.Pass();
         }
@@ -221,6 +225,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -263,6 +269,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 }, "CreateAccount_AccountAlreadyExist");
+
+                return;
             }
             
             Assert.Fail("CreateAccount_AccountAlreadyExist");
@@ -305,7 +313,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 }, "CreateAccount_AccountAlreadyExist");
-                throw;
+
+                return;
             }
 
             Assert.Fail("CreateAccount_AccountAlreadyExist");
@@ -348,7 +357,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 }, "CreateAccount_AccountAlreadyExist");
-                throw;
+                return;
             }
 
             Assert.Fail("CreateAccount_AccountAlreadyExist");
@@ -382,6 +391,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -393,7 +404,9 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
             var newAccount = await sut.CreateTestAccount();
-            await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
+            var auth = await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
+
+            sut = new AccountServiceClient(BaseUrl, auth.SessionId, new DummyPackageInfo(), null, null);
 
             await sut.ResetPassword(newAccount.Email);
 
@@ -407,6 +420,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -429,6 +444,8 @@ namespace apcurium.MK.Web.Tests
                 });
 
                 Assert.AreEqual(500, exception.StatusCode);
+
+                return;
             }
 
             Assert.Fail();
@@ -458,6 +475,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Pass();
@@ -490,6 +509,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -520,6 +541,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();
@@ -562,6 +585,8 @@ namespace apcurium.MK.Web.Tests
                 {
                     throw ex;
                 });
+
+                return;
             }
 
             Assert.Fail();

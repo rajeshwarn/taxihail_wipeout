@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Api.Services
             Session.RemoveSessionIfNeeded();
          }
 
+
          var newPassword = new PasswordService().GeneratePassword();
          var resetCommand = new ResetAccountPassword
          {

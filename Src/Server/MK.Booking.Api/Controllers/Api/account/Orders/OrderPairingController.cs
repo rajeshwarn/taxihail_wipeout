@@ -14,7 +14,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/accounts/orders")]
     [Auth]
     public class OrderPairingController: BaseApiController
     {
@@ -34,7 +33,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
         }
 
 
-        [HttpPost, NoCache, Route("{orderId}/pairing/tip")]
+        [HttpPost, NoCache, Route("api/v2/accounts/orders/{orderId}/pairing/tip")]
         public async Task<IHttpActionResult> UpdateAutoTip(Guid orderId, [FromBody]UpdateAutoTipRequest request)
         {
             request.OrderId = orderId;
@@ -44,7 +43,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return Ok();
         }
 
-        [HttpGet, Route("{OrderId}/pairing"), NoCache]
+        [HttpGet, Route("api/v2/accounts/orders/{orderId}/pairing"), NoCache]
         public IHttpActionResult GetOrderPairing(Guid orderId)
         {
             var result = _orderPairingService.Get(new OrderPairingRequest() {OrderId = orderId});

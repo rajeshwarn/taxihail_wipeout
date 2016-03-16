@@ -1,33 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Security;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin/accountscharge")]
     public class AccountsChargeController : BaseApiController
     {
         private readonly AccountsChargeService _service;
 
-        public AccountsChargeController(IAccountChargeDao dao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
+        public AccountsChargeController(IAccountChargeDao dao, ICommandBus commandBus,
+            IIBSServiceProvider ibsServiceProvider)
         {
             _service = new AccountsChargeService(dao, commandBus, ibsServiceProvider);
         }
@@ -39,28 +29,66 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             PrepareApiServices(_service);
         }
 
-        [HttpGet, Route("{accountNumber}"), Route("{accountNumber}/{customerNumber}/{hideAnswers}")]
+        [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}/{customerNumber}/{hideAnswers}")]
         public IHttpActionResult GetAccountCharge(string accountNumber, string customerNumber, bool hideAnswers)
         {
-            var result = _service.Get(new AccountChargeRequest
+            try
             {
-                AccountNumber = accountNumber,
-                CustomerNumber = customerNumber,
-                HideAnswers = hideAnswers
-            });
+                var result = _service.Get(new AccountChargeRequest
+                {
+                    AccountNumber = accountNumber,
+                    CustomerNumber = customerNumber,
+                    HideAnswers = hideAnswers
+                });
 
-            return GenerateActionResult(result);
+                return GenerateActionResult(result);
+            }
+            catch (HttpException ex)
+            {
+                var httpResponseMessage = new HttpResponseMessage((HttpStatusCode) ex.GetHttpCode())
+                {
+                    Content = new StringContent(ex.Message)
+                };
+
+                return ResponseMessage(httpResponseMessage);
+            }
+            catch (Exception)
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}")]
+        public IHttpActionResult GetAccountCharge(string accountNumber)
+        {
+            return GetAccountCharge(accountNumber, null, false);
+        }
+
+        [HttpGet, Route("api/v2/admin/accountscharge")]
         public IHttpActionResult GetAccountCharge()
         {
-            var result = _service.Get(new AccountChargeRequest());
+            try
+            {
+                var result = _service.Get(new AccountChargeRequest());
 
-            return GenerateActionResult(result);
+                return GenerateActionResult(result);
+            }
+            catch (HttpException ex)
+            {
+                var httpResponseMessage = new HttpResponseMessage((HttpStatusCode)ex.GetHttpCode())
+                {
+                    Content = new StringContent(ex.Message)
+                };
+
+                return ResponseMessage(httpResponseMessage);
+            }
+            catch (Exception)
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/admin/accountscharge")]
         public IHttpActionResult CreateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = _service.Post(request);
@@ -68,7 +96,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPut]
+        [HttpPut, Route("api/v2/admin/accountscharge")]
         public IHttpActionResult UpdateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = _service.Put(request);
@@ -76,7 +104,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Route("{accountNumber}")]
+        [HttpDelete, Route("api/v2/admin/accountscharge/{accountNumber}")]
         public IHttpActionResult DeleteAccountCharge(string accountNumber)
         {
             _service.Delete(new AccountChargeRequest {AccountNumber = accountNumber});

@@ -12,7 +12,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/accounts/orders")]
     public class ReceiptController : BaseApiController
     {
         public SendReceiptService SendReceiptService { get; }
@@ -31,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             SendReceiptService = new SendReceiptService(commandBus, ibsServiceProvider, orderDao, orderPaymentDao, creditCardDao, accountDao, promotionDao, reportDao, serverSettings, geocoding, Logger);
         }
 
-        [HttpPost, Auth, Route("{orderId}/sendreceipt")]
+        [HttpPost, Auth, Route("api/v2/accounts/orders/{orderId}/sendreceipt")]
         public async Task<IHttpActionResult> SendReceiptForOrder(Guid orderId)
         {
             await SendReceiptService.Post(orderId, string.Empty);
@@ -39,7 +38,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return Ok();
         }
 
-        [HttpPost, Auth(Role = RoleName.Support), Route("{orderId}/sendreceipt/{recipientEmail}")]
+        [HttpPost, Auth(Role = RoleName.Support), Route("api/v2/accounts/orders/{orderId}/sendreceipt/{recipientEmail}")]
         public async Task<IHttpActionResult> SendReceiptForOrderToRecipientEmail(Guid orderId, string recipientEmail)
         {
             await SendReceiptService.Post(orderId, recipientEmail);

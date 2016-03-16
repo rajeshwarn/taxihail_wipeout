@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Database;
 using NUnit.Framework;
@@ -64,7 +65,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void FirstGet_ShouldGet_FullTerms_AndCache()
+        public async Task FirstGet_ShouldGet_FullTerms_AndCache()
         {
             PrepareCompanyDetailWithoutTriggeredTerms();
 
@@ -75,7 +76,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void FirstGet_ShouldGet_FullTerms_AndCache_if_terms_have_been_triggered_once()
+        public async Task FirstGet_ShouldGet_FullTerms_AndCache_if_terms_have_been_triggered_once()
         {
             PrepareCompanyDetailWithTriggeredTerms();
 
@@ -86,7 +87,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void SecondGet_ShouldGet_Terms_NotUpdated()
+        public async Task SecondGet_ShouldGet_Terms_NotUpdated()
         {
             PrepareCompanyDetailWithTriggeredTerms();
 
@@ -101,7 +102,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void SecondGet_With_UpdateCompany_ShouldGet_Terms_Updated()
+        public async Task SecondGet_With_UpdateCompany_ShouldGet_Terms_Updated()
         {
             PrepareCompanyDetailWithTriggeredTerms();
 

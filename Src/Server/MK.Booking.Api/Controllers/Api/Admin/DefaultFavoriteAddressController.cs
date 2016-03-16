@@ -15,7 +15,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin"), Auth(Role = RoleName.Support)]
+    [Auth(Role = RoleName.Support)]
     public class DefaultFavoriteAddressController : BaseApiController
     {
         private readonly DefaultFavoriteAddressService _defaultFavoriteAddressService;
@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             PrepareApiServices(_defaultFavoriteAddressService);
         }
 
-        [HttpGet, Route("addresses"), NoCache]
+        [HttpGet, Route("api/v2/admin/addresses"), NoCache]
         public IHttpActionResult GetDefaultFavoriteAddress()
         {
             var result = _defaultFavoriteAddressService.Get();
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("addresses"), NoCache]
+        [HttpPost, Route("api/v2/admin/addresses"), NoCache]
         public IHttpActionResult AddDefaultFavoriteAddress([FromBody]DefaultFavoriteAddress request)
         {
             var result = _defaultFavoriteAddressService.Post(request);
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(new {Id = result});
         }
 
-        [HttpPut, Route("addresses/{id}"), NoCache]
+        [HttpPut, Route("api/v2/admin/addresses/{id}"), NoCache]
         public IHttpActionResult UpdateDefaultFavoriteAddress(Guid id, [FromBody]DefaultFavoriteAddress request)
         {
             request.Id = id;
@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpDelete, Route("addresses/{id}"), NoCache]
+        [HttpDelete, Route("api/v2/admin/addresses/{id}"), NoCache]
         public IHttpActionResult DeleteDefaultFavoriteAddress(Guid id)
         {
             _defaultFavoriteAddressService.Delete(new DefaultFavoriteAddress() {Id = id});

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Http.Headers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -25,8 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var company = _dao.Get();
 
-
-            return company.Version.HasValueTrimmed() && HttpRequest.Headers.IfNoneMatch.Any(p => p.Tag == company.Version);
+            return company.Version.HasValueTrimmed() && HttpRequest.Headers.IfNoneMatch.Any(p => p.Tag.Replace("\"", "") == company.Version);
         }
 
         public string GetCompanyVersion()

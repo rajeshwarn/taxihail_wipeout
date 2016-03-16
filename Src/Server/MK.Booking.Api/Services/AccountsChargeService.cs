@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(AccountChargeRequest request)
         {
-            bool isAdmin = Session.HasPermission(RoleName.Admin);
+            var isAdmin = Session.HasPermission(RoleName.Admin);
 
             if (!request.AccountNumber.HasValue())
             {

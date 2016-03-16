@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Http.Exceptions;
 using MK.Common.Exceptions;
 using NUnit.Framework;
 
@@ -18,20 +19,25 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+
+            _knownAddressId = Guid.NewGuid();
+
             sut.AddPopularAddress(new PopularAddress
             {
-                Id = (_knownAddressId = Guid.NewGuid()),
+                Id = _knownAddressId,
                 Address = new Address
                 {
+                    Id = _knownAddressId,
                     FriendlyName = "La Boite à Jojo le barjo popular",
                     FullAddress = "1234 rue Saint-Denis",
                     Latitude = 45.515065,
                     Longitude = -73.558064
                 }
-            });
+            })
+            .Wait();
         }
 
-        private Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId;
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
@@ -79,11 +85,25 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddInvalidAddress()
+        public async Task AddInvalidAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            Assert.Throws<WebServiceException>(() => sut.AddPopularAddress(new PopularAddress()));
+            try
+            {
+                await sut.AddPopularAddress(new PopularAddress());
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+
+                return;
+            }
+            
+            Assert.Fail();
         }
 
         [Test]
@@ -140,11 +160,13 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void UpdateAddressWithInvalidData()
+        public async Task UpdateAddressWithInvalidData()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
 
-            var ex = Assert.Throws<WebServiceException>(() => sut.UpdatePopularAddress(new PopularAddress
+            try
+            {
+                await sut.UpdatePopularAddress(new PopularAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
@@ -158,9 +180,19 @@ namespace apcurium.MK.Web.Tests
                         Latitude = double.NaN,
                         Longitude = double.NaN
                     }
-                }));
+                });
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
 
-            Assert.AreEqual("InclusiveBetween", ex.Message);
+                return;
+            }
+
+            Assert.Fail();
         }
     }
 }

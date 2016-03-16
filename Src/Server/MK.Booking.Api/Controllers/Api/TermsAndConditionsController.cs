@@ -12,7 +12,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/termsandconditions")]
     public class TermsAndConditionsController : BaseApiController
     {
         public TermsAndConditionsService TermsAndConditionsService { get; }
@@ -21,7 +20,7 @@ namespace apcurium.MK.Web.Controllers.Api
             TermsAndConditionsService = new TermsAndConditionsService(companyDao, commandBus);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/termsandconditions")]
         public IHttpActionResult Get()
         {
             var isNotModified = TermsAndConditionsService.IsNotModified();
@@ -37,21 +36,20 @@ namespace apcurium.MK.Web.Controllers.Api
 
             if (currentVersion.HasValueTrimmed())
             {
-                httpResponse.Headers.ETag = new EntityTagHeaderValue(currentVersion);
+                httpResponse.Headers.ETag = new EntityTagHeaderValue("\""+currentVersion+"\"");
             }
-
 
             var result = TermsAndConditionsService.Get().ToJson();
             var content = new StringContent(result);
 
-            content.Headers.Add("Content-Type","application/json");
+            content.Headers.ContentType.MediaType = "application/json";
 
             httpResponse.Content = content;
 
             return ResponseMessage(httpResponse);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/v2/termsandconditions"),Auth(Role = RoleName.Admin)]
         public IHttpActionResult UpdateTerms([FromBody]TermsAndConditionsRequest request)
         {
             TermsAndConditionsService.Post(request);
@@ -59,7 +57,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpPost, Route("retrigger"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/v2/termsandconditions/retrigger"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult ForceTermsAndConditionTriggering()
         {
             TermsAndConditionsService.RetriggerTermsAndConditions();

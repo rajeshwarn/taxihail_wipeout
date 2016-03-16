@@ -44,9 +44,9 @@ namespace apcurium.MK.Booking.Api.Controllers
 
             }
 
-            if (requestUrl.Contains("settleoverduepayment"))
+            if (requestUrl.Contains("/payments/settleoverduepayment"))
             {
-                requestUrl = requestUrl.Replace("/settleoverduepayment", "/overduepayment/settleoverduepayment");
+                requestUrl = requestUrl.Replace("/payments/settleoverduepayment", "/accounts/settleoverduepayment");
             }
 
             if (requestUrl.Contains("account/"))

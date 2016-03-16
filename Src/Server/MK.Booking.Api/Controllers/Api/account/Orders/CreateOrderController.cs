@@ -17,7 +17,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/account/orders")]
     public class CreateOrderController : BaseApiController
     {
         public CreateOrderService CreateOrderService { get; }
@@ -62,7 +61,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
                 ibsCreateOrderService);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/accounts/orders")]
         public IHttpActionResult CreateOrder([FromBody]CreateOrderRequest request)
         {
             var result = CreateOrderService.Post(request);
@@ -70,7 +69,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("{orderId}/switchDispatchCompany")]
+        [HttpPost, Route("api/v2/accounts/orders/{orderId}/switchDispatchCompany")]
         public async Task<IHttpActionResult> SwitchOrderToNextDispatchCompany(Guid orderId, [FromBody] SwitchOrderToNextDispatchCompanyRequest request)
         {
             request.OrderId = orderId;
@@ -80,7 +79,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("{orderId}/ignoreDispatchCompanySwitch")]
+        [HttpPost, Route("api/v2/accounts/orders/{orderId}/ignoreDispatchCompanySwitch")]
         public IHttpActionResult IgnoreDispatchCompanySwitch(Guid orderId, [FromBody] IgnoreDispatchCompanySwitchRequest request)
         {
             request.OrderId = orderId;

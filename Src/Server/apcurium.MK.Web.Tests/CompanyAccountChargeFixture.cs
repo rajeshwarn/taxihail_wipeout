@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Http.Exceptions;
 using MK.Common.Exceptions;
 using NUnit.Framework;
 
@@ -58,7 +61,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void Add_Already_Existing_AccountCharge()
+        public async Task Add_Already_Existing_AccountCharge()
         {
             var request = new AccountChargeRequest
             {
@@ -74,15 +77,42 @@ namespace apcurium.MK.Web.Tests
                     }
                 }
             };
-            _sut.CreateAccountCharge(request);
+            await _sut.CreateAccountCharge(request);
 
-            Assert.Throws<WebServiceException>(() => _sut.CreateAccountCharge(request));
+            try
+            {
+                await _sut.CreateAccountCharge(request);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public void GetUnknownAccountCharge()
+        public async Task GetUnknownAccountCharge()
         {
-            Assert.Throws<WebServiceException>(() => _sut.GetAccountCharge("UNKNOWN"));
+            try
+            {
+                await _sut.GetAccountCharge("UNKNOWN");
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
@@ -103,10 +133,17 @@ namespace apcurium.MK.Web.Tests
                 }
             };
 
-            var account = await _sut.GetAccountCharge(request.AccountNumber);
-            if (account == null)
+            Booking.Api.Contract.Resources.AccountCharge account = null;
+
+            try
+            {
+                account = await _sut.GetAccountCharge(request.AccountNumber);;
+            }
+            catch
             {
                 await _sut.CreateAccountCharge(request);
+
+                account = await _sut.GetAccountCharge(request.AccountNumber);
             }
 
             request.Id = account.Id;
@@ -120,7 +157,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void DeleteAccountCharge()
+        public async Task DeleteAccountCharge()
         {
             var request = new AccountChargeRequest
             {
@@ -135,11 +172,25 @@ namespace apcurium.MK.Web.Tests
                     }
                 }
             };
-            _sut.CreateAccountCharge(request);
+            await _sut.CreateAccountCharge(request);
             
-            _sut.DeleteAccountCharge(request.AccountNumber);
+            await _sut.DeleteAccountCharge(request.AccountNumber);
 
-            Assert.Throws<WebServiceException>(() =>  _sut.GetAccountCharge(request.AccountNumber));
+            try
+            {
+                await _sut.GetAccountCharge(request.AccountNumber);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+
+                return;
+            }
+
+            Assert.Fail();
         }
     }
 }

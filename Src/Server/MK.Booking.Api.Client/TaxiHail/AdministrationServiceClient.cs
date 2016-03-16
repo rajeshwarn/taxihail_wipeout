@@ -97,10 +97,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.Post(req, appReq);
         }
 
-        public Task<string> CreateAccountCharge(AccountChargeRequest request)
+        public Task CreateAccountCharge(AccountChargeRequest request)
         {
             var req = "/admin/accountscharge";
-            return Client.Post(req, request).Deserialize<string>();
+            return Client.Post(req, request);
         }
 
         public Task<AccountCharge[]>  GetAccountsCharge()

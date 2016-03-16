@@ -14,7 +14,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin"), Auth(Role = RoleName.Admin)]
+    [Auth(Role = RoleName.Admin)]
     public class NotificationAdministrationController : BaseApiController
     {
         public NotificationAdministrationService NotificationAdministrationService { get; }
@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             NotificationAdministrationService = new NotificationAdministrationService(accountDao, deviceDao, notificationService, serverSettings, Logger);
         }
 
-        [HttpPost, Route("testemail/{emailAddress}")]
+        [HttpPost, Route("api/v2/admin/testemail/{emailAddress}")]
         public IHttpActionResult TestEmail(string emailAddress, [FromBody] TestEmailAdministrationRequest request)
         {
             request.EmailAddress = emailAddress;
@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpPost, Route("pushnotifications/{emailAddress}")]
+        [HttpPost, Route("api/v2/admin/pushnotifications/{emailAddress}")]
         public IHttpActionResult TestPushNotification(string emailAddress, [FromBody] PushNotificationAdministrationRequest request)
         {
             request.EmailAddress = emailAddress;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpGet, Route("testmail/templates")]
+        [HttpGet, Route("api/v2/admin/testmail/templates")]
         public IHttpActionResult GetEmailTemplateNames()
         {
             var result = NotificationAdministrationService.Get(new EmailTemplateNamesRequest());

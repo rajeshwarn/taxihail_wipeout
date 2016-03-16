@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Http.Exceptions
 {
