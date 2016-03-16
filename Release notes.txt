@@ -517,8 +517,103 @@
 	Bug fix - iOS - missing order number in Order status view and history
 
 
-
-
+4.3.0
+	Added setting to disable AMEX
+	Added creditcard id to manual pairing (for refund purposes)
+	DriverHasBailed function is missing, provide a javascript error
+	No amount in Refund Recipt
+	Extra 'tolls' line in receipt for Arro
+	Bug fix - Refund response OK-200 not received
+4.3.1
+	Android/iOS - Sign In with Twitter doesn't work
+	Fixed crash that might occurs in Logging when doing rollover
+	Bug fix for Status Stuck On Scheduled
+	Bug fix - Pay in car per market does not work
+	Standardize check for card on file at booking
+	Update charge types every time there's a modification in the account
+	Account Management Page - Order Detail - Create Summary of Order Details
+	Allow user to delete last credit card on file
+	No trip-end location on manual pairing resend receipt
+	Bug fix - Call driver, messsage driver buttons are available when in taxi
+	At app start up, the map will go to the last known position
+4.3.2
+	Fix random xib issue
+	Localization update
+4.3.3
+	Localization update
+	Bug fix - Updates when vehicleNumber is not the same as the previous one
+	Fix blackberry build
+4.3.4
+	Custom string fro arro
+	Android - Global notifications switch not tall enough
+	Fixed issue where refund button is not visible in all wanted case
+	Update Medallion When Bailed
+4.3.5
+	Remove non-Arro customization from project
+4.3.6
+	use order language for ibsstatusdescription instead of account language
+4.3.7
+	Fixed issue where pairing token was not correctly being checked
+	Now disabling the email textfieldview when we are in twitter or Facebook login.
+	Bugfix - TaxiHailNetwork - Company keys are been added twice in the Preference.CompanyKey in the database
+	Modified of the selection of candidates
+	Bug fix - Blacklist_loophole
+	Show popup when trying to connect/create/reset password while the device is not connected
+	Fixed UI issue with location details
+	Accessory even though picker is disabled
+	update to 2Go on TaxiHail project. Works on all platforms.
+	Fixed order export failure when city is null.
+	Fixed Null reference exception caused by wrong name for image
+	Web - Promotion code - Customer support - "if null" appears in the UI
+	Add Dutch to supported languages
+	Fix terms and conditions caps + add SOME missing values (only comments)
+	Fixed issue with crash on startup for iOS.
+	Prevent messages from being truncated on smaller screens
+4.3.8
+	Bug fix - Website - Address picker did not work
+	Added the settings Disable Mastercard, Disable Discover card
+	Fix issue when city and street don't have a trimmed value
+	Bug fix - Problem with login after connection was re-established
+	Bug fix - Notification sent although it was disabled
+	Fixed issue where the result of the cmt pairing request was wrong  + added more logging
+	Fixed null ref exception
+	Bug fix - Wrong price in history detail
+	Bug fix - Facebook login issues
+	Spanish string change
+4.3.9
+	TH network - Allow to view other markets region, add a new market and set region, update market's region
+	TH network - View region when changing market in network settings page for company
+	TH Network - Migrate region from network settings obejct to market
+	Fix for pairing speed and report a problem
+	fix null ref exception message when creating order using our api
+	Add error message when CC is disabled
+	Give more details to the setting
+	Added visa electron and mastercard icons
+	Added check so that CardNumberCell doesn't display the icon of a card not supported
+	Added check for Discover cards
+	Bug UI on add credit card page
+4.3.10
+	Always allow P2D 
+4.3.11
+	Wrong price in history
+	String corrections
+	Company setting - ShowOrderNumber default value set to false
+	Add missing localizations in iOS project
+	Fixed issue with charge account
+	Customer portal - Added the new status to the default and demo filters
+4.3.12
+	Fixed localizations strings
+4.3.13
+	Now setting the correct text when the order pairing details is set
+4.3.14
+	Bug fix - Fixed "Delete credit card" button
+	Manual pair orders do not show fare totals in order history in app
+	Added the total to the displayed string when Manual ride
+	Bug fix - Fix problem with add new card navigating to edit default card
+4.3.15
+	Bug fix - Web Export order CSV not woking Added check if null on Name, Phone and Email adress before using Trim()
+	Bug fix - Fixed charge account deletion.
+	Bug fix - iOS - missing order number in Order status view and history
 
 
 
