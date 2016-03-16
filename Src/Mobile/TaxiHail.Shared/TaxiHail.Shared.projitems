@@ -152,6 +152,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Message\CustomToast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\ConnectivityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Activities\DebugActivity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\MapboxExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\TouchableMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\CustomMarkerPopupAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />

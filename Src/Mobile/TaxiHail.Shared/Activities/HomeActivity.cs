@@ -471,7 +471,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             //Setup Map enabled state.
             set.Bind(_touchMap)
-                .For(v => v.IsMapGestuesEnabled)
+                .For(v => v.IsMapGesturesEnabled)
                 .To(vm => vm.CurrentViewState)
                 .WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq, HomeViewModelState.DropOffAddressSelection });
 

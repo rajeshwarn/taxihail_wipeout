@@ -15,10 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler<MotionEvent> Touched;
         public Action<bool, float> ZoomBy;
-        public Action<float, float> MoveBy;
+        public Action<float, float> ScrollBy;
         private bool _isGestuesEnabled;
 
-        public bool IsGestuesEnabled
+        public bool IsGesturesEnabled
         {
             get { return _isGestuesEnabled; }
             set
@@ -52,12 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _gestureDetector = new GestureDetector (Context, new GestureListener (this));
             _scaleDetector = new ScaleGestureDetector (Context, new ScaleListener (this));
 
-            IsGestuesEnabled = true;
+            IsGesturesEnabled = true;
         }
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            if (!IsGestuesEnabled)
+            if (!IsGesturesEnabled)
             {
                 // Map control disabled.
                 return true;
@@ -83,7 +83,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             public override bool OnScroll (MotionEvent firstDownMotionEvent, MotionEvent moveMotionEvent, float distanceX, float distanceY)
-            {
+			{
+				if (_view.ScrollBy == null)
+				{
+					return false;
+				}
+
                 if (firstDownMotionEvent.PointerCount > 1 || moveMotionEvent.PointerCount > 1)
                 {
                     // don't scroll if we have more than one finger
@@ -95,12 +100,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     return false;
                 }
 
-                _view.MoveBy.Invoke (distanceX, distanceY);
+                _view.ScrollBy.Invoke (distanceX, distanceY);
                 return true;
             }
 
             public override bool OnDoubleTap (MotionEvent e)
             {
+				if (_view.ZoomBy == null)
+				{
+					return false;
+				}
+
                 if (e.PointerCount > 1)
                 {
                     // Zooming out on double tap with multitouch
@@ -133,4 +143,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
     }
 }
-

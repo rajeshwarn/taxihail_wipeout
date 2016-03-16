@@ -19,7 +19,11 @@
         <category android:name="com.apcurium.MK.TaxiHailDemo" />
       </intent-filter>
     </receiver>
+    <!-- Mapbox -->
     <meta-data android:name="com.mapbox.AccessToken" android:value="pk.eyJ1IjoiZGV2dG9ueSIsImEiOiJjaWZ5OGJ0NXc0eWtxdXBrcXl2czF1eGY5In0.6qUEJWLnvqZ0_0Q6Xh2Gaw" />
+	<meta-data android:name="com.mapbox.TestEventsServer" android:value="https://cloudfront-staging.tilestream.net" />
+	<meta-data android:name="com.mapbox.TestEventsAccessToken" android:value="sk.eyJ1IjoiYmxlZWdlIiwiYSI6InNpcml1c2x5In0.KyT-boMyC_xZYTYojTc8zg" />
+	<service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
     <!-- PayPal & card.io -->
     <service android:name="com.paypal.android.sdk.payments.PayPalService" android:exported="false" />
     <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
