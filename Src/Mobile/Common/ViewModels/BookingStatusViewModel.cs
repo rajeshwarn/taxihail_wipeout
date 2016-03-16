@@ -428,7 +428,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			// We are in a new vehicle, clearing the previous one and starting anew.
 			if (TaxiLocation != null && TaxiLocation.VehicleNumber != medallion)
 			{
-				TaxiLocation == null;
+				TaxiLocation = null;
 
 				RaisePropertyChanged(() => TaxiLocation);
 			}
