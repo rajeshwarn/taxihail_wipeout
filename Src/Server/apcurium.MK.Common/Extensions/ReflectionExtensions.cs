@@ -105,12 +105,14 @@ namespace apcurium.MK.Common.Extensions
         /// <returns>The display name of the property or the native name if no Display attribute exists.</returns>
         public static string GetDisplayName(this MemberInfo propertyInfo)
         {
-            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
-            if (attr != null)
+            try
             {
-                return attr.Name;
+                return GetDisplayAttribute(propertyInfo, "Name");
             }
-            return propertyInfo.Name;
+            catch (Exception)
+            {
+                return propertyInfo.Name;
+            }
         }
 
         /// <summary>
@@ -135,12 +137,21 @@ namespace apcurium.MK.Common.Extensions
         /// <returns>The display name of the property or null.</returns>
         public static string GetDisplayDescription(this PropertyInfo propertyInfo)
         {
-            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
-            if (attr != null)
+            try
             {
-                return attr.Description;
+                return GetDisplayAttribute(propertyInfo, "Description");
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private static string GetDisplayAttribute(MemberInfo propertyInfo, string element)
+        {
+            var customAttributes = propertyInfo.GetCustomAttributes().FirstOrDefault(attribut => attribut.GetType().FullName == "System.ComponentModel.DataAnnotations.DisplayAttribute");
+            var result = (string) customAttributes.GetType().GetProperty(element).GetValue(customAttributes);
+            return result;
         }
     }
 }
