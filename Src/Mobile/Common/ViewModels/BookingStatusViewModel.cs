@@ -428,9 +428,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			// We are in a new vehicle, clearing the previous one and starting anew.
 			if (TaxiLocation != null && TaxiLocation.VehicleNumber != medallion)
 			{
+				// remove the taxi location
 				TaxiLocation = null;
 
-				RaisePropertyChanged(() => TaxiLocation);
+				// put back the nearby vehicles
+				_vehicleService.SetAvailableVehicle(true);
 			}
 
 			if (TaxiLocation == null)
