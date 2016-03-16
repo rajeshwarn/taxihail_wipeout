@@ -1,9 +1,10 @@
 ﻿
+using System.Collections.Generic;
+
 namespace CMTPayment
 {
     public static class CmtErrorCodes
     {
-        // TripInfo Codes
         public const int TripNotFound = 441;
 
         public const int UnableToPair = 103;
@@ -21,6 +22,24 @@ namespace CMTPayment
         public const int CardDeclined = 114;
 
         public const int PaymentProcessingError = 115;
-        // TripInfo Codes
+
+        /// <summary>
+        /// Errors that mean we should stop polling
+        /// </summary>
+        public static List<int> TerminalErrors
+        {
+            get
+            {
+                return new List<int>
+                {
+                    UnableToPair,
+                    CreditCardDeclinedOnPreauthorization,
+                    PairingTimedOut,
+                    UnablePreauthorizeCreditCard,
+                    TripEndedNoPairing,
+                    TripUnpaired
+                };
+            }
+        }
     }
 }
