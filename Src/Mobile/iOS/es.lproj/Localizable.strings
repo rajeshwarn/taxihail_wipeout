@@ -134,6 +134,8 @@
 "ServerInfo"="({0} v{1})";
 "CreditCardInvalidCrediCardTypeAmex"="Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Sorry, Visa, Mastercard and Visa Electron cards are not supported";
+"CreditCardInvalidCrediCardTypeDiscover"="Sorry, Discover cards are not supported";
 "RideSettingsCannotLoadListTitle"="Server error";
 "RideSettingsName"="Name";
 "RideSettingsPhone"="Mobile";
@@ -347,7 +349,6 @@
 "CreditCardZipCode"="Zip/Postal";
 "View_CreditCard"="Payment";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
-"CreditCardInstructionsForLuxury"="Please enter a credit card to continue the booking process";
 "CreditCardRemoveErrorTitle"="Cannot remove credit card";
 "CreditCardRemoveErrorMessage"="You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";

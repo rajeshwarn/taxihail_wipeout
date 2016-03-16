@@ -111,6 +111,8 @@
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "InvalidAddressTitle"="Invalid address";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron";
+"CreditCardInvalidCrediCardTypeDiscover"="Désolé, nous ne supportons pas les cartes Discover";
 "CreditCardLabel"="Label";
 "Now"="Now";
 "Date"="Date";
@@ -346,7 +348,6 @@
 "CreditCardZipCode"="Zip/Postal";
 "View_CreditCard"="Payment";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
-"CreditCardInstructionsForLuxury"="Please enter a credit card to continue the booking process";
 "CreditCardRemoveErrorTitle"="Cannot remove credit card";
 "CreditCardRemoveErrorMessage"="You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
