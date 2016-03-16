@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -36,7 +37,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void AddCreditCard()
+        public async Task AddCreditCard()
         {
             const string creditCardComapny = "visa";
             var creditCardId = Guid.NewGuid();
@@ -64,7 +65,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void UpdateCreditCard()
+        public async Task UpdateCreditCard()
         {
             var client = GetFakePaymentClient();
 
@@ -115,7 +116,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void RemoveCreditCard()
+        public async Task RemoveCreditCard()
         {
             var client = GetFakePaymentClient();
 

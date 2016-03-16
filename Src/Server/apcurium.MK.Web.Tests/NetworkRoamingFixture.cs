@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Cryptography;
 using NUnit.Framework;
 
@@ -30,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_getting_the_company_market()
+        public async Task when_getting_the_company_market()
         {
             var market = await _sut.GetHashedCompanyMarket(99.99, -99.99);
             
@@ -38,7 +39,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_getting_the_company_market_settings()
+        public async Task when_getting_the_company_market_settings()
         {
             var market = await _sut.GetCompanyMarketSettings(99.99, -99.99);
 
