@@ -7,7 +7,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/searchlocation")]
     public class SearchLocationController : BaseApiController
     {
         public SearchLocationsService SearchLocationsService { get; }
@@ -16,11 +15,16 @@ namespace apcurium.MK.Web.Controllers.Api
         {
             SearchLocationsService = new SearchLocationsService(addressClient, accountDao);
         }
-        
-        [HttpPost]
-        public async Task<IHttpActionResult> SearchLocation(SearchLocationsRequest request)
+
+        [HttpPost, Route("api/v2/searchlocation")]
+        public async Task<IHttpActionResult> SearchLocation([FromUri]string name, [FromUri]double? lat, [FromUri]double? lng)
         {
-            var result = await SearchLocationsService.Post(request);
+            var result = await SearchLocationsService.Post(new SearchLocationsRequest
+            {
+                Lat = lat,
+                Lng = lng,
+                Name = name
+            });
 
             return GenerateActionResult(result);
         }

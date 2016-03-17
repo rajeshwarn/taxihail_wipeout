@@ -9,8 +9,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-
-    [RoutePrefix("api/v2/admin/tariffs")]
     public class TariffController : BaseApiController
     {
         public TariffsService TariffsService { get; }
@@ -20,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             TariffsService = new TariffsService(tariffDao, commandBus);
         }
 
-        [HttpGet, Auth]
+        [HttpGet, Auth, Route("api/v2/admin/tariffs")]
         public IHttpActionResult GetTariffs()
         {
             var result = TariffsService.Get();
@@ -28,7 +26,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin)]
+        [HttpPost, Auth(Role = RoleName.Admin), Route("api/v2/admin/tariffs")]
         public IHttpActionResult CreateTariff([FromBody] Tariff request)
         {
             var result = TariffsService.Post(request);
@@ -36,7 +34,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Route("{id}"),Auth(Role = RoleName.Admin)]
+        [HttpPut, Route("api/v2/admin/tariffs/{id}"),Auth(Role = RoleName.Admin)]
         public IHttpActionResult UpdateTariff(Guid id,[FromBody] Tariff request)
         {
             request.Id = id;
@@ -46,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpDelete, Route("{id}"), Auth(Role = RoleName.Admin)]
+        [HttpDelete, Route("api/v2/admin/tariffs/{id}"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult DeleteTarrif(Guid id)
         {
             TariffsService.Delete(id);

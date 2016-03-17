@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (!request.Name.HasValueTrimmed())
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString(), "An error occurred");
             }
 
             var language = CultureInfo.CurrentUICulture.Name;

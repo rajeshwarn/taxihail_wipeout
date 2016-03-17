@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
@@ -140,11 +141,14 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void UpdateAddressWithInvalidData()
+        public async Task UpdateAddressWithInvalidData()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            var ex = Assert.Throws<AggregateException>(() => sut.UpdateFavoriteAddress(new SaveAddress
+
+            try
+            {
+                await sut.UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
@@ -156,10 +160,16 @@ namespace apcurium.MK.Web.Tests
                         Latitude = double.NaN,
                         Longitude = double.NaN
                     }
-                }).Wait());
+                });
+            }
+            catch (Exception ex)
+            {
+                Assert.IsAssignableFrom<AggregateException>(ex);
+                Assert.That(ex.InnerException != null);
+                Assert.AreEqual("InclusiveBetween", ex.InnerException.Message);
+            }
 
-            Assert.That(ex.InnerException != null);
-            Assert.AreEqual("InclusiveBetween", ex.InnerException.Message);
+            Assert.Fail();
         }
     }
 }
