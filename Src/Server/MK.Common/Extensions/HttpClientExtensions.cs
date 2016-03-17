@@ -118,7 +118,8 @@ namespace apcurium.MK.Common.Extensions
             await result.HandleResultInternal(onSuccess, onError, logger);
 
             var jsonContent = await result.Content.ReadAsStringAsync();
-            return jsonContent.FromJson<TResult>();
+
+            return jsonContent.FromJsonSafe<TResult>();
         }
 
         private static async Task HandleResultInternal(this HttpResponseMessage result, Action<HttpResponseMessage> onSuccess, Action<HttpResponseMessage> onError, ILogger logger)

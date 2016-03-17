@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
@@ -16,7 +17,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<string> GetHashedCompanyMarket(double latitude, double longitude)
+        public async Task<string> GetHashedCompanyMarket(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {
@@ -26,7 +27,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<string>("/roaming/market" + queryString, logger: Logger);
+            var market = await Client.GetAsync<string>("/roaming/market" + queryString, logger: Logger);
+
+            return market??string.Empty;
         }
 
         public Task<MarketSettings> GetCompanyMarketSettings(double latitude, double longitude)

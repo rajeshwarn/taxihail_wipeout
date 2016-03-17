@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -49,7 +50,17 @@ namespace apcurium.MK.Booking.Api.Services
 
         public IHttpActionResult GenerateActionResult<T>(T content)
         {
-            return Json(content, GetSerializerSettings());
+            if (content != null)
+            {
+                return Json(content, GetSerializerSettings());
+            }
+
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(string.Empty, Encoding.Default, "application/json")
+            };
+
+            return ResponseMessage(httpResponseMessage);
         }
 
         protected void PrepareApiServices(params BaseApiService[] targets)
