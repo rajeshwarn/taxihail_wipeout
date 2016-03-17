@@ -324,30 +324,28 @@ namespace apcurium.MK.Booking.Services.Impl
                         return new CommitPreauthorizedPaymentResponse
                         {
                             IsSuccessful = true,
-                            AuthorizationCode = authorizationCode,
-                            Message = authResponse.ResponseMessage,
+                            AuthorizationCode = "NoAuthCodeReturnedFromCmtRideLinqAuthorize",
+                            Message = "Success",
                             TransactionId = commitTransactionId,
-                            TransactionDate = (DateTime?)authResponse.AuthorizationDate
+                            TransactionDate = DateTime.UtcNow
                         };
                     }
-                    else
-                    {
-                        var responseText = string.Empty;
-                        if (response != null)
-                        {
-                            using (var reader = new System.IO.StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                            {
-                                responseText = reader.ReadToEnd();
-                            }
-                        }
-                        _logger.LogMessage("Response was: {0}", responseText);
 
-                        return new CommitPreauthorizedPaymentResponse
+                    var responseText = string.Empty;
+                    if (response != null)
+                    {
+                        using (var reader = new System.IO.StreamReader(response.GetResponseStream(), Encoding.UTF8))
                         {
-                            IsSuccessful = false,
-                            TransactionId = transactionId
-                        };
+                            responseText = reader.ReadToEnd();
+                        }
                     }
+                    _logger.LogMessage("Response was: {0}", responseText);
+
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        TransactionId = transactionId
+                    };
                 }
                 else
                 {
