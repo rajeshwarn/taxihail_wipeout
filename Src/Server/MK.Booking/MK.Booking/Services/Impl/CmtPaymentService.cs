@@ -317,11 +317,12 @@ namespace apcurium.MK.Booking.Services.Impl
                         CofToken = creditCard.Token
                     };
 
-                    _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Request: {0}", request.ToJson());
+                    var requestUrl = string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken);
+                    _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Url: {0}", requestUrl);
 
                     try
                     {
-                        var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken), request);
+                        var response = _cmtMobileServiceClient.Post(requestUrl, request);
                         if (response != null && response.StatusCode == HttpStatusCode.OK)
                         {
                             _logger.LogMessage("Call to CMT RideLinq authorize succeeded");
