@@ -9,7 +9,6 @@ using CustomerPortal.Client.Impl;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/account/orders/validate")]
     public class ValidateOrderController : BaseApiController
     {
         public ValidateOrderService ValidateOrderService { get;  }
@@ -23,7 +22,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             ValidateOrderService = new ValidateOrderService(serverSettings, ibsServiceProvider, ruleCalculator, taxiHailNetworkServiceClient);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/accounts/orders/validate")]
         public async Task<IHttpActionResult> ValidateOrder([FromBody]ValidateOrderRequest request)
         {
             var result  = await ValidateOrderService.Post(request);
@@ -31,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("{forError}")]
+        [HttpPost, Route("api/v2/accounts/orders/validate/{forError}")]
         public Task<IHttpActionResult> ValidateOrderForError(bool forError, [FromBody] ValidateOrderRequest request)
         {
             request.ForError = forError;
@@ -39,7 +38,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return ValidateOrder(request);
         }
 
-        [HttpPost, Route("{forError}/{testZone}")]
+        [HttpPost, Route("api/v2/accounts/orders/validate/{forError}/{testZone}")]
         public Task<IHttpActionResult> ValidateOrderForError(bool forError, string testZone, [FromBody] ValidateOrderRequest request)
         {
             request.ForError = forError;

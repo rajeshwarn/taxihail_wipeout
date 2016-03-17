@@ -62,9 +62,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
         }
 
         [HttpPost, Route("api/v2/accounts/orders")]
-        public IHttpActionResult CreateOrder([FromBody]CreateOrderRequest request)
+        public async Task<IHttpActionResult> CreateOrder([FromBody]CreateOrderRequest request)
         {
-            var result = CreateOrderService.Post(request);
+            var result = await CreateOrderService.Post(request);
 
             return GenerateActionResult(result);
         }

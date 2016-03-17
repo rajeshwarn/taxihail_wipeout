@@ -23,22 +23,23 @@ namespace apcurium.MK.Web.Tests
             CreateAndAuthenticateTestAdminAccount().Wait();
 
             var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            DeleteAllRules(sut);
+            DeleteAllRules(sut).Wait();
             sut.CreateRule(new Rule
-            {
-                Id = (_knownRuleId = Guid.NewGuid()),
-                Type = RuleType.Recurring,
-                Category = RuleCategory.DisableRule,
-                DaysOfTheWeek = DayOfTheWeek.Sunday,
-                StartTime = DateTime.MinValue.AddHours(2),
-                EndTime = DateTime.MinValue.AddHours(3),
-                ActiveFrom = DateTime.Now.AddDays(1),
-                ActiveTo = DateTime.Now.AddDays(2),
-                IsActive = true,
-                Name = "Rate " + Guid.NewGuid(),
-                Message = "Due to...",
-                Priority = new Random().Next()
-            });
+                {
+                    Id = (_knownRuleId = Guid.NewGuid()),
+                    Type = RuleType.Recurring,
+                    Category = RuleCategory.DisableRule,
+                    DaysOfTheWeek = DayOfTheWeek.Sunday,
+                    StartTime = DateTime.MinValue.AddHours(2),
+                    EndTime = DateTime.MinValue.AddHours(3),
+                    ActiveFrom = DateTime.Now.AddDays(1),
+                    ActiveTo = DateTime.Now.AddDays(2),
+                    IsActive = true,
+                    Name = "Rate " + Guid.NewGuid(),
+                    Message = "Due to...",
+                    Priority = new Random().Next()
+                })
+                .Wait();
         }
 
         private Guid _knownRuleId;
@@ -53,7 +54,7 @@ namespace apcurium.MK.Web.Tests
         public override void TestFixtureTearDown()
         {
 			var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-			DeleteAllRules(sut);
+			DeleteAllRules(sut).Wait();
 
             base.TestFixtureTearDown();
         }
@@ -171,9 +172,9 @@ namespace apcurium.MK.Web.Tests
             {
                 await sut.CreateOrder(order);
             }
-            catch (WebServiceException wEx)
+            catch (WebServiceException ex)
             {
-                return wEx.ErrorMessage;
+                return ex.ErrorMessage;
             }
             catch (Exception ex)
             {
@@ -183,7 +184,7 @@ namespace apcurium.MK.Web.Tests
             return null;
         }
 
-        private Rule CreateRule(Action<Rule> update)
+        private async Task<Rule> CreateRule(Action<Rule> update)
         {
             var ruleId = Guid.NewGuid();
             var name = "TestRule" + Guid.NewGuid();
@@ -208,7 +209,7 @@ namespace apcurium.MK.Web.Tests
                 update(newRule);
             }
 
-            rules.CreateRule(newRule);
+            await rules.CreateRule(newRule);
 
             return newRule;
         }
@@ -286,7 +287,7 @@ namespace apcurium.MK.Web.Tests
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int) activeFromDateRef.DayOfWeek;
 
-            var rule1 = CreateRule(r =>
+            var rule1 = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Recurring;
@@ -300,14 +301,14 @@ namespace apcurium.MK.Web.Tests
                 r.EndTime = activeFromDateRef.AddHours(1);
             });
             
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 3;
             });
 
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Date;
@@ -385,7 +386,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async Task TestDefaultRule_Disable_NoZone()
         {
-            var rule = CreateRule(r =>
+            var rule = await CreateRule(r =>
             {
                 r.Category = RuleCategory.DisableRule;
                 r.Type = RuleType.Default;
@@ -401,21 +402,21 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async Task TestDefaultRule_Priority_NoZone()
         {
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 2;
             });
 
-            var rule2 = CreateRule(r =>
+            var rule2 = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 1;
             });
 
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -430,7 +431,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_SimpleNoZone_With_Rule_Zone()
         {
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -446,7 +447,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async Task TestDefaultRule_ValidZone_With_Rule_ZoneRequired()
         {
-            var rule = CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -463,7 +464,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async Task TestDefaultRule_NoZone_With_Rule_ZoneRequired()
         {
-            var rule = CreateRule(r =>
+            var rule = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -485,7 +486,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async Task TestDefaultRule_NoZoneonDropoff_With_Rule_ZoneRequired()
         {
-            var rule = CreateRule(r =>
+            var rule = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -508,7 +509,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_Simple_Zone()
         {
-            var rule1 = CreateRule(r =>
+            var rule1 = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -525,7 +526,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_Simple_Zone_Dropoff()
         {
-            var rule1 = CreateRule(r =>
+            var rule1 = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -543,7 +544,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_Warning_Current_NoApplied()
         {
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.AppliesToCurrentBooking = false;
 
@@ -559,7 +560,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_Warning_Futuret_NoApplied()
         {
-            CreateRule(r =>
+            await CreateRule(r =>
             {
                 r.AppliesToCurrentBooking = true;
                 r.AppliesToFutureBooking = false;
@@ -575,7 +576,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void TestDefaultRule_Warning_NoZone()
         {
-            var rule = CreateRule(r =>
+            var rule = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
@@ -597,7 +598,7 @@ namespace apcurium.MK.Web.Tests
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int) activeFromDateRef.DayOfWeek;
 
-            var rule1 = CreateRule(r =>
+            var rule1 = await CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Recurring;
@@ -626,7 +627,7 @@ namespace apcurium.MK.Web.Tests
             var mess = "ReccurencyRuleTestMessage";
             var dayOfTheWeek = 1 << (int) DateTime.Now.DayOfWeek;
             var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            rules.CreateRule(new Rule
+            await rules.CreateRule(new Rule
             {
                 Id = ruleId,
                 Name = name,
@@ -679,7 +680,7 @@ namespace apcurium.MK.Web.Tests
             var mess = "ReccurencyRuleTestMessage";
             var dayOfTheWeek = 1 << (int)DateTime.Now.DayOfWeek;
             var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
-            rules.CreateRule(new Rule
+            await rules.CreateRule(new Rule
             {
                 Id = ruleId,
                 Name = name,

@@ -740,8 +740,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private void ThrowAndLogException(CreateReportOrder createReportOrder, ErrorCode errorCodeType, string errorMessage = null)
         {
-            var createOrderException = new HttpException((int)HttpStatusCode.BadRequest, errorCodeType.ToString()/*, errorMessage*/);
-
+            var createOrderException = GenerateException(HttpStatusCode.BadRequest, errorCodeType.ToString(), errorMessage);
+            
             createReportOrder.Error = createOrderException.ToString();
             _commandBus.Send(createReportOrder);
 

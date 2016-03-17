@@ -40,12 +40,26 @@ namespace MK.Common.Exceptions
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
+            get
+            {
+                if (_errorMessage == null)
+                {
+                    ParseResponseDto();
+                }
+                return _errorMessage;
+            }
         }
 
         public string ServerStackTrace
         {
-            get { return _serverStackTrace; }
+            get
+            {
+                if (_serverStackTrace == null)
+                {
+                    ParseResponseDto();
+                }
+                return _serverStackTrace;
+            }
         }
 
         private void ParseResponseDto()
@@ -66,9 +80,9 @@ namespace MK.Common.Exceptions
                 return;
             }
             
-            rsMap.TryGetValue("ErrorCode", out _errorCode);
-            rsMap.TryGetValue("Message", out _errorMessage);
-            rsMap.TryGetValue("StackTrace", out _serverStackTrace);
+            rsMap.TryGetValue("errorCode", out _errorCode);
+            rsMap.TryGetValue("message", out _errorMessage);
+            rsMap.TryGetValue("stackTrace", out _serverStackTrace);
         }
 
         private bool TryGetResponseStatusFromResponseDto(out string responseStatus)

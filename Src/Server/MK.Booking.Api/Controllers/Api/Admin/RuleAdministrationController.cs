@@ -9,7 +9,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin/rules")]
     public class RuleAdministrationController : BaseApiController
     {
         public RuleActivateService RuleActivateService { get; }
@@ -23,7 +22,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             RulesService = new RulesService(ruleDao, commandBus);
         }
 
-        [HttpPost, Route("{ruleId}/activate"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/v2/admin/rules/{ruleId}/activate"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult ActivateRule(Guid ruleId)
         {
             var result = RuleActivateService.Post(new RuleActivateRequest() {RuleId = ruleId});
@@ -31,14 +30,14 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("{ruleId}/deactivate"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/v2/admin/rules/{ruleId}/deactivate"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult DeactivateRule(Guid ruleId)
         {
             var result = RuleDeactivateService.Post(new RuleDeactivateRequest() {RuleId = ruleId});
 
             return GenerateActionResult(result);
         }
-        [HttpGet, Auth]
+        [HttpGet, Auth, Route("api/v2/admin/rules")]
         public IHttpActionResult GetRules()
         {
             var result = RulesService.Get();
@@ -46,16 +45,16 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin)]
-        public IHttpActionResult CreateRule(RuleRequest request)
+        [HttpPost, Auth(Role = RoleName.Admin), Route("api/v2/admin/rules")]
+        public IHttpActionResult CreateRule([FromBody]RuleRequest request)
         {
             var result = RulesService.Post(request);
 
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("{id}")]
-        public IHttpActionResult UpdateRule(Guid ruleId, RuleRequest request)
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/rules/{ruleId}")]
+        public IHttpActionResult UpdateRule(Guid ruleId, [FromBody]RuleRequest request)
         {
             request.Id = ruleId;
 
@@ -64,7 +63,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpDelete, Auth(Role = RoleName.Admin), Route("{id}")]
+        [HttpDelete, Auth(Role = RoleName.Admin), Route("api/v2/admin/rules/{ruleId}")]
         public IHttpActionResult DeleteRule(Guid ruleId)
         {
             RulesService.Delete(ruleId);
