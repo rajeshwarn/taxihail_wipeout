@@ -305,6 +305,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    InitializeServiceClient();
+
                     var pairingToken = orderDetail.IsManualRideLinq
                         ? _orderDao.GetManualRideLinqById(orderId).PairingToken
                         : _orderDao.FindOrderPairingById(orderId).PairingToken;
@@ -317,34 +319,38 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Request: {0}", request.ToJson());
 
-                    var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken), request);
-                   
-                    if (response != null && response.StatusCode == HttpStatusCode.OK)
+                    try
                     {
-                        return new CommitPreauthorizedPaymentResponse
+                        var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken), request);
+                        if (response != null && response.StatusCode == HttpStatusCode.OK)
                         {
-                            IsSuccessful = true,
-                            AuthorizationCode = "NoAuthCodeReturnedFromCmtRideLinqAuthorize",
-                            Message = "Success",
-                            TransactionId = commitTransactionId,
-                            TransactionDate = DateTime.UtcNow
-                        };
-                    }
-
-                    var responseText = string.Empty;
-                    if (response != null)
-                    {
-                        using (var reader = new System.IO.StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                        {
-                            responseText = reader.ReadToEnd();
+                            _logger.LogMessage("Call to CMT RideLinq authorize succeeded");
+                            return new CommitPreauthorizedPaymentResponse
+                            {
+                                IsSuccessful = true,
+                                AuthorizationCode = "NoAuthCodeReturnedFromCmtRideLinqAuthorize",
+                                Message = "Success",
+                                TransactionId = commitTransactionId,
+                                TransactionDate = DateTime.UtcNow
+                            };
                         }
                     }
-                    _logger.LogMessage("Response was: {0}", responseText);
+                    catch (WebServiceException ex)
+                    {
+                        _logger.LogMessage("Response: {0}", ex.ResponseBody);
+
+                        return new CommitPreauthorizedPaymentResponse
+                        {
+                            IsSuccessful = false,
+                            TransactionId = commitTransactionId,
+                            Message = ex.ResponseBody
+                        };
+                    }
 
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
-                        TransactionId = transactionId
+                        TransactionId = commitTransactionId
                     };
                 }
                 else
