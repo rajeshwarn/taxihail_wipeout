@@ -241,8 +241,8 @@ namespace apcurium.MK.Booking.Jobs
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
             if (tripInfo != null
-                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
-                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
+                && tripInfo.ErrorCode.HasValue
+                && CmtErrorCodes.TerminalErrors.Contains(tripInfo.ErrorCode.Value))
             {
                 orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
                 orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
@@ -1141,7 +1141,10 @@ namespace apcurium.MK.Booking.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null || pairingInfo.WasUnpaired)
             {
-                _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
+                _logger.LogMessage(
+                    pairingInfo == null
+                        ? "Order {0}: No pairing to process as no pairing information was found."
+                        : "Order {0}: Order was unpaired, so no pairing to process.", orderStatusDetail.OrderId);
                 return;
             }
 

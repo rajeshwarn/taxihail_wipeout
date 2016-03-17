@@ -99,8 +99,11 @@ namespace CMTPayment
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
-				if (trip != null && trip.HttpStatusCode == (int)HttpStatusCode.BadRequest && (trip.ErrorCode == CmtErrorCodes.UnableToPair || trip.ErrorCode == CmtErrorCodes.CreditCardDeclinedOnPreauthorization || trip.ErrorCode == CmtErrorCodes.UnablePreauthorizeCreditCard))
+                if (trip != null 
+                    && trip.HttpStatusCode == (int)HttpStatusCode.BadRequest 
+                    && CmtErrorCodes.TerminalErrors.Contains(trip.ErrorCode.Value))
 				{
+                    // stop polling because we hit a terminal error
 					return trip;
 				}
 
@@ -128,6 +131,7 @@ namespace CMTPayment
                 }
             }
 
+            // return the trip because it's valid (no error code)
             return trip;
         }
 
