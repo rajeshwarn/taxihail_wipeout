@@ -100,12 +100,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
                          && VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId))
                      .OrderByDescending(order => order.PickupDate)
                      .ToList();
-
-                 // remove junk orders (unfinished and with pickup date more than 2 days ago)
-                 activeOrders = activeOrders
-                     .Where(x => x.PickupDate >= DateTime.Now.AddDays(-2))
-                     .ToList();
-
+                
+                // remove junk orders (unfinished and with pickup date more than 2 days ago)
+                activeOrders = activeOrders
+                    .Where(x => x.PickupDate >= DateTime.Now.AddDays(-2))
+                    .ToList();
+                
                 return activeOrders.SingleOrDefault();
             }
         }
