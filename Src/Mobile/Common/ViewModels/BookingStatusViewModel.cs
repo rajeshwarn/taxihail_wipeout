@@ -430,9 +430,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				// remove the taxi location
 				TaxiLocation = null;
-
-				// put back the nearby vehicles
-				_vehicleService.SetAvailableVehicle(true);
 			}
 
 			if (TaxiLocation == null)
@@ -1142,6 +1139,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
+
+					// put back the nearby vehicles
+					_vehicleService.SetAvailableVehicle(true);
 				}
 
 				if (VehicleStatuses.CancelStatuses.Any(cancelledStatus => cancelledStatus.Equals(status.IBSStatusId)))
