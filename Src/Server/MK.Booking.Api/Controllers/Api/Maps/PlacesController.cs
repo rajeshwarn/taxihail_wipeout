@@ -8,7 +8,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
-    [RoutePrefix("api/v2/places")]
     public class PlacesController : BaseApiController
     {
         public NearbyPlacesService NearbyPlacesService { get; }
@@ -20,7 +19,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             PlaceDetailService = new PlaceDetailService(client);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/places")]
         public IHttpActionResult GetNearbyPlace([FromUri] NearbyPlacesRequest request)
         {
             var result = NearbyPlacesService.Get(request);
@@ -28,7 +27,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("detail")]
+        [HttpGet, Route("api/v2/places/detail")]
         public async Task<IHttpActionResult> GetPlaceDetail([FromUri] PlaceDetailRequest request)
         {
             var result = await PlaceDetailService.Get(request);

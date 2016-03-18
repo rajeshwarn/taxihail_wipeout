@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -196,7 +197,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_creating_order_without_passing_settings()
+        public async Task when_creating_order_without_passing_settings()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
@@ -217,8 +218,23 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
-            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
-            Assert.AreEqual("CreateOrder_SettingsRequired", ex.ErrorMessage);
+            try
+            {
+                await sut.CreateOrder(order);
+            }
+            catch (Exception exception)
+            {
+                var ex = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw exception;
+                });
+
+                Assert.AreEqual("CreateOrder_SettingsRequired", ex.ErrorCode);
+                return;
+            }
+
+            Assert.Fail();
+            
         }
 
         [Test]

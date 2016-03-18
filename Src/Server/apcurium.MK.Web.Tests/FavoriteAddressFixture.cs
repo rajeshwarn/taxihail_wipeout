@@ -145,7 +145,6 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-
             try
             {
                 await sut.UpdateFavoriteAddress(new SaveAddress
@@ -162,11 +161,14 @@ namespace apcurium.MK.Web.Tests
                     }
                 });
             }
+            catch (WebServiceException ex)
+            {
+                Assert.AreEqual("InclusiveBetween", ex.ErrorCode);
+                return;
+            }
             catch (Exception ex)
             {
-                Assert.IsAssignableFrom<AggregateException>(ex);
-                Assert.That(ex.InnerException != null);
-                Assert.AreEqual("InclusiveBetween", ex.InnerException.Message);
+                Assert.IsAssignableFrom<WebServiceException>(ex);
             }
 
             Assert.Fail();

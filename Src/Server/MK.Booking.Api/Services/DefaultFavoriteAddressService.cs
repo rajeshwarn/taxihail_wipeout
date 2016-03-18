@@ -1,9 +1,11 @@
 ﻿#region
 
 using System;
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
 
@@ -21,8 +23,6 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        //TODO MKTAXI-3918
-        //public IValidator<DefaultFavoriteAddress> Validator { get; set; }
         protected IDefaultAddressDao Dao { get; set; }
 
         public DefaultFavoriteAddressResponse Get()
