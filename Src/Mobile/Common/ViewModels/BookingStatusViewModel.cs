@@ -613,7 +613,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				return Settings.ShowCallDriver 
+				return _showCallDriver
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
