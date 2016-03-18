@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +27,6 @@ namespace apcurium.MK.Booking.Api.Controllers
             if (requestUrl.Contains("api/v2/encryptedsettings"))
             {
                 requestUrl = requestUrl.Replace("encryptedsettings", "settings/encrypted");
-
             }
 
             if (requestUrl.Contains("account/manualridelinq") && (requestUrl.EndsWith("/status") || requestUrl.EndsWith("/unpair") || requestUrl.EndsWith("/pair")))
@@ -44,36 +39,19 @@ namespace apcurium.MK.Booking.Api.Controllers
 
             }
 
-            if (requestUrl.Contains("/payments/settleoverduepayment"))
-            {
-                requestUrl = requestUrl.Replace("/payments/settleoverduepayment", "/accounts/settleoverduepayment");
-            }
-
-            if (requestUrl.Contains("account/"))
-            {
-                requestUrl = requestUrl.Replace("account/", "accounts/");
-            }
-
-            if (requestUrl.Contains("creditCard/"))
-            {
-                requestUrl = requestUrl.Replace("creditCard/", "creditCards/");
-            }
-
-            if (requestUrl.Contains("/ordercountforapprating"))
-            {
-                requestUrl = requestUrl.Replace("/ordercountforapprating", "/orders/countforapprating");
-            }
+            requestUrl = requestUrl
+                    .Replace("account/grantadmin", "admin/grantadmin")
+                    .Replace("account/grantsupport", "admin/grantsupport")
+                    .Replace("account/grantsuperadmin", "admin/grantsuperadmin")
+                    .Replace("account/revokeaccess", "admin/revokeaccess")
+                    .Replace("/payments/settleoverduepayment", "/accounts/settleoverduepayment")
+                    .Replace("account/", "accounts/")
+                    .Replace("creditCard/", "creditCards/")
+                    .Replace("/ordercountforapprating", "/orders/countforapprating");
 
             request.RequestUri = new Uri(requestUrl);
 
-            var responseMessage = await base.SendAsync(request, cancellationToken);
-
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                return responseMessage;
-            }
-
-            return responseMessage;
+            return await base.SendAsync(request, cancellationToken);
         }
 
     }
