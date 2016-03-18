@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Cirrious.CrossCore;
@@ -150,10 +149,17 @@ namespace apcurium.MK.Common.Extensions
             }
         }
 
-        private static string GetDisplayAttribute(MemberInfo propertyInfo, string element)
+        private static string GetDisplayAttribute(PropertyInfo propertyInfo, string element)
         {
             var customAttributes = propertyInfo.GetCustomAttributes().FirstOrDefault(attribut => attribut.GetType().FullName == "System.ComponentModel.DataAnnotations.DisplayAttribute");
             var result = (string) customAttributes.GetType().GetProperty(element).GetValue(customAttributes);
+            return result;
+        }
+
+        private static string GetDisplayAttribute(MemberInfo memberInfo, string element)
+        {
+            var customAttributes = memberInfo.GetCustomAttributes().FirstOrDefault(attribut => attribut.GetType().FullName == "System.ComponentModel.DataAnnotations.DisplayAttribute");
+            var result = (string)customAttributes.GetType().GetProperty(element).GetValue(customAttributes);
             return result;
         }
     }
