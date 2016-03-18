@@ -115,6 +115,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                             if (overduePaymentResult.IsSuccessful)
                             {
+								_deviceCollectorService.GenerateNewSessionIdAndCollect();
+
                                 // Fire and forget to update creditcard cache, we do not need to wait for this.
                                 Task.Run(() => _accountService.GetDefaultCreditCard()).FireAndForget();
 
