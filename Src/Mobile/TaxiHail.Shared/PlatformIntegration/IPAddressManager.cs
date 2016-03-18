@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 foreach(var netInterfaceInfo in netInterfaceInfos)
                 {
-                    var ip = netInterfaceInfo.Value.ToString();
+                    var ip = netInterfaceInfo.Value;
                     if(ip.HasValue())
                     {
                         return ip;
@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public IDictionary<string,IPAddress> GetIPAddresses()
+        public IDictionary<string,string> GetIPAddresses()
         {
             var allAddresses = Dns.GetHostAddresses(Dns.GetHostName());
 

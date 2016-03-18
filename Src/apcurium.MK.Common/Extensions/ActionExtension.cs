@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-
-#endregion
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -32,7 +28,7 @@ namespace apcurium.MK.Common.Extensions
                 catch (Exception ex)
                 {
                     exceptions.Add(ex);
-                    Thread.Sleep(retryInterval);
+                    Task.Delay(retryInterval).Wait();
                 }
             }
 
@@ -56,13 +52,13 @@ namespace apcurium.MK.Common.Extensions
                     else
                     {
                         exceptions.Add(new Exception("Method returned false"));
-                        Thread.Sleep(retryInterval);
+                        Task.Delay(retryInterval).Wait();
                     }
                 }
                 catch (Exception ex)
                 {
                     exceptions.Add(ex);
-                    Thread.Sleep(retryInterval);
+                    Task.Delay(retryInterval).Wait();
                 }
             }
 

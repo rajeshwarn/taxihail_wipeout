@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Reflection;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Common.Extensions
 {

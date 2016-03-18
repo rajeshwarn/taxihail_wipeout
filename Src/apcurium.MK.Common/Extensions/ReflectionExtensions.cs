@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -92,9 +93,9 @@ namespace apcurium.MK.Common.Extensions
         /// <returns>True if the type is user defined; false otherwise.</returns>
         public static bool IsUserDefinedClass(this Type type)
         {
-            return type.IsClass
-                   && !type.IsPrimitive
-                   && !type.IsEnum
+            return type.GetTypeInfo().IsClass
+                   && !type.GetTypeInfo().IsPrimitive
+                   && !type.GetTypeInfo().IsEnum
                    && !type.FullName.StartsWith("System.");
         }
 
@@ -122,12 +123,14 @@ namespace apcurium.MK.Common.Extensions
         /// <returns>The display short name of the property or null.</returns>
         public static string GetDisplayShortName(this MemberInfo fieldInfo)
         {
-            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DisplayAttribute));
-            if (attr != null)
+            try
             {
-                return attr.ShortName;
+                return GetDisplayAttribute(fieldInfo, "ShortName");
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
