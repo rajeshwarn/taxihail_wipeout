@@ -328,7 +328,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
 
                     var requestUrl = string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken);
-                    _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Url: {0}", requestUrl);
+                    _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Url: {0} Request {1}", requestUrl, request.ToJson());
 
                     try
                     {
@@ -348,7 +348,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                     catch (WebServiceException ex)
                     {
-                        _logger.LogMessage("Response: {0}", ex.ResponseBody);
+                        _logger.LogMessage("Response: {0} {1} (Body: {2})", ex.StatusCode, ex.StatusDescription, ex.ResponseBody);
 
                         return new CommitPreauthorizedPaymentResponse
                         {
