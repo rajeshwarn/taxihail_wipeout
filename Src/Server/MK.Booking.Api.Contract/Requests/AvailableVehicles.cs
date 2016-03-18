@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceHost;
 
@@ -14,11 +15,13 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         /// <summary>
         /// Current user latitude
         /// </summary>
+        [Range(-90d, 90d)]
         public double Latitude { get; set; }
 
         /// <summary>
         /// Current user longitude
         /// </summary>
+        [Range(-180d, 180d)]
         public double Longitude { get; set; }
 
         /// <summary>

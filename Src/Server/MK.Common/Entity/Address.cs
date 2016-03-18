@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace apcurium.MK.Common.Entity
         public Guid Id { get; set; }
 
         public string PlaceId { get; set; }
-
+        [Required]
         public string FriendlyName { get; set; }
 
         public string StreetNumber { get; set; }
@@ -26,11 +27,11 @@ namespace apcurium.MK.Common.Entity
         public string ZipCode { get; set; }
 
         public string State { get; set; }
-
+        [Required]
         public string FullAddress { get; set; }
-
+        [Range(-180d, 180d)]
         public double Longitude { get; set; }
-
+        [Range(-90d, 90d)]
         public double Latitude { get; set; }
 
         public string Apartment { get; set; }
