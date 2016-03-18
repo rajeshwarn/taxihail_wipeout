@@ -154,11 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Api\account\AccountController.cs" />
-    <Compile Include="Controllers\Api\account\AccountOrderController.cs" />
     <Compile Include="Controllers\Api\account\AddressController.cs" />
     <Compile Include="Controllers\Api\account\CreditCardController.cs" />
     <Compile Include="Controllers\Api\account\ManualRideLinqController.cs" />
-    <Compile Include="Controllers\Api\account\Orders\CreateOrderController.cs" />
     <Compile Include="Controllers\Api\account\Orders\HailController.cs" />
     <Compile Include="Controllers\Api\account\Orders\OrderController.cs" />
     <Compile Include="Controllers\Api\account\Orders\OrderPairingController.cs" />

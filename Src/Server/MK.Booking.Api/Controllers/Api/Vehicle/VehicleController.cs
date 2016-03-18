@@ -19,10 +19,10 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
-    [RoutePrefix("api/v2")]
     public class VehicleController : BaseApiController
     {
         public VehicleService VehicleService { get; }
+
         public VehicleController(
             IIBSServiceProvider ibsServiceProvider,
             IVehicleTypeDao dao,
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             VehicleService = new VehicleService(ibsServiceProvider, dao, commandBus, referenceDataService, taxiHailNetworkServiceClient, serverSettings, logger, orderDao );
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/vehicles")]
         public async Task<IHttpActionResult> AvailableVehicles([FromBody]AvailableVehicles request)
         {
             var result = await VehicleService.Post(request);
@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth,Route("admin/vehicletypes/{id:Guid?}")]
+        [HttpGet, Auth, Route("api/v2/admin/vehicletypes/{id:Guid?}")]
         public IHttpActionResult GetVehicleType(Guid? id)
         {
             var result = VehicleService.Get(id ?? Guid.Empty);
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin), Route("admin/vehicletypes")]
+        [HttpPost, Auth(Role = RoleName.Admin), Route("api/v2/admin/vehicletypes")]
         public IHttpActionResult CreateVehicleType([FromBody]VehicleTypeRequest request)
         {
             var result = VehicleService.Post(request);
@@ -60,7 +60,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("admin/vehicletypes")]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/vehicletypes")]
         public IHttpActionResult UpdateVehicleType([FromBody]VehicleTypeRequest request)
         {
             var result = VehicleService.Put(request);
@@ -68,7 +68,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Auth(Role = RoleName.Admin), Route("admin/vehicletypes/{id}")]
+        [HttpDelete, Auth(Role = RoleName.Admin), Route("api/v2/admin/vehicletypes/{id}")]
         public IHttpActionResult UpdateVehicleType(Guid id)
         {
             VehicleService.DeleteVehicleType(id);
@@ -76,7 +76,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return Ok();
         }
 
-        [HttpGet, NoCache, Route("admin/vehicletypes/unassignednetworkvehicletype/{networkVehicleId:int?}")]
+        [HttpGet, NoCache, Route("api/v2/admin/vehicletypes/unassignednetworkvehicletype/{networkVehicleId:int?}")]
         public async Task<IHttpActionResult> GetUnassignedNetworkVehicleType(int? networkVehicleId)
         {
             var result = await VehicleService.GetUnassignedNetworkVehicleType(networkVehicleId);
@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
         
-        [HttpGet, NoCache, Route("admin/vehicletypes/unassignedreference/{vehicleBeingEdited:int?}")]
+        [HttpGet, NoCache, Route("api/v2/admin/vehicletypes/unassignedreference/{vehicleBeingEdited:int?}")]
         public IHttpActionResult GetUnassignedReferenceDataVehicles(int? vehicleBeingEdited)
         {
             var result = VehicleService.GetUnassignedReferenceDataVehicles(vehicleBeingEdited);
@@ -92,7 +92,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpGet, NoCache, Route("taxilocation/{orderId}")]
+        [HttpGet, NoCache, Route("api/v2/taxilocation/{orderId}")]
         public async Task<IHttpActionResult> GetTaxiLocation(Guid orderId, [FromUri] string medallion)
         {
             var result = await VehicleService.Get(new TaxiLocationRequest
@@ -103,7 +103,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
 
             return GenerateActionResult(result);
         }
-        [HttpPost, Route("vehicles/eta")]
+        [HttpPost, Route("api/v2/vehicles/eta")]
         public async Task<IHttpActionResult> EtaForPickupRequest(EtaForPickupRequest request)
         {
             var result = await VehicleService.Post(request);

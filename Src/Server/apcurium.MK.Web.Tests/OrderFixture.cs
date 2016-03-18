@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void create_order()
+        public async Task create_order()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
@@ -87,14 +87,14 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void create_order_with_charge_account_with_card_on_file_payment_from_web_app()
+        public async Task create_order_with_charge_account_with_card_on_file_payment_from_web_app()
         {
             var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
             var accountChargeName = "NAME" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
             var accountChargeNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
             var accountCustomerNumber = "CUSTOMER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
 
-            accountChargeSut.CreateAccountCharge(new AccountChargeRequest
+            await accountChargeSut.CreateAccountCharge(new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
                 Name = accountChargeName,
@@ -151,8 +151,21 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
-            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
-            Assert.AreEqual("Ce compte n'est pas supporté par la page web", ex.ErrorMessage);
+            try
+            {
+                await sut.CreateOrder(order);
+            }
+            catch (Exception exception)
+            {
+                var ex = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw exception;
+                });
+
+
+                Assert.AreEqual("Ce compte n'est pas supporté par la page web", ex.ErrorMessage);
+                return;
+            }
         }
 
         [Test]
@@ -392,17 +405,32 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void can_not_get_order_another_account()
+        public async Task can_not_get_order_another_account()
         {
             await CreateAndAuthenticateTestAccount();
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
-            var ex = Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
-            Assert.AreEqual("Can't access another account's order", ex.Message);
+
+            try
+            {
+                await sut.GetOrder(_orderId);
+            }
+            catch (Exception exception)
+            {
+                var ex = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw exception;
+                });
+                Assert.AreEqual("Can't access another account's order", ex.ErrorMessage);
+
+                return;
+            }
+            
+            Assert.Fail();
         }
 
         [Test]
-        public async void can_cancel_it()
+        public async Task can_cancel_it()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             await sut.CancelOrder(_orderId);
@@ -427,18 +455,32 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void can_not_cancel_when_different_account()
+        public async Task can_not_cancel_when_different_account()
         {
             await CreateAndAuthenticateTestAccount();
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            var ex = Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
-            Assert.AreEqual("Can't cancel another account's order", ex.Message);
+            try
+            {
+                await sut.CancelOrder(_orderId);
+            }
+            catch (Exception exception)
+            {
+                var ex = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw exception;
+                });
+                Assert.AreEqual("Can't cancel another account's order", ex.ErrorMessage);
+
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_remove_it_should_not_be_in_history()
+        public async Task when_remove_it_should_not_be_in_history()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -449,7 +491,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_order_rated_ratings_should_not_be_null()
+        public async Task when_order_rated_ratings_should_not_be_null()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -475,7 +517,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void GetOrderList()
+        public async Task GetOrderList()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
@@ -484,7 +526,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void GetOrder()
+        public async Task GetOrder()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 

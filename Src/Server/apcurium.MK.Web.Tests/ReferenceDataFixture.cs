@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void Get()
+        public async Task Get()
         {
             var sut = new ReferenceDataServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var data = await sut.GetReferenceData();

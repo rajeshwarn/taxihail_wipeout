@@ -61,12 +61,12 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (order == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order not found");
             }
 
             if (account.Id != order.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't cancel another account's order");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
             if (order.IBSOrderId.HasValue)
@@ -98,8 +98,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                     _logger.LogMessage(errorMessage);
 
-                    //TODO MKTAXI-3918: handle this
-                    throw new HttpException((int)HttpStatusCode.BadRequest, _resources.Get("CancelOrderError")/*, errorMessage*/);
+                    throw GenerateException(HttpStatusCode.BadRequest, _resources.Get("CancelOrderError"), errorMessage);
                 }
             }
             else

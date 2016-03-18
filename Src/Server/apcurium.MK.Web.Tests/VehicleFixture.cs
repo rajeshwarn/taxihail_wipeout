@@ -1,5 +1,8 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Extensions;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -30,10 +33,14 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void get_available_vehicles()
+        public async Task get_available_vehicles()
         {
-            await _sut.GetAvailableVehiclesAsync(45.420833, -75.69, 1);
+            var vehicles = await _sut.GetAvailableVehiclesAsync(45.420833, -75.69, 1);
 
+            if (vehicles.Any())
+            {
+                Assert.Pass();
+            }
             Assert.Inconclusive("Service returns no vehicles");
         }
     }

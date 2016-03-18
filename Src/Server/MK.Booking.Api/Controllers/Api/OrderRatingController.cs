@@ -8,7 +8,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/ratings"), Auth]
+    [Auth]
     public class OrderRatingController : BaseApiController
     {
         public OrderRatingsService OrderRatingsService { get; }
@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api
             OrderRatingsService = new OrderRatingsService(orderRatingDao, commandBus);
         }
 
-        [HttpGet, Route("{orderId}")]
+        [HttpGet, Route("api/v2/ratings/{orderId}")]
         public IHttpActionResult GetOrderRatings(Guid orderId)
         {
             var result = OrderRatingsService.Get(orderId);
@@ -26,7 +26,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/ratings")]
         public IHttpActionResult CommitOrderRating([FromBody] OrderRatingsRequest request)
         {
             OrderRatingsService.Post(request);

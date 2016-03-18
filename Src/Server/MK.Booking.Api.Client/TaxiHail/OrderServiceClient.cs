@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<IList<Order>> GetOrders()
         {
-            var req = string.Format("/account/orders");
+            var req = "/accounts/orders";
             var result = Client.GetAsync<IList<Order>>(req, logger: Logger);
             return result;
         }

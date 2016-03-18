@@ -42,12 +42,12 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (orderDetail == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order Not Found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order Not Found", "Order Not Found");
             }
 
             if (account.Id != orderDetail.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't access another account's order");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Can't access another account's order", "Can't access another account's order");
             }
 
             var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id, orderDetail.CompanyKey);
@@ -74,19 +74,19 @@ namespace apcurium.MK.Booking.Api.Services
             var order = Dao.FindById(request.OrderId);
             if (order == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order Not Found", "Order Not Found");
             }
 
             var status = Dao.FindOrderStatusById(request.OrderId);
             if (status == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order status not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order status Not Found", "Order status Not Found");
             }
 
             var account = _accountDao.FindById(Session.UserId);
             if (account.Id != order.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't initiate a call with driver of another account's order");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Can't initiate a call with driver of another account's order", "Can't initiate a call with driver of another account's order");
             }
 
             if (order.IBSOrderId.HasValue && status.VehicleNumber.HasValue())
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (account.Id != orderDetail.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't access another account's order");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Can't access another account's order", "Can't access another account's order");
             }
 
             _commandBus.Send(new RemoveOrderFromHistory {OrderId = request.OrderId});

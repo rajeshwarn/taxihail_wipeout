@@ -76,6 +76,9 @@ namespace apcurium.MK.Booking.Api.Services
                 baseApiService.HttpRequest = Request;
                 baseApiService.HttpRequestContext = RequestContext;
             }
+
+
+            targets.ToArray();
         }
 
         protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();

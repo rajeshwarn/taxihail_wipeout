@@ -59,6 +59,11 @@ namespace apcurium.MK.Booking.Api.Controllers
                 requestUrl = requestUrl.Replace("creditCard/", "creditCards/");
             }
 
+            if (requestUrl.Contains("/ordercountforapprating"))
+            {
+                requestUrl = requestUrl.Replace("/ordercountforapprating", "/orders/countforapprating");
+            }
+
             request.RequestUri = new Uri(requestUrl);
 
             var responseMessage = await base.SendAsync(request, cancellationToken);

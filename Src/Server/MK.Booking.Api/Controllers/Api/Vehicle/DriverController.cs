@@ -14,29 +14,22 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
-    [RoutePrefix("api/v2/vehicle")]
     public class DriverController : BaseApiController
     {
-        private readonly DriverService _driverService;
+        public DriverService DriverService { get; }
+
         public DriverController(IIbsOrderService ibsOrderService, ILogger logger, IOrderDao orderDao)
         {
-            _driverService = new DriverService(ibsOrderService, logger, orderDao);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_driverService);
+            DriverService = new DriverService(ibsOrderService, logger, orderDao);
         }
 
         [HttpPost, Auth]
-        [Route("{vehicleNumber}/message")]
+        [Route("api/v2/vehicle/{vehicleNumber}/message")]
         public IHttpActionResult SendMessageToDriver(string vehicleNumber, SendMessageToDriverRequest request)
         {
             request.VehicleNumber = vehicleNumber;
 
-            _driverService.Post(request);
+            DriverService.Post(request);
 
             return Ok();
         }

@@ -16,28 +16,24 @@ namespace apcurium.MK.Web.Controllers.Api
     [Auth]
     public class OrderStatusController : BaseApiController
     {
-        private readonly OrderStatusService _orderStatusService;
+        public OrderStatusService OrderStatusService { get; }
 
-        private readonly ActiveOrderStatusService _activeOrderStatusService;
+        public ActiveOrderStatusService ActiveOrderStatusService { get; }
 
         public OrderStatusController(OrderStatusHelper orderStatusHelper, IAccountDao accountDao, IOrderDao orderDao)
         {
-            _orderStatusService = new OrderStatusService(orderStatusHelper);
+            OrderStatusService = new OrderStatusService(orderStatusHelper);
 
-            _activeOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao);
-        }
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_orderStatusService, _activeOrderStatusService);
+            ActiveOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao);
         }
 
         [HttpGet]
-        [Route("api/v2/accounts/orders/{OrderId}/status")]
+        [Route("api/v2/accounts/orders/{orderId}/status")]
         public async Task<IHttpActionResult> GetOrderStatus(Guid orderId)
         {
-            var status = await _orderStatusService.Get(new OrderStatusRequest() {OrderId = orderId});
+            var session = Session;
+
+            var status = await OrderStatusService.Get(new OrderStatusRequest() {OrderId = orderId});
 
             return GenerateActionResult(status);
         }
@@ -46,7 +42,7 @@ namespace apcurium.MK.Web.Controllers.Api
         [Route("api/v2/accounts/orders/status/active")]
         public IHttpActionResult GetActiveOrdersStatus()
         {
-            var status = _activeOrderStatusService.Get();
+            var status = ActiveOrderStatusService.Get();
 
             return GenerateActionResult(status);
         }

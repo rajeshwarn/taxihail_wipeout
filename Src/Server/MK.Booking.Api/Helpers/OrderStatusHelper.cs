@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             if (session.UserId != order.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't access another account's order");
+                throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, "Can't access another account's order");
             }
         }
     }

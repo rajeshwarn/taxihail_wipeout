@@ -19,15 +19,14 @@ namespace apcurium.MK.Booking.Api.Services
 
         public HttpRequestMessage HttpRequest { get; set; }
 
-
-        protected HttpResponseException GenerateException(HttpStatusCode statusCode, string errorCode, string errorMessage, string stackTrace = null,[CallerMemberName] string memberName = null, [CallerLineNumber] int line = -1)
+        public static HttpResponseException GenerateException(HttpStatusCode statusCode, string errorCode, string errorMessage = null, string stackTrace = null,[CallerMemberName] string memberName = null, [CallerLineNumber] int line = -1)
         {
             var exceptionContent = new ErrorResponse
             {
                 ResponseStatus = new ResponseStatus()
                 {
                     ErrorCode = errorCode,
-                    Message = errorMessage,
+                    Message = errorMessage??errorCode,
                     StackTrace = stackTrace??"{0}:{1}".InvariantCultureFormat(memberName, line)
                 }
             };

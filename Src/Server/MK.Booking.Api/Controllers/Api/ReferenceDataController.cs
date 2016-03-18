@@ -13,7 +13,6 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class ReferenceDataController : BaseApiController
     {
         public ReferenceDataService ReferenceDataService { get; }
@@ -23,22 +22,34 @@ namespace apcurium.MK.Web.Controllers.Api
             ReferenceDataService = new ReferenceDataService(ibsServiceProvider, cacheClient, serverSettings, airlineDao, pickupPointDao);
         }
 
-        [HttpGet, Route("referencedata")]
+        [HttpGet, Route("api/v2/referencedata")]
         public IHttpActionResult GetReferenceData([FromUri]ReferenceDataRequest request)
         {
+            var result = ReferenceDataService.Get(request??new ReferenceDataRequest());
+
+            return GenerateActionResult(result);
+        }
+
+        [HttpGet, Route("api/v2/references/{listName}/{searchText}")]
+        public IHttpActionResult GetReferenceList(string listName, string searchText, [FromUri] ReferenceListRequest request)
+        {
+            if (request == null)
+            {
+                request = new ReferenceListRequest();
+            }
+
+            request.ListName = listName;
+            request.SearchText = searchText;
+
             var result = ReferenceDataService.Get(request);
 
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("references/{listName}")]
+        [HttpGet, Route("api/v2/references/{listName}")]
         public IHttpActionResult GetReferenceList(string listName, [FromUri] ReferenceListRequest request)
         {
-            request.ListName = listName;
-
-            var result = ReferenceDataService.Get(request);
-
-            return GenerateActionResult(result);
+            return GetReferenceList(listName, null, request);
         }
     }
 }
