@@ -288,7 +288,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, 
-            string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+            string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 
@@ -314,8 +314,18 @@ namespace apcurium.MK.Booking.Services.Impl
                     var request = new CmtRideLinqAuthorizationRequest
                     {
                         PairingToken = pairingToken,
-                        CofToken = creditCard.Token
+                        CofToken = creditCard.Token,
+                        LastFour = creditCard.Last4Digits,
+                        SessionId = kountSessionId,
+                        Email = account.Email,
+                        CustomerIpAddress = customerIpAddress,
+                        BillingFullName = creditCard.NameOnCard
                     };
+
+                    if (creditCard.ZipCode.HasValue())
+                    {
+                        request.ZipCode = creditCard.ZipCode;
+                    }
 
                     var requestUrl = string.Format("payment/{0}/authorize/{1}", request.PairingToken, request.CofToken);
                     _logger.LogMessage("Trying to authorize payment for CMT RideLinq (settling an overdue payment). Url: {0}", requestUrl);

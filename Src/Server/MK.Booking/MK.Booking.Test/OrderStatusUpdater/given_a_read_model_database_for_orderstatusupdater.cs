@@ -120,7 +120,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                     It.Is<decimal>(o => o == tipAmount),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
-                    It.IsAny<bool>()))
+                    It.IsAny<bool>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
                 .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
                 .Verifiable();
         }
@@ -166,7 +168,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                     It.Is<decimal>(o => o == 0),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
-                    It.IsAny<bool>()))
+                    It.IsAny<bool>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
                 .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
                 .Verifiable();
         }
