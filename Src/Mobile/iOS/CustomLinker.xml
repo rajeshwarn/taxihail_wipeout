@@ -1,4 +1,8 @@
 <linker>
+        <assembly fullname="apcurium.MK.Common" >
+            <type fullname="*" />
+        </assembly>
+
         <assembly fullname="MK.Booking.Api.Client.iOS" >
             <type fullname="*" />
         </assembly>
@@ -108,8 +112,9 @@
         <assembly fullname="Cirrious.MvvmCross.Plugins.WebBrowser.Touch" > 
             <type fullname="*" />
         </assembly>
-
+ 
         <assembly fullname="Newtonsoft.Json" > 
             <type fullname="*" />
         </assembly>
+       
 </linker>
