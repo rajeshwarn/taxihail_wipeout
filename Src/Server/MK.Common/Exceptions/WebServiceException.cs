@@ -38,6 +38,20 @@ namespace MK.Common.Exceptions
 
         public string StatusDescription { get; set; }
 
+        private string[] _errorCodes;
+        public string[] ErrorCodes 
+        {
+            get
+            {
+                if (_errorCodes == null)
+                {
+                    ParseResponseDto();
+                }
+
+                return _errorCodes;
+            }
+        }
+
         public string ErrorMessage
         {
             get
@@ -96,7 +110,7 @@ namespace MK.Common.Exceptions
                 }
                 var jsv = ResponseDto.ToJson();
                 var map = jsv.FromJson<Dictionary<string, string>>();
-
+                
                 return map.TryGetValue("ResponseStatus", out responseStatus);
             }
             catch
@@ -115,6 +129,7 @@ namespace MK.Common.Exceptions
                     return false;
                 }
 				var map = ResponseBody.FromJson<ErrorResponse>();
+                _errorCodes = map.ErrorCodes;
 				responseStatus = map.ResponseStatus.ToJson();
                 return true;
             }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Common.Http.Exceptions
 {
@@ -20,6 +22,40 @@ namespace apcurium.MK.Common.Http.Exceptions
         public HttpResponseMessage Response { get; private set; }
 
         public string ResponseBody { get; private set; }
+
+        public string ErrorCode
+        {
+            get
+            {
+                var error = ResponseBody.FromJsonSafe<ErrorResponse>();
+
+                if (error.ResponseStatus == null)
+                {
+                    return error.ErrorCodes != null
+                        ? error.ErrorCodes.FirstOrDefault()
+                        : Message;
+                }
+
+                return error.ResponseStatus.ErrorCode??Message;
+            }
+        }
+
+        //public string[] ErrorCodes
+        //{
+        //    get { var error; }
+        //}
+
+        public string ErrorMessage
+        {
+            get
+            {
+                var error = ResponseBody.FromJsonSafe<ErrorResponse>();
+
+                return error.ResponseStatus == null
+                    ? Message
+                    : error.ResponseStatus.Message ?? Message;
+            }
+        }
 
         public bool IsClientError
         {

@@ -30,7 +30,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
-    [RoutePrefix("api/v2/account/orders")]
     public class CreateOrderService : BaseCreateOrderService
     {
         private readonly IAccountDao _accountDao;

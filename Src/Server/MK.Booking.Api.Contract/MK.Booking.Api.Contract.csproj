@@ -45,6 +45,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
@@ -234,6 +235,13 @@
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Validation\AddressLongitudeValidation.cs" />
+    <Compile Include="Validation\AddressNameValidation.cs" />
+    <Compile Include="Validation\AddressLatitudeValidation.cs" />
+    <Compile Include="Validation\BookingSettingsValidation.cs" />
+    <Compile Include="Validation\RegisterAccountValidation.cs" />
+    <Compile Include="Validation\TariffNameValidation.cs" />
+    <Compile Include="Validation\TariffRatesValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">

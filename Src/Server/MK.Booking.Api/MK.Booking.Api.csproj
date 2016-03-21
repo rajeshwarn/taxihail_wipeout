@@ -206,6 +206,7 @@
     <Compile Include="Controllers\Api\Vehicle\DriverController.cs" />
     <Compile Include="Controllers\Api\Vehicle\VehicleController.cs" />
     <Compile Include="Controllers\LegacyHttpClientHandler.cs" />
+    <Compile Include="Controllers\ValidationFilterAttribute.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
@@ -291,19 +292,7 @@
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Services\IbsFareService.cs" />
-    <Compile Include="Validation\AvailableVehiclesValidator.cs" />
     <Compile Include="Services\VehicleService.cs" />
-    <Compile Include="Validation\BaseValidation\InclusiveBetweenValidator.cs" />
-    <Compile Include="Validation\BaseValidation\IValidatorBuilder.cs" />
-    <Compile Include="Validation\BaseValidation\NotEmptyValidator.cs" />
-    <Compile Include="Validation\BaseValidation\ValidatorBuilder.cs" />
-    <Compile Include="Validation\CreateOrderValidator.cs" />
-    <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
-    <Compile Include="Validation\IValidator.cs" />
-    <Compile Include="Validation\PopularAddressValidator.cs" />
-    <Compile Include="Validation\RegisterAccountValidator.cs" />
-    <Compile Include="Validation\TariffValidator.cs" />
-    <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

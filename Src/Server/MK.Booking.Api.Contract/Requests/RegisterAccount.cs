@@ -4,6 +4,7 @@ using System;
 using ServiceStack.ServiceHost;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common;
 
 #endregion
@@ -11,6 +12,7 @@ using apcurium.MK.Common;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 { 
     [Route("/account/register", "POST")]
+    [RegisterAccountValidation]
     public class RegisterAccount : BaseDto
     {
         public Guid AccountId { get; set; }

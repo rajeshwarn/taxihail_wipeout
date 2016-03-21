@@ -79,11 +79,28 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddInvalidAddress()
+        public async Task AddInvalidAddress()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            Assert.Throws<WebServiceException>(async () => await sut.AddFavoriteAddress(new SaveAddress()));
+            try
+            {
+                await sut.AddFavoriteAddress(new SaveAddress());
+            }
+            catch (Exception ex)
+            {
+                var exception = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+
+                Assert.Contains("NotEmpty", exception.ErrorCodes);
+                Assert.Contains("InclusiveBetween", exception.ErrorCodes);
+
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
@@ -161,14 +178,15 @@ namespace apcurium.MK.Web.Tests
                     }
                 });
             }
-            catch (WebServiceException ex)
-            {
-                Assert.AreEqual("InclusiveBetween", ex.ErrorCode);
-                return;
-            }
             catch (Exception ex)
             {
-                Assert.IsAssignableFrom<WebServiceException>(ex);
+                var exception = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+                Assert.Contains("InclusiveBetween", exception.ErrorCodes);
+
+                return;
             }
 
             Assert.Fail();

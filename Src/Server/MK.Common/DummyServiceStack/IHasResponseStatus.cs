@@ -8,6 +8,17 @@
     public class ErrorResponse : IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
+
+        private string[] _errorCodes;
+
+        public string[] ErrorCodes
+        {
+            get
+            {
+                return _errorCodes ?? new[] { ResponseStatus.ErrorCode };
+            }
+            set { _errorCodes = value; }
+        }
     }
 
     public class ResponseStatus

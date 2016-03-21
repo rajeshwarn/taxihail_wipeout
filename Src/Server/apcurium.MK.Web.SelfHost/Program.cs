@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
+using apcurium.MK.Booking.Api.Contract.Controllers;
 using apcurium.MK.Booking.Api.Controllers;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
@@ -74,6 +75,8 @@ namespace apcurium.MK.Web.SelfHost
             config.MessageHandlers.Add(new LegacyHttpClientHandler());      
             
             config.DependencyResolver = new UnityContainerAdapter(container, container.Resolve<ILogger>());
+
+            config.Filters.Add(new ValidationFilterAttribute());
 
             return config;
         }

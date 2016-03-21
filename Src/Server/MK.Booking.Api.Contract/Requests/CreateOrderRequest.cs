@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 
@@ -32,7 +33,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
-        [Required]
+
+        [BookingSettingsValidation]
         public BookingSettings Settings { get; set; }
 
         public PaymentSettings Payment { get; set; }

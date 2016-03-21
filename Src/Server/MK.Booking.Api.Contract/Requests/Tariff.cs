@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface.ServiceModel;
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Route("/admin/tariffs", "GET, POST")]
     [Route("/admin/tariffs/{Id}", "PUT, DELETE")]
+    [TariffNameValidation, TariffRatesValidator]
     public class Tariff
     {
         public Guid Id { get; set; }

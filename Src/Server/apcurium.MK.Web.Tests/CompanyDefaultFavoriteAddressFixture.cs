@@ -96,10 +96,12 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<ServiceResponseException>(() =>
                 {
                     throw ex;
                 });
+
+                Assert.AreEqual("InclusiveBetween", exception.ErrorCode);
 
                 return;
             }
@@ -185,7 +187,12 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                Assert.IsAssignableFrom<ServiceResponseException>(ex);
+                var exception = Assert.Throws<ServiceResponseException>(() =>
+                {
+                    throw ex;
+                });
+
+                Assert.AreEqual("InclusiveBetween", exception.ErrorCode);
 
                 return;
             }
