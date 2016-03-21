@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
@@ -72,7 +73,23 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
 
-            Assert.Throws<WebServiceException>(async () => await sut.GetOrderStatus(_orderId));
+            try
+            {
+                await sut.GetOrderStatus(_orderId);
+            }
+            catch (Exception ex)
+            {
+                var exception = Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                });
+
+                Assert.AreEqual((int)HttpStatusCode.Unauthorized, exception.StatusCode);
+
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
