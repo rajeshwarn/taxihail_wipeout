@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Security.Cryptography;
-using System.Web;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Services;
@@ -48,7 +47,7 @@ namespace apcurium.MK.Web.Controllers.Api
 
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Invalid authentication");
+                throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, "Invalid authentication");
             }
 
             return InnerLogin(account);
@@ -62,7 +61,7 @@ namespace apcurium.MK.Web.Controllers.Api
 
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Invalid authentication");
+                throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, "Invalid authentication");
             }
 
             return InnerLogin(account);
@@ -81,7 +80,7 @@ namespace apcurium.MK.Web.Controllers.Api
 
             if (!isCredentialsValid)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Invalid authentication");
+                throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, "Invalid authentication");
             }
 
             try
@@ -92,19 +91,19 @@ namespace apcurium.MK.Web.Controllers.Api
             {
                 if (!_passwordService.IsValid(request.Password, account.Id.ToString(), account.Password))
                 {
-                    throw new HttpException((int)HttpStatusCode.Unauthorized, AuthenticationErrorCode.InvalidLoginMessage);
+                    throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, AuthenticationErrorCode.InvalidLoginMessage);
                 }
 
                 if (account.DisabledByAdmin)
                 {
-                    throw new HttpException((int)HttpStatusCode.Unauthorized, (AuthenticationErrorCode.AccountDisabled));
+                    throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, AuthenticationErrorCode.AccountDisabled);
                 }
 
                 if (!account.IsConfirmed)
                 {
                     if (account.FacebookId != null)
                     {
-                        throw new HttpException((int)HttpStatusCode.Unauthorized, AuthenticationErrorCode.FacebookEmailAlreadyUsed);
+                        throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, AuthenticationErrorCode.FacebookEmailAlreadyUsed);
                     }
 
                     if (_serverSettings.ServerData.SMSConfirmationEnabled)
@@ -129,8 +128,7 @@ namespace apcurium.MK.Web.Controllers.Api
                             ConfirmationUrl = new Uri(confirmationUrl, UriKind.Relative),
                         });
                     }
-
-                    throw new HttpException((int) HttpStatusCode.Unauthorized, AuthenticationErrorCode.AccountNotActivated);
+                    throw BaseApiService.GenerateException(HttpStatusCode.Unauthorized, AuthenticationErrorCode.AccountNotActivated);
                 }
 
                 throw;

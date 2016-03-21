@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using MK.Common.Exceptions;
@@ -21,7 +22,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_user_sign_in()
+        public async Task when_user_sign_in()
         {
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
             var response = await sut.Authenticate(TestAccount.Email, TestAccountPassword);
@@ -32,21 +33,47 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_password()
+        public async Task when_user_sign_in_with_invalid_password()
         {
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
-            Assert.Throws<WebServiceException>(async () => await sut.Authenticate(TestAccount.Email, "wrong password"), "InvalidLoginMessage");
+            try
+            {
+                await sut.Authenticate(TestAccount.Email, "wrong password");
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "InvalidLoginMessage");
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_email()
+        public async Task when_user_sign_in_with_invalid_email()
         {
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
-            Assert.Throws<WebServiceException>(async () => await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword), "InvalidLoginMessage");
+            try
+            {
+                await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "InvalidLoginMessage");
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_user_sign_in_with_facebook()
+        public async Task when_user_sign_in_with_facebook()
         {
             var account = await GetNewFacebookAccount();
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
@@ -58,14 +85,28 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_facebook_id()
+        public async Task when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
-            Assert.Throws<WebServiceException>(async () => await sut.AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+
+            try
+            {
+                await sut.AuthenticateFacebook(Guid.NewGuid().ToString());
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "Invalid UserName or Password");
+                return;
+            }
+
+            Assert.Fail();
         }
 
         [Test]
-        public async void when_user_sign_in_with_twitter()
+        public async Task when_user_sign_in_with_twitter()
         {
             var account = await GetNewTwitterAccount();
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
@@ -77,10 +118,24 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_twitter_id()
+        public async Task when_user_sign_in_with_invalid_twitter_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
-            Assert.Throws<WebServiceException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+            try
+            {
+                await sut.AuthenticateTwitter(Guid.NewGuid().ToString());
+            }
+            catch (Exception ex)
+            {
+                Assert.Throws<WebServiceException>(() =>
+                {
+                    throw ex;
+                }, "Invalid UserName or Password");
+
+                return;
+            }
+
+            Assert.Fail();
         }
     }
 }
