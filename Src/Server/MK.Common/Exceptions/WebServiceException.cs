@@ -130,7 +130,10 @@ namespace MK.Common.Exceptions
                     return false;
                 }
 				var map = ResponseBody.FromJson<ErrorResponse>();
-                _errorCodes = map.ValidationResponseStatus.ValidationErrorCodes;
+                if (map.ValidationResponseStatus != null)
+                {
+                    _errorCodes = map.ValidationResponseStatus.ValidationErrorCodes;
+                }
 				responseStatus = map.ResponseStatus.ToJson();
                 return true;
             }
