@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Jobs
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
             
-            UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail, orderDetail);
+            await UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail, orderDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail, paymentSettings);
 
@@ -509,7 +509,7 @@ namespace apcurium.MK.Booking.Jobs
             return false;
         }
 
-        private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus, OrderDetail orderDetail)
+        private async Task UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus, OrderDetail orderDetail)
         {
 			// We are not supposed to attempt to show the vehicle position when not in the proper state.
 	        if (VehicleStatuses.ShowOnMapStatuses.None(status => status.Equals(ibsOrderInfo.Status)))
@@ -527,7 +527,7 @@ namespace apcurium.MK.Booking.Jobs
             // Override with Geo position if enabled and if we have a vehicle registration.
             if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
             {
-                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
+                var vehicleStatus = await _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
 
                 if (vehicleStatus.Latitude != 0.0f && vehicleStatus.Longitude != 0.0f)
                 {

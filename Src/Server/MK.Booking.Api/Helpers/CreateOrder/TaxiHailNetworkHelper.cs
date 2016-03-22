@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Common.Configuration;
@@ -156,7 +157,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             return new BestAvailableCompany();
         }
 
-        internal BestAvailableCompany FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking)
+        internal async Task<BestAvailableCompany> FindBestAvailableCompany(CompanyMarketSettingsResponse marketSettings, double? latitude, double? longitude, bool isFutureBooking)
         {
             var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
@@ -203,8 +204,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
-                var marketVehicles = GetAvailableVehiclesServiceClient(market)
-                    .GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+                var marketVehicles = (await GetAvailableVehiclesServiceClient(market)
+                    .GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true))
                     .ToArray();
 
                 if (marketVehicles.Any())

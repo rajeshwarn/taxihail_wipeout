@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Geography;
-using CMTServices.Enums;
 using CMTServices.Responses;
 
 namespace CMTServices
@@ -31,7 +29,7 @@ namespace CMTServices
         protected HttpClient Client { get; private set; }
 
 
-        public abstract IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false,bool throwError = false);
+        public abstract Task<VehicleResponse[]> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool throwError = false);
 
 		protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params, string paramsFromSetting = null)
 		{

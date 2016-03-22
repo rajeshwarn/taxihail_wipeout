@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Http.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -19,14 +20,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _client = new HttpClient { BaseAddress = new Uri(Url) };
         }
 
-        public OrderValidationResult ValidateOrder(CreateOrderRequest orderRequest, bool forError = false)
+        public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest orderRequest, bool forError = false)
         {
             try
             {
                 var req = string.Format("api/account/orders/validate/" + forError);
-                return _client.Post(req, orderRequest)
-                        .Deserialize<OrderValidationResult>()
-                        .Result;
+                return await _client.PostAsync<OrderValidationResult>(req, orderRequest);
             }
             catch(Exception)
             {

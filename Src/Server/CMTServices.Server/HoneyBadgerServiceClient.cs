@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Geography;
-using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
 
@@ -28,13 +29,14 @@ namespace CMTServices
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
         /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
+        /// <param name="throwError"></param>
         /// <returns>The available vehicles.</returns>
-        public override IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool throwError = false)
+        public override async Task<VehicleResponse[]> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool throwError = false)
         {
             var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly);
             if (@params == null)
             {
-                return new List<VehicleResponse>();
+                return new VehicleResponse[0];
             }
 
             var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
@@ -46,9 +48,7 @@ namespace CMTServices
 
             try
             {
-                response = Client.Get(queryString)
-                                 .Deserialize<HoneyBadgerResponse>()
-                                 .Result;
+                response = await Client.GetAsync<HoneyBadgerResponse>(queryString);
             }
             catch (Exception ex)
             {
@@ -66,11 +66,11 @@ namespace CMTServices
                 var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
-                return ToVehicleResponse(entities);
+                return ToVehicleResponse(entities).ToArray();
 
             }
 
-            return new List<VehicleResponse>();
+            return new VehicleResponse[0];
         }
 
         
@@ -82,7 +82,7 @@ namespace CMTServices
         /// If left empty, will return the status from all the vehicles in the market.</param>
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <returns>The vehicle statuses.</returns>
-        public virtual IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
+        public virtual async Task<VehicleResponse[]> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
         {
             if (vehicleIds == null)
             {
@@ -111,9 +111,7 @@ namespace CMTServices
 
             try
             {
-                response = Client.Get(queryString)
-                                 .Deserialize<HoneyBadgerResponse>()
-                                 .Result;
+                response = await Client.GetAsync<HoneyBadgerResponse>(queryString);
             }
             catch (Exception ex)
             {
@@ -130,10 +128,11 @@ namespace CMTServices
                     Longitude = e.Longitude,
                     Medallion = e.Medallion,
                     FleetId = e.FleetId
-                });
+                })
+                .ToArray();
             }
 
-            return new List<VehicleResponse>();
+            return new VehicleResponse[0];
         }
 
         protected List<KeyValuePair<string, string>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool usePolygon = true)

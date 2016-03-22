@@ -32,30 +32,14 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}/{customerNumber}/{hideAnswers}")]
         public IHttpActionResult GetAccountCharge(string accountNumber, string customerNumber, bool hideAnswers)
         {
-            try
+            var result = _service.Get(new AccountChargeRequest
             {
-                var result = _service.Get(new AccountChargeRequest
-                {
-                    AccountNumber = accountNumber,
-                    CustomerNumber = customerNumber,
-                    HideAnswers = hideAnswers
-                });
+                AccountNumber = accountNumber,
+                CustomerNumber = customerNumber,
+                HideAnswers = hideAnswers
+            });
 
-                return GenerateActionResult(result);
-            }
-            catch (HttpException ex)
-            {
-                var httpResponseMessage = new HttpResponseMessage((HttpStatusCode) ex.GetHttpCode())
-                {
-                    Content = new StringContent(ex.Message)
-                };
-
-                return ResponseMessage(httpResponseMessage);
-            }
-            catch (Exception)
-            {
-                return StatusCode(HttpStatusCode.InternalServerError);
-            }
+            return GenerateActionResult(result);
         }
 
         [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}")]
@@ -67,25 +51,9 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpGet, Route("api/v2/admin/accountscharge")]
         public IHttpActionResult GetAccountCharge()
         {
-            try
-            {
-                var result = _service.Get(new AccountChargeRequest());
+            var result = _service.Get(new AccountChargeRequest());
 
-                return GenerateActionResult(result);
-            }
-            catch (HttpException ex)
-            {
-                var httpResponseMessage = new HttpResponseMessage((HttpStatusCode)ex.GetHttpCode())
-                {
-                    Content = new StringContent(ex.Message)
-                };
-
-                return ResponseMessage(httpResponseMessage);
-            }
-            catch (Exception)
-            {
-                return StatusCode(HttpStatusCode.InternalServerError);
-            }
+            return GenerateActionResult(result);
         }
 
         [HttpPost, Route("api/v2/admin/accountscharge")]

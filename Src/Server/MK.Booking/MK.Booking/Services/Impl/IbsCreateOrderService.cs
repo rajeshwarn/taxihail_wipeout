@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _updateOrderStatusJob = updateOrderStatusJob;
         }
 
-        public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
+        public async Task<IBSOrderResult> CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
             string companyKey, int ibsAccountId, string name, string phone, string email, int passengers, int? vehicleTypeId, string ibsInformationNote, bool isFutureBooking,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
             int? requestProviderId, Fare fare, double? tipIncentive, int? tipPercent, bool isHailRequest = false, int? companyFleetId = null)
@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Services.Impl
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
                 // Wait 15 seconds to reproduce what happens in real life with the "Finding you a taxi"
-                Thread.Sleep(TimeSpan.FromSeconds(15));
+                await Task.Delay(TimeSpan.FromSeconds(15));
 
                 // Fake IBS order id
                 return new IBSOrderResult
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             if (isHailRequest)
             {
-                ibsHailResult = Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
+                ibsHailResult = await Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
                     email, passengers, vehicleTypeId, ibsChargeTypeId, ibsInformationNote, pickupDate, ibsPickupAddress,
                     ibsDropOffAddress, accountNumberString, customerNumber, prompts, promptsLength, defaultVehicleTypeId,
                     tipIncentive, tipPercent, fare);
@@ -175,13 +175,13 @@ namespace apcurium.MK.Booking.Services.Impl
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
         }
 
-        private IbsHailResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
+        private async Task<IbsHailResponse> Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
             string name, string phone, string email, int passengers, int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress,
             IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, int? tipPercent, Fare fare)
         {
             // Query only the avaiable vehicles from the selected company for the order
             var availableVehicleService = GetAvailableVehiclesServiceClient(market);
-            var availableVehicles = availableVehicleService.GetAvailableVehicles(market, pickupAddress.Latitude, pickupAddress.Longitude)
+            var availableVehicles = (await availableVehicleService.GetAvailableVehicles(market, pickupAddress.Latitude, pickupAddress.Longitude))
                 .Where(v => v.FleetId == companyFleetId).ToArray();
 
             if (!availableVehicles.Any())

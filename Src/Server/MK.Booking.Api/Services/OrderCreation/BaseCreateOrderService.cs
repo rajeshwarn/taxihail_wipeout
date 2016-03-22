@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -143,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
             else
             {
-                bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(marketSettings, request.PickupAddress.Latitude, request.PickupAddress.Longitude, isFutureBooking);
+                bestAvailableCompany = await _taxiHailNetworkHelper.FindBestAvailableCompany(marketSettings, request.PickupAddress.Latitude, request.PickupAddress.Longitude, isFutureBooking);
             }
 
             _logger.LogMessage("Best available company determined: {0}, in {1}",
@@ -235,7 +233,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                 _logger.LogMessage(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
 
-                var validationResult = orderServiceClient.ValidateOrder(request, true);
+                var validationResult = await orderServiceClient.ValidateOrder(request, true);
                 if (validationResult.HasError)
                 {
                     ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, validationResult.Message);

@@ -17,7 +17,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTServices;
-using CMTServices.Responses;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using Infrastructure.Messaging;
@@ -149,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = GetAvailableVehiclesServiceClient(market).GetAvailableVehicles(
+                var vehicleResponse = await GetAvailableVehiclesServiceClient(market).GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
@@ -436,7 +435,7 @@ namespace apcurium.MK.Booking.Api.Services
             
             var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient(market);
 
-            var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleRegistration);
+            var result = await geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleRegistration);
 
             var order = _orderDao.FindOrderStatusById(request.OrderId);
 

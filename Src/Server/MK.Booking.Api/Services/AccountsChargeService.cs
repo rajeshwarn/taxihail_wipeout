@@ -53,14 +53,14 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _dao.FindByAccountNumber(request.AccountNumber);
                 if (account == null)
                 {
-                    throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
+                    throw GenerateException(HttpStatusCode.NotFound, "Account number not found");
                 }
 
                 // Validate with IBS to make sure the account/customer is still active
                 var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber ?? "0");
                 if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
                 {
-                    throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
+                    throw GenerateException(HttpStatusCode.NotFound, "Account number not found");
                 }
 
                 if (request.HideAnswers || !isAdmin)
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing != null)
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
 
             var i = 0;
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (existing != null
                 && existing.Id != request.Id)
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
             }
 
             var i = 0;
@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Account Not Found");
+                throw GenerateException(HttpStatusCode.Conflict, "Account Not Found");
             }
 
             var deleteAccountCharge = new DeleteAccountCharge

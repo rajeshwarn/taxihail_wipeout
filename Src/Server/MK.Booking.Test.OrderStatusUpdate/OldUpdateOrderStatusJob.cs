@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel;
@@ -205,7 +206,9 @@ namespace MK.Booking.Test.OrderStatusUpdate
                     : market;                                                        // External market
 
                 // Get vehicle statuses/position from HoneyBadger
-                return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
+                return Task
+                    .Run(async () => await _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions).ConfigureAwait(false))
+                    .Result;
             }
 
             return new VehicleResponse[0];

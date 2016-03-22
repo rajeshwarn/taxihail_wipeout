@@ -395,7 +395,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void ibs_order_was_created()
+        public async Task ibs_order_was_created()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = await sut.GetOrder(_orderId);

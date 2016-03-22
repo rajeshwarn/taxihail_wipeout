@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Http.Extensions;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task SendManualPushNotification(string emailAddress, string message)
         {
-            return Client.Post("/admin/pushnotifications/" + Uri.EscapeDataString(emailAddress),
+            return Client.PostAsync<object>("/admin/pushnotifications/" + Uri.EscapeDataString(emailAddress),
                 new PushNotificationAdministrationRequest
                 {
                     Message = message

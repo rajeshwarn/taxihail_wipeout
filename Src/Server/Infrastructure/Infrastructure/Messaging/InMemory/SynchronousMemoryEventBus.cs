@@ -19,29 +19,30 @@ namespace Infrastructure.Messaging.InMemory
 
     public class SynchronousMemoryEventBus : IEventBus, IEventHandlerRegistry
     {
-        private List<IEventHandler> handlers = new List<IEventHandler>();
-        private List<IEvent> events = new List<IEvent>();
+        private readonly List<IEventHandler> _handlers = new List<IEventHandler>();
+        private readonly List<IEvent> _events = new List<IEvent>();
 
         public SynchronousMemoryEventBus(params IEventHandler[] handlers)
         {
-            this.handlers.AddRange(handlers);
+            _handlers.AddRange(handlers);
         }
 
         public void Register(IEventHandler handler)
         {
-            this.handlers.Add(handler);
+            _handlers.Add(handler);
         }
 
-        public IEnumerable<IEvent> Events { get { return this.events; } }
+        public IEnumerable<IEvent> Events { get { return _events; } }
 
         public void Publish(Envelope<IEvent> @event)
         {
-            this.events.Add(@event.Body);
+            _events.Add(@event.Body);
 
             var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.Body.GetType());
+            var asyncHandlerType = typeof (IAsyncEventHandler<>).MakeGenericType(@event.Body.GetType());
 
-            foreach (dynamic handler in this.handlers
-                .Where(x => handlerType.IsAssignableFrom(x.GetType())))
+            
+            foreach (dynamic handler in _handlers.Where(x => handlerType.IsInstanceOfType(x) || asyncHandlerType.IsInstanceOfType(x)))
             {
                 handler.Handle((dynamic)@event.Body);
             }
@@ -51,7 +52,7 @@ namespace Infrastructure.Messaging.InMemory
         {
             foreach (var @event in events)
             {
-                this.Publish(@event);
+                Publish(@event);
             }
         }
     }

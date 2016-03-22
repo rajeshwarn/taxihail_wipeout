@@ -12,12 +12,13 @@ namespace MK.Booking.Test.OrderStatusUpdate
 {
     public class FakeHoneyBadgerServiceClient : HoneyBadgerServiceClient
     {
-        public override IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
+        public override async Task<VehicleResponse[]> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
         {
             return vehicleIds.Select(vehicleId => new VehicleResponse
             {
                 Timestamp = DateTime.Now, Latitude = 45.3442423f, Longitude = -75.975767f, Medallion = vehicleId, FleetId = 2
-            });
+            })
+            .ToArray();
         }
 
         public FakeHoneyBadgerServiceClient(IServerSettings serverSettings) : base(serverSettings, null)

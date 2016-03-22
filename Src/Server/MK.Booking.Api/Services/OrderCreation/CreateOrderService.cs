@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Calculator;

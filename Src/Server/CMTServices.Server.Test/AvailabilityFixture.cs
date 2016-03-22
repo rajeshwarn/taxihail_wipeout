@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Test;
 using apcurium.MK.Common.Diagnostic;
 using NUnit.Framework;
@@ -17,29 +18,29 @@ namespace CMTServices.Test
         private HoneyBadgerServiceClient _sut;
 
         [Test]
-        public void when_getting_available_vehicles_inside_a_valid_zone()
+        public async Task when_getting_available_vehicles_inside_a_valid_zone()
         {
-            var vehicles = _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289);
+            var vehicles = (await _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289)).ToArray();
             Assert.IsNotEmpty(vehicles);
             Assert.LessOrEqual(vehicles.Count(), 10);
         }
 
         [Test]
-        public void when_getting_available_vehicles_outside_a_valide_zone()
+        public async Task when_getting_available_vehicles_outside_a_valide_zone()
         {
-            var vehicles = _sut.GetAvailableVehicles("BOS", 45.497765, -73.666280);
+            var vehicles = await _sut.GetAvailableVehicles("BOS", 45.497765, -73.666280);
             Assert.IsEmpty(vehicles);
         }
 
         [Test]
-        public void when_getting_the_status_of_a_vehicle()
+        public async Task when_getting_the_status_of_a_vehicle()
         {
-            var vehicles = _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289);
+            var vehicles = (await _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289)).ToArray();
             Assert.IsNotEmpty(vehicles);
 
             var vehicleId = vehicles.First().Medallion;
 
-            var vehicleStatus = _sut.GetVehicleStatus("BOS", new[] {vehicleId});
+            var vehicleStatus = await _sut.GetVehicleStatus("BOS", new[] {vehicleId});
             Assert.IsNotEmpty(vehicleStatus);
         }
     }

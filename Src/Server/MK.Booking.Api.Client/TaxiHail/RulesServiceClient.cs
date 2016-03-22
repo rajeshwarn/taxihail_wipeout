@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Http.Extensions;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -22,39 +22,37 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task CreateRule(Rule rule)
         {
-            var req = "/admin/rules";
-             return Client.Post(req, rule);
+             return Client.PostAsync<object>("/admin/rules", rule);
         }
 
         public Task UpdateRule(Rule rule)
         {
             var req = string.Format("/admin/rules/" + rule.Id);
-            return Client.Put(req, rule);
+            return Client.PutAsync<object>(req, rule);
         }
 
 
         public Task DeleteRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId);
-            return Client.Delete(req);
+            return Client.DeleteAsync<object>(req);
         }
 
         public Task<IList<Rule>> GetRules()
         {
-            var req = "/admin/rules";
-            return Client.Get(req).Deserialize<IList<Rule>>();
+            return Client.GetAsync<IList<Rule>>("/admin/rules");
         }
 
         public Task ActivateRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId + "/activate");
-            return Client.Post(req, new RuleActivateRequest {RuleId = ruleId});
+            return Client.PostAsync<object>(req, new RuleActivateRequest {RuleId = ruleId});
         }
 
         public Task DeactivateRule(Guid ruleId)
         {
             var req = string.Format("/admin/rules/" + ruleId + "/deactivate");
-            return Client.Post(req, new RuleDeactivateRequest {RuleId = ruleId});
+            return Client.PostAsync<object>(req, new RuleDeactivateRequest {RuleId = ruleId});
         }
     }
 }

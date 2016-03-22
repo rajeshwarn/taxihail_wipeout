@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var result = new BlockingCollection<IBSOrderInformation>();
 
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(async () =>
             {
                 try
                 {
@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Jobs
                         var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
 
                         // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+                        var honeyBadgerVehicleStatuses = (await GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market)).ToArray();
 
                         foreach (var orderStatus in orderStatuses)
                         {
@@ -259,7 +259,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
+        private async Task<IEnumerable<VehicleResponse>> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
         {
             var isLocalMarketAndConfigured = !market.HasValue()
                 && _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket.HasValue()
@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Jobs
                     : market;                                                        // External market
 
                 // Get vehicle statuses/position from HoneyBadger
-                return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
+                return await _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
             }
 
             return new VehicleResponse[0];

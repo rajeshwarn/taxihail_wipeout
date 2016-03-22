@@ -1,14 +1,10 @@
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Http.Extensions;
-using CMTPayment.Authorization;
 using ServiceStack.ServiceHost;
 
 namespace CMTPayment
@@ -29,18 +25,6 @@ namespace CMTPayment
 
         protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }
-
-        private void SignRequest(WebRequest request)
-        {
-            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
-                ConsumerSecretKey,
-                "",
-                "",
-                request.Method,
-                request.RequestUri,
-                null);
-            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
-        }
 
         public Task<T> Get<T>(IReturn<T> request)
         {

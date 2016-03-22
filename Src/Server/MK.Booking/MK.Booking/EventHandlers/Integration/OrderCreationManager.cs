@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Database;
@@ -18,9 +19,9 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderCreationManager : IIntegrationEventHandler,
-        IEventHandler<OrderCreated>,
-        IEventHandler<IbsOrderSwitchInitiated>,
-        IEventHandler<PrepaidOrderPaymentInfoUpdated>
+        IAsyncEventHandler<OrderCreated>,
+        IAsyncEventHandler<IbsOrderSwitchInitiated>,
+        IAsyncEventHandler<PrepaidOrderPaymentInfoUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Handle(OrderCreated @event)
+        public async Task Handle(OrderCreated @event)
         {
             // Normal order flow
 
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (!ibsOrderId.HasValue)
             {
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
-                var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
+                var result = await _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                     @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
                     @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.IsFutureBooking, @event.PickupDate, @event.Prompts, @event.PromptsLength,
@@ -90,13 +91,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
 
-        public void Handle(IbsOrderSwitchInitiated @event)
+        public async Task Handle(IbsOrderSwitchInitiated @event)
         {
             // Order switched to another company
 
             var account = _accountDao.FindById(@event.AccountId);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
+            var result = await _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, false, @event.PickupDate, null, null,
@@ -106,7 +107,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
 
-        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        public async Task Handle(PrepaidOrderPaymentInfoUpdated @event)
         {
             // Paypal web (prepaid) flow
 
@@ -117,7 +118,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             
             var account = _accountDao.FindById(orderInfo.AccountId);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
+            var result = await _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, account.Email, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.IsFutureBooking, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,

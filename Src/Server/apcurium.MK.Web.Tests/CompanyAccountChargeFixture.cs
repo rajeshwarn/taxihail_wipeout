@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
+using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Http.Exceptions;
 using MK.Common.Exceptions;
 using NUnit.Framework;
 
@@ -85,10 +83,12 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<WebServiceException>(() =>
                 {
                     throw ex;
                 });
+
+                Assert.AreEqual((int)HttpStatusCode.Conflict, exception.StatusCode);
 
                 return;
             }
@@ -105,10 +105,13 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<WebServiceException>(() =>
                 {
                     throw ex;
                 });
+
+                Assert.AreEqual((int)HttpStatusCode.NotFound, exception.StatusCode);
+
                 return;
             }
 
@@ -182,10 +185,12 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<WebServiceException>(() =>
                 {
                     throw ex;
                 });
+
+                Assert.AreEqual((int)HttpStatusCode.NotFound, exception.StatusCode);
 
                 return;
             }

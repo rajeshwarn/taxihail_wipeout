@@ -3,10 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Http.Exceptions;
-using Microsoft.Practices.Unity;
 using Container = apcurium.MK.Common.IoC.UnityServiceLocator;
 using MK.Common.Exceptions;
 using NUnit.Framework;
@@ -96,7 +93,7 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                var exception = Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<WebServiceException>(() =>
                 {
                     throw ex;
                 });
@@ -187,7 +184,7 @@ namespace apcurium.MK.Web.Tests
             }
             catch (Exception ex)
             {
-                var exception = Assert.Throws<ServiceResponseException>(() =>
+                var exception = Assert.Throws<WebServiceException>(() =>
                 {
                     throw ex;
                 });

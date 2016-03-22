@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
 
@@ -33,13 +32,14 @@ namespace CMTServices
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
         /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
+        /// <param name="throwError">True will rethrow the error.</param>
         /// <returns>The available vehicles.</returns>
-        public override IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool throwError = false)
+        public override async Task<VehicleResponse[]> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool throwError = false)
         {
             var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly);
             if (@params == null)
             {
-                return new List<VehicleResponse>();
+                return new VehicleResponse[0];
             }
 
 			@params.AddRange(new []
@@ -51,9 +51,8 @@ namespace CMTServices
             CmtGeoResponse response = null;
             try
             {
-				response = Client.Post("/availability", ToDictionary(@params))
-                    .Deserialize<CmtGeoResponse>()
-                    .Result;
+				response = await Client.PostAsync<CmtGeoResponse>("/availability", ToDictionary(@params))
+;
             }
             catch (Exception ex)
             {
@@ -79,10 +78,10 @@ namespace CMTServices
                     ? orderedVehicleList.Take(numberOfVehicles) 
                     : orderedVehicleList;
 
-                return ToVehicleResponse(entities);
+                return ToVehicleResponse(entities).ToArray();
             }
 
-            return new List<VehicleResponse>();
+            return new VehicleResponse[0];
         }
 
         protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<CmtGeoContent> entities)
@@ -103,7 +102,7 @@ namespace CMTServices
             return response;
         }
 
-        public VehicleResponse GetEta(double latitude, double longitude, string vehicleRegistration)
+        public async Task<VehicleResponse> GetEta(double latitude, double longitude, string vehicleRegistration)
         {
             var @params = new []
             {
@@ -115,9 +114,7 @@ namespace CMTServices
 
             try
             {
-                var response = Client.Post("/eta", @params.ToDictionary(kv => kv.Key, kv => kv.Value))
-                    .Deserialize<CmtGeoContent>()
-                    .Result;
+                var response = await Client.PostAsync<CmtGeoContent>("/eta", @params.ToDictionary(kv => kv.Key, kv => kv.Value));
 
                 return ToVehicleResponse(response);
             }

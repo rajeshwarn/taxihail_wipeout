@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -22,7 +23,7 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderDispatchCompanyManager : IIntegrationEventHandler,
-        IEventHandler<OrderTimedOut>
+        IAsyncEventHandler<OrderTimedOut>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 	        _serverSettings = serverSettings;
         }
 
-        public async void Handle(OrderTimedOut @event)
+        public async Task Handle(OrderTimedOut @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (@event.Market.HasValue())
                 {
                     // External market
-                    var marketFleet = GetMarketFleets(@event.Market, details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
+                    var marketFleet = await GetMarketFleets(@event.Market, details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
                     nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, marketFleet, @event.Market);
                 }
                 else
@@ -171,16 +172,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 : nextDispatchCompany;
         }
 
-        private List<NetworkFleetResponse> GetMarketFleets(string market, string currentCompanyKey, double pickupLatitude, double pickupLongitude)
+        private async Task<List<NetworkFleetResponse>> GetMarketFleets(string market, string currentCompanyKey, double pickupLatitude, double pickupLongitude)
         {
             const int searchExpendLimit = 10;
             var searchRadius = 2000; // In meters
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
-                var marketVehicles = GetAvailableVehiclesServiceClient(market)
-					.GetAvailableVehicles(market, pickupLatitude, pickupLongitude, searchRadius, null, true)
-					.ToArray();
+                var marketVehicles = await GetAvailableVehiclesServiceClient(market)
+					.GetAvailableVehicles(market, pickupLatitude, pickupLongitude, searchRadius, null, true);
 
                 if (marketVehicles.Any())
                 {
