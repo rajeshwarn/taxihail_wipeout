@@ -52,33 +52,77 @@ namespace apcurium.MK.Common.Entity
             get { return ConcatAddressComponents(true); }
         }
 
-        private string ConcatAddressComponents(bool useBuildingName = false)
+        private string FirstSectionOfDisplayAddress
         {
-            var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-            if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
+            get
             {
-                // StreetNumber Street, City, State ZipCode
-                var address = string.Join(", ", new[]
-                {
-                    string.Join(" ", new[] {StreetNumber, Street}),
-                    City,
-                    string.Join(" ", new[] {State, ZipCode})
-                });
+                var firstSection = string.Join(" ", IsReversedFormat() 
+                    ? new[] { Street.ToSafeString(), StreetNumber.ToSafeString() } 
+                    : new[] { StreetNumber.ToSafeString(), Street.ToSafeString() });
 
-                if (useBuildingName && !string.IsNullOrWhiteSpace(BuildingName))
+                if (!firstSection.HasValueTrimmed())
                 {
-                    address = BuildingName + " - " + address;
+                    firstSection = FullAddress;
                 }
 
-                if (!string.IsNullOrWhiteSpace(FullAddress) && !FullAddress.Contains(City))
+                return firstSection;
+            }
+        }
+
+        public string LastSectionOfDisplayAddress
+        {
+            get
+            {
+                var lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
+                if (!lastSection.HasValueTrimmed())
+                {
+                    lastSection = string.Empty;
+                }
+
+                return lastSection;
+            }
+        }
+
+        private string ConcatAddressComponents(bool useBuildingName = false)
+        {
+            var addressSections =
+                new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
+
+            if (FirstSectionOfDisplayAddress.HasValueTrimmed() 
+                && LastSectionOfDisplayAddress.HasValueTrimmed() 
+                && FirstSectionOfDisplayAddress.Contains(LastSectionOfDisplayAddress))
+            {
+                // special case where we only had a FullAddress that we added value to but we don't want to redo the loop again
+                return FirstSectionOfDisplayAddress;
+            }
+
+            // should return ("StreetNumber Street" or "Street StreetNumber" or "FullAddress"), City, State ZipCode
+            var address = string.Join(", ", addressSections);
+
+            if (useBuildingName && BuildingName.HasValueTrimmed())
+            {
+                address = BuildingName + " - " + address;
+            }
+
+            // Check if full address is really a full address
+            // If it doesn't contain the city, then we overwrite FullAddress with the value of DisplayAddress
+            // We also check that the street doesn't contain the city, ie: "11000 Garden Grove Blvd, Garden Grove, CA 92843"
+            if (FullAddress.HasValueTrimmed())
+            {
+                if (!FullAddress.Contains(City.ToSafeString()))
                 {
                     FullAddress = address;
                 }
-
-                return address;
+                else
+                {
+                    if (Street.HasValueTrimmed() && Street.Contains(City.ToSafeString()))
+                    {
+                        FullAddress = address;
+                    }
+                }
             }
-            return FullAddress;
+
+            return address;
         }
 
         public string GetFirstPortionOfAddress()
@@ -132,7 +176,10 @@ namespace apcurium.MK.Common.Entity
 			{
 				if (AddressType == "place" || FriendlyName.HasValue())
 				{
-					return DisplayAddress;
+				    if (!DisplayAddress.Contains(FriendlyName))
+				    {
+                        return DisplayAddress;
+                    }
 				}
 
                 if (DisplayAddress == null)
@@ -183,6 +230,32 @@ namespace apcurium.MK.Common.Entity
             return FullAddress.HasValue()
                 && Longitude != 0
                 && Latitude != 0;
+        }
+
+        /// <summary>
+        /// Determines if the address should be displayed in reversed order (Mexico, Netherlands)
+        /// </summary>
+        /// <returns><c>true</c> if this instance is reversed format; otherwise, <c>false</c>.</returns>
+        private bool IsReversedFormat()
+        {
+            var reversed = false;
+
+            try
+            {
+                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.InvariantCultureIgnoreCase);
+                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.InvariantCultureIgnoreCase);
+
+                if(indexOfStreet >= 0 && indexOfStreetNumber >= 0)
+                {
+                    // we succesfully found the 2 indexes in FullAddress
+                    reversed = indexOfStreet < indexOfStreetNumber;
+                }
+            }
+            catch
+            {
+            }
+
+            return reversed;
         }
     }
 }

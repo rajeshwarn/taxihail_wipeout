@@ -28,16 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private PayPalCustomFuturePaymentViewController _payPalPayment;
         private PayPalDelegate _payPalPaymentDelegate;
 
-        private bool CardIOIsEnabled
-        {
-            get 
-            { 
-                // CardIOToken is only used to know if the company wants it or not
-                return CardIOUtilities.CanReadCardWithCamera()
-                    && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
-            }
-        }
-
         private bool PayPalIsEnabled
         {
             get { return _payPalSettings.IsEnabled; }
@@ -62,10 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ChangeRightBarButtonFontToBold();
 
-            if (CardIOIsEnabled)
-            {
-                CardIOUtilities.Preload();
-            }
+            Utilities.Preload();
         }
 
         public override async void ViewDidLoad ()
@@ -127,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.CreditCardSaveButtonDisplay);
 
 			set.Bind(btnSaveCard)
-				.For(v => v.Hidden)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.IsAddingNewCard)
 				.WithConversion("BoolInverter");
 
@@ -152,7 +139,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanSetCreditCardAsDefault)
                 .WithConversion("BoolInverter");
-            
+
+            set.Bind(btnScanCard)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanScanCreditCard)
+                .WithConversion("BoolInverter");
+
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
@@ -189,12 +181,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
 				.To(vm => vm.IsAddingNewCard);
 
+			set.Bind(txtExpMonth)
+				.For(v => v.HasRightArrow)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtExpYear)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationYearDisplay);
 
 			set.Bind(txtExpYear)
 				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtExpYear)
+				.For(v => v.HasRightArrow)
 				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(txtCvv)
@@ -233,6 +233,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
                 .To(vm => vm.IsAddingNewCard);
 
+            set.Bind(imgVisa)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableVisaMastercard);
+
+            set.Bind(imgAmex)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableAMEX);
+
+            set.Bind(imgDiscover)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableDiscover);
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
@@ -259,16 +271,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ConfigureCreditCardSection()
         {
-            if (CardIOIsEnabled && ViewModel.CanScanCreditCard)
-            {
-                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
-                btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
-                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
-            }
-            else
-            {
-                btnScanCard.RemoveFromSuperview();
-            }
+            FlatButtonStyle.Silver.ApplyTo(btnScanCard);
+            btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
+            btnScanCard.TouchUpInside += (sender, e) => ScanCard();
+
             FlatButtonStyle.Silver.ApplyTo(btnCardDefault);
             // Configure CreditCard section
             FlatButtonStyle.Green.ApplyTo(btnSaveCard);
@@ -309,7 +315,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "amex.png";
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+            ViewModel.CreditCardCompanies[4].Image = "discover.png";
+            ViewModel.CreditCardCompanies[5].Image = "credit_card_generic.png";
 
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
@@ -407,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             PresentViewController(_cardScanner, true, null);
         }
 
-		private void PopulateCreditCardName(CardIOCreditCardInfo info)
+		private void PopulateCreditCardName(CreditCardInfo info)
         {
             txtCardNumber.Text = info.CardNumber;
             ViewModel.CreditCardNumber = info.CardNumber;
@@ -416,19 +423,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private class CardScannerDelegate : CardIOPaymentViewControllerDelegate
         {
-            private Action<CardIOCreditCardInfo> _cardScanned;
+            private Action<CreditCardInfo> _cardScanned;
 
-            public CardScannerDelegate (Action<CardIOCreditCardInfo> cardScanned)
+            public CardScannerDelegate (Action<CreditCardInfo> cardScanned)
             {
                 _cardScanned = cardScanned;
             }
 
-            public override void UserDidCancel(CardIOPaymentViewController paymentViewController)
+            public override void UserDidCancelPaymentViewController(CardIOPaymentViewController paymentViewController)
             {
                 paymentViewController.DismissViewController(true, null);
             }
 
-            public override void UserDidProvideCreditCardInfo(CardIOCreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
+            public override void UserDidProvideCreditCardInfo(CreditCardInfo cardInfo, CardIOPaymentViewController paymentViewController)
             {
                 _cardScanned(cardInfo);
                 paymentViewController.DismissViewController(true, null);

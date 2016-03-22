@@ -90,6 +90,26 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public OrderStatusDetail GetActiveOrderStatusDetails(Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var activeOrders = context.Set<OrderStatusDetail>()
+                     .Where(x => x.AccountId == accountId
+                         && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending)
+                         && VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId))
+                     .OrderByDescending(order => order.PickupDate)
+                     .ToList();
+                
+                // remove junk orders (unfinished and with pickup date more than 2 days ago)
+                activeOrders = activeOrders
+                    .Where(x => x.PickupDate >= DateTime.Now.AddDays(-2))
+                    .ToList();
+                
+                return activeOrders.SingleOrDefault();
+            }
+        }
+
         public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
@@ -194,21 +214,23 @@ namespace apcurium.MK.Booking.ReadModel.Query
         }
 
 	    public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
-	    {
-		    using (var context = _contextFactory.Invoke())
-		    {
-				return context
-				    .Query<OrderManualRideLinqDetail>()
-					.AsEnumerable()
-					.Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode) 
-						&& ridelinq.AccountId == accountId
-						&& ridelinq.StartTime.HasValue 
-						&& ridelinq.StartTime.Value.Date == DateTime.Now.Date
-					)
-					.OrderBy(ridelinq => ridelinq.StartTime)
-					.LastOrDefault();
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var today = DateTime.Now.Date;
+                return context
+                    .Query<OrderManualRideLinqDetail>()
+                    .Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode)
+                        && ridelinq.AccountId == accountId)
+                    .ToList()
+                    .Where(ridelinq => ridelinq.StartTime.HasValue
+                        && ridelinq.StartTime.Value.Date.Year == today.Year
+                        && ridelinq.StartTime.Value.Date.Month == today.Month
+                        && ridelinq.StartTime.Value.Date.Day == today.Day)
+                    .OrderBy(ridelinq => ridelinq.StartTime)
+                    .LastOrDefault();
 
-		    }
-	    }
+            }
+        }
     }
 }

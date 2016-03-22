@@ -1,0 +1,8 @@
+﻿{
+    "ibsOrderIdLabel" : "Ordernummer",
+    "statusLabel" : "Status :",
+    "statusCompleted": "Voltooid ",
+    "statusCanceled": "Geannuleerd ",
+    "statusCreated": "In behandeling",
+    "statusClickLabel": "Klik hier voor meer details"
+}

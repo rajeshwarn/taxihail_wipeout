@@ -211,7 +211,6 @@
     <Compile Include="Extensions\SessionEntityExtensions.cs" />
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
-    <Compile Include="Helpers\CreateOrder\IbsNoteBuilder.cs" />
     <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />

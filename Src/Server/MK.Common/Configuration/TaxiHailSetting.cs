@@ -91,7 +91,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             HideTHNetworkAppMenu = true;
-            ShowOrderNumber = false;
+            ShowOrderNumber = true;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -384,7 +384,7 @@ namespace MK.Common.Configuration
         public bool HideCallDispatchButton { get; protected set; }
 
         [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
-        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
+        [Hidden, SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
 
@@ -432,7 +432,6 @@ namespace MK.Common.Configuration
         public bool HideRebookOrder { get; protected set; }
 
 		[PropertyEncrypt]
-        [Hidden]
         [SendToClient]
         [Display(Name = "Card IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
         public string CardIOToken { get; protected set; }
@@ -533,7 +532,7 @@ namespace MK.Common.Configuration
         public bool HideTHNetworkAppMenu { get; protected set; }
 
 		[Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
-        [SendToClient, CustomizableByCompany]
+        [Hidden, SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
 

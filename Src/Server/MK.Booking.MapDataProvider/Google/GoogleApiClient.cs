@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]);
         }
 
-	    public Task<GeoPlace> GetPlaceDetailAsync(string id)
+	    public async Task<GeoPlace> GetPlaceDetailAsync(string id)
 	    {
             var client = GetClient(PlaceDetailsServiceUrl);
             var resource = GetPlaceDetailRequest(id);
@@ -113,8 +113,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 Address = ResourcesExtensions.ConvertGeoObjectToAddress(response.Result)
             };
 
-            return HandleGoogleResultAsync(() => client.GetAsync<PlaceDetailResponse>(resource), selector, new GeoPlace());
-        }
+            return await HandleGoogleResultAsync(() => client.GetAsync<PlaceDetailResponse>(resource), selector, new GeoPlace()).ConfigureAwait(false);
+	    }
 
         public Task<GeoAddress> GetAddressDetailAsync(string id)
         {
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         public GeoAddress[] GeocodeAddress(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 		{
             return GeocodeAddressAsync(query, currentLanguage, pickupLatitude, pickupLongitude, searchRadiusInMeters).Result;
-        }
+		}
             
         public Task<GeoAddress[]> GeocodeAddressAsync(string query, string currentLanguage, double? pickupLatitude, double? pickupLongitude, double searchRadiusInMeters)
 	    {
@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                     while (!success && attempts < MaxNumberOfAttemps)
                     {
                         await Task.Delay(RetryDelay);
-                        result = await apiCall.Invoke();
+                        result = await apiCall();
                         attempts++;
                         success = result.Status == ResultStatus.OK;
                     }
@@ -354,12 +354,12 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                         && _fallbackGeocoder != null
                         && fallBackAction != null)
                 {
-                    return await fallBackAction.Invoke();
+                    return await fallBackAction();
                 }
 
                 if (result.Status == ResultStatus.OK)
                 {
-                    return selector.Invoke(result);
+                    return selector(result);
                 }
             }
             catch (Exception ex)

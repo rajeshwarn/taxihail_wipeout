@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         }
 
 
-        public Task<Address> Get(PlaceDetailRequest request)
+        public Address Get(PlaceDetailRequest request)
         {
-            return _client.GetPlaceDetail(request.PlaceName, request.PlaceId);
+            return _client.GetPlaceDetail(request.PlaceName, request.PlaceId).Result;
         }
     }
 }

@@ -163,7 +163,7 @@
     <value>Connection error</value>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</value>
+    <value>The server cannot be contacted.</value>
   </data>
   <data name="FavoriteLocationsTitle" xml:space="preserve">
     <value>Favorite locations</value>
@@ -1196,6 +1196,12 @@
   </data>
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
     <value>Sorry, Amex cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Sorry, Visa, Mastercard and Visa Electron cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Sorry, Discover cards are not supported</value>
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>

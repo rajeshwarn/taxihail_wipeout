@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CustomerPortal.Web.Helpers;
 
 namespace CustomerPortal.Web.Services.Impl
 {
@@ -21,26 +22,17 @@ namespace CustomerPortal.Web.Services.Impl
 
             string result = null;
 
-            var response = await GetClient().GetAsync("tags?per_page=100");
-            IEnumerable<string> links;
-            response.Headers.TryGetValues("link", out links);
+            
 
-            result = await response.Content.ReadAsStringAsync();
-
-
-            var revisionsFromGitHub =
-                JsonConvert.DeserializeObject<GitHubRepoResponse[]>(result)
-                    .Select(x => new Revision
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Commit = x.Commit.Sha,
-                        Tag = x.Name
-                    }).ToList();
-
-
+            var revisionsFromGitHub = (await GetTagsFromGitHub()).Select(x => new Revision
+            {
+                Id = Guid.NewGuid().ToString(),
+                Commit = x.Commit.Sha,
+                Tag = x.Name
+            }).ToList();
 
             revisionsFromGitHub.Add(await GetDefaultRevision());
-
+            
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
             var updatesRevisions = repository
@@ -71,8 +63,35 @@ namespace CustomerPortal.Web.Services.Impl
                 repository.Add(newRevisions);
             }
 
-            var hasMoreThan100Tags = links != null ? true : false;
-            return hasMoreThan100Tags;
+            //var hasMoreThan100Tags = links != null ? true : false;
+            return false;
+        }
+
+        private async Task<List<GitHubRepoResponse>> GetTagsFromGitHub()
+        {
+            var response = await GetClient().GetAsync("tags?per_page=100");
+            var result = JsonConvert.DeserializeObject<GitHubRepoResponse[]>(await response.Content.ReadAsStringAsync()).ToList();
+
+            IEnumerable<string> links;
+            response.Headers.TryGetValues("link", out links);
+            var nextPageUrl = GetNextPageLink(links.FirstOrDefault());
+
+            while (nextPageUrl != null)
+            {
+                var nextPageResponse = await GetClient(true).GetAsync(nextPageUrl);
+                var nextPageResult = JsonConvert.DeserializeObject<GitHubRepoResponse[]>(await nextPageResponse.Content.ReadAsStringAsync());
+                result.AddRange(nextPageResult);
+
+                nextPageResponse.Headers.TryGetValues("link", out links);
+                nextPageUrl = GetNextPageLink(links.FirstOrDefault());
+            }
+
+            return result;
+        }
+
+        private string GetNextPageLink(string linkHeader)
+        {
+            return WebLinkParser.ParseAndGetNextLink(linkHeader);
         }
 
         public bool IsVersionNumber(Revision revision)
@@ -102,7 +121,7 @@ namespace CustomerPortal.Web.Services.Impl
 
 
         }
-        private static HttpClient GetClient()
+        private static HttpClient GetClient(bool noBaseUrl = false)
         {
             var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
 

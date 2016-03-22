@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -100,8 +101,13 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
-            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+            if (request.Settings.Country == null || !request.Settings.Country.Code.HasValueTrimmed())
+            {
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                    string.Format(_resources.Get("PhoneNumberCountryNotProvided", request.ClientLanguageCode)));
+            }
 
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
             if (PhoneHelper.IsPossibleNumber(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
@@ -308,7 +314,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            var ibsInformationNote = IbsNoteBuilder.BuildNote(
+            var ibsInformationNote = IbsHelper.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 request.Note,

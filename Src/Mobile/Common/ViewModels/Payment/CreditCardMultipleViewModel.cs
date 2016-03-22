@@ -130,9 +130,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get
 			{
 				return this.GetCommand<CreditCardInfos>( cci =>
-					{
-						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle});
-					});
+				{
+					ShowViewModel<CreditCardAddViewModel>(new { creditCardId = cci.CreditCardId, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
+				});
 			}
 		}
 
@@ -141,9 +141,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get
             {
                 return this.GetCommand(() =>
-                    {
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
-                    });
+                {
+					ShowViewModel<CreditCardAddViewModel>(new { isAddingNew = true, isFromCreditCardListView = true, hasPaymentToSettle = _hasPaymentToSettle });
+                });
             }
         }
     }

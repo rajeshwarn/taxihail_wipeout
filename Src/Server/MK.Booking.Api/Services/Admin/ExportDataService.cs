@@ -56,6 +56,22 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 default:
                     throw new HttpException((int)HttpStatusCode.NotFound, "Not found");
             }
+
+                        if (orderReport.Account.Name.HasValue())
+                        {
+                            orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
+                        }
+
+                        if (orderReport.Account.Phone.HasValue())
+                        {
+                            orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
+                        }
+
+                        if (orderReport.Account.Email.HasValue())
+                        {
+                            orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
+                        }
+                        
         }
 
         private object PreparePromotionsData(DateTime endDate, DateTime startDate)

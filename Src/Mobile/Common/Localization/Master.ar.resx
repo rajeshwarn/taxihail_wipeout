@@ -439,6 +439,12 @@
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
     <value>Sorry, Amex cards are not supported</value>
   </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Sorry, Visa, Mastercard and Visa Electron cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Sorry, Discover cards are not supported</value>
+  </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>
   </data>
@@ -803,7 +809,7 @@
     <value>لا</value>
   </data>
   <data name="NoConnectionMessage" xml:space="preserve">
-    <value>لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</value>
+    <value>The server cannot be contacted.</value>
   </data>
   <data name="NoConnectionTitle" xml:space="preserve">
     <value>خطأ في الإتصال</value>

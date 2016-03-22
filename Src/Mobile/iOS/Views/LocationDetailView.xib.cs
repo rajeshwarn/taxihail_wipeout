@@ -60,6 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
 				lblRingCode.Hidden = true;
                 txtRingCode.Hidden = true;
+
+				lblRingCode.RemoveFromSuperview();
+				txtRingCode.RemoveFromSuperview();
             }
 
 			if (!ViewModel.Settings.ShowPassengerApartment)
@@ -68,6 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtRingCode.Hidden = true;
 				lblApartment.Hidden = true;
 				txtAptNumber.Hidden = true;
+
+				lblRingCode.RemoveFromSuperview();
+				txtRingCode.RemoveFromSuperview();
+				lblApartment.RemoveFromSuperview();
+				txtAptNumber.RemoveFromSuperview();
 			}
 
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
@@ -101,8 +109,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(btnRebook)
 				.For("TouchUpInside")
 				.To(vm => vm.RebookOrder);
+			
 			set.Bind(btnRebook)
-				.For(v => v.Hidden)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.RebookIsAvailable)
 				.WithConversion("BoolInverter");
 
@@ -110,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteAddress);
 			set.Bind(btnDelete)
-				.For(v => v.Hidden)
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.IsNew);
 
 			set.Apply();
