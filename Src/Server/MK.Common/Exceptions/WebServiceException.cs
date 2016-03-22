@@ -84,6 +84,7 @@ namespace MK.Common.Exceptions
                 if (!TryGetResponseStatusFromResponseBody(out responseStatus))
                 {
                     _errorCode = StatusDescription;
+                    _errorCodes = new[] {StatusDescription};
                     return;
                 }
             }
@@ -129,7 +130,7 @@ namespace MK.Common.Exceptions
                     return false;
                 }
 				var map = ResponseBody.FromJson<ErrorResponse>();
-                _errorCodes = map.ErrorCodes;
+                _errorCodes = map.ValidationResponseStatus.ValidationErrorCodes;
 				responseStatus = map.ResponseStatus.ToJson();
                 return true;
             }

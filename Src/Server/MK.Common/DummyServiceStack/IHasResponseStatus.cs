@@ -9,16 +9,12 @@
     {
         public ResponseStatus ResponseStatus { get; set; }
 
-        private string[] _errorCodes;
+        public ValidationResponseStatus ValidationResponseStatus { get; set; }
+    }
 
-        public string[] ErrorCodes
-        {
-            get
-            {
-                return _errorCodes ?? new[] { ResponseStatus.ErrorCode };
-            }
-            set { _errorCodes = value; }
-        }
+    public class ValidationResponseStatus
+    {
+        public string[] ValidationErrorCodes { get; set; }
     }
 
     public class ResponseStatus

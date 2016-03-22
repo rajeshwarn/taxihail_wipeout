@@ -138,7 +138,7 @@ namespace apcurium.MK.Common.Extensions
                 ErrorResponse errorResponse;
                 try
                 {
-                    errorResponse = body.FromJson<ErrorResponse>();
+                    errorResponse = body.FromJsonSafe<ErrorResponse>();
                 }
                 catch
                 {

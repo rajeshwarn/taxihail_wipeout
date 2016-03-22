@@ -31,7 +31,10 @@ namespace apcurium.MK.Booking.Api.Contract.Controllers
 
             var error = new ErrorResponse
             {
-                ErrorCodes = errors,
+                ValidationResponseStatus = new ValidationResponseStatus()
+                {
+                    ValidationErrorCodes = errors
+                },
                 ResponseStatus = new ResponseStatus
                 {
                     ErrorCode = errors.FirstOrDefault()
