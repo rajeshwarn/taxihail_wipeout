@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;

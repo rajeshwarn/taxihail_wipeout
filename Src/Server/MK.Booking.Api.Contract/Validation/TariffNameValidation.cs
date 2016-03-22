@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#if CLIENT
+using ValidationAttribute = apcurium.MK.Booking.Api.Contract.Validation.ValidationAttribute;
+#else
+using ValidationAttribute = System.ComponentModel.DataAnnotations.ValidationAttribute;
+#endif
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Extensions;
 

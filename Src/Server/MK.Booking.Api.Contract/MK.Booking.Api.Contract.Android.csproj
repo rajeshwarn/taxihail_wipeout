@@ -129,6 +129,14 @@
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
     <Compile Include="Requests\OrderUpdateRequest.cs" />
+    <Compile Include="Validation\AddressLatitudeValidation.cs" />
+    <Compile Include="Validation\AddressLongitudeValidation.cs" />
+    <Compile Include="Validation\AddressNameValidation.cs" />
+    <Compile Include="Validation\BookingSettingsValidation.cs" />
+    <Compile Include="Validation\RegisterAccountValidation.cs" />
+    <Compile Include="Validation\TariffNameValidation.cs" />
+    <Compile Include="Validation\TariffRatesValidator.cs" />
+    <Compile Include="Validation\ValidationAttribute.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

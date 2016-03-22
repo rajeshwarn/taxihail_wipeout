@@ -87,6 +87,7 @@
     <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
+    <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
@@ -143,6 +144,14 @@
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
     <Compile Include="Requests\OrderUpdateRequest.cs" />
+    <Compile Include="Validation\AddressLatitudeValidation.cs" />
+    <Compile Include="Validation\AddressLongitudeValidation.cs" />
+    <Compile Include="Validation\AddressNameValidation.cs" />
+    <Compile Include="Validation\BookingSettingsValidation.cs" />
+    <Compile Include="Validation\RegisterAccountValidation.cs" />
+    <Compile Include="Validation\TariffNameValidation.cs" />
+    <Compile Include="Validation\TariffRatesValidator.cs" />
+    <Compile Include="Validation\ValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

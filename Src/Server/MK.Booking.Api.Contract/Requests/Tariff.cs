@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
@@ -18,18 +17,12 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
         public Guid Id { get; set; }
         public TariffType Type { get; set; }
-        [Required]
         public string Name { get; set; }
         public double MinimumRate { get; set; }
-        [Range(0, double.MaxValue)]
         public decimal FlatRate { get; set; }
-        [Range(0, double.MaxValue)]
         public double KilometricRate { get; set; }
-        [Range(0, double.MaxValue)]
         public double PerMinuteRate { get; set; }
-        [Range(0, double.MaxValue)]
         public double MarginOfError { get; set; }
-        [Range(0, double.MaxValue)]
         public double KilometerIncluded { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }

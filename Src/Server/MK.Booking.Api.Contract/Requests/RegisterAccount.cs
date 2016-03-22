@@ -2,8 +2,6 @@
 
 using System;
 using ServiceStack.ServiceHost;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common;
 
@@ -16,9 +14,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class RegisterAccount : BaseDto
     {
         public Guid AccountId { get; set; }
-        [Required]
+
         public string Email { get; set; }
-        [Required]
+
         public string Name { get; set; }
 
         public string FirstName { get; set; }
@@ -26,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string LastName { get; set; }
 
         public string Password { get; set; }
-        [Required]
+
         public CountryISOCode Country { get; set; }
 
         public string Phone { get; set; }
