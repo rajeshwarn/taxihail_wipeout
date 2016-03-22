@@ -47,8 +47,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         {
             if (!request.OriginLat.HasValue || !request.OriginLng.HasValue)
             {
-                //TODO MKTAXI-3918: Handle exceptions
-                throw new HttpException((int)HttpStatusCode.BadRequest, "MissingPosition"/*, "An original longitude and latitude is required"*/);
+                throw GenerateException(HttpStatusCode.BadRequest, "MissingPosition", "An original longitude and latitude is required");
             }
 
             var marketTariff = await GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);

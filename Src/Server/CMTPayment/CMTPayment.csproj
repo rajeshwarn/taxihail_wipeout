@@ -61,7 +61,6 @@
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtMobileServiceClient.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
-    <Compile Include="CmtPaymentServiceClient.Server.cs" />
     <Compile Include="CmtTripInfoServiceHelper.cs" />
     <Compile Include="ErrorResponse.cs" />
     <Compile Include="LevelThreeData.cs" />

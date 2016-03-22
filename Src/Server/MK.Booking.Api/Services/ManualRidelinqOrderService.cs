@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
@@ -95,14 +94,12 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (creditCard == null)
 		        {
-                    //TODO MKTAXI-3918: handle this
-                    throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_NoCardOnFile.ToString()/*, _resources.Get("ManualRideLinq_NoCardOnFile", account.Language)*/);
+                    throw  GenerateException(HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_NoCardOnFile.ToString(), _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
 		        }
 
 		        if (creditCard.IsDeactivated)
 		        {
-                    //TODO MKTAXI-3918: handle this
-                    throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString()/*, _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language)*/);
+                    throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(), _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
 		        }
 
 		        // Send pairing request to CMT API

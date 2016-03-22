@@ -21,8 +21,6 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        //TODO MKTAXI-3915: Handle this
-        //public IValidator<PopularAddress> Validator { get; set; }
         protected IPopularAddressDao Dao { get; set; }
 
         public object Post(PopularAddress request)

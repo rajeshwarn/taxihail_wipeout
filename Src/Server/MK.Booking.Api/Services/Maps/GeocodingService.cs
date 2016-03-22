@@ -2,7 +2,6 @@
 
 using System.Globalization;
 using System.Net;
-using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -32,8 +31,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             if ((request.Lat.HasValue && request.Lng.HasValue && !request.Name.IsNullOrEmpty()) ||
                 (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
             {
-                //TODO MKTAXI-3918: Handle exceptions
-                throw new HttpException((int)HttpStatusCode.BadRequest, "400"/*, "You must specify the name or the coordinate"*/);
+                throw GenerateException(HttpStatusCode.BadRequest, "400", "You must specify the name or the coordinate");
             }
 
             // Get current language

@@ -6,16 +6,12 @@ using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-using CMTPayment.Authorization;
-
-using System.Linq;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 
 
 namespace CMTPayment
 {
-    public partial class CmtPaymentServiceClient : BaseServiceClient
+    public class CmtPaymentServiceClient : BaseServiceClient
     {
         private readonly ILogger _logger;
 
@@ -26,14 +22,10 @@ namespace CMTPayment
         {
             _logger = logger;
 
-            ClientSetup();
-
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
         }
-
-        partial void ClientSetup();
 
         protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }
@@ -116,49 +108,5 @@ namespace CMTPayment
             }
 #endif
         }
-
-        //TODO MKTAXI-3370: To remove if needed
-//#else
-//        public Task<T> GetAsync<T>(IReturn<T> request)
-//        {
-//            _logger.Maybe(() => _logger.LogMessage("CMT Get : " + request.ToJson()));
-//            var result = Client.GetAsync(request);
-//            result.ContinueWith(r => LogResult(r, "CMT Get Result: "));
-//            return result;
-//        }
-
-//        public Task<T> DeleteAsync<T>(IReturn<T> request)
-//        {
-//            _logger.Maybe(() => _logger.LogMessage("CMT Delete : " + request.ToJson()));
-//            var result = Client.DeleteAsync(request);
-//            result.ContinueWith(r => LogResult(r, "CMT Delete Result: "));
-//            return result;
-//        }
-
-//        public Task<T> PostAsync<T>(IReturn<T> request)
-//        {
-//            _logger.Maybe(() => _logger.LogMessage("CMT Post : " + request.ToJson()));
-//            var result = Client.PostAsync(request);
-//            result.ContinueWith(r => LogResult(r, "CMT Post Result: "));
-//            return result;
-//        }
-
-//        private void LogResult<T>(Task<T> result, string message)
-//        {
-//            _logger.Maybe(() =>
-//            {
-//                if (!result.IsFaulted)
-//                {
-//                    _logger.LogMessage(message + result.Result.ToJson());
-//                }
-//                else if (result.Exception != null)
-//                {
-//                    _logger.LogMessage(message + " EXCEPTION.");
-//                    _logger.LogError(result.Exception);
-//                }
-
-//            });
-//        }
-//#endif
     }
 }
