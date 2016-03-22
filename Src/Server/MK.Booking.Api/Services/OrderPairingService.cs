@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
             var orderPairing = _orderDao.FindOrderPairingById(request.OrderId);
             if (orderPairing == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Pairing information not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Pairing information not found");
             }
 
             var order = _orderDao.FindById(request.OrderId);
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var result = await _paymentService.UpdateAutoTip(order.CompanyKey, request.OrderId, request.AutoTipPercentage);
                 if (!result.IsSuccessful)
                 {
-                    throw new HttpException(result.Message);
+                    throw GenerateException(HttpStatusCode.InternalServerError, result.Message);
                 }
             }
 

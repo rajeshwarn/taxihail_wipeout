@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (currentAccountDetail.Email != request.Email && currentAccountDetail.FacebookId.HasValue())
 			{
-				throw new HttpException((int)HttpStatusCode.BadRequest, _resources.Get("EmailChangeWithFacebookAccountErrorMessage"));
+				throw GenerateException(HttpStatusCode.BadRequest, _resources.Get("EmailChangeWithFacebookAccountErrorMessage"));
 			}
 
 			if (existingEmailAccountDetail != null && existingEmailAccountDetail.Email == request.Email && existingEmailAccountDetail.Id != accountId)
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                throw new HttpException((int)HttpStatusCode.InternalServerError,string.Format(_resources.Get("PhoneNumberFormat")), new Exception(countryCode.GetPhoneExample()));
+                throw GenerateException(HttpStatusCode.InternalServerError,string.Format(_resources.Get("PhoneNumberFormat")), countryCode.GetPhoneExample());
             }
 
             var isChargeAccountEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
@@ -74,21 +74,21 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 if (!request.CustomerNumber.HasValue())
                 {
-                    throw new HttpException((int)HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                    throw GenerateException(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }
 
                 // Validate locally that the account exists
                 var account = _accountChargeDao.FindByAccountNumber(request.AccountNumber);
                 if (account == null)
                 {
-                    throw new HttpException((int)HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                    throw GenerateException(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }
 
                 // Validate with IBS to make sure the account/customer is still active
                 var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
                 if (!ibsChargeAccount.IsValid())
                 {
-                    throw new HttpException((int)HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                    throw GenerateException(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }
             }
 

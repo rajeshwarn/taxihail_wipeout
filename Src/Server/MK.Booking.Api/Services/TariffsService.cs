@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Services
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Name == request.Name))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
             }
 
             var command = Mapper.Map<CreateTariff>(request);
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Services
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
             }
 
             var command = Mapper.Map<UpdateTariff>(request);

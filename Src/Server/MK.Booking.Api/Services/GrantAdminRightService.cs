@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
+                throw GenerateException(HttpStatusCode.BadRequest, "Bad request");
             }
 
             _commandBus.Send(new UpdateRoleToUserAccount
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Bad request");
+                throw GenerateException(HttpStatusCode.BadRequest, "Bad request");
             }
 
 
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return;
             }
 
-            throw new HttpException((int)HttpStatusCode.BadRequest, "Account not found");
+            throw GenerateException(HttpStatusCode.BadRequest, "Account not found");
         }
         public void Put(RevokeAccessRequest request)
         {
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return;
             }
 
-            throw new HttpException((int)HttpStatusCode.BadRequest, "Account not found");
+            throw GenerateException(HttpStatusCode.BadRequest, "Account not found");
         }
     }
 }

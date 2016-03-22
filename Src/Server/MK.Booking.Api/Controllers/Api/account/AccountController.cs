@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         {
             BookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
 
-            ConfirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService,serverSettings);
+            ConfirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService, blackListEntryService, serverSettings);
 
             RegisterAccountService = new RegisterAccountService(commandBus, accountDao, serverSettings, blackListEntryService);
 

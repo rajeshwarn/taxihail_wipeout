@@ -11,7 +11,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using System.Text;
-using System.Web;
 
 #endregion
 
@@ -54,24 +53,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 case DataType.Promotions:
                     return PreparePromotionsData(endDate, startDate);
                 default:
-                    throw new HttpException((int)HttpStatusCode.NotFound, "Not found");
+                    throw GenerateException(HttpStatusCode.NotFound, "Not found");
             }
-
-                        if (orderReport.Account.Name.HasValue())
-                        {
-                            orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
-                        }
-
-                        if (orderReport.Account.Phone.HasValue())
-                        {
-                            orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
-                        }
-
-                        if (orderReport.Account.Email.HasValue())
-                        {
-                            orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
-                        }
-                        
         }
 
         private object PreparePromotionsData(DateTime endDate, DateTime startDate)
@@ -156,9 +139,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 var orderReportEntry = new Dictionary<string, string>
                 {
                     ["Account.AccountId"] = orderReport.Account.AccountId.ToString(),
-                    ["Account.Name"] = orderReport.Account.Name.Trim(),
-                    ["Account.Phone"] = orderReport.Account.Phone.Trim(),
-                    ["Account.Email"] = orderReport.Account.Email.Trim(),
                     ["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString(),
                     ["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString(),
                     ["Account.PayBack "] = orderReport.Account.PayBack,
@@ -195,6 +175,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     ["Payment.Id"] = orderReport.Payment.PaymentId.ToString(),
                     ["Payment.DriverId"] = orderReport.Payment.DriverId,
                     ["Payment.Medallion"] = orderReport.Payment.Medallion,
+
+
                     ["Payment.Last4Digits"] = orderReport.Payment.Last4Digits.IsNullOrEmpty()
                             ? string.Empty
                             : string.Format("'{0}'", orderReport.Payment.Last4Digits),
@@ -240,6 +222,21 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     ["Client.UserAgent"] = orderReport.Client.UserAgent,
                     ["Client.Version"] = orderReport.Client.Version
                 };
+
+                if (orderReport.Account.Name.HasValue())
+                {
+                    orderReportEntry["Account.Name"] = orderReport.Account.Name.Trim();
+                }
+
+                if (orderReport.Account.Phone.HasValue())
+                {
+                    orderReportEntry["Account.Phone"] = orderReport.Account.Phone.Trim();
+                }
+
+                if (orderReport.Account.Email.HasValue())
+                {
+                    orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
+                }
 
                 var rating = orderReport.Rating.FromJsonSafe<Dictionary<string, string>>() ?? new Dictionary<string, string>();
 

@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception ex)
             {
-                throw new HttpException((int) HttpStatusCode.InternalServerError, ex.Message);
+                throw GenerateException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 

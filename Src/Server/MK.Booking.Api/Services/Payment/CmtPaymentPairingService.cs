@@ -51,21 +51,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _logger.LogMessage("Pairing info received for order {0} and PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
             if (Guid.Empty == request.OrderUuid || request.PairingToken.HasValueTrimmed())
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "400"/*, "Missing required parameter"*/);
+                throw GenerateException(HttpStatusCode.BadRequest, "400"/*, "Missing required parameter"*/);
             }
             
             var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderUuid);
 
             if (orderStatusDetail == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "401"/*, "Cannot find OrderId"*/);
+                throw GenerateException(HttpStatusCode.BadRequest, "401"/*, "Cannot find OrderId"*/);
             }
 
             var account = _accountDao.FindById(orderStatusDetail.AccountId);
 
             if (!account.DefaultCreditCard.HasValue)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "402"/*, "User does not have a currently set creditcard"*/);
+                throw GenerateException(HttpStatusCode.BadRequest, "402"/*, "User does not have a currently set creditcard"*/);
             }
 
             var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.Value);

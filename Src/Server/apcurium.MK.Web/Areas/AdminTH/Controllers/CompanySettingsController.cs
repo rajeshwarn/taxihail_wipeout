@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,9 +91,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     }
                     else
                     {
-                        StreamReader stream = new StreamReader(file.InputStream); 
-                        var fileSettings = fileContent.FromJson<Dictionary<string, string>>();
-                        stream.Close();
+
+                        var fileSettings = new Dictionary<string, string>();
+                        using (var stream = new StreamReader(file.InputStream))
+                        {
+                            var fileContent = await stream.ReadToEndAsync();
+                            fileSettings = fileContent.FromJson<Dictionary<string, string>>();
+                        }
+                            
                         if (fileSettings.Any())
                         {
                             SaveConfigurationChanges(fileSettings);

@@ -42,7 +42,15 @@ namespace apcurium.MK.Web.Controllers.Api
         [Route("api/v2/accounts/orders/status/active")]
         public IHttpActionResult GetActiveOrdersStatus()
         {
-            var status = ActiveOrderStatusService.Get();
+            var status = ActiveOrderStatusService.GetActiveOrders();
+
+            return GenerateActionResult(status);
+        }
+
+        [HttpGet, Route("api/v2/accounts/orders/active")]
+        public IHttpActionResult GetActiveAccount()
+        {
+            var status = ActiveOrderStatusService.GetActiveOrder();
 
             return GenerateActionResult(status);
         }

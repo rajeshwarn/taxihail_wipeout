@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.FlightStats;
@@ -56,26 +55,26 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (flightStatsResponse == null)
 			{
-				throw new HttpException((int)HttpStatusCode.NotFound, "No flight found.");
+				throw GenerateException(HttpStatusCode.NotFound, "No flight found.");
 			}
 
 			var error = flightStatsResponse.Error;
 
 			if (error != null)
 			{
-				throw new HttpException((int)HttpStatusCode.BadRequest, "OrderAirportView_" + error.ErrorCode);
+				throw GenerateException(HttpStatusCode.BadRequest, "OrderAirportView_" + error.ErrorCode);
 			}
 
 			if (flightStatsResponse.FlightStatuses == null ||  flightStatsResponse.FlightStatuses.None())
 			{
-				throw new HttpException((int)HttpStatusCode.NotFound, "No flight found.");
+				throw GenerateException(HttpStatusCode.NotFound, "No flight found.");
 			}
 
 			var terminal = GetTerminal(flightStatsResponse.FlightStatuses, request.IsPickup, request.AirportId);
 
 			if (!terminal.HasValue())
 			{
-				throw new HttpException((int)HttpStatusCode.NoContent,"No terminal found.");
+				throw GenerateException(HttpStatusCode.NoContent,"No terminal found.");
 			}
 
 			return new FlightInformation

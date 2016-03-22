@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.FindById(request.OrderId);
             if (order == null || !order.IBSOrderId.HasValue)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
             var success = _ibsServiceProvider.Booking(order.CompanyKey).UpdateDropOffInTrip(order.IBSOrderId.Value, order.Id, request.DropOffAddress);

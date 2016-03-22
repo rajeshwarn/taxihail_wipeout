@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var orderDetail = _orderDao.FindById(request.OrderKey.TaxiHailOrderId);
             if (orderDetail == null)
             {
-                throw new HttpException(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
+                throw GenerateException(HttpStatusCode.BadRequest, string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
             }
 
             _logger.LogMessage(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
                 _logger.LogMessage(errorMessage);
 
-                throw new HttpException((int)HttpStatusCode.InternalServerError, errorMessage);
+                throw GenerateException(HttpStatusCode.InternalServerError, errorMessage);
             }
 
             _logger.LogMessage("Hail request confirmed");

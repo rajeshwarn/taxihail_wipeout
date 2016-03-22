@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
-using ServiceStack.Common.Web;
 
 #endregion
 
@@ -41,15 +40,15 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public object Get(ActiveOrderRequest request)
+        public ActivateOrderResponse GetActiveOrder()
         {
-            var account = _accountDao.FindById(Guid.Parse(this.GetSession().UserAuthId));
+            var account = _accountDao.FindById(Session.UserId);
 
             var orderStatusDetails = _orderDao.GetActiveOrderStatusDetails(account.Id);
 
             if (orderStatusDetails == null)
             {
-                throw new HttpError(HttpStatusCode.NotFound, "NoActiveOrder");
+                throw GenerateException(HttpStatusCode.NotFound, "NoActiveOrder");
             }
             
             var orderDetail = _orderDao.FindById(orderStatusDetails.OrderId);
@@ -62,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         }
 
-        public ActiveOrderStatusRequestResponse Get()
+        public ActiveOrderStatusRequestResponse GetActiveOrders()
         {
             var statuses = new ActiveOrderStatusRequestResponse();
             var account = _accountDao.FindById(Session.UserId);

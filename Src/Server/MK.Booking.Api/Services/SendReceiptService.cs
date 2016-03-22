@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.FindById(orderId);
             if (order == null || !order.IBSOrderId.HasValue)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
             AccountDetail account;
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Services
                 account = _accountDao.FindById(Session.UserId);
                 if (account.Id != order.AccountId)
                 {
-                    throw new HttpException((int)HttpStatusCode.Unauthorized, "Not your order");
+                    throw GenerateException(HttpStatusCode.Unauthorized, "Not your order");
                 }
             }
 
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!ibsAccountId.HasValue)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
             var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);

@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
             //This method can only be used for unit test. 
             if (!HttpRequestContext.IsLocal)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "This method can only be called from the server");
+                throw GenerateException(HttpStatusCode.NotFound, "This method can only be called from the server");
             }
 
             var testEmail = string.Format(TestUserEmail, index);

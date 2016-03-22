@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Api.Services
             var vehicleType = _dao.FindById(id);
             if (vehicleType == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw GenerateException(HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
             
             return vehicleType;
@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindById(request.Id);
             if (existing == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw GenerateException(HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
 
             var command = new AddUpdateVehicleType
@@ -299,7 +299,7 @@ namespace apcurium.MK.Booking.Api.Services
             var existing = _dao.FindById(id);
             if (existing == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Vehicle Type Not Found");
+                throw GenerateException(HttpStatusCode.NotFound, "Vehicle Type Not Found");
             }
 
             var command = new DeleteVehicleType
@@ -374,7 +374,7 @@ namespace apcurium.MK.Booking.Api.Services
 			var order = _orderDao.FindById(request.OrderId);
 		    if (order == null)
 		    {
-				throw new HttpException((int)HttpStatusCode.NotFound, "No order found.");
+				throw GenerateException(HttpStatusCode.NotFound, "No order found.");
 		    }
 
 			var market = await GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
@@ -383,14 +383,14 @@ namespace apcurium.MK.Booking.Api.Services
 
 		    if (geoService == null)
 		    {
-				throw new HttpException((int)HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
+				throw GenerateException(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
 		    }
 
 		    var taxiLocation = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude, request.Medallion);
 
 			if (taxiLocation == null)
 		    {
-				throw new HttpException((int)HttpStatusCode.NotFound, "No vehicle found.");
+				throw GenerateException(HttpStatusCode.NotFound, "No vehicle found.");
 		    }
 
 		    return taxiLocation;
@@ -416,7 +416,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
+                throw GenerateException(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
             }
 
 		    var market = await GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
@@ -424,13 +424,13 @@ namespace apcurium.MK.Booking.Api.Services
             if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode != LocalAvailableVehiclesModes.Geo)
             {
                 // Local market validation
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
+                throw GenerateException(HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
             }
 
             if (market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode != ExternalAvailableVehiclesModes.Geo)
             {
                 // External market validation
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Api cannot be used unless 'External Available Mode' is set to Geo");
+                throw GenerateException(HttpStatusCode.BadRequest, "Api cannot be used unless 'External Available Mode' is set to Geo");
             }
             
             var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient(market);

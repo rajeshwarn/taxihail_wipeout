@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 if (!Session.HasPermission(RoleName.Admin))
                 {
-                    throw new HttpException((int)HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
+                    throw GenerateException(HttpStatusCode.Unauthorized, "You do not have permission to modify company settings");
                 }
 
                 _commandBus.Send(new AddOrUpdateNotificationSettings
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (request.AccountId == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Account Id cannot be null");
+                throw GenerateException(HttpStatusCode.BadRequest, "Account Id cannot be null");
             }
 
             var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value) 
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (request.AccountId == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Account Id cannot be null");
+                throw GenerateException(HttpStatusCode.BadRequest, "Account Id cannot be null");
             }
 
             _commandBus.Send(new AddOrUpdateUserTaxiHailNetworkSettings

@@ -40,17 +40,17 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			if (request.ZoneRequired && request.ExcludeCircularZone)
 			{
-				throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
+				throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
 			}
 
             //Check if rate with same name already exists
             if ((request.Type != RuleType.Default) && (_dao.GetAll().Any(x => x.Name == request.Name)))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
             }
             if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int) request.Category))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
             }
 
             var command = Mapper.Map<CreateRule>(request);
@@ -67,14 +67,14 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			if (request.ZoneRequired && request.ExcludeCircularZone)
 			{
-				throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
+				throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
 			}
 
             //Check if rate with same name already exists
             if ((request.Type != RuleType.Default) &&
                 (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name)))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
             }
             //if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
             if (
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
                     .Where(x => x.Id != request.Id)
                     .Any(x => x.Priority == request.Priority && x.Category == (int) request.Category))
             {
-                throw new HttpException((int)HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
+                throw GenerateException(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
             }
 
             var command = Mapper.Map<UpdateRule>(request);

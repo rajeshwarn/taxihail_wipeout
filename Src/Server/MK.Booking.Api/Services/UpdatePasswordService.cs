@@ -31,16 +31,16 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (user == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Account not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Account not found");
             }
             if (!string.IsNullOrEmpty(user.FacebookId) || !string.IsNullOrEmpty(user.TwitterId))
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Facebook or Twitter account cannot update password");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Facebook or Twitter account cannot update password");
             }
 
             if (!new PasswordService().IsValid(request.CurrentPassword, request.AccountId.ToString(), user.Password))
             {
-                throw new HttpException(ErrorCode.UpdatePassword_NotSame.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.UpdatePassword_NotSame.ToString());
             }
 
 

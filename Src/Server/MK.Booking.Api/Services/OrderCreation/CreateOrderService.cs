@@ -246,7 +246,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 _logger.LogMessage(networkErrorMessage);
                 _logger.LogError(ex);
 
-                throw new HttpException((int)HttpStatusCode.InternalServerError, networkErrorMessage);
+                throw GenerateException(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
             ValidateProvider(newOrderRequest, newReferenceData, market.HasValue(), null);
@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var order = _orderDao.FindById(request.OrderId);
             if (order == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order not found");
             }
 
             _commandBus.Send(new IgnoreDispatchCompanySwitch

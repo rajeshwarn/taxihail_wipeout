@@ -59,14 +59,14 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindByEmail(request.EmailAddress);
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
+                throw GenerateException(HttpStatusCode.NotFound, "No account matching this email address");
             }
 
             if (request.IsSMSConfirmation.HasValue && request.IsSMSConfirmation.Value)
             {
                 if (account.ConfirmationToken != request.ConfirmationToken)
                 {
-                    throw new HttpException(ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
+                    throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateAccount_InvalidConfirmationToken.ToString());
                 }
 
                 _commandBus.Send(new ConfirmAccount
@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (account == null)
 			{
-				throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
+				throw GenerateException(HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
             if (!_serverSettings.ServerData.AccountActivationDisabled)
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Services
 						phoneNumberForSms = request.PhoneNumber;
                         if (_blackListEntryService.GetAll().Any(e => e.PhoneNumber.Equals(request.PhoneNumber.ToSafeString())))
                         {
-                            throw new HttpError(_resources.Get("PhoneBlackListed"));
+                            throw GenerateException(HttpStatusCode.BadRequest, _resources.Get("PhoneBlackListed"));
                         }
 
 

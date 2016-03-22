@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (account.Id != address.AccountId)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "Can't remove another account's address");
+                throw GenerateException(HttpStatusCode.Unauthorized, "Can't remove another account's address");
             }
 
             _commandBus.Send(new RemoveAddressFromHistory {AddressId = request.AddressId, AccountId = account.Id});

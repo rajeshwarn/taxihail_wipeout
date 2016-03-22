@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Just in case someone was able to authenticate with a null session. 
             if (!Session.SessionId.HasValueTrimmed())
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "NoSession");
+                throw GenerateException(HttpStatusCode.Forbidden, "NoSession");
             }
 
             var account = _accountDao.FindById(Session.UserId);
@@ -92,12 +92,12 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (account == null)
 			{
-				throw new HttpException((int)HttpStatusCode.NotFound, "No account matching this email address");
+				throw GenerateException(HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
 			if (account.IsConfirmed)
 			{
-				throw new HttpException((int)HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
+				throw GenerateException(HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
 			}
 
 			return new CurrentAccountPhoneResponse()

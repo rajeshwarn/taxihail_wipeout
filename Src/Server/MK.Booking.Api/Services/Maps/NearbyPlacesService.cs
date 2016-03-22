@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         {
             if (string.IsNullOrEmpty(request.Name) && request.IsLocationEmpty())
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
             }
 
             var language = CultureInfo.CurrentUICulture.Name;

@@ -283,7 +283,7 @@ namespace apcurium.MK.Booking.Api.Services
             var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(request.OrderId);
             if (ridelinqOrderDetail == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order not found");
             }
 
             try
@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.GetManualRideLinqById(request.OrderId);
             if (order == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Order not found");
+                throw GenerateException(HttpStatusCode.NotFound, "Order not found");
             }
 
             try
@@ -376,14 +376,14 @@ namespace apcurium.MK.Booking.Api.Services
                     _logger.LogMessage("Error Response: {0}", errorResponse);
                 }
 
-                throw new HttpException((int)HttpStatusCode.InternalServerError, errorResponse ?? ex.Message);
+                throw GenerateException(HttpStatusCode.InternalServerError, errorResponse ?? ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogMessage(string.Format("An error occured while trying to manually unpair with CMT for OrderId: {0} with pairing token: {1}", request.OrderId, order.PairingToken));
                 _logger.LogError(ex);
 
-                throw new HttpException((int)HttpStatusCode.InternalServerError, ex.Message);
+                throw GenerateException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }

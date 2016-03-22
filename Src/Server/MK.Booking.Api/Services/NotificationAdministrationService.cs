@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (account == null)
             {
-                throw new HttpException((int)HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");
+                throw GenerateException(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");
             }
 
             var devices = _daoDevice.FindByAccountId(account.Id);
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
             var deviceDetails = devices as DeviceDetail[] ?? devices.ToArray();
             if (devices == null || !deviceDetails.Any())
             {
-                throw new HttpException((int)HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
+                throw GenerateException(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
             }
 
             // We create a new instance each time as we need to start from a clean state to get meaningful error messages
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
                 catch (Exception e)
                 {
                     _logger.LogError(e);
-                    throw new HttpException((int)HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message);
+                    throw GenerateException(HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message);
                 }
             }
         }
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Services
             catch (Exception e)
             {
                 _logger.LogError(e);
-                throw new HttpException((int)HttpStatusCode.InternalServerError, e.Message);
+                throw GenerateException(HttpStatusCode.InternalServerError, e.Message);
             }
         }
 

@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
                     var order = _orderDao.FindById(request.OrderId);
                     if (order == null)
                     {
-                        throw new Exception("Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
+                        throw GenerateException(HttpStatusCode.BadRequest, "Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
                     }
 
                     companyKey = order.CompanyKey;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services
                     request.Message, request.VehicleNumber));
                 _logger.LogError(ex);
 
-                throw new HttpException((int)HttpStatusCode.InternalServerError, ex.Message);
+                throw GenerateException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }
