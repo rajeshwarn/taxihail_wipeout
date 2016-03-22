@@ -46,6 +46,8 @@ namespace CustomerPortal.Web.Entities.Network
         public bool ShowCallDriver { get; set; }
 
         public Tariff MarketTariff { get; set; }
+
+        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 
     public class Vehicle

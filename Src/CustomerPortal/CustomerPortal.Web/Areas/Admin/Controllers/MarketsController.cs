@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
@@ -161,6 +162,55 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("MarketIndex", GetMarketModel(networkVehicle.Market));
         }
 
+        public ActionResult EditReceiptLabels(string market)
+        {
+            var marketToEdit = Repository.GetMarket(market);
+
+            if (marketToEdit.ReceiptLines == null)
+            {
+                marketToEdit.ReceiptLines = InitReceiptLabels();
+            }
+            else
+            {
+                var languageEnum = Enum.GetValues(typeof(SupportedLanguages)).Cast<SupportedLanguages>();
+                var languages = languageEnum.Select(enumValue => enumValue.ToString()).ToList();
+
+                if (marketToEdit.ReceiptLines.FirstOrDefault().Value.Count != languages.Count)
+                {
+                    foreach (var receiptLine in marketToEdit.ReceiptLines)
+                    {
+                        foreach (var language in languages)
+                        {
+                            if (!receiptLine.Value.ContainsKey(language))
+                            {
+                                receiptLine.Value.Add(language, string.Empty);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return View(marketToEdit);
+        }
+
+        [HttpPost]
+        public ActionResult EditReceiptLabels(Market market)
+        {
+            try
+            {
+                var marketToUpdate = Repository.GetMarket(market.Name);
+                marketToUpdate.ReceiptLines = market.ReceiptLines;
+
+                Repository.Update(marketToUpdate);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to update the receipt labels.";
+            }
+
+            return RedirectToAction("MarketIndex", GetMarketModel(market));
+        }
+
         public ActionResult EditVehicle(string market, string id)
         {
             var marketContainingVehicle = Repository.GetMarket(market);
@@ -231,7 +281,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             bool enableAppFareEstimates,
             bool showCallDriver,
             Tariff marketTariff,
-            MapRegion region)
+            MapRegion region,
+            IDictionary<string, IDictionary<string,string>> receiptLines)
         {
             try
             {
@@ -263,6 +314,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 marketToEdit.MarketTariff = marketTariff;
 
                 marketToEdit.Region = region;
+
+                marketToEdit.ReceiptLines = receiptLines;
 
                 Repository.Update(marketToEdit);
             }
@@ -349,7 +402,37 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             marketModel.ShowCallDriver = market.ShowCallDriver;
             marketModel.Region = market.Region;
 
+            if (market.ReceiptLines == null)
+            {
+                marketModel.ReceiptLines = InitReceiptLabels();
+            }
+            else
+            {
+                marketModel.ReceiptLines = market.ReceiptLines;
+            }
+
             return marketModel;
+        }
+
+        private IDictionary<string, IDictionary<string, string>> InitReceiptLabels()
+        {
+            var items = new Dictionary<string, IDictionary<string, string>>();
+
+            var languageEnum = Enum.GetValues(typeof(SupportedLanguages)).Cast<SupportedLanguages>();
+            var languages = languageEnum.Select(enumValue => enumValue.ToString()).ToList();
+
+            var emptyLanguageDictionary = languages.ToDictionary(lang => lang, lang => string.Empty);
+
+            items.Add("Email_Body_Fare", emptyLanguageDictionary);
+            items.Add("Email_Body_Extra", emptyLanguageDictionary);
+            items.Add("Email_Body_Surcharge", emptyLanguageDictionary);
+            items.Add("Email_Body_Toll", emptyLanguageDictionary);
+            items.Add("Email_Body_ImprovementSurcharge", emptyLanguageDictionary);
+            items.Add("Email_Body_Tip", emptyLanguageDictionary);
+            items.Add("Email_Body_TotalFare", emptyLanguageDictionary);
+            items.Add("Email_Body_RideLinqLastFour", emptyLanguageDictionary);
+
+            return items;
         }
     }
 }
