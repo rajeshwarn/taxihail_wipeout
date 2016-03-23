@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public async Task<Address> GetPlaceDetail(string name, string placeId)
         {
-            var place =  await _client.GetPlaceDetailAsync(placeId);
+            var place =  await _client.GetPlaceDetailAsync(placeId).ConfigureAwait(false);
 
             var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 

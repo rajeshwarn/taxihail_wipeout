@@ -43,7 +43,7 @@
 
         edit: function (model) {
             if(!model.isNew()) {
-                TaxiHail.app.navigate('accounts/edit/' + model.get('number'), { trigger: true });
+                TaxiHail.app.navigate('accounts/edit/' + model.get('accountNumber'), { trigger: true });
             }
         }
 

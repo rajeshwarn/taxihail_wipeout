@@ -35,6 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUseCreditCard { get; set; }
+		
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView imgAmex { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView imgDiscover { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView imgVisa { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblCardNumber { get; set; }
@@ -284,6 +293,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (viewTip != null) {
 				viewTip.Dispose ();
 				viewTip = null;
+			}
+
+			if (imgVisa != null) {
+				imgVisa.Dispose ();
+				imgVisa = null;
+			}
+
+			if (imgAmex != null) {
+				imgAmex.Dispose ();
+				imgAmex = null;
+			}
+
+			if (imgDiscover != null) {
+				imgDiscover.Dispose ();
+				imgDiscover = null;
 			}
 		}
 	}

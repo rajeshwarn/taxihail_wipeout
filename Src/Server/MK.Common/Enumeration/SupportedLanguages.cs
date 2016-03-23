@@ -18,6 +18,10 @@ namespace apcurium.MK.Common.Enumeration
 
         [Description("French")]
 // ReSharper disable once InconsistentNaming
-        fr
+        fr,
+
+        [Description("Dutch")]
+// ReSharper disable once InconsistentNaming
+        nl
     }
 }

@@ -46,6 +46,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.StatusInfoText);
 
+            set.Bind(lblOrderNumber)
+                .For("HiddenEx")
+                .To(vm => vm.IsConfirmationNoHidden);
+            
             set.Bind(viewDriverInfos)
                 .For(v => v.Hidden)
                 .To(vm => vm.IsDriverInfoAvailable)
@@ -68,11 +72,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.IsProgressVisible);
             
             set.Apply();
-
-            if (ViewModel.IsConfirmationNoHidden)
-            {
-                lblOrderNumber.RemoveFromSuperview();
-            }
         }
             
         private bool _showAnnimation;

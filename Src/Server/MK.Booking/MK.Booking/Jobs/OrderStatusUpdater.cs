@@ -202,8 +202,8 @@ namespace apcurium.MK.Booking.Jobs
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
             if (tripInfo != null
-                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
-                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
+                && tripInfo.ErrorCode.HasValue
+                && CmtErrorCodes.TerminalErrors.Contains(tripInfo.ErrorCode.Value))
             {
                 orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
                 orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
@@ -359,12 +359,19 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.DriverInfos.VehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
             orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
             orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
+            orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
             orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
             orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
             orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
-            orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
+
+            if (hasBailed)
+            {
+                // reset to empty values
+                orderStatusDetail.DriverInfos = new DriverInfos();
+                orderStatusDetail.VehicleNumber = string.Empty;
+            }
 
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
@@ -998,7 +1005,10 @@ namespace apcurium.MK.Booking.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null || pairingInfo.WasUnpaired)
             {
-                _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
+                _logger.LogMessage(
+                    pairingInfo == null
+                        ? "Order {0}: No pairing to process as no pairing information was found."
+                        : "Order {0}: Order was unpaired, so no pairing to process.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -1025,14 +1035,17 @@ namespace apcurium.MK.Booking.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return (ibsOrderInfo.Status.HasValue()                                // ibs status changed
-                        && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) 
-                   || (!orderStatusDetail.FareAvailable                           // fare was not available and ibs now has the information
-                        && ibsOrderInfo.Fare > 0)
+            return (ibsOrderInfo.Status.HasValue() // ibs status changed
+                    && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
+                   || (!orderStatusDetail.FareAvailable // fare was not available and ibs now has the information
+                       && ibsOrderInfo.Fare > 0)
                    || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
-                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
-                   || (orderStatusDetail.Status == OrderStatus.TimedOut           // special case for network                   
-                        && _serverSettings.ServerData.Network.Enabled);           
+                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
+                   || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   
+                       && _serverSettings.ServerData.Network.Enabled)
+                   || (orderStatusDetail.VehicleNumber != ibsOrderInfo.VehicleNumber); // sometimes driver bailed, and we got the status assigned 
+                                                                                       //directly after the previous status assigned (to the previous driver)
+                                                                                       //so we need to check the vehicle number with the previous one
         }
 
         private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
@@ -1123,7 +1136,11 @@ namespace apcurium.MK.Booking.Jobs
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
-                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
+                    var orderPairingDetail = _orderDao.FindOrderPairingById(orderDetail.Id);
+
+                    description = orderPairingDetail.SelectOrDefault(orderPairing => orderPairingDetail.PairingToken.HasValueTrimmed() && !orderPairingDetail.WasUnpaired)
+                        ? _resources.Get("OrderStatus_PairingSuccess", _languageCode)
+                        : _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
 

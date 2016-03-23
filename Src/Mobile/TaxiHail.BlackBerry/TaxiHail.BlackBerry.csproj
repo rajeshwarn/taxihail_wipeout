@@ -1584,5 +1584,11 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_Debug.axml">
       <Link>Resources\Layout\View_Debug.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\discover.png">
+      <Link>Resources\Drawable\discover.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\discover.png">
+      <Link>Resources\drawable-xhdpi\discover.png</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>

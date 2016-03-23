@@ -213,7 +213,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             var repository = new MongoRepository<Company>();
 
-            return View("Index", repository.Where(x => x.Status < AppStatus.DemoSystem).OrderBy(x => x.CompanyName).ToArray());
+            return View("Index", repository.Where(x => x.Status < AppStatus.DemoSystem || x.Status == AppStatus.MonitoringProd).OrderBy(x => x.CompanyName).ToArray());
         }
 
         public ActionResult Demo()
@@ -224,7 +224,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             var repository = new MongoRepository<Company>();
 
-            return View("Index", repository.Where(x => x.Status == AppStatus.DemoSystem).OrderBy(x => x.CompanyName).ToArray());
+            return View("Index", repository.Where(x => x.Status == AppStatus.DemoSystem || x.Status == AppStatus.MonitoringDemo).OrderBy(x => x.CompanyName).ToArray());
         }
 
         public ActionResult All()

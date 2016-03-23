@@ -1,0 +1,10 @@
+﻿{
+    "Login" : "Login",
+    "Email Address" : "E-mail Adres",
+    "Password" : "Wachtwoord",
+    "Signup" : "Aanmelden",
+    "Forgot password" : "Ik ben mijn wachtwoord vergeten",
+    "InvalidLoginMessage" : "Het e-mail adres of wachtwoord is ongeldig.",
+    "AccountDisabled" : "Uw account is gedeactiveerd, neemt u contact op met {{ApplicationName}} via nummer {{PhoneNumber}} om uw account weer te activeren.",
+    "AccountNotActivated" : "Uw account is nog niet geactiveerd. Er is nogmaals een activerings e-mail naar u verstuurd."
+}

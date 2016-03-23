@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(AccountChargeRequest request)
         {
-            bool isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
+            var isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
 
             if (!request.AccountNumber.HasValue())
             {
@@ -46,7 +46,16 @@ namespace apcurium.MK.Booking.Api.Services
                         HideAnswers(account.Questions);
                     }
                 }
-                return allAccounts;
+                return allAccounts
+                    .Select(acc => new
+                    {
+                        acc.Name,
+                        AccountNumber = acc.Number,
+                        acc.Questions,
+                        acc.Id,
+                        acc.UseCardOnFileForPayment
+                    })
+                    .ToArray();
             }
             else
             {

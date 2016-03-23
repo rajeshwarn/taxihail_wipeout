@@ -59,6 +59,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return RedirectToAction("Index");
             }
 
+
+
             if (appSettings.Any())
             {
                 var data = appSettings.ToJson(false);
@@ -81,15 +83,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
                 else if (file.ContentLength > 0)
                 {
-                    string[] AllowedFileExtensions = new string[] { ".csf" };
+                    string[] allowedFileExtensions = new string[] { ".csf" };
 
-                    if (!AllowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+                    if (!allowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
                     {
-                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", AllowedFileExtensions);
+                        TempData["Info"] = "Please select a file of type: " + string.Join(", ", allowedFileExtensions);
                     }
                     else
                     {
-                        var fileContent = System.IO.File.ReadAllText(file.FileName);
+                        StreamReader stream = new StreamReader(file.InputStream); 
+                        var fileContent = stream.ReadToEnd();
+                        stream.Close();
                         Dictionary<string, string> fileSettings = JsonSerializerExtensions.FromJson<Dictionary<string, string>>(fileContent);
                         if (fileSettings.Any())
                         {
@@ -195,6 +199,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             var model = GetAvailableSettingsForUser();
 
+            var addError = new Action<string>(errorMessage =>
+            {
+                isValid = false;
+                errorMessageBuilder.Append(Environment.NewLine);
+                errorMessageBuilder.Append(errorMessage);
+            });
+            
             foreach (var appSetting in appSettings)
             {
                 Type settingType;
@@ -235,13 +246,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     }
                     catch (Exception)
                     {
-                        isValid = false;
-
-                        if (errorMessageBuilder.Length > 0)
-                        {
-                            errorMessageBuilder.Append(", "); 
-                        }
-                        errorMessageBuilder.Append(settingName);
+                        addError(settingName);
                     }
                 }
             }
@@ -257,13 +262,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (disableImmediateBooking && disableFutureBooking)
             {
-                isValid = false;
+                addError("Disable Immediate Booking and Disable Future Booking can not be 'Yes' simultaneously");
+            }
 
-                if (errorMessageBuilder.Length > 0)
+            if (appSettings.ContainsKey("SMSConfirmationEnabled") && appSettings["SMSConfirmationEnabled"].Contains("true"))
+            {
+                var twilioFields = new string[] {"SMSAccountSid", "SMSAuthToken" };
+
+                if (!twilioFields.All(x => appSettings.ContainsKey(x) && !string.IsNullOrWhiteSpace(appSettings[x])))
                 {
-                    errorMessageBuilder.Append(", ");
+                    addError("To use Enable Activation by SMS, you need to set Twilio settings");
                 }
-                errorMessageBuilder.Append("Disable Immediate Booking and Disable Future Booking can not be 'Yes' simultaneously");
             }
 
             if (!isValid)

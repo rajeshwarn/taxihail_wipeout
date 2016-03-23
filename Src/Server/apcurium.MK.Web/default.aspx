@@ -84,6 +84,8 @@
             TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
             TaxiHail.parameters.askForCVVAtBooking = <%: AskForCVVAtBooking ? "true" : "false" %>;
             TaxiHail.parameters.disableAMEX = <%: DisableAMEX ? "true" : "false" %>;
+            TaxiHail.parameters.disableVisaMastercard = <%: DisableVisaMastercard ? "true" : "false" %>;
+            TaxiHail.parameters.disableDiscover = <%: DisableDiscover ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
@@ -91,6 +93,8 @@
             TaxiHail.parameters.SocialMediaGoogleURL = "<%: SocialMediaGoogleURL %>";
             TaxiHail.parameters.SocialMediaPinterestURL = "<%: SocialMediaPinterestURL %>";
             TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
+            TaxiHail.parameters.SocialMediaYoutubeURL = "<%: SocialMediaYoutubeURL %>";
+            TaxiHail.parameters.SocialMediaInstagramURL = "<%: SocialMediaInstagramURL %>";
 
             TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;

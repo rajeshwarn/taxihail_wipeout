@@ -1,0 +1,27 @@
+﻿{
+    "PaymentTitle": "Betaling",
+    "CreditCardName": "Naam zoals op vermeld op creditcard",
+    "CreditCardNumber": "Kaartnummer",
+    "CVV": "CVV",
+    "ExpMonth": "Exp. Maand",
+    "ExpYear": "Exp. Jaar",
+    "Save": "Wijzigingen Opslaan",
+    "Delete": "Verwijder Creditcard",
+    "Label" :    "Label",
+    "Personal": "Privé",
+    "Business": "Zakelijk",
+
+    // Exp. Months
+    "January": "Januari (01)",
+    "February": "Februari (02)",
+    "Mars": "Maart (03)",
+    "April": "April (04)",
+    "May": "Mei (05)",
+    "June": "Juni (06)",
+    "July": "Juli (07)",
+    "August": "Augustus (08)",
+    "September": "September (09)",
+    "October": "Oktober (10)",
+    "November": "November (11)",
+    "December": "December (12)"
+}

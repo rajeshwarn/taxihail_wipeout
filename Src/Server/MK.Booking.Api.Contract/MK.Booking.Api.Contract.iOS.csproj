@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticateAttribute.cs" />
+    <Compile Include="Requests\ActiveOrderRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CreateOrderRequest.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\ActivateOrderResponse.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />

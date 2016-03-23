@@ -108,6 +108,8 @@
 "CreditCardInvalidCrediCardNumber"="Le numéro de la carte ne semble pas être valide";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "CreditCardInvalidCrediCardTypeAmex"="Désolé, nous ne supportons pas les cartes Amex";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron";
+"CreditCardInvalidCrediCardTypeDiscover"="Désolé, nous ne supportons pas les cartes Discover";
 "CreditCardLabel"="Label";
 "CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";
@@ -232,7 +234,7 @@
 "NetworkErrorTitle"="Aucune connexion disponible";
 "NoAptText"="--";
 "NoButton"="Non";
-"NoConnectionMessage"="Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.";
+"NoConnectionMessage"="Echec de connexion.";
 "NoConnectionTitle"="Erreur de connexion";
 "NoCreditCardSelected"="Merci de sélectionner une carte de paiement";
 "NoFareText"="Vous devez saisir une destination pour obtenir une estimation du prix du trajet";

@@ -1537,6 +1537,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must provide a country code, ex: CA, US, ....
+        /// </summary>
+        public static string PhoneNumberCountryNotProvided {
+            get {
+                return ResourceManager.GetString("PhoneNumberCountryNotProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The phone number is invalid. It must have format {0}.
         /// </summary>
         public static string PhoneNumberFormat {

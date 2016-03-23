@@ -2,64 +2,71 @@ using System;
 using Android.Views.InputMethods;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
     public class NumberAndAddressTextFieldBehavior
     {
-        public static void ApplyTo(EditText address, EditText number, Action<string> streetNumberOfAddressUpdated)
+        public static void ApplyTo(EditText addressTextField, EditText numberTextField, Func<Address> currentAddress, Action<string> streetNumberOfAddressUpdated)
         {
-            number.Text = "";
+            numberTextField.Text = "";
 
-            number.EditorAction += (s, e) => 
+            numberTextField.EditorAction += (s, e) => 
             {
-                if(e.ActionId == ImeAction.Done){
-                    number.ClearFocus();
+                if(e.ActionId == ImeAction.Done)
+                {
+                    numberTextField.ClearFocus();
                 } 
             };
 
-            number.FocusChange += (s, e) => 
+            numberTextField.FocusChange += (s, e) => 
             {
                 if (e.HasFocus)
                 {
-                    FocusOnNumber(number, address);
-                    number.ShowKeyboard();
+                    FocusOnNumber(addressTextField, numberTextField, currentAddress);
+                    numberTextField.ShowKeyboard();
                 }
                 else
                 {
-                    var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
+                    var currentAddressValue = currentAddress();
+                    currentAddressValue.ChangeStreetNumber(numberTextField.Text);
+
+                    var newFullAddress = currentAddressValue.DisplayAddress;
                     if (streetNumberOfAddressUpdated != null)
                     {
-                        streetNumberOfAddressUpdated(number.Text);
+                        streetNumberOfAddressUpdated(numberTextField.Text);
                     }
-                    address.Text = newFullAddress;
-                    number.Text = "";
-                    number.HideKeyboard();
+                    addressTextField.Text = newFullAddress;
+                    numberTextField.Text = "";
+                    numberTextField.HideKeyboard();
                 }
             };
         }
 
-        private static void FocusOnNumber(EditText streetNumber, EditText address)
+        private static void FocusOnNumber(EditText addressTextField, EditText numberTextField, Func<Address> currentAddress)
         {
-            if (address.Text == null)
+            if (addressTextField.Text == null)
             {
                 return;
             }
 
-            var splitPoint = address.Text.IndexOf(' ');
-
-            if (splitPoint == -1) { return; }
-
-            var value = address.Text.Substring(0, splitPoint);
+            var currentAddressValue = currentAddress();
+            var streetNumber = currentAddressValue != null
+                ? currentAddressValue.StreetNumber
+                : string.Empty;
 
             int dummy;
-            if(!int.TryParse(value, out dummy)) { return; }
+            if(!int.TryParse(streetNumber, out dummy)) 
+            { 
+                return; 
+            }
 
-            streetNumber.Text = value;
-            streetNumber.SelectAll();
+            numberTextField.Text = streetNumber;
+            numberTextField.SelectAll();
 
-            address.Text = address.Text.Substring(splitPoint).Trim();
+            // remove the street number from the other textfield 
+            addressTextField.Text = addressTextField.Text.Replace(streetNumber, string.Empty).Trim();
         }
     }
 }

@@ -56,7 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _didCheckForAppRating;
 
-		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
+        private bool _showCallDriver;
+
+        public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
@@ -89,6 +91,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
             _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
+
+            Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+        }
+
+		private void MarketChanged(MarketSettings marketSettings)
+		{
+			_showCallDriver = marketSettings.ShowCallDriver;
+		    RaisePropertyChanged(() => IsCallTaxiVisible);
 		}
 
         /// <summary>
@@ -115,18 +125,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.PrepareForNewOrder();
 			}
 
-			CenterMapOnPinsIfNeeded();
-
-			StatusInfoText = orderStatusDetail.IBSStatusId == null 
+            StatusInfoText = orderStatusDetail.IBSStatusId == null 
 				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
-			_subscriptions.Disposable = GetTimerObservable()
+            var forceCenterMap = orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded;
+
+
+            _subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
 				.Where(_ => !_isOrderRefreshing)
-				.SelectMany(async (_, cancellationToken) =>
+                .Do(_ =>
+                {
+                    if (!forceCenterMap)
+                    {
+                        return;
+                    }
+
+                    CenterMapOnPinsIfNeeded();
+                    forceCenterMap = false;
+                })
+                .SelectMany(async (_, cancellationToken) =>
 				{
 					_isOrderRefreshing = true;
 					await RefreshStatus(cancellationToken);
@@ -295,7 +318,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Logger.LogError(ex);
             }
-        }
+        } 
 
         // Method used when we are restoring from background to zoom back to the order's location correctly.
         private void CenterMapOnPinsIfNeeded()
@@ -402,6 +425,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
+			// We are in a new vehicle, clearing the previous one and starting anew.
+			if (TaxiLocation != null && TaxiLocation.VehicleNumber != medallion)
+			{
+				// remove the taxi location
+				TaxiLocation = null;
+			}
+
 			if (TaxiLocation == null)
 			{
 				TaxiLocation = new TaxiLocation
@@ -470,33 +500,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
         {
             if (manualRideLinqDetails == null)
-		{
-                return;
-		}
-
-            try
-		{
-			ManualRideLinqDetail = manualRideLinqDetails;
-
-			ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
-
-			var localize = this.Services().Localize;
-
-			if (!_canAutoFollowTaxi)
 			{
-				_canAutoFollowTaxi = true;
-				_autoFollowTaxi = true;
+                return;
 			}
 
-		    if (manualRideLinqDetails.PairingError.HasValue())
-		    {
-                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
-		    }
+            try
+			{
+				ManualRideLinqDetail = manualRideLinqDetails;
 
-		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
-		}
+				ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
+
+				var localize = this.Services().Localize;
+
+				if (!_canAutoFollowTaxi)
+				{
+					_canAutoFollowTaxi = true;
+					_autoFollowTaxi = true;
+				}
+
+			    if (manualRideLinqDetails.PairingError.HasValue())
+			    {
+	                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
+			    }
+
+			    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
+			}
             catch (Exception ex)
-		{
+			{
                 Logger.LogMessage("An error occurred while refreshing the manual RideLinQ details");
                 Logger.LogError(ex);
             }
@@ -582,8 +612,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				return Settings.ShowCallDriver 
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+				return _showCallDriver
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
@@ -1110,6 +1139,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
+
+					// put back the nearby vehicles
+					_vehicleService.SetAvailableVehicle(true);
 				}
 
 				if (VehicleStatuses.CancelStatuses.Any(cancelledStatus => cancelledStatus.Equals(status.IBSStatusId)))

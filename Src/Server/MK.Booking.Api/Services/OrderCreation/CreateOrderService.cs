@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
@@ -226,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             // because it is sent to the driver
             var chargeTypeIbs = _resources.Get(chargeTypeDisplay, _serverSettings.ServerData.PriceFormat);
 
-            var ibsInformationNote = IbsNoteBuilder.BuildNote(
+            var ibsInformationNote = IbsHelper.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 order.UserNote,
