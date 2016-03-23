@@ -741,7 +741,31 @@ namespace apcurium.MK.Booking.Services.Impl
                     PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                     promoCode,
                     AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
-                    ShowOrderNumber = showOrderNumber
+                    ShowOrderNumber = showOrderNumber,
+
+                    HasSocialMediaGoogleURL = !_serverSettings.ServerData.SocialMediaGoogleURL.IsNullOrEmpty(),
+                    SocialMediaGoogleImg = String.Concat(baseUrls.BaseUrlAssetsImg, "google.png"),
+                    SocialMediaGoogleURL = _serverSettings.ServerData.SocialMediaGoogleURL,
+
+                    HasSocialMediaFacebookURL = !_serverSettings.ServerData.SocialMediaFacebookURL.IsNullOrEmpty(),
+                    SocialMediaFacebookImg = String.Concat(baseUrls.BaseUrlAssetsImg, "facebook.png"),
+                    SocialMediaFacebookURL = _serverSettings.ServerData.SocialMediaFacebookURL,
+
+                    HasSocialMediaTwitterURL = !_serverSettings.ServerData.SocialMediaTwitterURL.IsNullOrEmpty(),
+                    SocialMediaTwitterImg = String.Concat(baseUrls.BaseUrlAssetsImg, "twitter.png"),
+                    SocialMediaTwitterURL = _serverSettings.ServerData.SocialMediaTwitterURL,
+
+                    HasSocialMediaPinterestURL = !_serverSettings.ServerData.SocialMediaPinterestURL.IsNullOrEmpty(),
+                    SocialMediaPinterestImg = String.Concat(baseUrls.BaseUrlAssetsImg, "pinterest.png"),
+                    SocialMediaPinterestURL = _serverSettings.ServerData.SocialMediaPinterestURL,
+
+                    HasSocialMediaYoutubeURL = !_serverSettings.ServerData.SocialMediaYoutubeURL.IsNullOrEmpty(),
+                    SocialMediaYoutubeImg = String.Concat(baseUrls.BaseUrlAssetsImg, "youtube.png"),
+                    SocialMediaYoutubeURL = _serverSettings.ServerData.SocialMediaYoutubeURL,
+
+                    HasSocialMediaInstagramURL = !_serverSettings.ServerData.SocialMediaInstagramURL.IsNullOrEmpty(),
+                    SocialMediaInstagramImg = String.Concat(baseUrls.BaseUrlAssetsImg, "instagram.png"),
+                    SocialMediaInstagramURL = _serverSettings.ServerData.SocialMediaInstagramURL,
                 };
 
                 SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
