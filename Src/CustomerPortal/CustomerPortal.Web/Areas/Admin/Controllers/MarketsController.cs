@@ -211,6 +211,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("MarketIndex", GetMarketModel(market));
         }
 
+        public ActionResult CancelReceiptEdition(Market market)
+        {
+            return RedirectToAction("MarketIndex", GetMarketModel(market));
+        }
+
         public ActionResult EditVehicle(string market, string id)
         {
             var marketContainingVehicle = Repository.GetMarket(market);

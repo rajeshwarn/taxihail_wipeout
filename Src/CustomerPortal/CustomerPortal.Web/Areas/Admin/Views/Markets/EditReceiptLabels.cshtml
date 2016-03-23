@@ -35,7 +35,6 @@
                 {
                     <tr>
                         <td>
-
                             <label>
                                 @Resources.ResourceManager.GetString(receiptLine.Key)
                             </label>
@@ -43,7 +42,7 @@
 
                         @foreach (var language in languages)
                         {
-                                                        <td>
+                            <td>
                                 @Html.TextBoxFor(m => m.ReceiptLines[receiptLine.Key][language])
                             </td>
                         }
@@ -55,6 +54,6 @@
 
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Save Changes</button>
-        @*@Html.ActionLink("Cancel", "MarketIndex", new MarketModel { Market = Model.Market }, new { @class = "btn span" })*@
+        @Html.ActionLink("Cancel", "CancelReceiptEdition", Model, new { @class = "btn span" })
     </div>
 }

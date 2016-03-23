@@ -664,62 +664,14 @@ namespace apcurium.MK.Booking.Services.Impl
                     _logger.LogMessage("Could not get market settings [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 }
 
-                var emailBodyFare = string.Empty;
-                var valueFound = receiptLabels.TryGetValue("Email_Body_Fare", out emailBodyFare);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyFare))
-                {
-                    emailBodyFare = _resources.Get("Email_Body_Fare", clientLanguageCode);
-                }
-
-                var emailBodyExtra = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_Extra", out emailBodyExtra);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyExtra))
-                {
-                    emailBodyExtra = _resources.Get("Email_Body_Extra", clientLanguageCode);
-                }
-
-                var emailBodySurcharge = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_Surcharge", out emailBodySurcharge);
-                if (!valueFound || string.IsNullOrEmpty(emailBodySurcharge))
-                {
-                    emailBodySurcharge = _resources.Get("Email_Body_Surcharge", clientLanguageCode);
-                }
-
-                var emailBodyToll = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_Toll", out emailBodyToll);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyToll))
-                {
-                    emailBodyToll = _resources.Get("Email_Body_Toll", clientLanguageCode);
-                }
-
-                var emailBodyImprovementSurcharge = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_ImprovementSurcharge",
-                    out emailBodyImprovementSurcharge);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyImprovementSurcharge))
-                {
-                    emailBodyImprovementSurcharge = _resources.Get("Email_Body_ImprovementSurcharge", clientLanguageCode);
-                }
-
-                var emailBodyTip = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_Tip", out emailBodyTip);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyTip))
-                {
-                    emailBodyTip = _resources.Get("Email_Body_Tip", clientLanguageCode);
-                }
-
-                var emailBodyTotalFare = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_TotalFare", out emailBodyTotalFare);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyTotalFare))
-                {
-                    emailBodyTotalFare = _resources.Get("Email_Body_TotalFare", clientLanguageCode);
-                }
-
-                var emailBodyRideLinqLastFour = string.Empty;
-                valueFound = receiptLabels.TryGetValue("Email_Body_RideLinqLastFour", out emailBodyRideLinqLastFour);
-                if (!valueFound || string.IsNullOrEmpty(emailBodyRideLinqLastFour))
-                {
-                    emailBodyRideLinqLastFour = _resources.Get("Email_Body_RideLinqLastFour", clientLanguageCode);
-                }
+                var emailBodyFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Fare", clientLanguageCode);
+                var emailBodyExtra = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Extra", clientLanguageCode);
+                var emailBodySurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Surcharge", clientLanguageCode);
+                var emailBodyToll = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Toll", clientLanguageCode);
+                var emailBodyImprovementSurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_ImprovementSurcharge", clientLanguageCode);
+                var emailBodyTip = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tip", clientLanguageCode);
+                var emailBodyTotalFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_TotalFare", clientLanguageCode);
+                var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode);
 
                 var templateData = new
                 {
@@ -1290,6 +1242,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Returns label from dictionary or from Resx by default
+        /// </summary>
+        /// <param name="receiptLabels"></param>
+        /// <param name="key"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        private string GetReceiptLabelOrDefault(IDictionary<string, string> receiptLabels, string key, string language)
+        {
+            string receiptLabel;
+            var valueFound = receiptLabels.TryGetValue(key, out receiptLabel);
+            if (!valueFound || string.IsNullOrEmpty(receiptLabel))
+            {
+                receiptLabel = _resources.Get(key, language);
+            }
+            return receiptLabel;
         }
     }
 }
