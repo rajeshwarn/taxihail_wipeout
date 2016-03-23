@@ -299,6 +299,24 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fare.
+        /// </summary>
+        public static string Email_Body_Extra {
+            get {
+                return ResourceManager.GetString("Email_Body_Extra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fare.
+        /// </summary>
+        public static string Email_Body_Fare {
+            get {
+                return ResourceManager.GetString("Email_Body_Fare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flag Drop Rate.
         /// </summary>
         public static string FlagDropRate {
