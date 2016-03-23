@@ -1,27 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Controllers
 {
-    public class LegacyHttpClientHandler : DelegatingHandler
+    public class TaxihailApiHttpHandler : DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.RequestUri.OriginalString.Contains("api/v2"))
-            {
-                return await base.SendAsync(request, cancellationToken);
-            }
-
-            var requestUrl = request.RequestUri.OriginalString.Replace("api", "api/v2");
+            var requestUrl = request.RequestUri.OriginalString;
 
             if (requestUrl.Contains("api/v2/auth"))
             {
-                requestUrl = requestUrl.Replace("auth", "login")
-                        .Replace("credentialsfb", "facebook")
-                        .Replace("credentialstw", "twitter")
-                        .Replace("credentials", "password");
+                requestUrl = requestUrl.Replace("credentialsfb", "login/facebook")
+                        .Replace("credentialstw", "login/twitter")
+                        .Replace("credentials", "login/password");
             }
 
             if (requestUrl.Contains("api/v2/encryptedsettings"))
@@ -49,9 +47,29 @@ namespace apcurium.MK.Booking.Api.Controllers
                     .Replace("creditCard/", "creditCards/")
                     .Replace("/ordercountforapprating", "/orders/countforapprating");
 
+            if (requestUrl.Contains("format=json"))
+            {
+                requestUrl = requestUrl.Remove(requestUrl.IndexOf("?", StringComparison.Ordinal));
+                var query = request.RequestUri.Query.Remove(0, 1).Split('&')
+                    .Select(q => q.Split('=').Select(item => "\""+item+"\"").JoinBy(":"))
+                    .JoinBy(",");
+
+                query = "{" + query + "}";
+
+                request.Content = new StringContent(query, Encoding.Default, "application/json");
+            }
+
+
             request.RequestUri = new Uri(requestUrl);
 
-            return await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+
+            return response;
         }
 
     }

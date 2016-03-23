@@ -41,7 +41,7 @@ namespace apcurium.MK.Web
                 }
 
                 _userSession = SessionKey != null 
-                    ? Cache.Get<SessionEntity>(SessionKey) 
+                    ? Cache.GetOrDefault(SessionKey, new SessionEntity()) 
                     : new SessionEntity();
 
                 return _userSession;

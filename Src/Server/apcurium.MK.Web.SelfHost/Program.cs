@@ -1,22 +1,13 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Net;
-using System.Web;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Routing;
 using apcurium.MK.Booking.Api.Contract.Controllers;
 using apcurium.MK.Booking.Api.Controllers;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
-using Funq;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Practices.Unity;
@@ -46,33 +37,12 @@ namespace apcurium.MK.Web.SelfHost
     
     public class AppHost
     {
-        private class DirectRouteResolver : DefaultDirectRouteProvider
-        {
-            private readonly Func<ILogger> _getLogger = () => UnityServiceLocator.Instance.Resolve<ILogger>();
 
-            protected override IReadOnlyList<RouteEntry> GetActionDirectRoutes(HttpActionDescriptor actionDescriptor, IReadOnlyList<IDirectRouteFactory> factories,
-                IInlineConstraintResolver constraintResolver)
-            {
-                try
-                {
-                    return base.GetActionDirectRoutes(actionDescriptor, factories, constraintResolver);
-                }
-                catch (Exception ex)
-                {
-                    _getLogger().LogError(ex);
-                    throw;
-                }
-            }
-        }
-
-        public AppHost()
-        {
-        }
         private HttpConfiguration MapRoutes(HttpConfiguration config, IUnityContainer container)
         {
-            config.MapHttpAttributeRoutes(new DirectRouteResolver());
+            config.MapHttpAttributeRoutes();
 
-            config.MessageHandlers.Add(new LegacyHttpClientHandler());      
+            config.MessageHandlers.Add(new TaxihailApiHttpHandler());      
             
             config.DependencyResolver = new UnityContainerAdapter(container, container.Resolve<ILogger>());
 

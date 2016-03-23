@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
 {
-    [TestFixture]
+    [TestFixture, Ignore]
     public class DirectionFixture : BaseTest
     {
         [SetUp]

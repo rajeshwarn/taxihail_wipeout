@@ -97,7 +97,7 @@ namespace apcurium.MK.Web
             DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             DefaultPhoneNumber = config.ServerData.DefaultPhoneNumberDisplay;
-            IsAuthenticated = base.UserSession.IsAuthenticated();
+            IsAuthenticated = UserSession.IsAuthenticated();
             FacebookAppId = config.ServerData.FacebookAppId;
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;

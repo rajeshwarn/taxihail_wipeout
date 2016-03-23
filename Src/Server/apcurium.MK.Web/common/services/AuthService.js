@@ -9,7 +9,7 @@
     TaxiHail.auth = _.extend({}, Backbone.Events, {
         account: null,
         login: function (email, password, url) {
-            return $.post('api/auth/credentials', {
+            return $.post('api/v2/auth/login/password', {
                 userName: email,
                 password: password
             },_.bind(function () {
@@ -31,7 +31,7 @@
         },
 
         resetPassword: function(email) {
-            return $.post('api/account/resetpassword/' + email,{}, function () {}, 'json');
+            return $.post('api/v2/accounts/resetpassword/' + email,{}, function () {}, 'json');
         },
         
         fblogin: function (url) {
@@ -44,7 +44,7 @@
                                             Accept : "application/json; charset=utf-8",         
                                             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
                                         },
-                                        url:'api/auth/credentialsfb', 
+                                        url: 'api/v2/auth/login/facebook',
                                         type: 'POST',
                                         data: {
                                             userName: me.id,
@@ -77,7 +77,7 @@
                 
                 if (T.isConnected()) {
                     var me = T.currentUser;
-                    $.post('api/auth/credentialstw', {
+                    $.post('api/v2/auth/login/twitter', {
                         userName: me.id,
                         password: me.id
                     }, 'json')

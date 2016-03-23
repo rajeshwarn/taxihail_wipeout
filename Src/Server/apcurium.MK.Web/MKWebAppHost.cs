@@ -1,12 +1,16 @@
 ﻿#region
 
+using System.Web.Http;
+using apcurium.MK.Web;
+using apcurium.MK.Web.App_Start;
 using Funq;
 using log4net;
+using Microsoft.Owin;
 using Owin;
 
 #endregion
 
-
+[assembly: OwinStartup(typeof(MkWebAppHost))]
 namespace apcurium.MK.Web
 {
     public partial class MkWebAppHost 

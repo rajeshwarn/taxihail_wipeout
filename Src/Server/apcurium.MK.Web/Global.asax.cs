@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Routing;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
@@ -24,7 +25,7 @@ using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensi
 
 namespace apcurium.MK.Web
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
@@ -39,17 +40,19 @@ namespace apcurium.MK.Web
             var container = UnityConfig.GetConfiguredContainer();
             new Module().Init(container);
 
-            var config = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
+            var config = UnityContainerExtensions.Resolve<IServerSettings>(container);
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.ServerData.TaxiHail.ApplicationKey);
 
-            var serverSettings = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
+            var serverSettings = UnityContainerExtensions.Resolve<IServerSettings>(container);
 
             _defaultPollingValue = serverSettings.ServerData.OrderStatus.ServerPollingInterval;
             PollIbs(_defaultPollingValue);
 
             AreaRegistration.RegisterAllAreas();
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            
         }
 
         private void PollIbs(int pollingValue)
@@ -109,6 +112,13 @@ namespace apcurium.MK.Web
                 var watch = new Stopwatch();
                 watch.Start();
                 HttpContext.Current.Items.Add("RequestLoggingWatch", watch);
+                var path = HttpContext.Current.Request.Path;
+
+                if (!path.Contains("/api/v2/"))
+                {
+                    HttpContext.Current.RewritePath(path.Replace("/api/","/api/v2/"));
+                }
+
             }
         }
 

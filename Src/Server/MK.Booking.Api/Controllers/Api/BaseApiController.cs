@@ -83,6 +83,29 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();
 
+        private string _sessionKey;
+        protected string SessionKey
+        {
+            get
+            {
+                if (_sessionKey.HasValueTrimmed())
+                {
+                    return _sessionKey;
+                }
+
+                var sessionId = Request.Headers.GetCookies()
+                    .SelectMany(cookieContainer => cookieContainer.Cookies)
+                    .Where(cookie => cookie.Name == "ss-pid")
+                    .Select(cookie => cookie.Value)
+                    .FirstOrDefault();
+
+                _sessionKey = sessionId.HasValueTrimmed()
+                    ? "urn:iauthsession:{0}".InvariantCultureFormat(sessionId)
+                    : null;
+
+                return _sessionKey;
+            }
+        }
 
         private SessionEntity _session;
         public SessionEntity Session
@@ -94,21 +117,22 @@ namespace apcurium.MK.Booking.Api.Services
                     return _session;
                 }
 
-                var sessionId = Request.Headers.GetCookies()
-                    .SelectMany(cookieContainer => cookieContainer.Cookies)
-                    .Where(cookie => cookie.Name == "ss-pid")
-                    .Select(cookie => cookie.Value)
-                    .FirstOrDefault();
+                var key = SessionKey;
 
-                if (!sessionId.HasValueTrimmed())
-                {
-                    return _session = new SessionEntity();
-                }
+                _session = key.HasValueTrimmed()
+                    ? _cacheClient.GetOrDefault(key, new SessionEntity())
+                    : new SessionEntity();
 
-                var key = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
-
-                return _session = _cacheClient.Get<SessionEntity>(key);
+                return _session;
             }
+        }
+
+        protected void ForgetSession()
+        {
+            Session.RemoveSessionIfNeeded();
+
+            _sessionKey = null;
+            _session = new SessionEntity();
         }
     }
 }

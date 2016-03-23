@@ -9,7 +9,6 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/app")]
     public class ApplicationInfoController : BaseApiController
     {
         private readonly ApplicationInfoService _applicationInfoService;
@@ -30,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PrepareApiServices(_appStartUpLogStartUpLogService, _applicationInfoService);
         }
 
-        [HttpGet, Route("info")]
+        [HttpGet, Route("api/v2/app/info")]
         public IHttpActionResult GetApplicationInfo()
         {
             var result = _applicationInfoService.Get();
@@ -38,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("starts/{lastMinutes}"), Auth(Role = RoleName.Admin)]
+        [HttpGet, Route("api/v2/app/starts/{lastMinutes}"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult AppStartUpLog(long lastMinutes)
         {
             var result = _appStartUpLogStartUpLogService.Get(new AppStartUpLogRequest() {LastMinutes = lastMinutes});

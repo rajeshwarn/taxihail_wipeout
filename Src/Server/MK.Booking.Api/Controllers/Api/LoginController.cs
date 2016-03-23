@@ -13,12 +13,13 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
+using apcurium.MK.Web.Security;
 using Infrastructure.Messaging;
 using MK.Common.DummyServiceStack;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/login"), NoCache]
+    [RoutePrefix("api/v2/auth/login"), NoCache]
     public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();
@@ -53,6 +54,13 @@ namespace apcurium.MK.Web.Controllers.Api
             return InnerLogin(account);
         }
 
+        [HttpPost, Auth, Route("~/api/auth/logout")]
+        public IHttpActionResult Logout()
+        {
+            ForgetSession();
+            return Ok();
+        }
+
         [HttpPost]
         [Route("twitter")]
         public AuthResponse LoginTwitter(Auth request)
@@ -69,7 +77,7 @@ namespace apcurium.MK.Web.Controllers.Api
         
         [HttpPost]
         [Route("password")]
-        public AuthResponse Login(Auth request)
+        public IHttpActionResult Login([FromBody]Auth request)
         {
             var account = _accountDao.FindByEmail(request.UserName);
 
@@ -85,7 +93,9 @@ namespace apcurium.MK.Web.Controllers.Api
 
             try
             {
-                return InnerLogin(account);
+                var authResult = InnerLogin(account);
+
+                return GenerateActionResult(authResult);
             }
             catch (Exception)
             {
