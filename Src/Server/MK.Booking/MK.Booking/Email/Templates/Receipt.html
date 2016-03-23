@@ -461,22 +461,22 @@
                         <tr>
                             <td>
                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
-                                                                    {{#ShowExtraInfoInReceipt}}
-                                                                    {{#HasDriverPhoto}}
-                                                                    <tr style="color: { {EmailFontColor}}! important">
-                                                                        <td class="driver_list_title" style="vertical-align: middle">{{ localize "Email_Body_DriverPhoto" }}</td>
-                                                                        <td class="list_value">
-                                                                            <div style="width: 100%">
-                                                                                <div style="margin-top: 5px; margin-bottom: 5px; width: 70px; height: 70px; float: right">
-                                                                                    <div class="driverPhotoMask">
-                                                                                        <img style="max-width: 100%; display: block; padding: 0px; vertical-align: central;" src="{{ DriverPhotoURL }}"/>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    {{/HasDriverPhoto}}
-                                                                    {{/ShowExtraInfoInReceipt}}
+                                    {{#ShowExtraInfoInReceipt}}
+                                    {{#HasDriverPhoto}}
+                                    <tr style="color: { {EmailFontColor}}! important">
+                                        <td class="driver_list_title" style="vertical-align: middle">{{ localize "Email_Body_DriverPhoto" }}</td>
+                                        <td class="list_value">
+                                            <div style="width: 100%">
+                                                <div style="margin-top: 5px; margin-bottom: 5px; width: 70px; height: 70px; float: right">
+                                                    <div class="driverPhotoMask">
+                                                        <img style="max-width: 100%; display: block; padding: 0px; vertical-align: central;" src="{{ DriverPhotoURL }}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/HasDriverPhoto}}
+                                    {{/ShowExtraInfoInReceipt}}
 
                                     {{#HasDriverInfo}}
                                     <tr style="color: { {EmailFontColor}}! important">
@@ -556,59 +556,59 @@
                                 <table class="invoice" cellpadding="0" cellspacing="0">
                                     <tr>
                                                                         
-                                                                        <td class="list_title">{{ EmailBodyFare }} {{#ShowRateClassStart}} {{ RateClassStart }} {{/ShowRateClassStart}}</td>
+                                        <td class="list_title">{{{ EmailBodyFare }} {{#ShowRateClassStart}} {{ RateClassStart }} {{/ShowRateClassStart}}</td>
                                         <td class="list_value">{{ Fare }}</td>
                                     </tr>
 
                                     {{#ShowRateClassEnd}}
                                     <tr>
-                                                                        <td class="list_title">{{ EmailBodyFare }} {{ RateClassEnd }}</td>
+                                        <td class="list_title">{{{ EmailBodyFare }}} {{ RateClassEnd }}</td>
                                         <td class="list_value">{{ FareAtAlternateRate }}</td>
                                     </tr>
                                     {{/ShowRateClassEnd}}
 
                                     {{#ShowExtra}}
                                     <tr>
-                                                                        <td class="list_title">{{EmailBodyExtra}}</td>
+                                        <td class="list_title">{{{EmailBodyExtra}}}</td>
                                         <td class="list_value">{{ Extra }}</td>
                                     </tr>
                                     {{/ShowExtra}}
 
                                     {{#ShowSurcharge}}
                                     <tr>
-                                                                        <td class="list_title">{{EmailBodySurcharge}}</td>
+                                        <td class="list_title">{{{EmailBodySurcharge}}}</td>
                                         <td class="list_value">{{ Surcharge }}</td>
                                     </tr>
                                     {{/ShowSurcharge}}
 
                                     {{#ShowToll1}}
                                     <tr>
-                                        <td class="list_title">{{ TollName1 }}</td>
+                                        <td class="list_title">{{{ TollName1 }}}</td>
                                         <td class="list_value">{{ TollAmount1 }}</td>
                                     </tr>
                                     {{/ShowToll1}}
                                     {{#ShowToll2}}
                                     <tr>
-                                        <td class="list_title">{{ TollName2 }}</td>
+                                        <td class="list_title">{{{ TollName2 }}}</td>
                                         <td class="list_value">{{ TollAmount2 }}</td>
                                     </tr>
                                     {{/ShowToll2}}
                                     {{#ShowToll3}}
                                     <tr>
-                                        <td class="list_title">{{ TollName3 }}</td>
+                                        <td class="list_title">{{{ TollName3 }}}</td>
                                         <td class="list_value">{{ TollAmount3 }}</td>
                                     </tr>
                                     {{/ShowToll3}}
                                     {{#ShowToll4}}
                                     <tr>
-                                        <td class="list_title">{{ TollName4 }}</td>
+                                        <td class="list_title">{{{ TollName4 }}}</td>
                                         <td class="list_value">{{ TollAmount4 }}</td>
                                     </tr>
                                     {{/ShowToll4}}
 
                                     {{#ShowTollTotal}}
                                     <tr>
-                                                                        <td class="list_title">{{ EmailBodyToll }}</td>
+                                        <td class="list_title">{{{ EmailBodyToll }}}</td>
                                         <td class="list_value">{{ Toll }}</td>
                                     </tr>
                                     {{/ShowTollTotal}}
@@ -624,7 +624,7 @@
                                     {{/ShowTax}}
                                     {{#ShowImprovementSurcharge}}
                                     <tr>
-                                                                        <td class="list_title">{{ EmailBodyImprovementSurcharge }}</td>
+                                        <td class="list_title">{{{ EmailBodyImprovementSurcharge }}}</td>
                                         <td class="list_value">{{ ImprovementSurcharge }}</td>
                                     </tr>
                                     {{/ShowImprovementSurcharge}}
@@ -634,12 +634,12 @@
                                         <td class="list_title">
                                             {{ localize "Email_Body_BookingFees"}}
                                         </td>
-                                        <td class="list_value">{{ BookingFees }}</td>
+                                        <td class="list_value">{{{ BookingFees }}}</td>
                                     </tr>
                                     {{/ShowBookingFees}}
 
                                     <tr>
-                                                                        <td class="list_title">{{ EmailBodyTip }}</td>
+                                        <td class="list_title">{{{ EmailBodyTip }}}</td>
                                         <td class="list_value">{{ Tip }}</td>
                                     </tr>
 
@@ -656,14 +656,14 @@
                                         <td class="list_value">({{ AmountSavedByPromotion }})</td>
                                     </tr>
                                     {{/PromotionWasUsed}}
-                                    <tr class="fare_list_charged" style="color: { {EmailFontColor}}">
-                                                                        <td class="list_title">{{ EmailBodyTotalFare }}</td>
+                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}">
+                                        <td class="list_title">{{{ EmailBodyTotalFare }}}</td>
                                         <td class="list_value">{{ TotalFare }}</td>
                                     </tr>
 
                                     {{#ShowRideLinqLastFour}}
                                     <tr>
-                                                                        <td class="list_title">{{ EmailBodyRideLinqLastFour }}</td>
+                                        <td class="list_title">{{{ EmailBodyRideLinqLastFour }}}</td>
                                         <td class="list_value">{{ RideLinqLastFour }}</td>
                                     </tr>
                                     {{/ShowRideLinqLastFour}}
@@ -709,7 +709,7 @@
                 </tr>
                 <tr>
                     <td class="content-block">
-                        <p style="text-align: center">{{Note}}</p>
+                        <p style="text-align: center">{{{Note}}}</p>
                     </td>
                 </tr>
                 <tr>
