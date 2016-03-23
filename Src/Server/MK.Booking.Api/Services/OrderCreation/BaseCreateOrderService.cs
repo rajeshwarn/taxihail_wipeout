@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
-            _logger.LogMessage("Create order request : " + request.ToJson());
+            _logger.LogMessage("Create order request : " + request);
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
