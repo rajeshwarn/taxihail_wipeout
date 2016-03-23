@@ -424,7 +424,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			const string api = "//api.";
 			const string services = "//services.";
 
-
 			var settings = Container.Resolve<IAppSettings>();
 			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
 			{
@@ -440,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				// We must also change https to http since staging does not support HTTPS
 				serverUrl = serverUrl.Replace(services, staging).Replace(api, staging);
 
-				await InnerSetServerUrl(serverUrl);
+				await InnerSetServerUrl(serverUrl, true);
 
 				settings.SetAppleTestAccountMode(true);
 
@@ -453,7 +452,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				serverUrl = serverUrl.Replace(staging, api);
 
-				await InnerSetServerUrl(serverUrl);
+				await InnerSetServerUrl(serverUrl, true);
 
 				settings.SetAppleTestAccountMode(false);
 			}
@@ -476,9 +475,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private async Task InnerSetServerUrl(string serverUrl)
+		private async Task InnerSetServerUrl(string serverUrl, bool skipAppRestart = false)
 		{
-			await Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+			await Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl, skipAppRestart);
 			this.Services().ApplicationInfo.ClearAppInfo();
 			_accountService.ClearReferenceData();
 		}
