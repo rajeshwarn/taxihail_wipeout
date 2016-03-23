@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         protected async Task<CreateOrder> BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
-            _logger.LogMessage("Create order request : " + request.ToJson());
+            _logger.LogMessage("Create order request : " + request);
 
             if (request.Settings.Country == null || !request.Settings.Country.Code.HasValueTrimmed())
             {

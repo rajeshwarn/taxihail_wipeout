@@ -178,19 +178,27 @@ namespace MK.Common.Configuration
         public bool IsWebSocialMediaVisible { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Facebook  URL (Website)", Description = "Adds the link to the Facebook address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Facebook  URL (website/email)", Description = "Adds the link to the Facebook address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaFacebookURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Twitter  URL (Website)", Description = "Adds the link to the Twitter address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Twitter  URL (website/email)", Description = "Adds the link to the Twitter address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaTwitterURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Google+ URL (Website)", Description = "Adds the link to the Google+ address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Instagram  URL (website/email)", Description = "Adds the link to the Instagram address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        public string SocialMediaInstagramURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Website - Youtube  URL (website/email)", Description = "Adds the link to the Youtube address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        public string SocialMediaYoutubeURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Website - Google+ URL (Website/email)", Description = "Adds the link to the Google+ address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaGoogleURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Website - Pinterest URL (Website)", Description = "Adds the link to the Pinterest address. If empty, no button will appear. Requires: Website - Display Social Media link")]
+        [Display(Name = "Website - Pinterest URL (Website/email)", Description = "Adds the link to the Pinterest address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaPinterestURL { get; protected set; }
 
         [CustomizableByCompany]
