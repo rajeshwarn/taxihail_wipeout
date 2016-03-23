@@ -1,17 +1,17 @@
 using System;
 using Android.Content;
-using Android.OS;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using Card.IO;
 using Java.Util;
 using TinyIoC;
 using TimeZone = Java.Util.TimeZone;
 using Uri = Android.Net.Uri;
 
-#if !CALLBOX
-using PaypalSdkDroid.CardPayment;
-#endif
+//#if !CALLBOX
+//using PaypalSdkDroid.CardPayment;
+//#endif
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

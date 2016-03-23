@@ -152,12 +152,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     _numberOfCreditCards = creditCards.Count;
 
                     _currentlyDisplayedCreditCard = _creditCardId == default(Guid)
-					if(!_isAddingNew)
-					{
-						creditCard = _creditCardId == default(Guid)
                         ? await _accountService.GetDefaultCreditCard()
                         : creditCards.First(c => c.CreditCardId == _creditCardId);
-                }
 				}
                 catch (Exception ex)
                 {
@@ -261,6 +257,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			set
 			{
 				Data.CardNumber = value;
+
 				DetermineCompany (value);
 
 				RaisePropertyChanged();
@@ -710,9 +707,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
 					return;
-				}
-
-                    return;
                 }
                 using (this.Services().Message.ShowProgress())
                 {
