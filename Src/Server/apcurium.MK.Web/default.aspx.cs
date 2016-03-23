@@ -74,6 +74,8 @@ namespace apcurium.MK.Web
         protected string SocialMediaTwitterURL { get; private set; }
         protected string SocialMediaGoogleURL { get; private set; }
         protected string SocialMediaPinterestURL { get; private set; }
+        protected string SocialMediaInstagramURL { get; private set; }
+        protected string SocialMediaYoutubeURL { get; private set; }
         protected bool HideMarketChangeWarning { get; private set; }
         protected bool AutoConfirmFleetChange { get; private set; }
         protected bool AlwaysDisplayCoFOption { get; private set; }
@@ -114,6 +116,8 @@ namespace apcurium.MK.Web
             SocialMediaTwitterURL = config.ServerData.SocialMediaTwitterURL;
             SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
             SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
+            SocialMediaInstagramURL = config.ServerData.SocialMediaInstagramURL;
+            SocialMediaYoutubeURL = config.ServerData.SocialMediaYoutubeURL;
 
             AvailableVehicleRefreshRate = config.ServerData.AvailableVehicleRefreshRate;
 

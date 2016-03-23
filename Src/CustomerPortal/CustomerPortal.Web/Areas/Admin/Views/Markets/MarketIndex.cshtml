@@ -1,4 +1,6 @@
-﻿@using CustomerPortal.Web.Areas.Admin.Models
+﻿@using apcurium.MK.Common.Enumeration
+@using apcurium.MK.Common.Extensions
+@using CustomerPortal.Web.Areas.Admin.Models
 @model MarketModel
 
 <h2>Market @Model.Market Configuration</h2>
@@ -161,6 +163,11 @@
 
             <h4>Receipt Footer</h4>
             @Html.TextBoxFor(x => x.ReceiptFooter, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+            <br/>
+            <br/>
+
+            <h4>Edit receipt labels</h4>
+            <a class="btn" href='@Url.Action("EditReceiptLabels", new {Model.Market})'>Edit receipt labels</a>
             <br/>
             <br />
 

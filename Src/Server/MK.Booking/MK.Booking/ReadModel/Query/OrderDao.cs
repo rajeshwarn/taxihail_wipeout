@@ -95,18 +95,18 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var activeOrders = context.Set<OrderStatusDetail>()
-                     .Where(x => x.AccountId == accountId
-                         && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending)
-                         && VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId))
-                     .OrderByDescending(order => order.PickupDate)
-                     .ToList();
+                    .Where(x => x.AccountId == accountId
+                        && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending) 
+                        && VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId))
+                    .OrderByDescending(order => order.PickupDate)
+                    .ToList();
                 
                 // remove junk orders (unfinished and with pickup date more than 2 days ago)
                 activeOrders = activeOrders
                     .Where(x => x.PickupDate >= DateTime.Now.AddDays(-2))
                     .ToList();
-                
-                return activeOrders.SingleOrDefault();
+
+                return activeOrders.FirstOrDefault();
             }
         }
 

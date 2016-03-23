@@ -16,6 +16,6 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<OverduePayment> GetOverduePayment();
 
-        Task<SettleOverduePaymentResponse> SettleOverduePayment();
+        Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId);
     }
 }
