@@ -416,7 +416,7 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
 
-            if (hasBailed)
+            if (hasDriverBailed)
             {
                 // reset to empty values
                 orderStatusDetail.DriverInfos = new DriverInfos();
