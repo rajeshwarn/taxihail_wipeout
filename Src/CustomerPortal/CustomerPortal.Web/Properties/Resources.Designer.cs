@@ -173,6 +173,15 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic.
+        /// </summary>
+        public static string ar {
+            get {
+                return ResourceManager.GetString("ar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Phone Number.
         /// </summary>
         public static string CompanyPhoneNumber {
@@ -299,7 +308,7 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare.
+        ///   Looks up a localized string similar to Extra.
         /// </summary>
         public static string Email_Body_Extra {
             get {
@@ -313,6 +322,87 @@ namespace CustomerPortal.Web.Properties {
         public static string Email_Body_Fare {
             get {
                 return ResourceManager.GetString("Email_Body_Fare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access Fee.
+        /// </summary>
+        public static string Email_Body_ImprovementSurcharge {
+            get {
+                return ResourceManager.GetString("Email_Body_ImprovementSurcharge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Four.
+        /// </summary>
+        public static string Email_Body_RideLinqLastFour {
+            get {
+                return ResourceManager.GetString("Email_Body_RideLinqLastFour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surcharge.
+        /// </summary>
+        public static string Email_Body_Surcharge {
+            get {
+                return ResourceManager.GetString("Email_Body_Surcharge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax.
+        /// </summary>
+        public static string Email_Body_Tax {
+            get {
+                return ResourceManager.GetString("Email_Body_Tax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip.
+        /// </summary>
+        public static string Email_Body_Tip {
+            get {
+                return ResourceManager.GetString("Email_Body_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toll.
+        /// </summary>
+        public static string Email_Body_Toll {
+            get {
+                return ResourceManager.GetString("Email_Body_Toll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Email_Body_TotalFare {
+            get {
+                return ResourceManager.GetString("Email_Body_TotalFare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string en {
+            get {
+                return ResourceManager.GetString("en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spanish.
+        /// </summary>
+        public static string es {
+            get {
+                return ResourceManager.GetString("es", resourceCulture);
             }
         }
         
@@ -349,6 +439,15 @@ namespace CustomerPortal.Web.Properties {
         public static string FleetIdWhiteListLabel {
             get {
                 return ResourceManager.GetString("FleetIdWhiteListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French.
+        /// </summary>
+        public static string fr {
+            get {
+                return ResourceManager.GetString("fr", resourceCulture);
             }
         }
         
@@ -431,6 +530,15 @@ namespace CustomerPortal.Web.Properties {
         public static string MileageRateHelp {
             get {
                 return ResourceManager.GetString("MileageRateHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dutch.
+        /// </summary>
+        public static string nl {
+            get {
+                return ResourceManager.GetString("nl", resourceCulture);
             }
         }
         
