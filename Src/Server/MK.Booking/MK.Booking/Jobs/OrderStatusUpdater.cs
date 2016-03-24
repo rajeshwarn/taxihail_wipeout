@@ -121,9 +121,10 @@ namespace apcurium.MK.Booking.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
+            var pairingError = orderStatusDetail.PairingError;
             var trip = CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
 
-            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
+            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail, pairingError))
             {
                 _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
@@ -195,6 +196,15 @@ namespace apcurium.MK.Booking.Jobs
             if (pairingInfo == null)
             {
                 // Order not paired
+                return null;
+            }
+
+            var pairingError = orderStatusDetail.PairingError;
+
+            if (pairingError.HasValueTrimmed() &&
+                CmtErrorCodes.TerminalErrors.Any(error => pairingError.EndsWith(error.ToString())))
+            {
+                // trip has terminating error, exiting
                 return null;
             }
 
@@ -1033,12 +1043,13 @@ namespace apcurium.MK.Booking.Jobs
             throw new NotImplementedException("Cannot have pairing without any payment mode");
         }
 
-        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail, string oldPairingError)
         {
             return (ibsOrderInfo.Status.HasValue() // ibs status changed
                     && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
                    || (!orderStatusDetail.FareAvailable // fare was not available and ibs now has the information
                        && ibsOrderInfo.Fare > 0)
+                   || (orderStatusDetail.PairingError.HasValue() && oldPairingError != orderStatusDetail.PairingError)
                    || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
                    || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   
