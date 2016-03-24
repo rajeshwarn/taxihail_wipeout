@@ -121,10 +121,10 @@ namespace apcurium.MK.Booking.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
-            var pairingError = orderStatusDetail.PairingError;
+            var oldPairingError = orderStatusDetail.PairingError;
             var trip = CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
 
-            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail, pairingError))
+            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail, oldPairingError))
             {
                 _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
