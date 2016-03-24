@@ -433,11 +433,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             items.Add("Email_Body_Extra", emptyLanguageDictionary);
             items.Add("Email_Body_Surcharge", emptyLanguageDictionary);
             items.Add("Email_Body_Toll", emptyLanguageDictionary);
+            items.Add("Email_Body_Tax", emptyLanguageDictionary);
             items.Add("Email_Body_ImprovementSurcharge", emptyLanguageDictionary);
             items.Add("Email_Body_Tip", emptyLanguageDictionary);
             items.Add("Email_Body_TotalFare", emptyLanguageDictionary);
             items.Add("Email_Body_RideLinqLastFour", emptyLanguageDictionary);
-            items.Add("Email_Body_Tax", emptyLanguageDictionary);
 
             return items;
         }
