@@ -677,7 +677,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyImprovementSurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_ImprovementSurcharge", clientLanguageCode);
                 var emailBodyTip = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tip", clientLanguageCode);
                 var emailBodyTotalFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_TotalFare", clientLanguageCode);
-                var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode);
+                var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
+                var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
                 var templateData = new
                 {
@@ -795,6 +796,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     EmailBodyTip = emailBodyTip,
                     EmailBodyTotalFare = emailBodyTotalFare,
                     EmailBodyRideLinqLastFour = emailBodyRideLinqLastFour,
+                    EmailBodyTax = emailBodyTax,
                     
                     HasSocialMediaGoogleURL = !_serverSettings.ServerData.SocialMediaGoogleURL.IsNullOrEmpty(),
                     SocialMediaGoogleImg = String.Concat(baseUrls.BaseUrlAssetsImg, "google.png"),

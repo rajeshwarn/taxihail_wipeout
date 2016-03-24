@@ -337,16 +337,16 @@ the months ahead, and are always interested in what you have to say!</value>
     <value>Toll</value>
   </data>
   <data name="Email_Body_ImprovementSurcharge" xml:space="preserve">
-    <value>Improvement surcharge</value>
+    <value>Access Fee</value>
   </data>
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Tip</value>
   </data>
   <data name="Email_Body_TotalFare" xml:space="preserve">
-    <value>Total fare</value>
+    <value>Total</value>
   </data>
   <data name="Email_Body_RideLinqLastFour" xml:space="preserve">
-    <value>Ride linq last four</value>
+    <value>Last Four</value>
   </data>
   <data name="ar" xml:space="preserve">
     <value>Arabic</value>
@@ -362,5 +362,8 @@ the months ahead, and are always interested in what you have to say!</value>
   </data>
   <data name="nl" xml:space="preserve">
     <value>Dutch</value>
+  </data>
+  <data name="Email_Body_Tax" xml:space="preserve">
+    <value>Tax</value>
   </data>
 </root>
