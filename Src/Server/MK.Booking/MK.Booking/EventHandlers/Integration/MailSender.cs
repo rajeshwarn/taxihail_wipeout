@@ -83,6 +83,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var order = _orderDao.FindById(@event.SourceId);
                     var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
+                    var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                    if (orderStatus.PairingError.HasValueTrimmed() &&
+                        CmtErrorCodes.TerminalErrors.Any(e => orderStatus.PairingError.EndsWith(e.ToString())))
+                    {
+                        return;
+                    }
+
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
                         // Send receipt for Pay in Car

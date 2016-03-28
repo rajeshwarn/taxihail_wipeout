@@ -107,6 +107,23 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
+                    if (orderStatusDetail.PairingError.HasValueTrimmed())
+                    {
+                        var errorCode = CmtErrorCodes.TerminalErrors.Select(e => (int?)e)
+                        .FirstOrDefault(e => e.HasValue && orderStatusDetail.PairingError.EndsWith(e.ToString()));
+
+                        if (errorCode.HasValue)
+                        {
+                            _logger.LogMessage("An attempt to pair order {0} after previous pairing ended in terminal error has been detected. Returning original pairing error {1}.", orderStatusDetail.OrderId, errorCode);
+                            return new PairingResponse
+                            {
+                                IsSuccessful = false,
+                                ErrorCode = errorCode
+                            };
+                        }
+                    }
+                    
+
                     var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 
                     if (response.ErrorCode.HasValue)
