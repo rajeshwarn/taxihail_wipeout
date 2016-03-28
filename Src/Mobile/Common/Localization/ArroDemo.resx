@@ -144,4 +144,7 @@
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>Oops, looks like you don't have a credit card on file. Select \"Add Card\" to add one.</value>
   </data>  
+  <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Enter the 7-digit code located at the top and in the center of the taxi TV screen to auto-pay and get an e-receipt at the end of your ride.</value>
+  </data>
 </root>
