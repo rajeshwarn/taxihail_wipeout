@@ -238,10 +238,7 @@ namespace apcurium.MK.Booking.Jobs
                 return null;
             }
 
-            var pairingError = orderStatusDetail.PairingError;
-
-            if (pairingError.HasValueTrimmed() &&
-                CmtErrorCodes.TerminalErrors.Any(error => pairingError.EndsWith(error.ToString())))
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
             {
                 // trip has terminating error, exiting
                 return null;
@@ -721,6 +718,13 @@ namespace apcurium.MK.Booking.Jobs
 
         private void HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
+            {
+                // There was a terminal pairing error.
+                return;
+
+            }
+
             HandleOrderCompletionWithNoFare(orderStatusDetail,
                 () =>
                 {
@@ -767,8 +771,7 @@ namespace apcurium.MK.Booking.Jobs
                 if (hasNoFareInfo())
                 {
                     // no fare info yet
-
-                    if (orderStatusDetail.Status == OrderStatus.Completed)
+                   if (orderStatusDetail.Status == OrderStatus.Completed)
                     {
                         // no fare received but order is completed, change status to increase polling speed and to trigger a completion on clientside
                         orderStatusDetail.Status = OrderStatus.WaitingForPayment;
