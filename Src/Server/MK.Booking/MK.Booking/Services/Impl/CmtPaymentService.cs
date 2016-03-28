@@ -106,23 +106,19 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         throw new Exception("Order has no IBSOrderId");
                     }
-
-                    if (orderStatusDetail.PairingError.HasValueTrimmed())
-                    {
-                        var errorCode = CmtErrorCodes.TerminalErrors.Select(e => (int?)e)
-                        .FirstOrDefault(e => e.HasValue && orderStatusDetail.PairingError.EndsWith(e.ToString()));
-
-                        if (errorCode.HasValue)
-                        {
-                            _logger.LogMessage("An attempt to pair order {0} after previous pairing ended in terminal error has been detected. Returning original pairing error {1}.", orderStatusDetail.OrderId, errorCode);
-                            return new PairingResponse
-                            {
-                                IsSuccessful = false,
-                                ErrorCode = errorCode
-                            };
-                        }
-                    }
                     
+                    // We need to extract the errorCode and resend it as a pairing response failed if necessary to prevent redoing a pairing after terminal error.
+                    var savedPairingErrorCode = CmtErrorCodes.ExtractTerminalError(orderStatusDetail.PairingError);
+
+                    if (savedPairingErrorCode.HasValue)
+                    {
+                        _logger.LogMessage("An attempt to pair order {0} after previous pairing ended in terminal error has been detected. Returning original pairing error {1}.", orderStatusDetail.OrderId, savedPairingErrorCode);
+                        return new PairingResponse
+                        {
+                            IsSuccessful = false,
+                            ErrorCode = savedPairingErrorCode
+                        };
+                    }
 
                     var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 

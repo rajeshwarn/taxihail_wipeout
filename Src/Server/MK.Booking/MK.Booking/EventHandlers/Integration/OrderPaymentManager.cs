@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    if (orderStatus.PairingError.HasValueTrimmed() && CmtErrorCodes.TerminalErrors.Any(e => orderStatus.PairingError.EndsWith(e.ToString())))
+                    if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
                     {
                         // Terminal error, no need to react to paymentFailure.
                         return;

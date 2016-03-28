@@ -199,10 +199,7 @@ namespace apcurium.MK.Booking.Jobs
                 return null;
             }
 
-            var pairingError = orderStatusDetail.PairingError;
-
-            if (pairingError.HasValueTrimmed() &&
-                CmtErrorCodes.TerminalErrors.Any(error => pairingError.EndsWith(error.ToString())))
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
             {
                 // trip has terminating error, exiting
                 return null;
@@ -578,7 +575,7 @@ namespace apcurium.MK.Booking.Jobs
 
         private void HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
-            if (CmtErrorCodes.TerminalErrors.Any(error => orderStatusDetail.PairingError.EndsWith(error.ToString())))
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
             {
                 // There was a terminal pairing error.
                 return;

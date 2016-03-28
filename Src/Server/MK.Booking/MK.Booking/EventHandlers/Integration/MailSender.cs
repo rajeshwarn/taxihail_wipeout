@@ -84,8 +84,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
                     var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
-                    if (orderStatus.PairingError.HasValueTrimmed() &&
-                        CmtErrorCodes.TerminalErrors.Any(e => orderStatus.PairingError.EndsWith(e.ToString())))
+                    if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
                     {
                         return;
                     }
