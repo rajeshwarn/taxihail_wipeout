@@ -331,13 +331,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     var order = _orderDao.FindByAccountId(accountManagementModel.Id).FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId);
                     var orderModel = new OrderModel(order);
-                    var orderManualRideLinqDetail = GetOrderManualRideLinqDetail(order.Id);
-                    double? accessFee = orderManualRideLinqDetail != null ? orderManualRideLinqDetail.AccessFee : 0.0;
-
+                    
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
-                        orderModel.TotalAmount(accessFee), 
+                        orderModel.TotalAmount(), 
                         accountManagementModel.Email, 
                         AuthSession.UserAuthName,
                         order.ClientLanguageCode);
@@ -444,12 +442,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return _orderStatusDetails ?? (_orderStatusDetails = _orderDao.FindOrderStatusByAccountId(accountId));
         }
 
-        private OrderManualRideLinqDetail _orderManualRideLinqDetail;
-        private OrderManualRideLinqDetail GetOrderManualRideLinqDetail(Guid orderId)
-        {
-            return _orderManualRideLinqDetail ?? (_orderManualRideLinqDetail = _orderDao.GetManualRideLinqById(orderId));
-        }
-
         private IEnumerable<PromotionUsageDetail> _promotionUsageDetails;
         private IEnumerable<PromotionUsageDetail> GetPromotionUsageDetails(Guid accountId)
         {
@@ -466,8 +458,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                    var promo =  GetPromotionUsageDetails(accountId).FirstOrDefault(promotionUsageDetail => promotionUsageDetail.OrderId == x.Id);
                    var status = GetOrderStatusDetails(accountId).FirstOrDefault(orderStatusDetail => orderStatusDetail.OrderId == x.Id);
                    var orderPairing = _orderDao.FindOrderPairingById(x.Id);
-                   var orderManualRideLinqDetail = GetOrderManualRideLinqDetail(x.Id);
-                   double? accessFee = orderManualRideLinqDetail != null ? orderManualRideLinqDetail.AccessFee : 0.0;
 
                    return new OrderModel(x)
                    {
@@ -478,8 +468,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        TollString = _resources.FormatPrice(x.Toll),
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
-                       AccessFeeString = _resources.FormatPrice(accessFee),
-                       TotalAmountString = _resources.FormatPrice(x.TotalAmount(accessFee)),
+                       TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
                        IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
                        StatusString = status != null ? (status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()) : string.Empty
                    };
