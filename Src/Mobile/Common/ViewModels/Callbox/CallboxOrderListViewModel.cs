@@ -196,6 +196,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						this.Services ().Localize["BookTaxiTitle"],
 						this.Services ().Localize["BookTaxiPassengerName"]);
 
+                    if(name == null)
+                    {
+                        return;
+                    }
+
 					await CreateOrder(name);
 				});
 			}
