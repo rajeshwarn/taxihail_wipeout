@@ -59,6 +59,7 @@ namespace CMTPayment
 
             return TerminalErrors
                 .Select(error => (int?) error)
+                // Using EndsWith here since pairingError is saved in the DB with the following pattern: CMT Pairing Error Code: {code}
                 .FirstOrDefault(error => error.HasValue && pairingError.EndsWith(error.Value.ToString()));
         }
     }
