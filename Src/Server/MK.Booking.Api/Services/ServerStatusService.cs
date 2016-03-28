@@ -151,15 +151,22 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void RunMapiTest()
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
-
-            var response = cmtMobileServiceClient.Get("hc");
-            if (response != null && response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                return;
+                var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
+
+                var response = cmtMobileServiceClient.Get("hc");
+                if (response != null && response.StatusCode == HttpStatusCode.OK)
+                {
+                    return;
+                }
+
+                throw new Exception("Mapi connection failed with StatusCode {0}".InvariantCultureFormat(response != null ? response.StatusCode.ToString() : ""));
             }
-            
-            throw new Exception("Mapi connection failed with StatusCode {0}".InvariantCultureFormat(response != null ? response.StatusCode.ToString() : ""));
+            catch (Exception ex)
+            {
+                throw new Exception("Mapi connection failed with message {0}".InvariantCultureFormat(ex.Message));
+            }
         }
 
         private void RunHoneyBadgerTest()
