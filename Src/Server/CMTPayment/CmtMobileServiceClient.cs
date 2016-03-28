@@ -57,6 +57,11 @@ namespace CMTPayment
             return Client.Post(request);
         }
 
+        public HttpWebResponse Get(string relativeOrAbsoluteUrl)
+        {
+            return Client.Get<HttpWebResponse>(relativeOrAbsoluteUrl);
+        }
+
         public HttpWebResponse Post<T>(string relativeOrAbsoluteUrl, IReturn<T> request)
         {
             return Client.Post<HttpWebResponse>(relativeOrAbsoluteUrl, request);

@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -14,7 +13,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
@@ -29,7 +27,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _networkService;
         private readonly IOrderStatusUpdateDao _statusUpdaterDao;
-
 
         public ServerStatusService(
             IServerSettings serverSettings, 
@@ -155,16 +152,14 @@ namespace apcurium.MK.Booking.Api.Services
         private void RunMapiTest()
         {
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
-            var cmtTripInfoHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 
-            var tripInfo = cmtTripInfoHelper.GetTripInfo("0");
-
-            if (tripInfo == null ||  tripInfo.HttpStatusCode == (int) HttpStatusCode.BadRequest && tripInfo.ErrorCode.HasValue)
+            var response = cmtMobileServiceClient.Get("hc");
+            if (response != null && response.StatusCode == HttpStatusCode.OK)
             {
                 return;
             }
-
-            throw new Exception("Mapi connection failed with StatusCode {0} and CmtErrorCode {1}".InvariantCultureFormat(tripInfo.HttpStatusCode, tripInfo.ErrorCode));
+            
+            throw new Exception("Mapi connection failed with StatusCode {0}".InvariantCultureFormat(response != null ? response.StatusCode.ToString() : ""));
         }
 
         private void RunHoneyBadgerTest()
