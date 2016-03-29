@@ -47,16 +47,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private int? _currentIbsOrderId;
 		private bool _canAutoFollowTaxi;
 		private bool _autoFollowTaxi;
-
 		private bool _isCmtRideLinq;
-
 		private bool _isStarted;
-
 		private bool _isOrderRefreshing;
-
 		private bool _didCheckForAppRating;
-
 		private bool _showCallDriver;
+
+		private BookingStatusBottomBarViewModel _bottomBar;
+		private OrderManualRideLinqDetail _manualRideLinqDetail;
+		private TaxiLocation _taxiLocation;
 
         public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
@@ -90,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			GetIsCmtRideLinq();
 
             _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
-            _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
+			_orientationService.Initialize(new[] { DeviceOrientations.Left, DeviceOrientations.Right });
 
             Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
         }
@@ -379,7 +378,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.SelectMany(async notif =>
 				{
 					//Fallback in case of errors from the GeoService call
-					if ((notif.Kind == NotificationKind.OnError) || (notif.Kind == NotificationKind.OnNext && notif.Value == null))
+					if ((notif.Kind == NotificationKind.OnError) 
+						|| (notif.Kind == NotificationKind.OnNext && notif.Value == null)
+						|| (notif.Kind == NotificationKind.OnNext && notif.Value.Latitude == 0 && notif.Value.Longitude == 0))
 					{
 						var fallbackPosition = await _locationService.GetUserPosition();
 
@@ -936,9 +937,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private BookingStatusBottomBarViewModel _bottomBar;
-		private OrderManualRideLinqDetail _manualRideLinqDetail;
-		private TaxiLocation _taxiLocation;
 
 		private async Task PromptAppRatingIfNecessary()
 		{
