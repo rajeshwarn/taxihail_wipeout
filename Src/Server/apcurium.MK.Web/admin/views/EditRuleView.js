@@ -174,6 +174,17 @@
                 serialized.appliesToServiceTaxi = $("#appliesToServiceTaxi").attr('checked') ? true : false;
                 serialized.appliesToServiceLuxury = $("#appliesToServiceLuxury").attr('checked') ? true : false;
 
+                // AppliesToService was not designed to fit with backbone.validation. Using a custom validation:
+                if (!(serialized.appliesToServiceTaxi || serialized.appliesToServiceLuxury)) {
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize("Missing service types for rule"),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+                    return this;
+                }
+
                 serialized.zoneRequired = $("#zoneRequired").attr('checked') ? true : false;
                 serialized.excludeCircularZone = $("#checkBoxExcludeCircularZone").attr('checked') ? true : false;
 
