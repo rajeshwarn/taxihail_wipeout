@@ -226,7 +226,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude)
                         : null,
-				market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+				market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude), request.Settings.ServiceType);
 
             if (rule != null)
             {
