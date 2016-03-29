@@ -915,28 +915,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().Cache.Set("OrderReminderWasSeen." + orderId, true.ToString());                     
         }
 
-        private void AddReminder(OrderStatusDetail status)
+        private void HandleScheduledOrder(OrderStatusDetail status)
         {
 			if (!HasSeenReminderPrompt(status.OrderId))
 			{
 				SetHasSeenReminderPrompt(status.OrderId);
 				InvokeOnMainThread(() => this.Services().Message.ShowMessage(
-						this.Services().Localize["AddReminderTitle"], 
-						this.Services().Localize["AddReminderMessage"],
-						this.Services().Localize["YesButton"], async () => 
-					{
-						_phoneService.AddEventToCalendarAndReminder(
-							string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
-							string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
-							Order.PickupAddress.FullAddress, 
-							Order.PickupDate,
-							Order.PickupDate.AddHours(-2));
-						await GoToHomeScreen();
-					}, 
-						this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
+					this.Services().Localize["AddReminderTitle"], 
+					this.Services().Localize["AddReminderMessage"],
+					this.Services().Localize["YesButton"], async () =>
+				{
+					_phoneService.AddEventToCalendarAndReminder(
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
+						string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
+						Order.PickupAddress.FullAddress, 
+						Order.PickupDate,
+						Order.PickupDate.AddHours(-2));
+					await GoToHomeScreen();
+				}, 
+					this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
+			}
+			else
+			{
+				GoToHomeScreen().FireAndForget();
 			}
         }
-
 
 		private async Task PromptAppRatingIfNecessary()
 		{
@@ -995,7 +998,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled))
 				{
-					AddReminder(status);
+					HandleScheduledOrder(status);
 				}
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
