@@ -322,10 +322,37 @@
 3.2.24
 	History detail - Cannot cancel scheduled order
 	EastsideForARide - Custom strings
-
-
-
-
+3.2.25
+	Bug fix - Android - fixed crash on registration screen
+3.2.26
+	Fix bug - Fixed issue preventing mobile deployments with recent version of Xamarin
+3.2.27
+	Fixed syntax in UpdateStatusOrder 
+3.2.28
+	Custom string changes (BramCityTaxi)
+3.2.29
+	Bug fix - Android - Fixed issue where you cannot select January for the Credit card month
+	Added multi threading for OrderStatusUpdater
+3.2.30
+	Fixed issue with Manual pairing crashes
+3.2.31
+	Fix iOS address search
+3.2.32
+	Standardized search function across platforms (IPlaces + IGeocoding implementations)
+3.2.33
+	Updated Language recourse file in Spanish 
+3.2.34
+	Bug fix - When in landscape while awaiting vehicle, uses proper text colour
+3.2.35
+	Updated Language recourse file in Spanish 
+3.2.36
+	Fix iOS search (cont.)
+	Custom string changes (EastSideforARide)
+3.2.37
+	Updated Language recourse file in Spanish  (cont.)
+3.2.38
+	Bug fix - iOS - Fixed issue where "show order number" does not work on iOS
+	
 
 
 
