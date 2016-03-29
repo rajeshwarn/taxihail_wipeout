@@ -46,9 +46,9 @@ namespace apcurium.MK.Web.Security
         {
             var sessionId = context.Request.Headers.GetCookies()
                 .SelectMany(cookieContainer => cookieContainer.Cookies)
-                .Where(cookie => cookie.Name == "ss-pid")
+                .Where(cookie => cookie.Name == "ss-pid" /*|| cookie.Name == "ASP.NET_SessionId"*/)
                 .Select(cookie => cookie.Value)
-                .Select(Uri.UnescapeDataString)
+                //.Select(Uri.UnescapeDataString)
                 .FirstOrDefault();
 
             if (!sessionId.HasValueTrimmed())
@@ -57,7 +57,6 @@ namespace apcurium.MK.Web.Security
 
                 return Task.FromResult(0);
             }
-
 
             var urn = "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
 

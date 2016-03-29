@@ -21,7 +21,7 @@
                 if (tarifMode == "Ibs_Distance") {
                     var distance = null;
                     $.ajax({
-                        url: 'api/directions/',
+                        url: TaxiHail.parameters.apiRoot + '/directions/',
                         data: coordinates,
                         dataType: fmt,
                         success: function (result, status) {
@@ -31,7 +31,7 @@
                         async: false
                     });
 
-                    $.get('api/ibsdistance?Distance={0}&WaitTime={1}&StopCount={2}&PassengerCount={3}&AccountNumber={4}&CustomerNumber={5}&VehicleType={6}'.format(
+                    $.get(TaxiHail.parameters.apiRoot + '/ibsdistance?Distance={0}&WaitTime={1}&StopCount={2}&PassengerCount={3}&AccountNumber={4}&CustomerNumber={5}&VehicleType={6}'.format(
                            distance,  
                            (tripDurationInSeconds != null)
                             ? tripDurationInSeconds
@@ -49,7 +49,7 @@
                 else if (tarifMode != 'AppTarif') {
 
                     $.ajax({
-                        url: 'api/directions/',
+                        url: TaxiHail.parameters.apiRoot + '/directions/',
                         data: coordinates,
                         dataType: fmt,
                         success: function (result,status) {
@@ -58,7 +58,7 @@
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&VehicleType={9}'.format(
+                    $.get(TaxiHail.parameters.apiRoot + '/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&VehicleType={9}'.format(
                             coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng, pickupZipCode, dropOffZipCode,
                             (account != null)
                                 ? account
@@ -70,7 +70,7 @@
                             vehicleTypeId),
                         function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
-                            $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                
+                            $.get(TaxiHail.parameters.apiRoot + '/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {
                                 directionInfoDefer.resolve(resultGoogleBoth);
                             });
                         } else                            
@@ -80,7 +80,7 @@
                     });
 
                 } else {
-                    $.get('api/directions/', coordinates, function () {}, fmt).then(function (resultGoogleAppTarif) {
+                    $.get(TaxiHail.parameters.apiRoot + '/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
                         directionInfoDefer.resolve(resultGoogleAppTarif);
                     });
                 }
@@ -111,7 +111,7 @@
 
                 var directionInfoDefer = $.Deferred();
 
-                    $.get('api/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
+                $.get(TaxiHail.parameters.apiRoot + '/directions/', coordinates, function () { }, fmt).then(function (resultGoogleAppTarif) {
                         directionInfoDefer.resolve(resultGoogleAppTarif);
                     });
                 

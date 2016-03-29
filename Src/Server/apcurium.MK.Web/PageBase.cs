@@ -1,5 +1,10 @@
 ﻿#region
 
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Web;
 using System.Web.UI;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Extensions;
@@ -13,6 +18,8 @@ namespace apcurium.MK.Web
 {
     public class PageBase : Page
     {
+        private readonly RandomNumberGenerator _randgen = new RNGCryptoServiceProvider();
+
         private IUnityContainer _container;
         private SessionEntity _userSession;
 
@@ -27,7 +34,9 @@ namespace apcurium.MK.Web
             {
                 var sessionId = Request.Cookies.Get("ss-pid").SelectOrDefault(cookie => cookie.Value);
 
-                return "urn:iauthsession:{0}".InvariantCultureFormat(sessionId);
+                return sessionId.HasValueTrimmed()
+                    ? "urn:iauthsession:{0}".InvariantCultureFormat(sessionId)
+                    : null;
             }
         }
 

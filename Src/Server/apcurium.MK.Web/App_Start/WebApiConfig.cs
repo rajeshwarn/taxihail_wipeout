@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Routing;
+﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Controllers;
 using apcurium.MK.Booking.Api.Controllers;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.IoC;
 
 namespace apcurium.MK.Web
 {

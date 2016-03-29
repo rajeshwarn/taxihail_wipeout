@@ -2,7 +2,7 @@
     
     TaxiHail.NewAccount = Backbone.Model.extend({
         
-        url: "api/account/register"
+        url: "api/accounts/register"
     });
 
 })();

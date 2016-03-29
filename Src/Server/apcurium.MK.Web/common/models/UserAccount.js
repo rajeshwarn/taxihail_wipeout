@@ -2,10 +2,10 @@
 
     TaxiHail.UserAccount = Backbone.Model.extend({
         
-        url: TaxiHail.parameters.apiRoot+'/account',
+        url: TaxiHail.parameters.apiRoot+'/accounts',
 
         updatePassword: function(currentPassword, newPassword) {
-            return $.post('api/accounts/' + this.id + '/updatePassword', {
+            return $.post(TaxiHail.parameters.apiRoot + '/accounts/' + this.id + '/updatePassword', {
                 currentPassword: currentPassword,
                 newPassword: newPassword
             }, function(){}, 'json');
@@ -16,7 +16,7 @@
 
             var result = $.ajax({
                 type: 'PUT',
-                url: 'api/account/bookingsettings',
+                url: TaxiHail.parameters.apiRoot + '/accounts/bookingsettings',
                 data: JSON.stringify(settings),
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
@@ -26,7 +26,7 @@
         },
 
         getChargeAccount: function (accountNumber, customerNumber) {
-            return $.get('api/admin/accountscharge/' + accountNumber + '/' + customerNumber + '/true', function () { }, 'json');;
+            return $.get(TaxiHail.parameters.apiRoot + '/admin/accountscharge/' + accountNumber + '/' + customerNumber + '/true', function () { }, 'json');;
         }
     });
 

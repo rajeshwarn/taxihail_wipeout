@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var sessionId = Request.Headers.GetCookies()
                     .SelectMany(cookieContainer => cookieContainer.Cookies)
-                    .Where(cookie => cookie.Name == "ss-pid")
+                    .Where(cookie => cookie.Name == "ss-pid" /*|| cookie.Name == "ASP.NET_SessionId"*/)
                     .Select(cookie => cookie.Value)
                     .FirstOrDefault();
 

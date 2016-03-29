@@ -233,7 +233,6 @@
         },
 
         updateAvailableVehiclesPosition: function () {
-
             // Get vehicle backbone models as simple objects for underscore query purposes
             var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleName: e.vehicleName, latitude: e.latitude, longitude: e.longitude }) });
 

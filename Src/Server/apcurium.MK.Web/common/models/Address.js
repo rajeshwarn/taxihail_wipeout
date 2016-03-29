@@ -20,7 +20,7 @@
     };
 
     var Address = TaxiHail.Address = Backbone.Model.extend({
-        urlRoot: TaxiHail.parameters.apiRoot + '/account/addresses', sync: function (method, model, options) {
+        urlRoot: TaxiHail.parameters.apiRoot + '/accounts/addresses', sync: function (method, model, options) {
             
         var type = methodMap[method];
 

@@ -15,7 +15,7 @@ namespace apcurium.MK.Common.Http
 
         public bool IsAuthenticated()
         {
-            return SessionId.HasValueTrimmed();
+            return Guid.Empty != UserId;
         }
     }
 }

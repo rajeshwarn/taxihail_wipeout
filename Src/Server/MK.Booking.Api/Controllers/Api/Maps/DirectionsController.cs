@@ -12,7 +12,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/directions")]
     public class DirectionsController : BaseApiController
     {
         public DirectionsService DirectionsService { get;  }
@@ -22,7 +21,7 @@ namespace apcurium.MK.Web.Controllers.Api
             DirectionsService = new DirectionsService(client, serverSettings, orderDao, vehicleService, logger, commandBus, networkServiceClient);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/directions")]
         public async Task<IHttpActionResult> GetDirections([FromUri]DirectionsRequest request)
         {
             var result = await DirectionsService.Get(request);
@@ -30,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("eta")]
+        [HttpGet, Route("api/v2/directions/eta")]
         public IHttpActionResult GetAssignedEta([FromUri] AssignedEtaRequest request)
         {
             var result = DirectionsService.Get(request);

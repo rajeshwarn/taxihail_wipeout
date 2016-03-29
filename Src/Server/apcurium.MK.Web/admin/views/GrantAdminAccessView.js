@@ -23,7 +23,7 @@
             
             return $.ajax({
                 type: 'PUT',
-                url: '../api/account/' + action,
+                url: TaxiHail.parameters.apiRoot + '/admin/' + action,
                 data: {
                     accountEmail: email
                 },

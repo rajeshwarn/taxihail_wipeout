@@ -11,7 +11,7 @@
         },
 
         url: function() {
-            return 'api/account/orders/' + this.id + '/status/';
+            return TaxiHail.parameters.apiRoot + '/accounts/orders/' + this.id + '/status/';
         },
 
         isActive: function() {

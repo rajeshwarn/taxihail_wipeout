@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using System.Net;
-using System.Web;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services

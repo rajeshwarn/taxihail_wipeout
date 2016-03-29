@@ -1,12 +1,12 @@
 (function(){
 
     var Model = TaxiHail.Address.extend({
-        urlRoot: '../api/admin/popularaddresses'
+        urlRoot: TaxiHail.parameters.apiRoot + '/admin/popularaddresses'
     });
 
     var Collection = TaxiHail.AddressCollection.extend({
         model: Model,
-        url: '../api/admin/popularaddresses'
+        url: TaxiHail.parameters.apiRoot + '/admin/popularaddresses'
     });
 
     var Controller = TaxiHail.PopularAddressesController  = TaxiHail.Controller.extend({

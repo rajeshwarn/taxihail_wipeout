@@ -3,7 +3,7 @@
     TaxiHail.Order = Backbone.Model.extend({
 
         idAttribute: 'orderId',
-        urlRoot: 'api/account/orders',
+        urlRoot: TaxiHail.parameters.apiRoot + '/accounts/orders',
 
         validateOrder: function (forError) {
             return TaxiHail.orderService.validate(this, forError);
@@ -59,7 +59,7 @@
         sendMessageToDriver: function(vehicleNumber, message) {
             return $.ajax({
                 type: 'POST',
-                url: 'api/vehicle/' + vehicleNumber + '/message',
+                url: TaxiHail.parameters.apiRoot + '/vehicle/' + vehicleNumber + '/message',
                 data: JSON.stringify({
                     message: message
                 }),
@@ -125,7 +125,7 @@
         },
 
         fetchQuestions: function (accountChargeNumber, customerNumber) {
-            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/' + customerNumber + '/true', function () { }, 'json');
+            return $.get(TaxiHail.parameters.apiRoot + '/admin/accountscharge/' + accountChargeNumber + '/' + customerNumber + '/true', function () { }, 'json');
         }
     });
 }());

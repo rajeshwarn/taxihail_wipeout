@@ -47,10 +47,15 @@ namespace apcurium.MK.Booking.Api.Controllers
                     .Replace("creditCard/", "creditCards/")
                     .Replace("/ordercountforapprating", "/orders/countforapprating");
 
-            if (requestUrl.Contains("format=json"))
+
+            var queryStrings = request.RequestUri.Query.HasValueTrimmed() ?
+                request.RequestUri.Query.Remove(0, 1).Split('&')
+                : new string[0];
+
+            if (queryStrings.Any(q => q == "format=json"))
             {
                 requestUrl = requestUrl.Remove(requestUrl.IndexOf("?", StringComparison.Ordinal));
-                var query = request.RequestUri.Query.Remove(0, 1).Split('&')
+                var query = queryStrings
                     .Select(q => q.Split('=').Select(item => "\""+item+"\"").JoinBy(":"))
                     .JoinBy(",");
 
@@ -62,14 +67,7 @@ namespace apcurium.MK.Booking.Api.Controllers
 
             request.RequestUri = new Uri(requestUrl);
 
-            var response = await base.SendAsync(request, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return response;
-            }
-
-            return response;
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
     }

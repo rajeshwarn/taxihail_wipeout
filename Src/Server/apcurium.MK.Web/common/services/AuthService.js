@@ -9,12 +9,17 @@
     TaxiHail.auth = _.extend({}, Backbone.Events, {
         account: null,
         login: function (email, password, url) {
-            return $.post('api/v2/auth/login/password', {
+            return $.post(TaxiHail.parameters.apiRoot + '/auth/login/password', {
                 userName: email,
                 password: password
-            },_.bind(function () {
+            },_.bind(function (result) {
                 isLoggedIn = true;
-                
+
+                var expire = new Date();
+                expire.setTime(expire.getTime() + 3600000 * 24 * 365);
+                // We set the local auth cookie.
+                document.cookie = "ss-pid=" + result.sessionId + ";expires=" + expire.toGMTString();
+
                 this.trigger('change', isLoggedIn, url);
             }, this), 'json');
         },
@@ -24,14 +29,18 @@
             TaxiHail.localStorage.removeItem('fbId');
             TaxiHail.localStorage.removeItem(currentOrderKey);
 
-            return $.post('api/auth/logout', _.bind(function () {
+            return $.post(TaxiHail.parameters.apiRoot + '/auth/logout', _.bind(function () {
                 isLoggedIn = false;
+
+                // We remove the local auth cookie
+                document.cookie = "ss-pid=";
+
                 this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
 
         resetPassword: function(email) {
-            return $.post('api/v2/accounts/resetpassword/' + email,{}, function () {}, 'json');
+            return $.post(TaxiHail.parameters.apiRoot + '/accounts/resetpassword/' + email, {}, function () { }, 'json');
         },
         
         fblogin: function (url) {
@@ -44,7 +53,7 @@
                                             Accept : "application/json; charset=utf-8",         
                                             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
                                         },
-                                        url: 'api/v2/auth/login/facebook',
+                                        url: TaxiHail.parameters.apiRoot + '/auth/login/facebook',
                                         type: 'POST',
                                         data: {
                                             userName: me.id,
@@ -77,7 +86,7 @@
                 
                 if (T.isConnected()) {
                     var me = T.currentUser;
-                    $.post('api/v2/auth/login/twitter', {
+                    $.post(TaxiHail.parameters.apiRoot + '/auth/login/twitter', {
                         userName: me.id,
                         password: me.id
                     }, 'json')

@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Jobs
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
 
-            CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
+            await CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
 
             _commandBus.Send(new ChangeOrderStatus
             {

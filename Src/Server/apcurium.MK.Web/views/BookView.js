@@ -262,7 +262,7 @@
         setLocalMarketVehicleTypes: function () {
             $.ajax({
                 type: 'GET',
-                url: 'api/admin/vehicletypes',
+                url: TaxiHail.parameters.apiRoot + '/admin/vehicletypes',
                 dataType: 'json'
             }).done(_.bind(function (localVehicles) {
                 TaxiHail.vehicleTypes = localVehicles;
@@ -272,7 +272,7 @@
         setExternalMarketVehicleTypes: function (latitude, longitude) {
             $.ajax({
                 type: 'GET',
-                url: 'api/roaming/externalMarketVehicleTypes?latitude=' + latitude + "&longitude=" + longitude,
+                url: TaxiHail.parameters.apiRoot + '/roaming/externalMarketVehicleTypes?latitude=' + latitude + "&longitude=" + longitude,
                 dataType: 'json'
                 }).done(_.bind(function (networkVehicles) {
                     TaxiHail.vehicleTypes = networkVehicles;

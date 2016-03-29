@@ -2,14 +2,14 @@
 
     TaxiHail.CreditCard = Backbone.Model.extend({
 
-        urlRoot: TaxiHail.parameters.apiRoot + "/account/creditcards",
+        urlRoot: TaxiHail.parameters.apiRoot + "/accounts/creditcards",
 
         updateCreditCard: function () {
             var updatedCreditCard = this.attributes;
 
             return $.ajax({
                 type: 'POST',
-                url: 'api/account/creditcards',
+                url: TaxiHail.parameters.apiRoot + '/accounts/creditcards',
                 data: updatedCreditCard,
                 dataType: 'json'
             });
@@ -18,7 +18,7 @@
         deleteCreditCard: function() {
             var result = $.ajax({
                 type: 'DELETE',
-                url: 'api/account/creditcards/' + this.attributes.creditCardId,
+                url: TaxiHail.parameters.apiRoot + '/accounts/creditcards/' + this.attributes.creditCardId,
                 dataType: 'json'
             });
 
@@ -29,7 +29,7 @@
             var updatedCreditCard = this.attributes;
             return $.ajax({
                 type: 'POST',
-                url: 'api/account/creditcard/updatelabel',
+                url: TaxiHail.parameters.apiRoot + '/accounts/creditcards/updatelabel',
                 data: updatedCreditCard,
                 dataType: 'json'
             });
@@ -38,7 +38,7 @@
         changeDefaultCreditCard: function () {
             return $.ajax({
                 type: 'POST',
-                url: 'api/account/creditcard/updatedefault',
+                url: TaxiHail.parameters.apiRoot + '/accounts/creditcards/updatedefault',
                 data: { "creditCardId": this.attributes.creditCardId },
                 dataType: 'json'
             });
@@ -50,7 +50,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: 'api/payments/braintree/generateclienttoken'
+                url: TaxiHail.parameters.apiRoot + '/payments/braintree/generateclienttoken'
             })
             .then(function (clientToken) {
                      var client = new braintree.api.Client({ clientToken: clientToken });
@@ -67,7 +67,7 @@
                          // Tokenizing card by sending the nonce to server
                          $.ajax({
                              type: 'POST',
-                             url: 'api/payments/braintree/tokenize',
+                             url: TaxiHail.parameters.apiRoot + '/payments/braintree/tokenize',
                              dataType: 'json',
                              data: {
                                  paymentMethodNonce: nonce
@@ -85,7 +85,7 @@
 
             var result = $.ajax({
                 type: 'PUT',
-                url: 'api/account/bookingsettings',
+                url: TaxiHail.parameters.apiRoot + '/accounts/bookingsettings',
                 data: JSON.stringify(settings),
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'

@@ -31,7 +31,7 @@
 
                     var creditCards = new TaxiHail.CreditCardCollection();
                     creditCards.fetch({
-                        url: 'api/account/creditcards',
+                        url: TaxiHail.parameters.apiRoot + '/accounts/creditcards',
                         success: _.bind(function (collection) {
 
                             var container = this.$("#user-account-container");
@@ -88,10 +88,10 @@
 
                 TaxiHail.showSpinner($container);
                 favorites.fetch({
-                    url: 'api/account/addresses',
+                    url: TaxiHail.parameters.apiRoot + '/accounts/addresses',
                     success: _.bind(function (collection, resp) {
                         history.fetch({
-                            url: 'api/account/addresses/history',
+                            url: TaxiHail.parameters.apiRoot + '/accounts/addresses/history',
                             success: _.bind(function (collection, resp) {
                                 addresses.reset(favorites.models.concat(history.models));
                                 $container.html(view.el);
@@ -104,7 +104,7 @@
             history: function () {
                 var orders = new TaxiHail.OrderCollection();
                 orders.fetch({
-                    url: 'api/account/orders',
+                    url: TaxiHail.parameters.apiRoot + '/accounts/orders',
                     success: _.bind(function (model) {
                         this._tabView = new TaxiHail.OrderHistoryView({
                             collection: model,

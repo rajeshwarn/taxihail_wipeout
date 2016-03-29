@@ -7,7 +7,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
-    [RoutePrefix("api/v2/geocode")]
     public class GeocodingController : BaseApiController
     {
         public GeocodingService GeocodingService { get; }
@@ -17,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             GeocodingService = new GeocodingService(geocoding, accountDao);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/geocode")]
         public IHttpActionResult GetAddressWithGeocoding([FromBody] GeocodingRequest request)
         {
             var result = GeocodingService.Post(request);

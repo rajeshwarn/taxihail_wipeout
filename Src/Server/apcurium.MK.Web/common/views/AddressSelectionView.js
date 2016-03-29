@@ -168,10 +168,10 @@
                 var favorites = new TaxiHail.AddressCollection();
                 var history = new TaxiHail.AddressCollection();
                 favorites.fetch({
-                    url: 'api/account/addresses',
+                    url: TaxiHail.parameters.apiRoot + '/accounts/addresses',
                     success: _.bind(function(collection, resp) {
                         history.fetch({
-                            url: 'api/account/addresses/history',
+                            url: TaxiHail.parameters.apiRoot + '/accounts/addresses/history',
                             success: _.bind(function(collection, resp) {
                                 addresses.reset(favorites.models.concat(history.models));
                                 this.$('.tab-content').html(view.el);

@@ -24,7 +24,7 @@
         validate: function (order, forError) {
             return $.ajax({
                 type: 'POST',
-                url: TaxiHail.parameters.apiRoot + "/account/orders/validate/" + forError,
+                url: TaxiHail.parameters.apiRoot + "/accounts/orders/validate/" + forError,
                 data: JSON.stringify(order) ,
                 contentType: 'application/json'
             });

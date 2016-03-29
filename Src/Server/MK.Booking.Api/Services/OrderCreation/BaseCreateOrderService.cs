@@ -326,7 +326,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             orderCommand.AccountId = account.Id;
             orderCommand.UserAgent = HttpRequest.GetUserAgent();
-            orderCommand.ClientVersion = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault();
+            orderCommand.ClientVersion = GetClientVersion(request.FromWebApp);
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
@@ -421,9 +421,17 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 OrderId = request.Id,
                 EstimatedFare = request.Estimate.Price,
                 UserAgent = HttpRequest.GetUserAgent(),
-                ClientVersion = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault(),
+                ClientVersion = GetClientVersion(request.FromWebApp),
                 TipIncentive = request.TipIncentive
             };
+        }
+
+        protected string GetClientVersion(bool isFromWebApp)
+        {
+            var version = typeof(BaseCreateOrderService).Assembly.GetName().Version;
+            return isFromWebApp
+                ? "{0}.{1}.{2}".InvariantCultureFormat(version.Major, version.Minor, version.Build)
+                : HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault();
         }
 
         private void ValidateAppVersion(string clientLanguage, CreateReportOrder createReportOrder)
