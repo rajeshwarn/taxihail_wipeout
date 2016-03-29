@@ -28,6 +28,9 @@
             data.appliesToPickupChecked = data.appliesToPickup == true ? 'checked' : '';
             data.appliesToDropoffChecked = data.appliesToDropoff == true ? 'checked' : '';
 
+            data.appliesToServiceTaxiChecked = data.appliesToServiceTaxi == true ? 'checked' : '';
+            data.appliesToServiceLuxuryChecked = data.appliesToServiceLuxury == true ? 'checked' : '';
+
             data.zoneRequiredChecked = data.zoneRequired == true ? 'checked' : '';
             data.checkBoxExcludeCircularZoneChecked = data.excludeCircularZone == true ? 'checked' : '';
             
@@ -162,10 +165,14 @@
                 serialized.category = +this.model.get('category');
                 serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked') ? true : false;
                 serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked') ? true : false;
+
                 serialized.disableFutureBookingOnError = $("#disableFutureBookingOnError").attr('checked') ? true : false;
 
                 serialized.appliesToPickup = $("#appliesToPickup").attr('checked') ? true : false;
                 serialized.appliesToDropoff = $("#appliesToDropoff").attr('checked') ? true : false;
+
+                serialized.appliesToServiceTaxi = $("#appliesToServiceTaxi").attr('checked') ? true : false;
+                serialized.appliesToServiceLuxury = $("#appliesToServiceLuxury").attr('checked') ? true : false;
 
                 serialized.zoneRequired = $("#zoneRequired").attr('checked') ? true : false;
                 serialized.excludeCircularZone = $("#checkBoxExcludeCircularZone").attr('checked') ? true : false;

@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void CreateRule(Guid ruleId, string name, string message, string zoneList,bool zoneRequired, RuleType type,
-            RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking,bool appliesToPickup, bool appliesToDropoff, int priority,
+            RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, bool appliesToServiceTaxi, bool appliesToServiceLuxury, int priority,
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
             DateTime? activeTo, string market, bool disableFutureBookingOnError)
         {
@@ -365,7 +365,10 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new InvalidOperationException("Missing message for date rule");
             }
-
+            if (!(appliesToServiceTaxi || appliesToServiceLuxury))
+            {
+                throw new InvalidOperationException("Missing service types for rule");   
+            }
 
             Update(new RuleCreated
             {
@@ -380,6 +383,8 @@ namespace apcurium.MK.Booking.Domain
                 AppliesToFutureBooking = appliesToFutureBooking,
                 AppliesToPickup = appliesToPickup,
                 AppliesToDropoff = appliesToDropoff,
+                AppliesToServiceTaxi = appliesToServiceTaxi,
+                AppliesToServiceLuxury = appliesToServiceLuxury,
                 IsActive = isActive,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
@@ -394,7 +399,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool excludeCircularZone,
 			double excludedCircularZoneLatitude, double excludedCircularZoneLongitude, int excludedCircularZoneRadius, bool appliedToCurrentBooking,
-            bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
+            bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, bool appliesToServiceTaxi, bool appliesToServiceLuxury, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
             DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive, string market, bool disableFutureBookingOnError)
         {
             Update(new RuleUpdated
@@ -412,6 +417,8 @@ namespace apcurium.MK.Booking.Domain
                 AppliesToFutureBooking = appliesToFutureBooking,
                 AppliesToPickup = appliesToPickup,
                 AppliesToDropoff = appliesToDropoff,
+                AppliesToServiceTaxi = appliesToServiceTaxi,
+                AppliesToServiceLuxury = appliesToServiceLuxury,
                 IsActive = isActive,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,

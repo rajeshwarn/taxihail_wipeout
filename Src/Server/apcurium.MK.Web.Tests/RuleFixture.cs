@@ -806,6 +806,8 @@ namespace apcurium.MK.Web.Tests
             
             rule.AppliesToCurrentBooking = false;
             rule.AppliesToFutureBooking = true;
+            rule.AppliesToServiceTaxi = true;
+            rule.AppliesToServiceLuxury = false;
             rule.ZoneList = "200,201";
             rule.ActiveFrom = activeFromDateRef;
             rule.ActiveTo = activeFromDateRef.AddMonths(4);
@@ -821,6 +823,8 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newName, rule.Name);
             Assert.AreEqual(true, rule.AppliesToFutureBooking);
             Assert.AreEqual(false, rule.AppliesToCurrentBooking);
+            Assert.AreEqual(true, rule.AppliesToServiceTaxi);
+            Assert.AreEqual(false, rule.AppliesToServiceLuxury);
             Assert.AreEqual("200,201", rule.ZoneList);
             Assert.AreEqual(false, rule.IsActive);
             Assert.AreEqual(activeFromDateRef, rule.ActiveFrom);

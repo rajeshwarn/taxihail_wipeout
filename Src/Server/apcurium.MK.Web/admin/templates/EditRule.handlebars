@@ -186,6 +186,22 @@
         </div>
         
         <div class="control-group">
+            <label class="control-label">{{localize 'Applies to'}}</label>
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToServiceTaxi" name='appliesToServiceTaxi' value="{{appliesToServiceTaxi}}" {{appliesToServiceTaxiChecked}}>
+                    {{localize "Taxi"}}
+                    </input>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="appliesToServiceLuxury" name='appliesToServiceLuxury' value="{{appliesToServiceLuxury} {{appliesToServiceLuxuryChecked}}>
+                    {{localize "Luxury"}}
+                    </input>
+                </label>
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label">{{localize 'IBS Zone Validation'}}</label>
             <div class="controls">
                 <label class="checkbox">

@@ -32,6 +32,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public bool AppliesToDropoff { get; set; }
 
+        public bool AppliesToServiceTaxi { get; set; }
+
+        public bool AppliesToServiceLuxury { get; set; }
+
         public bool ZoneRequired { get; set; }
 
 		public bool ExcludeCircularZone { get; set; }

@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Calculator
             _serverSettings = serverSettings;
         }
 
-		public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint)
+		public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint, ServiceType serviceType)
         {
             var rules = new RuleDetail[0];
 
@@ -37,11 +38,12 @@ namespace apcurium.MK.Booking.Calculator
                     .Where(rule => rule.Market == market)
                     .ToArray();
             }
-            else if (!market.HasValue())
+            else if (!market.HasValue()) // Only applying serviceType logic in Home Market
             {
                 // Home market rules validation
                 rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
-                    .Where(rule => !rule.Market.HasValue())
+                    .Where(rule => !rule.Market.HasValue() 
+                        && ((rule.AppliesToServiceLuxury && serviceType == ServiceType.Luxury) || (rule.AppliesToServiceTaxi && serviceType == ServiceType.Taxi)))
                     .ToArray();
             }
 
@@ -53,7 +55,7 @@ namespace apcurium.MK.Booking.Calculator
             return GetMatching(rules, pickupDate);
         }
 
-        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint)
+        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market, Position pickupPoint, ServiceType serviceType)
         {
             var rules = new RuleDetail[0];
 
@@ -68,7 +70,8 @@ namespace apcurium.MK.Booking.Calculator
             {
                 // Home market rules validation
                 rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
-                    .Where(rule => !rule.Market.HasValue())
+                    .Where(rule => !rule.Market.HasValue()
+                        && ((rule.AppliesToServiceLuxury && serviceType == ServiceType.Luxury) || (rule.AppliesToServiceTaxi && serviceType == ServiceType.Taxi)))
                     .ToArray();
             }
 
@@ -80,14 +83,25 @@ namespace apcurium.MK.Booking.Calculator
             return GetMatching(rules, pickupDate);
         }
 
-        public RuleDetail GetDisableFutureBookingRule(string market)
+        public RuleDetail GetDisableFutureBookingRule(string market, ServiceType serviceType)
         {
             if (_serverSettings.ServerData.ValidateAdminRulesForExternalMarket)
             {
-                return _ruleDao.GetActiveDisableRule(true)
-                    .Where(rule => rule.Market == market && rule.DisableFutureBookingOnError)
-                    .ToArray()
-                    .FirstOrDefault();
+                if (market.HasValue())
+                {
+                     return _ruleDao.GetActiveDisableRule(true)
+                        .Where(rule => rule.Market == market && rule.DisableFutureBookingOnError)
+                        .ToArray()
+                        .FirstOrDefault();   
+                }
+                else
+                {
+                    return _ruleDao.GetActiveDisableRule(true)
+                        .Where(rule => rule.Market == market && rule.DisableFutureBookingOnError
+                            && ((rule.AppliesToServiceLuxury && serviceType == ServiceType.Luxury) || (rule.AppliesToServiceTaxi && serviceType == ServiceType.Taxi)))
+                            .ToArray()
+                            .FirstOrDefault();   
+                }
             }
             return null;
         }

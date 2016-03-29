@@ -73,6 +73,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     AppliesToFutureBooking = @event.AppliesToFutureBooking,
                     AppliesToPickup = @event.AppliesToPickup,
                     AppliesToDropoff = @event.AppliesToDropoff,
+                    AppliesToServiceTaxi = @event.AppliesToServiceTaxi,
+                    AppliesToServiceLuxury = @event.AppliesToServiceLuxury,
                     IsActive = @event.IsActive,
                     Category = (int) @event.Category,
                     Type = (int) @event.Type,
@@ -144,6 +146,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rule.AppliesToFutureBooking = @event.AppliesToFutureBooking;
                 rule.AppliesToPickup = @event.AppliesToPickup;
                 rule.AppliesToDropoff = @event.AppliesToDropoff;
+                rule.AppliesToServiceTaxi = @event.AppliesToServiceTaxi;
+                rule.AppliesToServiceLuxury = @event.AppliesToServiceLuxury;
                 rule.IsActive = @event.IsActive;
                 rule.Market = @event.Market;
                 rule.DisableFutureBookingOnError = @event.DisableFutureBookingOnError;

@@ -36,6 +36,10 @@ namespace apcurium.MK.Booking.Events
 
         public bool AppliesToDropoff { get; set; }
 
+        public bool AppliesToServiceTaxi { get; set; }
+
+        public bool AppliesToServiceLuxury { get; set; }
+
         public DayOfTheWeek DaysOfTheWeek { get; set; }
 
         public DateTime? StartTime { get; set; }

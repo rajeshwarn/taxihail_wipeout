@@ -12,6 +12,10 @@
 
         public bool AppliesToFutureBooking { get; set; }
 
+        public bool AppliesToServiceTaxi { get; set; }
+
+        public bool AppliesToServiceLuxury { get; set; }
+
         public bool DisableFutureBooking { get; set; }
     }
 }

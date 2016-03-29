@@ -70,12 +70,12 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-                                        getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+                                        getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude), request.Settings.ServiceType);
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = marketSettings.EnableFutureBooking 
-                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
+                var disableFutureBooking = marketSettings.EnableFutureBooking
+                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market, request.Settings.ServiceType) != null 
                     : true;
 
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
@@ -86,6 +86,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Message = message,
                     AppliesToCurrentBooking = rule != null && rule.AppliesToCurrentBooking,
                     AppliesToFutureBooking = rule != null && rule.AppliesToFutureBooking,
+                    AppliesToServiceTaxi = rule != null && rule.AppliesToServiceTaxi,
+                    AppliesToServiceLuxury = rule != null && rule.AppliesToServiceLuxury,
                     DisableFutureBooking = disableFutureBooking
                 };
             }
@@ -93,12 +95,12 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
-										getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude));
+                                        getPickupZone, getDropoffZone, marketSettings.Market, new Position(request.PickupAddress.Latitude, request.PickupAddress.Longitude), request.Settings.ServiceType);
 
                 var hasWarning = rule != null;
                 var message = rule != null ? rule.Message : null;
-                var disableFutureBooking = marketSettings.EnableFutureBooking 
-                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market) != null 
+                var disableFutureBooking = marketSettings.EnableFutureBooking
+                    ? _ruleCalculator.GetDisableFutureBookingRule(marketSettings.Market, request.Settings.ServiceType) != null 
                     : true;
 
                 return new OrderValidationResult
@@ -107,6 +109,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Message = message,
                     AppliesToCurrentBooking = rule != null && rule.AppliesToCurrentBooking,
                     AppliesToFutureBooking = rule != null && rule.AppliesToFutureBooking,
+                    AppliesToServiceTaxi = rule != null && rule.AppliesToServiceTaxi,
+                    AppliesToServiceLuxury = rule != null && rule.AppliesToServiceLuxury,
                     DisableFutureBooking = disableFutureBooking
                 };
             }

@@ -42,6 +42,10 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool AppliesToDropoff { get; set; }
 
+        public bool AppliesToServiceTaxi { get; set; }
+
+        public bool AppliesToServiceLuxury { get; set; }
+
         public int DaysOfTheWeek { get; set; }
 
         public DateTime? StartTime { get; set; }

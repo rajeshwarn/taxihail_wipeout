@@ -16,6 +16,8 @@ namespace apcurium.MK.Common.Entity
         public bool AppliesToFutureBooking { get; set; }
         public bool AppliesToPickup { get; set; }
         public bool AppliesToDropoff { get; set; }
+        public bool AppliesToServiceTaxi { get; set; }
+        public bool AppliesToServiceLuxury { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
