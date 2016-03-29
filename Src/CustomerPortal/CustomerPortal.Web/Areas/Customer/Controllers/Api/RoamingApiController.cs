@@ -300,7 +300,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 EnableAppFareEstimates = market.EnableAppFareEstimates,
                 MarketTariff = market.MarketTariff,
                 DisableOutOfAppPayment = market.DisableOutOfAppPayment,
-                ShowCallDriver = market.ShowCallDriver
+                ShowCallDriver = market.ShowCallDriver,
+                ReceiptLines = market.ReceiptLines
             };
         }
     }

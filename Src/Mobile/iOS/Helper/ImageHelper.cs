@@ -185,9 +185,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return ApplyColorToImage(imagePath, Theme.LabelTextColor);
         }
 
-        public static UIImage ApplyContrastBasedThemeTextColorToImage(string imagePath)
+        public static UIImage ApplyContrastBasedThemeLoginColorToImage(string imagePath)
         {
-            return ApplyColorToImage(imagePath, Theme.GetContrastBasedColor(Theme.LabelTextColor));
+            return ApplyColorToImage(imagePath, Theme.GetContrastBasedColor(Theme.LoginColor));
         }
 
 		public static UIImage GetImage ( string imagePath )

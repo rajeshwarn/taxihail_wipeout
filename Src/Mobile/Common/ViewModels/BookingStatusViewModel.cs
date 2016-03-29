@@ -428,9 +428,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			// We are in a new vehicle, clearing the previous one and starting anew.
 			if (TaxiLocation != null && TaxiLocation.VehicleNumber != medallion)
 			{
+				// remove the taxi location
 				TaxiLocation = null;
-
-				RaisePropertyChanged(() => TaxiLocation);
 			}
 
 			if (TaxiLocation == null)
@@ -614,7 +613,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				return Settings.ShowCallDriver 
+				return _showCallDriver
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
@@ -1141,6 +1140,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
+
+					// put back the nearby vehicles
+					_vehicleService.SetAvailableVehicle(true);
 				}
 
 				if (VehicleStatuses.CancelStatuses.Any(cancelledStatus => cancelledStatus.Equals(status.IBSStatusId)))

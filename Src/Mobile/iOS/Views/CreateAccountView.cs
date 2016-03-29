@@ -31,8 +31,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = Theme.LoginColor;
             lblTitle.TextColor = Theme.GetContrastBasedColor(Theme.LoginColor);
-
-			if (ViewModel.Settings.ShowTermsAndConditions)
+            checkBoxAcknowledged.ApplyContrastBasedColor();
+            
+            if (ViewModel.Settings.ShowTermsAndConditions)
             {
                 var textFirstPart = Localize.GetValue("TermsAndConditionsAcknowledgment")
                     .Replace(Localize.GetValue("TermsAndConditionsLabel"), string.Empty)

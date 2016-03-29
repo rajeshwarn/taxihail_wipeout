@@ -122,8 +122,10 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                     It.Is<decimal>(o => o == tipAmount),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
-                    It.IsAny<bool>()))
-                .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
+                    It.IsAny<bool>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool, string, string>(Commit)
                 .Verifiable();
         }
 
@@ -168,8 +170,10 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                     It.Is<decimal>(o => o == 0),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
-                    It.IsAny<bool>()))
-                .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
+                    It.IsAny<bool>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool, string, string>(Commit)
                 .Verifiable();
         }
 
@@ -266,7 +270,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             };
         }
 
-        protected CommitPreauthorizedPaymentResponse Commit(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        protected CommitPreauthorizedPaymentResponse Commit(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
         {
             var pennyValue = amount - Math.Truncate(amount);
             pennyValue = pennyValue * 100;

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -596,7 +597,46 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
 
-                var marketSpecificNote = GetMarketReceiptFooter(pickupAddress.Latitude, pickupAddress.Longitude);
+                var marketSpecificNote = string.Empty;
+                var receiptLabels = new Dictionary<string, string>();
+                try
+                {
+                    var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupAddress.Latitude, pickupAddress.Longitude);
+
+                    if (marketSettings != null)
+                    {
+                        if (marketSettings.ReceiptFooter.HasValueTrimmed())
+                        {
+                            marketSpecificNote = string.Format("<br>{0}", marketSettings.ReceiptFooter);
+                        }
+                    }
+
+                    //Retrieve labels for the receipt
+                    if (marketSettings.ReceiptLines != null)
+                    {
+                        //Create a dictionary for the current language
+                        foreach (var receiptLine in marketSettings.ReceiptLines)
+                        {
+                            string label;
+                            receiptLine.Value.TryGetValue(clientLanguageCode, out label);
+                            receiptLabels.Add(receiptLine.Key, label);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    _logger.LogMessage("Could not get market settings [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
+                }
+
+                var emailBodyFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Fare", clientLanguageCode);
+                var emailBodyExtra = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Extra", clientLanguageCode);
+                var emailBodySurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Surcharge", clientLanguageCode);
+                var emailBodyToll = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Toll", clientLanguageCode);
+                var emailBodyImprovementSurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_ImprovementSurcharge", clientLanguageCode);
+                var emailBodyTip = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tip", clientLanguageCode);
+                var emailBodyTotalFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_TotalFare", clientLanguageCode);
+                var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
+                var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
                 var templateData = new
                 {
@@ -704,7 +744,41 @@ namespace apcurium.MK.Booking.Services.Impl
                     PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                     promoCode,
                     AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
-                    ShowOrderNumber = showOrderNumber
+                    ShowOrderNumber = showOrderNumber,
+
+                    EmailBodyFare = emailBodyFare,
+                    EmailBodyExtra = emailBodyExtra,
+                    EmailBodySurcharge = emailBodySurcharge,
+                    EmailBodyToll = emailBodyToll,
+                    EmailBodyImprovementSurcharge = emailBodyImprovementSurcharge,
+                    EmailBodyTip = emailBodyTip,
+                    EmailBodyTotalFare = emailBodyTotalFare,
+                    EmailBodyRideLinqLastFour = emailBodyRideLinqLastFour,
+                    EmailBodyTax = emailBodyTax,
+                    
+                    HasSocialMediaGoogleURL = !_serverSettings.ServerData.SocialMediaGoogleURL.IsNullOrEmpty(),
+                    SocialMediaGoogleImg = String.Concat(baseUrls.BaseUrlAssetsImg, "google.png"),
+                    SocialMediaGoogleURL = _serverSettings.ServerData.SocialMediaGoogleURL,
+
+                    HasSocialMediaFacebookURL = !_serverSettings.ServerData.SocialMediaFacebookURL.IsNullOrEmpty(),
+                    SocialMediaFacebookImg = String.Concat(baseUrls.BaseUrlAssetsImg, "facebook.png"),
+                    SocialMediaFacebookURL = _serverSettings.ServerData.SocialMediaFacebookURL,
+
+                    HasSocialMediaTwitterURL = !_serverSettings.ServerData.SocialMediaTwitterURL.IsNullOrEmpty(),
+                    SocialMediaTwitterImg = String.Concat(baseUrls.BaseUrlAssetsImg, "twitter.png"),
+                    SocialMediaTwitterURL = _serverSettings.ServerData.SocialMediaTwitterURL,
+
+                    HasSocialMediaPinterestURL = !_serverSettings.ServerData.SocialMediaPinterestURL.IsNullOrEmpty(),
+                    SocialMediaPinterestImg = String.Concat(baseUrls.BaseUrlAssetsImg, "pinterest.png"),
+                    SocialMediaPinterestURL = _serverSettings.ServerData.SocialMediaPinterestURL,
+
+                    HasSocialMediaYoutubeURL = !_serverSettings.ServerData.SocialMediaYoutubeURL.IsNullOrEmpty(),
+                    SocialMediaYoutubeImg = String.Concat(baseUrls.BaseUrlAssetsImg, "youtube.png"),
+                    SocialMediaYoutubeURL = _serverSettings.ServerData.SocialMediaYoutubeURL,
+
+                    HasSocialMediaInstagramURL = !_serverSettings.ServerData.SocialMediaInstagramURL.IsNullOrEmpty(),
+                    SocialMediaInstagramImg = String.Concat(baseUrls.BaseUrlAssetsImg, "instagram.png"),
+                    SocialMediaInstagramURL = _serverSettings.ServerData.SocialMediaInstagramURL,
                 };
 
                 SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -1178,6 +1252,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Returns label from dictionary or from Resx by default
+        /// </summary>
+        /// <param name="receiptLabels"></param>
+        /// <param name="key"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        private string GetReceiptLabelOrDefault(IDictionary<string, string> receiptLabels, string key, string language)
+        {
+            string receiptLabel;
+            var valueFound = receiptLabels.TryGetValue(key, out receiptLabel);
+            if (!valueFound || string.IsNullOrEmpty(receiptLabel))
+            {
+                receiptLabel = _resources.Get(key, language);
+            }
+            return receiptLabel;
         }
     }
 }

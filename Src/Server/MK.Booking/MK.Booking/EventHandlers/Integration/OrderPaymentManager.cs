@@ -210,6 +210,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient(orderStatus.ServiceType);
 
+                    if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
+                    {
+                        // Terminal error, no need to react to paymentFailure.
+                        return;
+                    }
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)

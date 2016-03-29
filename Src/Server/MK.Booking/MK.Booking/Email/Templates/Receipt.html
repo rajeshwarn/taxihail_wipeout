@@ -371,353 +371,363 @@
             <td></td>
             <td class="container" width="90%" style=" background-color:{{AccentColor}}">
                 <div class="content">
-                    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="color:{{EmailFontColor}}">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0" style="color: { {EmailFontColor}}">
+                <tr>
+                <td class="content-wrap aligncenter">
+                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: white !important; border-radius: 5px;">
+                <tr>
+                    <td class="content-block">
+                        <img src="{{LogoImg}}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
+                            </tr>
+                            {{#ShowOrderNumber}}
+                            <tr>
+                                <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{iBSOrderId}}</td>
+                            </tr>
+                            {{/ShowOrderNumber}}
+                            {{#ShowFareAndPaymentDetails}}
+                            <tr>
+                                <td class="receipt_price">{{ TotalFare }}</td>
+                            </tr>
+                            {{/ShowFareAndPaymentDetails}}
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                <td>
+                <div>
+                <div class="receiptLeftInfo" style="float: left !important;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td class="content-wrap aligncenter">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: white !important;border-radius:5px;">
-                                    <tr>
-                                        <td class="content-block">
-                                            <img src="{{LogoImg}}" />
-                                        </td>
-                                    </tr>
-                                    <tr>
+                            <td class="title_block"><span>{{ localize "Email_Body_Route" }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table width="100%" class="route_departure">
+                                    <tr class="route_list_item">
                                         <td>
-                                            <table width="100%" cellpadding="0" cellspacing="0">
+                                            <img src="{{GreenDotImg}}"/>
+                                        </td>
+                                        <td>
+                                            <table>
                                                 <tr>
-                                                    <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
+                                                    <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
                                                 </tr>
-                                                {{#ShowOrderNumber}}
                                                 <tr>
-                                                    <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{iBSOrderId}}</td>
+                                                    <td class="route_list_adddress">{{ PickupAddress }}</td>
                                                 </tr>
-                                                {{/ShowOrderNumber}}
-                                                {{#ShowFareAndPaymentDetails}}
-                                                <tr>
-                                                    <td class="receipt_price">{{ TotalFare }}</td>
-                                                </tr>
-                                                {{/ShowFareAndPaymentDetails}}
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="route_list_item">
                                         <td>
-                                            <div>
-                                                <div class="receiptLeftInfo" style="float: left !important;">
-                                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                            <td class="title_block"><span>{{ localize "Email_Body_Route" }}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <table width="100%" class="route_departure">
-                                                                    <tr class="route_list_item">
-                                                                        <td>
-                                                                            <img src="{{GreenDotImg}}"/>
-                                                                        </td>
-                                                                        <td>
-                                                                            <table>
-                                                                                <tr>
-                                                                                    <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td class="route_list_adddress">{{ PickupAddress }}</td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="route_list_item">
-                                                                        <td>
-                                                                            <img src="{{RedDotImg}}"/>
-                                                                        </td>
-                                                                        <td>
-                                                                            <table>
-                                                                                <tr>
-                                                                                    <td class="route_list_title">{{DropOffDate}}{{#ShowDropOffTime}} - {{DropOffTime}} {{#ShowUTCWarning}}(UTC){{/ShowUTCWarning}}{{/ShowDropOffTime}}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td class="route_list_adddress">{{ DropOffAddress }}</td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                        {{#ShowStaticMap}}
-                                                        <tr>
-                                                            <td style="text-align: center">
-                                                                <img src="{{ StaticMapUri }}"/>
-                                                            </td>
-                                                        </tr>
-                                                        {{/ShowStaticMap}}
-                                                    </table>
-                                                </div>
-                                                {{#ShowTripSection}}
-                                                <div class="receiptBottomInfo" style="float: left !important;">
-                                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                            <td class="title_block"><span>{{localize "Email_Body_YourDriver"}}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <table class="yourdriver" cellpadding="0" cellspacing="0">
-
-																	{{#ShowExtraInfoInReceipt}}
-																		{{#HasDriverPhoto}}
-																		<tr style="color: {{EmailFontColor}}! important">
-																			<td class="driver_list_title" style="vertical-align:middle">{{ localize "Email_Body_DriverPhoto" }}</td>
-																			<td class="list_value">
-																				<div style="width:100%">
-																					<div style="margin-top:5px; margin-bottom:5px; width:70px; height:70px; float:right">
-																						<div class="driverPhotoMask">
-																							<img style="max-width:100%; display: block; padding:0px; vertical-align:central;" src="{{ DriverPhotoURL }}" />
-																						</div>
-																					</div>
-																				</div>
-																			</td>
-																		</tr>
-																		{{/HasDriverPhoto}}
-																	{{/ShowExtraInfoInReceipt}}
-
-																	{{#HasDriverInfo}}
-																		<tr style="color: {{EmailFontColor}}! important">
-																			<td class="driver_list_title">{{ localize "Email_Body_Driver" }}</td>
-																			<td class="driver_name">{{ DriverName }}</td>
-																		</tr>
-																	{{/HasDriverInfo}}
-
-																	{{#HasDriverId}}
-																		<tr>
-																			<td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
-																			<td class="list_value">{{ DriverId }}</td>
-																		</tr>
-																	{{/HasDriverId}}
-
-                                                                    {{#HasDriverInfo}}
-																		<tr>
-																			<td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
-																			<td class="list_value">{{ VehicleNumber }}</td>
-																		</tr>
-
-																		{{#ShowExtraInfoInReceipt}}
-																			<tr>
-																				<td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
-																				<td class="list_value">{{ VehicleMake }} {{ VehicleModel }} {{ VehicleColor }}</td>
-																			</tr>
-
-																			{{#HasVehicleRegistration}}
-																				<tr>
-																					<td class="driver_list_title">{{ localize "Email_Body_VehicleRegistration" }}</td>
-																					<td class="list_value">{{ VehicleRegistration }}</td>
-																				</tr>
-																			{{/HasVehicleRegistration}}
-																		{{/ShowExtraInfoInReceipt}}
-
-                                                                    {{/HasDriverInfo}}
-
-                                                                    {{#ShowMinimalDriverInfo}}
-                                                                    <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
-                                                                        <td class="list_value" >{{ DriverId }}</td>
-                                                                    </tr>
-
-                                                                    <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
-                                                                        <td class="list_value" >{{ VehicleNumber }}</td>
-                                                                    </tr>
-                                                                    {{/ShowMinimalDriverInfo}}
-
-                                                                    {{#ShowTripId}}
-                                                                    <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_TripId" }}</td>
-                                                                        <td class="list_value" >{{ TripId }}</td>
-                                                                    </tr>
-                                                                    {{/ShowTripId}}
-
-                                                                    {{#ShowDistance}}
-                                                                    <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
-                                                                        <td class="list_value" >{{ Distance }}</td>
-                                                                    </tr>
-                                                                    {{/ShowDistance}}
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                {{/ShowTripSection}}
-                                                {{#ShowFareAndPaymentDetails}}
-                                                <div class="receiptRightInfo" style="float: left !important;">
-                                                    <table>
-                                                        <tr>
-                                                            <td class="title_block"><span>{{localize "Email_Body_FareBreakDown"}}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <table class="invoice" cellpadding="0" cellspacing="0">
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}} {{#ShowRateClassStart}} {{ RateClassStart }} {{/ShowRateClassStart}}</td>
-                                                                        <td class="list_value">{{ Fare }}</td>
-                                                                    </tr>
-
-                                                                    {{#ShowRateClassEnd}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}} {{ RateClassEnd }}</td>
-                                                                        <td class="list_value">{{ FareAtAlternateRate }}</td>
-                                                                    </tr>
-                                                                    {{/ShowRateClassEnd}}
-
-                                                                    {{#ShowExtra}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Extra" }}</td>
-                                                                        <td class="list_value">{{ Extra }}</td>
-                                                                    </tr>
-                                                                    {{/ShowExtra}}
-
-                                                                    {{#ShowSurcharge}}
-                                                                    <tr>
-                                                                        <td class="list_title">
-                                                                            {{ localize "Email_Body_Surcharge"}}
-                                                                        </td>
-                                                                        <td class="list_value">{{ Surcharge }}</td>
-                                                                    </tr>
-                                                                    {{/ShowSurcharge}}
-
-                                                                    {{#ShowToll1}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ TollName1 }}</td>
-                                                                        <td class="list_value">{{ TollAmount1 }}</td>
-                                                                    </tr>
-                                                                    {{/ShowToll1}}
-                                                                    {{#ShowToll2}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ TollName2 }}</td>
-                                                                        <td class="list_value">{{ TollAmount2 }}</td>
-                                                                    </tr>
-                                                                    {{/ShowToll2}}
-                                                                    {{#ShowToll3}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ TollName3 }}</td>
-                                                                        <td class="list_value">{{ TollAmount3 }}</td>
-                                                                    </tr>
-                                                                    {{/ShowToll3}}
-                                                                    {{#ShowToll4}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ TollName4 }}</td>
-                                                                        <td class="list_value">{{ TollAmount4 }}</td>
-                                                                    </tr>
-                                                                    {{/ShowToll4}}
-
-                                                                    {{#ShowTollTotal}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
-                                                                        <td class="list_value">{{ Toll }}</td>
-                                                                    </tr>
-                                                                    {{/ShowTollTotal}}
-
-                                                                    {{#ShowTax}}
-                                                                    <tr>
-                                                                        <td class="list_title">
-                                                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
-                                                                            {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
-                                                                        </td>
-                                                                        <td class="list_value">{{ Tax }}</td>
-                                                                    </tr>
-                                                                    {{/ShowTax}}
-                                                                    {{#ShowImprovementSurcharge}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_ImprovementSurcharge"}}</td>
-                                                                        <td class="list_value">{{ ImprovementSurcharge }}</td>
-                                                                    </tr>
-                                                                    {{/ShowImprovementSurcharge}}
-
-                                                                    {{#ShowBookingFees}}
-                                                                    <tr>
-                                                                        <td class="list_title">
-                                                                            {{ localize "Email_Body_BookingFees"}}
-                                                                        </td>
-                                                                        <td class="list_value">{{ BookingFees }}</td>
-                                                                    </tr>
-                                                                    {{/ShowBookingFees}}
-
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
-                                                                        <td class="list_value">{{ Tip }}</td>
-                                                                    </tr>
-
-                                                                    {{#ShowTipIncentive}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_TipIncentive"}}</td>
-                                                                        <td class="list_value">{{ TipIncentive }}</td>
-                                                                    </tr>
-                                                                    {{/ShowTipIncentive}}
-
-                                                                    {{#PromotionWasUsed}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>
-                                                                        <td class="list_value">({{ AmountSavedByPromotion }})</td>
-                                                                    </tr>
-                                                                    {{/PromotionWasUsed}}
-                                                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}">
-                                                                        <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
-                                                                        <td class="list_value">{{ TotalFare }}</td>
-                                                                    </tr>
-
-                                                                    {{#ShowRideLinqLastFour}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_RideLinqLastFour" }}</td>
-                                                                        <td class="list_value">{{ RideLinqLastFour }}</td>
-                                                                    </tr>
-                                                                    {{/ShowRideLinqLastFour}}
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    {{#HasPaymentInfo}}
-                                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                            <td class="title_block"><span>{{ localize "Email_Body_PaymentInformation" }} </span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <table class="invoice" cellpadding="0" cellspacing="0">
-                                                                    <tr>
-                                                                        <td class="card_list_title">{{ localize "Email_Body_PaidWith" }}</td>
-                                                                        <td class="list_value">{{ PaymentMethod }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="card_list_title">{{ localize "Email_Body_TotalAmount" }}</td>
-                                                                        <td class="list_value">{{ PaymentAmount }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="card_list_title">{{ localize "Email_Body_TransactionId" }}</td>
-                                                                        <td class="list_value">{{ PaymentTransactionId }}</td>
-                                                                    </tr>
-                                                                    {{#ShowPaymentAuthorizationCode}}
-                                                                    <tr>
-                                                                        <td class="card_list_title">{{ localize "Email_Body_AuthorizationNumber" }}</td>
-                                                                        <td class="list_value">{{ PaymentAuthorizationCode }}</td>
-                                                                    </tr>
-                                                                    {{/ShowPaymentAuthorizationCode}}
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    {{/HasPaymentInfo}}
-                                                </div>
-                                                {{/ShowFareAndPaymentDetails}}
-                                            </div>
+                                            <img src="{{RedDotImg}}"/>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block">
-                                            <p style="text-align: center">{{{Note}}}</p>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td class="route_list_title">{{DropOffDate}}{{#ShowDropOffTime}} - {{DropOffTime}} {{#ShowUTCWarning}}(UTC){{/ShowUTCWarning}}{{/ShowDropOffTime}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="route_list_adddress">{{ DropOffAddress }}</td>
+                                                </tr>
+                                            </table>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
+                        {{#ShowStaticMap}}
+                        <tr>
+                            <td style="text-align: center">
+                                <img src="{{ StaticMapUri }}"/>
+                            </td>
+                        </tr>
+                        {{/ShowStaticMap}}
                     </table>
+                </div>
+                {{#ShowTripSection}}
+                <div class="receiptBottomInfo" style="float: left !important;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="title_block"><span>{{localize "Email_Body_YourDriver"}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="yourdriver" cellpadding="0" cellspacing="0">
+                                    {{#ShowExtraInfoInReceipt}}
+                                    {{#HasDriverPhoto}}
+                                    <tr style="color: { {EmailFontColor}}! important">
+                                        <td class="driver_list_title" style="vertical-align: middle">{{ localize "Email_Body_DriverPhoto" }}</td>
+                                        <td class="list_value">
+                                            <div style="width: 100%">
+                                                <div style="margin-top: 5px; margin-bottom: 5px; width: 70px; height: 70px; float: right">
+                                                    <div class="driverPhotoMask">
+                                                        <img style="max-width: 100%; display: block; padding: 0px; vertical-align: central;" src="{{ DriverPhotoURL }}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/HasDriverPhoto}}
+                                    {{/ShowExtraInfoInReceipt}}
+
+                                    {{#HasDriverInfo}}
+                                    <tr style="color: { {EmailFontColor}}! important">
+                                        <td class="driver_list_title">{{ localize "Email_Body_Driver" }}</td>
+                                        <td class="driver_name">{{ DriverName }}</td>
+                                    </tr>
+                                    {{/HasDriverInfo}}
+
+                                    {{#HasDriverId}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                        <td class="list_value">{{ DriverId }}</td>
+                                    </tr>
+                                    {{/HasDriverId}}
+
+                                    {{#HasDriverInfo}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                    </tr>
+
+                                    {{#ShowExtraInfoInReceipt}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
+                                        <td class="list_value">{{ VehicleMake }} {{ VehicleModel }} {{ VehicleColor }}</td>
+                                    </tr>
+
+                                    {{#HasVehicleRegistration}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleRegistration" }}</td>
+                                        <td class="list_value">{{ VehicleRegistration }}</td>
+                                    </tr>
+                                    {{/HasVehicleRegistration}}
+                                    {{/ShowExtraInfoInReceipt}}
+
+                                    {{/HasDriverInfo}}
+
+                                    {{#ShowMinimalDriverInfo}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                                                        <td class="list_value">{{ DriverId }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                    </tr>
+                                    {{/ShowMinimalDriverInfo}}
+
+                                    {{#ShowTripId}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_TripId" }}</td>
+                                        <td class="list_value">{{ TripId }}</td>
+                                    </tr>
+                                    {{/ShowTripId}}
+
+                                    {{#ShowDistance}}
+                                    <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
+                                        <td class="list_value">{{ Distance }}</td>
+                                    </tr>
+                                    {{/ShowDistance}}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {{/ShowTripSection}}
+                {{#ShowFareAndPaymentDetails}}
+                <div class="receiptRightInfo" style="float: left !important;">
+                    <table>
+                        <tr>
+                            <td class="title_block"><span>{{localize "Email_Body_FareBreakDown"}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="invoice" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                                                        
+                                        <td class="list_title">{{{ EmailBodyFare }}} {{#ShowRateClassStart}} {{ RateClassStart }} {{/ShowRateClassStart}}</td>
+                                        <td class="list_value">{{ Fare }}</td>
+                                    </tr>
+
+                                    {{#ShowRateClassEnd}}
+                                    <tr>
+                                        <td class="list_title">{{{ EmailBodyFare }}} {{ RateClassEnd }}</td>
+                                        <td class="list_value">{{ FareAtAlternateRate }}</td>
+                                    </tr>
+                                    {{/ShowRateClassEnd}}
+
+                                    {{#ShowExtra}}
+                                    <tr>
+                                        <td class="list_title">{{{EmailBodyExtra}}}</td>
+                                        <td class="list_value">{{ Extra }}</td>
+                                    </tr>
+                                    {{/ShowExtra}}
+
+                                    {{#ShowSurcharge}}
+                                    <tr>
+                                        <td class="list_title">{{{EmailBodySurcharge}}}</td>
+                                        <td class="list_value">{{ Surcharge }}</td>
+                                    </tr>
+                                    {{/ShowSurcharge}}
+
+                                    {{#ShowToll1}}
+                                    <tr>
+                                        <td class="list_title">{{{ TollName1 }}}</td>
+                                        <td class="list_value">{{ TollAmount1 }}</td>
+                                    </tr>
+                                    {{/ShowToll1}}
+                                    {{#ShowToll2}}
+                                    <tr>
+                                        <td class="list_title">{{{ TollName2 }}}</td>
+                                        <td class="list_value">{{ TollAmount2 }}</td>
+                                    </tr>
+                                    {{/ShowToll2}}
+                                    {{#ShowToll3}}
+                                    <tr>
+                                        <td class="list_title">{{{ TollName3 }}}</td>
+                                        <td class="list_value">{{ TollAmount3 }}</td>
+                                    </tr>
+                                    {{/ShowToll3}}
+                                    {{#ShowToll4}}
+                                    <tr>
+                                        <td class="list_title">{{{ TollName4 }}}</td>
+                                        <td class="list_value">{{ TollAmount4 }}</td>
+                                    </tr>
+                                    {{/ShowToll4}}
+
+                                    {{#ShowTollTotal}}
+                                    <tr>
+                                        <td class="list_title">{{{ EmailBodyToll }}}</td>
+                                        <td class="list_value">{{ Toll }}</td>
+                                    </tr>
+                                    {{/ShowTollTotal}}
+
+                                    {{#ShowTax}}
+                                    <tr>
+                                        <td class="list_title">
+                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
+                                            {{^vatIsEnabled}}{{{ EmailBodyTax}}}{{/vatIsEnabled}}
+                                        </td>
+                                        <td class="list_value">{{ Tax }}</td>
+                                    </tr>
+                                    {{/ShowTax}}
+                                    {{#ShowImprovementSurcharge}}
+                                    <tr>
+                                        <td class="list_title">{{{ EmailBodyImprovementSurcharge }}}</td>
+                                        <td class="list_value">{{ ImprovementSurcharge }}</td>
+                                    </tr>
+                                    {{/ShowImprovementSurcharge}}
+
+                                    {{#ShowBookingFees}}
+                                    <tr>
+                                        <td class="list_title">
+                                            {{ localize "Email_Body_BookingFees"}}
+                                        </td>
+                                        <td class="list_value">{{{ BookingFees }}}</td>
+                                    </tr>
+                                    {{/ShowBookingFees}}
+
+                                    <tr>
+                                        <td class="list_title">{{{ EmailBodyTip }}}</td>
+                                        <td class="list_value">{{ Tip }}</td>
+                                    </tr>
+
+                                    {{#ShowTipIncentive}}
+                                    <tr>
+                                        <td class="list_title">{{ localize "Email_Body_TipIncentive"}}</td>
+                                        <td class="list_value">{{ TipIncentive }}</td>
+                                    </tr>
+                                    {{/ShowTipIncentive}}
+
+                                    {{#PromotionWasUsed}}
+                                    <tr>
+                                        <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>
+                                        <td class="list_value">({{ AmountSavedByPromotion }})</td>
+                                    </tr>
+                                    {{/PromotionWasUsed}}
+                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}">
+                                        <td class="list_title">{{{ EmailBodyTotalFare }}}</td>
+                                        <td class="list_value">{{ TotalFare }}</td>
+                                    </tr>
+
+                                    {{#ShowRideLinqLastFour}}
+                                    <tr>
+                                        <td class="list_title">{{{ EmailBodyRideLinqLastFour }}}</td>
+                                        <td class="list_value">{{ RideLinqLastFour }}</td>
+                                    </tr>
+                                    {{/ShowRideLinqLastFour}}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    {{#HasPaymentInfo}}
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="title_block"><span>{{ localize "Email_Body_PaymentInformation" }} </span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="invoice" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td class="card_list_title">{{ localize "Email_Body_PaidWith" }}</td>
+                                        <td class="list_value">{{ PaymentMethod }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="card_list_title">{{ localize "Email_Body_TotalAmount" }}</td>
+                                        <td class="list_value">{{ PaymentAmount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="card_list_title">{{ localize "Email_Body_TransactionId" }}</td>
+                                        <td class="list_value">{{ PaymentTransactionId }}</td>
+                                    </tr>
+                                    {{#ShowPaymentAuthorizationCode}}
+                                    <tr>
+                                        <td class="card_list_title">{{ localize "Email_Body_AuthorizationNumber" }}</td>
+                                        <td class="list_value">{{ PaymentAuthorizationCode }}</td>
+                                    </tr>
+                                    {{/ShowPaymentAuthorizationCode}}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    {{/HasPaymentInfo}}
+                </div>
+                {{/ShowFareAndPaymentDetails}}
+                </div>
+                </td>
+                </tr>
+                <tr>
+                    <td class="content-block">
+                        <p style="text-align: center">{{{Note}}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="content-block">
+                        <p style="text-align: center">
+                            {{#HasSocialMediaGoogleURL }}<a href="{{SocialMediaGoogleURL}}"><img src="{{SocialMediaGoogleImg}}" border="0"/></a>{{/HasSocialMediaGoogleURL}}&nbsp;
+                            {{#HasSocialMediaFacebookURL }}<a href="{{SocialMediaFacebookURL}}"><img src="{{SocialMediaFacebookImg}}" border="0"/></a>{{/HasSocialMediaFacebookURL}}&nbsp;
+                            {{#HasSocialMediaYoutubeURL }}<a href="{{SocialMediaYoutubeURL}}"><img src="{{SocialMediaYoutubeImg}}" border="0"/></a>{{/HasSocialMediaYoutubeURL}}&nbsp;
+                            {{#HasSocialMediaPinterestURL }}<a href="{{SocialMediaPinterestURL}}"><img src="{{SocialMediaPinterestImg}}" border="0"/></a>{{/HasSocialMediaPinterestURL}}&nbsp;
+                            {{#HasSocialMediaInstagramURL }}<a href="{{SocialMediaInstagramURL}}"><img src="{{SocialMediaInstagramImg}}" border="0"/></a>{{/HasSocialMediaInstagramURL}}&nbsp;
+                            {{#HasSocialMediaTwitterURL }}<a href="{{SocialMediaTwitterURL}}"><img src="{{SocialMediaTwitterImg}}" border="0"/></a>{{/HasSocialMediaTwitterURL}}
+                        </p>
+                    </td>
+                </tr>
+                </table>
+                </td>
+                </tr>
+                </table>
                 </div>
             </td>
             <td></td>

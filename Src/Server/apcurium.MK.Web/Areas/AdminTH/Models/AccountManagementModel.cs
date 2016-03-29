@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using PagedList;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
