@@ -201,7 +201,7 @@ namespace MK.Common.Configuration
 		public string TwitterAuthorizeUrl { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
-        [Display(Name = "Facebook - Publish Enabled", Description="Facebook Publish Enabled")]
+        [Display(Name = "Facebook - Publish Enabled", Description="Facebook Publish Enabled (Analytics/Reporting)")]
 		public bool FacebookPublishEnabled { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
