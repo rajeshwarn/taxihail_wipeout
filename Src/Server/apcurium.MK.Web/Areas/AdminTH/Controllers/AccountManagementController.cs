@@ -270,33 +270,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         [HttpPost]
         public async Task<ActionResult> ExportOrders(AccountManagementModel accountManagementModel)
         {
-            var csv = (List<Dictionary<string, string>>)_exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
+            var csv = _exportDataService.Post(new ExportDataRequest { AccountId = accountManagementModel.Id, Target = DataType.Orders });
             if (csv.IsEmpty())
             {
                 return View("Index", accountManagementModel);
             }
 
-            var csvFlattened = new StringBuilder();
-            foreach (var item in csv.ElementAt(0))
-            {
-                csvFlattened.Append(item.Key).Append(",");
-            }
-
-            csvFlattened.Append("\n");
-
-            foreach (var line in csv)
-            {
-                foreach (var item in line)
-                {
-                    csvFlattened.Append(item.Value).Append(",");
-                }
-                csvFlattened.Append("\n");
-            }
-
             // needed to feed orders list
             accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);
 
-            return File(new ASCIIEncoding().GetBytes(csvFlattened.ToString()), "text/csv", "Export.csv");
+            return File(new ASCIIEncoding().GetBytes(csv.ToCsv()), "text/csv", "Export.csv");
         }
 
         [HttpPost]

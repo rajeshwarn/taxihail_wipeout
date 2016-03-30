@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             _promotionsDao = promotionsDao;
         }
 
-        public object Post(ExportDataRequest request)
+        public List<Dictionary<string, string>> Post(ExportDataRequest request)
         {
             var offset = new TimeSpan(_serverSettings.ServerData.IBS.TimeDifference);
 
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             }
         }
 
-        private object PreparePromotionsData(DateTime endDate, DateTime startDate)
+        private List<Dictionary<string, string>> PreparePromotionsData(DateTime endDate, DateTime startDate)
         {
             var exportedPromotions = new List<Dictionary<string, string>>();
 
@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             return exportedPromotions;
         }
 
-        private object PrepareOrdersData(Guid? accountId, DateTime startDate, DateTime endDate, TimeSpan offset)
+        private List<Dictionary<string, string>> PrepareOrdersData(Guid? accountId, DateTime startDate, DateTime endDate, TimeSpan offset)
         {
             var orders = accountId.HasValue ? _reportDao.GetOrderReportsByAccountId(accountId.Value) : _reportDao.GetOrderReports(startDate, endDate);
 
@@ -251,19 +251,24 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             return exportedOrderReports;
         }
 
-        private object PrepareAccountData(DateTime startDate, DateTime endDate)
+        private List<Dictionary<string, string>> PrepareAccountData(DateTime startDate, DateTime endDate)
         {
             var accounts = _accountDao.GetAll().Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).ToList();
             var startUpLogs = _appStartUpLogDao.GetAll().ToList();
 
             // We join each account details with their "last launch details"
-            return from a in accounts
+            var accountData = from a in accounts
                 join s in startUpLogs on a.Id equals s.UserId into matchingLog
                 from m in matchingLog.DefaultIfEmpty()
                 select new
                 {
                     a.Id, a.IBSAccountId, CreateDate = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("d", CultureInfo.InvariantCulture), CreateTime = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("t", CultureInfo.InvariantCulture), a.Settings.Name, a.Settings.Phone, a.Email, a.DefaultCreditCard, a.DefaultTipPercent, a.Language, a.TwitterId, a.FacebookId, a.HasAdminAccess, a.IsConfirmed, a.DisabledByAdmin, a.Settings.PayBack, LastLaunch = (m == null ? null : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, m.DateOccured).ToString(CultureInfo.InvariantCulture)), Platform = (m == null ? null : m.Platform), PlatformDetails = (m == null ? null : m.PlatformDetails), ApplicationVersion = (m == null ? null : m.ApplicationVersion), ServerVersion = (m == null ? null : m.ServerVersion)
                 };
+
+            return accountData
+                .Select(data => data.ToJson())
+                .Select(data => data.FromJsonSafe<Dictionary<string,string>>())
+                .ToList();
         }
     }
 }

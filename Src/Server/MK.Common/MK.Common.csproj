@@ -146,6 +146,7 @@
     <Compile Include="Enumeration\ServiceStatusType.cs" />
     <Compile Include="Exceptions\WebServiceException.cs" />
     <Compile Include="Extensions\CacheClientExtensions.cs" />
+    <Compile Include="Extensions\CSVExtensions.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\ReturnExtensions.cs" />
