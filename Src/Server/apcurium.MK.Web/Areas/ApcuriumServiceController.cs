@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
@@ -19,9 +21,17 @@ namespace apcurium.MK.Web.Areas
             : base(serverSettings)
         {
             _cache = cache;
-            ViewData["IsAuthenticated"] = AuthSession != null;
-            ViewData["IsSuperAdmin"] = AuthSession.HasPermission(RoleName.SuperAdmin);
-            ViewData["IsAdmin"] = AuthSession.HasPermission(RoleName.Admin);
+        }
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+
+            var authSession = SessionAs<SessionEntity>(requestContext.HttpContext.Request);
+
+            ViewData["IsAuthenticated"] = authSession != null;
+            ViewData["IsSuperAdmin"] = authSession.HasPermission(RoleName.SuperAdmin);
+            ViewData["IsAdmin"] = authSession.HasPermission(RoleName.Admin);
         }
 
         protected SessionEntity AuthSession
@@ -36,7 +46,7 @@ namespace apcurium.MK.Web.Areas
         {
             if (NeedsToBeAuthenticated(filterContext))
             {
-                if (AuthSession != null)
+                if (!AuthSession.IsAuthenticated())
                 {
                     filterContext.Result = Redirect(BaseUrl);
                 }
@@ -47,13 +57,18 @@ namespace apcurium.MK.Web.Areas
 
         protected TUserSession SessionAs<TUserSession>()
         {
+            return SessionAs<TUserSession>(Request);
+        }
+
+        protected TUserSession SessionAs<TUserSession>(HttpRequestBase request)
+        {
             if (_userSession == null)
             {
-                var cookie = Request.Cookies.Get("ss-pid");
+                var cookie = request.Cookies.Get("ss-pid");
 
                 if (cookie != null)
                 {
-                    _userSession = _cache.Get<TUserSession>(cookie.Value);
+                    _userSession = _cache.Get<TUserSession>("urn:iauthsession:" + cookie.Value);
                 }
             }
 

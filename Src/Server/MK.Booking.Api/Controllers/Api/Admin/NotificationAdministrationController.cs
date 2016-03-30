@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpGet, Route("api/v2/admin/testmail/templates")]
+        [HttpGet, Route("api/v2/admin/testemail/templates")]
         public IHttpActionResult GetEmailTemplateNames()
         {
             var result = NotificationAdministrationService.Get(new EmailTemplateNamesRequest());

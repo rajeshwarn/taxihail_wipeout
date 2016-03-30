@@ -5,7 +5,6 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
-    [RoutePrefix("api/v2/settings/defaultlocation")]
     public class DefaultGeoLocationController : BaseApiController
     {
         public DefaultGeoLocationService DefaultGeoLocationService { get; }
@@ -15,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             DefaultGeoLocationService = new DefaultGeoLocationService(serverSettings);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/settings/defaultlocation")]
         public IHttpActionResult GetDefaultGeoLocation()
         {
             var result = DefaultGeoLocationService.Get();

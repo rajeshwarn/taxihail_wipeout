@@ -82,7 +82,13 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpGet, Route("api/v2/accounts/confirm/{emailAddress}/{confirmationToken}/{isSmsConfirmation:bool?}")]
+        [HttpGet, Route("api/v2/accounts/confirm/{emailAddress}/{confirmationToken}")]
+        public IHttpActionResult ConfirmAccount(string emailAddress, string confirmationToken)
+        {
+            return ConfirmAccount(emailAddress, confirmationToken, null);
+        }
+
+        [HttpGet, Route("api/v2/accounts/confirm/{emailAddress}/{confirmationToken}/{isSmsConfirmation}")]
         public IHttpActionResult ConfirmAccount(string emailAddress, string confirmationToken, bool? isSmsConfirmation)
         {
             var result = ConfirmAccountService.Get(new ConfirmAccountRequest()

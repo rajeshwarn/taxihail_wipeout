@@ -155,7 +155,7 @@ namespace apcurium.MK.Web.Controllers.Api
                     else
                     {
 
-                        var confirmationUrl = "/api/accounts/confirm/{0}/{1}".InvariantCultureFormat(account.Email, account.ConfirmationToken);
+                        var confirmationUrl = "/api/v2/accounts/confirm/{0}/{1}".InvariantCultureFormat(account.Email, account.ConfirmationToken);
 
                         _commandBus.Send(new SendAccountConfirmationEmail
                         {

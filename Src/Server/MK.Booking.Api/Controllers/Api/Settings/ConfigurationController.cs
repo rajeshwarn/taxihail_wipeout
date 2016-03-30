@@ -12,7 +12,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
-    [RoutePrefix("api/v2/settings")]
     public class ConfigurationController : BaseApiController
     {
         private readonly ConfigurationResetService _configurationResetService;
@@ -32,7 +31,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             PrepareApiServices(_configurationsService, _configurationResetService);
         }
 
-        [HttpGet, Route("reset")]
+        [HttpGet, Route("api/v2/settings/reset")]
         public IHttpActionResult ResetConfiguration()
         {
             _configurationResetService.Get();
@@ -40,7 +39,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(true);
         }
 
-        [HttpGet]
+        [HttpGet, Route("api/v2/settings")]
         public IHttpActionResult GetAppSettings()
         {
             var result = _configurationsService.Get(new ConfigurationsRequest());
@@ -48,7 +47,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("encrypted")]
+        [HttpGet, Route("api/v2/settings/encrypted")]
         public IHttpActionResult GetEncryptedSettings()
         {
             var result = _configurationsService.Get(new EncryptedConfigurationsRequest());
@@ -64,7 +63,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return Ok();
         }
 
-        [HttpGet, Auth, Route("notifications/{accountId:Guid?}")]
+        [HttpGet, Auth, Route("api/v2/settings/notifications")]
+        public IHttpActionResult GetNotificationSettings()
+        {
+            return GetNotificationSettings(null);
+        }
+
+        [HttpGet, Auth, Route("api/v2/settings/notifications/{accountId}")]
         public IHttpActionResult GetNotificationSettings(Guid? accountId)
         {
             var result = _configurationsService.Get(new NotificationSettingsRequest() {AccountId = accountId});
@@ -72,8 +77,14 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("notifications/{accountId:Guid?}")]
-        public IHttpActionResult UpdateNotificationSettings(Guid? accountId, NotificationSettingsRequest request)
+        [HttpPost, Auth, Route("api/v2/settings/notifications")]
+        public IHttpActionResult UpdateNotificationSettings([FromBody] NotificationSettingsRequest request)
+        {
+            return UpdateNotificationSettings(null, request);
+        }
+
+        [HttpPost, Auth, Route("api/v2/settings/notifications/{accountId}")]
+        public IHttpActionResult UpdateNotificationSettings(Guid? accountId, [FromBody]NotificationSettingsRequest request)
         {
             request.AccountId = accountId;
 
@@ -82,7 +93,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return Ok();
         }
 
-        [HttpGet, Auth, Route("taxihailnetwork/{accountId:Guid?}")]
+        [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork")]
+        public IHttpActionResult GetUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest request)
+        {
+            return GetUserTaxiHailNetworkSettings(null, request);
+        }
+
+        [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
         public IHttpActionResult GetUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
         {
             request.AccountId = accountId;
@@ -92,7 +109,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("taxihailnetwork/{accountId:Guid?}")]
+        [HttpPost, Auth, Route("api/v2/settings/taxihailnetwork")]
+        public IHttpActionResult UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest request)
+        {
+            return UpdateUserTaxiHailNetworkSettings(null, request);
+        }
+
+        [HttpPost, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
         public IHttpActionResult UpdateUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
         {
             request.AccountId = accountId;

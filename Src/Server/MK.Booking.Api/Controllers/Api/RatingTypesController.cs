@@ -9,7 +9,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/ratingtypes")]
     public class RatingTypesController : BaseApiController
     {
         public RatingTypesService RatingTypesService { get; set; }
@@ -19,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api
             RatingTypesService = new RatingTypesService(ratingTypeDao, commandBus);
         }
 
-        [HttpGet, Auth]
+        [HttpGet, Auth, Route("api/v2/ratingtypes")]
         public IHttpActionResult GetAllRatingTypes()
         {
             var result = RatingTypesService.Get(new RatingTypesRequest());
@@ -27,7 +26,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("{clientLanguage}")]
+        [HttpGet, Auth, Route("api/v2/ratingtypes/{clientLanguage}")]
         public IHttpActionResult GetRatingTypesByLanguage(string clientLanguage)
         {
             var result = RatingTypesService.Get(new RatingTypesRequest() {ClientLanguage = clientLanguage});
@@ -35,7 +34,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin)]
+        [HttpPost, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes")]
         public IHttpActionResult CreateRatingType([FromBody]RatingTypesRequest request)
         {
             var result = RatingTypesService.Post(request);
@@ -43,7 +42,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin)]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes")]
         public IHttpActionResult UpdateRatingType([FromBody] RatingTypesRequest request)
         {
             RatingTypesService.Put(request);
@@ -51,7 +50,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpDelete, Auth(Role = RoleName.Admin), Route("{ratingTypeId}")]
+        [HttpDelete, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes/{ratingTypeId}")]
         public IHttpActionResult DeleteRatingType(Guid ratingTypeId)
         {
             RatingTypesService.Delete(ratingTypeId);

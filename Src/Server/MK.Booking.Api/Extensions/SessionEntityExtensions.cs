@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
@@ -12,6 +13,10 @@ namespace apcurium.MK.Booking.Api.Extensions
     {
         public static bool HasPermission(this SessionEntity source, string permission)
         {
+            if (source == null)
+            {
+                return permission == RoleName.None;
+            }
             var dao = UnityServiceContainer.Instance.Resolve<IAccountDao>();
 
             var account = dao.FindById(source.UserId);

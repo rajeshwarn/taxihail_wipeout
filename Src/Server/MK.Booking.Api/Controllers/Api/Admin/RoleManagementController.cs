@@ -11,24 +11,17 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 {
     public class RoleManagementController : BaseApiController
     {
-        private readonly GrantAdminRightService _grantAdminRightService;
+        public GrantAdminRightService AdminRightService { get; }
 
         public RoleManagementController(ICommandBus commandBus, IAccountDao accountDao)
         {
-            _grantAdminRightService = new GrantAdminRightService(accountDao, commandBus);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_grantAdminRightService);
+            AdminRightService = new GrantAdminRightService(accountDao, commandBus);
         }
 
         [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/grantadmin")]
         public IHttpActionResult GrantAdminRight(GrantAdminRightRequest request)
         {
-            _grantAdminRightService.Put(request);
+            AdminRightService.Put(request);
 
             return Ok();
         }
@@ -36,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpPut, Auth(Role = RoleName.SuperAdmin), Route("api/v2/admin/grantsuperadmin")]
         public IHttpActionResult GrantSuperAdminRight(GrantSuperAdminRightRequest request)
         {
-            _grantAdminRightService.Put(request);
+            AdminRightService.Put(request);
 
             return Ok();
         }
@@ -44,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/grantsupport")]
         public IHttpActionResult GrantSupportRight(GrantSupportRightRequest request)
         {
-            _grantAdminRightService.Put(request);
+            AdminRightService.Put(request);
 
             return Ok();
         }
@@ -52,7 +45,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/revokeaccess")]
         public IHttpActionResult GrantRevokeAccessRight(RevokeAccessRequest request)
         {
-            _grantAdminRightService.Put(request);
+            AdminRightService.Put(request);
 
             return Ok();
         }

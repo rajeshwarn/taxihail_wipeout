@@ -44,7 +44,13 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("api/v2/admin/vehicletypes/{id:Guid?}")]
+        [HttpGet, Auth, Route("api/v2/admin/vehicletypes")]
+        public IHttpActionResult GetVehicleType()
+        {
+            return GetVehicleType(null);
+        }
+
+        [HttpGet, Auth, Route("api/v2/admin/vehicletypes/{id}")]
         public IHttpActionResult GetVehicleType(Guid? id)
         {
             var result = VehicleService.Get(id ?? Guid.Empty);
@@ -74,6 +80,12 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
             VehicleService.DeleteVehicleType(id);
 
             return Ok();
+        }
+
+        [HttpGet, NoCache, Route("api/v2/admin/vehicletypes/unassignednetworkvehicletype")]
+        public Task<IHttpActionResult> GetUnassignedNetworkVehicleType()
+        {
+            return GetUnassignedNetworkVehicleType(null);
         }
 
         [HttpGet, NoCache, Route("api/v2/admin/vehicletypes/unassignednetworkvehicletype/{networkVehicleId:int?}")]

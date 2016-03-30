@@ -23,10 +23,16 @@
             
             return $.ajax({
                 type: 'PUT',
-                url: TaxiHail.parameters.apiRoot + '/admin/' + action,
+                url: 'api/v2/admin/' + action,
                 data: {
                     accountEmail: email
                 },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                contentType: "application/json",
                 dataType: 'json',
                 success : _.bind(function() {
                     this.$('.errors').text(TaxiHail.localize(action + 'Success'));

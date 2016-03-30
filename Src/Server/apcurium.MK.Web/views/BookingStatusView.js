@@ -262,7 +262,16 @@
         },
 
         onTHStatusChanged: function (model, status) {
-            if (status.toUpperCase() === 'TIMEDOUT' && this.model._status.get('nextDispatchCompanyKey') != "") {
+            var orderStatus = status;
+
+            // This ensures that we don't try to use toUpperCase when status is an int.
+            if (typeof (status) == "string") {
+                orderStatus = status.toUpperCase();
+            }
+
+            var isTimeout = orderStatus === 'TIMEDOUT' || status === 6;
+
+            if (isTimeout && this.model._status.get('nextDispatchCompanyKey') != "") {
 
                 var alwaysAccept = $.cookie('THNetwork_always_accept');
 
