@@ -616,6 +616,28 @@
 	Bug fix - iOS - missing order number in Order status view and history
 
 
+4.4.0
+	Fixed car on map not updated correctly on Bail
+	Bug fix - Stop polling when we get a terminal error
+	Settle overdue payment for ridelinq 
+	Fix which card to use for normal CMT rides
+	Fixed GetLastActiveOrder
+	Improved logs
+	Add kount session id  + customer's ip address to SettleOverduePaymentRequest
+	Add kount clientside for OverduePaymentViewModel
+	Fix ShowCallDriver not using the market settings
+	Fix apple credentials change url prompting for restart
+	Correction on trace correction on date to ignore UTC
+	Added new icon for social 
+	Added social icon in receipt email - each social icon can be present on website and email
+	Added Market specific line items on e-receipt
+	Added Tax label in Custom portal
+4.4.1
+	Added accessFee on sever side
+	Change manual pairing instruction on screen
+	Fix for register checkbox color on iOS
+
+
 
 
 
