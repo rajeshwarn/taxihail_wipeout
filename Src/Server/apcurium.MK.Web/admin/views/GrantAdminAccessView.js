@@ -20,18 +20,16 @@
             e.preventDefault();
             var action = $(e.currentTarget).data().action,
                 email = this.$('[name=email]').val();
+
+
+            var data = JSON.stringify({
+                accountEmail: email
+            });
             
             return $.ajax({
                 type: 'PUT',
-                url: 'api/v2/admin/' + action,
-                data: {
-                    accountEmail: email
-                },
-                beforeSend: function (x) {
-                    if (x && x.overrideMimeType) {
-                        x.overrideMimeType("application/j-son;charset=UTF-8");
-                    }
-                },
+                url: TaxiHail.parameters.apiRoot + '/admin/' + action,
+                data: data,
                 contentType: "application/json",
                 dataType: 'json',
                 success : _.bind(function() {
