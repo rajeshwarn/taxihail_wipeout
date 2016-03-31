@@ -439,7 +439,7 @@
     <value>Delete</value>
   </data>
   <data name="InvalidAddressTextEdit" xml:space="preserve">
-    <value>Cannot validate adddress</value>
+    <value>Cannot validate address</value>
   </data>
   <data name="InvalidAddressMessage" xml:space="preserve">
     <value>The address you provided is invalid. Please verify this information</value>
@@ -604,7 +604,7 @@
     <value>Are you sure you want to cancel?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
-    <value>The order cannot be canceled, please call to cancel this order.</value>
+    <value>The order cannot be cancelled, please call to cancel this order.</value>
   </data>
   <data name="StatusConfirmCancelRideErrorTitle" xml:space="preserve">
     <value>Cannot cancel</value>
@@ -1657,7 +1657,7 @@
     <value>Calculating...</value>
   </data>
   <data name="Knowledgabledriver" xml:space="preserve">
-    <value>Knowledgable driver</value>
+    <value>Knowledgeable driver</value>
   </data>
   <data name="Safety" xml:space="preserve">
     <value>Safety</value>
@@ -1705,10 +1705,10 @@
     <value>The account or rider number that was entered doesn't exist</value>
   </data>
   <data name="CreditCardBookingSettingsError" xml:space="preserve">
-    <value>An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</value>
+    <value>An error occurred when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</value>
   </data>
   <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
-    <value>An error occured when updating the booking settings</value>
+    <value>An error occurred when updating the booking settings</value>
   </data>
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>You must have a card on file to use this account</value>
@@ -1960,7 +1960,7 @@
     <value>Unpair</value>
   </data>
   <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
-    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+    <value>An error has occurred. Please try to checking again using the code displayed on the taxi touchscreen.</value>
   </data>
   <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
     <value>Error</value>
@@ -1981,7 +1981,7 @@
     <value>Done</value>
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
-    <value>An error occured when trying to unpair. Please try again.</value>
+    <value>An error occurred when trying to unpair. Please try again.</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
     <value>Are you sure you want to cancel? A cancellation fee may apply.</value>
@@ -2170,13 +2170,13 @@
     <value>Missing information</value>
   </data>
   <data name="BookingAirportMissingInfo_Message" xml:space="preserve">
-    <value>The airline and the flight number are madatory.</value>
+    <value>The airline and the flight number are mandatory.</value>
   </data>
   <data name="BookingAirportNoFlights_Message" xml:space="preserve">
     <value>No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</value>
   </data>
   <data name="BookingAirportPickupPointFee" xml:space="preserve">
-    <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
+    <value>Selecting Pickup Point {0} will incur an additional Fee of {1}</value>
   </data>
   <data name="BookingAirportDetails" xml:space="preserve">
     <value>Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</value>
@@ -2275,7 +2275,7 @@
     <value>Notification setting</value>
   </data>
   <data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
-    <value>Initialition of order of account payment</value>
+    <value>Initialization of order of account payment</value>
   </data>
   <data name="AccountConfirmationActivityName" xml:space="preserve">
     <value>Account confirmation</value>
@@ -2413,13 +2413,13 @@
     <value>Last 4 numbers:  </value>
   </data>
   <data name="InvalidCreditCardMessage" xml:space="preserve">
-  	<value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
+    <value>There was a problem with your current Payment Method. Please add a different card or update the information.</value>
   </data>
   <data name="CreditCompany" xml:space="preserve">
     <value>Credit company: </value>
   </data>
   <data name="InvalidCreditCardUpdateCardButton" xml:space="preserve">
-  	<value>Update Card</value>
+    <value>Update Card</value>
   </data>
   <data name="SelectedCreditCard" xml:space="preserve">
     <value>Currently selected credit card</value>

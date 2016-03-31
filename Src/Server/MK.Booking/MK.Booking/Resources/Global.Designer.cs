@@ -1546,7 +1546,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, your driver canceled. Finding you another taxi....
+        ///   Looks up a localized string similar to Sorry, your driver cancelled. Finding you another taxi....
         /// </summary>
         public static string PushNotification_BAILED {
             get {
