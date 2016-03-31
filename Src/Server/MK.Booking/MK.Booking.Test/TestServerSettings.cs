@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Test
 	    throw new NotImplementedException();
 	}
 
-        public Task ChangeServerUrl(string serverUrl)
+        public Task ChangeServerUrl(string serverUrl, bool skipAppRestart = false)
         {
             throw new NotImplementedException();
         }

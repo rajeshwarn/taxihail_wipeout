@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Entity;
+﻿using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 
 namespace CustomerPortal.Contract.Response
@@ -31,5 +32,7 @@ namespace CustomerPortal.Contract.Response
         public Tariff MarketTariff { get; set; }
 
         public bool ShowCallDriver { get; set; }
+
+        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 }

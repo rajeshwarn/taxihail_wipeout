@@ -121,9 +121,10 @@ namespace apcurium.MK.Booking.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
+            var oldPairingError = orderStatusDetail.PairingError;
             var trip = CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
 
-            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
+            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail, oldPairingError))
             {
                 _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
@@ -195,6 +196,12 @@ namespace apcurium.MK.Booking.Jobs
             if (pairingInfo == null)
             {
                 // Order not paired
+                return null;
+            }
+
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
+            {
+                // trip has terminating error, exiting
                 return null;
             }
 
@@ -568,6 +575,13 @@ namespace apcurium.MK.Booking.Jobs
 
         private void HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
+            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
+            {
+                // There was a terminal pairing error.
+                return;
+
+            }
+
             HandleOrderCompletionWithNoFare(orderStatusDetail,
                 () =>
                 {
@@ -614,8 +628,7 @@ namespace apcurium.MK.Booking.Jobs
                 if (hasNoFareInfo())
                 {
                     // no fare info yet
-
-                    if (orderStatusDetail.Status == OrderStatus.Completed)
+                   if (orderStatusDetail.Status == OrderStatus.Completed)
                     {
                         // no fare received but order is completed, change status to increase polling speed and to trigger a completion on clientside
                         orderStatusDetail.Status = OrderStatus.WaitingForPayment;
@@ -1033,12 +1046,13 @@ namespace apcurium.MK.Booking.Jobs
             throw new NotImplementedException("Cannot have pairing without any payment mode");
         }
 
-        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail, string oldPairingError)
         {
             return (ibsOrderInfo.Status.HasValue() // ibs status changed
                     && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
                    || (!orderStatusDetail.FareAvailable // fare was not available and ibs now has the information
                        && ibsOrderInfo.Fare > 0)
+                   || (orderStatusDetail.PairingError.HasValue() && oldPairingError != orderStatusDetail.PairingError)
                    || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
                    || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   

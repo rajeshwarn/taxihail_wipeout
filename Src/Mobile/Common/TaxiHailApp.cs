@@ -243,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile
 		    var appSettings = Mvx.Resolve<IAppSettings>();
 		    var facebookService = Mvx.Resolve<IFacebookService>();
 
-            if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled || appSettings.Data.FacebookPublishEnabled)
 			{
                 facebookService.Init();
 			}

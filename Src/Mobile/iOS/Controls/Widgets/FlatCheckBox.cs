@@ -44,8 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public void ApplyContrastBasedColor()
         {
-          SetImage(ImageHelper.ApplyContrastBasedThemeTextColorToImage("unchecked.png"), UIControlState.Normal);
-          SetImage(ImageHelper.ApplyContrastBasedThemeTextColorToImage("checked.png"), UIControlState.Selected);
+            SetImage(ImageHelper.ApplyContrastBasedThemeLoginColorToImage("unchecked.png"), UIControlState.Normal);
+            SetImage(ImageHelper.ApplyContrastBasedThemeLoginColorToImage("checked.png"), UIControlState.Selected);
         }
     }
 }

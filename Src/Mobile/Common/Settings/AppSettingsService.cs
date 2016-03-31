@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
 		}
 
-		public async Task ChangeServerUrl(string serverUrl)
+		public async Task ChangeServerUrl(string serverUrl, bool skipAppRestart = false)
 		{
 			// Reset cache
 			Data = new TaxiHailSetting();
@@ -81,8 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			{
 				await RefreshSettingsFromServer(true);
 
-				await Mvx.Resolve<IMessageService>().ShowMessage("Apps needs to restart", "Server url succesfully updated, press to quit the application");
-				Mvx.Resolve<IQuitApplicationService>().Quit ();
+				if(!skipAppRestart)
+				{
+					await Mvx.Resolve<IMessageService>().ShowMessage("Apps needs to restart", "Server url succesfully updated, press to quit the application");
+					Mvx.Resolve<IQuitApplicationService>().Quit ();
+				}
 			}
 			catch
 			{

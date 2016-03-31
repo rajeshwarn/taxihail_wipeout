@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Configuration
 		TaxiHailSetting Data { get; }
         
 		Task Load();
-        Task ChangeServerUrl(string serverUrl);
+        Task ChangeServerUrl(string serverUrl, bool skipAppRestart = false);
 
 		string GetServiceUrl();
 

@@ -56,6 +56,8 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         public IEnumerable<SelectListItem> CompaniesOrMarket { get; set; }
 
         public IEnumerable<Market> OtherMarkets { get; set; } 
+
+        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 
     public class VehicleModel : Vehicle

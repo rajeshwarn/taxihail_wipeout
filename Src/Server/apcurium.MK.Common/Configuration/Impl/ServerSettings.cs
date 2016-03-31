@@ -83,7 +83,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 			throw new NotSupportedException("This method is only supported on mobile.");
 		}
 
-        public Task ChangeServerUrl(string serverUrl)
+        public Task ChangeServerUrl(string serverUrl, bool skipAppRestart = false)
         {
 			throw new NotSupportedException("This method is only supported on mobile.");
         }

@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
 				v = _spinnerEmptyItemView ?? (_spinnerEmptyItemView = inflater.Inflate (Resource.Layout.SpinnerEmptyItem, null));
 
-			} else
+				v.LayoutParameters = new AbsListView.LayoutParams (AbsListView.LayoutParams.MatchParent,0);
+			} 
+			else
 			{
 				v = GetView(position, convertView, parent);
 			}
