@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.OrderCreation;
 using apcurium.MK.Booking.Calculator;
@@ -28,6 +30,10 @@ namespace apcurium.MK.Web.Controllers.Api.account
         public CreateOrderService CreateOrderService { get; }
         public OrderUpdateService OrderUpdateService { get; }
         private AccountOrderListService AccountOrderListService { get; }
+        public OrderStatusService OrderStatusService { get; }
+        public ActiveOrderStatusService ActiveOrderStatusService { get; }
+
+        public OrderPairingService PairingService { get; }
 
         public OrderController(
             IAccountDao accountDao, 
@@ -50,12 +56,18 @@ namespace apcurium.MK.Web.Controllers.Api.account
             IFeesDao feesDao,
             IAirlineDao airlineDao,
             IPickupPointDao pickupPointDao,
-            IOrderRatingsDao orderRatingsDao)
+            IOrderRatingsDao orderRatingsDao,
+            OrderStatusHelper orderStatusHelper)
         {
             AccountOrderListService = new AccountOrderListService(orderDao, orderRatingsDao, serverSettings);
             CancelOrderService = new CancelOrderService(commandBus, ibsServiceProvider, orderDao, accountDao, updateOrderStatusJob, serverSettings, networkServiceClient, ibsCreateOrderService, Logger);
             OrderService = new OrderService(orderDao, orderPaymentDao, promotionDao, accountDao, commandBus, ibsServiceProvider);
             OrderUpdateService = new OrderUpdateService(orderDao, commandBus, ibsServiceProvider);
+            PairingService = new OrderPairingService(orderDao, commandBus, serverSettings, paymentService);
+            OrderStatusService = new OrderStatusService(orderStatusHelper);
+
+            ActiveOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao);
+
             CreateOrderService = new CreateOrderService(
                 commandBus,
                 accountDao,
@@ -75,6 +87,52 @@ namespace apcurium.MK.Web.Controllers.Api.account
                 feesDao,
                 Logger,
                 ibsCreateOrderService);
+        }
+
+        [HttpPost, NoCache, Route("api/v2/accounts/orders/{orderId}/pairing/tip")]
+        public async Task<IHttpActionResult> UpdateAutoTip(Guid orderId, [FromBody]UpdateAutoTipRequest request)
+        {
+            request.OrderId = orderId;
+
+            await PairingService.Post(request);
+
+            return Ok();
+        }
+
+        [HttpGet, Route("api/v2/accounts/orders/{orderId}/pairing"), NoCache]
+        public IHttpActionResult GetOrderPairing(Guid orderId)
+        {
+            var result = PairingService.Get(new OrderPairingRequest() { OrderId = orderId });
+
+            return GenerateActionResult(result);
+        }
+
+        [HttpGet, NoCache]
+        [Route("api/v2/accounts/orders/{orderId}/status")]
+        public async Task<IHttpActionResult> GetOrderStatus(Guid orderId)
+        {
+            var session = Session;
+
+            var status = await OrderStatusService.Get(new OrderStatusRequest() { OrderId = orderId });
+
+            return GenerateActionResult(status);
+        }
+
+        [HttpGet, NoCache]
+        [Route("api/v2/accounts/orders/status/active")]
+        public IHttpActionResult GetActiveOrdersStatus()
+        {
+            var status = ActiveOrderStatusService.GetActiveOrders();
+
+            return GenerateActionResult(status);
+        }
+
+        [HttpGet, NoCache, Route("api/v2/accounts/orders/active")]
+        public IHttpActionResult GetActiveAccount()
+        {
+            var status = ActiveOrderStatusService.GetActiveOrder();
+
+            return GenerateActionResult(status);
         }
 
         [HttpGet, Route("api/v2/accounts/orders/{orderId}")]

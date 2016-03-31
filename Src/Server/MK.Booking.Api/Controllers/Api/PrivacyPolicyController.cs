@@ -8,7 +8,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class PrivacyPolicyController : BaseApiController
     {
         public PrivacyPolicyService PrivacyPolicyService { get; }
@@ -18,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PrivacyPolicyService = new PrivacyPolicyService(companyDao, commandBus);
         }
 
-        [HttpGet, Route("privacypolicy")]
+        [HttpGet, Route("api/v2/privacypolicy")]
         public IHttpActionResult GetPrivacyPolicy()
         {
             var result = PrivacyPolicyService.Get();
@@ -26,7 +25,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("privacypolicy"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/v2/privacypolicy"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult UpdatePrivacyPolicy([FromBody]PrivacyPolicyRequest request)
         {
             PrivacyPolicyService.Post(request);

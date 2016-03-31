@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
@@ -13,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Extensions
     {
         public static bool HasPermission(this SessionEntity source, string permission)
         {
-            if (source == null)
+            if (source == null || source.UserId == Guid.Empty)
             {
                 return permission == RoleName.None;
             }

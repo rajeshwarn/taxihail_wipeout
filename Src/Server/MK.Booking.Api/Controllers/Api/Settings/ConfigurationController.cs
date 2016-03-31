@@ -94,17 +94,18 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         }
 
         [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork")]
-        public IHttpActionResult GetUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest request)
+        public IHttpActionResult GetUserTaxiHailNetworkSettings()
         {
-            return GetUserTaxiHailNetworkSettings(null, request);
+            return GetUserTaxiHailNetworkSettings(null);
         }
 
         [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
-        public IHttpActionResult GetUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
+        public IHttpActionResult GetUserTaxiHailNetworkSettings(Guid? accountId)
         {
-            request.AccountId = accountId;
-
-            var result = _configurationsService.Get(request);
+            var result = _configurationsService.Get(new UserTaxiHailNetworkSettingsRequest()
+            {
+                AccountId = accountId
+            });
 
             return GenerateActionResult(result);
         }

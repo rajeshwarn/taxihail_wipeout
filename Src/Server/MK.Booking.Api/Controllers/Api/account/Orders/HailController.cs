@@ -17,7 +17,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
-    [RoutePrefix("api/v2/client/hail"), Auth]
+    [Auth]
     public class HailController : BaseApiController
     {
         public HailService HailService { get; }
@@ -64,7 +64,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
                 resources);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/client/hail")]
         public async Task<IHttpActionResult> Hail([FromBody]HailRequest request)
         {
             var result = await HailService.Post(request);
@@ -72,7 +72,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("confirm")]
+        [HttpPost, Route("api/v2/client/hail/confirm")]
         public IHttpActionResult ConfirmHail([FromBody]ConfirmHailRequest request)
         {
             var result = HailService.Post(request);

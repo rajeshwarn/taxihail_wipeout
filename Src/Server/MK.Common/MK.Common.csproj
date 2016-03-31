@@ -229,6 +229,7 @@
     <Compile Include="Fare.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
     <Compile Include="Cryptography\SettingsEncryptor.cs" />
+    <Compile Include="Http\RequestUrlHelper.cs" />
     <Compile Include="Http\SessionEntity.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IClock.cs" />

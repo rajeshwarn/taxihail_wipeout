@@ -30,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             PayPalCheckoutService = new PayPalCheckoutService(commandBus, logger, orderDao, accountDao, payPalServiceFactory, serverSettings);
         }
 
-        [HttpGet, Route("api/v2/accounts/orders/{orderId}/proceed"), Auth]
+        [HttpGet, HttpHead, Route("api/v2/accounts/orders/{orderId}/proceed"), Auth]
         public IHttpActionResult ExecuteWebPaymentAndProceedWithOrder(ExecuteWebPaymentAndProceedWithOrder request)
         {
             var result = PayPalCheckoutService.Get(request);

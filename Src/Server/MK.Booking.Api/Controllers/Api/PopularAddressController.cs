@@ -10,7 +10,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class PopularAddressController : BaseApiController
     {
         public ClientPopularAddressService ClientPopularAddressService { get; }
@@ -22,7 +21,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PopularAddressService = new PopularAddressService(popularAddressDao, commandBus);
         }
 
-        [HttpGet, NoCache, Route("popularaddresses")]
+        [HttpGet, NoCache, Route("api/v2/popularaddresses")]
         public IHttpActionResult GetClientPopularAddress()
         {
             var result = ClientPopularAddressService.Get(new ClientPopularAddress());
@@ -30,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, NoCache, Route("admin/popularaddresses")]
+        [HttpGet, NoCache, Route("api/v2/admin/popularaddresses")]
         public IHttpActionResult GetAdminPopularAddress()
         {
             var result = ClientPopularAddressService.Get(new AdminPopularAddress());
@@ -38,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Support), Route("admin/popularaddresses")]
+        [HttpPost, Auth(Role = RoleName.Support), Route("api/v2/admin/popularaddresses")]
         public IHttpActionResult CreatePopularAddress([FromBody] PopularAddress request)
         {
             var result = PopularAddressService.Post(request);
@@ -46,7 +45,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Auth(Role = RoleName.Support), Route("admin/popularaddresses/{id}")]
+        [HttpDelete, Auth(Role = RoleName.Support), Route("api/v2/admin/popularaddresses/{id}")]
         public IHttpActionResult DeletePopularAddress(Guid id)
         {
             PopularAddressService.Delete(id);
@@ -54,7 +53,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpPut, Auth(Role = RoleName.Support), Route("admin/popularaddresses/{id}")]
+        [HttpPut, Auth(Role = RoleName.Support), Route("api/v2/admin/popularaddresses/{id}")]
         public IHttpActionResult UpdatePopularAddress(Guid id, [FromBody] PopularAddress request)
         {
             request.Id = id;

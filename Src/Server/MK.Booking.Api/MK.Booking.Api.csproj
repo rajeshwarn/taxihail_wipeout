@@ -159,8 +159,6 @@
     <Compile Include="Controllers\Api\account\ManualRideLinqController.cs" />
     <Compile Include="Controllers\Api\account\Orders\HailController.cs" />
     <Compile Include="Controllers\Api\account\Orders\OrderController.cs" />
-    <Compile Include="Controllers\Api\account\Orders\OrderPairingController.cs" />
-    <Compile Include="Controllers\Api\account\Orders\OrderStatusController.cs" />
     <Compile Include="Controllers\Api\account\Orders\PayPalCheckoutController.cs" />
     <Compile Include="Controllers\Api\account\Orders\ReceiptController.cs" />
     <Compile Include="Controllers\Api\account\Orders\ValidateOrderController.cs" />

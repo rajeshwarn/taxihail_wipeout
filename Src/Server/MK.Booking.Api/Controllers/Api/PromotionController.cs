@@ -4,7 +4,6 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class PromotionController : BaseApiController
     {
         public PromotionService PromotionService { get; }
@@ -14,7 +13,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PromotionService = new PromotionService(promotionDao);
         }
 
-        [HttpGet, Route("promotions")]
+        [HttpGet, Route("api/v2/promotions")]
         public IHttpActionResult GetPromotions()
         {
             var result = PromotionService.Get();

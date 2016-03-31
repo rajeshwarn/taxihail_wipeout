@@ -87,16 +87,8 @@ namespace apcurium.MK.Web.Controllers.Api
         {
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(content.ToJson(), Encoding.Default, "application/json"),
+                Content = new StringContent(content.ToJson(), Encoding.UTF8, "application/json"),
             };
-
-            //httpResponseMessage.Headers.Remove("Cookie");
-
-            //httpResponseMessage.Headers.AddCookies(new[]
-            //{
-            //    new CookieHeaderValue("ss-pid", content.SessionId),
-            //    new CookieHeaderValue("ss-opt", "perm"),  
-            //});
 
             return ResponseMessage(httpResponseMessage);
         }

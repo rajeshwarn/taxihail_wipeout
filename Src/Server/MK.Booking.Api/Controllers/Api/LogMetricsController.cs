@@ -8,7 +8,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2")]
     public class LogMetricsController : BaseApiController
     {
         private readonly LogMetricsService _logMetricsService;
@@ -25,14 +24,14 @@ namespace apcurium.MK.Web.Controllers.Api
             PrepareApiServices(_logMetricsService);
         }
 
-        [HttpPost, Auth, Route("accounts/logstartup")]
+        [HttpPost, Auth, Route("api/v2/accounts/logstartup")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogApplicationStartUpRequest request)
         {
             _logMetricsService.Post(request);
 
             return Ok();
         }
-        [HttpPost, Auth, Route("order/logeta")]
+        [HttpPost, Auth, Route("api/v2/order/logeta")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogOriginalEtaRequest request)
         {
             _logMetricsService.Post(request);

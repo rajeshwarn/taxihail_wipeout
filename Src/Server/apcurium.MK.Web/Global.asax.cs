@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Http;
 using apcurium.MK.Common.IoC;
 using apcurium.MK.Web.App_Start;
 using log4net;
@@ -116,9 +117,9 @@ namespace apcurium.MK.Web
 
                 if (!path.Contains("/api/v2/"))
                 {
-                    HttpContext.Current.RewritePath(path.Replace("/api/","/api/v2/"));
+                    // The use of the old version of the api is detected, updating it to current version.
+                    HttpContext.Current.RewritePath(RequestUrlHelper.UpdateRequestUrl(path));
                 }
-
             }
         }
 
