@@ -123,6 +123,10 @@
       <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
+    </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>apcurium.MK.Common.Android</Name>

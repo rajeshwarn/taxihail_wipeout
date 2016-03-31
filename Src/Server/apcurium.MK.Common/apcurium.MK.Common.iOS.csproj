@@ -97,29 +97,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoordinateSystemOrientation.cs" />
-    <Compile Include="DummyServiceStack\Auth.cs" />
-    <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
-    <Compile Include="DummyServiceStack\IReturn.cs" />
-    <Compile Include="DummyServiceStack\RouteAttribute.cs" />
-    <Compile Include="Entity\ToggleItem.cs" />
-    <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
-    <Compile Include="Enumeration\DeviceOrientations.cs" />
-    <Compile Include="Exceptions\WebServiceException.cs" />
-    <Compile Include="Extensions\HttpClientExtensions.cs" />
-    <Compile Include="Extensions\LoggerExtensions.cs" />
-    <Compile Include="Extensions\ReturnExtensions.cs" />
-    <Compile Include="Diagnostic\IErrorHandler.cs" />
-    <Compile Include="Provider\IPOIProvider.cs" />
-    <Compile Include="Patterns\Singleton.cs" />
-    <Compile Include="Patterns\ActionDisposable.cs" />
-    <Compile Include="Vector3.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Diagnostic\BaseLogger.cs" />
-    <Compile Include="Enumeration\RateApplicationState.cs" />
-    <Compile Include="CustomNativeMessageHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -134,6 +111,10 @@
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
       <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

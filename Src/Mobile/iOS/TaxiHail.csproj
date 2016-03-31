@@ -828,6 +828,10 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.MapDataProvider.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.iOS.csproj">
       <Project>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</Project>
       <Name>MK.Booking.Mobile.iOS</Name>

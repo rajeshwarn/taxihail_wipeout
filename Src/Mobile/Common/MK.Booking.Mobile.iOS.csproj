@@ -412,6 +412,10 @@
       <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
       <Name>CMTPayment.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

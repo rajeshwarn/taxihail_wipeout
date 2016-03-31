@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using ServiceStack.ServiceHost;
 
@@ -12,7 +13,7 @@ namespace apcurium.MK.Common.Extensions
         {
             var requestType = request.GetType();
 
-            var properties = requestType.GetProperties()
+            var properties = requestType.GetTypeInfo().DeclaredProperties
                 .Select(property => new
                 {
                     property.Name,
@@ -21,7 +22,7 @@ namespace apcurium.MK.Common.Extensions
                 .Where(property => property.Value != null)
                 .ToArray();
 
-            var routeAttributes = requestType.GetCustomAttributes(typeof(RouteAttribute), true)
+            var routeAttributes = requestType.GetTypeInfo().GetCustomAttributes(typeof(RouteAttribute), true)
                 .OfType<RouteAttribute>()
                 .ToArray();
 
@@ -34,7 +35,8 @@ namespace apcurium.MK.Common.Extensions
                 ? routeAttributes.First()
                 : routeAttributes.SelectCorrectRouteAttribute(properties.Select(p => p.Name));
 
-            var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}", RegexOptions.Compiled)
+            // before PCL: var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}", RegexOptions.Compiled)
+            var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}")
                 .Cast<Match>()
                 .Select(match => new
                 {

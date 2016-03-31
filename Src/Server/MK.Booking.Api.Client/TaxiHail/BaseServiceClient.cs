@@ -65,6 +65,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             // otherwise we won't be able to handle 304 NotModified ourselves (ie: Terms & Conditions)
             nativeHandler.DisableCaching = true;
+			nativeHandler.UseCookies = false;
 
             var client = new HttpClient(nativeHandler)
             {

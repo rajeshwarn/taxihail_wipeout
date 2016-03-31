@@ -146,9 +146,6 @@
     <Compile Include="Entity\OrderNotificationDetail.cs" />
     <Compile Include="Entity\OrderVehiclePositionDetail.cs" />
     <Compile Include="Entity\PromotionTriggerSettings.cs" />
-    <Compile Include="Entity\Rule.cs" />
-    <Compile Include="Entity\RuleCategory.cs" />
-    <Compile Include="Entity\RuleType.cs" />
     <Compile Include="Entity\TollDetail.cs" />
     <Compile Include="Enumeration\DeploymentTargets.cs" />
     <Compile Include="Enumeration\DriverEtaNotificationModes.cs" />

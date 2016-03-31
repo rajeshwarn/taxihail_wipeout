@@ -1,5 +1,4 @@
-﻿using System;
-using ModernHttpClient;
+﻿using ModernHttpClient;
 using System.Net;
 
 namespace apcurium.MK.Common

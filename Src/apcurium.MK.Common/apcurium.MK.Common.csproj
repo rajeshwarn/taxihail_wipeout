@@ -66,6 +66,9 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RideEstimate.cs" />
+    <Compile Include="Entity\Rule.cs" />
+    <Compile Include="Entity\RuleCategory.cs" />
+    <Compile Include="Entity\RuleType.cs" />
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />

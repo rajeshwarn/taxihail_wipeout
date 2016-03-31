@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
 using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Plugins.File;
 
 namespace apcurium.MK.Common.Diagnostic
 {
@@ -15,8 +17,10 @@ namespace apcurium.MK.Common.Diagnostic
 	    private const string LogFileName = "taxihail_log.txt";
 
 	    private readonly object _threadLock = new object();
-		
-		public void LogError(Exception ex, string method, int lineNumber)
+
+        private IMvxFileStore _fileStoreService = Mvx.Resolve<IMvxFileStore>();
+
+        public void LogError(Exception ex, string method, int lineNumber)
 		{
 		    var aggregateException = ex as AggregateException;
             if (aggregateException != null) 
@@ -50,6 +54,7 @@ namespace apcurium.MK.Common.Diagnostic
 
         public void LogStack ()
         {
+            /*
             var stackTrace = new StackTrace();           // get call stack
             var stackFrames = stackTrace.GetFrames();    // get method calls (frames)
 
@@ -63,6 +68,7 @@ namespace apcurium.MK.Common.Diagnostic
             {
                 Write(string.Format ("Stack: {0}", stackFrame.GetMethod().Name)); // write method name
             }
+            */
         }
 
         public IDisposable StartStopwatch (string message)
@@ -152,55 +158,49 @@ namespace apcurium.MK.Common.Diagnostic
 			return log;
 		}
 
-		private void DeleteOldEntries (FileInfo fileIO, int overflow)
+		private void DeleteOldEntries (string fileName, int overflow)
 		{
-			var backupFileName = fileIO.FullName + ".bak";
+			var backupFileName = fileName + ".bak";
 
-		    try
+            try
 		    {
-                if (File.Exists(backupFileName))
+                if (_fileStoreService.Exists(backupFileName))
                 {
-                    File.Delete(backupFileName);
+                    _fileStoreService.DeleteFile(backupFileName);
 				}
 
-				// Creating a backup copy of the log in case a crash happends.
-				File.Copy(fileIO.FullName, backupFileName);
+                // Creating a backup copy of the log in case a crash happends.
+                _fileStoreService.TryMove(fileName, backupFileName, false);
 
+                // read the content of file and remove old entries
+                string fileContentString = string.Empty;
+                _fileStoreService.TryReadTextFile(fileName, out fileContentString);
+				var logContent = RemoveOlderEntries(fileContentString, overflow);
 
-		        var fs = fileIO.Open(FileMode.Open, FileAccess.Read);
+                // delete current log file en rewrite it without old entries
+                _fileStoreService.DeleteFile(fileName);
+                _fileStoreService.WriteFile(fileName, x => GenerateStreamFromString(logContent));
 
-				var sr = new StreamReader(fs);
-
-				var fileContent = sr.ReadToEnd();
-
-				// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened).
-				sr.Dispose();
-				fs.Close();
-				fs.Dispose();
-
-				var log = RemoveOlderEntries(fileContent, overflow);
-
-
-				fs = fileIO.Open(FileMode.Truncate, FileAccess.Write);
-				var sw = new StreamWriter(fs);
-				sw.WriteLine(log);
-				sw.Flush();
-
-				// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened).
-				sw.Dispose();
-				fs.Close();
-				fs.Dispose();
-
-				// Deleting the backup copy.
-				File.Delete(backupFileName);
-			}
+                // deleting the backup copy
+                _fileStoreService.DeleteFile(backupFileName);
+            }
 			catch (Exception ex)
 			{
 				LogError(ex);
 			}
 		}
 
-		private bool _isWriting;
+        private Stream GenerateStreamFromString(string str)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(str);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+        private bool _isWriting;
 
 		private readonly IList<string> _waitingQueue = new List<string>();
 
@@ -222,20 +222,23 @@ namespace apcurium.MK.Common.Diagnostic
 
 					_waitingQueue.Add(messageWithUserName);
 
-					var fileIO = new FileInfo(GetLogFileName());
+                    byte[] fileContentBytes = new byte[0];
 
-                    if (fileIO.Exists && fileIO.Length + messageWithUserName.Length > LogFileMaximumSize)
+                    if(_fileStoreService.Exists(GetLogFileName()))
+                    {
+                        _fileStoreService.TryReadBinaryFile(GetLogFileName(), out fileContentBytes);
+                    }
+
+                    if (_fileStoreService.Exists(GetLogFileName()) && fileContentBytes.Length + messageWithUserName.Length > LogFileMaximumSize)
 					{
-						#if DEBUG
-						Console.WriteLine("**********************  Log is too long, removing older entries.");
+                        #if DEBUG
+                         Debug.WriteLine("**********************  Log is too long, removing older entries.");
 						#endif
-						DeleteOldEntries(fileIO, (int)(fileIO.Length + messageWithUserName.Length - LogFileMaximumSize));
+						DeleteOldEntries(GetLogFileName(), (int)(fileContentBytes.Length + messageWithUserName.Length - LogFileMaximumSize));
 					}
 
-
-					var fs = fileIO.Open(FileMode.Append, FileAccess.Write);
-
-					var sw = new StreamWriter(fs);
+                    var stream = _fileStoreService.OpenWrite(GetLogFileName());
+                    var streamWriter = new StreamWriter(stream);
 
 					while(_waitingQueue.Any())
 					{
@@ -243,19 +246,14 @@ namespace apcurium.MK.Common.Diagnostic
 
 						_waitingQueue.RemoveAt(0);
 
-						Console.WriteLine(additionalLine);
-
-						sw.WriteLine(additionalLine);
+						Debug.WriteLine(additionalLine);
+                        streamWriter.WriteLine(additionalLine);
 					}
 
-					sw.Flush();
+                    streamWriter.Flush();
 
-					// Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened".
-					sw.Dispose();
-					fs.Close();
-					fs.Dispose();
-
-					fileIO = null;
+                    // Forcing dispose of file handle to attempt to reduce the possibility of "Too many files opened".
+                    streamWriter.Dispose();
 				}
 			}
 			catch(Exception ex)
@@ -273,16 +271,17 @@ namespace apcurium.MK.Common.Diagnostic
 		{
 			lock (_threadLock)
 			{
-				if (!Directory.Exists(GetBaseDirectory()))
+				/*if (!_fileStoreService.FolderExists(GetBaseDirectory()))
 				{
-					Directory.CreateDirectory(GetBaseDirectory());
-				}
+                    // can't do that in PCL, we assume that directory is created during file creation
+					//Directory.CreateDirectory(GetBaseDirectory());
+				}*/
 
 				var logFileName = Path.Combine(GetBaseDirectory(), LogFileName);
 
-				if (!File.Exists(logFileName) && File.Exists(logFileName + ".bak"))
+				if (!_fileStoreService.Exists(logFileName) && _fileStoreService.Exists(logFileName + ".bak"))
 				{
-					File.Copy(logFileName + ".bak", logFileName);
+                    _fileStoreService.TryMove(logFileName, logFileName + ".bak", false);
 				}
 
 				return logFileName;

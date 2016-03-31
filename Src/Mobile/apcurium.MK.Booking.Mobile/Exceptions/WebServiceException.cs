@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceInterface.ServiceModel;
 
