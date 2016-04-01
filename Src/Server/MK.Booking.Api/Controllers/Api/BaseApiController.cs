@@ -93,11 +93,7 @@ namespace apcurium.MK.Booking.Api.Services
                     return _sessionKey;
                 }
 
-                var sessionId = Request.Headers.GetCookies()
-                    .SelectMany(cookieContainer => cookieContainer.Cookies)
-                    .Where(cookie => cookie.Name == "ss-pid" /*|| cookie.Name == "ASP.NET_SessionId"*/)
-                    .Select(cookie => cookie.Value)
-                    .FirstOrDefault();
+                var sessionId = Request.GetSessionId();
 
                 _sessionKey = sessionId.HasValueTrimmed()
                     ? "urn:iauthsession:{0}".InvariantCultureFormat(sessionId)

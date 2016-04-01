@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,6 +31,14 @@ namespace apcurium.MK.Common.Extensions
             }
 
             return null;
+        }
+        public static string GetSessionId(this HttpRequestMessage request)
+        {
+            return request.Headers.GetCookies()
+                .SelectMany(cookieContainer => cookieContainer.Cookies)
+                .Where(cookie => cookie.Name == "ss-pid")
+                .Select(cookie => cookie.Value)
+                .FirstOrDefault();
         }
 
         public static string GetBaseUrl(this HttpRequestMessage request)

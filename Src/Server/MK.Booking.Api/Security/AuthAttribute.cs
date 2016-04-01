@@ -44,12 +44,7 @@ namespace apcurium.MK.Web.Security
         public bool AllowMultiple { get; }
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            var sessionId = context.Request.Headers.GetCookies()
-                .SelectMany(cookieContainer => cookieContainer.Cookies)
-                .Where(cookie => cookie.Name == "ss-pid" /*|| cookie.Name == "ASP.NET_SessionId"*/)
-                .Select(cookie => cookie.Value)
-                //.Select(Uri.UnescapeDataString)
-                .FirstOrDefault();
+            var sessionId = context.Request.GetSessionId();
 
             if (!sessionId.HasValueTrimmed())
             {
