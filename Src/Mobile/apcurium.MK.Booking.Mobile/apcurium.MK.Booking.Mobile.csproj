@@ -49,6 +49,7 @@
     <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
     <Compile Include="DummyServiceStack\IReturn.cs" />
     <Compile Include="DummyServiceStack\RouteAttribute.cs" />
+    <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />
@@ -79,6 +80,10 @@
     </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\Libraries\ModernHttpClient\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Portable.DataAnnotations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Portable.DataAnnotations.1.0.0\lib\portable-net45+netcore45+wp8+wpa81\Portable.DataAnnotations.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\Libraries\ModernHttpClient\Portable-Net45+WinRT45+WP8+WPA81\System.Net.Http.dll</HintPath>

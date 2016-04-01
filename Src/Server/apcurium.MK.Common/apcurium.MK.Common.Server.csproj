@@ -130,6 +130,7 @@
     <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
     <Compile Include="Diagnostic\Log4NetTraceListener.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\OrderHailResult.cs" />
     <Compile Include="Entity\OrderKey.cs" />
     <Compile Include="Entity\ServiceStatus.cs" />
