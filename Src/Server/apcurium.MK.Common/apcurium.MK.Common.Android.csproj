@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EmptyClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
@@ -80,7 +81,7 @@
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
-      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
       <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
