@@ -103,11 +103,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             else if (deploymentJob.Type == DeploymentJobType.DeployClient)
             {
-                bool isProduction = deploymentJob.ServerUrl.Contains("services.taxihail.com") 
-                    || deploymentJob.ServerUrl.Contains("api.taxihail.com");
-                bool isStaging = deploymentJob.ServerUrl.Contains("staging.taxihail.com");                
+                string serverURLType = "";
+
+                if (deploymentJob.ServerUrl.Contains("services.taxihail.com") || deploymentJob.ServerUrl.Contains("api.taxihail.com"))
+                    serverURLType = "prod";
+                if (deploymentJob.ServerUrl.Contains("staging.taxihail.com"))
+                    serverURLType = "staging";
+                if (deploymentJob.ServerUrl.Contains("api.goarro.com"))
+                    serverURLType = "arro";
+                if (deploymentJob.ServerUrl.Contains("test.taxihail.biz"))
+                    serverURLType = "dev";
+
                 return RedirectToAction("DeployClient", new { companyId = deploymentJob.Company.CompanyKey, serverId = deploymentJob.Server.Id, revisionId = FindRevisionId(deploymentJob.Revision.Tag),
-                                                                serverUrlIsProduction = isProduction, serverUrlIsStaging = isStaging, android = deploymentJob.Android, callbox = deploymentJob.CallBox, iosAdhoc = deploymentJob.IosAdhoc, iosAppStore = deploymentJob.IosAppStore, blackBerry = deploymentJob.BlackBerry});
+                                                                serverUrlRB = serverURLType, android = deploymentJob.Android, callbox = deploymentJob.CallBox, iosAdhoc = deploymentJob.IosAdhoc, iosAppStore = deploymentJob.IosAppStore, blackBerry = deploymentJob.BlackBerry});
             }
             if (deploymentJob.Type == DeploymentJobType.DeployServer)
             {
@@ -248,7 +256,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [NoCache]
-        public ActionResult DeployClient(string companyId = null, string serverId = null, string revisionId = null, bool serverUrlIsProduction = false, bool serverUrlIsStaging = false, bool android =false, bool callbox = false, bool iosAdhoc = false, bool iosAppStore = false, bool blackBerry = false)
+        public ActionResult DeployClient(string companyId = null, string serverId = null, string revisionId = null, string serverUrlRB = null, bool android =false, bool callbox = false, bool iosAdhoc = false, bool iosAppStore = false, bool blackBerry = false)
         {
             var model = GetAddJobModel(e => e.Role == EnvironmentRole.BuildMobile);
 
@@ -257,9 +265,24 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.ServerId = serverId;
             model.RevisionId = revisionId;
             model.CompanyId = companyId;
-            if ( serverUrlIsProduction || serverUrlIsStaging )
+
+            switch (serverUrlRB)
             {
-                model.ServerUrlOptions = serverUrlIsStaging ? ServerUrlOptions.Staging : ServerUrlOptions.Production;
+                case "prod":
+                    model.ServerUrlOptions = ServerUrlOptions.Production;
+                    break;
+                case "staging":
+                    model.ServerUrlOptions = ServerUrlOptions.Staging;
+                    break;
+                case "arro":
+                    model.ServerUrlOptions = ServerUrlOptions.Arro;
+                    break;
+                case "dev":
+                    model.ServerUrlOptions = ServerUrlOptions.Dev;
+                    break;
+                default:
+                    model.ServerUrlOptions = ServerUrlOptions.Other;
+                    break;
             }
 
             model.Android = android;
