@@ -363,6 +363,21 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         _logger.LogMessage("Response: {0} {1} (Body: {2})", ex.StatusCode, ex.StatusDescription, ex.ResponseBody);
 
+                        var cmtErrorCode = ex.ResponseBody.FromJson<UnsuccessfulResponse>();
+                        if (cmtErrorCode.Code == CmtErrorCodes.TripAlreadyAuthorized.ToString())
+                        {
+                            // this should be considered a success
+                            _logger.LogMessage("Received error code 615, consider it a success");
+                            return new CommitPreauthorizedPaymentResponse
+                            {
+                                IsSuccessful = true,
+                                AuthorizationCode = "NoAuthCodeReturnedFromCmtRideLinqAuthorize",
+                                Message = "Success",
+                                TransactionId = commitTransactionId,
+                                TransactionDate = DateTime.UtcNow
+                            };
+                        }
+
                         return new CommitPreauthorizedPaymentResponse
                         {
                             IsSuccessful = false,
