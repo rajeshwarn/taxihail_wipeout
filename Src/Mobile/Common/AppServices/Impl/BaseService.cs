@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch (Exception ex)
 			{                    
-				Logger.LogError(ex, method, lineNumber);
+				Logger.LogError(ex, method, lineNumber, true);
 				bool handled;
 				if (errorHandler == null)
 				{
