@@ -68,14 +68,8 @@
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
-      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
       <Name>apcurium.MK.Booking.Mobile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.iOS.csproj">
-      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
-      <Name>apcurium.MK.Common.iOS</Name>
-      <IsAppExtension>False</IsAppExtension>
-      <IsWatchApp>False</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>

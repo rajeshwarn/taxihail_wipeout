@@ -386,10 +386,6 @@
       <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>apcurium.MK.Common.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
       <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>
       <Name>CMTPayment.Android</Name>
@@ -411,7 +407,7 @@
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
-      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
       <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
   </ItemGroup>

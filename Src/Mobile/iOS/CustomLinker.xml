@@ -28,10 +28,6 @@
             <type fullname="*" />
         </assembly>
 
-        <assembly fullname="MK.Common.iOS">
-            <type fullname="*" />
-        </assembly>
-
         <assembly fullname="CMTPayment.iOS" > 
             <type fullname="*" />
         </assembly>

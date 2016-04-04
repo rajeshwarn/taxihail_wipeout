@@ -145,12 +145,8 @@
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
-      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
       <Name>apcurium.MK.Booking.Mobile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>apcurium.MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
