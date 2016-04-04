@@ -40,7 +40,15 @@ namespace apcurium.MK.Common.Extensions
 
             var currentRelativeUrl = client.BaseAddress.LocalPath;
 
-            return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
+
+            if (currentRelativeUrl.EndsWith("/"))
+            {
+                return url.StartsWith("/")
+                    ? currentRelativeUrl + url.Remove(0, 1)
+                    : currentRelativeUrl + url;
+            }
+
+            return url.StartsWith("/")
                 ? currentRelativeUrl + url
                     : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
         }
