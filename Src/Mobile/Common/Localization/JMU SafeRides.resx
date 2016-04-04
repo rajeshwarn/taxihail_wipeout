@@ -144,6 +144,9 @@
   <data name="HomeView_ManualPairing" xml:space="preserve">
     <value>In a SafeRide</value>
   </data>
+  <data name="InvalidPassengersNumber" xml:space="preserve">
+    <value>That's too many people! Call the SafeRides office or request a separate ride on another phone in order to request multiple cars</value>
+  </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Enter the 7-digit code displayed on the SafeRide's touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
   </data>
