@@ -3,6 +3,10 @@
             <type fullname="*" />
         </assembly>
 
+        <assembly fullname="apcurium.MK.Booking.Mobile" >
+            <type fullname="*" />
+        </assembly>
+
         <assembly fullname="MK.Booking.Api.Client.iOS" >
             <type fullname="*" />
         </assembly>
