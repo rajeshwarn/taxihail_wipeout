@@ -73,7 +73,6 @@ namespace apcurium.MK.Web.Tests
 
         public virtual void TestFixtureSetup()
         {
-            //AppHost.Start(BaseUrl);
             var task = !AsAdmin ? AccountService.GetTestAccount(0) : AccountService.GetAdminTestAccount(0);
             task.Wait();
             TestAccount = task.Result;
@@ -84,7 +83,7 @@ namespace apcurium.MK.Web.Tests
             var authResponseTask = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null)
                 .Authenticate(TestAccount.Email, TestAccountPassword);
             authResponseTask.Wait();
-            SessionId = authResponseTask.Result.SessionId;
+            SessionId = Uri.UnescapeDataString(authResponseTask.Result.SessionId);
         }
 
         public virtual void TestFixtureTearDown()
@@ -101,7 +100,7 @@ namespace apcurium.MK.Web.Tests
         {
             var newAccount = await AccountService.CreateTestAccount();
             var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
-            SessionId = authResponse.SessionId;
+            SessionId = Uri.UnescapeDataString(authResponse.SessionId);
             return newAccount;
         }
 
@@ -109,7 +108,7 @@ namespace apcurium.MK.Web.Tests
         {
             var newAccount = await AccountService.CreateTestAdminAccount();
             var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null).Authenticate(newAccount.Email, TestAccountPassword);
-            SessionId = authResponse.SessionId;
+            SessionId = Uri.UnescapeDataString(authResponse.SessionId);
             return newAccount;
         }
         
@@ -120,7 +119,7 @@ namespace apcurium.MK.Web.Tests
 
             var client = new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null);
             var authResponse = await client.AuthenticateFacebook(newAccount.FacebookId);
-            SessionId = authResponse.SessionId;
+            SessionId = Uri.UnescapeDataString(authResponse.SessionId);
 
             return await AccountService.GetMyAccount();
         }
@@ -131,7 +130,7 @@ namespace apcurium.MK.Web.Tests
             await AccountService.RegisterAccount(newAccount);
 
             var authResponse = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null).AuthenticateTwitter(newAccount.TwitterId);
-            SessionId = authResponse.SessionId;
+            SessionId = Uri.UnescapeDataString(authResponse.SessionId);
 
             return await AccountService.GetMyAccount();
         }
