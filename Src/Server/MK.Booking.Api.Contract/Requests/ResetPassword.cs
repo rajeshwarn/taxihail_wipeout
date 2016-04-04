@@ -8,7 +8,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/resetpassword/{EmailAddress}", "POST")]
+    [Route("/accounts/resetpassword/{EmailAddress}", "POST")]
     public class ResetPassword : BaseDto
     {
         public string EmailAddress { get; set; }

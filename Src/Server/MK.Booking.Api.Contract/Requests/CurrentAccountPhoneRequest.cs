@@ -4,7 +4,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/phone/{Email}", "GET")]
+	[Route("/accounts/phone/{Email}", "GET")]
 	public class CurrentAccountPhoneRequest:IReturn<CurrentAccountPhoneResponse>
 	{
 		public string Email { get; set; }

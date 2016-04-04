@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/logstartup", "POST")]
+	[Route("/accounts/logstartup", "POST")]
 	public class LogApplicationStartUpRequest
 	{
         public DateTime StartUpDate { get; set; }

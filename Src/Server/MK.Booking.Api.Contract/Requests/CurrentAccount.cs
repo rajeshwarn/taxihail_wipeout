@@ -9,7 +9,7 @@ using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account", "GET")]
+    [Route("/accounts", "GET")]
     public class CurrentAccount : BaseDto
     {
     }

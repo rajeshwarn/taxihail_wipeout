@@ -5,7 +5,7 @@ using ServiceStack.ServiceHost;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
 	[NoCache]
-    [Route("/account/manualridelinq/pair", "POST")]
+    [Route("/accounts/manualridelinq/pair", "POST")]
     public class ManualRideLinqPairingRequest : IReturn<OrderManualRideLinqDetail>
     {
         public string PairingCode { get; set; }

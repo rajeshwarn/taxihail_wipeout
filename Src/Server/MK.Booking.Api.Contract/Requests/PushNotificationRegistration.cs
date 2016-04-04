@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/pushnotifications/{DeviceToken}", "POST,DELETE")]
+    [Route("/accounts/pushnotifications/{DeviceToken}", "POST,DELETE")]
     public class PushNotificationRegistration
     {
         public string DeviceToken { get; set; }

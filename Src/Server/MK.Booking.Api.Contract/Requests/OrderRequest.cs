@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}", "GET,DELETE")]
+    [Route("/accounts/orders/{OrderId}", "GET,DELETE")]
     public class OrderRequest : BaseDto
     {
         public Guid OrderId { get; set; }

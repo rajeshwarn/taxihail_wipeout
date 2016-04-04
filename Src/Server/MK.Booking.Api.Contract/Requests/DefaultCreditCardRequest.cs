@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/creditcard/updatedefault", "POST")]
+    [Route("/accounts/creditcard/updatedefault", "POST")]
     public class DefaultCreditCardRequest
     {
         public Guid CreditCardId { get; set; }

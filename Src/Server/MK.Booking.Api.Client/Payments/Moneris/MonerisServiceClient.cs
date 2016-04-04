@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
         public Task<OverduePayment> GetOverduePayment()
         {
-            return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: Logger);
+            return Client.GetAsync<OverduePayment>("/accounts/overduepayment", logger: Logger);
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)

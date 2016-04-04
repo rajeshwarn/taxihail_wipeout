@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/order/logeta", "POST")]
+    [Route("/orders/logeta", "POST")]
     public class LogOriginalEtaRequest
     {
         public Guid OrderId { get; set; }

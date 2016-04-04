@@ -16,12 +16,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task LogApplicationStartUp(LogApplicationStartUpRequest request)
         {
-            return Client.PostAsync<string>("/account/logstartup", request, logger: Logger);
+            return Client.PostAsync<string>("/accounts/logstartup", request, logger: Logger);
         }
 
         public Task LogOriginalRideEta(LogOriginalEtaRequest request)
         {
-            return Client.PostAsync<string>("/order/logeta", request, logger: Logger);
+            return Client.PostAsync<string>("/orders/logeta", request, logger: Logger);
         }
     }
 }

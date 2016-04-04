@@ -9,7 +9,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders", "GET")]
+    [Route("/accounts/orders", "GET")]
     public class AccountOrderListRequest
     {
     }

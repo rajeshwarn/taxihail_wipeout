@@ -9,7 +9,7 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 { 
-    [Route("/account/register", "POST")]
+    [Route("/accounts/register", "POST")]
     [RegisterAccountValidation]
     public class RegisterAccount : BaseDto
     {

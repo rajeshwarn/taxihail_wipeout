@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/cancel", "POST")]
+    [Route("/accounts/orders/{OrderId}/cancel", "POST")]
     public class CancelOrder : BaseDto
     {
         public Guid OrderId { get; set; }

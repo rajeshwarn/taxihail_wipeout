@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Controllers.Api
 
             return Ok();
         }
-        [HttpPost, Auth, Route("api/v2/order/logeta")]
+        [HttpPost, Auth, Route("api/v2/orders/logeta")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogOriginalEtaRequest request)
         {
             _logMetricsService.Post(request);

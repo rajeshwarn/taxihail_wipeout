@@ -8,8 +8,8 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/creditcards/{CreditCardId}", "DELETE")]
-    [Route("/account/creditcards", "GET,POST")]
+    [Route("/accounts/creditcards/{CreditCardId}", "DELETE")]
+    [Route("/accounts/creditcards", "GET,POST")]
     public class CreditCardRequest : IReturn<CreditCardDetails>
     {
         public Guid CreditCardId { get; set; }

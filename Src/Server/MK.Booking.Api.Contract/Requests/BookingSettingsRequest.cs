@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/bookingsettings", "PUT")]
+    [Route("/accounts/bookingsettings", "PUT")]
     public class BookingSettingsRequest : BaseDto
     {
         public string Name { get; set; }

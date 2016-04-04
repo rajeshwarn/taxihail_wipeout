@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/active", "GET")]
+    [Route("/accounts/orders/active", "GET")]
     public class ActiveOrderRequest : IReturn<ActivateOrderResponse>
     {
     }

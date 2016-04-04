@@ -6,6 +6,8 @@ namespace apcurium.MK.Common.Http
     {
         public static string UpdateRequestUrl(string requestUrl)
         {
+            var originalUrl = requestUrl.Clone();
+
             requestUrl = requestUrl.Replace("api/", "api/v2/");
 
             if (requestUrl.Contains("api/v2/auth"))
@@ -43,6 +45,7 @@ namespace apcurium.MK.Common.Http
                     .Replace("/payments/settleoverduepayment", "/accounts/settleoverduepayment")
                     .Replace("account/", "accounts/")
                     .Replace("creditCard/", "creditCards/")
+                    .Replace("/order/logeta", "/orders/logeta")
                     .Replace("/ordercountforapprating", "/orders/countforapprating");
 
             return requestUrl;

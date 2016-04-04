@@ -8,13 +8,13 @@ using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/sendreceipt", "POST")]
+    [Route("/accounts/orders/{OrderId}/sendreceipt", "POST")]
     public class SendReceipt
     {
         public Guid OrderId { get; set; }
     }
 
-    [Route("/account/orders/{OrderId}/sendreceipt/{RecipientEmail}", "POST")]
+    [Route("/accounts/orders/{OrderId}/sendreceipt/{RecipientEmail}", "POST")]
     public class SendReceiptAdmin
     {
         public Guid OrderId { get; set; }

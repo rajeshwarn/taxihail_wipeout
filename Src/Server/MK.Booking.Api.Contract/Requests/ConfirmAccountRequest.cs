@@ -8,7 +8,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/confirm/{EmailAddress}/{ConfirmationToken}/{IsSMSConfirmation*}", "GET")]
+    [Route("/accounts/confirm/{EmailAddress}/{ConfirmationToken}/{IsSMSConfirmation*}", "GET")]
     public class ConfirmAccountRequest
     {
         public string EmailAddress { get; set; }

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		{
 			try
 			{
-                return await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings", logger: Logger);
+                return await Client.GetAsync<Dictionary<string, string>>("/settings/encrypted", logger: Logger);
 			}
 			catch (Exception ex)
 			{
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			var paymentSettings = new ClientPaymentSettings();
 			try
 			{
-                var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments", logger: Logger);
+                var result = await Client.GetAsync<Dictionary<string, string>>("/settings/encrypted/payments", logger: Logger);
 
 				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
 				SettingsLoader.InitializeDataObjects(paymentSettings, result, Logger);

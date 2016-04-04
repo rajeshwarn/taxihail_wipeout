@@ -18,18 +18,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 		public Task<ManualRideLinqResponse> Pair(ManualRideLinqPairingRequest manualRideLinqPairingRequest)
 		{
-            return Client.PostAsync<ManualRideLinqResponse>("/account/manualridelinq/pair", manualRideLinqPairingRequest, logger: Logger);
+            return Client.PostAsync<ManualRideLinqResponse>("/accounts/manualridelinq", manualRideLinqPairingRequest, logger: Logger);
 		}
 
         public Task Unpair(Guid orderId)
         {
-            var req = string.Format("/account/manualridelinq/{0}/unpair", orderId);
+            var req = string.Format("/accounts/manualridelinq/{0}", orderId);
             return Client.DeleteAsync<string>(req, logger: Logger);
         }
 
         public Task<ManualRideLinqResponse> UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-            var req = string.Format("/account/manualridelinq/{0}/pairing/tip", orderId);
+            var req = string.Format("/accounts/manualridelinq/{0}/tip", orderId);
             return Client.PutAsync<ManualRideLinqResponse>(req, new ManualRideLinqUpdateAutoTipRequest
             {
                 OrderId = orderId,
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<ManualRideLinqResponse> GetUpdatedTrip(Guid orderId)
         {
-            var req = string.Format("/account/manualridelinq/{0}/status", orderId);
+            var req = string.Format("/accounts/manualridelinq/{0}", orderId);
             return Client.GetAsync<ManualRideLinqResponse>(req, logger: Logger);
         }
     }

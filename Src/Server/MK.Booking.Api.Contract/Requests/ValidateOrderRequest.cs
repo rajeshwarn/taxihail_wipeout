@@ -9,9 +9,9 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/validate", "POST")]
-    [Route("/account/orders/validate/{ForError}", "POST")]
-    [Route("/account/orders/validate/{ForError}/{TestZone}", "POST")]
+    [Route("/accounts/orders/validate", "POST")]
+    [Route("/accounts/orders/validate/{ForError}", "POST")]
+    [Route("/accounts/orders/validate/{ForError}/{TestZone}", "POST")]
     public class ValidateOrderRequest : BaseDto
     {
         public ValidateOrderRequest()

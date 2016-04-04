@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task CheckSession()
         {
-            return Client.GetAsync<Account>("/account", logger: Logger);
+            return Client.GetAsync<Account>("/accounts", logger: Logger);
         }
 
         public async Task<AuthenticationData> Authenticate(string email, string password)
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				UserName = email,
 				Password = password,
 				RememberMe = true,
-			}, "credentials");
+			}, "password");
 			
             return new AuthenticationData
             {
@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					UserName = facebookId,
 					Password = facebookId,
 					RememberMe = true,
-				}, "credentialsfb")
+				}, "facebook")
 				.ConfigureAwait(false);
 
 			return new AuthenticationData
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 UserName = twitterId,
                 Password = twitterId,
                 RememberMe = true,
-            }, "credentialstw");
+            }, "twitter");
 			
 
             return new AuthenticationData
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
 		{
-            return Client.PostAsync<AuthResponse>("/auth/" + provider , auth, logger: Logger);
+            return Client.PostAsync<AuthResponse>("/auth/login/" + provider , auth, logger: Logger);
 		}
     }
 }

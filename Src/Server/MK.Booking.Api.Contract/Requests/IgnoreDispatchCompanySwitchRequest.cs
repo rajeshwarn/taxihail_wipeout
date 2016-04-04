@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/ignoreDispatchCompanySwitch", "POST")]
+    [Route("/accounts/orders/{OrderId}/ignoreDispatchCompanySwitch", "POST")]
     public class IgnoreDispatchCompanySwitchRequest : BaseDto
     {
         public Guid OrderId { get; set; }

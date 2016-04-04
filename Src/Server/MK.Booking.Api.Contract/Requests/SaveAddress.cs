@@ -9,8 +9,8 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/addresses", "POST")]
-    [Route("/account/addresses/{Id}", "PUT, DELETE")]
+    [Route("/accounts/addresses", "POST")]
+    [Route("/accounts/addresses/{Id}", "PUT, DELETE")]
     public class SaveAddress
     {
         public Guid Id { get; set; }

@@ -4,7 +4,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/updateintrip", "POST")]
+    [Route("/accounts/orders/{OrderId}/updateintrip", "POST")]
     public class OrderUpdateRequest : IReturn<bool>
     {
         public OrderUpdateRequest()

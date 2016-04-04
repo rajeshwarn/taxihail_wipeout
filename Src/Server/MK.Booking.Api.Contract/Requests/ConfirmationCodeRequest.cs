@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/getconfirmationcode/{Email}/{CountryCode}/{PhoneNumber}", "GET")]
+	[Route("/accounts/getconfirmationcode/{Email}/{CountryCode}/{PhoneNumber}", "GET")]
     public class ConfirmationCodeRequest
     {
         public string Email { get; set; }

@@ -2,7 +2,7 @@
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/addresses", "GET")]
+    [Route("/accounts/addresses", "GET")]
     public class Addresses
     {
     }

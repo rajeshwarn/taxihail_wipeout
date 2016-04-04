@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
         {
             try
             {
-                var req = string.Format("/account/orders/{0}/pairing/tip", orderId);
+                var req = string.Format("/accounts/orders/{0}/pairing/tip", orderId);
 
                 await Client.PostAsync<string>(req, new UpdateAutoTipRequest
                 {
