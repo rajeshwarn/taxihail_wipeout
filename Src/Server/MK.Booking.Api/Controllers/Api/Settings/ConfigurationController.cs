@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             var result = _configurationsService.Get(new ConfigurationsRequest());
             
-            return GenerateActionResult(result);
+            return GenerateActionResult(result, useCameCase: false);
         }
 
         [HttpGet, Route("api/v2/settings/encrypted")]
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             var result = _configurationsService.Get(new EncryptedConfigurationsRequest());
 
-            return GenerateActionResult(result);
+            return GenerateActionResult(result, useCameCase: false);
         }
 
         [HttpPost, Auth(Role = RoleName.Admin), Route("settings")]

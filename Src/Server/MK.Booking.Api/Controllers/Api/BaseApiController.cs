@@ -15,6 +15,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using UnityContainer = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -37,27 +38,27 @@ namespace apcurium.MK.Booking.Api.Services
             PrepareApiServices(services.ToArray());
         }
 
-        private JsonSerializerSettings GetSerializerSettings()
+        private JsonSerializerSettings GetSerializerSettings(bool useCamelCase)
         {
             return new JsonSerializerSettings()
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
-                ContractResolver = new CustomCamelCasePropertyNamesContractResolver(),
+                ContractResolver = useCamelCase ? new CustomCamelCasePropertyNamesContractResolver() : new DefaultContractResolver(),
             };
         }
 
-        public IHttpActionResult GenerateActionResult<T>(T content)
+        public IHttpActionResult GenerateActionResult<T>(T content, bool useCameCase = true)
         {
             if (content != null)
             {
-                return Json(content, GetSerializerSettings());
+                return Json(content, GetSerializerSettings(useCameCase));
             }
 
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(string.Empty, Encoding.Default, "application/json")
+                Content = new StringContent(string.Empty, Encoding.UTF8, "application/json")
             };
 
             return ResponseMessage(httpResponseMessage);
