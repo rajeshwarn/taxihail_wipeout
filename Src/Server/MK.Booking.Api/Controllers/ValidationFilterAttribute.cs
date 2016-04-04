@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Contract.Controllers
             
             return new HttpResponseMessage(HttpStatusCode.BadRequest)
             {
-                Content = new StringContent(error.ToJson(), Encoding.Default, "application/json")
+                Content = new StringContent(error.ToJson(), Encoding.UTF8, "application/json")
             };
         }
     }

@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var exceptionMessage = new HttpResponseMessage(statusCode)
             {
-                Content = new StringContent(jsonContent, Encoding.Default, "application/json")
+                Content = new StringContent(jsonContent, Encoding.UTF8, "application/json")
             };
 
             return new HttpResponseException(exceptionMessage);
