@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Tests
             await sut.RegisterAccount(newAccount);
 
             var auth = await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).AuthenticateFacebook(newAccount.FacebookId);
-            sut = new AccountServiceClient(BaseUrl, auth.SessionId, new DummyPackageInfo(), null, null);
+            sut = new AccountServiceClient(BaseUrl, Uri.UnescapeDataString(auth.SessionId),  new DummyPackageInfo(), null, null);
             var account = await sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
@@ -71,8 +71,8 @@ namespace apcurium.MK.Web.Tests
             };
             await sut.RegisterAccount(newAccount);
 
-            var auth = await new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).AuthenticateTwitter(newAccount.TwitterId);
-            sut = new AccountServiceClient(BaseUrl, auth.SessionId, new DummyPackageInfo(), null, null);
+            var auth = await new AuthServiceClient(BaseUrl, null, new DummyPackageInfo(), null, null).AuthenticateTwitter(newAccount.TwitterId);
+            sut = new AccountServiceClient(BaseUrl, Uri.UnescapeDataString(auth.SessionId), new DummyPackageInfo(), null, null);
             var account = await sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.TwitterId, auth.UserName);

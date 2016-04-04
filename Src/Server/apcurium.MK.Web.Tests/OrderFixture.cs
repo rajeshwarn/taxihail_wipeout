@@ -317,7 +317,7 @@ namespace apcurium.MK.Web.Tests
             var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null).Authenticate(TestAccount.Email, TestAccountPassword);
             authTask.Wait();
             var auth = authTask.Result;
-            SessionId = auth.SessionId;
+            SessionId = Uri.UnescapeDataString(auth.SessionId);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest

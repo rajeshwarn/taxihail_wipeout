@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
             var authResponse = authResponseTask.Result;
 
             _orderId = Guid.NewGuid();
-            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, new DummyPackageInfo(), null, null);
+            var sut = new OrderServiceClient(BaseUrl, Uri.UnescapeDataString(authResponse.SessionId), new DummyPackageInfo(), null, null);
             var order = new CreateOrderRequest
             {
                 Id = _orderId,
@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
                     Name = "Joe Smith"
                 },
                 Estimate = new RideEstimate
-                {
+                { 
                     Distance = 3,
                     Price = 10
                 },
