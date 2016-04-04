@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             var result = PaymentSettingsService.GetEncrypted();
 
-            return GenerateActionResult(result);
+            return GenerateActionResult(result, useCameCase: false);
         }
 
         [HttpGet, Auth(Role = RoleName.SuperAdmin), Route("api/v2/settings/payments/server")]
