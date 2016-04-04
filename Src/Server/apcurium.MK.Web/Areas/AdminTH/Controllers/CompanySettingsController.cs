@@ -290,27 +290,22 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         private void SetSettingsAvailableToAdmin(Dictionary<string, string> appSettings)
         {
-            var checkBoxKeys = appSettings.Keys.Where(k => k.StartsWith("CheckBox_")).ToArray();
-
-            var settingsAvailableToAdmin = new StringBuilder();
-
-            foreach (var checkBoxKey in checkBoxKeys)
-            {
-                var isSettingAvailableToAdmin = Convert.ToBoolean(appSettings[checkBoxKey]);
-                if (isSettingAvailableToAdmin)
+            var adminCheckboxValues = appSettings.Keys
+                .Where(k => k.StartsWith("CheckBox_"))
+                .Select(adminCheckBoxKey => new
                 {
-                    if (settingsAvailableToAdmin.Length > 0)
-                    {
-                        settingsAvailableToAdmin.Append(',');
-                    }
+                    CheckboxKey = adminCheckBoxKey,
+                    SettingName = adminCheckBoxKey.Replace("CheckBox_", string.Empty),
+                    IsChecked = appSettings[adminCheckBoxKey].StartsWith("true")
+                })
+                .ToArray();
 
-                    var settingName = checkBoxKey.Replace("CheckBox_", string.Empty);
-                    settingsAvailableToAdmin.Append(settingName);
-                }
-            }
+            var settingsAvailableToAdmin = adminCheckboxValues.Where(adminCheckBox => adminCheckBox.IsChecked)
+                .Select(adminCheckBox => adminCheckBox.SettingName)
+                .JoinBy(",");
 
-            appSettings.RemoveKeys(checkBoxKeys);
-            appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin.ToString();
+            appSettings.RemoveKeys(adminCheckboxValues.Select(adminCheckBox => adminCheckBox.CheckboxKey));
+            appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin;
         }
 
         private CompanySettingsModel GetAvailableSettingsForUser()
