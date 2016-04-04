@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(companyKey, orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
         {
             var commitTransactionId = transactionId;
             string authorizationCode = null;

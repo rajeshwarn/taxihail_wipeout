@@ -673,6 +673,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
                     order.Tip = @event.Tip;
+                    order.Surcharge = @event.Surcharge + @event.AccessFee; // add access fees here since it's only for manual ridelinq and we don't want to add a property for it in OrderDetail
+
                     context.Save(order);
                 }
 

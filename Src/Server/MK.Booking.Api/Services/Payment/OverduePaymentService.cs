@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 fees = overduePayment.ContainBookingFees ? order.BookingFees : overduePayment.OverdueAmount;
                 if (fees > 0)
                 {
-                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, true);
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, true, request.KountSessionId, request.CustomerIpAddress);
                     if (!feesSettled)
                     {
                         return new SettleOverduePaymentResponse
@@ -103,14 +103,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 };
             }
                 
-            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, remainingToSettle, order.CompanyKey, false);
+            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, remainingToSettle, order.CompanyKey, false, request.KountSessionId, request.CustomerIpAddress);
             return new SettleOverduePaymentResponse
             {
                 IsSuccessful = paymentSettled
             };
         }
 
-        private bool SettleOverduePayment(Guid orderId, AccountDetail accountDetail, decimal amount, string companyKey, bool isFee)
+        private bool SettleOverduePayment(Guid orderId, AccountDetail accountDetail, decimal amount, string companyKey, bool isFee, string kountSessionId, string customerIpAddress)
         {
             var payment = _orderPaymentDao.FindByOrderId(orderId, companyKey);
             var reAuth = payment != null;
@@ -130,7 +130,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     amount,
                     0,
                     preAuthResponse.TransactionId,
-                    preAuthResponse.ReAuthOrderId);
+                    preAuthResponse.ReAuthOrderId,
+                    false,
+                    kountSessionId,
+                    customerIpAddress);
 
                 if (commitResponse.IsSuccessful)
                 {

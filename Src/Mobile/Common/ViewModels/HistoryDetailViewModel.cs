@@ -11,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,8 +20,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentSettings;
-
-		private ClientPaymentSettings _clientPaymentSettings;
 
 		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, 
 			IBookingService bookingService, 
@@ -48,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
 		        await LoadOrder();
 		        await LoadStatus();
-		        _clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
 		        RaisePropertyChanged(() => StatusDescription); 
 		    }
 		}
@@ -283,12 +279,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (Status.FareAvailable || Status.IsManualRideLinq)
 				{
 					var paymentAmount = Order.Fare.GetValueOrDefault()
-					                   + Order.Tip.GetValueOrDefault()
 					                   + Order.Tax.GetValueOrDefault()
 					                   + Order.Toll.GetValueOrDefault()
+					                   + Order.Tip.GetValueOrDefault()
 					                   + Order.Surcharge.GetValueOrDefault();
 
-					var statusString = String.Empty;
+					var statusString = string.Empty;
 				
 					if (Status.FareAvailable)
 					{

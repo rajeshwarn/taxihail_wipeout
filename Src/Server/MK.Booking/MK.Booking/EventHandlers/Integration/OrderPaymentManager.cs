@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -209,6 +210,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
+                    if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
+                    {
+                        // Terminal error, no need to react to paymentFailure.
+                        return;
+                    }
                     var trip = await _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
