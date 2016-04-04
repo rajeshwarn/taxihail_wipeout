@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
@@ -80,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        public void Post(TestEmailAdministrationRequest request)
+        public async Task Post(TestEmailAdministrationRequest request)
         {
             try
             {
@@ -132,7 +133,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var fare = Convert.ToDouble(fareObject.AmountExclTax);
                         var tax = Convert.ToDouble(fareObject.TaxAmount);
 
-                        _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra,
+                        await _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra,
                             surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra + tipIncentive - amountSavedByPromo,
                             _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow,
                             request.EmailAddress, request.Language, amountSavedByPromo, "PROMO10", new SendReceipt.CmtRideLinqReceiptFields

@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return overduePayment;
         }
 
-        public SettleOverduePaymentResponse Post()
+        public SettleOverduePaymentResponse Post(SettleOverduePaymentRequest request)
         {
             var accountId = Session.UserId;
 

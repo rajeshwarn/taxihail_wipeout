@@ -509,7 +509,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
 
-        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+        public async Task SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
             SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
@@ -637,7 +637,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var receiptLabels = new Dictionary<string, string>();
                 try
                 {
-                    var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupAddress.Latitude, pickupAddress.Longitude);
+                    var marketSettings = await _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupAddress.Latitude, pickupAddress.Longitude);
 
                     if (marketSettings != null)
                     {

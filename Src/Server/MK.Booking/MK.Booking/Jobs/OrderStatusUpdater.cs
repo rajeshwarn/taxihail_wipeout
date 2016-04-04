@@ -574,7 +574,7 @@ namespace apcurium.MK.Booking.Jobs
             }
         }
 
-        private Task HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
+        private async Task HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
             if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
             {
@@ -583,8 +583,8 @@ namespace apcurium.MK.Booking.Jobs
 
             }
 
-            HandleOrderCompletionWithNoFare(orderStatusDetail,
-                () =>
+            await HandleOrderCompletionWithNoFare(orderStatusDetail,
+                async () =>
                 {
                     if (trip == null)
                     {

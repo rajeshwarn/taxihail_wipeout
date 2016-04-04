@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -41,9 +42,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         }
 
         [Route("~/api/v2/accounts/settleoverduepayment"), HttpPost, Auth]
-        public IHttpActionResult SettleOverduePayment()
+        public IHttpActionResult SettleOverduePayment([FromBody]SettleOverduePaymentRequest request)
         {
-            var result = OverduePaymentService.Post();
+            var result = OverduePaymentService.Post(request);
 
             return GenerateActionResult(result);
         }

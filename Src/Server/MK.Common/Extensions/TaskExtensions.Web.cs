@@ -26,5 +26,10 @@ namespace apcurium.MK.Common.Extensions
 
             logger.LogError(task.Exception);
         }
+
+        public static async void FireAndForget(this Task task)
+        {
+            await task.HandleErrors();
+        }
     }
 }

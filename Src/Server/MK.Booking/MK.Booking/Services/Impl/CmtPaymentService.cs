@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         };
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
+                    var response = await PairWithVehicleUsingRideLinq(pairingMethod, orderStatusDetail, cardToken, autoTipPercentage);
 
                     if (response.ErrorCode.HasValue)
                     {
@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     try
                     {
-                        var response = _cmtMobileServiceClient.Post(requestUrl, request);
+                        var response = _cmtMobileServiceClient.Post(requestUrl, request).Result;
                         if (response != null && response.StatusCode == HttpStatusCode.OK)
                         {
                             _logger.LogMessage("Call to CMT RideLinq authorize succeeded");
@@ -387,7 +387,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                     
                     var deviceId = orderStatus.VehicleNumber;
-                    var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
+                    var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.ToInt();
                     var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.GetValueOrDefault();
                     var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;

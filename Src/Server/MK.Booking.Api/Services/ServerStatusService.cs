@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -13,12 +12,9 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Http.Extensions;
-using CMTPayment;
 using CMTServices;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -62,11 +58,11 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsTest = RunTest(() => Task.Run(() => _ibsProvider.Booking().GetOrdersStatus(new[] { 0 })), "IBS");
 
             var geoTest = useGeo
-                ? RunTest(() => Task.Run(() => RunGeoTest()), "GEO")
+                ? RunTest(async () => await RunGeoTest(), "GEO")
                 : Task.FromResult(false); // We do nothing here.
             
             var honeyBadger = useHoneyBadger
-                ? RunTest(() => Task.Run(() => RunHoneyBadgerTest()), "HoneyBadger")
+                ? RunTest(async () => await RunHoneyBadgerTest(), "HoneyBadger")
                 : Task.FromResult(false); // We do nothing here.
 
             var orderStatusUpdateDetailTest = Task.Run(() => _statusUpdaterDao.GetLastUpdate());
@@ -175,22 +171,22 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void RunHoneyBadgerTest()
+        private Task RunHoneyBadgerTest()
         {
             var honeyBadgerService = new HoneyBadgerServiceClient(_serverSettings, _logger);
 
-            honeyBadgerService.GetAvailableVehicles(
+            return honeyBadgerService.GetAvailableVehicles(
                 null, 
                 _serverSettings.ServerData.GeoLoc.DefaultLatitude, 
                 _serverSettings.ServerData.GeoLoc.DefaultLongitude,
                 throwError: true);
         }
 
-        private void RunGeoTest()
+        private Task RunGeoTest()
         {
             var geoService = new CmtGeoServiceClient(_serverSettings, _logger);
 
-            geoService.GetAvailableVehicles(
+            return geoService.GetAvailableVehicles(
                 _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket,
                 _serverSettings.ServerData.GeoLoc.DefaultLatitude,
                 _serverSettings.ServerData.GeoLoc.DefaultLongitude,
