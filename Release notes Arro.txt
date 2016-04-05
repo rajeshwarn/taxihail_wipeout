@@ -95,91 +95,91 @@
 	Bug fix - 'Need a taxi' not responsive
 	Fixed DeviceOrientationLogic
 3.1.13
-    Bug fix - iOS available vehicle flashing
-    Bug fix - Register account background color to use company theme
-    Bug fix - Tap on taxi icon issue - Ensured that VehicleName was used instead of Vehicle number
-    Orientation change response time decreased
-    Added more errors handling TH account update from admin panel
+  Bug fix - iOS available vehicle flashing
+  Bug fix - Register account background color to use company theme
+  Bug fix - Tap on taxi icon issue - Ensured that VehicleName was used instead of Vehicle number
+  Orientation change response time decreased
+  Added more errors handling TH account update from admin panel
 3.1.14
-    Bug fix - contact driver for older app version
-    Bug fix - IBS methods not working in external market
-    Bug fix - add or edit a CC - Check if label is null before saving into db
-    Bug fix - Color coded medallion not working
-    Bug fix - Android - Driver info UI issues
+  Bug fix - contact driver for older app version
+  Bug fix - IBS methods not working in external market
+  Bug fix - add or edit a CC - Check if label is null before saving into db
+  Bug fix - Color coded medallion not working
+  Bug fix - Android - Driver info UI issues
 3.1.15
 	Version number increase only
 3.1.16
-    Bug fix - Date/time and vehicle number information fixed for receipt
-    Bug fix - Fixed issue where NeedATaxi would not work after selecting an address in the Picker
-    Bug fix - Fixed App crash when validating the order
-    Bug fix - App stays in trip after manual pair trip complete
+  Bug fix - Date/time and vehicle number information fixed for receipt
+  Bug fix - Fixed issue where NeedATaxi would not work after selecting an address in the Picker
+  Bug fix - Fixed App crash when validating the order
+  Bug fix - App stays in trip after manual pair trip complete
 	Bug fix - Fixed issue where CreditCard label was overlapping over business
 	Bug fix - Fixed a bug with promotion unlocked push enabled setting
-    Bug fix - CC logo would overlap the CC number
-    Bug fix - Text overlap in EditTip view on iOS.
+  Bug fix - CC logo would overlap the CC number
+  Bug fix - Text overlap in EditTip view on iOS.
 	Added check if should send driver bailed push or not
-    Added logs to IBSOrderService + bug fixing
-    Added logging in booking status observable
-    Added bailed in menu notification settings and localization
-    Added default value
-    Added Migration Script
-    Added bail push in Notification Settings
-    Updated Yellow colour for assigned NYC vehicle medallion
+  Added logs to IBSOrderService + bug fixing
+  Added logging in booking status observable
+  Added bailed in menu notification settings and localization
+  Added default value
+  Added Migration Script
+  Added bail push in Notification Settings
+  Updated Yellow colour for assigned NYC vehicle medallion
 3.1.17
-    Bug fix - App crash
-    Comparison level changed for Address;
-    History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application;
+  Bug fix - App crash
+  Comparison level changed for Address;
+  History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application;
 3.1.18
 	Fixed issue where medallion would not correctly be displayed when reusing PinAnnotationView
 3.1.19
-    Improved memory usage
-    Bug fix - Fixed iOS crash at login
-    Bug fix - Fixed duplicate destination button
-    Bug fix - Fixed issue where AuthenticationToken was saved in the application cache instead of the user cache.
-    Bug fix - Fixed concurrency issue where PrepareForNewOrder was not awaited therefore we would delete the Current account and then retrieve it again.
+  Improved memory usage
+  Bug fix - Fixed iOS crash at login
+  Bug fix - Fixed duplicate destination button
+  Bug fix - Fixed issue where AuthenticationToken was saved in the application cache instead of the user cache.
+  Bug fix - Fixed concurrency issue where PrepareForNewOrder was not awaited therefore we would delete the Current account and then retrieve it again.
 3.1.20
-    Bug fix - Crash with orientation service iOS
-    Bug fix - Fix issue where map blur would show the company color on the map
-    Bug fix - Fix Android appbar visibility problems when showing "book a taxi" popup and date selection
-    Bug fix - Fix case where search was slow and user selected an address before the 400ms to open the keyboard would trigger causing the keyboard to appear on the map
-    Bug fix - Fix regression on AddressPickerView with wrong background color
-    Bug fix - Fix binding crash with available vehicles
-    Bug fix - Fix height of ContactTaxiControl
-    Bug fix - Fixed issue where loading bar animation (BookingStatus) would not be correctly disposed.
+  Bug fix - Crash with orientation service iOS
+  Bug fix - Fix issue where map blur would show the company color on the map
+  Bug fix - Fix Android appbar visibility problems when showing "book a taxi" popup and date selection
+  Bug fix - Fix case where search was slow and user selected an address before the 400ms to open the keyboard would trigger causing the keyboard to appear on the map
+  Bug fix - Fix regression on AddressPickerView with wrong background color
+  Bug fix - Fix binding crash with available vehicles
+  Bug fix - Fix height of ContactTaxiControl
+  Bug fix - Fixed issue where loading bar animation (BookingStatus) would not be correctly disposed.
 3.1.21
 	Cleaned up log information
 3.1.22
-    Bug fix - Fix for horizontal bounce in AccountConfirmationView
+  Bug fix - Fix for horizontal bounce in AccountConfirmationView
 3.1.23
-    Bug fix - fixed colour of a bar in the AccountConfirmationView
+  Bug fix - fixed colour of a bar in the AccountConfirmationView
 3.1.24
-    Aeroport Taxi - String change
-    added view again
-    removed view
-    Prod_3_1 issues with tutorial view
-    Production_3_1 Added missing tutorial view
+  Aeroport Taxi - String change
+  added view again
+  removed view
+  Prod_3_1 issues with tutorial view
+  Production_3_1 Added missing tutorial view
 3.1.25
-    Bug fix - Fixed issue where resetting a password while not logged in would result in a null reference exception.
-    Aeroport Taxi - string changes
-    Limits the trip info updated event to only when a pairing error or a trip ended event
+  Bug fix - Fixed issue where resetting a password while not logged in would result in a null reference exception.
+  Aeroport Taxi - string changes
+  Limits the trip info updated event to only when a pairing error or a trip ended event
 3.1.26
-    String corrections
-    Support contrast colour for buttons border and image
-    Fixed build failure
+  String corrections
+  Support contrast colour for buttons border and image
+  Fixed build failure
 3.1.27
-    Added encryption for payment settings
-    Identity info about company vehicles removed for non-authenticated users;
-    Added client certificate validation
+  Added encryption for payment settings
+  Identity info about company vehicles removed for non-authenticated users;
+  Added client certificate validation
 3.1.28
-    Deployment build fix
+  Deployment build fix
 3.1.29
-    Merge branch 'MKTAXI-3493-DestinationPopupPromptAfterBookPopup' into Production_3_1
+  Merge branch 'MKTAXI-3493-DestinationPopupPromptAfterBookPopup' into Production_3_1
 3.1.30
-    Metadata disabled for service
-    Updatescript (add verification)
-    Deployment build fix
+  Metadata disabled for service
+  Updatescript (add verification)
+  Deployment build fix
 3.1.31
-    Add ArroUAT resource files
+  Add ArroUAT resource files
 3.1.32
 	Fixed crash in market vehicles request if best available company is null
 	Fixed a bug where the city information was not present in an address of type "Places"
@@ -199,7 +199,6 @@
 	Custom strings change for EastsideForARide
 3.1.38
 	Custom strings change
-	
 3.2.0
 	Add - App rating
 3.2.1
@@ -319,46 +318,145 @@
 	Add more stuff to the CustomLinker.xml file (fixes registration issue)
 3.2.23
 	Updated MapBox to version 3.0
-3.2.24
-	History detail - Cannot cancel scheduled order
+4.0.16
+	New branch for Arro
+	Added dispatch 
+	Added resource files to project
+	Bug fix - Fix problem when receiving an http error with no body
+	Add extra fields for CMT requests
+	Bug fix - Fix Wrong error message when resetting password
+	Added check for connectivity in NativeMessageHandler from modern http client
+  Bug fix - Fix Android Missing Vertical Scroll On HistoryDetailView
+	Add Track Config Changes
+  Bug fix - Fix Buttons overlapping
+	Added DB init migration Added check for config changes Use Config Change Service
+	Add Validate tokenized card methods
+	Connectivity service done with xamarin component + alert view to test
+	EastsideForAride - ACTUAL custom string change
 	EastsideForARide - Custom strings
-3.3.1
-	Addes possibility to acces "Pay in Car" for web order only
-
-
+	Bug fix - Fix Cannot Delete Multiple CC
+	Call Collect() when tokenizing card and pass session id to CMT
+	Bug fix - Fix mapping from serviceStack error to webServiceException
+  Bug fix - FIx Crash on address selection
+	Update Deployment Script to update Blackberry version manifest
+	Removed await GetCreditCards (); from UnregisterTokenizedCards in AccountServiceClient => used UseServiceClientAsync in AccountService
+	Hide Cancel Button in History when not needed
+4.0.21
+	Fixed give unit tests.
+	Disable App Transport Security since we're getting errors with cmtapi.com production server's https certificate (and more... look for CFNetwork SSLHandshake failed (-9824)) in console when running app in debug
+	Bug fix -  Possible fix for receipt not sent (fixes the email sent from admin...)
+	Add environment setting for Kount
+	Add cardholder full name to CMT base validation request
+	NullReferenceException correction
+	When cancelling the order later on (because user requested a cancellation before he was assigned) we must use the event's company key (special case here since the dispatcher could change the value, unlike the "no dispatcher" version)
+	Version Bump 3.2.28
+	Change message in app when doing a P2D call
+	remove $ to String.Format
+	Update Kount Collector Url
+	Bug fix - [Android] Crash on register screen - Skip version caching on error to force displaying of TermsAndConditions
+	Bug fix - Fix crash http client handling
+	Bug fix - Multiple toasts on home view
+	Fix Callbox build error
+	Add customer ip address to requests directly from device
+	History Detail - View Status - Should show HomeViewModel with selected order - Code react
+	Bug fix - History detail - Cannot cancel scheduled order
+	Bug fix - Fix problems with requests failing with Unauthorized error for no reason
+4.0.25
+	Add debug menu
+	Bug fix - fix potential totalAmout at 0 because of null values
+  Bug fix - Fix - Cannot Select Janvier or 2016 in Add new card - Add an invisible cell for empty item in adapter as native view doesn't support empty selection
+	Now sending as url parameters properties of a request object if the call is GetAsync
+	Add IP to server info on customer portal
+	Logging - Increased maximum log file number
+	Bug fix - Fix Multithread Issue
+	Add logger back to cmtpaymentclient + remove debug "validate" preventing from using sandbox test cardsFox crash on app start when no internet connection
+	Add API related stuff
+	Add test + fix in case of no market from customer portal
+	Revert null checks for market settings when no internet connection, instead the setter of the subject will instantiate a non-null default value
+	Change pairing notification for Arro
+4.0.26
+	Fix BlackBerry build
+	Change Blackberry to Android for Android Push registration
+4.0.27
+  Arro iphone pairing failure app crash
+	Order accounts in AccoutsManagement alphabeticallys been used) [Prevents Collect() from not being completed when we need it]
+	send TipPercent to CreateIbsOrderObject
+	Bug fix - Correction on label and button color (IOS/Android)
+	Now using the Tariff if in roaming and if it's overrides the local settings.
+  Add enable future booking to market page in customer portal
+4.0.28
+  Remove Appender named "Courriel"
+  Changed api to enable future booking
+  Now getting the MarketSettings from the roaming service.
+  Bug fix - Fixes issue where marketsettings fare estimates would not correct be fetched if enabled.(on server)
+  Missing rate in "view my rating" screen - Refactoring of BookRatingViewModel
+  Move double-rating check into command to allow fixing of missing rating in EH
+  Added some changes after getting the new networkroamingservice
+  Bug fix - Fix Kount
+4.0.29
+	Bug fix - Fix Kount
+4.0.30
+	Disable debug logging on DeviceCollector iOS
+	Use bindings for iOS/Android + remove unnecessary code
+  ValidateOrderService, if future booking enabled => check for rule
+	Refactor DeploymentService server to use another type of settings to be compatible with the DeploymentTools shared across mobile/server services
+	Add new public key for https certificate *.cmtapi.com + remove test.taxihail.biz public key
+	Make future reservation market based
+	Bug fix - Fixing Null Reference exception issue + streamlined logic for MarketSettings and orderValidationResult.
+	Bug fix - Fix Kount
+  Use payment settings to determine Kount settings + fix Unauthorized on app startup for payment settings if not logged in
+	Replace usage of cancel unpairing setting - and some fixes on backend
+	Fare Estimates by market
+	Rename field from CancelOrderOnUnpair to DisableOutOfAppPayment
+4.0.31
+  Localization changes for UnpairPayInCar vs UnpairCancel
+  Default payment type behaviour - Don't show or use PayInCar when DisableOutOfAppPayment is true in market settings
+  Ability to pay cash in vehicle by market
+  Add a notice to the setting
+  Bug fix - Fix iOS title binding on Unpair button
+  make sure we have a endtrip before sending a OrderStatusChanged event with IsCompleted (refactor of WaitingForPayment flow to be used in all cases)
+	Wrap with try/finally the call to IBS/HoneyBadger in UpdateOrderStatusJob to prevent BlockingCollection from never completing
+4.0.32
+	Add protection to prevent StatusUpdater deadlock
+	ModernHttpClient to support RC4 certificat
+	Send the proper push notification on pairing fail and don't throw in the notification flow
+	If network is disabled, use company settings instead of market settings
+	Bug fix - Fix issue with Future booking not working correctly (not showing when it should)
+	Bug fix - Fix crash with existing orders during update site
+	Correction on accountId link between note and account
+	Arro iphone pairing failure app crash - Error parse fix and ref	during manual ridelinq, end the polling and complete the order
+	if trip has an error during manual ridelinq, end the polling and complete the order
 4.1.0
 	correction on accountId link between note and account
 	Arro iphone pairing failure app crash - Error parse fix and refactoring
 	if trip has an error during manual ridelinq, end the polling and complete the order
-	fix problem on Note assignment in AdminTH
+	Bug fix - fix problem on Note assignment in AdminTH
 4.1.2
-	fix iOS address search + standardize search (IPlaces + IGeocoding implementations)
-	Fixed cases where overdue payment exists or payment method is disactivated when attempting to do manual pairing.
+	Bug fix - fix iOS address search + standardize search (IPlaces + IGeocoding implementations)
+	Bug fix - Fixed cases where overdue payment exists or payment method is disactivated when attempting to do manual pairing.
 	Remove cache for dispatcher settings, always call customer portal for latest settings
 4.1.3
 	Arro iphone pairing failure app crash - Fix with a custom ManualPairingException
 4.1.4
 	Ajusted Overduepayment screen to display current credit card.
 	Ensuring that overdue payment flow reacts correctly.
-	Fixed Resend email problem for manual ride
+	Bug fix - Fixed Resend email problem for manual ride
 	correction on keyboard visibility
 	Localization update
-	Fixing issue where map would not auto-follow taxi on iOS.
+	Bug fix - Fixing issue where map would not auto-follow taxi on iOS.
 	keyboard keep focus on invalid manual pairing.
-
-
 4.2.0
 	check server side if email is linked to Facebook or Twitter
 	Prevented flickering, added error loging to a task and fixed odd flow when charge type is enabled or not
 	Reduced the number of resolves done in chargetype list
 	If not in cmt, we need to also ensure that if Payments is 1, we also disable the chargeType dropdown.
-	Fixed issue where charge type was blank
-	Fixed auto-follow on iOS.
+	Bug fix - Fixed issue where charge type was blank
+	Bug fix - Fixed auto-follow on iOS.
 	add city client side for places
-	fix book later not respecting market settings
+	Bug fix - fix book later not respecting market settings
 	add check server side to have full address with city for history addres
 	Add future booking settings
-	fix market change detection false position
+	Bug fix - fix market change detection false position
 	Adding self monitoring api to taxihail server.
 	Added test to payment API (cmt) and fixed bug with IsUpdaterDeadlocked.
 	add check to detect if driver has bailed
@@ -373,28 +471,28 @@
 	Callbox - Fixed issue where Butons Hidden By Keyboard
 	Now ensuring that errors are thrown in Geo and Honeybadger when we are expecting to receive an error.
 	Support Bailed state to show CancelButton
-	Fix serverside compilation
+	Bug fix - Fix serverside compilation
 	Use Device name for pairing
 	Email templates
-	Callbox - Fixed the color of user prompts
+	Bug fix - Callbox - Fixed the color of user prompts
 	Add email address to ibs order creation
-	Fixing updater to acutally wait on the underlying parallel tasks and fixed refresh delays
+	Bug fix - Fixing updater to acutally wait on the underlying parallel tasks and fixed refresh delays
 	remove check for AuthFailure.NetworkError in VM since it is handled in AccountService
 	replace HttpRequestException with WebException (WebExceptionStatus.ConnectFailure) 
-	Fixed some typo
+	Bug fix - Fixed some typo
 	Callbox - added popup when server is unavailable
 	Add French strings
 	Add setting for customer portal watchdog
-	Fixed CC card scan
-	Fix customer portal menu
+	Bug fix - Fixed CC card scan
+	Bug fix - Fix customer portal menu
 	Change push notification message on pairing for Arro
-	Fixed issue with CustomerPortal. Now deleting user preferences when deleting a user.
+	Bug fix - Fixed issue with CustomerPortal. Now deleting user preferences when deleting a user.
 4.2.1
 	Added tooltips and changed the green color to something more green...
-	Fix Unable to delete 'no driver accepted' order from history
+	Bug fix - Fix Unable to delete 'no driver accepted' order from history
 	Payment settings not all saved on Customer Portal
 4.2.2
-	Message missing for current wrong password in Profile screen
+	Bug fix - Message missing for current wrong password in Profile screen
 	When driver bail, status is no more wosWaiting as in Master but wosBailed
 	Simplification of logs.
 	Keep the other case when dispatcher is not used
@@ -402,22 +500,64 @@
 4.2.3
 	Send totalAmount otherwise, 0 is send.... show button only if Completed
 	Check when update if medallion is different than the previous one
-	Fixed Refund that is not working
-	Fix iOS address Search
-	Fixed logic in app for DisableOutOfAppPayment via market.
-	Fixed FlatTextField to correctly set it's background color and arrow on enable/disabled.
+	Bug fix - Fixed Refund that is not working
+	Bug fix - Fix iOS address Search
+	Bug fix - Fixed logic in app for DisableOutOfAppPayment via market.
+	Bug fix - Fixed FlatTextField to correctly set it's background color and arrow on enable/disabled.
 	MarketChanged should be HashedMarketless-safe
 	Refactor of the rollover system to only use 1 file (and 1 temporary backup).
 	Use Places Autocomplete Google maps api instead of Geocode
 	Correction on refund, send POST instead of PUT
-	Fixed issue where the HasRightArrow was overridden during draw phase.
+	Bug fix - Fixed issue where the HasRightArrow was overridden during draw phase.
 	String changes
 4.2.3.1
-	Fixing issue where RightView might be null when displaying FlatTextFieldView inside of a TableCellSource.
-	Fixing missing call to the correct method to get and run a log file.
+	Bug fix - Fix issue where RightView might be null when displaying FlatTextFieldView inside of a TableCellSource.
+	Bug fix - Fix missing call to the correct method to get and run a log file.
 	Refund correction
 	Cleanup of FlatTextField
-	
+4.2.3.2
+	Add resetToInitialState on exception.
+	Add migration + NoShowPush variable in tests
+	Add localization for push name + push to notification screen
+	Refund unhautorized response - enhanced message
+4.2.4
+	Connectivity doesn't cover all behaviours
+	Handle manual ridelinq differently in OrderStatusUpdater and allow dead orders to die peacefully
+	Bug fix - Fixed medallion display on web booker.
+	Bug fix - fix FlatTextField
+	Manual ridelinq timeout
+	Cleartext support in RC4
+	Bug fix - Fix for weird market changed triggered at app startup + unauthorized call when not logged in
+	Bug fix - Fix db migration
+	Bug fix - Error in network if remote site wasn't updated to new payment settings + standardize ridelinq error messages
+4.2.5
+	Bug fix - Extra 'tolls' line in receipt for Arro
+	Bug fix - No amount in Refund Recipt
+	MKTAXI-3909 Dispatch with old Provider ID on Bail
+	DriverHasBailed function is missing, provide a javascript error
+	Translation fix
+4.2.6
+	Refund error - Refund error
+4.2.7
+	Don't need to call Task.Run, call action directly exception mal thrower est une regression entre Cycle 5 et Cycle 6 de Xamarin https://bugzilla.xamarin.com/show_bug.cgi?id=37273
+	Bug fix - Updated arro 4.2 with chargetype fix.
+4.2.10
+	Bug fix - Fixing issue where a failure to execute export operation occurred if Order_PickupAddress_City was null.
+4.2.11
+	Modification of the selection of candidates
+4.2.12
+	Bug fix - Fixing issue where pairing token was not correctly being checked
+	Bug fix - Wrong price in history detail
+	Change when the geolocation is done + add some loging
+4.2.13
+  Remove the AsEnumerable() to stop loading the entire table.
+4.2.15
+	Query optimization
+	Bug fix - Fix for pairing speed and report a problem
+4.2.16
+  Ref* with ModernHttpClient to readd deprecated cipher suite
+4.2.18
+	Remerge pairing speed fix and modification of the selection of candidates in same release
 4.3.0
 	Added setting to disable AMEX
 	Added creditcard id to manual pairing (for refund purposes)
@@ -515,107 +655,6 @@
 	Bug fix - Web Export order CSV not woking Added check if null on Name, Phone and Email adress before using Trim()
 	Bug fix - Fixed charge account deletion.
 	Bug fix - iOS - missing order number in Order status view and history
-
-
-4.3.0
-	Added setting to disable AMEX
-	Added creditcard id to manual pairing (for refund purposes)
-	DriverHasBailed function is missing, provide a javascript error
-	No amount in Refund Recipt
-	Extra 'tolls' line in receipt for Arro
-	Bug fix - Refund response OK-200 not received
-4.3.1
-	Android/iOS - Sign In with Twitter doesn't work
-	Fixed crash that might occurs in Logging when doing rollover
-	Bug fix for Status Stuck On Scheduled
-	Bug fix - Pay in car per market does not work
-	Standardize check for card on file at booking
-	Update charge types every time there's a modification in the account
-	Account Management Page - Order Detail - Create Summary of Order Details
-	Allow user to delete last credit card on file
-	No trip-end location on manual pairing resend receipt
-	Bug fix - Call driver, messsage driver buttons are available when in taxi
-	At app start up, the map will go to the last known position
-4.3.2
-	Fix random xib issue
-	Localization update
-4.3.3
-	Localization update
-	Bug fix - Updates when vehicleNumber is not the same as the previous one
-	Fix blackberry build
-4.3.4
-	Custom string fro arro
-	Android - Global notifications switch not tall enough
-	Fixed issue where refund button is not visible in all wanted case
-	Update Medallion When Bailed
-4.3.5
-	Remove non-Arro customization from project
-4.3.6
-	use order language for ibsstatusdescription instead of account language
-4.3.7
-	Fixed issue where pairing token was not correctly being checked
-	Now disabling the email textfieldview when we are in twitter or Facebook login.
-	Bugfix - TaxiHailNetwork - Company keys are been added twice in the Preference.CompanyKey in the database
-	Modified of the selection of candidates
-	Bug fix - Blacklist_loophole
-	Show popup when trying to connect/create/reset password while the device is not connected
-	Fixed UI issue with location details
-	Accessory even though picker is disabled
-	update to 2Go on TaxiHail project. Works on all platforms.
-	Fixed order export failure when city is null.
-	Fixed Null reference exception caused by wrong name for image
-	Web - Promotion code - Customer support - "if null" appears in the UI
-	Add Dutch to supported languages
-	Fix terms and conditions caps + add SOME missing values (only comments)
-	Fixed issue with crash on startup for iOS.
-	Prevent messages from being truncated on smaller screens
-4.3.8
-	Bug fix - Website - Address picker did not work
-	Added the settings Disable Mastercard, Disable Discover card
-	Fix issue when city and street don't have a trimmed value
-	Bug fix - Problem with login after connection was re-established
-	Bug fix - Notification sent although it was disabled
-	Fixed issue where the result of the cmt pairing request was wrong  + added more logging
-	Fixed null ref exception
-	Bug fix - Wrong price in history detail
-	Bug fix - Facebook login issues
-	Spanish string change
-4.3.9
-	TH network - Allow to view other markets region, add a new market and set region, update market's region
-	TH network - View region when changing market in network settings page for company
-	TH Network - Migrate region from network settings obejct to market
-	Fix for pairing speed and report a problem
-	fix null ref exception message when creating order using our api
-	Add error message when CC is disabled
-	Give more details to the setting
-	Added visa electron and mastercard icons
-	Added check so that CardNumberCell doesn't display the icon of a card not supported
-	Added check for Discover cards
-	Bug UI on add credit card page
-4.3.10
-	Always allow P2D 
-4.3.11
-	Wrong price in history
-	String corrections
-	Company setting - ShowOrderNumber default value set to false
-	Add missing localizations in iOS project
-	Fixed issue with charge account
-	Customer portal - Added the new status to the default and demo filters
-4.3.12
-	Fixed localizations strings
-4.3.13
-	Now setting the correct text when the order pairing details is set
-4.3.14
-	Bug fix - Fixed "Delete credit card" button
-	Manual pair orders do not show fare totals in order history in app
-	Added the total to the displayed string when Manual ride
-	Bug fix - Fix problem with add new card navigating to edit default card
-4.3.15
-	Bug fix - Web Export order CSV not woking Added check if null on Name, Phone and Email adress before using Trim()
-	Bug fix - Fixed charge account deletion.
-	Bug fix - iOS - missing order number in Order status view and history
-
-
 4.4.0
 	Fixed car on map not updated correctly on Bail
 	Bug fix - Stop polling when we get a terminal error
@@ -636,8 +675,3 @@
 	Added accessFee on sever side
 	Change manual pairing instruction on screen
 	Fix for register checkbox color on iOS
-
-
-
-
-
