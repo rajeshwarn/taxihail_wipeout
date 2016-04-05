@@ -6,9 +6,13 @@ namespace apcurium.MK.Common.Http
     {
         public static string UpdateRequestUrl(string requestUrl)
         {
-            var originalUrl = requestUrl.Clone();
-
             requestUrl = requestUrl.Replace("api/", "api/v2/");
+
+            // Special case for cmt Pairing API.
+            if (requestUrl.EndsWith("api/v2/order/pairing") || requestUrl.EndsWith("api/v2/order/pairing/"))
+            {
+                return requestUrl;
+            }
 
             if (requestUrl.Contains("api/v2/auth"))
             {

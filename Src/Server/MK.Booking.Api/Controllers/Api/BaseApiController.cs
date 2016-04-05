@@ -14,7 +14,9 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
+using MK.Common.Serializer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using UnityContainer = apcurium.MK.Common.IoC.UnityServiceLocator;
 
@@ -46,6 +48,15 @@ namespace apcurium.MK.Booking.Api.Services
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 ContractResolver = useCamelCase ? new CustomCamelCasePropertyNamesContractResolver() : new DefaultContractResolver(),
+                Converters = GetConverters()
+            };
+        }
+
+        private JsonConverter[] GetConverters()
+        {
+            return new JsonConverter[]
+            {
+                new StringEnumConverter()
             };
         }
 

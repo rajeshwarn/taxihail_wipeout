@@ -10,7 +10,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/order/pairing")]
     public class CmtPaymentPairingController : BaseApiController
     {
         public CmtPaymentPairingService CmtPaymentService { get; }
@@ -20,7 +19,7 @@ namespace apcurium.MK.Web.Controllers.Api
             CmtPaymentService = new CmtPaymentPairingService(orderDao, accountDao, creditCardDao, logger, commandBus, serverSettings);
         }
 
-        [HttpPost]
+        [HttpPost, Route("api/v2/order/pairing")]
         public async Task<IHttpActionResult> Pair(CmtPaymentPairingRequest request)
         {
             var result = await CmtPaymentService.Post(request);
