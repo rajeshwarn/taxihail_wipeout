@@ -16,7 +16,9 @@ namespace apcurium.MK.Web
 
             builder.Filters.Add(new ValidationFilterAttribute());
 
+#if DEBUG
             builder.EnableSystemDiagnosticsTracing();
+#endif
         }
         
     }

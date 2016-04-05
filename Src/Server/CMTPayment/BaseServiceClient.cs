@@ -34,18 +34,14 @@ namespace CMTPayment
 
         public void SetOAuthHeader(string url, string method, string consumerKey, string consumerSecretKey)
         {
-            var baseAddress = Client.BaseAddress.ToString();
-            if (Client.BaseAddress.Host.Contains("runscope"))
-            {
-                baseAddress = baseAddress.Replace("payment-cmtapi-com-hqy5tesyhuwv.runscope.net", "payment.cmtapi.com");
-            }
+            var baseAddress = GetUrl(url);
 
             var oauthHeader = OAuthAuthorizer.AuthorizeRequest(consumerKey,
                 consumerSecretKey,
                 "",
                 "",
                 method,
-                new Uri(baseAddress + url),
+                new Uri(baseAddress),
                 null);
 
             if (Client.DefaultRequestHeaders.Authorization != null)
@@ -54,6 +50,20 @@ namespace CMTPayment
             }
 
             Client.DefaultRequestHeaders.Add("Authorization", oauthHeader);
+        }
+
+        private string GetUrl(string url)
+        {
+            var baseAddress = url.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
+                ? url
+                : Client.BaseAddress + url;
+
+            if (Client.BaseAddress.Host.Contains("runscope"))
+            {
+                baseAddress = baseAddress.Replace("payment-cmtapi-com-hqy5tesyhuwv.runscope.net", "payment.cmtapi.com");
+            }
+
+            return baseAddress;
         }
 
         private string GetUserAgent()

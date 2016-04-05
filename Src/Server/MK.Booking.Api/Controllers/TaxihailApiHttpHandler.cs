@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -40,15 +41,7 @@ namespace apcurium.MK.Booking.Api.Controllers
 
             request.RequestUri = new Uri(requestUrl);
 
-            var response = await base.SendAsync(request, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return response;
-            }
-
-
-            return response;
+            return await base.SendAsync(request, cancellationToken);
         }
 
     }

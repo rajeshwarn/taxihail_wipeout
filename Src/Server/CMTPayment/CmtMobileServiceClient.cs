@@ -17,8 +17,7 @@ namespace CMTPayment
                 : cmtSettings.MobileBaseUrl, sessionId, packageInfo, connectivityService)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
-            //Client.LocalHttpWebRequestFilter = SignRequest;
-
+            
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
         }
@@ -28,35 +27,57 @@ namespace CMTPayment
 
         public Task<T> Get<T>(IReturn<T> request)
         {
+            var url = request.GetUrlFromRoute();
+
+            SetOAuthHeader(url, "GET", ConsumerKey, ConsumerSecretKey);
+
             return Client.GetAsync(request);
         }
 
         public Task<T> Delete<T>(string requestUrl)
         {
+            SetOAuthHeader(requestUrl, "DELETE", ConsumerKey, ConsumerSecretKey);
+
             return Client.DeleteAsync<T>(requestUrl);
         }
 
         public Task<T> Delete<T>(IReturn<T> payload)
         {
+            var url = payload.GetUrlFromRoute();
+
+            SetOAuthHeader(url, "DELETE", ConsumerKey, ConsumerSecretKey);
+
             return Client.DeleteAsync(payload);
         }
 
         public Task<T> Post<T>(IReturn<T> request)
         {
+            var url = request.GetUrlFromRoute();
+
+            SetOAuthHeader(url, "POST", ConsumerKey, ConsumerSecretKey);
+
             return Client.PostAsync(request);
         }
         public Task<HttpResponseMessage> Post<T>(string relativeOrAbsoluteUrl, IReturn<T> request)
         {
+            SetOAuthHeader(relativeOrAbsoluteUrl, "POST", ConsumerKey, ConsumerSecretKey);
+
             return Client.PostAndGetHttpResponseMessage(relativeOrAbsoluteUrl, request);
         }
 
         public Task<T> Put<T>(string requestUrl, IReturn<T> payload)
         {
+            SetOAuthHeader(requestUrl, "PUT", ConsumerKey, ConsumerSecretKey);
+
             return Client.PutAsync<T>(requestUrl, payload);
         }
 
         public Task<T> Put<T>(IReturn<T> request)
         {
+            var url = request.GetUrlFromRoute();
+
+            SetOAuthHeader(url, "PUT", ConsumerKey, ConsumerSecretKey);
+
             return Client.PutAsync<T>(request);
         }
     }
