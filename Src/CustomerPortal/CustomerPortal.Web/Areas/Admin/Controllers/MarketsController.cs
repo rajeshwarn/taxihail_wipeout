@@ -18,6 +18,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
     {
         private IRepository<Market> Repository { get; set; }
 
+        private readonly List<string> _receiptLabelsKeys = new List<string>()
+        {
+            "Email_Body_Fare",
+            "Email_Body_Extra",
+            "Email_Body_Surcharge",
+            "Email_Body_Toll",
+            "Email_Body_Tax",
+            "Email_Body_ImprovementSurcharge",
+            "Email_Body_Tip",
+            "Email_Body_TotalFare",
+            "Email_Body_RideLinqLastFour"
+        };
+
         public MarketsController()
             : this(new MongoRepository<Market>())
         {
@@ -173,9 +186,26 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             else
             {
+                //If a label changed or was removed
+                //remove the entry from dictionary
+                var labelsToRemove = marketToEdit.ReceiptLines.Keys.Where(key => !_receiptLabelsKeys.Contains(key)).ToList();
+                marketToEdit.ReceiptLines.RemoveKeys(labelsToRemove);
+
                 var languageEnum = Enum.GetValues(typeof(SupportedLanguages)).Cast<SupportedLanguages>();
                 var languages = languageEnum.Select(enumValue => enumValue.ToString()).ToList();
 
+                var emptyLanguageDictionary = languages.ToDictionary(lang => lang, lang => string.Empty);
+                //If a new label was added
+                //add entry to dictionary
+                foreach (var key in _receiptLabelsKeys)
+                {
+                    if (!marketToEdit.ReceiptLines.ContainsKey(key))
+                    {
+                        marketToEdit.ReceiptLines.Add(key, emptyLanguageDictionary);
+                    }
+                }
+
+                //If a new language was added
                 if (marketToEdit.ReceiptLines.FirstOrDefault().Value.Count != languages.Count)
                 {
                     foreach (var receiptLine in marketToEdit.ReceiptLines)
@@ -429,15 +459,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             var emptyLanguageDictionary = languages.ToDictionary(lang => lang, lang => string.Empty);
 
-            items.Add("Email_Body_Fare", emptyLanguageDictionary);
-            items.Add("Email_Body_Extra", emptyLanguageDictionary);
-            items.Add("Email_Body_Surcharge", emptyLanguageDictionary);
-            items.Add("Email_Body_Toll", emptyLanguageDictionary);
-            items.Add("Email_Body_Tax", emptyLanguageDictionary);
-            items.Add("Email_Body_ImprovementSurcharge", emptyLanguageDictionary);
-            items.Add("Email_Body_Tip", emptyLanguageDictionary);
-            items.Add("Email_Body_TotalFare", emptyLanguageDictionary);
-            items.Add("Email_Body_RideLinqLastFour", emptyLanguageDictionary);
+            foreach (var label in _receiptLabelsKeys)
+            {
+                items.Add(label, emptyLanguageDictionary);
+            }
 
             return items;
         }

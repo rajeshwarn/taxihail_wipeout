@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.RebookOrder);
 			
 			set.Bind(btnRebook)
-				.For(v => v.HiddenWithConstraints)
+				.For("HiddenEx")
 				.To(vm => vm.RebookIsAvailable)
 				.WithConversion("BoolInverter");
 
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteAddress);
 			set.Bind(btnDelete)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.IsNew);
 
 			set.Apply();
