@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             try
             {
                 // Recreate order on next dispatch company IBS
-                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+                ibsAccountId = CreateIbsAccountIfNeeded(account, order.Settings.ServiceType, request.NextDispatchCompanyKey);
             }
             catch (Exception ex)
             {

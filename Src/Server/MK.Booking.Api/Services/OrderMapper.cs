@@ -44,8 +44,9 @@ namespace apcurium.MK.Booking.Api.Services
                 Surcharge = order.Surcharge,
                 Status = (OrderStatus) order.Status,
                 IsRated = order.IsRated,
+                Gratuity = order.Gratuity,
                 TransactionId = order.TransactionId,
-                IsManualRideLinq = order.IsManualRideLinq
+                IsManualRideLinq = order.IsManualRideLinq,
             };
 
             return resource;

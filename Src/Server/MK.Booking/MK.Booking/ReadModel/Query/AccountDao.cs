@@ -65,18 +65,20 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
+                var companyAndServiceTypeKey = companyKey;
+
                 if (serviceType != ServiceType.Taxi)
                 {
-                    companyKey = serviceType.ToString();
+                    companyAndServiceTypeKey = (companyKey ?? String.Empty) + serviceType.ToString();
                 }
 
-                if (companyKey == null)
+                if (companyAndServiceTypeKey == null)
                 {
                     var account = context.Query<AccountDetail>().First(c => c.Id == accountId);
                     return account.IBSAccountId;
                 }
 
-                var accountIbsInfo = context.Query<AccountIbsDetail>().SingleOrDefault(c => c.AccountId == accountId && c.CompanyKey == companyKey);
+                var accountIbsInfo = context.Query<AccountIbsDetail>().SingleOrDefault(c => c.AccountId == accountId && c.CompanyKey == companyAndServiceTypeKey);
                 return accountIbsInfo != null
                     ? (int?)accountIbsInfo.IBSAccountId
                     : null;

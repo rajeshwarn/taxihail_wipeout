@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,7 +35,6 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
-using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -46,6 +44,8 @@ namespace DatabaseInitializer
 {
     public class Program
     {
+        public const int ApcuriumIbsProviderId = 1;
+
         private const string LocalDevProjectName = "MKWebDev";
 
         private static string AssemblyDirectory
@@ -1114,6 +1114,7 @@ namespace DatabaseInitializer
             }
         }
 
+        // Both IBSWebServicesUrl should point to Apcurium IBS
         private static void EnsureServiceTypesExists(ConnectionStringSettings connectionString, ICommandBus commandBus, IServerSettings serverSettings)
         {
             var serviceTypeProvider = new ServiceTypeSettingsProvider(() => new ConfigurationDbContext(connectionString.ConnectionString), serverSettings);
@@ -1127,8 +1128,8 @@ namespace DatabaseInitializer
                         ServiceTypeSettings = new ServiceTypeSettings
                         {
                             ServiceType = ServiceType.Taxi,
-                            IBSWebServicesUrl = "http://64.179.222.39:2555/dev/IBSCab.dll/soap/", //serverSettings.ServerData.IBS.WebServicesUrl,
-                            ProviderId = 1
+                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl,
+                            ProviderId = ApcuriumIbsProviderId
                         } 
                     },
                     new UpdateServiceTypeSettings
@@ -1137,8 +1138,8 @@ namespace DatabaseInitializer
                         ServiceTypeSettings = new ServiceTypeSettings
                         {
                             ServiceType = ServiceType.Luxury,
-                            IBSWebServicesUrl = "http://mdsibs.mears.com:43550/IBScab/IBScab.dll/soap/",
-                            ProviderId = 99,
+                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl,
+                            ProviderId = ApcuriumIbsProviderId
                         }
                     }
                 };

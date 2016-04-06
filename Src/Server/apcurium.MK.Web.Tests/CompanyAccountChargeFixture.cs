@@ -49,7 +49,18 @@ namespace apcurium.MK.Web.Tests
                     }
                 }
             };
-            _sut.CreateAccountCharge(request);
+
+            try
+            {
+                _sut.CreateAccountCharge(request);
+            }
+            catch (Exception e)
+            {
+                if (e.Message != "AccountCharge_AccountAlreadyExisting")
+                {
+                    throw e;
+                }
+            }
 
             var account = _sut.GetAccountCharge(request.AccountNumber);
 

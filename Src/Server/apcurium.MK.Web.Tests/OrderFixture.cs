@@ -261,6 +261,7 @@ namespace apcurium.MK.Web.Tests
     public class given_an_existing_order : BaseTest
     {
         private Guid _orderId;
+        private double? _orderPrice = 10;
         private Type _taxiHailNetworkServiceImplementation;
         private FakeTaxiHailNetworkServiceClient _taxiHailNetworkService;
 
@@ -298,13 +299,14 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new RideEstimate
                 {
-                    Price = 10,
+                    Price = _orderPrice,
                     Distance = 3
                 },
                 Settings = new BookingSettings
                 {
                     ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
+                    ServiceType = ServiceType.Luxury,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",
                     Country = new CountryISOCode("CA"),
@@ -316,7 +318,7 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
             sut.CreateOrder(order).Wait();
-
+            
             // Wait for IBS order Id to be assigned
             Thread.Sleep(10000);
         }
@@ -436,19 +438,22 @@ namespace apcurium.MK.Web.Tests
         public async void when_paying_gratuity_order_gratuity_should_not_be_null()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, null);
+            
+            var gratuityPercentage = 10;
 
             var orderRatingsRequest = new GratuityRequest
             {
                 OrderId = _orderId,
-                Percentage =  10
+                Percentage = gratuityPercentage
             };
 
             await sut.PayGratuity(orderRatingsRequest);
 
             var order = await sut.GetOrder(_orderId);
+            
             var gratuity = order.Gratuity;
             Assert.NotNull(gratuity);
-            Assert.That(gratuity.Value, Is.EqualTo(10));
+            Assert.That(gratuity.Value, Is.EqualTo(_orderPrice * (gratuityPercentage / 100d)));
         }
 
         [Test]

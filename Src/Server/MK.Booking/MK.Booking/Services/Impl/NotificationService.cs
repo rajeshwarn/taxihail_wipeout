@@ -658,7 +658,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                     VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                     VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
-                    DriverInfos = driverInfos,
+                    DriverInfos = driverInfos ?? new DriverInfos(),
                     DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                     PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
                         ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
@@ -1027,6 +1027,25 @@ namespace apcurium.MK.Booking.Services.Impl
                     view.LinkedResources.Add(linkedImage);
                 }
             }
+
+            var conf = new apcurium.MK.Booking.Email.EmailSender.SmtpConfiguration
+            {
+                Host = _serverSettings.ServerData.Smtp.Host,
+                Port = _serverSettings.ServerData.Smtp.Port,
+                EnableSsl = _serverSettings.ServerData.Smtp.EnableSsl,
+                DeliveryMethod = _serverSettings.ServerData.Smtp.DeliveryMethod,
+                UseDefaultCredentials = _serverSettings.ServerData.Smtp.UseDefaultCredentials,
+                Username = _serverSettings.ServerData.Smtp.Credentials.Username,
+                Password = _serverSettings.ServerData.Smtp.Credentials.Password,
+            };
+
+            var client = new SmtpClient();
+            AutoMapper.Mapper.Map(conf, client);
+            using (client)
+            {
+                client.Send(mailMessage);
+            }
+
 
             _emailSender.Send(mailMessage);
 

@@ -355,7 +355,7 @@ namespace apcurium.MK.Booking.Domain
             }
             if ((type == RuleType.Recurring) &&
                 (Params.Get(message, name).Any(s => s.IsNullOrEmpty()) || (daysOfTheWeek == DayOfTheWeek.None) ||
-                 (!startTime.HasValue) || (!endTime.HasValue)))
+                 !startTime.HasValue || !endTime.HasValue))
             {
                 throw new InvalidOperationException("Missing message for recurrring rule");
             }

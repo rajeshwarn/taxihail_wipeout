@@ -37,7 +37,9 @@ namespace apcurium.MK.Web.Tests
                 IsActive = true,
                 Name = "Rate " + Guid.NewGuid(),
                 Message = "Due to...",
-                Priority = new Random().Next()
+                Priority = new Random().Next(),
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true
             });
         }
 
@@ -69,6 +71,8 @@ namespace apcurium.MK.Web.Tests
                     Category = RuleCategory.WarningRule,
                     AppliesToCurrentBooking = true,
                     AppliesToFutureBooking = true,
+                    AppliesToServiceTaxi = true,
+                    AppliesToServiceLuxury = true,
                     Id = Guid.NewGuid(),
                     IsActive = false,
                     Message = "Due to the current volume of calls, please note that pickup may be delayed.",
@@ -86,6 +90,8 @@ namespace apcurium.MK.Web.Tests
                     Category = RuleCategory.DisableRule,
                     AppliesToCurrentBooking = true,
                     AppliesToFutureBooking = true,
+                    AppliesToServiceTaxi = true,
+                    AppliesToServiceLuxury = true,
                     Id = Guid.NewGuid(),
                     Message = "Service is temporarily unavailable. Please call dispatch center for service.",
                 });
@@ -196,6 +202,8 @@ namespace apcurium.MK.Web.Tests
                 Category = RuleCategory.WarningRule,
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = true,
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true,
                 Priority = 23,
                 IsActive = true,
                 Message = mess,
@@ -245,6 +253,8 @@ namespace apcurium.MK.Web.Tests
                 Category = RuleCategory.WarningRule,
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = true,
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true,
                 ActiveFrom = activeFromDateRef,
                 ActiveTo = activeFromDateRef.AddMonths(2),
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
@@ -291,6 +301,8 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneList = "100,101,200";
                 r.AppliesToPickup = true;
                 r.Priority = 2;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
                 r.ActiveFrom = activeFromDateRef.AddHours(-1);
                 r.ActiveTo = activeFromDateRef.AddHours(1);
                 r.DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek;
@@ -302,6 +314,8 @@ namespace apcurium.MK.Web.Tests
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
                 r.Priority = 3;
             });
 
@@ -312,6 +326,8 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneList = "100,101,200";
                 r.AppliesToPickup = true;
                 r.Priority = 4;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
                 r.ActiveFrom = activeFromDateRef.AddHours(-1);
@@ -346,6 +362,8 @@ namespace apcurium.MK.Web.Tests
                 AppliesToFutureBooking = true,
                 ActiveFrom = activeFromDateRef.AddHours(-1),
                 ActiveTo = activeFromDateRef.AddHours(1),
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true,
                 DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek,
                 StartTime = activeFromDateRef.AddHours(-1),
                 EndTime = activeFromDateRef.AddHours(1),
@@ -387,6 +405,8 @@ namespace apcurium.MK.Web.Tests
             {
                 r.Category = RuleCategory.DisableRule;
                 r.Type = RuleType.Default;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
             
             var validation = await ValidateOrder(null);
@@ -404,6 +424,8 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 2;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             var rule2 = CreateRule(r =>
@@ -411,6 +433,8 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 1;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             CreateRule(r =>
@@ -418,6 +442,8 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 6;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
             
             var validation = await ValidateOrder(null);
@@ -434,6 +460,8 @@ namespace apcurium.MK.Web.Tests
                 r.Type = RuleType.Default;
                 r.ZoneList = "100,101,200";
                 r.Priority = 2;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             var validation = await ValidateOrder(null);
@@ -451,9 +479,11 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneRequired = true;
                 r.AppliesToPickup = true;
                 r.Priority = 2;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
-            var validation = await ValidateOrder(null);
+            var validation = await ValidateOrder(null, "100");
 
             Assert.IsFalse(validation.HasWarning);
         }
@@ -468,6 +498,8 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneRequired = true;
                 r.AppliesToPickup = true;
                 r.Priority = 2;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             var validation = await ValidateOrder(o =>
@@ -490,6 +522,8 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneRequired = true;
                 r.AppliesToPickup = false;
                 r.AppliesToDropoff = true;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
                 r.Priority = 2;
             });
 
@@ -513,6 +547,8 @@ namespace apcurium.MK.Web.Tests
                 r.ZoneList = "100,101,200";
                 r.Priority = 2;
                 r.AppliesToPickup = true;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             var validation = await ValidateOrder(null, "101");
@@ -531,9 +567,12 @@ namespace apcurium.MK.Web.Tests
                 r.Priority = 2;
                 r.AppliesToPickup = false;
                 r.AppliesToDropoff = true;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
-            var validation = await ValidateOrder(null);
+            var validation = await ValidateOrder(null, "1");
+
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
         }
@@ -547,6 +586,8 @@ namespace apcurium.MK.Web.Tests
 
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
             
             var validation = await ValidateOrder(o => o.PickupDate = null);
@@ -563,6 +604,8 @@ namespace apcurium.MK.Web.Tests
                 r.AppliesToFutureBooking = false;
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
             
             var validation = await ValidateOrder(o => o.PickupDate = DateTime.Now);
@@ -607,6 +650,8 @@ namespace apcurium.MK.Web.Tests
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
                 r.AppliesToPickup = true;
+                r.AppliesToServiceTaxi = true;
+                r.AppliesToServiceLuxury = true;
             });
 
             var validation = await ValidateOrder(null, "101");
@@ -632,6 +677,8 @@ namespace apcurium.MK.Web.Tests
                 Category = RuleCategory.WarningRule,
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = true,
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true,
                 ActiveFrom = activeFromDateRef.AddHours(-1),
                 ActiveTo = activeFromDateRef.AddHours(1),
                 DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek,
@@ -685,6 +732,8 @@ namespace apcurium.MK.Web.Tests
                 Category = RuleCategory.WarningRule,
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = true,
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true,
                 ActiveFrom = activeFromDateRef.AddHours(-1),
                 ActiveTo = activeFromDateRef.AddHours(1),
                 DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek,
@@ -729,6 +778,8 @@ namespace apcurium.MK.Web.Tests
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
             rule.AppliesToFutureBooking = true;
+            rule.AppliesToServiceTaxi= true;
+            rule.AppliesToServiceLuxury = true;
             rule.IsActive = true;
             rules.UpdateRule(rule);
 

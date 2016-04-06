@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             createReportOrder.IsPrepaid = isPrepaid;
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account,  request.Settings.ServiceType, bestAvailableCompany.CompanyKey);
 
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
@@ -381,16 +381,19 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             return offsetedTime;
         }
 
-        protected int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        protected int CreateIbsAccountIfNeeded(AccountDetail account, ServiceType serviceType, string companyKey = null)
         {
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey, default(ServiceType)); // TODO: Not sure.
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey, serviceType);
+
+            var hasServiceType = serviceType == ServiceType.Luxury;
+
             if (ibsAccountId.HasValue)
             {
                 return ibsAccountId.Value;
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey, serviceType).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,
@@ -400,7 +403,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             {
                 AccountId = account.Id,
                 IbsAccountId = ibsAccountId.Value,
-                CompanyKey = companyKey
+                CompanyKey = hasServiceType ? (companyKey ?? string.Empty) + serviceType.ToString() : companyKey
             });
 
             return ibsAccountId.Value;

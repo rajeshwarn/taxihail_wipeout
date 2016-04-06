@@ -210,7 +210,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 RuleId = ruleId,
                 Category = RuleCategory.DisableRule,
                 Type = RuleType.Default,
-                Message = "Due to..."
+                Message = "Due to...",
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true
             });
 
             var evt = _sut.ThenHasSingle<RuleCreated>();
@@ -232,7 +234,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 RuleId = ruleId,
                 Category = RuleCategory.DisableRule,
                 Type = RuleType.Default,
-                Message = "Due to..."
+                Message = "Due to...",
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true
             });
 
             var evt = _sut.ThenHasSingle<RuleCreated>();
@@ -250,7 +254,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 RuleId = ruleId,
                 Category = RuleCategory.WarningRule,
                 Type = RuleType.Default,
-                Message = "Due to..."
+                Message = "Due to...",
+                AppliesToServiceTaxi = true,
+                AppliesToServiceLuxury = true
             });
 
             Assert.AreEqual(2, _sut.Events.Count);
