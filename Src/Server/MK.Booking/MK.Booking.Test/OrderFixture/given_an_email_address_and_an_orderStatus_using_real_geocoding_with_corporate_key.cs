@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            Sut.Setup(new EmailCommandHandler(notificationService));
+            Sut.Setup(new EmailCommandHandler(notificationService, new Logger()));
         }
 
         [Test]

@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
-            Sut.Setup(new EmailCommandHandler(notificationService));
+            Sut.Setup(new EmailCommandHandler(notificationService, new Logger()));
 
             var returnAddressValue = new Address {FullAddress = "full dropoff"};
 
