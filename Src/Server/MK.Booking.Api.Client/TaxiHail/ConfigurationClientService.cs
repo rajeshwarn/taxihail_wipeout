@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
-                Logger.LogError(ex);
+                Logger.LogError(ex, string.Empty, -1, true);
 
                 if (shouldThrowExceptionIfError)
                 {
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
-                Logger.LogError(ex);
+                Logger.LogError(ex, string.Empty, -1, true);
 			}	
 			return paymentSettings;
 		}

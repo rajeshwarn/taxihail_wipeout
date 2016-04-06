@@ -16,20 +16,20 @@ namespace apcurium.MK.Common.Diagnostic
 
         private readonly object _threadLock = new object();
 
-        public void LogError(Exception ex, string method, int lineNumber)
+        public void LogError(Exception ex, string method, int lineNumber, bool minimalLogging = false)
         {
             var aggregateException = ex as AggregateException;
             if (aggregateException != null)
             {
                 aggregateException.Handle(x =>
                 {
-                    LogError(x, 0, method, lineNumber);
+                    LogError (x, 0, method, lineNumber, null, minimalLogging);
                     return true;
                 });
             }
             else
             {
-                LogError(ex, 0, method, lineNumber);
+                LogError (ex, 0, method, lineNumber, null, minimalLogging);
             }
         }
 
@@ -77,7 +77,7 @@ namespace apcurium.MK.Common.Diagnostic
             });
         }
 
-        private void LogError(Exception ex, int indent, string method, int lineNumber, IList<string> fullErrorMessage = null)
+        private void LogError(Exception ex, int indent, string method, int lineNumber, IList<string> fullErrorMessage = null, bool minimalLogging = false)
         {
             var indentStr = "";
             for (var i = 0; i < indent; i++)
@@ -100,12 +100,15 @@ namespace apcurium.MK.Common.Diagnostic
             }
 
             fullErrorMessage.Add(string.Format("{0}Message : {1}", indentStr, ex.Message));
-            fullErrorMessage.Add(string.Format("{0}Stack : {1}", indentStr, ex.StackTrace));
 
-
+            if (!minimalLogging)
+            {
+                fullErrorMessage.Add(string.Format ("{0}Stack : {1}", indentStr, ex.StackTrace));
+            }
+			
 			if (ex.InnerException != null)
 			{
-				LogError(ex.InnerException, ++indent, method, lineNumber, fullErrorMessage);
+                LogError(ex.InnerException, ++indent, method, lineNumber, fullErrorMessage, minimalLogging);
 			}
 			else
 			{
