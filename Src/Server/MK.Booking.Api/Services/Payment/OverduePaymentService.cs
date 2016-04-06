@@ -144,22 +144,36 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
                     var promotion = _promotionDao.FindByOrderId(orderId);
 
-                    decimal meterAmount = amount;
+                    var orderDetail = _orderDao.FindById(orderId);
+
                     decimal tipAmount = 0;
+                    decimal meterAmountWithoutTax = amount;
+                    decimal taxAmount = 0;
 
                     if (!isFee)
                     {
-                        var pairingInfo = _orderDao.FindOrderPairingById(orderId);
-                        tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(amount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
-                        meterAmount = meterAmount - tipAmount;
+                        if (!orderDetail.IsManualRideLinq)
+                        {
+                            var pairingInfo = _orderDao.FindOrderPairingById(orderId);
+                            tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(amount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
+                            var meterAmount = amount - tipAmount;
+
+                            var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
+                                _serverSettings.ServerData.VATIsEnabled
+                                    ? _serverSettings.ServerData.VATPercentage
+                                    : 0);
+
+                            meterAmountWithoutTax = fareObject.AmountExclTax;
+                            taxAmount = fareObject.TaxAmount;
+                        }
+                        else
+                        {
+                            var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(orderId);
+                            taxAmount = Convert.ToDecimal(ridelinqOrderDetail.Tax ?? 0);
+                            meterAmountWithoutTax = amount - taxAmount;
+                            tipAmount = Convert.ToDecimal(ridelinqOrderDetail.Tip);
+                        }
                     }
-
-                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
-                        _serverSettings.ServerData.VATIsEnabled
-                            ? _serverSettings.ServerData.VATPercentage
-                            : 0);
-
-                    var orderDetail = _orderDao.FindById(orderId);
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
@@ -169,9 +183,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(companyKey, orderId),
                         TotalAmount = amount,
-                        MeterAmount = fareObject.AmountExclTax,
+                        MeterAmount = meterAmountWithoutTax,
                         TipAmount = tipAmount,
-                        TaxAmount = fareObject.TaxAmount,
+                        TaxAmount = taxAmount,
                         TollAmount = Convert.ToDecimal(orderDetail.Toll ?? 0),
                         SurchargeAmount = Convert.ToDecimal(orderDetail.Surcharge ?? 0),
                         AuthorizationCode = commitResponse.AuthorizationCode,

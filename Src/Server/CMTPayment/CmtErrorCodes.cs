@@ -25,6 +25,8 @@ namespace CMTPayment
 
         public const int PaymentProcessingError = 115;
 
+        public const int TripAlreadyAuthorized = 615;
+
         /// <summary>
         /// Errors that mean we should stop polling
         /// </summary>
