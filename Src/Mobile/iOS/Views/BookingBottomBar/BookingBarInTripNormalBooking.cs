@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Command)
                 .To(vm => vm.BookingStatus.BottomBar.Unpair);
             set.Bind(buttonUnpair)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible)
                 .WithConversion("BoolInverter");
 			set.Bind (buttonUnpair)
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CancelOrder);
 			set.Bind(buttonCancel)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.BookingStatus.BottomBar.IsCancelButtonVisible)
 				.WithConversion("BoolInverter");
             
@@ -74,11 +74,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CallCompany);
 			set.Bind(buttonCall)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
 
 			set.Bind(buttonEditTip)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip)
 				.WithConversion("BoolInverter");
 			set.Bind(buttonEditTip)

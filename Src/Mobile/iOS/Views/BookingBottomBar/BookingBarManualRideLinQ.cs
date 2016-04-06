@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.Settings.HideDestination);
 
 			set.Bind(buttonBooking)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.BookButtonHidden);
 			set.Bind(buttonBooking)
 				.For(v => v.Command)
