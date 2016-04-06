@@ -272,7 +272,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             IBSOrderId = orderStatus.IBSOrderId,
                             CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
-                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
+                            OverdueAmount = Convert.ToDecimal(@event.Total),
                             TransactionDate = @event.EventDate
                         });
 
