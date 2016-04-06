@@ -363,8 +363,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         _logger.LogMessage("Response: {0} {1} (Body: {2})", ex.StatusCode, ex.StatusDescription, ex.ResponseBody);
 
-                        var cmtErrorCode = ex.ResponseBody.FromJson<UnsuccessfulResponse>();
-                        if (cmtErrorCode.Code == CmtErrorCodes.TripAlreadyAuthorized.ToString())
+                        var cmtErrorCode = ex.ResponseBody.FromJson<ErrorResponse>();
+                        if (cmtErrorCode.ResponseCode == CmtErrorCodes.TripAlreadyAuthorized)
+
                         {
                             // this should be considered a success
                             _logger.LogMessage("Received error code 615, consider it a success");
