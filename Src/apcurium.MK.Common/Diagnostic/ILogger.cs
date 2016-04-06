@@ -5,7 +5,7 @@ namespace apcurium.MK.Common.Diagnostic
     public interface ILogger
     {
         void LogError(Exception ex);
-        void LogError(Exception ex, string method, int lineNumber);
+        void LogError(Exception ex, string method, int lineNumber, bool minimalLogging = false);
 
         void LogMessage(string message, params object[] args);
 

@@ -18,16 +18,18 @@ namespace apcurium.MK.Common.Diagnostic
             LogError(ex, null, -1);
         }
 
-        public void LogError(Exception ex, string method, int lineNumber)
+	    public void LogError(Exception ex, string method, int lineNumber, bool minimalLogging = false)
         {
             var errorLocation = method.HasValueTrimmed() && lineNumber > -1
                 ? " at {0}:{1}".InvariantCultureFormat(method, lineNumber)
                 : string.Empty;
 
-            Log.Error(ex.Message + errorLocation + " " + ex.StackTrace);
+	        var errorFormat = string.Format("{0}{1}{2}", ex.Message, errorLocation,
+	            minimalLogging ? string.Empty : " " + ex.StackTrace);
+            Log.Error(errorFormat);
             if (ex.InnerException != null)
             {
-                LogError(ex.InnerException);
+                LogError(ex.InnerException, null, -1, minimalLogging);
             }
         }
 

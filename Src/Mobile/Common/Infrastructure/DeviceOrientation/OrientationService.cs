@@ -2,13 +2,16 @@ using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Enumeration;
+using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 {
 	public class OrientationService : IOrientationService
 	{
-		private DeviceOrientations[] _deviceOrientationsNotifications;
 		private readonly IDeviceOrientationService _deviceOrientationService;
+		private readonly IMvxLifetime _mvxLifetime;
+
+		private DeviceOrientations[] _deviceOrientationsNotifications;
 		private DeviceOrientations _currentOrientation = DeviceOrientations.Up;
 
 		bool _previousTrustZRotation = true;
@@ -24,9 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		public event Action<DeviceOrientations> NotifyOrientationChanged;
 		public event Action<int, bool> NotifyAngleChanged;
 
-		public OrientationService(IDeviceOrientationService deviceOrientationService)
+		public OrientationService(IDeviceOrientationService deviceOrientationService, IMvxLifetime mvxLifetime)
 		{
 			_deviceOrientationService = deviceOrientationService;
+			_mvxLifetime = mvxLifetime;
 		}
 
 		public void Initialize(DeviceOrientations[] deviceOrientationsNotifications)
@@ -47,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		{
 			if (_initialized && !_started && IsAvailable())
 			{
+				_mvxLifetime.LifetimeChanged += OnApplicationLifetimeChanged;
 				_previousTrustZRotation = true;
 				_started = true;
 				_deviceOrientationService.NotifyAngleChanged += AngleChanged;
@@ -62,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		{
 			if (_initialized && _started)
 			{
+				_mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
 				_started = false;
 				_deviceOrientationService.Stop();
 				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged -= AngleChanged;
@@ -72,7 +78,20 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			return false;
 		}
 
-		DeviceOrientations GetOrientationByAngle(int angle, DeviceOrientations currentDeviceOrientations)
+		private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
+		{
+			if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+			{
+				_deviceOrientationService.Start();
+			}
+
+			if (args.LifetimeEvent == MvxLifetimeEvent.Closing || args.LifetimeEvent == MvxLifetimeEvent.Deactivated)
+			{
+				_deviceOrientationService.Stop();
+			}
+		}
+
+		private DeviceOrientations GetOrientationByAngle(int angle, DeviceOrientations currentDeviceOrientations)
 		{
 			var axe1 = _axes[0];
 			var axe2 = _axes[1];

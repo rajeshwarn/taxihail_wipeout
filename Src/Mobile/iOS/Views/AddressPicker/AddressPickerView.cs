@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 AutocorrectionType = UITextAutocorrectionType.No
             };
 
-            AddressEditText.Placeholder = Localize.GetValue("PickupTextPlaceholder");
+            AddressEditText.Placeholder = Localize.GetValue("AddressSearch");
             AddressEditText.AccessibilityLabel = AddressEditText.Placeholder;
 
             AddressEditText.TranslatesAutoresizingMaskIntoConstraints = false;

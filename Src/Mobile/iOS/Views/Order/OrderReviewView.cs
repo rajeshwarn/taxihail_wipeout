@@ -172,8 +172,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.DriverBonus)
                 .WithConversion("CurrencyFormat");
 
-            set.Bind(this)
-                .For(v => v.DriverBonusViewHiddenWithConstraints)
+            set.Bind(driverBonusView)
+                .For("HiddenEx")
                 .To(vm => vm.CanShowDriverBonus)
                 .WithConversion("BoolInverter");
 
@@ -257,41 +257,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                     sliderBonus.Enabled = false;
                     lblBonusAmount.Enabled = false;
                     lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
-                }
-            }
-        }
-
-
-        private NSLayoutConstraint[] _hiddenDriverBonusViewContraints { get; set; }
-        
-        public bool DriverBonusViewHiddenWithConstraints
-        {
-            get
-            {
-                return driverBonusView.Hidden;
-            }
-            set
-            {
-                if (driverBonusView.Hidden == value)
-                {
-                    return;
-                }
-
-                driverBonusView.Hidden = value;
-
-                if (value)
-                {
-                    _hiddenDriverBonusViewContraints = driverBonusView.Constraints != null 
-                        ? driverBonusView.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-                        : null;
-
-                    driverBonusView.RemoveConstraints(_hiddenDriverBonusViewContraints);
-                }
-
-                if (!value && _hiddenDriverBonusViewContraints != null)
-                {
-                    driverBonusView.AddConstraints(_hiddenDriverBonusViewContraints);
-                    _hiddenDriverBonusViewContraints = null;
                 }
             }
         }
