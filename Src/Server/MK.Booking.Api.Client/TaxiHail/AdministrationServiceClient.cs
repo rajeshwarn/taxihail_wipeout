@@ -25,12 +25,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task GrantAdminAccess(GrantAdminRightRequest request)
         {
-            return Client.PutAsync<object>("/account/grantadmin", request);
+            return Client.PutAsync<object>("/admin/grantadmin", request);
         }
 
         public Task GrantSupportAccess(GrantSupportRightRequest request)
         {
-            return Client.PutAsync<object>("/account/grantsupport", request);
+            return Client.PutAsync<object>("/admin/grantsupport", request);
         }
 
         public Task<IList<Address>> GetDefaultFavoriteAddresses()

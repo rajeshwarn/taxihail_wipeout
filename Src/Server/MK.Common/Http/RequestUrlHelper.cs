@@ -42,10 +42,6 @@ namespace apcurium.MK.Common.Http
             }
 
             requestUrl = requestUrl
-                    .Replace("/account/grantadmin", "/admin/grantadmin")
-                    .Replace("/account/grantsupport", "/admin/grantsupport")
-                    .Replace("/account/grantsuperadmin", "/admin/grantsuperadmin")
-                    .Replace("/account/revokeaccess", "/admin/revokeaccess")
                     .Replace("/payments/settleoverduepayment", "/accounts/settleoverduepayment")
                     .Replace("account/", "accounts/")
                     .Replace("creditCard/", "creditCards/")

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task Register(string deviceToken, PushNotificationServicePlatform platform)
         {
-            return Client.PostAsync<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken),
+            return Client.PostAsync<string>("accounts/pushnotifications/" + Uri.EscapeDataString(deviceToken),
                 new PushNotificationRegistration
                 {
                     Platform = platform
@@ -31,12 +31,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task Unregister(string deviceToken)
         {
-            return Client.DeleteAsync<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken), logger: Logger);
+            return Client.DeleteAsync<string>("accounts/pushnotifications/" + Uri.EscapeDataString(deviceToken), logger: Logger);
         }
 
         public Task Replace(string oldDeviceToken, string newDeviceToken, PushNotificationServicePlatform platform)
         {
-            return Client.PostAsync<string>("account/pushnotifications/" + Uri.EscapeDataString(newDeviceToken),
+            return Client.PostAsync<string>("accounts/pushnotifications/" + Uri.EscapeDataString(newDeviceToken),
                 new PushNotificationRegistration
                 {
                     OldDeviceToken = oldDeviceToken,
