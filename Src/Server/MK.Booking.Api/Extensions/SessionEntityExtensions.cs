@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
@@ -23,6 +25,7 @@ namespace apcurium.MK.Booking.Api.Extensions
             var account = dao.FindById(source.UserId);
 
             return account.RoleNames.Any(p => p == permission);
+
         }
 
         public static void RemoveSessionIfNeeded(this SessionEntity source)

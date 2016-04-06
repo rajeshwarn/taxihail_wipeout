@@ -32,10 +32,11 @@ namespace apcurium.MK.Web
         {
             get
             {
-                var sessionId = Request.Cookies.Get("ss-pid").SelectOrDefault(cookie => cookie.Value);
+                var sessionId = Request.Cookies.Get("ss-pid")
+                    .SelectOrDefault(cookie => cookie.Value);
 
                 return sessionId.HasValueTrimmed()
-                    ? "urn:iauthsession:{0}".InvariantCultureFormat(sessionId)
+                    ? "urn:iauthsession:{0}".InvariantCultureFormat(Uri.UnescapeDataString(sessionId))
                     : null;
             }
         }

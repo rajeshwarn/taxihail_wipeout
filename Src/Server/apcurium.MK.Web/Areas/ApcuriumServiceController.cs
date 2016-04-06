@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,6 +8,7 @@ using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using apcurium.MK.Web.Attributes;
 
@@ -64,11 +66,12 @@ namespace apcurium.MK.Web.Areas
         {
             if (_userSession == null)
             {
-                var cookie = request.Cookies.Get("ss-pid");
+                var sessionId = request.Cookies.Get("ss-pid")
+                    .SelectOrDefault(cookie => Uri.UnescapeDataString(cookie.Value));
 
-                if (cookie != null)
+                if (sessionId.HasValueTrimmed())
                 {
-                    _userSession = _cache.Get<TUserSession>("urn:iauthsession:" + cookie.Value);
+                    _userSession = _cache.Get<TUserSession>("urn:iauthsession:" + sessionId);
                 }
             }
 
