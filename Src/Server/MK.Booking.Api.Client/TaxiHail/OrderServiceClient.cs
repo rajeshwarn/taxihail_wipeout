@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public async Task<Tuple<Order, OrderStatusDetail>> GetActiveOrder()
         {
-            var active = await Client.GetAsync(new ActiveOrderRequest());
+            var active = await Client.GetAsync(new ActiveOrderRequest(), logger: Logger);
 
             return new Tuple<Order, OrderStatusDetail>(active.Order, active.OrderStatusDetail);
         }
