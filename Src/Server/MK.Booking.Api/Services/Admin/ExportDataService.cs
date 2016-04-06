@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
         private List<Dictionary<string, string>> PreparePromotionsData(DateTime endDate, DateTime startDate)
         {
-                        orderReportEntry["Order.GUID"] = orderReport.Id.ToString();
             var exportedPromotions = new List<Dictionary<string, string>>();
 
             var promotions = _promotionsDao.GetAll().Where(x => (!x.StartDate.HasValue || (x.StartDate.Value <= endDate)) && (!x.EndDate.HasValue || (x.EndDate.Value >= startDate))).ToArray();
@@ -143,6 +142,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     ["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString(),
                     ["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString(),
                     ["Account.PayBack "] = orderReport.Account.PayBack,
+                    ["Order.GUID"] = orderReport.Id.ToString(),
                     ["Order.CompanyName"] = orderReport.Order.CompanyName,
                     ["Order.CompanyKey"] = orderReport.Order.CompanyKey,
                     ["Order.Market"] = orderReport.Order.Market,
