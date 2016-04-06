@@ -169,7 +169,7 @@
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>Sorry, your driver canceled. Finding you another taxi...</value>
+    <value>Sorry, your driver cancelled. Finding you another taxi...</value>
   </data>
   <data name="PushNotification_wosNOSHOW" xml:space="preserve">
     <value>Your driver indicated you were not at the pickup location.</value>

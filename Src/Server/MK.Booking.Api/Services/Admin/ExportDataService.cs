@@ -110,6 +110,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         orderReportEntry["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString();
                         orderReportEntry["Account.PayBack "] = orderReport.Account.PayBack;
 
+                        orderReportEntry["Order.GUID"] = orderReport.Id.ToString();
                         orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
                         orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;
                         orderReportEntry["Order.Market"] = orderReport.Order.Market;

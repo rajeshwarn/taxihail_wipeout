@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
 			set.Bind(btnRebook)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.RebookIsAvailable)
 				.WithConversion("BoolInverter");
 			set.Bind(btnRebook)
@@ -77,14 +77,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.RebookOrder);
 
 			set.Bind(btnStatus)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.IsCompleted);
 			set.Bind(btnStatus)
 				.For("TouchUpInside")
 				.To(vm => vm.NavigateToOrderStatus);
 
 			set.Bind(btnRateRide)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.ShowRateButton)
 				.WithConversion("BoolInverter");
 			set.Bind(btnRateRide)
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToRatingPage);
 
 			set.Bind(btnViewRating)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.HasRated)
 				.WithConversion("BoolInverter");
 			set.Bind(btnViewRating)
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToRatingPage);
 
 			set.Bind(btnSendReceipt)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.SendReceiptAvailable)
 				.WithConversion("BoolInverter");
 			set.Bind(btnSendReceipt)
@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.SendReceipt);
 
 			set.Bind(btnDelete)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.IsCompleted)
 				.WithConversion("BoolInverter");
 			set.Bind(btnDelete)
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.DeleteOrder);
 
 			set.Bind(btnCancel)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanCancel)
                 .WithConversion("BoolInverter");
 			set.Bind(btnCancel)

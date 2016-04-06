@@ -106,7 +106,7 @@
 "EntryCodeLabel"="Entry code";
 "Save"="Save";
 "Delete"="Delete";
-"InvalidAddressTextEdit"="Cannot validate adddress";
+"InvalidAddressTextEdit"="Cannot validate address";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "InvalidAddressTitle"="Invalid address";
 "Now"="Now";
@@ -161,7 +161,7 @@
 "StatusActionCancelButton"="Cancel this order";
 "StatusActionBookButton"="Book another taxi";
 "StatusConfirmCancelRide"="Are you sure you want to cancel?";
-"StatusConfirmCancelRideError"="The order cannot be canceled, please call to cancel this order.";
+"StatusConfirmCancelRideError"="The order cannot be cancelled, please call to cancel this order.";
 "StatusConfirmCancelRideErrorTitle"="Cannot cancel";
 "StatusConfirmNewBooking"="Booking a new taxi will keep this order active, do you want to continue ?";
 "YesButton"="Yes";
@@ -514,7 +514,7 @@
 "ChargeAccount"="Charge Account";
 "CardOnFile"="Card on File";
 "EstimateFareCalculating"="Calculating...";
-"Knowledgabledriver"="Knowledgable driver";
+"Knowledgabledriver"="Knowledgeable driver";
 "Safety"="Safety";
 "Politeness"="Politeness";
 "CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
@@ -530,8 +530,8 @@
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
 "UpdateBookingSettingsInvalidAccount"="The account or rider number that was entered doesn't exist";
-"CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
-"UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
+"CreditCardBookingSettingsError"="An error occurred when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
+"UpdateBookingSettingsGenericError"="An error occurred when updating the booking settings";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
 "MarketChangedMessageTitle"="New service area detected";
@@ -615,14 +615,14 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Unpair"="Unpair";
-"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
+"ManualRideLinqStatus_PairingError"="An error has occurred. Please try to checking again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqSummary_Done"="Done";
-"ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
+"ManualUnPairingForRideLinQ_Error_Message"="An error occurred when trying to unpair. Please try again.";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A cancellation fee may apply.";
 "BookATaxi_Message"="When would you like to book?";
 "InvalidChargeType"="You must select a charge type to be able to book a ride";
@@ -685,9 +685,9 @@
 "Next"="Next";
 "BookingAirportNoFlights_Title"="No flights";
 "BookingAirportMissingInfo_Title"="Missing information";
-"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are mandatory.";
 "BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
-"BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
+"BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incur an additional Fee of {1}";
 "BookingAirportDetails"="Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}";
 "BookingAirportDetailsFee"=", (Pickup Fee: {0})";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
@@ -720,7 +720,7 @@
 "OverduePaymentActivityName"="Overdue payment";
 "ProfileSettingsActivityName"="Profile";
 "NotificationSettingsActivityName"="Notification setting";
-"InitializeOrderForAccountPaymentActivityName"="Initialition of order of account payment";
+"InitializeOrderForAccountPaymentActivityName"="Initialization of order of account payment";
 "AccountConfirmationActivityName"="Account confirmation";
 "UpdatePasswordActivityName"="Update password";
 "BookStatusActivityName"="Booking status";
