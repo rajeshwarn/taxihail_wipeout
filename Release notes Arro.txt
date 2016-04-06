@@ -675,3 +675,17 @@
 	Added accessFee on sever side
 	Change manual pairing instruction on screen
 	Fix for register checkbox color on iOS
+4.5.0
+	Bug fix - Show user location instead of 0,0 on VTS vehicles
+	Bug fix - Fix scheduled orders causing user to be stuck when navigating from history
+	Bug fix - Prevent crash if Facebook Publish was enabled but not Facebook login
+	Bug fix - Fix Android 4.4 crash on dropdown lists (Credit card view)
+	Bug fix - Fix for Android OrientationService never stopping when in background (iOS at the same time but OS was stopping it anyway)
+	Cleanup to use HiddenEx
+	Remove FlatButton HiddenWithConstraints and replace with HiddenEx
+	Grammar corrects in master.resx
+	Bug fix - Fix text in address search iOS
+	JMU SafeRide - Text changes (Freskdesk ticket# 2538)
+	GUID to Arrp API orders export Added "orderReport.Id" as the Order.GUID in the order export report
+	Bug fix - Promo saving issue if not in server timezone
+	Manage new label addition If a label is removed, it is removed from the dictionary as well If a label is added, it is added in the dictionary
