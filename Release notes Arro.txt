@@ -701,3 +701,5 @@
 	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
 4.5.1.1	
 	Bug fix -  Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
+4.5.2
+	Now preventing the vehicle number to be displayed on home view when Show Assigned Vehicle Number On Pin is set to NO
