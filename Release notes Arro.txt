@@ -689,3 +689,14 @@
 	GUID to Arrp API orders export Added "orderReport.Id" as the Order.GUID in the order export report
 	Bug fix - Promo saving issue if not in server timezone
 	Manage new label addition If a label is removed, it is removed from the dictionary as well If a label is added, it is added in the dictionary
+4.5.0.1
+	When we receive a 615 from mapi on reauth, we should treat it as a success
+	Bug fix -Now ensuring that we navigate out of the Splashscreen when an error occurs.
+4.5.1
+	Check minimum app version at "in a taxi", server side
+	Added Unhandled exception logging.
+	Add logs for market settings at order creation (client and server side) + remove duplicate UnpairForPayment command sent when unpairing with ridelinq
+	Bug fix - Now preventing multiple booking when "Allow simultaneous booking" is false.
+	Added UTC indication to Account creation date.
+	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
+	
