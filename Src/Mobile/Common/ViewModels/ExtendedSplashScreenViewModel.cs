@@ -57,10 +57,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     locateUser = false
                 });
             }
-            catch
+			catch(Exception ex)
             {
+				Logger.LogError(ex);
                 // For some reason we had an exception. Gracefully moving to HomeView to prevent us getting stuck on the SplashScreen.
-
                 ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
 
                 _bookingService.ClearLastOrder();
