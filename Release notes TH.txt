@@ -488,4 +488,10 @@
 3.5.9
   Bug fix - iOS - Fixed terms and conditions checkbox colour on registration screen
 3.5.10
-  Bug fix - iOS - Fixed terms and conditions checkbox colour on registration screen (cont.)	
+  Bug fix - iOS - Fixed terms and conditions checkbox colour on registration screen (cont.)
+3.5.11
+  Bug fix - Android 4.4 - Crash when using a dropdownlist
+  Grammar correction
+  Bug fix - iOS - When entering the address picker from the destination address, default text now says: "Address search". 
+  Custom strings (James Madison Uni. - SafeRides)
+  Bug fix - Promotions - Saving issue if not in server timezone.
