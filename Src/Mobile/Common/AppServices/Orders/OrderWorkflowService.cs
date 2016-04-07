@@ -305,8 +305,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
+                Logger.LogMessage("MarketSettings for order {0}: {1}", orderCreated.Id, _marketSettings.ToJson());
 
-				_deviceCollectorService.GenerateNewSessionIdAndCollect();
+                _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}

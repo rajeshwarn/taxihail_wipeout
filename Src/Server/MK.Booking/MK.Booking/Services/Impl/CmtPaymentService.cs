@@ -192,12 +192,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
 
                     UnpairFromVehicleUsingRideLinq(orderPairingDetail);
-
-                    // send a command to delete the pairing pairing info for this order
-                    _commandBus.Send(new UnpairForPayment
-                    {
-                        OrderId = orderId
-                    });
                 }
 
                 _pairingService.Unpair(orderId);
@@ -210,6 +204,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
+                _logger.LogError(e);
                 return new BasePaymentResponse
                 {
                     IsSuccessful = false,
@@ -708,10 +703,12 @@ namespace apcurium.MK.Booking.Services.Impl
             InitializeServiceClient();
 
             // send unpairing request
+            _logger.LogMessage("Sending Unpairing request for pairing token: " + orderPairingDetail.PairingToken);
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
                 PairingToken = orderPairingDetail.PairingToken
             });
+            _logger.LogMessage("Response received: " + response.ToJson());
 
             // wait for trip to be updated
             _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);

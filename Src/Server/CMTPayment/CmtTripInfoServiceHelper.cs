@@ -148,7 +148,8 @@ namespace CMTPayment
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {
-                    throw new TimeoutException("Could not be unpaired of vehicle");
+                    _logger.LogMessage("Timeout Exception, Could not be unpaired from vehicle.");
+                    throw new TimeoutException("Could not be unpaired from vehicle");
                 }
             }
         }
