@@ -31,9 +31,16 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             CreateOrUpdateMedaillonView(annotation.Title, annotation.Market, hidden:true);
 		}
 
+		public bool ShowMedallionOnTap { get; set; }
+
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
+
+			if (!ShowMedallionOnTap)
+			{
+				return;
+			}
 
             var ann = (AddressAnnotation)Annotation;
 
