@@ -501,9 +501,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 vehicle.Market)
                 {
 	                Degrees = vehicle.CompassCourse,
+					ShowMedallionOnTap = ViewModel.Settings.ShowAssignedVehicleNumberOnPin,
 					ShowOrientation = ViewModel.Settings.ShowOrientedPins
                 };
-            
+
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
             {
 	            var annotations = Annotations.Where(annotation => !annotation.Equals(vehicleAnnotation))
@@ -516,7 +517,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						pinAnnotationView.HideMedaillon();
                     }
                 });
-            
+
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
         }

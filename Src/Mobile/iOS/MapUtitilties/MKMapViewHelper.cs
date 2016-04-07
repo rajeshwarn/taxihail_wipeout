@@ -16,12 +16,16 @@ namespace MapKit
 			var anv = mapView.DequeueReusableAnnotation (ann.AddressType.ToString()) as PinAnnotationView;
             if (anv == null) 
             {
-				anv = new PinAnnotationView (ann, ann.AddressType.ToString());
+				anv = new PinAnnotationView (ann, ann.AddressType.ToString())
+					{
+						ShowMedallionOnTap = ann.ShowMedallionOnTap
+					};
             } 
             else 
             {
                 anv.Annotation = ann;
                 anv.RefreshPinImage();
+				anv.ShowMedallionOnTap = ann.ShowMedallionOnTap;
             }
 
             anv.Enabled = false; //disables the popup when you tap the annotation

@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public bool ShowMedallionOnStart { get; set; }
 
+		public bool ShowMedallionOnTap { get; set; }
+
 		public bool ShowSubtitleOnPin = true;
 
         public string Market { get; private set; }
