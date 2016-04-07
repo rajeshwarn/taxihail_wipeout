@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 var activeOrders = context.Set<OrderStatusDetail>()
                     .Where(x => x.AccountId == accountId
                         && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending) 
-                        && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending)
                         && (VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId) || x.IsManualRideLinq)
                     )
                     .OrderByDescending(order => order.PickupDate)
