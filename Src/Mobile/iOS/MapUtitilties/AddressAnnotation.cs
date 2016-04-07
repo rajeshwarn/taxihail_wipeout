@@ -23,8 +23,19 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private CLLocationCoordinate2D _coordinate;
         private readonly string _vehicleTypeLogoName;
 
-        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string title, string subtitle, bool useThemeColorForIcons,
-            bool showSubtitleOnPin, string vehicleTypeLogoName = null, string market = null)
+        public AddressAnnotation(
+			CLLocationCoordinate2D coord, 
+			AddressAnnotationType type,
+			string title, 
+			string subtitle, 
+			bool useThemeColorForIcons,
+            bool showSubtitleOnPin, 
+			string vehicleTypeLogoName = null,
+			string market = null,
+			double degrees = double.NaN,
+			bool showMedallionOnTap = false,
+			bool showMedallionOnStart = false,
+			bool showOrientation = false)
 		{
 			AddressType = type;
 			_coordinate = coord;

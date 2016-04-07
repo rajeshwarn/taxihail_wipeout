@@ -498,12 +498,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
                                 vehicle.LogoName,
-                                vehicle.Market)
-                {
-	                Degrees = vehicle.CompassCourse,
-					ShowMedallionOnTap = ViewModel.Settings.ShowAssignedVehicleNumberOnPin,
-					ShowOrientation = ViewModel.Settings.ShowOrientedPins
-                };
+                                vehicle.Market,
+								vehicle.CompassCourse,
+								ViewModel.Settings.ShowAssignedVehicleNumberOnPin,
+								showOrientation: ViewModel.Settings.ShowOrientedPins);
 
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
             {
@@ -775,12 +773,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _useThemeColorForPickupAndDestinationMapIcons, 
                 _showAssignedVehicleNumberOnPin,
                 null,
-                value.Market)
-            {
-				ShowMedallionOnStart = true,
-	            Degrees = value.CompassCourse??0,
-				ShowOrientation = showOrientedPins
-            };
+                value.Market,
+				value.CompassCourse??0,
+				showMedallionOnStart: true,
+				showOrientation: showOrientedPins);
 
             AddAnnotation(_taxiLocationPin);
             SetNeedsDisplay();
