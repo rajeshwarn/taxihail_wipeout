@@ -699,4 +699,5 @@
 	Bug fix - Now preventing multiple booking when "Allow simultaneous booking" is false.
 	Added UTC indication to Account creation date.
 	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
-	
+4.5.1.1	
+	Bug fix -  Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
