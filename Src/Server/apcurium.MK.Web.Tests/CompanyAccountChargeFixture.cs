@@ -144,6 +144,11 @@ namespace apcurium.MK.Web.Tests
             }
             catch
             {
+                // We are suppressing this error. 
+            }
+
+            if (account == null)
+            {
                 await _sut.CreateAccountCharge(request);
 
                 account = await _sut.GetAccountCharge(request.AccountNumber);
