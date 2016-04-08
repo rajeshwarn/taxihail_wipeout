@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Security
         /// </remarks>
         public string Role { get; set; }
 
-        public bool AllowMultiple { get; }
+        public bool AllowMultiple { get; set; }
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
             var sessionId = context.Request.GetSessionId();
