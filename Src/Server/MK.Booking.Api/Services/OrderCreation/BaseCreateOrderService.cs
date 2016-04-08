@@ -271,7 +271,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
             var orderCommand = Mapper.Map<CreateOrder>(request);
-            
+            _logger.LogMessage("MarketSettings for order {0}: {1}", orderCommand.OrderId, marketSettings.ToJson());
+
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
             createReportOrder.BookingFees = orderCommand.BookingFees;

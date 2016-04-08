@@ -191,12 +191,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
 
                     await UnpairFromVehicleUsingRideLinq(orderPairingDetail);
-
-                    // send a command to delete the pairing pairing info for this order
-                    _commandBus.Send(new UnpairForPayment
-                    {
-                        OrderId = orderId
-                    });
                 }
 
                 _pairingService.Unpair(orderId);
@@ -209,6 +203,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
+                _logger.LogError(e);
                 return new BasePaymentResponse
                 {
                     IsSuccessful = false,
@@ -361,6 +356,22 @@ namespace apcurium.MK.Booking.Services.Impl
                     catch (WebServiceException ex)
                     {
                         _logger.LogMessage("Response: {0} {1} (Body: {2})", ex.StatusCode, ex.StatusDescription, ex.ResponseBody);
+
+                        var cmtErrorCode = ex.ResponseBody.FromJson<ErrorResponse>();
+                        if (cmtErrorCode.ResponseCode == CmtErrorCodes.TripAlreadyAuthorized)
+
+                        {
+                            // this should be considered a success
+                            _logger.LogMessage("Received error code 615, consider it a success");
+                            return new CommitPreauthorizedPaymentResponse
+                            {
+                                IsSuccessful = true,
+                                AuthorizationCode = "NoAuthCodeReturnedFromCmtRideLinqAuthorize",
+                                Message = "Success",
+                                TransactionId = commitTransactionId,
+                                TransactionDate = DateTime.UtcNow
+                            };
+                        }
 
                         return new CommitPreauthorizedPaymentResponse
                         {
@@ -684,10 +695,12 @@ namespace apcurium.MK.Booking.Services.Impl
             InitializeServiceClient();
 
             // send unpairing request
+            _logger.LogMessage("Sending Unpairing request for pairing token: " + orderPairingDetail.PairingToken);
             var response = await _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
                 PairingToken = orderPairingDetail.PairingToken
             });
+            _logger.LogMessage("Response received: " + response.ToJson());
 
             // wait for trip to be updated
             await _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);

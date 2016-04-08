@@ -6,6 +6,7 @@ using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -16,8 +17,8 @@ using CMTPayment.Pair;
 using Infrastructure.Messaging;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
-using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -71,12 +72,32 @@ namespace apcurium.MK.Booking.Api.Services
 
         public async Task<ManualRideLinqResponse> Post(ManualRideLinqPairingRequest request)
         {
+            var appVersionString = base.Request.Headers.Get("ClientVersion");
+            var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
+
+            if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            var mobileVersion = new ApplicationVersion(appVersionString);
+            var minimumAppVersion = new ApplicationVersion(minimumAppVersionString);
+
+            if (mobileVersion < minimumAppVersion)
+            {
+                throw new Exception(string.Format("App version not supported (email: {0}, version: {1}, required: {2})", account.Email, appVersionString, minimumAppVersionString));
+            }
+        }
+
+        {
 	        try
 	        {
 	            var accountId = Session.UserId;
                 var account = _accountDao.FindById(accountId);
 
-		        var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
+                ValidateAppVersion(account);
+
+                var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
 
 		        if (currentRideLinq != null)
 		        {
