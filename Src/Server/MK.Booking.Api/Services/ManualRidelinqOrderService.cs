@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
@@ -196,16 +197,6 @@ namespace apcurium.MK.Booking.Api.Services
                     };
 
 					_commandBus.Send(command);
-
-                    _commandBus.Send(new PairForPayment
-                    {
-                        OrderId = command.OrderId,
-                        Medallion = response.Medallion,
-                        PairingCode = response.PairingCode,
-                        PairingToken = response.PairingToken,
-                        DriverId = trip.DriverId.ToString(),
-                        TokenOfCardToBeUsedForPayment = creditCard.Token
-                    });
 
 					var data = new OrderManualRideLinqDetail
 					{
