@@ -20,7 +20,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
     [Auth]
     public class HailController : BaseApiController
     {
-        public HailService HailService { get; }
+        public HailService HailService { get; private set; }
 
         public HailController(IServerSettings serverSettings,
             ICommandBus commandBus,

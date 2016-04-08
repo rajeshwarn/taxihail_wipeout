@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
     public class DriverController : BaseApiController
     {
-        public DriverService DriverService { get; }
+        public DriverService DriverService { get; private set; }
 
         public DriverController(IIbsOrderService ibsOrderService, ILogger logger, IOrderDao orderDao)
         {

@@ -13,7 +13,7 @@ namespace apcurium.MK.Web.Controllers.Api
     [RoutePrefix("api/v2/status")]
     public class ServerStatusController : BaseApiController
     {
-        public ServerStatusService ServerStatusService { get; }
+        public ServerStatusService ServerStatusService { get; private set; }
         public ServerStatusController(IServerSettings serverSettings,
             IIBSServiceProvider ibsProvider,
             ITaxiHailNetworkServiceClient networkService,

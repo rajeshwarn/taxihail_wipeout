@@ -8,7 +8,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class NetworkRoamingController : BaseApiController
     {
-        public NetworkRoamingService NetworkRoamingService { get; }
+        public NetworkRoamingService NetworkRoamingService { get; private set; }
 
         public NetworkRoamingController(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
         {

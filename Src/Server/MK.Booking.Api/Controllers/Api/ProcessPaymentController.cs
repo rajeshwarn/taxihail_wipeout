@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class ProcessPaymentController : BaseApiController
     {
-        public ProcessPaymentService ProcessPaymentService { get; }
+        public ProcessPaymentService ProcessPaymentService { get; private set; }
 
         public ProcessPaymentController(IPayPalServiceFactory payPalServiceFactory,
             IPaymentService paymentService,

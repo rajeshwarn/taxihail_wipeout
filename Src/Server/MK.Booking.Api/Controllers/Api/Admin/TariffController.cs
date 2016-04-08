@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 {
     public class TariffController : BaseApiController
     {
-        public TariffsService TariffsService { get; }
+        public TariffsService TariffsService { get; private set; }
 
         public TariffController(ITariffDao tariffDao, ICommandBus commandBus)
         {

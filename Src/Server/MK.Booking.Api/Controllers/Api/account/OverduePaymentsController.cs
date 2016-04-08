@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 {
     public class OverduePaymentsController : BaseApiController
     {
-        public OverduePaymentService OverduePaymentService { get; }
+        public OverduePaymentService OverduePaymentService { get; private set; }
 
 
         public OverduePaymentsController(

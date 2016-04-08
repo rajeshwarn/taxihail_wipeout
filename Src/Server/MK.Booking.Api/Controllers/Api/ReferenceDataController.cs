@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class ReferenceDataController : BaseApiController
     {
-        public ReferenceDataService ReferenceDataService { get; }
+        public ReferenceDataService ReferenceDataService { get; private set; }
 
         public ReferenceDataController(IIBSServiceProvider ibsServiceProvider, ICacheClient cacheClient, IServerSettings serverSettings, IAirlineDao airlineDao,IPickupPointDao pickupPointDao)
         {

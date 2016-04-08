@@ -10,7 +10,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class PrivacyPolicyController : BaseApiController
     {
-        public PrivacyPolicyService PrivacyPolicyService { get; }
+        public PrivacyPolicyService PrivacyPolicyService { get; private set; }
 
         public PrivacyPolicyController(ICommandBus commandBus, ICompanyDao companyDao)
         {

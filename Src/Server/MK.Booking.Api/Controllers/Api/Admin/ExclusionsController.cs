@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("api/v2/admin/exclusions")]
     public class ExclusionsController : BaseApiController
     {
-        public ExclusionsService ExclusionsService { get; }
+        public ExclusionsService ExclusionsService { get; private set; }
 
         public ExclusionsController(IServerSettings serverSettings, ICommandBus commandBus, ICacheClient cacheClient)
         {

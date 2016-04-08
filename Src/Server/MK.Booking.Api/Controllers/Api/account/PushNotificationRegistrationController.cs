@@ -9,7 +9,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     [RoutePrefix("api/v2/accounts/pushnotifications"), Auth]
     public class PushNotificationRegistrationController : BaseApiController
     {
-        public PushNotificationRegistrationService PushNotificationRegistrationService { get; }
+        public PushNotificationRegistrationService PushNotificationRegistrationService { get; private set; }
 
         public PushNotificationRegistrationController(IAccountDao accountDao, IDeviceDao deviceDao)
         {

@@ -10,7 +10,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
     [RoutePrefix("api/v2/addressFromPostalCode")]
     public class PostalCodeController : BaseApiController
     {
-        public PostalCodeService PostalCodeService { get; set; }
+        public PostalCodeService PostalCodeService { get; private set; }
         public PostalCodeController(IPostalCodeService postalCodeService, ILogger log)
         {
             PostalCodeService = new PostalCodeService(postalCodeService, log);

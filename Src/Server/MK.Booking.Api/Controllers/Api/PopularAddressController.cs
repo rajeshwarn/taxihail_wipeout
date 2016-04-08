@@ -12,8 +12,8 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class PopularAddressController : BaseApiController
     {
-        public ClientPopularAddressService ClientPopularAddressService { get; }
-        public PopularAddressService PopularAddressService { get; set; }
+        public ClientPopularAddressService ClientPopularAddressService { get; private set; }
+        public PopularAddressService PopularAddressService { get; private set; }
 
         public PopularAddressController(IPopularAddressDao popularAddressDao, ICommandBus commandBus)
         {

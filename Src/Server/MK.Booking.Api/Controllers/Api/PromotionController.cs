@@ -6,7 +6,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class PromotionController : BaseApiController
     {
-        public PromotionService PromotionService { get; }
+        public PromotionService PromotionService { get; private set; }
 
         public PromotionController(IPromotionDao promotionDao)
         {

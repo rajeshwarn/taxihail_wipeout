@@ -10,8 +10,8 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
 {
     public class PlacesController : BaseApiController
     {
-        public NearbyPlacesService NearbyPlacesService { get; }
-        public PlaceDetailService PlaceDetailService { get; }
+        public NearbyPlacesService NearbyPlacesService { get; private set; }
+        public PlaceDetailService PlaceDetailService { get; private set; }
 
         public PlacesController(IPlaces client, IAccountDao accountDao)
         {

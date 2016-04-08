@@ -11,9 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 {
     public class RuleAdministrationController : BaseApiController
     {
-        public RuleActivateService RuleActivateService { get; }
-        public RuleDeactivateService RuleDeactivateService { get; }
-        public RulesService RulesService { get; }
+        public RuleActivateService RuleActivateService { get; private set; }
+        public RuleDeactivateService RuleDeactivateService { get; private set; }
+        public RulesService RulesService { get; private set; }
 
         public RuleAdministrationController(IRuleDao ruleDao, ICommandBus commandBus)
         {

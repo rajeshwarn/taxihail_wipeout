@@ -17,8 +17,8 @@ namespace apcurium.MK.Web.Controllers.Api
     [RoutePrefix("api/v2/accounts/test")]
     public class TestOnlyEndpointController : BaseApiController
     {
-        public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; }
-        public TestOnlyReqGetTestAdminAccountService TestOnlyReqGetTestAdminAccountService { get; set; }
+        public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; private set; }
+        public TestOnlyReqGetTestAdminAccountService TestOnlyReqGetTestAdminAccountService { get; private set; }
 
         public TestOnlyEndpointController(IAccountDao accountDao, ICommandBus commandBus, ICreditCardDao creditCardDao)
         {

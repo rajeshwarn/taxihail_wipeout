@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
     [RoutePrefix("api/v2/payments/braintree")]
     public class BraintreeClientPaymentController : BaseApiController
     {
-        public BraintreeClientPaymentService BraintreeClientPaymentService { get; }
+        public BraintreeClientPaymentService BraintreeClientPaymentService { get; private set; }
 
         public BraintreeClientPaymentController(IServerSettings serverSettings)
         {

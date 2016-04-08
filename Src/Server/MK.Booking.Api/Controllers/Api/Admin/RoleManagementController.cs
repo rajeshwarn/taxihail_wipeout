@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
 {
     public class RoleManagementController : BaseApiController
     {
-        public GrantAdminRightService AdminRightService { get; }
+        public GrantAdminRightService AdminRightService { get; private set; }
 
         public RoleManagementController(ICommandBus commandBus, IAccountDao accountDao)
         {

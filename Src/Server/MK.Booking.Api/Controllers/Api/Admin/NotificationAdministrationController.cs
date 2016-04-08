@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [Auth(Role = RoleName.Admin)]
     public class NotificationAdministrationController : BaseApiController
     {
-        public NotificationAdministrationService NotificationAdministrationService { get; }
+        public NotificationAdministrationService NotificationAdministrationService { get; private set; }
 
         public NotificationAdministrationController(IAccountDao accountDao, IDeviceDao deviceDao, INotificationService notificationService, IServerSettings serverSettings)
         {

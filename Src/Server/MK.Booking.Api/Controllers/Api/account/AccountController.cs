@@ -20,12 +20,12 @@ namespace apcurium.MK.Web.Controllers.Api.Account
 {
     public class AccountController : BaseApiController
     {
-        public BookingSettingsService BookingSettingsService { get; }
-        public ConfirmAccountService ConfirmAccountService { get; }
-        public ResetPasswordService ResetPasswordService { get; }
-        public RegisterAccountService RegisterAccountService { get; }
-        public CurrentAccountService CurrentAccountService { get; }
-        public UpdatePasswordService UpdatePasswordService { get; }
+        public BookingSettingsService BookingSettingsService { get; private set; }
+        public ConfirmAccountService ConfirmAccountService { get; private set; }
+        public ResetPasswordService ResetPasswordService { get; private set; }
+        public RegisterAccountService RegisterAccountService { get; private set; }
+        public CurrentAccountService CurrentAccountService { get; private set; }
+        public UpdatePasswordService UpdatePasswordService { get; private set; }
         
 
         public AccountController(IAccountDao accountDao, 

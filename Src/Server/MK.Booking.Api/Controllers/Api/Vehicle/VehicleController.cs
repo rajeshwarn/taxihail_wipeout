@@ -21,7 +21,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
     public class VehicleController : BaseApiController
     {
-        public VehicleService VehicleService { get; }
+        public VehicleService VehicleService { get; private set; }
 
         public VehicleController(
             IIBSServiceProvider ibsServiceProvider,

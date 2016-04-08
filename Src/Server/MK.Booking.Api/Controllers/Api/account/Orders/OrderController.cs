@@ -25,15 +25,15 @@ namespace apcurium.MK.Web.Controllers.Api.account
     [Auth]
     public class OrderController : BaseApiController
     {
-        public CancelOrderService CancelOrderService { get;  }
-        public OrderService OrderService { get; }
-        public CreateOrderService CreateOrderService { get; }
-        public OrderUpdateService OrderUpdateService { get; }
-        private AccountOrderListService AccountOrderListService { get; }
-        public OrderStatusService OrderStatusService { get; }
-        public ActiveOrderStatusService ActiveOrderStatusService { get; }
+        public CancelOrderService CancelOrderService { get; private set; }
+        public OrderService OrderService { get; private set; }
+        public CreateOrderService CreateOrderService { get; private set; }
+        public OrderUpdateService OrderUpdateService { get; private set; }
+        public AccountOrderListService AccountOrderListService { get; private set; }
+        public OrderStatusService OrderStatusService { get; private set; }
+        public ActiveOrderStatusService ActiveOrderStatusService { get; private set; }
 
-        public OrderPairingService PairingService { get; }
+        public OrderPairingService PairingService { get; private set; }
 
         public OrderController(
             IAccountDao accountDao, 

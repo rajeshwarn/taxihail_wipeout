@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class DirectionsController : BaseApiController
     {
-        public DirectionsService DirectionsService { get;  }
+        public DirectionsService DirectionsService { get; private set; }
 
         public DirectionsController(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus, ITaxiHailNetworkServiceClient networkServiceClient)
         {

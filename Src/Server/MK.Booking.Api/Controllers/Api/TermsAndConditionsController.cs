@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class TermsAndConditionsController : BaseApiController
     {
-        public TermsAndConditionsService TermsAndConditionsService { get; }
+        public TermsAndConditionsService TermsAndConditionsService { get; private set; }
         public TermsAndConditionsController(ICompanyDao companyDao, ICommandBus commandBus)
         {
             TermsAndConditionsService = new TermsAndConditionsService(companyDao, commandBus);

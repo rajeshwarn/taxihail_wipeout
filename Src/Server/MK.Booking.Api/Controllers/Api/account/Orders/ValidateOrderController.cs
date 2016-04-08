@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
     public class ValidateOrderController : BaseApiController
     {
-        public ValidateOrderService ValidateOrderService { get;  }
+        public ValidateOrderService ValidateOrderService { get; private set; }
 
         public ValidateOrderController(
             IServerSettings serverSettings,

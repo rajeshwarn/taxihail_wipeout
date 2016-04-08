@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
     public class PayPalCheckoutController : BaseApiController
     {
-        public PayPalCheckoutService PayPalCheckoutService { get; }
+        public PayPalCheckoutService PayPalCheckoutService { get; private set; }
 
         public PayPalCheckoutController(ICommandBus commandBus,
             ILogger logger,

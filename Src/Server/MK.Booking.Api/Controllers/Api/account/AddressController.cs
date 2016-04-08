@@ -20,9 +20,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     [Auth]
     public class AddressController : BaseApiController
     {
-        public AddressesService AddressesService { get; }
-        public AddressHistoryService AddressHistoryService { get;  }
-        public SaveAddressService SaveAddressService { get;  }
+        public AddressesService AddressesService { get; private set; }
+        public AddressHistoryService AddressHistoryService { get; private set; }
+        public SaveAddressService SaveAddressService { get; private set; }
 
         public AddressController(IAddressDao addressDao, IAccountDao accountDao, ICommandBus commandBus)
         {

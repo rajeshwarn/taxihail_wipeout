@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class RatingTypesController : BaseApiController
     {
-        public RatingTypesService RatingTypesService { get; set; }
+        public RatingTypesService RatingTypesService { get; private set; }
 
         public RatingTypesController(IRatingTypeDao ratingTypeDao, ICommandBus commandBus)
         {

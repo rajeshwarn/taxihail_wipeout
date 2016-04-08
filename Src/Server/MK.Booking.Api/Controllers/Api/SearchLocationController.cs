@@ -9,7 +9,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class SearchLocationController : BaseApiController
     {
-        public SearchLocationsService SearchLocationsService { get; }
+        public SearchLocationsService SearchLocationsService { get; private set; }
 
         public SearchLocationController(IAddresses addressClient, IAccountDao accountDao)
         {

@@ -9,7 +9,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
 {
     public class GeocodingController : BaseApiController
     {
-        public GeocodingService GeocodingService { get; }
+        public GeocodingService GeocodingService { get; private set; }
 
         public GeocodingController(IGeocoding geocoding, IAccountDao accountDao)
         {

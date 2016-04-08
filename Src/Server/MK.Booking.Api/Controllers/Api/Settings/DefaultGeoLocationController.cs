@@ -7,7 +7,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
 {
     public class DefaultGeoLocationController : BaseApiController
     {
-        public DefaultGeoLocationService DefaultGeoLocationService { get; }
+        public DefaultGeoLocationService DefaultGeoLocationService { get; private set; }
 
         public DefaultGeoLocationController(IServerSettings serverSettings)
         {

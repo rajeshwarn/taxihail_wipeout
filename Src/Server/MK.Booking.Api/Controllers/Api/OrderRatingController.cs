@@ -11,7 +11,7 @@ namespace apcurium.MK.Web.Controllers.Api
     [Auth]
     public class OrderRatingController : BaseApiController
     {
-        public OrderRatingsService OrderRatingsService { get; }
+        public OrderRatingsService OrderRatingsService { get; private set; }
 
         public OrderRatingController(IOrderRatingsDao orderRatingDao, ICommandBus commandBus)
         {

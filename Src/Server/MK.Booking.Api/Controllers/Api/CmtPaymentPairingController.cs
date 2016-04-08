@@ -12,7 +12,7 @@ namespace apcurium.MK.Web.Controllers.Api
 {
     public class CmtPaymentPairingController : BaseApiController
     {
-        public CmtPaymentPairingService CmtPaymentService { get; }
+        public CmtPaymentPairingService CmtPaymentService { get; private set; }
 
         public CmtPaymentPairingController(IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, ILogger logger, ICommandBus commandBus, IServerSettings serverSettings)
         {

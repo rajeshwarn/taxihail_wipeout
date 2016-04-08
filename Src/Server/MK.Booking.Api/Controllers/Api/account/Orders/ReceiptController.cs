@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
     public class ReceiptController : BaseApiController
     {
-        public SendReceiptService SendReceiptService { get; }
+        public SendReceiptService SendReceiptService { get; private set; }
 
         public ReceiptController(ICommandBus commandBus,
             IIBSServiceProvider ibsServiceProvider,

@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
 {
     public class PaymentSettingsController : BaseApiController
     {
-        public PaymentSettingsService PaymentSettingsService { get; }
+        public PaymentSettingsService PaymentSettingsService { get; private set; }
         public PaymentSettingsController(ICommandBus commandBus,
             IConfigurationDao configurationDao,
             ILogger logger,

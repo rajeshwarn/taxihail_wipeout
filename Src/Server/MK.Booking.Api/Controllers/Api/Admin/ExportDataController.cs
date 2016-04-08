@@ -19,7 +19,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("api/v2/admin/export")]
     public class ExportDataController : BaseApiController
     {
-        public ExportDataService ExportDataService { get;  }
+        public ExportDataService ExportDataService { get; private set; }
 
         public ExportDataController(IAccountDao accountDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao, IPromotionDao promotionsDao)
         {
