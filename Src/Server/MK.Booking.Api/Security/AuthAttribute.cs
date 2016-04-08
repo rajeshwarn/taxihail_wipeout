@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
-using System.Web.Http.Results;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Caching;
@@ -27,6 +23,8 @@ namespace apcurium.MK.Web.Security
             AllowMultiple = true;
             _accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             _cacheClient = UnityServiceLocator.Instance.Resolve<ICacheClient>();
+
+            Role = RoleName.None;
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace apcurium.MK.Web.Security
         /// If we choose to restrict to admin, the superadmin will have access also.
         /// If we choose to restrict to superadmin, only the superadmin will have access
         /// </remarks>
-        public string Role { get; set; } = RoleName.None;
+        public string Role { get; set; }
 
         public bool AllowMultiple { get; }
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)

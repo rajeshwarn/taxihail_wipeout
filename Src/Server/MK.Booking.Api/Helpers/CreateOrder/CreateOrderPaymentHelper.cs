@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -11,7 +12,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
-using static apcurium.MK.Booking.Api.Services.BaseApiService;
 
 namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 {
@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     return paypalWebPaymentResponse;
                 }
 
-                var createOrderException = GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+                var createOrderException = BaseApiService.GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
 
                 createReportOrder.Error = createOrderException.ToString();
                 _commandBus.Send(createReportOrder);

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Text;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using System.Web.Http.Results;
 using apcurium.MK.Booking.Api.Extensions;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
 using Microsoft.Practices.Unity;
-using MK.Common.Serializer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -88,12 +83,12 @@ namespace apcurium.MK.Booking.Api.Services
                 baseApiService.HttpRequest = Request;
                 baseApiService.HttpRequestContext = RequestContext;
             }
-
-
-            targets.ToArray();
         }
 
-        protected ILogger Logger { get; set; } = UnityContainer.Instance.Resolve<ILogger>();
+        protected ILogger Logger
+        {
+            get { return UnityContainer.Instance.Resolve<ILogger>(); }
+        }
 
         private string _sessionKey;
         protected string SessionKey
@@ -116,6 +111,7 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
         private SessionEntity _session;
+
         public SessionEntity Session
         {
             get

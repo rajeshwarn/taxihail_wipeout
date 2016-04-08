@@ -13,7 +13,13 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class BaseApiService
     {
-        public SessionEntity Session { get; set; } = new SessionEntity();
+        private SessionEntity _session;
+        
+        public SessionEntity Session
+        {
+            get { return _session ?? new SessionEntity(); }
+            set { _session = value; }
+        }
 
         public HttpRequestContext HttpRequestContext { get; set; }
 
