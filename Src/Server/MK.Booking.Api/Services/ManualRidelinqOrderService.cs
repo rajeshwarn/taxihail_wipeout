@@ -19,6 +19,7 @@ using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.P
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
+using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -70,9 +71,10 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public async Task<ManualRideLinqResponse> Post(ManualRideLinqPairingRequest request)
+        
+        private void ValidateAppVersion(AccountDetail account)
         {
-            var appVersionString = base.Request.Headers.Get("ClientVersion");
+            var appVersionString = HttpRequest.Headers.GetValues("ClientVersion").FirstOrDefault();
             var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
 
             if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
@@ -88,7 +90,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new Exception(string.Format("App version not supported (email: {0}, version: {1}, required: {2})", account.Email, appVersionString, minimumAppVersionString));
             }
         }
-
+        public async Task<ManualRideLinqResponse> Post(ManualRideLinqPairingRequest request)
         {
 	        try
 	        {
