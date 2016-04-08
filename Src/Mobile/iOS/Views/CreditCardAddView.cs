@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.CreditCardSaveButtonDisplay);
 
 			set.Bind(btnSaveCard)
-				.For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
 				.To(vm => vm.IsAddingNewCard)
 				.WithConversion("BoolInverter");
 
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.DeleteCreditCardCommand);
             
 			set.Bind(btnDeleteCard)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
             
@@ -114,12 +114,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.SetAsDefault);
             
             set.Bind(btnCardDefault)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanSetCreditCardAsDefault)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnScanCard)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanScanCreditCard)
                 .WithConversion("BoolInverter");
 

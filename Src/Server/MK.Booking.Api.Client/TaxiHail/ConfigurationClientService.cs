@@ -32,12 +32,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
+                Logger.LogError(ex, string.Empty, -1, true);
                 if (shouldThrowExceptionIfError)
                 {
                     throw;
                 }
-
-                Logger.LogError(ex);
 
                 return new Dictionary<string, string>();
 			}
@@ -55,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
-                Logger.LogError(ex);
+                Logger.LogError(ex, string.Empty, -1, true);
 			}	
 			return paymentSettings;
 		}

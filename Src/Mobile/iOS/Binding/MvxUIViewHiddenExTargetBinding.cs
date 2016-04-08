@@ -32,6 +32,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void HideAndDealWithConstraints(UIView view, bool hidden)
         {
+            if (view.Hidden == hidden)
+            {
+                return;
+            }
+
             view.Hidden = hidden;
 
             if (hidden)

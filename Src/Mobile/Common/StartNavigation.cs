@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			await appSettings.Load();
 
-			if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled || appSettings.Data.FacebookPublishEnabled)
 			{
 				facebookService.Init();
 			}

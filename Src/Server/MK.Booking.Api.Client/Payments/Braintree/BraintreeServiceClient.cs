@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: Logger);
         }
 
-        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)
         {
             return Client.PostAsync(new SettleOverduePaymentRequest(), Logger);
         }

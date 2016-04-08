@@ -139,7 +139,9 @@ namespace apcurium.MK.Common.Extensions
 
                 if (errorResponse != null && errorResponse.ResponseStatus != null)
                 {
-                    throw new WebServiceException(errorResponse.ResponseStatus.ErrorCode) 
+                    throw new WebServiceException(errorResponse.ResponseStatus.Message.HasValueTrimmed() 
+                        ? errorResponse.ResponseStatus.Message 
+                        : errorResponse.ResponseStatus.ErrorCode) 
                     {
                         StatusCode = (int)result.StatusCode,
                         StatusDescription = result.ReasonPhrase,

@@ -407,25 +407,25 @@
         <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
     }
 
-            @if (Model.StartDate.HasValue)
+           @if (Model.StartDate.HasValue)
     {
         var startDate = @Html.Raw(Json.Encode(Model.StartDate));
-        <text>$('#StartDate').datepicker('setValue', moment(@startDate).format('L'));</text>
+        <text>$('#StartDate').datepicker('setValue', moment(@startDate).utc().format('L'));</text>
     }
             @if (Model.EndDate.HasValue)
     {
         var endDate = @Html.Raw(Json.Encode(Model.EndDate));
-        <text>$('#EndDate').datepicker('setValue', moment(@endDate).format('L'));</text>
+        <text>$('#EndDate').datepicker('setValue', moment(@endDate).utc().format('L'));</text>
     }
             @if (Model.PublishedStartDate.HasValue)
     {
         var publishedStartDate = @Html.Raw(Json.Encode(Model.PublishedStartDate));
-        <text>$('#PublishedStartDate').datepicker('setValue', moment(@publishedStartDate).format('L'));</text>
+        <text>$('#PublishedStartDate').datepicker('setValue', moment(@publishedStartDate).utc().format('L'));</text>
     }
             @if (Model.PublishedEndDate.HasValue)
     {
         var publishedEndDate = @Html.Raw(Json.Encode(Model.PublishedEndDate));
-        <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).format('L'));</text>
+        <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).utc().format('L'));</text>
     }
 
             @if (!Model.CanModifyTriggerGoal)

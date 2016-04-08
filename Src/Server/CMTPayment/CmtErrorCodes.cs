@@ -1,5 +1,7 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace CMTPayment
 {
@@ -23,6 +25,8 @@ namespace CMTPayment
 
         public const int PaymentProcessingError = 115;
 
+        public const int TripAlreadyAuthorized = 615;
+
         /// <summary>
         /// Errors that mean we should stop polling
         /// </summary>
@@ -40,6 +44,25 @@ namespace CMTPayment
                     TripUnpaired
                 };
             }
+        }
+
+        public static bool IsTerminalError(string pairingError)
+        {
+            // Using EndsWith here since pairingError is saved in the DB with the following pattern: CMT Pairing Error Code: {code}
+            return pairingError.HasValueTrimmed() && TerminalErrors.Any(error => pairingError.EndsWith(error.ToString()));
+        }
+
+        public static int? ExtractTerminalError(string pairingError)
+        {
+            if (!pairingError.HasValueTrimmed())
+            {
+                return null;
+            }
+
+            return TerminalErrors
+                .Select(error => (int?) error)
+                // Using EndsWith here since pairingError is saved in the DB with the following pattern: CMT Pairing Error Code: {code}
+                .FirstOrDefault(error => error.HasValue && pairingError.EndsWith(error.Value.ToString()));
         }
     }
 }

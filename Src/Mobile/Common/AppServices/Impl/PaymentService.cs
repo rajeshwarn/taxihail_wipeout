@@ -139,9 +139,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().GetOverduePayment();
 		}
 
-        public async Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        public async Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)
         {
-            return await GetClient().SettleOverduePayment();
+            return await GetClient().SettleOverduePayment(kountSessionId);
         }
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)

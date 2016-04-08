@@ -652,15 +652,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			await _accountService.RemoveCreditCard(Data.CreditCardId);
 
-			if (_accountService.CurrentAccount.DefaultCreditCard == null)
-			{
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-			}
-			else
-			{
-				Close(this);
-			}
-		}
+            Close(this);
+        }
 
         private async Task SaveCreditCard()
         {

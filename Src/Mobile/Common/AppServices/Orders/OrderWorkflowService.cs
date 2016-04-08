@@ -305,8 +305,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
+                Logger.LogMessage("MarketSettings for order {0}: {1}", orderCreated.Id, _marketSettings.ToJson());
 
-				_deviceCollectorService.GenerateNewSessionIdAndCollect();
+                _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}
@@ -953,7 +954,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				order.PickupDate = DateTime.SpecifyKind (order.PickupDate.Value, DateTimeKind.Unspecified);
 			}
 
-			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
+            order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
