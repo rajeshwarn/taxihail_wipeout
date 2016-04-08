@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (_accountDao.FindByEmail(request.Email) != null)
             {
-                throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
             }
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
@@ -51,12 +52,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                throw new HttpException(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+                throw GenerateException(HttpStatusCode.BadRequest, string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
             }
 
             if (_blackListEntryService.GetAll().Any(e => e.PhoneNumber.Equals(request.Phone)))
             {
-                throw new HttpException(_resources.Get("PhoneBlackListed"));
+                throw GenerateException(HttpStatusCode.BadRequest, _resources.Get("PhoneBlackListed"));
             }
 
             if (request.FacebookId.HasValue())
@@ -64,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Facebook registration
                 if (_accountDao.FindByFacebookId(request.FacebookId) != null)
                 {
-                    throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                    throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
                 }
                     
                 var command = new RegisterFacebookAccount();
@@ -81,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Twitter registration
                 if (_accountDao.FindByTwitterId(request.TwitterId) != null)
                 {
-                    throw new HttpException(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                    throw GenerateException(HttpStatusCode.BadRequest, ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
                 }
                     
                 var command = new RegisterTwitterAccount();
