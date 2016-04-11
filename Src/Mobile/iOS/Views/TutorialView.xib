@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TutorialView">
             <connections>
                 <outlet property="btnClose" destination="12" id="14"/>
+                <outlet property="btnCloseTarget" destination="00B-k1-g6w" id="IKN-4N-dOE"/>
                 <outlet property="contentView" destination="11" id="15"/>
                 <outlet property="pageControl" destination="6" id="7"/>
                 <outlet property="scrollview" destination="4" id="5"/>
@@ -65,23 +67,29 @@
                         <constraint firstAttribute="width" secondItem="4" secondAttribute="width" id="zZJ-9J-rAo"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00B-k1-g6w" userLabel="Btn Close target">
+                    <rect key="frame" x="262" y="0.0" width="51" height="51"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="51" id="1ca-XY-IU8"/>
+                        <constraint firstAttribute="width" constant="51" id="q0w-ax-BTe"/>
+                    </constraints>
+                    <state key="normal" title=" "/>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="00B-k1-g6w" firstAttribute="top" secondItem="1" secondAttribute="top" id="Z76-vA-l0c"/>
+                <constraint firstItem="00B-k1-g6w" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="elf-zU-gj3"/>
                 <constraint firstAttribute="trailing" secondItem="11" secondAttribute="trailing" constant="7" id="jQH-IR-clk"/>
                 <constraint firstItem="11" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="7" id="res-ZF-su2"/>
                 <constraint firstAttribute="bottom" secondItem="11" secondAttribute="bottom" constant="20" id="wJU-89-Gji"/>
                 <constraint firstItem="11" firstAttribute="top" secondItem="1" secondAttribute="top" constant="22" id="xzl-eQ-Ubx"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="254" y="357"/>
         </view>
     </objects>
     <resources>
         <image name="close_tutorial_button.png" width="13" height="13"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

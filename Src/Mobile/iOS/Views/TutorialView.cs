@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var set = this.CreateBindingSet<TutorialView, TutorialViewModel>();
 
-			set.BindSafe(btnClose)
+			set.BindSafe(btnCloseTarget)
 				.For("TouchUpInside")
 				.To(vm => vm.CloseCommand);
 
