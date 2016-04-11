@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Web.Security;
-using CustomerPortal.Client;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Vehicle
 {
@@ -23,17 +13,9 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
     {
         public VehicleService VehicleService { get; private set; }
 
-        public VehicleController(
-            IIBSServiceProvider ibsServiceProvider,
-            IVehicleTypeDao dao,
-            ICommandBus commandBus,
-            ReferenceDataService referenceDataService,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IServerSettings serverSettings,
-            ILogger logger,
-            IOrderDao orderDao)
+        public VehicleController(VehicleService vehicleService)
         {
-            VehicleService = new VehicleService(ibsServiceProvider, dao, commandBus, referenceDataService, taxiHailNetworkServiceClient, serverSettings, logger, orderDao );
+            VehicleService = vehicleService;
         }
 
         [HttpPost, Route("api/v2/vehicles")]

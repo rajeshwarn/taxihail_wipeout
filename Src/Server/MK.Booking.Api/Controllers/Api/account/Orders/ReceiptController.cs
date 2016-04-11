@@ -2,13 +2,8 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
@@ -16,18 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
     {
         public SendReceiptService SendReceiptService { get; private set; }
 
-        public ReceiptController(ICommandBus commandBus,
-            IIBSServiceProvider ibsServiceProvider,
-            IOrderDao orderDao,
-            IOrderPaymentDao orderPaymentDao,
-            ICreditCardDao creditCardDao,
-            IAccountDao accountDao,
-            IPromotionDao promotionDao,
-            IReportDao reportDao,
-            IServerSettings serverSettings,
-            IGeocoding geocoding)
+        public ReceiptController(SendReceiptService sendReceiptService)
         {
-            SendReceiptService = new SendReceiptService(commandBus, ibsServiceProvider, orderDao, orderPaymentDao, creditCardDao, accountDao, promotionDao, reportDao, serverSettings, geocoding, Logger);
+            SendReceiptService = sendReceiptService;
         }
 
         [HttpPost, Auth, Route("api/v2/accounts/orders/{orderId}/sendreceipt")]

@@ -1,38 +1,27 @@
 ﻿using System.Web.Http;
-using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
     public class ApplicationInfoController : BaseApiController
     {
-        private readonly ApplicationInfoService _applicationInfoService;
-        private readonly AppStartUpLogService _appStartUpLogStartUpLogService;
+        public ApplicationInfoService InfoService { get; private set; }
+        public AppStartUpLogService AppStartUpLogStartUpLogService { get; private set; }
 
 
-        public ApplicationInfoController(IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
+        public ApplicationInfoController(ApplicationInfoService infoService, AppStartUpLogService appStartUpLogStartUpLogService)
         {
-            _applicationInfoService = new ApplicationInfoService(serverSettings);
-
-            _appStartUpLogStartUpLogService = new AppStartUpLogService(appStartUpLogDao);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_appStartUpLogStartUpLogService, _applicationInfoService);
+            InfoService = infoService;
+            AppStartUpLogStartUpLogService = appStartUpLogStartUpLogService;
         }
 
         [HttpGet, Route("api/v2/app/info")]
         public IHttpActionResult GetApplicationInfo()
         {
-            var result = _applicationInfoService.Get();
+            var result = InfoService.Get();
 
             return GenerateActionResult(result);
         }
@@ -40,7 +29,7 @@ namespace apcurium.MK.Web.Controllers.Api
         [HttpGet, Route("api/v2/app/starts/{lastMinutes}"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult AppStartUpLog(long lastMinutes)
         {
-            var result = _appStartUpLogStartUpLogService.Get(new AppStartUpLogRequest() {LastMinutes = lastMinutes});
+            var result = AppStartUpLogStartUpLogService.Get(new AppStartUpLogRequest() {LastMinutes = lastMinutes});
 
             return GenerateActionResult(result);
         }

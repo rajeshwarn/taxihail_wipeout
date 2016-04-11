@@ -3,12 +3,6 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using CustomerPortal.Client;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -16,9 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public DirectionsService DirectionsService { get; private set; }
 
-        public DirectionsController(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus, ITaxiHailNetworkServiceClient networkServiceClient)
+        public DirectionsController(DirectionsService directionsService)
         {
-            DirectionsService = new DirectionsService(client, serverSettings, orderDao, vehicleService, logger, commandBus, networkServiceClient);
+            DirectionsService = directionsService;
         }
 
         [HttpGet, Route("api/v2/directions")]

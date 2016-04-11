@@ -2,7 +2,6 @@
 using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
@@ -10,24 +9,17 @@ namespace apcurium.MK.Web.Controllers.Api
     [RoutePrefix("api/v2/flightInfo")]
     public class FlightInformationController : BaseApiController
     {
-        private readonly FlightInformationService _flightInformationService;
+        public FlightInformationService InformationService { get; private set;  }
 
-        public FlightInformationController(IServerSettings serverSettings)
+        public FlightInformationController(FlightInformationService informationService)
         {
-            _flightInformationService = new FlightInformationService(serverSettings);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_flightInformationService);
+            InformationService = informationService;
         }
 
         [HttpPost, Auth]
         public IHttpActionResult GetFlightInformation(FlightInformationRequest request)
         {
-            var result = _flightInformationService.Post(request);
+            var result = InformationService.Post(request);
 
             return GenerateActionResult(result);
         }

@@ -2,10 +2,6 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Calculator;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Common.Configuration;
-using CustomerPortal.Client.Impl;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
@@ -13,13 +9,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
     {
         public ValidateOrderService ValidateOrderService { get; private set; }
 
-        public ValidateOrderController(
-            IServerSettings serverSettings,
-            IIBSServiceProvider ibsServiceProvider,
-            IRuleCalculator ruleCalculator,
-            TaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+        public ValidateOrderController(ValidateOrderService validateOrderService)
         {
-            ValidateOrderService = new ValidateOrderService(serverSettings, ibsServiceProvider, ruleCalculator, taxiHailNetworkServiceClient);
+            ValidateOrderService = validateOrderService;
         }
 
         [HttpPost, Route("api/v2/accounts/orders/validate")]

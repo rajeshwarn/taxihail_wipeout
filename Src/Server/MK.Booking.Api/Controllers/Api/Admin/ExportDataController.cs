@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Admin;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Security;
 
@@ -21,9 +16,9 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     {
         public ExportDataService ExportDataService { get; private set; }
 
-        public ExportDataController(IAccountDao accountDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao, IPromotionDao promotionsDao)
+        public ExportDataController(ExportDataService exportDataService)
         {
-            ExportDataService = new ExportDataService(accountDao, reportDao, serverSettings, appStartUpLogDao, promotionsDao);
+            ExportDataService = exportDataService;
         }
 
         [HttpPost, Route("{target}"), Auth(Role = RoleName.Support)]

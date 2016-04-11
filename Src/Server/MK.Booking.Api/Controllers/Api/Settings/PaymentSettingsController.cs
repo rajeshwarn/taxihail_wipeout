@@ -2,29 +2,17 @@
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Web.Security;
-using CustomerPortal.Client;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
     public class PaymentSettingsController : BaseApiController
     {
         public PaymentSettingsService PaymentSettingsService { get; private set; }
-        public PaymentSettingsController(ICommandBus commandBus,
-            IConfigurationDao configurationDao,
-            ILogger logger,
-            IServerSettings serverSettings,
-            IPayPalServiceFactory paypalServiceFactory,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IConfigurationChangeService configurationChangeService)
+        public PaymentSettingsController(PaymentSettingsService paymentSettingsService)
         {
-            PaymentSettingsService = new PaymentSettingsService(commandBus, configurationDao, logger, serverSettings, paypalServiceFactory, taxiHailNetworkServiceClient, configurationChangeService);
+            PaymentSettingsService = paymentSettingsService;
         }
 
         [HttpGet, Auth, Route("api/v2/settings/payments")]

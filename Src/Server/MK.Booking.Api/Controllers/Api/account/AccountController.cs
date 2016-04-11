@@ -7,14 +7,9 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
@@ -28,26 +23,20 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         public UpdatePasswordService UpdatePasswordService { get; private set; }
         
 
-        public AccountController(IAccountDao accountDao, 
-            IServerSettings serverSettings,
-            IAccountChargeDao accountChargeDao, 
-            ICommandBus commandBus,
-            IIBSServiceProvider ibsServiceProvider,
-            ITemplateService templateService,
-            IBlackListEntryService blackListEntryService,
-            ICreditCardDao creditCardDao)
+        public AccountController(
+            BookingSettingsService bookingSettingsService,
+            ConfirmAccountService confirmAccountService, 
+            ResetPasswordService resetPasswordService, 
+            RegisterAccountService registerAccountService, 
+            CurrentAccountService currentAccountService,
+            UpdatePasswordService updatePasswordService)
         {
-            BookingSettingsService = new BookingSettingsService(accountChargeDao, accountDao, commandBus, ibsServiceProvider, serverSettings);
-
-            ConfirmAccountService = new ConfirmAccountService(commandBus,accountDao,templateService, blackListEntryService, serverSettings);
-
-            RegisterAccountService = new RegisterAccountService(commandBus, accountDao, serverSettings, blackListEntryService);
-
-            ResetPasswordService = new ResetPasswordService(commandBus, accountDao);
-
-            UpdatePasswordService = new UpdatePasswordService(commandBus, accountDao);
-
-            CurrentAccountService = new CurrentAccountService(accountDao, creditCardDao, serverSettings);
+            BookingSettingsService = bookingSettingsService;
+            ConfirmAccountService = confirmAccountService;
+            ResetPasswordService = resetPasswordService;
+            RegisterAccountService = registerAccountService;
+            CurrentAccountService = currentAccountService;
+            UpdatePasswordService = updatePasswordService;
         }
 
         [HttpPut, Auth(Role = RoleName.Support), Route("api/v2/accounts/update/{accountId}")]

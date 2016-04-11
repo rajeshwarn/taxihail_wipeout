@@ -2,9 +2,7 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -13,9 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public OrderRatingsService OrderRatingsService { get; private set; }
 
-        public OrderRatingController(IOrderRatingsDao orderRatingDao, ICommandBus commandBus)
+        public OrderRatingController(OrderRatingsService orderRatingsService)
         {
-            OrderRatingsService = new OrderRatingsService(orderRatingDao, commandBus);
+            OrderRatingsService = orderRatingsService;
         }
 
         [HttpGet, Route("api/v2/ratings/{orderId}")]

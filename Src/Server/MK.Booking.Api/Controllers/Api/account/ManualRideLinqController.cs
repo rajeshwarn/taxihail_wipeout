@@ -1,46 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
     [RoutePrefix("api/v2/accounts/manualridelinq")]
     public class ManualRideLinqController : BaseApiController
     {
-        private readonly ManualRidelinqOrderService _manualRidelinqOrderService;
+        public ManualRidelinqOrderService ManualRidelinqOrderService { get; private set; }
 
-        public ManualRideLinqController(
-            ICommandBus commandBus, 
-            IOrderDao orderDao,
-            IAccountDao accountDao,
-            ICreditCardDao creditcardDao,
-            IServerSettings serverSettings, 
-            ILogger logger, 
-            INotificationService notification)
+        public ManualRideLinqController(ManualRidelinqOrderService manualRidelinqOrderService)
         {
-            _manualRidelinqOrderService = new ManualRidelinqOrderService(commandBus, orderDao, accountDao, creditcardDao, serverSettings, logger, notification);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_manualRidelinqOrderService);
+            ManualRidelinqOrderService = manualRidelinqOrderService;
         }
 
         [HttpGet, Route("{orderId}"), Auth]
         public IHttpActionResult GetManualRideling(Guid orderId)
         {
-            var result = _manualRidelinqOrderService.Get(new ManualRideLinqRequest() {OrderId = orderId});
+            var result = ManualRidelinqOrderService.Get(new ManualRideLinqRequest() {OrderId = orderId});
 
             return GenerateActionResult(result);
         }
@@ -48,7 +28,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         [HttpDelete, Route("{orderId}"), Auth]
         public async Task<IHttpActionResult> DeleteManualRideling(Guid orderId)
         {
-            await _manualRidelinqOrderService.Delete(new ManualRideLinqRequest() { OrderId = orderId });
+            await ManualRidelinqOrderService.Delete(new ManualRideLinqRequest() { OrderId = orderId });
 
             return Ok();
         }
@@ -56,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         [HttpPost, Auth]
         public async Task<IHttpActionResult> PairWithManualRidelinq([FromBody] ManualRideLinqPairingRequest request)
         {
-            var result = await _manualRidelinqOrderService.Post(request);
+            var result = await ManualRidelinqOrderService.Post(request);
 
             return GenerateActionResult(result);
         }
@@ -66,7 +46,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         {
             request.OrderId = orderId;
 
-            var result = await _manualRidelinqOrderService.Put(request);
+            var result = await ManualRidelinqOrderService.Put(request);
 
             return GenerateActionResult(result);
         }

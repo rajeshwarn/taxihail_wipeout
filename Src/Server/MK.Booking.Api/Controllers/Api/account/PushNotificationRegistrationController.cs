@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
@@ -11,9 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account
     {
         public PushNotificationRegistrationService PushNotificationRegistrationService { get; private set; }
 
-        public PushNotificationRegistrationController(IAccountDao accountDao, IDeviceDao deviceDao)
+        public PushNotificationRegistrationController(PushNotificationRegistrationService pushNotificationRegistrationService)
         {
-            PushNotificationRegistrationService = new PushNotificationRegistrationService(accountDao, deviceDao);
+            PushNotificationRegistrationService = pushNotificationRegistrationService;
         }
 
         [HttpPost, Route("{deviceToken}")]

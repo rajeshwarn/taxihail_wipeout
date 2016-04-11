@@ -1,49 +1,32 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Resources;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
     public class IbsFareController : BaseApiController
     {
-        private readonly IbsFareService _ibsFareService;
+        public IbsFareService IBSFareService { get; private set; }
 
-        public IbsFareController(IVehicleTypeDao vehicleTypeDao, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider)
+        public IbsFareController(IbsFareService ibsFareService)
         {
-            _ibsFareService = new IbsFareService(ibsServiceProvider, serverSettings, vehicleTypeDao);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_ibsFareService);
+            IBSFareService = ibsFareService;
         }
 
         [HttpGet, Route("api/v2/ibsfare")]
         public IHttpActionResult GetIbsFare([FromUri]IbsFareRequest request)
         {
-            var result = _ibsFareService.Get(request);
-
-
+            var result = IBSFareService.Get(request);
+            
             return GenerateActionResult(result);
         }
 
         [HttpGet, Route("api/v2/ibsdistance")]
         public IHttpActionResult Get([FromUri]IbsDistanceRequest request)
         {
-            var result = _ibsFareService.Get(request);
-
-
+            var result = IBSFareService.Get(request);
+            
             return GenerateActionResult(result);
         }
     }

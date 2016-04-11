@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
@@ -24,13 +14,11 @@ namespace apcurium.MK.Web.Controllers.Api.Account
         public AddressHistoryService AddressHistoryService { get; private set; }
         public SaveAddressService SaveAddressService { get; private set; }
 
-        public AddressController(IAddressDao addressDao, IAccountDao accountDao, ICommandBus commandBus)
+        public AddressController(AddressesService addressesService, AddressHistoryService addressHistoryService, SaveAddressService saveAddressService)
         {
-            AddressesService = new AddressesService(addressDao);
-
-            AddressHistoryService = new AddressHistoryService(addressDao,commandBus, accountDao );
-
-            SaveAddressService = new SaveAddressService(commandBus);
+            AddressesService = addressesService;
+            AddressHistoryService = addressHistoryService;
+            SaveAddressService = saveAddressService;
         }
 
         [HttpGet, Route("api/v2/accounts/addresses")]

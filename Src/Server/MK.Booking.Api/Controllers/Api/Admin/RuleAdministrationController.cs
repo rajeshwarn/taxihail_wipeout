@@ -2,10 +2,8 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
@@ -15,11 +13,11 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         public RuleDeactivateService RuleDeactivateService { get; private set; }
         public RulesService RulesService { get; private set; }
 
-        public RuleAdministrationController(IRuleDao ruleDao, ICommandBus commandBus)
+        public RuleAdministrationController(RuleActivateService ruleActivateService, RuleDeactivateService ruleDeactivateService, RulesService rulesService)
         {
-            RuleActivateService = new RuleActivateService(commandBus);
-            RuleDeactivateService = new RuleDeactivateService(commandBus);
-            RulesService = new RulesService(ruleDao, commandBus);
+            RuleActivateService = ruleActivateService;
+            RuleDeactivateService = ruleDeactivateService;
+            RulesService = rulesService;
         }
 
         [HttpPost, Route("api/v2/admin/rules/{ruleId}/activate"), Auth(Role = RoleName.Admin)]

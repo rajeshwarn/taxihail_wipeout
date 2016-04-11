@@ -2,10 +2,8 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -13,9 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public RatingTypesService RatingTypesService { get; private set; }
 
-        public RatingTypesController(IRatingTypeDao ratingTypeDao, ICommandBus commandBus)
+        public RatingTypesController(RatingTypesService ratingTypesService)
         {
-            RatingTypesService = new RatingTypesService(ratingTypeDao, commandBus);
+            RatingTypesService = ratingTypesService;
         }
 
         [HttpGet, Auth, Route("api/v2/ratingtypes")]

@@ -14,27 +14,19 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
 {
     public class ConfigurationController : BaseApiController
     {
-        private readonly ConfigurationResetService _configurationResetService;
-        private readonly ConfigurationsService _configurationsService;
+        public ConfigurationResetService ResetService { get; private set; }
+        public ConfigurationsService Service { get; private set; }
 
-        public ConfigurationController(ICacheClient cacheClient, IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
+        public ConfigurationController(ConfigurationResetService resetService, ConfigurationsService service)
         {
-            _configurationResetService = new ConfigurationResetService(cacheClient, serverSettings);
-
-            _configurationsService = new ConfigurationsService(serverSettings, commandBus, configDao);
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            base.Initialize(controllerContext);
-
-            PrepareApiServices(_configurationsService, _configurationResetService);
+            ResetService = resetService;
+            Service = service;
         }
 
         [HttpGet, Route("api/v2/settings/reset")]
         public IHttpActionResult ResetConfiguration()
         {
-            _configurationResetService.Get();
+            ResetService.Get();
 
             return GenerateActionResult(true);
         }
@@ -42,7 +34,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         [HttpGet, Route("api/v2/settings")]
         public IHttpActionResult GetAppSettings()
         {
-            var result = _configurationsService.Get(new ConfigurationsRequest());
+            var result = Service.Get(new ConfigurationsRequest());
             
             return GenerateActionResult(result, useCameCase: false);
         }
@@ -50,7 +42,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         [HttpGet, Route("api/v2/settings/encrypted")]
         public IHttpActionResult GetEncryptedSettings()
         {
-            var result = _configurationsService.Get(new EncryptedConfigurationsRequest());
+            var result = Service.Get(new EncryptedConfigurationsRequest());
 
             return GenerateActionResult(result, useCameCase: false);
         }
@@ -58,7 +50,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         [HttpPost, Auth(Role = RoleName.Admin), Route("settings")]
         public IHttpActionResult UpdateSettings(ConfigurationsRequest request)
         {
-            _configurationsService.Post(request);
+            Service.Post(request);
 
             return Ok();
         }
@@ -72,7 +64,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         [HttpGet, Auth, Route("api/v2/settings/notifications/{accountId}")]
         public IHttpActionResult GetNotificationSettings(Guid? accountId)
         {
-            var result = _configurationsService.Get(new NotificationSettingsRequest() {AccountId = accountId});
+            var result = Service.Get(new NotificationSettingsRequest() {AccountId = accountId});
 
             return GenerateActionResult(result);
         }
@@ -88,7 +80,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             request.AccountId = accountId;
 
-            _configurationsService.Post(request);
+            Service.Post(request);
 
             return Ok();
         }
@@ -102,7 +94,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
         public IHttpActionResult GetUserTaxiHailNetworkSettings(Guid? accountId)
         {
-            var result = _configurationsService.Get(new UserTaxiHailNetworkSettingsRequest()
+            var result = Service.Get(new UserTaxiHailNetworkSettingsRequest()
             {
                 AccountId = accountId
             });
@@ -121,7 +113,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
         {
             request.AccountId = accountId;
 
-            _configurationsService.Post(request);
+            Service.Post(request);
 
             return Ok();
         }

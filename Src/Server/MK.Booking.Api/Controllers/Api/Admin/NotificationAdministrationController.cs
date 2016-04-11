@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
@@ -19,17 +12,17 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     {
         public NotificationAdministrationService NotificationAdministrationService { get; private set; }
 
-        public NotificationAdministrationController(IAccountDao accountDao, IDeviceDao deviceDao, INotificationService notificationService, IServerSettings serverSettings)
+        public NotificationAdministrationController(NotificationAdministrationService notificationAdministrationService)
         {
-            NotificationAdministrationService = new NotificationAdministrationService(accountDao, deviceDao, notificationService, serverSettings, Logger);
+            NotificationAdministrationService = notificationAdministrationService;
         }
 
         [HttpPost, Route("api/v2/admin/testemail/{emailAddress}")]
-        public IHttpActionResult TestEmail(string emailAddress, [FromBody] TestEmailAdministrationRequest request)
+        public async Task<IHttpActionResult> TestEmail(string emailAddress, [FromBody] TestEmailAdministrationRequest request)
         {
             request.EmailAddress = emailAddress;
 
-            NotificationAdministrationService.Post(request);
+            await NotificationAdministrationService.Post(request);
 
             return Ok();
         }

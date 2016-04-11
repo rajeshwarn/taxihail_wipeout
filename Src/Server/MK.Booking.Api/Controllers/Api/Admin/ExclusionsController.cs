@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Admin;
-using apcurium.MK.Common.Caching;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
@@ -19,9 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     {
         public ExclusionsService ExclusionsService { get; private set; }
 
-        public ExclusionsController(IServerSettings serverSettings, ICommandBus commandBus, ICacheClient cacheClient)
+        public ExclusionsController(ExclusionsService exclusionsService)
         {
-            ExclusionsService = new ExclusionsService(serverSettings, commandBus, cacheClient);
+            ExclusionsService = exclusionsService;
         }
 
         [HttpGet, Auth]

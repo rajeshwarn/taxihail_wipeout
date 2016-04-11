@@ -1,10 +1,8 @@
 ﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -12,9 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public PrivacyPolicyService PrivacyPolicyService { get; private set; }
 
-        public PrivacyPolicyController(ICommandBus commandBus, ICompanyDao companyDao)
+        public PrivacyPolicyController(PrivacyPolicyService privacyPolicyService)
         {
-            PrivacyPolicyService = new PrivacyPolicyService(companyDao, commandBus);
+            PrivacyPolicyService = privacyPolicyService;
         }
 
         [HttpGet, Route("api/v2/privacypolicy")]

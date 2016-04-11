@@ -1,12 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
-using CustomerPortal.Client;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -14,12 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api
     public class ServerStatusController : BaseApiController
     {
         public ServerStatusService ServerStatusService { get; private set; }
-        public ServerStatusController(IServerSettings serverSettings,
-            IIBSServiceProvider ibsProvider,
-            ITaxiHailNetworkServiceClient networkService,
-            IOrderStatusUpdateDao statusUpdaterDao)
+        public ServerStatusController(ServerStatusService serverStatusService)
         {
-            ServerStatusService = new ServerStatusService(serverSettings, ibsProvider, Logger, networkService, statusUpdaterDao);
+            ServerStatusService = serverStatusService;
         }
 
         [HttpGet, Auth(Role = RoleName.Support)]

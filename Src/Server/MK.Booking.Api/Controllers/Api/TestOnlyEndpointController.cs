@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.IoC;
-using Infrastructure.Messaging;
-using Microsoft.Practices.Unity;
-using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -20,10 +10,10 @@ namespace apcurium.MK.Web.Controllers.Api
         public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; private set; }
         public TestOnlyReqGetTestAdminAccountService TestOnlyReqGetTestAdminAccountService { get; private set; }
 
-        public TestOnlyEndpointController(IAccountDao accountDao, ICommandBus commandBus, ICreditCardDao creditCardDao)
+        public TestOnlyEndpointController(TestOnlyReqGetTestAccountService testOnlyReqGetTestAccountService, TestOnlyReqGetTestAdminAccountService testOnlyReqGetTestAdminAccountService)
         {
-            TestOnlyReqGetTestAccountService = new TestOnlyReqGetTestAccountService(accountDao, commandBus, creditCardDao);
-            TestOnlyReqGetTestAdminAccountService = new TestOnlyReqGetTestAdminAccountService(accountDao, commandBus, creditCardDao);
+            TestOnlyReqGetTestAccountService = testOnlyReqGetTestAccountService;
+            TestOnlyReqGetTestAdminAccountService = testOnlyReqGetTestAdminAccountService;
         }
 
         [HttpGet, Route("{index}")]

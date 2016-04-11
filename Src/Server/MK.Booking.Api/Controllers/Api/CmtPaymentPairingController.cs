@@ -3,10 +3,6 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -14,9 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public CmtPaymentPairingService CmtPaymentService { get; private set; }
 
-        public CmtPaymentPairingController(IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, ILogger logger, ICommandBus commandBus, IServerSettings serverSettings)
+        public CmtPaymentPairingController(CmtPaymentPairingService cmtPaymentService)
         {
-            CmtPaymentService = new CmtPaymentPairingService(orderDao, accountDao, creditCardDao, logger, commandBus, serverSettings);
+            CmtPaymentService = cmtPaymentService;
         }
 
         [HttpPost, Route("api/v2/order/pairing")]

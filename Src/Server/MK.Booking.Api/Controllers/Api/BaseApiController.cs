@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly ICacheClient _cacheClient = UnityContainer.Instance.Resolve<ICacheClient>();
 
-
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);

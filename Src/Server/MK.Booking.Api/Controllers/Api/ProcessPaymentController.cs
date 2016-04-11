@@ -1,15 +1,9 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
@@ -18,14 +12,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public ProcessPaymentService ProcessPaymentService { get; private set; }
 
-        public ProcessPaymentController(IPayPalServiceFactory payPalServiceFactory,
-            IPaymentService paymentService,
-            IAccountDao accountDao,
-            IOrderDao orderDao,
-            IIBSServiceProvider ibsServiceProvider,
-            IServerSettings serverSettings)
+        public ProcessPaymentController(ProcessPaymentService processPaymentService)
         {
-            ProcessPaymentService = new ProcessPaymentService(payPalServiceFactory, paymentService, accountDao, orderDao, ibsServiceProvider, serverSettings);
+            ProcessPaymentService = processPaymentService;
         }
 
         [HttpPost, Auth, Route("api/v2/paypal/link")]

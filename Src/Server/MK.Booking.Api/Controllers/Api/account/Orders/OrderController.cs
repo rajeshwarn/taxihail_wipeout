@@ -4,21 +4,9 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.OrderCreation;
-using apcurium.MK.Booking.Calculator;
-using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Jobs;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Caching;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
-using CustomerPortal.Client;
-using Infrastructure.EventSourcing;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.account
 {
@@ -32,61 +20,18 @@ namespace apcurium.MK.Web.Controllers.Api.account
         public AccountOrderListService AccountOrderListService { get; private set; }
         public OrderStatusService OrderStatusService { get; private set; }
         public ActiveOrderStatusService ActiveOrderStatusService { get; private set; }
-
         public OrderPairingService PairingService { get; private set; }
 
-        public OrderController(
-            IAccountDao accountDao, 
-            IOrderDao orderDao,
-            IOrderPaymentDao orderPaymentDao,
-            IPromotionDao promotionDao, 
-            ICommandBus commandBus, 
-            IIBSServiceProvider ibsServiceProvider,
-            IServerSettings serverSettings,
-            ITaxiHailNetworkServiceClient networkServiceClient, 
-            IIbsCreateOrderService ibsCreateOrderService,
-            IUpdateOrderStatusJob updateOrderStatusJob,
-            ICacheClient cacheClient,
-            IRuleCalculator ruleCalculator,
-            IAccountChargeDao accountChargeDao,
-            ICreditCardDao creditCardDao,
-            IEventSourcedRepository<Promotion> promoRepository,
-            IPaymentService paymentService,
-            IPayPalServiceFactory payPalServiceFactory, 
-            IFeesDao feesDao,
-            IAirlineDao airlineDao,
-            IPickupPointDao pickupPointDao,
-            IOrderRatingsDao orderRatingsDao,
-            OrderStatusHelper orderStatusHelper)
+        public OrderController(CancelOrderService cancelOrderService, OrderService orderService, CreateOrderService createOrderService, OrderUpdateService orderUpdateService, AccountOrderListService accountOrderListService, OrderStatusService orderStatusService, ActiveOrderStatusService activeOrderStatusService, OrderPairingService pairingService)
         {
-            AccountOrderListService = new AccountOrderListService(orderDao, orderRatingsDao, serverSettings);
-            CancelOrderService = new CancelOrderService(commandBus, ibsServiceProvider, orderDao, accountDao, updateOrderStatusJob, serverSettings, networkServiceClient, ibsCreateOrderService, Logger);
-            OrderService = new OrderService(orderDao, orderPaymentDao, promotionDao, accountDao, commandBus, ibsServiceProvider);
-            OrderUpdateService = new OrderUpdateService(orderDao, commandBus, ibsServiceProvider);
-            PairingService = new OrderPairingService(orderDao, commandBus, serverSettings, paymentService);
-            OrderStatusService = new OrderStatusService(orderStatusHelper);
-
-            ActiveOrderStatusService = new ActiveOrderStatusService(orderDao, accountDao);
-
-            CreateOrderService = new CreateOrderService(
-                commandBus,
-                accountDao,
-                serverSettings,
-                new ReferenceDataService(ibsServiceProvider, cacheClient, serverSettings, airlineDao, pickupPointDao), 
-                ibsServiceProvider,
-                ruleCalculator,
-                accountChargeDao,
-                creditCardDao,
-                orderDao,
-                promotionDao,
-                promoRepository,
-                networkServiceClient,
-                paymentService,
-                payPalServiceFactory,
-                orderPaymentDao,
-                feesDao,
-                Logger,
-                ibsCreateOrderService);
+            CancelOrderService = cancelOrderService;
+            OrderService = orderService;
+            CreateOrderService = createOrderService;
+            OrderUpdateService = orderUpdateService;
+            AccountOrderListService = accountOrderListService;
+            OrderStatusService = orderStatusService;
+            ActiveOrderStatusService = activeOrderStatusService;
+            PairingService = pairingService;
         }
 
         [HttpPost, NoCache, Route("api/v2/accounts/orders/{orderId}/pairing/tip")]

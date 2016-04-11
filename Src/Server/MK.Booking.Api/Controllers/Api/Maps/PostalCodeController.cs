@@ -2,8 +2,6 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
-using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
@@ -11,9 +9,9 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
     public class PostalCodeController : BaseApiController
     {
         public PostalCodeService PostalCodeService { get; private set; }
-        public PostalCodeController(IPostalCodeService postalCodeService, ILogger log)
+        public PostalCodeController(PostalCodeService postalCodeService)
         {
-            PostalCodeService = new PostalCodeService(postalCodeService, log);
+            PostalCodeService = postalCodeService;
         }
 
         [HttpPost]

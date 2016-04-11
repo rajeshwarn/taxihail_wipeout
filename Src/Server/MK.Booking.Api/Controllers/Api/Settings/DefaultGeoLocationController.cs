@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
@@ -9,9 +8,9 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
     {
         public DefaultGeoLocationService DefaultGeoLocationService { get; private set; }
 
-        public DefaultGeoLocationController(IServerSettings serverSettings)
+        public DefaultGeoLocationController(DefaultGeoLocationService defaultGeoLocationService)
         {
-            DefaultGeoLocationService = new DefaultGeoLocationService(serverSettings);
+            DefaultGeoLocationService = defaultGeoLocationService;
         }
 
         [HttpGet, Route("api/v2/settings/defaultlocation")]

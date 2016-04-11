@@ -3,8 +3,6 @@ using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
@@ -13,10 +11,10 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
         public NearbyPlacesService NearbyPlacesService { get; private set; }
         public PlaceDetailService PlaceDetailService { get; private set; }
 
-        public PlacesController(IPlaces client, IAccountDao accountDao)
+        public PlacesController(NearbyPlacesService nearbyPlacesService, PlaceDetailService placeDetailService)
         {
-            NearbyPlacesService = new NearbyPlacesService(client, accountDao);
-            PlaceDetailService = new PlaceDetailService(client);
+            NearbyPlacesService = nearbyPlacesService;
+            PlaceDetailService = placeDetailService;
         }
 
         [HttpGet, Route("api/v2/places")]

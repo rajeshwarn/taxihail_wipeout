@@ -2,7 +2,6 @@
 using System.Web.Http.Controllers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Web.Security;
 
@@ -11,24 +10,24 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
     [RoutePrefix("api/v2/admin/ibschargeaccount")]
     public class IbsChargeAccountController : BaseApiController
     {
-        private readonly IbsChargeAccountService _ibsChargeAccountService;
+        public IbsChargeAccountService IBSChargeAccountService { get; private set; }
 
-        public IbsChargeAccountController(IIBSServiceProvider ibsServiceProvider)
+        public IbsChargeAccountController(IbsChargeAccountService ibsChargeAccountService)
         {
-            _ibsChargeAccountService = new IbsChargeAccountService(ibsServiceProvider);
+            IBSChargeAccountService = ibsChargeAccountService;
         }
 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
 
-            PrepareApiServices(_ibsChargeAccountService);
+            PrepareApiServices(IBSChargeAccountService);
         }
 
         [HttpGet, Route("{accountNumber}/{customerNumber}")]
         public IHttpActionResult GetChargeAccount(string accountNumber, string customerNumber)
         {
-            var account = _ibsChargeAccountService.Get(new IbsChargeAccountRequest()
+            var account = IBSChargeAccountService.Get(new IbsChargeAccountRequest()
             {
                 AccountNumber = accountNumber,
                 CustomerNumber = customerNumber
@@ -40,7 +39,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpGet, Auth(Role = RoleName.Admin)]
         public IHttpActionResult GetAll()
         {
-            var result = _ibsChargeAccountService.Get();
+            var result = IBSChargeAccountService.Get();
 
             return GenerateActionResult(result);
         }
@@ -48,7 +47,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
         [HttpPost, Auth(Role = RoleName.Admin)]
         public IHttpActionResult ValidateChargeAccount([FromBody]IbsChargeAccountValidationRequest request)
         {
-            var result = _ibsChargeAccountService.Post(request);
+            var result = IBSChargeAccountService.Post(request);
             
             return GenerateActionResult(result);
         }

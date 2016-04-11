@@ -22,46 +22,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
     {
         public HailService HailService { get; private set; }
 
-        public HailController(IServerSettings serverSettings,
-            ICommandBus commandBus,
-            ILogger logger,
-            IAccountChargeDao accountChargeDao,
-            ICreditCardDao creditCardDao,
-            IIBSServiceProvider ibsServiceProvider,
-            IPromotionDao promotionDao,
-            IAccountDao accountDao,
-            IFeesDao feesDao,
-            IOrderDao orderDao,
-            IOrderPaymentDao orderPaymentDao,
-            IPaymentService paymentService,
-            ReferenceDataService referenceDataService,
-            IIbsCreateOrderService ibsCreateOrderService,
-            IEventSourcedRepository<Promotion> promoRepository,
-            IPayPalServiceFactory payPalServiceFactory,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IRuleCalculator ruleCalculator,
-            Booking.Resources.Resources resources)
+        public HailController(HailService hailService)
         {
-            HailService = new HailService(
-                serverSettings, 
-                commandBus,
-                logger,
-                accountChargeDao, 
-                creditCardDao, 
-                ibsServiceProvider, 
-                promotionDao, 
-                accountDao, 
-                feesDao, 
-                orderDao, 
-                orderPaymentDao, 
-                paymentService, 
-                referenceDataService, 
-                ibsCreateOrderService, 
-                promoRepository, 
-                payPalServiceFactory, 
-                taxiHailNetworkServiceClient, 
-                ruleCalculator, 
-                resources);
+            HailService = hailService;
         }
 
         [HttpPost, Route("api/v2/client/hail")]

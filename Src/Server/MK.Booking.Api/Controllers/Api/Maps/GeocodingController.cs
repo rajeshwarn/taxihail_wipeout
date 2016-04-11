@@ -2,8 +2,6 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Maps;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
@@ -11,9 +9,9 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
     {
         public GeocodingService GeocodingService { get; private set; }
 
-        public GeocodingController(IGeocoding geocoding, IAccountDao accountDao)
+        public GeocodingController(GeocodingService geocodingService)
         {
-            GeocodingService = new GeocodingService(geocoding, accountDao);
+            GeocodingService = geocodingService;
         }
 
         [HttpPost, Route("api/v2/geocode")]

@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.OrderCreation;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Services;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Account.Orders
 {
@@ -20,14 +10,9 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
     {
         public PayPalCheckoutService PayPalCheckoutService { get; private set; }
 
-        public PayPalCheckoutController(ICommandBus commandBus,
-            ILogger logger,
-            IOrderDao orderDao,
-            IAccountDao accountDao,
-            IPayPalServiceFactory payPalServiceFactory,
-            IServerSettings serverSettings)
+        public PayPalCheckoutController(PayPalCheckoutService payPalCheckoutService)
         {
-            PayPalCheckoutService = new PayPalCheckoutService(commandBus, logger, orderDao, accountDao, payPalServiceFactory, serverSettings);
+            PayPalCheckoutService = payPalCheckoutService;
         }
 
         [HttpGet, HttpHead, Route("api/v2/accounts/orders/{orderId}/proceed"), Auth]

@@ -2,8 +2,6 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -11,9 +9,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public SearchLocationsService SearchLocationsService { get; private set; }
 
-        public SearchLocationController(IAddresses addressClient, IAccountDao accountDao)
+        public SearchLocationController(SearchLocationsService searchLocationsService)
         {
-            SearchLocationsService = new SearchLocationsService(addressClient, accountDao);
+            SearchLocationsService = searchLocationsService;
         }
 
         [HttpPost, Route("api/v2/searchlocation")]

@@ -2,7 +2,6 @@
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using CustomerPortal.Client;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
@@ -10,9 +9,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public NetworkRoamingService NetworkRoamingService { get; private set; }
 
-        public NetworkRoamingController(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+        public NetworkRoamingController(NetworkRoamingService networkRoamingService)
         {
-            NetworkRoamingService = new NetworkRoamingService(taxiHailNetworkServiceClient);
+            NetworkRoamingService = networkRoamingService;
         }
 
         [Route("api/v2/roaming/market"), HttpGet]

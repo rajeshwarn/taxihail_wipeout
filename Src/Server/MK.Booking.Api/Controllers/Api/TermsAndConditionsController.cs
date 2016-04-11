@@ -4,20 +4,18 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
     public class TermsAndConditionsController : BaseApiController
     {
         public TermsAndConditionsService TermsAndConditionsService { get; private set; }
-        public TermsAndConditionsController(ICompanyDao companyDao, ICommandBus commandBus)
+        public TermsAndConditionsController(TermsAndConditionsService termsAndConditionsService)
         {
-            TermsAndConditionsService = new TermsAndConditionsService(companyDao, commandBus);
+            TermsAndConditionsService = termsAndConditionsService;
         }
 
         [HttpGet, Route("api/v2/termsandconditions")]

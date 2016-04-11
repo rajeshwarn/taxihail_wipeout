@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
@@ -17,9 +11,9 @@ namespace apcurium.MK.Web.Controllers.Api
     {
         public BraintreeClientPaymentService BraintreeClientPaymentService { get; private set; }
 
-        public BraintreeClientPaymentController(IServerSettings serverSettings)
+        public BraintreeClientPaymentController(BraintreeClientPaymentService braintreeClientPaymentService)
         {
-            BraintreeClientPaymentService = new BraintreeClientPaymentService(serverSettings);
+            BraintreeClientPaymentService = braintreeClientPaymentService;
         }
 
         [HttpPost, Auth, Route("tokenize")]
