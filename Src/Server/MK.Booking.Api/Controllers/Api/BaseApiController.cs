@@ -84,10 +84,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        protected ILogger Logger
-        {
-            get { return UnityContainer.Instance.Resolve<ILogger>(); }
-        }
+        [Dependency]
+        protected ILogger Logger { get; set; }
 
         private string _sessionKey;
         protected string SessionKey
