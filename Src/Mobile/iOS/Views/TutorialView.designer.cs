@@ -16,12 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UIButton btnClose { get; set; }
 
 		[Outlet]
-		UIKit.UIButton btnCloseTarget { get; set; }
-
-		[Outlet]
-		UIKit.UIView closeTouchTarget { get; set; }
-
-		[Outlet]
 		UIKit.UIView contentView { get; set; }
 
 		[Outlet]
@@ -37,11 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnClose = null;
 			}
 
-			if (closeTouchTarget != null) {
-				closeTouchTarget.Dispose ();
-				closeTouchTarget = null;
-			}
-
 			if (contentView != null) {
 				contentView.Dispose ();
 				contentView = null;
@@ -55,11 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (scrollview != null) {
 				scrollview.Dispose ();
 				scrollview = null;
-			}
-
-			if (btnCloseTarget != null) {
-				btnCloseTarget.Dispose ();
-				btnCloseTarget = null;
 			}
 		}
 	}
