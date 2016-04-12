@@ -7,12 +7,12 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
 using ServiceStack.CacheAccess;
-using ServiceStack.Common;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -32,19 +32,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/Order/ViewDebug/{id}
         public ActionResult ViewDebug(string id)
         {
-            var ibsId = id.ToInt(int.MinValue);
-            Guid orderId;
-            var isOrderId = Guid.TryParse(id, out orderId);
+            var ibsId = id.ToIntOrNull();
+            var orderId = id.ToGuidOrNull();
 
             OrderDebugModel model;
 
-            if (ibsId != int.MinValue)
+            if (ibsId.HasValue)
             {
-                model = GenerateOrderDebugModel(ibsId);
+                model = GenerateOrderDebugModel(ibsId.Value);
             }
-            else if (isOrderId)
+            else if (orderId.HasValue)
             {
-                model = GenerateOrderDebugModel(orderId);
+                model = GenerateOrderDebugModel(orderId.Value);
             }
             else
             {
