@@ -85,6 +85,11 @@ namespace DatabaseInitializer
                 var creatorDb = new DatabaseCreator();
                 IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
+                
+                //Check if mirror is set
+                var masterConnectionString = creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName) 
+                    ? param.MirrorMasterConnectionString 
+                    : param.MasterConnectionString;
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && IsUpdate)
@@ -100,7 +105,7 @@ namespace DatabaseInitializer
                         }
                         else
                         {
-                            creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
+                            creatorDb.DropDatabase(masterConnectionString, param.CompanyName);
                         }
                         IsUpdate = false;
                     }
@@ -109,9 +114,9 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
-                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DropMessageLogTable(masterConnectionString, param.CompanyName);
 
-                    creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DeleteDeviceRegisteredEvents(masterConnectionString, param.CompanyName);
 
                     UpdateSchema(param);
 
@@ -128,18 +133,18 @@ namespace DatabaseInitializer
                     // if DBs are re-used then it should already be created
                     if (!param.ReuseTemporaryDb)
                     {
-                        creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
+                        creatorDb.CreateDatabase(masterConnectionString, param.CompanyName, param.SqlServerDirectory);
                     }
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
 
                     UpdateSchema(param);
 
-                    creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.CreateIndexes(masterConnectionString, param.CompanyName);
 
                     Console.WriteLine("Add user for IIS...");
                     if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
                     {
-                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                        creatorDb.AddUserAndRighst(masterConnectionString, param.MkWebConnectionString,
                             "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
 
