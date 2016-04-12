@@ -97,12 +97,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 .OrderByDescending(order => order.PickupDate)
                 .FirstOrDefault();
 
-            if (activeOrder == null)
-            {
-                return null;
-            }
-
-            if (!activeOrder.IsManualRideLinq)
+            if (activeOrder == null || !activeOrder.IsManualRideLinq)
             {
                 return activeOrder;
             }
