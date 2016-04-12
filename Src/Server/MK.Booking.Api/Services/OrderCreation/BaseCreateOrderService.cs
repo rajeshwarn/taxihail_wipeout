@@ -700,9 +700,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private Guid? GetPendingOrder()
         {
-            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
-
-            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
+            var latestActiveOrder = _orderDao.GetActiveOrderStatusDetails(new Guid(this.GetSession().UserAuthId));
+            
             if (latestActiveOrder != null)
             {
                 return latestActiveOrder.OrderId;
