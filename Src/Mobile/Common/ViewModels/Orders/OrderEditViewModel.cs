@@ -163,6 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					catch (OrderValidationException e)
 					{
+						Logger.LogMessage("OrderValidationException Error: {0}", e.Error.ToString());
 						switch (e.Error)
 						{							
 							case OrderValidationError.InvalidPassengersNumber:								
