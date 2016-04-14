@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.ReadModel;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
@@ -35,12 +38,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateOrderInTrip>
     {
         private readonly IEventSourcedRepository<Order> _repository;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public OrderCommandHandler(IEventSourcedRepository<Order> repository)
+        public OrderCommandHandler(IEventSourcedRepository<Order> repository, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
+            _contextFactory = contextFactory;
         }
-        
+
         public void Handle(CancelOrder command)
         {
             var order = _repository.Find(command.OrderId);
