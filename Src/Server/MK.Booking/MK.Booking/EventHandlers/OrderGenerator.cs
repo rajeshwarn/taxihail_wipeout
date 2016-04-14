@@ -213,40 +213,48 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPairedForPayment @event)
         {
-            using (var context = _contextFactory.Invoke())
+            try
             {
-                var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
-                if (existingPairing != null)
+                using (var context = _contextFactory.Invoke())
                 {
-                    _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
-                }
-                else
-                {
-                    context.Save(new OrderPairingDetail
+                    var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                    if (existingPairing != null)
                     {
-                        OrderId = @event.SourceId,
-                        Medallion = @event.Medallion,
-                        DriverId = @event.DriverId,
-                        PairingToken = @event.PairingToken,
-                        PairingCode = @event.PairingCode,
-                        TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
-                        AutoTipAmount = @event.AutoTipAmount,
-                        AutoTipPercentage = @event.AutoTipPercentage
-                    });
-
-                    var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-
-                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
-                    if (!paymentSettings.IsUnpairingDisabled)
+                        _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
+                    }
+                    else
                     {
-                        // Unpair only available if automatic pairing is disabled
-                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
-                            ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
-                            : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
-                        
-                        context.Save(orderStatus);
+                        context.Save(new OrderPairingDetail
+                        {
+                            OrderId = @event.SourceId,
+                            Medallion = @event.Medallion,
+                            DriverId = @event.DriverId,
+                            PairingToken = @event.PairingToken,
+                            PairingCode = @event.PairingCode,
+                            TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                            AutoTipAmount = @event.AutoTipAmount,
+                            AutoTipPercentage = @event.AutoTipPercentage
+                        });
+
+                        var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
+                        var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
+                        if (!paymentSettings.IsUnpairingDisabled)
+                        {
+                            // Unpair only available if automatic pairing is disabled
+                            orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                                ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                                : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+
+                            context.Save(orderStatus);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                throw;
             }
         }
 

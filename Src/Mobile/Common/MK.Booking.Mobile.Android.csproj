@@ -402,6 +402,7 @@
     </None>
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
+    <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">

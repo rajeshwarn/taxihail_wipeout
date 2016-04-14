@@ -16,11 +16,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
+		private readonly IAccountService _accountService;
 
-		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService)
+		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService, 
+			IAccountService accountService)
 		{
 			_registerService = registerService;	
 			_termsService = termsService;
+			_accountService = accountService;
 		}
 
 		public RegisterAccount Data { get; set; }
@@ -213,6 +216,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}			
 		}
+
+		public ICommand Cancel
+		{
+			get
+			{
+				return  this.GetCommand(() =>
+					{
+						_accountService.SignOut();
+						this.CloseCommand.Execute(null);
+					}
+				);
+			}
+		}
+
 	}
 }
 

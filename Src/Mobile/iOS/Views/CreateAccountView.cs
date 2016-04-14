@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
-				.To(vm => vm.CloseCommand);
+				.To(vm => vm.Cancel);
 
 			set.Bind(btnCreate)
 				.For("TouchUpInside")
