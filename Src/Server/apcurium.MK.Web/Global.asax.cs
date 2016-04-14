@@ -53,7 +53,11 @@ namespace apcurium.MK.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            
+
+            // Enable Swagger only on Debug builds
+#if DEBUG
+            SwaggerConfig.Register();
+#endif
         }
 
         private void PollIbs(int pollingValue)
