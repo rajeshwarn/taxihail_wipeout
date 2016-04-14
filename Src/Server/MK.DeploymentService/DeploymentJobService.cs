@@ -382,7 +382,21 @@ namespace MK.DeploymentService
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
-	        var p = new DatabaseInitializerParams
+            Log(companyName);
+            Log(ConfigurationManager.AppSettings["BackupFolder"]);
+            Log(_job.Server.SqlServerInstance);
+            Log(string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName));
+            Log(ConfigurationManager.ConnectionStrings["SqlConnectionStringMaster"].ConnectionString);
+            Log(ConfigurationManager.AppSettings["MirroringSharedFolder"]);
+            Log(ConfigurationManager.AppSettings["MirroringMirrorPartner"]);
+            Log(ConfigurationManager.AppSettings["MirroringWitness"]);
+            Log(ConfigurationManager.AppSettings["MirroringPrincipalPartner"]);
+            Log(ConfigurationManager.AppSettings["MirrorMasterConnectionString"]);
+            Log(ConfigurationManager.AppSettings["ServerName"]);
+            Log(appPoolName);
+            Log(ConfigurationManager.AppSettings["SecondWebServerName"]);
+
+            var p = new DatabaseInitializerParams
             {
                 CompanyName = companyName,
                 BackupFolder = ConfigurationManager.AppSettings["BackupFolder"],

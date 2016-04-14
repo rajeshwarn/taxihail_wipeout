@@ -72,24 +72,37 @@ namespace DatabaseInitializer
             try
             {
                 Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
+                Console.WriteLine("Blab bla bla");
                 Console.WriteLine("Started at: {0}", DateTime.Now);
 
                 Console.WriteLine("Initializing...");
                 var param = GetParamsFromArgs(args);
 
-                Console.WriteLine("Working...");
+                Console.WriteLine("Working Working Working");
 
                 UnityContainer container;
                 Module module;
 
+                Console.WriteLine("Database creator");
                 var creatorDb = new DatabaseCreator();
+                Console.WriteLine("Database creator created");
+
                 IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
+                Console.WriteLine("IsUpdate "+ IsUpdate);
                 IDictionary<string, string> appSettings;
+
+                var masterConnectionString = string.Empty;
+                if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
+                {
+                    masterConnectionString = param.MirrorMasterConnectionString;
+                    Console.WriteLine("Mirror connectionString : " + masterConnectionString);
+                }
+                else
+                {
+                    masterConnectionString = param.MasterConnectionString;
+                    Console.WriteLine("Main connectionString : " + masterConnectionString);
+                }
                 
-                //Check if mirror is set
-                var masterConnectionString = creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName) 
-                    ? param.MirrorMasterConnectionString 
-                    : param.MasterConnectionString;
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && IsUpdate)
@@ -114,11 +127,15 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
+                    Console.WriteLine("Drop message log table");
                     creatorDb.DropMessageLogTable(masterConnectionString, param.CompanyName);
 
+                    Console.WriteLine("Delete device registered events");
                     creatorDb.DeleteDeviceRegisteredEvents(masterConnectionString, param.CompanyName);
 
+                    Console.WriteLine("Update schema");
                     UpdateSchema(param);
+                    Console.WriteLine("Update schema done");
 
                     if (param.ReuseTemporaryDb)
                     {
@@ -154,6 +171,7 @@ namespace DatabaseInitializer
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
                 container = new UnityContainer();
                 module = new Module();
+                Console.WriteLine("Init module");
                 module.Init(container, connectionString, param.MkWebConnectionString);
 
                 var serverSettings = container.Resolve<IServerSettings>();
