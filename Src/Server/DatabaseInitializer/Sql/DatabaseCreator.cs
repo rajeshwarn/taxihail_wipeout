@@ -82,6 +82,11 @@ namespace DatabaseInitializer.Sql
 
             var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, isMirrored);
             Console.WriteLine("Mirrored ? : " + result.ToString());
+
+            var mirroringState = "SELECT mirroring_state     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            var r = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, mirroringState);
+            Console.WriteLine("Mirroring state : " + result.ToString());
+
             return result.HasValue && (result.Value == 1);
         }
 
