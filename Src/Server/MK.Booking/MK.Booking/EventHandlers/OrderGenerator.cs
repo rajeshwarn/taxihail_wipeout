@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
             catch (Exception ex)
             {
-                
+                _logger.LogError(ex);
                 throw;
             }
         }
