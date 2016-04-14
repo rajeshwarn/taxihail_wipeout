@@ -299,7 +299,6 @@
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
-    <None Include="Resources\luxury_progress.png" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarAirportBooking.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarConfirmation.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarEdit.xib" />
@@ -752,6 +751,9 @@
     <BundleResource Include="nl.lproj\Localizable.strings" />
     <BundleResource Include="Resources\discover.png" />
     <BundleResource Include="Resources\discover%402x.png" />
+    <BundleResource Include="Resources\message%403x.png" />
+    <BundleResource Include="Resources\luxury_progress%402x.png" />
+    <BundleResource Include="Resources\luxury_progress.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
