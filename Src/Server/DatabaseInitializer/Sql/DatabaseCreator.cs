@@ -132,9 +132,12 @@ namespace DatabaseInitializer.Sql
 
         public bool DatabaseExists(string connStringMaster, string companyName)
         {
+            _logger.Debug("Database exists ??");
             var exists = "SELECT count(*) FROM sys.databases WHERE name = N'" + companyName + "'";
 
             var result = DatabaseHelper.ExecuteScalarQuery<int>(connStringMaster, exists);
+
+            _logger.Debug("DatabaseExists done");
 
             return result > 0;
         }
