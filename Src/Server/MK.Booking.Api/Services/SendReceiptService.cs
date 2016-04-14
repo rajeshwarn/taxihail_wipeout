@@ -246,6 +246,10 @@ namespace apcurium.MK.Booking.Api.Services
                     promotionUsed,
                     creditCard,
                     cmtRideLinqFields);
+
+            // Since the user or an admin requested the receipt, we should bypass the normal notification settings.
+            sendReceiptCommand.BypassNotificationSettings = true;
+
             if (!request.RecipientEmail.IsNullOrEmpty())
             {
                 sendReceiptCommand.EmailAddress = request.RecipientEmail;
