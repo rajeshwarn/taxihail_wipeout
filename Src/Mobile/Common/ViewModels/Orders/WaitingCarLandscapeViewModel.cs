@@ -1,33 +1,60 @@
 ﻿using System;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.EventArgs;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class WaitingCarLandscapeViewModel : PageViewModel
+    //TODO: MKTAXI-4086: This VM must handle it's close always.
+    //TODO: MKTAXI-4086: This VM must be notify of orientation changes
+    //TODO: MKTAXI-4086: This VM must be notify of Car number changes
+    //TODO: MKTAXI-4086: This VM must be notify of OrderStatus wosLoaded
+    //TODO: MKTAXI-4086: WARNING, this VM MUST unregister to events when closing.
+    public class WaitingCarLandscapeViewModel : PageViewModel
 	{
+	    private static EventHandler<BookingStatusChangedEventArgs> _bookingStatusChanged;
+	    private IOrientationService _orientationService;
+
+        public WaitingCarLandscapeViewModel(IOrientationService orientationService)
+        {
+            _orientationService = orientationService;
+        }
+
+	    public override void OnViewStarted(bool firstTime)
+	    {
+	        base.OnViewStarted(firstTime);
+
+            
+
+	    }
+
+
+	    public static bool IsViewVisible { get; private set; }
+
+	    public static void NotifyBookingStatusChanged(object sender, string carNumber, bool shouldClose)
+	    {
+	        if (_bookingStatusChanged != null)
+	        {
+	            _bookingStatusChanged(sender, new BookingStatusChangedEventArgs()
+	            {
+	                CarNumber = carNumber,
+                    ShouldCloseWaitingCarLandscapeView = shouldClose
+	            });
+	        }
+	    }
+
+        
 		private string _carNumber;
 		private DeviceOrientations _deviceOrientation;
 
-		public void Init(WaitingCarLandscapeViewModelParameters waitingCarLandscapeViewModelParameters)
-		{
-			CarNumber = waitingCarLandscapeViewModelParameters.CarNumber;
-			DeviceOrientation = waitingCarLandscapeViewModelParameters.DeviceOrientations;
+	    
 
-			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.Subscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
-		}
-
-		private void UpdateModelParametersEvent(DeviceOrientations deviceOrientation, string carNumber)
+	    public void Init(string carNumber, int deviceOrientations)
 		{
-			DeviceOrientation = deviceOrientation;
 			CarNumber = carNumber;
-		}
-
-		private void СloseWaitingWindowEvent()
-		{
-			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.UnSubscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
-			Close(this);
+			DeviceOrientation = (DeviceOrientations)deviceOrientations;
 		}
 
 		public string CarNumber
@@ -61,59 +88,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() =>
-					{
-						BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-					});
-			}
-		}
-	}
-
-	public class WaitingCarLandscapeViewModelParameters
-	{
-		public event Action<DeviceOrientations, string> UpdateModelParametersEvent;
-		public event Action СloseWaitingWindowEvent;
-
-		public string CarNumber { get; set; }
-
-		public DeviceOrientations DeviceOrientations { get; set; }
-
-		public bool WaitingWindowClosed = false;
-
-		private object _exclusiveAccess = new object();
-
-		public void UpdateModelParameters(DeviceOrientations deviceOrientations, string carMumber)
-		{
-			lock (_exclusiveAccess)
-			{
-				if (UpdateModelParametersEvent != null && !WaitingWindowClosed)
 				{
-					UpdateModelParametersEvent(deviceOrientations, carMumber);
-				}
+				    Close(this);
+				});
 			}
-		}
-
-		public void CloseWaitingWindow()
-		{
-			lock (_exclusiveAccess)
-			{
-				if (СloseWaitingWindowEvent != null && !WaitingWindowClosed)
-				{
-					СloseWaitingWindowEvent();
-					WaitingWindowClosed = true;
-				}
-			}
-		}
-
-		public void Subscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
-		{
-			UpdateModelParametersEvent += updateModelParametersEvent;
-			СloseWaitingWindowEvent += closeWaitingWindowEvent;
-		}
-
-		public void UnSubscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
-		{
-			UpdateModelParametersEvent -= updateModelParametersEvent;
-			СloseWaitingWindowEvent -= closeWaitingWindowEvent;
 		}
 	}
 }

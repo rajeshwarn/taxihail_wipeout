@@ -56,9 +56,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
-
-        public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
-
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
 			IBookingService bookingService,
@@ -87,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
 			GetIsCmtRideLinq();
-
+            
             _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
 			_orientationService.Initialize(new[] { DeviceOrientations.Left, DeviceOrientations.Right });
 
@@ -1161,7 +1158,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
+        //TODO MKTAXI-4086: Change signature here to support correct event handling.
+        //TODO MKTAXI-4086: Change logic here to support new way to handle WaitingCarLandscape.
+        private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
 			var orderStatusDetail = OrderStatusDetail;
 			if (orderStatusDetail == null)

@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		bool Stop();
 
-		event Action<DeviceOrientations> NotifyOrientationChanged;
+	    event EventHandler<DeviceOrientations> NotifyOrientationChanged;
+
 		event Action<int, bool> NotifyAngleChanged;
 	}
 }

@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		private bool _initialized;
 		private bool _started;
 
-		public event Action<DeviceOrientations> NotifyOrientationChanged;
+		public event EventHandler<DeviceOrientations> NotifyOrientationChanged;
 		public event Action<int, bool> NotifyAngleChanged;
 
 		public OrientationService(IDeviceOrientationService deviceOrientationService, IMvxLifetime mvxLifetime)
@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
 						if (NotifyOrientationChanged != null && _deviceOrientationsNotifications.Contains(deviceOrientation))
 						{
-							NotifyOrientationChanged(_currentOrientation);
+							NotifyOrientationChanged(this, _currentOrientation);
 						}
 					}
 
