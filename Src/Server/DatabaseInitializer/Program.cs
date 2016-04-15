@@ -92,9 +92,16 @@ namespace DatabaseInitializer
                 IDictionary<string, string> appSettings;
 
                 var masterConnectionString = param.MasterConnectionString;
-                creatorDb.MirroringRole(param.MasterConnectionString, param.CompanyName);
+                var cs1 = param.MasterConnectionString;
+                Console.WriteLine("Master :" + cs1);
+                creatorDb.MirroringRole(cs1, param.CompanyName);
 
-                if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
+                var cs2 = param.MirrorMasterConnectionString;
+                Console.WriteLine("Mirror :" + cs2);
+                creatorDb.MirroringRole(cs2, param.CompanyName);
+
+
+                /*if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
                 {
                     masterConnectionString = param.MasterConnectionString;
                     Console.WriteLine("IsMirror : TRUE");
@@ -103,7 +110,7 @@ namespace DatabaseInitializer
                 {
                     //masterConnectionString = param.MasterConnectionString;
                     Console.WriteLine("IsMirror : FALSE");
-                }
+                }*/
 
 
                 //for dev company, delete old database to prevent keeping too many databases
