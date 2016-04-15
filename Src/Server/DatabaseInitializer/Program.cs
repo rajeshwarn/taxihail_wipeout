@@ -85,7 +85,7 @@ namespace DatabaseInitializer
                 var creatorDb = new DatabaseCreator();
                 var sqlConnectionString = param.SqlConnectionStringMaster;
 
-
+                Console.WriteLine("Connection string : " + sqlConnectionString);
                 var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
 
                 // if Mirroring role value is 2, we need to switch between Mirror and Principal
@@ -113,6 +113,8 @@ namespace DatabaseInitializer
 
                     sqlConnectionString = string.Join(";", elements);
                 }
+
+                Console.WriteLine("Final connection string : " + sqlConnectionString);
 
                 IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
