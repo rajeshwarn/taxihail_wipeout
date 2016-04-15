@@ -1,5 +1,6 @@
 using apcurium.MK.Common.Enumeration;
 using System;
+using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -13,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		bool Stop();
 
-	    event EventHandler<DeviceOrientations> NotifyOrientationChanged;
+	    event EventHandler<DeviceOrientationChangedEventArgs> NotifyOrientationChanged;
 
 		event Action<int, bool> NotifyAngleChanged;
 	}

@@ -139,8 +139,10 @@
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
-    <Compile Include="EventArgs\BookingStatusChangedEventArgs.cs" />
+    <Compile Include="TaxihailEventArgs\BookingStatusChangedEventArgs.cs" />
+    <Compile Include="TaxihailEventArgs\DeviceOrientationChangedEventArgs.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\DeviceOrientationServiceExtensions.cs" />
     <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
