@@ -114,11 +114,11 @@ namespace DatabaseInitializer
                     sqlConnectionString = string.Join(";", elements);
                 }
 
-                IsDatabaseExists = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
+                IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == LocalDevProjectName && IsDatabaseExists)
+                if (param.CompanyName == LocalDevProjectName && IsUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -133,12 +133,12 @@ namespace DatabaseInitializer
                         {
                             creatorDb.DropDatabase(sqlConnectionString, param.CompanyName);
                         }
-                        IsDatabaseExists = false;
+                        IsUpdate = false;
                     }
 #endif
                 }
 
-                if (IsDatabaseExists)
+                if (IsUpdate)
                 {
                     creatorDb.DropMessageLogTable(sqlConnectionString, param.CompanyName);
 
@@ -188,7 +188,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Checking Company Created...");
                 CheckCompanyCreated(container, commandBus);
 
-                if (!IsDatabaseExists)
+                if (!IsUpdate)
                 {
                     appSettings = GetCompanySettings(param.CompanyName);
 
@@ -303,7 +303,7 @@ namespace DatabaseInitializer
             // ReSharper restore LocalizableElement
         }
 
-        public static bool IsDatabaseExists { get; set; }
+        public static bool IsUpdate { get; set; }
 
         public static void UpdateSchema(DatabaseInitializerParams param)
         {
