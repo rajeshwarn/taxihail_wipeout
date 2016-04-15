@@ -87,9 +87,9 @@ namespace DatabaseInitializer.Sql
 
         public int MirroringRole(string connStringMaster, string companyName)
         {
-            var roleString = "SELECT mirroring_role_desc FROM sys.database_mirroring WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            /*var roleString = "SELECT mirroring_role_desc FROM sys.database_mirroring WHERE DB_NAME(database_id) = N'" + companyName + "'";
             var r = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, roleString);
-            Console.WriteLine("Mirroring role desc: " + r.ToString());
+            Console.WriteLine("Mirroring role desc: " + r.ToString());*/
 
             var role = "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
             var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, role);
