@@ -92,16 +92,17 @@ namespace DatabaseInitializer
                 IDictionary<string, string> appSettings;
 
                 var masterConnectionString = param.MasterConnectionString;
-                /*if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
+                if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
                 {
-                    masterConnectionString = param.MirrorMasterConnectionString;
-                    Console.WriteLine("Mirror connectionString : " + masterConnectionString);
+                    masterConnectionString = param.MasterConnectionString;
+                    Console.WriteLine("IsMirror : TRUE");
                 }
                 else
                 {
-                    masterConnectionString = param.MasterConnectionString;
+                    //masterConnectionString = param.MasterConnectionString;
                     Console.WriteLine("Main connectionString : " + masterConnectionString);
-                }*/
+                    Console.WriteLine("IsMirror : FALSE");
+                }
 
 
                 //for dev company, delete old database to prevent keeping too many databases
