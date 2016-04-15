@@ -85,6 +85,19 @@ namespace DatabaseInitializer.Sql
             return result.HasValue && (result.Value == 1);
         }
 
+        public int MirroringRole(string connStringMaster, string companyName)
+        {
+            var roleString = "SELECT mirroring_role_desc FROM sys.database_mirroring WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            var r = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, roleString);
+            Console.WriteLine("Mirroring role desc: " + r.ToString());
+
+            var role = "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, role);
+            Console.WriteLine("Mirroring role : " + result.ToString());
+
+            return result.GetValueOrDefault();
+        }
+
         public void InitMirroring(string connStringMaster, string companyName)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET AUTO_CLOSE OFF", companyName));

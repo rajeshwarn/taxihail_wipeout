@@ -92,6 +92,8 @@ namespace DatabaseInitializer
                 IDictionary<string, string> appSettings;
 
                 var masterConnectionString = param.MasterConnectionString;
+                creatorDb.MirroringRole(param.MasterConnectionString, param.CompanyName);
+
                 if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
                 {
                     masterConnectionString = param.MasterConnectionString;
@@ -100,7 +102,6 @@ namespace DatabaseInitializer
                 else
                 {
                     //masterConnectionString = param.MasterConnectionString;
-                    Console.WriteLine("Main connectionString : " + masterConnectionString);
                     Console.WriteLine("IsMirror : FALSE");
                 }
 
