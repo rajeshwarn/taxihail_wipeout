@@ -89,7 +89,7 @@ namespace DatabaseInitializer
                 var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
 
                 // if Mirroring role value is 2, we need to switch between Mirror and Principal
-                if (mirroringRole == 1)
+                if (mirroringRole == 2)
                 {
                     var elements = sqlConnectionString.Split(';');
                     var dataSourceIdx = -1;
@@ -120,6 +120,8 @@ namespace DatabaseInitializer
                 }
 
                 Console.WriteLine("Final connection string : " + sqlConnectionString);
+
+                creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
 
                 IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
