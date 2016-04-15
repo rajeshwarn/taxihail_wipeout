@@ -108,10 +108,15 @@ namespace DatabaseInitializer
                         }
                     }
 
+                    Console.WriteLine("1 - elements[dataSourceIdx] = " + elements[dataSourceIdx]);
                     elements[dataSourceIdx] = elements[dataSourceIdx].Replace("Data Source", "Failover Partner");
+                    Console.WriteLine("2 - elements[dataSourceIdx] = " + elements[dataSourceIdx]);
+                    Console.WriteLine("1 - elements[failOverIdx] = " + elements[failOverIdx]);
                     elements[failOverIdx] = elements[failOverIdx].Replace("Failover Partner", "Data Source");
+                    Console.WriteLine("2 - elements[failOverIdx] = " + elements[failOverIdx]);
 
                     sqlConnectionString = string.Join(";", elements);
+                    Console.WriteLine("sqlConnectionString = " + sqlConnectionString);
                 }
 
                 Console.WriteLine("Final connection string : " + sqlConnectionString);
