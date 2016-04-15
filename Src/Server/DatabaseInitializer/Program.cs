@@ -91,8 +91,8 @@ namespace DatabaseInitializer
                 Console.WriteLine("IsUpdate "+ IsUpdate);
                 IDictionary<string, string> appSettings;
 
-                var masterConnectionString = string.Empty;
-                if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
+                var masterConnectionString = param.MasterConnectionString;
+                /*if (creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName))
                 {
                     masterConnectionString = param.MirrorMasterConnectionString;
                     Console.WriteLine("Mirror connectionString : " + masterConnectionString);
@@ -101,8 +101,8 @@ namespace DatabaseInitializer
                 {
                     masterConnectionString = param.MasterConnectionString;
                     Console.WriteLine("Main connectionString : " + masterConnectionString);
-                }
-                
+                }*/
+
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && IsUpdate)
