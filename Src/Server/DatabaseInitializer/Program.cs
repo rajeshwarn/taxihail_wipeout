@@ -83,11 +83,42 @@ namespace DatabaseInitializer
                 Module module;
 
                 var creatorDb = new DatabaseCreator();
-                IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
+                var sqlConnectionString = param.SqlConnectionStringMaster;
+
+
+                var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
+
+                // if Mirroring role value is 2, we need to switch between Mirror and Principal
+                if (mirroringRole == 2)
+                {
+                    var elements = sqlConnectionString.Split(';');
+                    var dataSourceIdx = -1;
+                    var failOverIdx = -1;
+
+                    for (int idx = 0; idx < elements.Length; idx++)
+                    {
+                        if (elements[idx].ToLower().Contains("Data Source".ToLower()))
+                        {
+                            dataSourceIdx = idx;
+                        }
+
+                        if (elements[idx].ToLower().Contains("Failover Partner".ToLower()))
+                        {
+                            failOverIdx = idx;
+                        }
+                    }
+
+                    elements[dataSourceIdx] = elements[dataSourceIdx].Replace("Data Source", "Failover Partner");
+                    elements[failOverIdx] = elements[failOverIdx].Replace("Failover Partner", "Data Source");
+
+                    sqlConnectionString = string.Join(";", elements);
+                }
+
+                IsDatabaseExists = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == LocalDevProjectName && IsUpdate)
+                if (param.CompanyName == LocalDevProjectName && IsDatabaseExists)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -96,22 +127,22 @@ namespace DatabaseInitializer
                     {
                         if (param.ReuseTemporaryDb)
                         {
-                            creatorDb.DropSchema(param.MkWebConnectionString, param.CompanyName);
+                            creatorDb.DropSchema(param.ToolSqlConnectionString, param.CompanyName);
                         }
                         else
                         {
-                            creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
+                            creatorDb.DropDatabase(sqlConnectionString, param.CompanyName);
                         }
-                        IsUpdate = false;
+                        IsDatabaseExists = false;
                     }
 #endif
                 }
 
-                if (IsUpdate)
+                if (IsDatabaseExists)
                 {
-                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DropMessageLogTable(sqlConnectionString, param.CompanyName);
 
-                    creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DeleteDeviceRegisteredEvents(sqlConnectionString, param.CompanyName);
 
                     UpdateSchema(param);
 
@@ -128,28 +159,28 @@ namespace DatabaseInitializer
                     // if DBs are re-used then it should already be created
                     if (!param.ReuseTemporaryDb)
                     {
-                        creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
+                        creatorDb.CreateDatabase(sqlConnectionString, param.CompanyName, param.SqlServerDirectory);
                     }
-                    creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
+                    creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.ToolSqlConnectionString));
 
                     UpdateSchema(param);
 
-                    creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.CreateIndexes(sqlConnectionString, param.CompanyName);
 
                     Console.WriteLine("Add user for IIS...");
-                    if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
+                    if (param.ToolSqlConnectionString.ToLower().Contains("integrated security=true"))
                     {
-                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                        creatorDb.AddUserAndRighst(sqlConnectionString, param.ToolSqlConnectionString,
                             "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
 
                     SetupMirroring(param);
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
+                var connectionString = new ConnectionStringSettings("MkWeb", param.ToolSqlConnectionString);
                 container = new UnityContainer();
                 module = new Module();
-                module.Init(container, connectionString, param.MkWebConnectionString);
+                module.Init(container, connectionString, param.ToolSqlConnectionString);
 
                 var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();
@@ -157,7 +188,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Checking Company Created...");
                 CheckCompanyCreated(container, commandBus);
 
-                if (!IsUpdate)
+                if (!IsDatabaseExists)
                 {
                     appSettings = GetCompanySettings(param.CompanyName);
 
@@ -272,7 +303,7 @@ namespace DatabaseInitializer
             // ReSharper restore LocalizableElement
         }
 
-        public static bool IsUpdate { get; set; }
+        public static bool IsDatabaseExists { get; set; }
 
         public static void UpdateSchema(DatabaseInitializerParams param)
         {
@@ -281,7 +312,7 @@ namespace DatabaseInitializer
             StopAppPools(param);
 
             DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext();
-            configuration.TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient");
+            configuration.TargetDatabase = new DbConnectionInfo(param.ToolSqlConnectionString, "System.Data.SqlClient");
 
             var migrator = new DbMigrator(configuration);
             DisplayPendingMigrations(migrator);
@@ -290,7 +321,7 @@ namespace DatabaseInitializer
 
             configuration = new apcurium.MK.Common.Migrations.ConfigMigrationConfigurationContext
             {
-                TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient")
+                TargetDatabase = new DbConnectionInfo(param.ToolSqlConnectionString, "System.Data.SqlClient")
             };
 
             migrator = new DbMigrator(configuration);
@@ -369,7 +400,7 @@ namespace DatabaseInitializer
                     param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
                 Directory.CreateDirectory(backupFolder);
 
-                creatorDb.InitMirroring(param.MasterConnectionString, param.CompanyName);
+                creatorDb.InitMirroring(param.SqlConnectionStringMaster, param.CompanyName);
 
                 var mirrorDbExist = creatorDb.DatabaseExists(param.MirrorMasterConnectionString, param.CompanyName);
                 if (mirrorDbExist)
@@ -379,7 +410,7 @@ namespace DatabaseInitializer
                 }
 
                 Console.WriteLine("Backup for mirroring...");
-                creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
+                creatorDb.BackupDatabase(param.SqlConnectionStringMaster, backupFolder, param.CompanyName);
 
                 Console.WriteLine("Restoring mirroring backup...");
                 creatorDb.RestoreDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
@@ -387,7 +418,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Set Mirroring Partner...");
                 creatorDb.SetMirroringPartner(param.MirrorMasterConnectionString, param.CompanyName, param.MirroringMirrorPartner);
                 Console.WriteLine("Complete Mirroring...");
-                creatorDb.CompleteMirroring(param.MasterConnectionString, param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness);
+                creatorDb.CompleteMirroring(param.SqlConnectionStringMaster, param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness);
                 Console.WriteLine("Mirroring Completed.");
             }
         }
@@ -630,7 +661,7 @@ namespace DatabaseInitializer
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
-            if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 1))
+            if (string.IsNullOrWhiteSpace(result.ToolSqlConnectionString) && (args.Length > 1))
             {
                 result.SqlInstanceName = args[1];
             }
@@ -654,23 +685,23 @@ namespace DatabaseInitializer
             }
 
             //Company connection string
-            if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 3))
+            if (string.IsNullOrWhiteSpace(result.ToolSqlConnectionString) && (args.Length > 3))
             {
-                result.MkWebConnectionString = string.Format(args[3], result.CompanyName);
+                result.ToolSqlConnectionString = string.Format(args[3], result.CompanyName);
             }
-            else if (string.IsNullOrWhiteSpace(result.MkWebConnectionString))
+            else if (string.IsNullOrWhiteSpace(result.ToolSqlConnectionString))
             {
-                result.MkWebConnectionString = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", result.CompanyName);
+                result.ToolSqlConnectionString = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", result.CompanyName);
             }
 
             //Master connection string           
-            if (string.IsNullOrWhiteSpace(result.MasterConnectionString) && (args.Length > 4))
+            if (string.IsNullOrWhiteSpace(result.SqlConnectionStringMaster) && (args.Length > 4))
             {
-                result.MasterConnectionString = string.Format(args[4], result.CompanyName);
+                result.SqlConnectionStringMaster = string.Format(args[4], result.CompanyName);
             }
-            else if (string.IsNullOrWhiteSpace(result.MasterConnectionString))
+            else if (string.IsNullOrWhiteSpace(result.SqlConnectionStringMaster))
             {
-                result.MasterConnectionString = result.MkWebConnectionString.Replace(result.CompanyName, "master");
+                result.SqlConnectionStringMaster = result.ToolSqlConnectionString.Replace(result.CompanyName, "master");
             }
 
             if (string.IsNullOrWhiteSpace(result.AppPoolName))

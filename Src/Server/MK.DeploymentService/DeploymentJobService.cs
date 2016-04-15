@@ -387,8 +387,8 @@ namespace MK.DeploymentService
                 CompanyName = companyName,
                 BackupFolder = ConfigurationManager.AppSettings["BackupFolder"],
                 SqlInstanceName = _job.Server.SqlServerInstance,
-                MkWebConnectionString = string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName),
-                MasterConnectionString = ConfigurationManager.ConnectionStrings["SqlConnectionStringMaster"].ConnectionString,
+                ToolSqlConnectionString = string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName),
+                SqlConnectionStringMaster = ConfigurationManager.ConnectionStrings["SqlConnectionStringMaster"].ConnectionString,
                 MirroringSharedFolder = ConfigurationManager.AppSettings["MirroringSharedFolder"],
                 MirroringMirrorPartner = ConfigurationManager.AppSettings["MirroringMirrorPartner"],
                 MirroringWitness = ConfigurationManager.AppSettings["MirroringWitness"],
@@ -437,24 +437,9 @@ namespace MK.DeploymentService
             var targetWeDirectory = Path.Combine(_job.Server.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
-
             CopyFiles(sourcePath, targetWeDirectory);
 
-            var webApp = SetupWebApplication(companyName, appPoolName, iisManager, targetWeDirectory);
-
-            var configuration = webApp.GetWebConfiguration();
-
-
-            var section =
-                configuration.GetSection("connectionStrings")
-                    .GetCollection()
-                    .First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
-            
-            var connSting = section.Attributes["connectionString"];
-
-            
-
-            connSting.Value =string.Format(ConfigurationManager.AppSettings["SiteSqlConnectionString"], companyName );                    
+            SetupWebApplication(companyName, appPoolName, iisManager, targetWeDirectory);
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");
