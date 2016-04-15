@@ -148,7 +148,7 @@
     <value>Sorry, no driver accepted. Please try again in a bit.</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Meter is on. Checking you in now...</value>
+    <value>Passenger is in the taxi</value>
   </data>
   <data name="PushNotification_wosASSIGNED" xml:space="preserve">
     <value>Taxi #{0} has been assigned to you and is on the way</value>
@@ -158,14 +158,5 @@
   </data>
   <data name="PhoneBlackListed" xml:space="preserve">
     <value>Sorry, you are not allowed to create an account. Please contact support@goarro.com for assistance.</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
-    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
-  </data>
-  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
-    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   </data>
 </root>
