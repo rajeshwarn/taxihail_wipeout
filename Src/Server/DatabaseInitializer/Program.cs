@@ -89,7 +89,7 @@ namespace DatabaseInitializer
                 var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
 
                 // if Mirroring role value is 2, we need to switch between Mirror and Principal
-                if (mirroringRole == 2)
+                if (mirroringRole == 1)
                 {
                     var elements = sqlConnectionString.Split(';');
                     var dataSourceIdx = -1;
