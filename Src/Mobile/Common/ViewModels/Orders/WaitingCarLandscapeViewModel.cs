@@ -12,13 +12,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     public class WaitingCarLandscapeViewModel : PageViewModel
 	{
 	    private static EventHandler<BookingStatusChangedEventArgs> _bookingStatusChanged;
-	    private IOrientationService _orientationService;
+	    private readonly IOrientationService _orientationService;
+        private string _carNumber;
+        private DeviceOrientations _deviceOrientation;
 
         public WaitingCarLandscapeViewModel(IOrientationService orientationService)
         {
+            IsViewVisible = true;
             _orientationService = orientationService;
 
             _orientationService.ObserveDeviceIsInLandscape()
+                .Where(deviceOrientation => deviceOrientation != DeviceOrientation)
                 .Subscribe(orientation =>
                 {
                     DeviceOrientation = orientation;
@@ -48,24 +52,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 .DisposeWith(Subscriptions);
         }
 
-        public void Init(string carNumber, DeviceOrientations deviceOrientations)
+        public void Init(string carNumber, DeviceOrientations deviceOrientation)
         {
             CarNumber = carNumber;
-            DeviceOrientation = deviceOrientations;
+            DeviceOrientation = deviceOrientation;
         }
-
-	    public override void OnViewStarted(bool firstTime)
-	    {
-	        base.OnViewStarted(firstTime);
-
-	        IsViewVisible = true;
-	    }
 
 	    public static bool IsViewVisible { get; private set; }
 
+        // Overridden to ensure that IsVisible is set to false when closing the page and subscriptions are disposed.
         protected new void Close(IMvxViewModel vm)
         {
             IsViewVisible = false;
+            Subscriptions.Clear();
 
             base.Close(vm);
         }
@@ -81,19 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            });
 	        }
 	    }
-
         
-		private string _carNumber;
-		private DeviceOrientations _deviceOrientation;
-
-	    
-
-	    public void Init(string carNumber, int deviceOrientations)
-		{
-			CarNumber = carNumber;
-			DeviceOrientation = (DeviceOrientations)deviceOrientations;
-		}
-
 		public string CarNumber
 		{
 			get { return _carNumber; }

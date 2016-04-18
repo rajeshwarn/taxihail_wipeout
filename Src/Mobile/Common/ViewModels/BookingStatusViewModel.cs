@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Models;
+using Cirrious.MvvmCross.Platform;
 using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -282,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _deviceOrientationSubscription.Disposable = null;
             
-            NotifyWaitingCarLandscapeViewModel(closeViewIfPossible: true);
+            CloseWaitingCarLandscapeViewModelIfPossible(closeViewIfPossible: true);
 
             _canAutoFollowTaxi = false;
             _autoFollowTaxi = false;
@@ -473,15 +474,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    _deviceOrientationSubscription.Disposable = null;
 
-			    NotifyWaitingCarLandscapeViewModel(closeViewIfPossible: true);
+			    CloseWaitingCarLandscapeViewModelIfPossible(closeViewIfPossible: true);
 			}
 		}
 
-        private void NotifyWaitingCarLandscapeViewModel(string carNumber = "", bool closeViewIfPossible = false)
+        private void CloseWaitingCarLandscapeViewModelIfPossible(bool closeViewIfPossible = false)
         {
             if (WaitingCarLandscapeViewModel.IsViewVisible)
             {
-                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, carNumber, closeViewIfPossible);
+                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, string.Empty, closeViewIfPossible);
             }
         }
 
@@ -1183,17 +1184,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				
 			var carNumber = orderStatusDetail.VehicleNumber;
 
-            if (carNumber.HasValueTrimmed() && carNumber.Trim() != "0")
+            if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
             {
-                NotifyWaitingCarLandscapeViewModel(carNumber);
+                return;
+            }
+
+            if (WaitingCarLandscapeViewModel.IsViewVisible)
+            {
+                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, carNumber, false);
                 return;
             }
 
             ShowViewModel<WaitingCarLandscapeViewModel>(new
             {
-                CarNumber = carNumber,
-                DeviceOrientations = deviceOrientation
-            });
+                carNumber,
+                deviceOrientation
+            }.ToSimplePropertyDictionary());
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
