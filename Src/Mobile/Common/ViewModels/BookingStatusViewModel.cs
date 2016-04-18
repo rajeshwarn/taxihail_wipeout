@@ -89,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			GetIsCmtRideLinq();
             
-            
 			_orientationService.Initialize(new[] { DeviceOrientations.Left, DeviceOrientations.Right });
 
             Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
@@ -1173,33 +1172,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError(ex);
             }
         }
-
-        private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
+			
+		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			var orderStatusDetail = OrderStatusDetail;
-			if (orderStatusDetail == null)
+			if (OrderStatusDetail == null)
 			{
 				return;
 			}
-				
-			var carNumber = orderStatusDetail.VehicleNumber;
 
-            if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
+			var carNumber = OrderStatusDetail.VehicleNumber;
+
+			if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
             {
                 return;
             }
 
             if (WaitingCarLandscapeViewModel.IsViewVisible)
             {
-                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, carNumber, false);
+				WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, carNumber, false);
                 return;
             }
 
-            ShowViewModel<WaitingCarLandscapeViewModel>(new
-            {
-                carNumber,
-                deviceOrientation
-            }.ToSimplePropertyDictionary());
+			ShowViewModel<WaitingCarLandscapeViewModel>(new
+				{
+					carNumber,
+					deviceOrientation
+				});
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)

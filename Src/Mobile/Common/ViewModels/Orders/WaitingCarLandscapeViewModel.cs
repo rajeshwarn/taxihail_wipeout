@@ -16,58 +16,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private string _carNumber;
         private DeviceOrientations _deviceOrientation;
 
+		public static bool IsViewVisible { get; private set; }
+
         public WaitingCarLandscapeViewModel(IOrientationService orientationService)
         {
-            IsViewVisible = true;
             _orientationService = orientationService;
-
-            _orientationService.ObserveDeviceIsInLandscape()
-                .Where(deviceOrientation => deviceOrientation != DeviceOrientation)
-                .Subscribe(orientation =>
-                {
-                    DeviceOrientation = orientation;
-                },
-                Logger.LogError)
-                .DisposeWith(Subscriptions);
-
-            Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
-                h => _bookingStatusChanged += h,
-                h => _bookingStatusChanged -= h
-                )
-                .Select(args => args.EventArgs)
-                .Do(args =>
-                {
-                    if (args.ShouldCloseWaitingCarLandscapeView)
-                    {
-                        Close(this);
-                        return;
-                    }
-
-                    CarNumber = args.CarNumber;
-                })
-                .Subscribe(
-                    _ => { },
-                    Logger.LogError
-                )
-                .DisposeWith(Subscriptions);
         }
-
         public void Init(string carNumber, DeviceOrientations deviceOrientation)
         {
+			IsViewVisible = true;
             CarNumber = carNumber;
             DeviceOrientation = deviceOrientation;
         }
 
-	    public static bool IsViewVisible { get; private set; }
+		private void HandleBookingStatusChanged(BookingStatusChangedEventArgs args)
+		{
+			if (args.ShouldCloseWaitingCarLandscapeView)
+			{
+				CloseCommand.ExecuteIfPossible();
+				return;
+			}
 
-        // Overridden to ensure that IsVisible is set to false when closing the page and subscriptions are disposed.
-        protected new void Close(IMvxViewModel vm)
-        {
-            IsViewVisible = false;
-            Subscriptions.Clear();
-
-            base.Close(vm);
-        }
+			CarNumber = args.CarNumber;
+		}
 
 	    public static void NotifyBookingStatusChanged(object sender, string carNumber, bool shouldClose)
 	    {
@@ -80,6 +51,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            });
 	        }
 	    }
+
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+
+			_orientationService.ObserveDeviceIsInLandscape()
+				.Subscribe(orientation =>
+					{
+						DeviceOrientation = orientation;
+					},
+					Logger.LogError)
+				.DisposeWith(Subscriptions);
+
+			Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
+				h => _bookingStatusChanged += h,
+				h => _bookingStatusChanged -= h
+				)
+				.Select(args => args.EventArgs)
+				.Where(args => args.CarNumber != _carNumber || args.ShouldCloseWaitingCarLandscapeView)
+				.Subscribe(
+					HandleBookingStatusChanged,
+					Logger.LogError
+				)
+				.DisposeWith(Subscriptions);
+		}
         
 		public string CarNumber
 		{
@@ -105,6 +101,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged();
 				}
 			}
+		}
+
+		public override void OnViewStopped()
+		{
+			base.OnViewStopped();
+			IsViewVisible = false;
+			// Clearing subscriptions to ensure we kill the static event handlers.
+			Subscriptions.Clear();
 		}
 
 		public ICommand CloseView
