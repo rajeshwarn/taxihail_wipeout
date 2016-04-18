@@ -85,12 +85,12 @@ namespace DatabaseInitializer
                 var creatorDb = new DatabaseCreator();
                 var sqlConnectionString = param.SqlConnectionStringMaster;
 
-                Console.WriteLine("Connection string : " + sqlConnectionString);
                 var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
-
                 // if Mirroring role value is 2, we need to switch between Mirror and Principal
                 if (mirroringRole == 2)
                 {
+                    Console.WriteLine("Connected to the mirror database");
+
                     var elements = sqlConnectionString.Split(';');
                     var dataSourceIdx = -1;
                     var failOverIdx = -1;
@@ -108,20 +108,13 @@ namespace DatabaseInitializer
                         }
                     }
 
-                    Console.WriteLine("1 - elements[dataSourceIdx] = " + elements[dataSourceIdx]);
                     elements[dataSourceIdx] = elements[dataSourceIdx].Replace("Data Source", "Failover Partner");
-                    Console.WriteLine("2 - elements[dataSourceIdx] = " + elements[dataSourceIdx]);
-                    Console.WriteLine("1 - elements[failOverIdx] = " + elements[failOverIdx]);
                     elements[failOverIdx] = elements[failOverIdx].Replace("Failover Partner", "Data Source");
-                    Console.WriteLine("2 - elements[failOverIdx] = " + elements[failOverIdx]);
+
+                    Console.WriteLine("Switched addresses between 'Data Source' and 'Failover Partner'");
 
                     sqlConnectionString = string.Join(";", elements);
-                    Console.WriteLine("sqlConnectionString = " + sqlConnectionString);
                 }
-
-                Console.WriteLine("Final connection string : " + sqlConnectionString);
-
-                creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
 
                 IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
