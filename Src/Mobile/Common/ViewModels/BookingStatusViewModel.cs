@@ -88,8 +88,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
 			GetIsCmtRideLinq();
-            
-			_orientationService.Initialize(new[] { DeviceOrientations.Left, DeviceOrientations.Right });
 
             Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
         }

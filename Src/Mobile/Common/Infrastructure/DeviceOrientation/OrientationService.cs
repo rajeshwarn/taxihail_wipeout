@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		private readonly IDeviceOrientationService _deviceOrientationService;
 		private readonly IMvxLifetime _mvxLifetime;
 
-		//private DeviceOrientations[] _deviceOrientationsNotifications;
 		private DeviceOrientations _currentOrientation = DeviceOrientations.Up;
 
 		bool _previousTrustZRotation = true;
@@ -26,21 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		private bool _started;
 
 		public event EventHandler<DeviceOrientationChangedEventArgs> NotifyOrientationChanged;
-		public event Action<int, bool> NotifyAngleChanged;
 
 		public OrientationService(IDeviceOrientationService deviceOrientationService, IMvxLifetime mvxLifetime)
 		{
 			_deviceOrientationService = deviceOrientationService;
 			_mvxLifetime = mvxLifetime;
-		}
-
-		public void Initialize(DeviceOrientations[] deviceOrientationsNotifications)
-		{
-			if (!_initialized)
-			{
-				//_deviceOrientationsNotifications = deviceOrientationsNotifications;
-				_initialized = true;
-			}
 		}
 
 		public bool IsAvailable()
@@ -71,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 				_mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
 				_started = false;
 				_deviceOrientationService.Stop();
-				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged -= AngleChanged;
+				_deviceOrientationService.NotifyAngleChanged -= AngleChanged;
 
 				return true;
 			}
@@ -156,11 +145,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			{
 				_currentTrustZRotation = false;
 				return;
-			}
-
-			if (NotifyAngleChanged != null)
-			{
-				NotifyAngleChanged(angle, trustZRotation);
 			}
 
 			var deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
