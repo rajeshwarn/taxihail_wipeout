@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		private readonly IDeviceOrientationService _deviceOrientationService;
 		private readonly IMvxLifetime _mvxLifetime;
 
-		private DeviceOrientations[] _deviceOrientationsNotifications;
+		//private DeviceOrientations[] _deviceOrientationsNotifications;
 		private DeviceOrientations _currentOrientation = DeviceOrientations.Up;
 
 		bool _previousTrustZRotation = true;
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		{
 			if (!_initialized)
 			{
-				_deviceOrientationsNotifications = deviceOrientationsNotifications;
+				//_deviceOrientationsNotifications = deviceOrientationsNotifications;
 				_initialized = true;
 			}
 		}
@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 					{
 						_currentOrientation = deviceOrientation;
 
-						if (NotifyOrientationChanged != null && _deviceOrientationsNotifications.Contains(deviceOrientation))
+						if (NotifyOrientationChanged != null)
 						{
 							NotifyOrientationChanged(this, new DeviceOrientationChangedEventArgs() {DeviceOrientation = _currentOrientation });
 						}
