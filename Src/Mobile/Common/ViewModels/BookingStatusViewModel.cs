@@ -1015,6 +1015,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 					    _deviceOrientationSubscription.Disposable = _orientationService
                             .ObserveDeviceIsInLandscape()
+							// No need to process the orientation change if we are displaying the WaitingCarLanscape View
+							.Where(_ => !WaitingCarLandscapeViewModel.IsViewVisible)
 					        .Subscribe(DeviceOrientationChanged, Logger.LogError);
 					}
                     // The car number changed we need to notify the waitingcarlandscape view of the new vehicle number if it is displayed.
@@ -1178,7 +1180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			if (OrderStatusDetail == null)
+			if (OrderStatusDetail == null || WaitingCarLandscapeViewModel.IsViewVisible)
 			{
 				return;
 			}
@@ -1187,12 +1189,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
             {
-                return;
-            }
-
-            if (WaitingCarLandscapeViewModel.IsViewVisible)
-            {
-				WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, carNumber, false);
                 return;
             }
 
