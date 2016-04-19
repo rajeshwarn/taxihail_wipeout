@@ -495,3 +495,23 @@
   Bug fix - iOS - When entering the address picker from the destination address, default text now says: "Address search". 
   Custom strings (James Madison Uni. - SafeRides)
   Bug fix - Promotions - Saving issue if not in server timezone.
+3.6.0
+	Bug fix - Show user location instead of 0,0 on VTS vehicles
+	Bug fix - Fix scheduled orders causing user to be stuck when navigating from history
+	Bug fix - Prevent crash if Facebook Publish was enabled but not Facebook login
+	Bug fix - Fix for Android OrientationService never stopping when in background (iOS at the same time but OS was stopping it anyway)
+	Cleanup to use HiddenEx
+	Remove FlatButton HiddenWithConstraints and replace with HiddenEx
+	Grammar corrects in master.resx
+	JMU SafeRide - Text changes (Freskdesk ticket# 2538)
+	GUID to Arrp API orders export Added "orderReport.Id" as the Order.GUID in the order export report
+	Manage new label addition If a label is removed, it is removed from the dictionary as well If a label is added, it is added in the dictionary
+	When we receive a 615 from mapi on reauth, we should treat it as a success
+	Bug fix -Now ensuring that we navigate out of the Splashscreen when an error occurs.
+	Check minimum app version at "in a taxi", server side
+	Added Unhandled exception logging.
+	Add logs for market settings at order creation (client and server side) + remove duplicate UnpairForPayment command sent when unpairing with ridelinq
+	Bug fix - Now preventing multiple booking when "Allow simultaneous booking" is false.
+	Added UTC indication to Account creation date.
+	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
+	Bug fix -  Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
