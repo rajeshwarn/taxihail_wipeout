@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 addressesGeocode = allResults;
             }
 
-            var term = name.FirstOrDefault();
+            var term = name.Split(' ').FirstOrDefault();
             int n;
             if (!int.TryParse(term + "", out n))
             {

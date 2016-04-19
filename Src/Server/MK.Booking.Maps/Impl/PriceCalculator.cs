@@ -68,10 +68,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             var roundedPrice = Math.Round(price, 2);
             roundedPrice = roundedPrice * 100;
             var q = (int) (roundedPrice / 5.0);
-            int r;
+            int remainder = (int)roundedPrice % 5;
 
-            Math.DivRem((int) roundedPrice, 5, out r);
-            if (r > 0)
+            if (remainder > 0)
             {
                 q++;
             }

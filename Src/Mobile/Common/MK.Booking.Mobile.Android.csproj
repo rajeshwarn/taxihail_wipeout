@@ -411,9 +411,9 @@
       <Project>{72536CA5-DA80-4EEA-9D6A-2B8B03E09E15}</Project>
       <Name>MK.Booking.MapDataProvider.Mobile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj">
-      <Project>{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}</Project>
-      <Name>MK.Booking.Maps.Android</Name>
+    <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.Mobile.csproj">
+      <Project>{C2E7A3D6-5586-4E20-99B0-2EDB29E0A9C0}</Project>
+      <Name>MK.Booking.Maps.Mobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
       <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
