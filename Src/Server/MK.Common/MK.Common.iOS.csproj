@@ -105,10 +105,6 @@
     <Compile Include="CoordinateSystemOrientation.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
-    <Compile Include="DummyServiceStack\Auth.cs" />
-    <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
-    <Compile Include="DummyServiceStack\IReturn.cs" />
-    <Compile Include="DummyServiceStack\RouteAttribute.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
@@ -144,6 +140,10 @@
     <Compile Include="Helpers\AirlineComparer.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
+    <Compile Include="Http\Response\Auth.cs" />
+    <Compile Include="Http\Response\IHasResponseStatus.cs" />
+    <Compile Include="Http\Response\IReturn.cs" />
+    <Compile Include="Http\RouteDescriptionAttribute.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
     <Compile Include="Params.cs" />
