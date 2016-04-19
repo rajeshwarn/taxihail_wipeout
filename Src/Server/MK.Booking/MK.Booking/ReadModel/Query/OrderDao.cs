@@ -92,22 +92,22 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderStatusDetail GetActiveOrderStatusDetails(Guid accountId)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var activeOrders = context.Set<OrderStatusDetail>()
-                    .Where(x => x.AccountId == accountId
-                        && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending) 
-                        && VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId))
-                    .OrderByDescending(order => order.PickupDate)
-                    .ToList();
-                
-                // remove junk orders (unfinished and with pickup date more than 2 days ago)
-                activeOrders = activeOrders
-                    .Where(x => x.PickupDate >= DateTime.Now.AddDays(-2))
-                    .ToList();
+            var activeOrder = GetOrdersInProgressByAccountId(accountId)
+                .Where(orderStatusDetail => VehicleStatuses.OrderActiveStatuses.Any(status => status == orderStatusDetail.IBSStatusId) || orderStatusDetail.IsManualRideLinq)
+                .OrderByDescending(order => order.PickupDate)
+                .FirstOrDefault();
 
-                return activeOrders.FirstOrDefault();
+            if (activeOrder == null || !activeOrder.IsManualRideLinq)
+            {
+                return activeOrder;
             }
+
+            // Verifying if the manual paired order is still active.
+            var manualPairingDetails = GetManualRideLinqById(activeOrder.OrderId);
+
+            return manualPairingDetails.EndTime.HasValue
+                ? null
+                : activeOrder;
         }
 
         public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)

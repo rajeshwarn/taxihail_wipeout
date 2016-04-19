@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;		
 		private readonly INetworkRoamingService _networkRoamingService;
+		private readonly IBookingService _bookingService;
 
         private OrderValidationResult _orderValidationResult;
 
@@ -34,8 +35,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IMvxPhoneCallTask phone, 
 			IAccountService accountService, 
 			IPaymentService paymentService, 
-			INetworkRoamingService networkRoamingService)
+			INetworkRoamingService networkRoamingService,
+			IBookingService bookingService)
         {
+			_bookingService = bookingService;
             _phone = phone;
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
@@ -499,7 +502,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-					var tipIncentive = await _orderWorkflowService.GetTipIncentive();
+                    var tipIncentive = await _orderWorkflowService.GetTipIncentive();
 
 					if(tipIncentive.HasValue && tipIncentive > 0)
 					{
@@ -1024,6 +1027,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             });
         }
 
+		private async Task<bool> PreventNewOrderCreationIfNeeded()
+		{
+			if (Settings.AllowSimultaneousAppOrders)
+			{
+				return false;
+			}
+
+			var currentOrder = await _bookingService.GetActiveOrder();
+
+			if (currentOrder == null)
+			{
+				return false;
+			}
+
+			var localize = this.Services().Localize;
+
+			await this.Services().Message.ShowMessage(
+				localize["ErrorCreatingOrderTitle"], 
+				localize["ErrorCreateOrder_PendingOrder"],
+				localize["Yes"],
+				() => 
+				{
+					ParentViewModel.BookingStatus.StartBookingStatus(currentOrder.Order, currentOrder.OrderStatus);
+
+					ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+				},
+				localize["No"],
+				() => {});
+
+			return true;
+		}
+
         public ICommand ManualPairingRideLinq
         {
             get
@@ -1039,6 +1074,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						PromptToAddCreditCard(cardDeactivated, true);
 						return;
                     }
+					
+					if(await PreventNewOrderCreationIfNeeded())
+					{
+						return;
+					}
+
 
                     //We need to verify if we have an overdue payment.
                     var overduePayment = await _paymentService.GetOverduePayment().ShowProgress();

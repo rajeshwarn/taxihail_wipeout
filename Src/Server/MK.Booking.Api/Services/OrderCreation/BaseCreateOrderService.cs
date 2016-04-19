@@ -273,7 +273,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
-            
+            _logger.LogMessage("MarketSettings for order {0}: {1}", orderCommand.OrderId, marketSettings.ToJson());
+
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
             createReportOrder.BookingFees = orderCommand.BookingFees;
@@ -699,9 +700,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private Guid? GetPendingOrder()
         {
-            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
-
-            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
+            var latestActiveOrder = _orderDao.GetActiveOrderStatusDetails(new Guid(this.GetSession().UserAuthId));
+            
             if (latestActiveOrder != null)
             {
                 return latestActiveOrder.OrderId;

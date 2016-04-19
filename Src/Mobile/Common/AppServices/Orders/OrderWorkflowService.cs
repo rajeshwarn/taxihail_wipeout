@@ -305,8 +305,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
+                Logger.LogMessage("MarketSettings for order {0}: {1}", orderCreated.Id, _marketSettings.ToJson());
 
-				_deviceCollectorService.GenerateNewSessionIdAndCollect();
+                _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}
@@ -327,7 +328,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-					var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
+					var localizedMessageKey = error.ResponseStatus.ErrorCode == "CreateOrder_PendingOrder" 
+                        ? error.ResponseStatus.ErrorCode 
+                        : error.ResponseStatus.Message;
 
                     throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }

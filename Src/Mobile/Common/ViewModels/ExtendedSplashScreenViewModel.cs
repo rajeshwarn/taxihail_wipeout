@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Extensions;
@@ -23,36 +24,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async Task GetCurrentOrderAsync()
         {
-            var currentOrder = await _bookingService.GetActiveOrder();
-
-            if (currentOrder == null)
+            try
             {
-                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
+                var currentOrder = await _bookingService.GetActiveOrder();
 
-                _bookingService.ClearLastOrder();
+                if (currentOrder == null)
+                {
+                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
 
-                return;
-            }
+                    _bookingService.ClearLastOrder();
 
-			if (currentOrder.Order.IsManualRideLinq)
-            {
-				var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Order.Id);
+                    return;
+                }
+
+                if (currentOrder.Order.IsManualRideLinq)
+                {
+                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(currentOrder.Order.Id);
+
+                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
+                    {
+                        manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson(),
+                        locateUser = false
+                    });
+
+                    return;
+                }
 
                 ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
                 {
-                    manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson(),
+                    order = currentOrder.Order.ToJson(),
+                    orderStatusDetail = currentOrder.OrderStatus.ToJson(),
                     locateUser = false
                 });
-
-                return;
             }
-
-            ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
+			catch(Exception ex)
             {
-				order = currentOrder.Order.ToJson(),
-				orderStatusDetail = currentOrder.OrderStatus.ToJson(),
-                locateUser = false
-            });
+				Logger.LogError(ex);
+                // For some reason we had an exception. Gracefully moving to HomeView to prevent us getting stuck on the SplashScreen.
+                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
+
+                _bookingService.ClearLastOrder();
+            }
+            
         }
     }
 }

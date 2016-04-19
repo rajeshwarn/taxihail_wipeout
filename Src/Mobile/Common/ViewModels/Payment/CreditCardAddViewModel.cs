@@ -637,15 +637,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			await _accountService.RemoveCreditCard(Data.CreditCardId, replacedByPayPal);
 
-			if (!replacedByPayPal && _accountService.CurrentAccount.DefaultCreditCard == null)
-			{
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-			}
-			else
-			{
-				Close(this);
-			}
-		}
+            Close(this);
+        }
 
 		private async void SaveCreditCard()
 		{

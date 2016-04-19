@@ -192,12 +192,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
 
                     UnpairFromVehicleUsingRideLinq(orderPairingDetail);
-
-                    // send a command to delete the pairing pairing info for this order
-                    _commandBus.Send(new UnpairForPayment
-                    {
-                        OrderId = orderId
-                    });
                 }
 
                 _pairingService.Unpair(orderId);
@@ -210,6 +204,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
+                _logger.LogError(e);
                 return new BasePaymentResponse
                 {
                     IsSuccessful = false,
@@ -484,32 +479,14 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var order = _orderDao.FindById(orderId);
-                var orderPairing = _orderDao.FindOrderPairingById(orderId);
-
-                if (orderPairing == null)
-                {
-                    throw new Exception(string.Format("can't find orderPairing object for orderId {0}", orderId));
-                }
-
-                var creditCardDetail = _creditCardDao.FindByToken(orderPairing.TokenOfCardToBeUsedForPayment);
-
-                var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
-                                    + order.Tax.GetValueOrDefault()
-                                    + order.Toll.GetValueOrDefault()
-                                    + order.Tip.GetValueOrDefault()
-                                    + order.Surcharge.GetValueOrDefault()) * 100);
-
-                var request = new CmtRideLinqRefundRequest
-                {
-                    PairingToken = orderPairing.PairingToken,
-                    CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
-                    LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
-                    AuthAmount = totalAmount
-                };
+                
+                var request = order.IsManualRideLinq
+                    ? GetRefundRequestFromManualPairingDetails(order)
+                    : GetRefundRequestFromOrderPairingDetails(order);
 
                 _logger.LogMessage("Refunding CMT RideLinq. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", orderPairing.PairingToken), request);
+                var response = _cmtMobileServiceClient.Post(string.Format("payment/{0}/credit", request.PairingToken), request);
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
@@ -523,7 +500,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new RefundPaymentResponse
                     {
                         IsSuccessful = true,
-                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
+                        Last4Digits = request.LastFour,
                     };
                 }
                 else
@@ -531,7 +508,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new RefundPaymentResponse
                     {
                         IsSuccessful = false,
-                        Last4Digits = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty,
+                        Last4Digits = request.LastFour,
                         Message = response != null ? response.StatusDescription : string.Empty
                     };
                 }
@@ -558,6 +535,66 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message
                 };
             }
+        }
+
+        private CmtRideLinqRefundRequest GetRefundRequestFromManualPairingDetails(OrderDetail order)
+        {
+            var manualRideLinqDetail = _orderDao.GetManualRideLinqById(order.Id);
+
+            if (manualRideLinqDetail == null)
+            {
+                throw new Exception(string.Format("can't find orderPairing object for orderId {0}", order.Id));
+            }
+
+            if (order.PaymentInformation == null || !order.PaymentInformation.CreditCardId.HasValue)
+            {
+                throw new Exception(string.Format("can't find creditCardId for orderId {0}", order.Id));
+            }
+
+            var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
+                                               + order.Tax.GetValueOrDefault()
+                                               + order.Toll.GetValueOrDefault()
+                                               + order.Tip.GetValueOrDefault()
+                                               + order.Surcharge.GetValueOrDefault()) * 100);
+            
+
+            var creditCardDetails = _creditCardDao.FindById(order.PaymentInformation.CreditCardId.Value);
+
+            var request = new CmtRideLinqRefundRequest
+            {
+                PairingToken = manualRideLinqDetail.PairingToken,
+                CofToken = creditCardDetails.Token,
+                AuthAmount = totalAmount,
+                LastFour = creditCardDetails.Last4Digits
+            };
+            return request;
+        }
+
+        private CmtRideLinqRefundRequest GetRefundRequestFromOrderPairingDetails(OrderDetail order)
+        {
+            var orderPairing = _orderDao.FindOrderPairingById(order.Id);
+
+            if (orderPairing == null)
+            {
+                throw new Exception(string.Format("can't find orderPairing object for orderId {0}", order.Id));
+            }
+
+            var totalAmount = Convert.ToInt32((order.Fare.GetValueOrDefault()
+                                               + order.Tax.GetValueOrDefault()
+                                               + order.Toll.GetValueOrDefault()
+                                               + order.Tip.GetValueOrDefault()
+                                               + order.Surcharge.GetValueOrDefault())*100);
+
+            var creditCardDetail = _creditCardDao.FindByToken(orderPairing.PairingToken);
+
+            var request = new CmtRideLinqRefundRequest
+            {
+                PairingToken = orderPairing.PairingToken,
+                CofToken = orderPairing.TokenOfCardToBeUsedForPayment,
+                AuthAmount = totalAmount,
+                LastFour = creditCardDetail != null ? creditCardDetail.Last4Digits : string.Empty
+            };
+            return request;
         }
 
         public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
@@ -701,10 +738,12 @@ namespace apcurium.MK.Booking.Services.Impl
             InitializeServiceClient();
 
             // send unpairing request
+            _logger.LogMessage("Sending Unpairing request for pairing token: " + orderPairingDetail.PairingToken);
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
                 PairingToken = orderPairingDetail.PairingToken
             });
+            _logger.LogMessage("Response received: " + response.ToJson());
 
             // wait for trip to be updated
             _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);

@@ -51,8 +51,19 @@ namespace apcurium.MK.Booking.Mobile
 
             InitalizeServices();
             InitializeStartNavigation();
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
-        
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = e.ExceptionObject as Exception;
+            if (Mvx.CanResolve<ILogger>() && ex != null)
+            {
+                Mvx.Resolve<ILogger>().LogError(new Exception("Unhandled exception", ex));
+            }
+        }
+
         private void InitalizeServices()
         {
 			_container.Register<ITinyMessengerHub, TinyMessengerHub>();
