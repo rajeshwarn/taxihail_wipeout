@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using Android.App;
 using Android.Content;
 using Android.Hardware;
+using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -14,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		private readonly AccelerometerSensorListener _accelerometerSensorListener;
 		private bool _enabled;
 
-		public AndroidDeviceOrientationService() : base(Common.CoordinateSystemOrientation.LeftHanded)
+		public AndroidDeviceOrientationService(IMvxLifetime mvxLifetime) : base(Common.CoordinateSystemOrientation.LeftHanded, mvxLifetime)
 		{
 			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
 			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);

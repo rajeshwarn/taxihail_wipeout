@@ -5,6 +5,7 @@ using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -16,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		private bool _isOrientationUpdateThreadActive;
 		private Thread _orientationUpdateThread;
 
-		public AppleDeviceOrientationService() : base(Common.CoordinateSystemOrientation.RightHanded)
+		public AppleDeviceOrientationService(IMvxLifetime mvxLifetime) : base(Common.CoordinateSystemOrientation.RightHanded, mvxLifetime)
 		{
 		    if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{

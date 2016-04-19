@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
-		private readonly IOrientationService _orientationService;
+		private readonly IDeviceOrientationService _orientationService;
 		private readonly IRateApplicationService _rateApplicationService;
 		private readonly IAccountService _accountService;
 		private readonly INetworkRoamingService _networkRoamingService;
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-        private SerialDisposable _deviceOrientationSubscription = new SerialDisposable();
+        private readonly SerialDisposable _deviceOrientationSubscription = new SerialDisposable();
 
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService,
 			IMetricsService metricsService,
 			IOrderWorkflowService orderWorkflowService,
-			IOrientationService orientationService,
+			IDeviceOrientationService orientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
 			IAccountService accountService,
@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _deviceOrientationSubscription.Disposable = null;
             
-            CloseWaitingCarLandscapeViewModelIfPossible(closeViewIfPossible: true);
+            CloseWaitingCarLandscapeViewModelIfPossible();
 
             _canAutoFollowTaxi = false;
             _autoFollowTaxi = false;
@@ -471,15 +471,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    _deviceOrientationSubscription.Disposable = null;
 
-			    CloseWaitingCarLandscapeViewModelIfPossible(closeViewIfPossible: true);
+			    CloseWaitingCarLandscapeViewModelIfPossible();
 			}
 		}
 
-        private void CloseWaitingCarLandscapeViewModelIfPossible(bool closeViewIfPossible = false)
+        private void CloseWaitingCarLandscapeViewModelIfPossible()
         {
             if (WaitingCarLandscapeViewModel.IsViewVisible)
             {
-                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, string.Empty, closeViewIfPossible);
+                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, string.Empty, true);
             }
         }
 
@@ -1017,6 +1017,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             .ObserveDeviceIsInLandscape()
 					        .Subscribe(DeviceOrientationChanged, Logger.LogError);
 					}
+                    // The car number changed we need to notify the waitingcarlandscape view of the new vehicle number if it is displayed.
+				    if (WaitingCarLandscapeViewModel.IsViewVisible && OrderStatusDetail.VehicleNumber != _vehicleNumber)
+				    {
+				        WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, _vehicleNumber, false);
+				    }
 				}
 				else
 				{

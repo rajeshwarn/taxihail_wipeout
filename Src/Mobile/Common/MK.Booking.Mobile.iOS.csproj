@@ -356,10 +356,8 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
-    <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />

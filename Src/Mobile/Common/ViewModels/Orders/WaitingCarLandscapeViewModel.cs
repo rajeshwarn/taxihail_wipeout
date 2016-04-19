@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
 using apcurium.MK.Common.Enumeration;
-using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
     public class WaitingCarLandscapeViewModel : PageViewModel
 	{
 	    private static EventHandler<BookingStatusChangedEventArgs> _bookingStatusChanged;
-	    private readonly IOrientationService _orientationService;
+	    private readonly IDeviceOrientationService _orientationService;
         private string _carNumber;
         private DeviceOrientations _deviceOrientation;
 
 		public static bool IsViewVisible { get; private set; }
 
-        public WaitingCarLandscapeViewModel(IOrientationService orientationService)
+        public WaitingCarLandscapeViewModel(IDeviceOrientationService orientationService)
         {
             _orientationService = orientationService;
         }
@@ -52,32 +51,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	    }
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
+        public override void OnViewLoaded()
+        {
+            base.OnViewLoaded();
 
-			_orientationService.ObserveDeviceIsInLandscape()
-				.Subscribe(orientation =>
-					{
-						DeviceOrientation = orientation;
-					},
-					Logger.LogError)
-				.DisposeWith(Subscriptions);
+            _orientationService.ObserveDeviceIsInLandscape()
+               .Subscribe(orientation =>
+               {
+                   DeviceOrientation = orientation;
+               },
+                   Logger.LogError)
+               .DisposeWith(Subscriptions);
 
-			Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
-				h => _bookingStatusChanged += h,
-				h => _bookingStatusChanged -= h
-				)
-				.Select(args => args.EventArgs)
-				.Where(args => args.CarNumber != _carNumber || args.ShouldCloseWaitingCarLandscapeView)
-				.Subscribe(
-					HandleBookingStatusChanged,
-					Logger.LogError
-				)
-				.DisposeWith(Subscriptions);
-		}
-        
-		public string CarNumber
+            Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
+                h => _bookingStatusChanged += h,
+                h => _bookingStatusChanged -= h
+                )
+                .Select(args => args.EventArgs)
+                .Where(args => args.CarNumber != _carNumber || args.ShouldCloseWaitingCarLandscapeView)
+                .Subscribe(
+                    HandleBookingStatusChanged,
+                    Logger.LogError
+                )
+                .DisposeWith(Subscriptions);
+        }
+
+        public string CarNumber
 		{
 			get { return _carNumber; }
 			set
