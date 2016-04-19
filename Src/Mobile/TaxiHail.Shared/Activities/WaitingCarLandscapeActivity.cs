@@ -1,25 +1,17 @@
+using System.ComponentModel;
 using Android.App;
 using Android.Content.PM;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Enumeration;
-using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/WaitingCarLandscapeActivityName", Theme = "@android:style/Theme.NoTitleBar.Fullscreen", ScreenOrientation = ScreenOrientation.Landscape)]
-	public class WaitingCarLandscapeActivity:MvxActivity
+	public class WaitingCarLandscapeActivity : BaseBindingActivity<WaitingCarLandscapeViewModel>
     {
-		TextView _carNumberTextView;
-		string _initialContentDescription;
-
-		public new WaitingCarLandscapeViewModel ViewModel
-		{
-			get
-			{
-				return (WaitingCarLandscapeViewModel)DataContext;
-			}
-		}
+		private TextView _carNumberTextView;
+		private string _initialContentDescription;
 
 		protected override void OnViewModelSet()
 		{
@@ -30,22 +22,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			_carNumberTextView = FindViewById<TextView>(Resource.Id.CarNumberTextView);
 			_initialContentDescription = _carNumberTextView.ContentDescription;
 
-			ViewModel_PropertyChanged(null, null);
-			ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            _carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
+		    UpdateDeviceOrientation();
+		}
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
-		void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
-			{
-				RequestedOrientation = ScreenOrientation.Landscape;
-			}
-			else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
-			{
-				RequestedOrientation = ScreenOrientation.ReverseLandscape;
-			}
+        protected override void OnStop()
+        {
+            base.OnStop();
 
-			_carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
+            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+		    if (e.PropertyName == nameof(ViewModel.DeviceOrientation))
+		    {
+		        UpdateDeviceOrientation();
+		    }
+		    else if (e.PropertyName == nameof(ViewModel.CarNumber))
+		    {
+		        _carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
+		    }
 		}
+
+        private void UpdateDeviceOrientation()
+        {
+            if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+            }
+            else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
+            {
+                RequestedOrientation = ScreenOrientation.ReverseLandscape;
+            }
+        }
     }
 }
