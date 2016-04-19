@@ -444,7 +444,7 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob ("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo {
-				FileName = "mono",
+				FileName = "/usr/local/bin/mono",
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
@@ -468,7 +468,7 @@ namespace MK.DeploymentService.Mobile
 
             localizationToolRun = new ProcessStartInfo
             {
-                FileName = "mono",
+                FileName = "/usr/local/bin/mono",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
                 UseShellExecute = false,
@@ -498,7 +498,7 @@ namespace MK.DeploymentService.Mobile
 
             localizationToolRun = new ProcessStartInfo
             {
-                FileName = "mono",
+                FileName = "/usr/local/bin/mono",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
