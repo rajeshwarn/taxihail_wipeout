@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9C99B625-C4A2-476E-8024-CDE6A9AE5D9C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>apcurium.MK.Booking.Api.Contract</RootNamespace>
+    <AssemblyName>MK.Booking.Api.Contract.Mobile</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69d8aaea-4111-4ffa-b035-6cec2dac200e}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Mobile.csproj">
+      <Project>{72536CA5-DA80-4EEA-9D6A-2B8B03E09E15}</Project>
+      <Name>MK.Booking.MapDataProvider.Mobile</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthenticateAttribute.cs" />
+    <Compile Include="BaseDTO.cs" />
+    <Compile Include="Http\NoCacheAttribute.Mobile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\AccountOrderListRequest.cs" />
+    <Compile Include="Requests\ActivationMethod.cs" />
+    <Compile Include="Requests\ActiveOrderRequest.cs" />
+    <Compile Include="Requests\ActivePromotions.cs" />
+    <Compile Include="Requests\Addresses.cs" />
+    <Compile Include="Requests\AddressHistoryRequest.cs" />
+    <Compile Include="Requests\AvailableVehicles.cs" />
+    <Compile Include="Requests\BookingSettingsRequest.cs" />
+    <Compile Include="Requests\CancelOrder.cs" />
+    <Compile Include="Requests\ConfirmAccountRequest.cs" />
+    <Compile Include="Requests\ConfirmationCodeRequest.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
+    <Compile Include="Requests\CreditCardRequest.cs" />
+    <Compile Include="Requests\CurrentAccount.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
+    <Compile Include="Requests\DefaultCreditCardRequest.cs" />
+    <Compile Include="Requests\DirectionsRequest.cs" />
+    <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
+    <Compile Include="Requests\GeocodingRequest.cs" />
+    <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
+    <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
+    <Compile Include="Requests\LogOriginalEtaRequest.cs" />
+    <Compile Include="Requests\NotificationSettingsRequest.cs" />
+    <Compile Include="Requests\OrderRatingRequest.cs" />
+    <Compile Include="Requests\OrderRequest.cs" />
+    <Compile Include="Requests\OrderStatusRequest.cs" />
+    <Compile Include="Requests\OrderUpdateRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
+    <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
+    <Compile Include="Requests\Payment\ManualRideLinqRequest.cs" />
+    <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
+    <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
+    <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\PushNotificationRegistration.cs" />
+    <Compile Include="Requests\ReferenceDataRequest.cs" />
+    <Compile Include="Requests\RegisterAccount.cs" />
+    <Compile Include="Requests\ResetPassword.cs" />
+    <Compile Include="Requests\SaveAddress.cs" />
+    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
+    <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
+    <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
+    <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
+    <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
+    <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\AccountCharge.cs" />
+    <Compile Include="Resources\ActivateOrderResponse.cs" />
+    <Compile Include="Resources\ActivePromotion.cs" />
+    <Compile Include="Resources\AddressList.cs" />
+    <Compile Include="Resources\ApplicationInfo.cs" />
+    <Compile Include="Resources\AvailableVehicle.cs" />
+    <Compile Include="Resources\CreditCardDetails.cs" />
+    <Compile Include="Resources\DirectionInfo.cs" />
+    <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\FlightInformation.cs" />
+    <Compile Include="Resources\MarketSettings.cs" />
+    <Compile Include="Resources\NetworkFleet.cs" />
+    <Compile Include="Resources\Order.cs" />
+    <Compile Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\OrderValidationResult.cs" />
+    <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\Payments\OverduePayment.cs" />
+    <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
+    <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
+    <Compile Include="Resources\ReferenceData.cs" />
+    <Compile Include="Resources\TermsAndConditions.cs" />
+    <Compile Include="Resources\VehicleType.cs" />
+    <Compile Include="Security\AuthenticationData.cs" />
+    <Compile Include="Requests\TermsAndConditionsRequest.Mobile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

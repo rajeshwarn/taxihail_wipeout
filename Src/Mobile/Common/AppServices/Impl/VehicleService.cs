@@ -15,6 +15,7 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using MK.Common.Exceptions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -93,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 				    return x.vehicle == null
 				        ? double.MaxValue
-				        : Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude);
+				        : Maps.Geo.Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude);
 				})
 				.SelectMany(x => CheckForEta(x.isUsingGeoServices, x.address, x.vehicle));
 		}
@@ -166,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var centerLongitude = pickup.Longitude;
 
 			var vehicles = OrderVehiclesByDistanceIfNeeded (isUsingGeoServices, pickup, cars)
-				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, centerLatitude, centerLongitude) <= radius)
+				.Where (car => Maps.Geo.Position.CalculateDistance (car.Latitude, car.Longitude, centerLatitude, centerLongitude) <= radius)
 				.Take (vehicleCount)
 				.ToArray();
 
@@ -175,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return null;
 			}
 
-			var distanceFromLastVehicle = Position.CalculateDistance (vehicles.Last ().Latitude, vehicles.Last ().Longitude, centerLatitude, centerLongitude); 
+			var distanceFromLastVehicle = Maps.Geo.Position.CalculateDistance (vehicles.Last ().Latitude, vehicles.Last ().Longitude, centerLatitude, centerLongitude); 
 
 			var maximumBounds = MapBounds.GetBoundsFromCenterAndRadius(centerLatitude, centerLongitude, distanceFromLastVehicle, distanceFromLastVehicle);
 
@@ -187,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return isUsingGeoServices
                 // Ensure that the cars are ordered correctly.
                 ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleName)
-                : cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
+                : cars.OrderBy (car => Maps.Geo.Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
 		}
 
 	    private async Task<Direction> CheckForEta(bool isUsingCmtGeo, Address pickup, AvailableVehicle vehicleLocation)

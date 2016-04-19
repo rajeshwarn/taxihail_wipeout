@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google;
+using apcurium.MK.Booking.MapDataProvider.TomTom;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
@@ -23,15 +26,12 @@ using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Dialog.Droid;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
-using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Google;
 using Cirrious.CrossCore.Droid;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.MapDataProvider.TomTom;
-using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Services;
+using MK.Booking.MapDataProvider.Foursquare;
 using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile.Client

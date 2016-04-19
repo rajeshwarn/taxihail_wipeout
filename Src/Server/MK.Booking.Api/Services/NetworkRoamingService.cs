@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
 
             // Hash market so that client doesn't have direct access to its value
-            return _cryptographyService.GetHashString(market);
+            return _cryptographyService.GetHashString(market, CryptographyHashAlgorithm.Md5);
         }
 
         public object Get(FindMarketSettingsRequest request)
@@ -37,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services
             return marketSettings != null
                 ? new MarketSettings
                     {
-                        HashedMarket = _cryptographyService.GetHashString(marketSettings.Market),
+                        HashedMarket = _cryptographyService.GetHashString(marketSettings.Market, CryptographyHashAlgorithm.Md5),
                         EnableDriverBonus = marketSettings.EnableDriverBonus,
                         OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                         EnableFutureBooking = marketSettings.EnableFutureBooking,

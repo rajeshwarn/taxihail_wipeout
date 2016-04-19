@@ -75,9 +75,9 @@
       <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
       <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
-      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.MapDataProvider.iOS</Name>
+    <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Mobile.csproj">
+      <Project>{72536CA5-DA80-4EEA-9D6A-2B8B03E09E15}</Project>
+      <Name>MK.Booking.MapDataProvider.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

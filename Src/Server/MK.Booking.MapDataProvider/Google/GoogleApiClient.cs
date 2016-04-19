@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Resources;
@@ -12,6 +11,9 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Services;
+using PCLCrypto;
+using Portable.Text;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
@@ -82,7 +84,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = "json" + BuildQueryString(@params);
 
             #if DEBUG
-            Console.WriteLine(PlacesServiceUrl + resource);
+            Debug.WriteLine(PlacesServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
@@ -94,7 +96,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = GetPlacesAutocompleteSearchRequest(latitude, longitude, query, languageCode, radius, "establishment");
 
             #if DEBUG
-            Console.WriteLine(PlacesAutoCompleteServiceUrl + resource);
+            Debug.WriteLine(PlacesAutoCompleteServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), 
@@ -160,7 +162,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var signedUrl = Sign(DirectionsServiceUrl + resource);
 
             #if DEBUG
-            Console.WriteLine(signedUrl);
+            Debug.WriteLine(signedUrl);
             #endif
 
             var result = new GeoDirection();
@@ -212,7 +214,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = GetPlacesAutocompleteSearchRequest(pickupLatitude, pickupLongitude, query, currentLanguage, (int)searchRadiusInMeters, "address");
 
             #if DEBUG
-            Console.WriteLine(PlacesAutoCompleteServiceUrl + resource);
+            Debug.WriteLine(PlacesAutoCompleteServiceUrl + resource);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<PredictionResponse>(resource), 
@@ -294,7 +296,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
 
             #if DEBUG
-            Console.WriteLine(signedUrl);
+            Debug.WriteLine(signedUrl);
             #endif
 
             return HandleGoogleResultAsync(() => client.GetAsync<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
@@ -315,11 +317,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var encodedPathAndQueryBytes = encoding.GetBytes(uri.LocalPath + uri.Query);
 
             // compute the hash
-            var algorithm = new HMACSHA1(privateKeyBytes);
-            var hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
+            var cryptographyService = new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, null);
+            var hash = cryptographyService.GenerateHash(uri.LocalPath + uri.Query, usablePrivateKey);
 
             // convert the bytes to string and make url-safe by replacing '+' and '/' characters
-            var signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
+            var signature = hash.Replace("+", "-").Replace("/", "_");
 
             // Add the signature to the existing URI.
             return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;

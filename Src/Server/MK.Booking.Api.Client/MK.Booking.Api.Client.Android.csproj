@@ -115,9 +115,9 @@
       <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>
       <Name>CMTPayment.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
-      <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
-      <Name>MK.Booking.Api.Contract.Android</Name>
+    <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Mobile.csproj">
+      <Project>{9C99B625-C4A2-476E-8024-CDE6A9AE5D9C}</Project>
+      <Name>MK.Booking.Api.Contract.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

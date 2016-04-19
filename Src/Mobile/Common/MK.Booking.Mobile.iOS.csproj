@@ -390,17 +390,17 @@
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
-      <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
-      <Name>MK.Booking.Api.Contract.iOS</Name>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Mobile.csproj">
+      <Project>{9C99B625-C4A2-476E-8024-CDE6A9AE5D9C}</Project>
+      <Name>MK.Booking.Api.Contract.Mobile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Mobile.csproj">
+      <Project>{72536CA5-DA80-4EEA-9D6A-2B8B03E09E15}</Project>
+      <Name>MK.Booking.MapDataProvider.Mobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
-      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.MapDataProvider.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.iOS.csproj">
       <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>

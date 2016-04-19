@@ -1207,7 +1207,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var hashedImagedata = CryptographyService.GetHashString(imageData);
+                        var hashedImagedata = CryptographyService.GetHashString(imageData, CryptographyHashAlgorithm.Md5);
 
                         // Append its hash to its URL
                         return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);

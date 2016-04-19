@@ -1,11 +1,5 @@
-﻿#region
-
-
-using apcurium.MK.Booking.MapDataProvider.Resources;
-using ServiceStack.ServiceHost;
+﻿using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {

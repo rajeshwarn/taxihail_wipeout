@@ -151,7 +151,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
             var location = venue.Response.Venue.location;
             string street = null;
             string streetNumber = null;
-            if (!string.IsNullOrEmpty(location.address) && (char.IsNumber(location.address.FirstOrDefault())) && location.address.Any(c => c == ' '))
+            if (!string.IsNullOrEmpty(location.address) && (char.IsNumber(location.address[0])) && !location.address.Contains(" "))
             {
                 streetNumber = location.address.Split(' ')[0];
                 street = location.address.Substring(location.address.IndexOf(' '), location.address.Length - location.address.IndexOf(' ')).Trim();

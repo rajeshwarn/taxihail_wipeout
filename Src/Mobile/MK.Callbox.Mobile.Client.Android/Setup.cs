@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.Mobile;
 using Android.Content;
 using Cirrious.MvvmCross.Droid.Platform;
@@ -21,6 +20,7 @@ using apcurium.MK.Callbox.Mobile.Client.Cache;
 using apcurium.MK.Callbox.Mobile.Client.Localization;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Services;
+using apcurium.MK.Booking.MapDataProvider;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {

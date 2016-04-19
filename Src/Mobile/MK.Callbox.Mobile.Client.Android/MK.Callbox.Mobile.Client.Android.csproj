@@ -332,13 +332,13 @@
       <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
-      <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
-      <Name>MK.Booking.Api.Contract.Android</Name>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Mobile.csproj">
+      <Project>{9C99B625-C4A2-476E-8024-CDE6A9AE5D9C}</Project>
+      <Name>MK.Booking.Api.Contract.Mobile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
-      <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
-      <Name>MK.Booking.MapDataProvider.Android</Name>
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Mobile.csproj">
+      <Project>{72536CA5-DA80-4EEA-9D6A-2B8B03E09E15}</Project>
+      <Name>MK.Booking.MapDataProvider.Mobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
       <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>

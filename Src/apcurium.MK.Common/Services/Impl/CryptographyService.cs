@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using PCLCrypto;
 
@@ -97,7 +98,7 @@ namespace apcurium.MK.Common.Services
             }
         }
 
-        public string GetHashString(string inputString)
+        public string GetHashString(string inputString, CryptographyHashAlgorithm algorithm)
         {
             if (!inputString.HasValue())
             {
@@ -105,7 +106,7 @@ namespace apcurium.MK.Common.Services
             }
 
             var sb = new StringBuilder();
-            foreach (byte b in GetHash(inputString))
+            foreach (byte b in GetHash(inputString, algorithm))
             {
                 sb.Append(b.ToString("x2"));
             }
@@ -113,7 +114,7 @@ namespace apcurium.MK.Common.Services
             return sb.ToString();
         }
 
-        public string GetHashString(byte[] inputBytes)
+        public string GetHashString(byte[] inputBytes, CryptographyHashAlgorithm algorithm)
         {
             if (inputBytes == null)
             {
@@ -121,7 +122,7 @@ namespace apcurium.MK.Common.Services
             }
 
             var sb = new StringBuilder();
-            foreach (byte b in GetHash(inputBytes))
+            foreach (byte b in GetHash(inputBytes, algorithm))
             {
                 sb.Append(b.ToString("x2"));
             }
@@ -149,16 +150,51 @@ namespace apcurium.MK.Common.Services
             return Encoding.UTF8.GetString(plainText, 0, plainText.Length);
         }
 
-        private byte[] GetHash(string inputString)
+        public string GenerateHash(string input, string key)
         {
-            var md5Hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Md5);
-            return md5Hasher.HashData(Encoding.UTF8.GetBytes(inputString));
+            var mac = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha1);
+            var keyMaterial = Convert.FromBase64String(key);
+            var cryptoKey = mac.CreateKey(keyMaterial);
+            var hash = WinRTCrypto.CryptographicEngine.Sign(cryptoKey, WinRTCrypto.CryptographicBuffer.ConvertStringToBinary(input, Encoding.UTF8));
+            return WinRTCrypto.CryptographicBuffer.EncodeToBase64String(hash);
         }
 
-        private byte[] GetHash(byte[] inputBytes)
+        private byte[] GetHash(string inputString, CryptographyHashAlgorithm algorithm)
         {
-            var md5Hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Md5);
-            return md5Hasher.HashData(inputBytes);
+            IHashAlgorithmProvider hasher = null;
+
+            switch (algorithm)
+            {
+                case CryptographyHashAlgorithm.Md5:
+                    hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Md5);
+                    break;
+                case CryptographyHashAlgorithm.Sha1:
+                    hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Sha1);
+                    break;
+                default:
+                    throw new NotSupportedException("CryptographyHashAlgorithm provided is not recognized");
+            }
+           
+            return hasher.HashData(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        private byte[] GetHash(byte[] inputBytes, CryptographyHashAlgorithm algorithm)
+        {
+            IHashAlgorithmProvider hasher = null;
+
+            switch (algorithm)
+            {
+                case CryptographyHashAlgorithm.Md5:
+                    hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Md5);
+                    break;
+                case CryptographyHashAlgorithm.Sha1:
+                    hasher = _hashAlgorithmProviderFactory.OpenAlgorithm(HashAlgorithm.Sha1);
+                    break;
+                default:
+                    throw new NotSupportedException("CryptographyHashAlgorithm provided is not recognized");
+            }
+
+            return hasher.HashData(inputBytes);
         }
 
         private string ByteArrayToString(byte[] data)
