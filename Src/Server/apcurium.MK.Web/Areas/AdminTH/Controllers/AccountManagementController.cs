@@ -442,9 +442,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                    var status = GetOrderStatusDetails(accountId).FirstOrDefault(orderStatusDetail => orderStatusDetail.OrderId == x.Id);
                    var orderPairing = _orderDao.FindOrderPairingById(x.Id);
 
+                   var hasPaymentInfo = x.PaymentInformation != null && x.PaymentInformation.CreditCardId.HasValue;
+                   var isOrderPairedAndRefundable = orderPairing != null || (x.IsManualRideLinq & hasPaymentInfo);
+
                    return new OrderModel(x)
                    {
-                       IsOrderPairing = orderPairing != null,
+                       IsOrderPairing = isOrderPairedAndRefundable,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),

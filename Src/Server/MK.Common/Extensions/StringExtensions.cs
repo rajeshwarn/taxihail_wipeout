@@ -25,6 +25,18 @@ namespace apcurium.MK.Common.Extensions
             return int.Parse(instance);
         }
 
+        public static Guid? ToGuidOrNull(this string instance)
+        {
+            Guid value;
+            return Guid.TryParse(instance, out value) ? (Guid?) value : null;
+        }
+
+        public static int? ToIntOrNull(this string text)
+        {
+            int value;
+            return int.TryParse(text, out value) ? (int?)value : null;
+        }
+
         public static long ToLong(this string instance)
         {
             return long.Parse(instance);

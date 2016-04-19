@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _notificationService.SendTripReceiptEmail(command.OrderId, command.IBSOrderId, command.VehicleNumber, command.DriverInfos, command.Fare, command.Toll, command.Tip,
                     command.Tax, command.Extra, command.Surcharge, command.BookingFees, command.TotalFare, command.PaymentInfo, command.PickupAddress, command.DropOffAddress,
                     command.PickupDate, command.UtcDropOffDate, command.EmailAddress, command.ClientLanguageCode, command.AmountSavedByPromotion, command.PromoCode,
-                    command.CmtRideLinqFields).FireAndForget();
+                command.CmtRideLinqFields, command.BypassNotificationSettings).FireAndForget();
         }
     }
 }

@@ -502,12 +502,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-					if(await PreventNewOrderCreationIfNeeded())
-					{
-						return;
-					}
-
-					var tipIncentive = await _orderWorkflowService.GetTipIncentive();
+                    var tipIncentive = await _orderWorkflowService.GetTipIncentive();
 
 					if(tipIncentive.HasValue && tipIncentive > 0)
 					{
