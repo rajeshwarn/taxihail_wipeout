@@ -97,8 +97,7 @@ namespace DatabaseInitializer
                         {
                             elements[idx] = elements[idx].Replace("Data Source", "Failover Partner");
                         }
-
-                        if (elements[idx].ToLower().Contains("failover partner"))
+                        else if (elements[idx].ToLower().Contains("failover partner"))
                         {
                             elements[idx] = elements[idx].Replace("Failover Partner", "Data Source");
                         }
