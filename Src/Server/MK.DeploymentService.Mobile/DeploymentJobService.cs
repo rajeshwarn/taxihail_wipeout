@@ -428,7 +428,7 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Release");
-			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
+			var configToolRun = ProcessEx.GetProcess ("/usr/local/bin/mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
 
             using (var exeProcess = Process.Start(configToolRun))
             {
@@ -526,7 +526,7 @@ namespace MK.DeploymentService.Mobile
 
 			_logger.DebugFormat ("Restore NuGet Packages");
 			var restoreProcess = ProcessEx.GetProcess (
-                "nuget", 
+                "/usr/local/bin/nuget", 
                 string.Format ("restore \"{0}/TaxiHail.sln\"", sourceMobileFolder),
                 sourceMobileFolder);
 
