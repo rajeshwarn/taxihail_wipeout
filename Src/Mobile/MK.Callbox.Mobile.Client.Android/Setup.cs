@@ -21,6 +21,7 @@ using apcurium.MK.Callbox.Mobile.Client.Localization;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Services;
 using apcurium.MK.Booking.MapDataProvider;
+using PCLCrypto;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -44,7 +45,10 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
             container.Register<IIPAddressManager, IPAddressManager>();
-			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>(), container.Resolve<ICryptographyService>()));
+            container.Register<ISymmetricKeyAlgorithmProviderFactory>((c, x) => WinRTCrypto.SymmetricKeyAlgorithmProvider);
+            container.Register<ICryptographicEngine>((c, x) => WinRTCrypto.CryptographicEngine);
+            container.Register<IHashAlgorithmProviderFactory>((c, x) => WinRTCrypto.HashAlgorithmProvider);
+            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>(), container.Resolve<ICryptographyService>()));
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());

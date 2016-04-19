@@ -19,6 +19,7 @@ using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Services;
+using PCLCrypto;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -69,6 +70,8 @@ namespace apcurium.MK.Booking.Mobile
 				c.Resolve<IIPAddressManager>()));
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
+
+            _container.Register<ICryptographyService>((c, p) => new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, c.Resolve<ILogger>()));
 
             ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
         }

@@ -69,6 +69,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldbelow = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_textfieldbelow;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_textfieldright;
 			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Callbox.Mobile.Client.Resource.String.library_name;
+			global::PCLCrypto.Resource.String.ApplicationName = global::apcurium.MK.Callbox.Mobile.Client.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::apcurium.MK.Callbox.Mobile.Client.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
@@ -707,8 +709,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050087
 			public const int ApartmentLabel = 2131034247;
 			
-			// aapt resource value: 0x7f050002
-			public const int ApplicationName = 2131034114;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
 			// aapt resource value: 0x7f0501b0
 			public const int April = 2131034544;
@@ -1388,8 +1390,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0501cf
 			public const int GooglePlayServicesNotAvailableTitle = 2131034575;
 			
-			// aapt resource value: 0x7f050001
-			public const int Hello = 2131034113;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
 			// aapt resource value: 0x7f0502dc
 			public const int HistoryActivityName = 2131034844;
@@ -3014,8 +3016,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050048
 			public const int app_id = 2131034184;
 			
-			// aapt resource value: 0x7f050000
-			public const int library_name = 2131034112;
+			// aapt resource value: 0x7f050002
+			public const int library_name = 2131034114;
 			
 			// aapt resource value: 0x7f0501d7
 			public const int mobileKnowledgeUrl = 2131034583;
