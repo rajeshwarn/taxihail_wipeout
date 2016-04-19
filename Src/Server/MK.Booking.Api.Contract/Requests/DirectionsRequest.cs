@@ -1,13 +1,13 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/directions", "GET")]
+    [RouteDescription("/directions", "GET")]
     public class DirectionsRequest : BaseDto
     {
         public double? OriginLat { get; set; }

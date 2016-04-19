@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment
 {

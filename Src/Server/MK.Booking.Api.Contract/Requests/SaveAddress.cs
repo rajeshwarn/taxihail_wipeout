@@ -3,14 +3,14 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/addresses", "POST")]
-    [Route("/accounts/addresses/{Id}", "PUT, DELETE")]
+    [RouteDescription("/accounts/addresses", "POST")]
+    [RouteDescription("/accounts/addresses/{Id}", "PUT, DELETE")]
     public class SaveAddress
     {
         public Guid Id { get; set; }

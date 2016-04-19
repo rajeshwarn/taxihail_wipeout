@@ -1,14 +1,8 @@
-﻿using apcurium.MK.Common;
-using ServiceStack.ServiceHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/accounts/getconfirmationcode/{Email}/{CountryCode}/{PhoneNumber}", "GET")]
+	[RouteDescription("/accounts/getconfirmationcode/{Email}/{CountryCode}/{PhoneNumber}", "GET")]
     public class ConfirmationCodeRequest
     {
         public string Email { get; set; }

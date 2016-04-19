@@ -1,13 +1,14 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
 using System.Collections.Generic;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/ibschargeaccount/all", "GET")]
+    [RouteDescription("/admin/ibschargeaccount/all", "GET")]
     public class IbsChargeAccountsRequest : IReturn<List<IbsChargeAccountResponse>>
     {
     }

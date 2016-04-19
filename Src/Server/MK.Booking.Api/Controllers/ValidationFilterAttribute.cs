@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
-using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http.Response;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Contract.Controllers
 {

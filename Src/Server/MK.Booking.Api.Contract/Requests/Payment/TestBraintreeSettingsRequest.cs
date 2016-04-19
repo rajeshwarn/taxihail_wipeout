@@ -1,13 +1,14 @@
 ﻿#region
 
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/settings/payments/server/test/brainTree", "POST")]
+    [RouteDescription("/settings/payments/server/test/brainTree", "POST")]
     public class TestBraintreeSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public BraintreeClientSettings BraintreeClientSettings { get; set; }

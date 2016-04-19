@@ -1,14 +1,10 @@
-﻿#region
+﻿
 
-using ServiceStack.ServiceHost;
-
-#endregion
-
-
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/places", "GET")]
+    [RouteDescription("/places", "GET")]
     public class NearbyPlacesRequest : BaseDto
     {
         public double? Lat { get; set; }

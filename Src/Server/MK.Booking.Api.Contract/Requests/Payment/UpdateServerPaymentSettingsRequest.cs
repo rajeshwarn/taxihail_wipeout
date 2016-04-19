@@ -1,13 +1,13 @@
 ﻿#region
 
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/settings/payments/server", "POST")]
+    [RouteDescription("/settings/payments/server", "POST")]
     public class UpdateServerPaymentSettingsRequest
     {
         public ServerPaymentSettings ServerPaymentSettings { get; set; }

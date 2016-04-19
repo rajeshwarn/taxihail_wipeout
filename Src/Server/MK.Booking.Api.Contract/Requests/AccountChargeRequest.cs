@@ -1,12 +1,12 @@
 ﻿using System;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/accountscharge", "GET, POST, PUT")]
-    [Route("/admin/accountscharge/{AccountNumber}", "GET,DELETE")]
-    [Route("/admin/accountscharge/{AccountNumber}/{CustomerNumber}/{HideAnswers}", "GET")]
+    [RouteDescription("/admin/accountscharge", "GET, POST, PUT")]
+    [RouteDescription("/admin/accountscharge/{AccountNumber}", "GET,DELETE")]
+    [RouteDescription("/admin/accountscharge/{AccountNumber}/{CustomerNumber}/{HideAnswers}", "GET")]
     public class AccountChargeRequest
     {
         public Guid Id { get; set; }

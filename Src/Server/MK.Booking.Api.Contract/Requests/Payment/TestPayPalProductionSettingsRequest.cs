@@ -1,13 +1,14 @@
 ﻿#region
 
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/settings/payments/server/test/payPal/production", "POST")]
+    [RouteDescription("/settings/payments/server/test/payPal/production", "POST")]
     public class TestPayPalProductionSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public PayPalServerCredentials ServerCredentials { get; set; }

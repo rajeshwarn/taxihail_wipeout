@@ -1,9 +1,9 @@
 using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/vehicle/{VehicleNumber}/message", "POST")]
+    [RouteDescription("/vehicle/{VehicleNumber}/message", "POST")]
 	public class SendMessageToDriverRequest : BaseDto
 	{
 		public string Message { get; set; }

@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/testemail/{EmailAddress}", "POST")]
+    [RouteDescription("/admin/testemail/{EmailAddress}", "POST")]
     public class TestEmailAdministrationRequest
     {
         public string EmailAddress { get; set; }

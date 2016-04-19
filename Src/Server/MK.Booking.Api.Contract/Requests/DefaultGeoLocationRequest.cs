@@ -1,12 +1,8 @@
-﻿#region
-
-using ServiceStack.ServiceHost;
-
-#endregion
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/settings/defaultlocation", "GET")]
+    [RouteDescription("/settings/defaultlocation", "GET")]
     public class DefaultGeoLocationRequest
     {
     }

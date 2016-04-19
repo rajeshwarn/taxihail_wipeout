@@ -7,10 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using MK.Common.DummyServiceStack;
-#if CLIENT
-using apcurium.MK.Common.Extensions;
-#endif
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 

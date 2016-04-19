@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http.Response;
 
 namespace MK.Common.Exceptions
 {

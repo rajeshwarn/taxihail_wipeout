@@ -5,32 +5,29 @@ using System.Collections;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/{OrderId}/status/", "GET")]
+    [RouteDescription("/accounts/orders/{OrderId}/status/", "GET")]
     public class OrderStatusRequest : BaseDto
     {
         public Guid OrderId { get; set; }
     }
 
-    [Route("/accounts/orders/status/active", "GET")]
+    [RouteDescription("/accounts/orders/status/active", "GET")]
     public class ActiveOrderStatusRequest : BaseDto
     {
     }
-
-    [NoCache]
+    
     public class OrderStatusRequestResponse : OrderStatusDetail, IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
     }
-
-    [NoCache]
+    
     public class ActiveOrderStatusRequestResponse : IEnumerable<OrderStatusDetail>, IHasResponseStatus
     {
         private readonly IList<OrderStatusDetail> _details;

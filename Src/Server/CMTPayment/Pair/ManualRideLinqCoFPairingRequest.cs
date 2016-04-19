@@ -1,9 +1,10 @@
-﻿using CMTPayment.Tokenize;
-using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
+using CMTPayment.Tokenize;
 
 namespace CMTPayment.Pair
 {
-    [Route("init/pairing/external/cof")]
+    [RouteDescription("init/pairing/external/cof")]
     public class ManualRideLinqCoFPairingRequest : BasePaymentValidationRequest, IReturn<CmtPairingResponse>
     {
         public string PairingCode { get; set; }

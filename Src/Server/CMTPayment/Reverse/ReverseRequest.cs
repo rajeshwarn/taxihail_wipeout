@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Reverse
 {
-    [Route("fleet/{FleetToken}/device/{DeviceId}/reverse")]
+    [RouteDescription("fleet/{FleetToken}/device/{DeviceId}/reverse")]
     public class ReverseRequest : IReturn<ReverseResponse>
     {
         public long TransactionId { get; set; }

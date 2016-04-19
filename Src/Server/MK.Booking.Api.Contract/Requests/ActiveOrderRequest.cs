@@ -1,9 +1,10 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/active", "GET")]
+    [RouteDescription("/accounts/orders/active", "GET")]
     public class ActiveOrderRequest : IReturn<ActivateOrderResponse>
     {
     }

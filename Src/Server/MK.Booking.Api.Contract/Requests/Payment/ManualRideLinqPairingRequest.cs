@@ -1,11 +1,11 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-	[NoCache]
-    [Route("/accounts/manualridelinq/pair", "POST")]
+    [RouteDescription("/accounts/manualridelinq/pair", "POST")]
     public class ManualRideLinqPairingRequest : IReturn<OrderManualRideLinqDetail>
     {
         public string PairingCode { get; set; }

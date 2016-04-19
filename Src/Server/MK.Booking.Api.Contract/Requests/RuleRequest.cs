@@ -2,15 +2,15 @@
 
 using System;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/rules", "GET, POST")]
-    [Route("/admin/rules/{Id}", "PUT, DELETE")]
+    [RouteDescription("/admin/rules", "GET, POST")]
+    [RouteDescription("/admin/rules/{Id}", "PUT, DELETE")]
     public class RuleRequest
     {
         public Guid Id { get; set; }

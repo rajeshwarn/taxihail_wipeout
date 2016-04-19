@@ -1,13 +1,14 @@
 ﻿#region
 
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/places/detail", "GET")]
+    [RouteDescription("/places/detail", "GET")]
     public class PlaceDetailRequest : IReturn<Address>
     {
         public string PlaceId { get; set; }

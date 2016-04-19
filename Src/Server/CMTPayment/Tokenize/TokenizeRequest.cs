@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Tokenize
 {
-    [Route("tokenize")]
+    [RouteDescription("tokenize")]
     public class TokenizeRequest : BasePaymentValidationRequest, IReturn<TokenizeResponse>
     {
         public TokenizeRequest()

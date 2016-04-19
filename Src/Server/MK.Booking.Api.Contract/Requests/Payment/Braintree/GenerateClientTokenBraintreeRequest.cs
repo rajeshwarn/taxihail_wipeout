@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 {
-    [Route("/payments/braintree/generateclienttoken", "GET")]
+    [RouteDescription("/payments/braintree/generateclienttoken", "GET")]
     public class GenerateClientTokenBraintreeRequest
     {
     }

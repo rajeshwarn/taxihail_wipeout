@@ -1,9 +1,10 @@
-﻿using ServiceStack.ServiceHost;
-using apcurium.MK.Booking.Api.Contract.Resources;
+﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/termsandconditions/retrigger", "POST")]
+    [RouteDescription("/termsandconditions/retrigger", "POST")]
     public class RetriggerTermsAndConditionsRequest : IReturn<TermsAndConditions>
     {
     }

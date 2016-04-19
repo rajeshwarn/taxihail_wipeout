@@ -3,9 +3,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using MK.Common.Exceptions;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Common.Extensions
 {

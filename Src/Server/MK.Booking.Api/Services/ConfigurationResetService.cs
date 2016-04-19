@@ -1,9 +1,7 @@
 ﻿#region
 
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.ServiceInterface;
 
 #endregion
 

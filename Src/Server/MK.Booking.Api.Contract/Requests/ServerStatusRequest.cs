@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/status", "GET")]
+    [RouteDescription("/status", "GET")]
     public class ServerStatusRequest
     {
     }

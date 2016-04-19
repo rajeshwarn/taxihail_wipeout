@@ -1,13 +1,13 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/{AccountId}/updatePassword", "POST")]
+    [RouteDescription("/accounts/{AccountId}/updatePassword", "POST")]
     public class UpdatePassword : BaseDto
     {
         public Guid AccountId { get; set; }

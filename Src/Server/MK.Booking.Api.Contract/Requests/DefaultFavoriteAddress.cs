@@ -2,19 +2,18 @@
 
 using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/addresses", "GET")]
-    [Route("/admin/addresses", "POST")]
-    [Route("/admin/addresses/{Id}", "PUT, DELETE")]
+    [RouteDescription("/admin/addresses", "GET")]
+    [RouteDescription("/admin/addresses", "POST")]
+    [RouteDescription("/admin/addresses/{Id}", "PUT, DELETE")]
     public class DefaultFavoriteAddress : BaseDto
     {
         public Guid Id { get; set; }
@@ -24,7 +23,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public Address Address { get; set; }
     }
 
-    [NoCache]
     public class DefaultFavoriteAddressResponse : List<DefaultAddressDetails>
     {
         public DefaultFavoriteAddressResponse()

@@ -7,7 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Services
 {

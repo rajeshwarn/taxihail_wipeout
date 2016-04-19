@@ -1,9 +1,10 @@
-﻿using CMTPayment.Tokenize;
-using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
+using CMTPayment.Tokenize;
 
 namespace CMTPayment.Authorization
 {
-    [Route("payment/{PairingToken}/authorize/{CofToken}")]
+    [RouteDescription("payment/{PairingToken}/authorize/{CofToken}")]
     public class CmtRideLinqAuthorizationRequest : BasePaymentValidationRequest, IReturn<UnsuccessfulResponse>
     {
         public string PairingToken { get; set; }

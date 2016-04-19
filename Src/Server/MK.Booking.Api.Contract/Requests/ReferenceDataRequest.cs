@@ -1,12 +1,13 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
 
 #endregion
 
+using apcurium.MK.Common.Http;
+
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/referencedata", "GET")]
+    [RouteDescription("/referencedata", "GET")]
     public class ReferenceDataRequest : BaseDto
     {
         public bool WithoutFiltering { get; set; }
@@ -14,8 +15,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string CompanyKey { get; set; }
     }
 
-    [Route("/references/{ListName}", "GET")]
-    [Route("/references/{ListName}/{SearchText}", "GET")]
+    [RouteDescription("/references/{ListName}", "GET")]
+    [RouteDescription("/references/{ListName}/{SearchText}", "GET")]
     public class ReferenceListRequest : BaseDto
     {
         public string ListName { get; set; }

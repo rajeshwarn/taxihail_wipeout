@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -21,8 +22,8 @@ namespace apcurium.MK.Common.Extensions
                 .Where(property => property.Value != null)
                 .ToArray();
 
-            var routeAttributes = requestType.GetCustomAttributes(typeof(RouteAttribute), true)
-                .OfType<RouteAttribute>()
+            var routeAttributes = requestType.GetCustomAttributes(typeof(RouteDescriptionAttribute), true)
+                .OfType<RouteDescriptionAttribute>()
                 .ToArray();
 
             if (routeAttributes.None())
@@ -67,10 +68,10 @@ namespace apcurium.MK.Common.Extensions
                 : address;
         }
 
-        private static RouteAttribute SelectCorrectRouteAttribute(this IEnumerable<RouteAttribute> routes, IEnumerable<string> propertyInfos)
+        private static RouteDescriptionAttribute SelectCorrectRouteAttribute(this IEnumerable<RouteDescriptionAttribute> routes, IEnumerable<string> propertyInfos)
         {
             var activePropertyNames = propertyInfos as string[] ?? propertyInfos.ToArray();
-            var routeAttributes = routes as RouteAttribute[] ?? routes.ToArray();
+            var routeAttributes = routes as RouteDescriptionAttribute[] ?? routes.ToArray();
 
             var routeAttribute = routeAttributes.FirstOrDefault(route => activePropertyNames.All(p => route.Address.Contains(p)));
 

@@ -1,15 +1,15 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 { 
-    [Route("/accounts/register", "POST")]
+    [RouteDescription("/accounts/register", "POST")]
     [RegisterAccountValidation]
     public class RegisterAccount : BaseDto
     {

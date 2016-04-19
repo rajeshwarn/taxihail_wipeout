@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Authorization
 {
-    [Route("merchants/{MerchantToken}/authorize")]
+    [RouteDescription("merchants/{MerchantToken}/authorize")]
     public class MerchantAuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public MerchantAuthorizationRequest()

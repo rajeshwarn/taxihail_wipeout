@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/findaccounts/{searchCriteria}", "GET")]
+	[RouteDescription("/account/findaccounts/{searchCriteria}", "GET")]
 	public class FindAccountsRequest
 	{
 		public string SearchCriteria { get; set; }

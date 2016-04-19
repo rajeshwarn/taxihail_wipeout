@@ -3,15 +3,15 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/tariffs", "GET, POST")]
-    [Route("/admin/tariffs/{Id}", "PUT, DELETE")]
+    [RouteDescription("/admin/tariffs", "GET, POST")]
+    [RouteDescription("/admin/tariffs/{Id}", "PUT, DELETE")]
     [TariffNameValidation, TariffRatesValidator]
     public class Tariff
     {

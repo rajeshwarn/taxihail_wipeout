@@ -1,9 +1,10 @@
-﻿using ServiceStack.ServiceHost;
-using System;
+﻿using System;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/vehicles/eta", "POST")]
+    [RouteDescription("/vehicles/eta", "POST")]
     public class EtaForPickupRequest : IReturn<EtaForPickupResponse>
     {
         public string VehicleRegistration { get; set; }

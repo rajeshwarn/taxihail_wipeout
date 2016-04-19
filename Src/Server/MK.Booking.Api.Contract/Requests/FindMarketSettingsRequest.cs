@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/roaming/marketsettings", "GET")]
+    [RouteDescription("/roaming/marketsettings", "GET")]
     public class FindMarketSettingsRequest
     {
         public double Latitude { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/creditcard/updatelabel", "POST")]
+    [RouteDescription("/accounts/creditcard/updatelabel", "POST")]
     public class UpdateCreditCardLabelRequest
     {
         public Guid CreditCardId { get; set; }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/ibsdistance/", "GET")]
+    [RouteDescription("/ibsdistance/", "GET")]
     public class IbsDistanceRequest : IReturn<IbsDistanceResponse>
     {
         public double Distance { get; set; }

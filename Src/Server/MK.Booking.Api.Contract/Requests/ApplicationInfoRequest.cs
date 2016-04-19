@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/app/info", "GET")]
+    [RouteDescription("/app/info", "GET")]
     public class ApplicationInfoRequest
     {
     }

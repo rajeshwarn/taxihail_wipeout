@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/{OrderId}/switchDispatchCompany", "POST")]
+    [RouteDescription("/accounts/orders/{OrderId}/switchDispatchCompany", "POST")]
     public class SwitchOrderToNextDispatchCompanyRequest : BaseDto
     {
         public Guid OrderId { get; set; }

@@ -1,9 +1,10 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree
 {
-    [Route("/payments/braintree/tokenize", "POST")]
+    [RouteDescription("/payments/braintree/tokenize", "POST")]
     public class TokenizeCreditCardBraintreeRequest : IReturn<TokenizedCreditCardResponse>
     {
         public string EncryptedCreditCardNumber { get; set; }

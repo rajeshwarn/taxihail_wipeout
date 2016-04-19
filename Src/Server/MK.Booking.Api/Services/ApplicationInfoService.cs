@@ -1,10 +1,8 @@
 ﻿#region
 
 using System.Reflection;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.ServiceInterface;
 using System;
 
 #endregion

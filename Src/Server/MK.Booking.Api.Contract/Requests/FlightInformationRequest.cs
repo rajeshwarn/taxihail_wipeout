@@ -1,10 +1,11 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/flightInfo/", "POST")]
+	[RouteDescription("/flightInfo/", "POST")]
 	public class FlightInformationRequest : IReturn<FlightInformation>
 	{
 		public DateTime Date { get; set; }

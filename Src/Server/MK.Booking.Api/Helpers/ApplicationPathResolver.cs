@@ -1,10 +1,8 @@
 ﻿#region
 
 using System;
-using System.Web;
 using System.Web.Hosting;
 using System.Web.Http.Controllers;
-using ServiceStack.ServiceHost;
 
 #endregion
 

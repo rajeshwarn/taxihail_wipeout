@@ -4,13 +4,13 @@ using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders", "POST")]
+    [RouteDescription("/accounts/orders", "POST")]
     public class CreateOrderRequest : BaseDto
     {
         public CreateOrderRequest()

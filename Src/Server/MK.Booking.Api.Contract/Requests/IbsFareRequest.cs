@@ -1,13 +1,14 @@
 ﻿#region
 
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/ibsfare/", "GET")]
+    [RouteDescription("/ibsfare/", "GET")]
     public class IbsFareRequest : IReturn<IbsFareResponse>
     {
         public double PickupLatitude { get; set; }

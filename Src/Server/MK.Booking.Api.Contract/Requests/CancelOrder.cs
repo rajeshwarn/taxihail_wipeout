@@ -1,13 +1,13 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/{OrderId}/cancel", "POST")]
+    [RouteDescription("/accounts/orders/{OrderId}/cancel", "POST")]
     public class CancelOrder : BaseDto
     {
         public Guid OrderId { get; set; }

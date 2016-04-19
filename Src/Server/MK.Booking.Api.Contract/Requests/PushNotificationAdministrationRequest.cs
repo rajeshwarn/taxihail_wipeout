@@ -1,12 +1,12 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/pushnotifications/{EmailAddress}", "POST")]
+    [RouteDescription("/admin/pushnotifications/{EmailAddress}", "POST")]
     public class PushNotificationAdministrationRequest
     {
         public string EmailAddress { get; set; }

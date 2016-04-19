@@ -1,10 +1,10 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/vehicletypes", "GET, POST,PUT")]
-    [Route("/admin/vehicletypes/{Id}", "GET,DELETE")]
+    [RouteDescription("/admin/vehicletypes", "GET, POST,PUT")]
+    [RouteDescription("/admin/vehicletypes/{Id}", "GET,DELETE")]
     public class VehicleTypeRequest
     {
         public Guid Id { get; set; }

@@ -1,14 +1,8 @@
-﻿#region
-
-using ServiceStack.ServiceHost;
-
-#endregion
-
-
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/confirm/{EmailAddress}/{ConfirmationToken}/{IsSMSConfirmation*}", "GET")]
+    [RouteDescription("/accounts/confirm/{EmailAddress}/{ConfirmationToken}/{IsSMSConfirmation*}", "GET")]
     public class ConfirmAccountRequest
     {
         public string EmailAddress { get; set; }

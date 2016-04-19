@@ -1,13 +1,13 @@
 ﻿#region
 
 using apcurium.MK.Common.Enumeration;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/pushnotifications/{DeviceToken}", "POST,DELETE")]
+    [RouteDescription("/accounts/pushnotifications/{DeviceToken}", "POST,DELETE")]
     public class PushNotificationRegistration
     {
         public string DeviceToken { get; set; }

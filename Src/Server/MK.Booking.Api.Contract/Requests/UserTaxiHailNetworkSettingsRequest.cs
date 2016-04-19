@@ -1,11 +1,11 @@
 ﻿using System;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/settings/taxihailnetwork", "GET, POST")]
-    [Route("/settings/taxihailnetwork/{AccountId}", "GET, POST")]
+    [RouteDescription("/settings/taxihailnetwork", "GET, POST")]
+    [RouteDescription("/settings/taxihailnetwork/{AccountId}", "GET, POST")]
     public class UserTaxiHailNetworkSettingsRequest
     {
         public Guid? AccountId { get; set; }

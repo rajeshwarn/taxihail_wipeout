@@ -3,14 +3,14 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/ratings", "POST")]
-    [Route("/ratings/{OrderId}", "GET")]
+    [RouteDescription("/ratings", "POST")]
+    [RouteDescription("/ratings/{OrderId}", "GET")]
     public class OrderRatingsRequest : BaseDto
     {
         public Guid OrderId { get; set; }

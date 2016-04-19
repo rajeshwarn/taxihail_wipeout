@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/accounts/manualridelinq/{OrderId}/pairing/tip", "PUT")]
+    [RouteDescription("/accounts/manualridelinq/{OrderId}/pairing/tip", "PUT")]
     public class ManualRideLinqUpdateAutoTipRequest : BaseDto
     {
         public Guid OrderId { get; set; }

@@ -1,9 +1,9 @@
 ﻿using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Client
 {
-    [Route("/client/hail/confirm", "POST")]
+    [RouteDescription("/client/hail/confirm", "POST")]
     public class ConfirmHailRequest
     {
         public OrderKey OrderKey { get; set; }

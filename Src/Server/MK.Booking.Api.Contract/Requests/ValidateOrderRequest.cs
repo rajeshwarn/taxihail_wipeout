@@ -3,15 +3,15 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/validate", "POST")]
-    [Route("/accounts/orders/validate/{ForError}", "POST")]
-    [Route("/accounts/orders/validate/{ForError}/{TestZone}", "POST")]
+    [RouteDescription("/accounts/orders/validate", "POST")]
+    [RouteDescription("/accounts/orders/validate/{ForError}", "POST")]
+    [RouteDescription("/accounts/orders/validate/{ForError}/{TestZone}", "POST")]
     public class ValidateOrderRequest : BaseDto
     {
         public ValidateOrderRequest()

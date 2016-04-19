@@ -1,13 +1,13 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/geocode", "POST")]
+    [RouteDescription("/geocode", "POST")]
     public class GeocodingRequest : BaseDto
     {
         public string Name { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 using apcurium.MK.Common.Resources;
-using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/payments/unpair", "POST")]
+    [RouteDescription("/payments/unpair", "POST")]
     public class UnpairingForPaymentRequest : IReturn<BasePaymentResponse>
     {
         public Guid OrderId { get; set; }

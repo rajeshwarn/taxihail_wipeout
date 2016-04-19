@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/proceed")]
+    [RouteDescription("/account/orders/{OrderId}/proceed")]
     public class ExecuteWebPaymentAndProceedWithOrder
     {
         public Guid OrderId { get; set; }

@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/network/networkfleets", "GET")]
+    [RouteDescription("/network/networkfleets", "GET")]
     public class NetworkFleetsRequest
     {
     }

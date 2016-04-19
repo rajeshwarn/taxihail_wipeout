@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Tokenize
 {
-    [Route("tokenize/{CardToken}/")]
+    [RouteDescription("tokenize/{CardToken}/")]
     public class TokenizeDeleteRequest : IReturn<TokenizeDeleteResponse>
     {
         public string CardToken { get; set; }

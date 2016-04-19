@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Actions
 {
-    [Route("payment/{PairingToken}/credit")]
+    [RouteDescription("payment/{PairingToken}/credit")]
     public class CmtRideLinqRefundRequest : IReturn<UnsuccessfulResponse>
     {
         public string PairingToken { get; set; }

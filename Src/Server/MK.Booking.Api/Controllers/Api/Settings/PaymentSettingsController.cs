@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Services.Payment;
@@ -7,6 +8,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
+    [NoCache]
     public class PaymentSettingsController : BaseApiController
     {
         public PaymentSettingsService PaymentSettingsService { get; private set; }

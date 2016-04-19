@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/account/overduepayment", "GET")]
+    [RouteDescription("/account/overduepayment", "GET")]
     public class OverduePaymentRequest
     {
     }

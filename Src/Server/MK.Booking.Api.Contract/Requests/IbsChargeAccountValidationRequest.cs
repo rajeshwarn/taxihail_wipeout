@@ -1,14 +1,15 @@
 ﻿#region
 
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
 using System.Collections.Generic;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/ibschargeaccount", "POST")]
+    [RouteDescription("/admin/ibschargeaccount", "POST")]
     public class IbsChargeAccountValidationRequest : IReturn<IbsChargeAccountValidationResponse>
     {
         public IEnumerable<string> Prompts { get; set; }

@@ -1,21 +1,20 @@
 ﻿#region
 
 using apcurium.MK.Booking.Api.Contract.Http;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/exclusions", "GET, POST")]
+    [RouteDescription("/admin/exclusions", "GET, POST")]
     public class ExclusionsRequest
     {
         public int[] ExcludedVehicleTypeId { get; set; }
         public int[] ExcludedProviderId { get; set; }
     }
 
-    [NoCache]
     public class ExclusionsRequestResponse : IHasResponseStatus
     {
         public ExclusionsRequestResponse()

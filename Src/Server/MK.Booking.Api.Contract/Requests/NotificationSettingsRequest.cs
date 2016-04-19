@@ -1,11 +1,11 @@
 using System;
+using apcurium.MK.Common.Http;
 using MK.Common.Configuration;
-using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/settings/notifications", "GET, POST")]
-    [Route("/settings/notifications/{AccountId}", "GET, POST")]
+    [RouteDescription("/settings/notifications", "GET, POST")]
+    [RouteDescription("/settings/notifications/{AccountId}", "GET, POST")]
     public class NotificationSettingsRequest
     {
         public Guid? AccountId { get; set; }

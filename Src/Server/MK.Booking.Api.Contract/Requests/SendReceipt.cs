@@ -1,20 +1,20 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/{OrderId}/sendreceipt", "POST")]
+    [RouteDescription("/accounts/orders/{OrderId}/sendreceipt", "POST")]
     public class SendReceipt
     {
         public Guid OrderId { get; set; }
     }
 
-    [Route("/accounts/orders/{OrderId}/sendreceipt/{RecipientEmail}", "POST")]
+    [RouteDescription("/accounts/orders/{OrderId}/sendreceipt/{RecipientEmail}", "POST")]
     public class SendReceiptAdmin
     {
         public Guid OrderId { get; set; }

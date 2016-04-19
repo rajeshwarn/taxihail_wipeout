@@ -1,8 +1,9 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace CMTPayment.Authorization
 {
-    [Route("fleet/{FleetToken}/device/{DeviceId}/authorize")]
+    [RouteDescription("fleet/{FleetToken}/device/{DeviceId}/authorize")]
     public class AuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public AuthorizationRequest()

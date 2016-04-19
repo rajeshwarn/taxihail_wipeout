@@ -1,15 +1,15 @@
 ﻿#region
 
 
-using apcurium.MK.Booking.MapDataProvider.Resources;
-using ServiceStack.ServiceHost;
+
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/searchlocation", "POST")]
+    [RouteDescription("/searchlocation", "POST")]
     public class SearchLocationsRequest : BaseDto
     {
         public string Name { get; set; }

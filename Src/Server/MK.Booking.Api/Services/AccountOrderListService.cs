@@ -1,13 +1,9 @@
 ﻿#region
 
-using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using ServiceStack.ServiceInterface;
-using System.Collections;
-using apcurium.MK.Booking.Domain;
-using System.Collections.Generic;
+
 using apcurium.MK.Common.Configuration;
 
 #endregion

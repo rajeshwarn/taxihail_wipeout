@@ -1,9 +1,9 @@
-﻿using ServiceStack.ServiceHost;
-using System;
+﻿using System;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/admin/deleteAllCreditCards/{AccountID}", "DELETE")]
+	[RouteDescription("/admin/deleteAllCreditCards/{AccountID}", "DELETE")]
 	public class DeleteCreditCardsWithAccountRequest
 	{
 		public Guid AccountID { get; set; }

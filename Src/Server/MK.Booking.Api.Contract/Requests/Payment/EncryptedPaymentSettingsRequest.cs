@@ -1,8 +1,10 @@
-﻿using ServiceStack.ServiceHost;
+﻿
+
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-	[Route("/encryptedsettings/payments", "GET")]
+	[RouteDescription("/encryptedsettings/payments", "GET")]
 	public class EncryptedPaymentSettingsRequest
 	{
 	}

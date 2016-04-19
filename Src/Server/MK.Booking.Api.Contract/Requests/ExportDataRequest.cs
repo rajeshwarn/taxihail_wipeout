@@ -1,9 +1,9 @@
-﻿using ServiceStack.ServiceHost;
-using System;
+﻿using System;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/export/{Target}", "POST")]
+    [RouteDescription("/admin/export/{Target}", "POST")]
     public class ExportDataRequest
     {
         public Guid? AccountId { get; set; }

@@ -15,9 +15,9 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 using apcurium.MK.Web.Security;
 using Infrastructure.Messaging;
-using MK.Common.DummyServiceStack;
 
 namespace apcurium.MK.Web.Controllers.Api
 {

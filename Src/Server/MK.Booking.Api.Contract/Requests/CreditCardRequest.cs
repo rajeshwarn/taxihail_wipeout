@@ -2,14 +2,15 @@
 
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/creditcards/{CreditCardId}", "DELETE")]
-    [Route("/accounts/creditcards", "GET,POST")]
+    [RouteDescription("/accounts/creditcards/{CreditCardId}", "DELETE")]
+    [RouteDescription("/accounts/creditcards", "GET,POST")]
     public class CreditCardRequest : IReturn<CreditCardDetails>
     {
         public Guid CreditCardId { get; set; }

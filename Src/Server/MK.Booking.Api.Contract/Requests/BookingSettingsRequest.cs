@@ -1,13 +1,13 @@
 ﻿#region
 
 using apcurium.MK.Common;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/bookingsettings", "PUT")]
+    [RouteDescription("/accounts/bookingsettings", "PUT")]
     public class BookingSettingsRequest : BaseDto
     {
         public string Name { get; set; }

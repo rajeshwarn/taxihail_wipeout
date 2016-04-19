@@ -1,4 +1,4 @@
-﻿namespace ServiceStack.ServiceInterface.ServiceModel
+﻿namespace apcurium.MK.Common.Http.Response
 {
     public interface IHasResponseStatus
     {

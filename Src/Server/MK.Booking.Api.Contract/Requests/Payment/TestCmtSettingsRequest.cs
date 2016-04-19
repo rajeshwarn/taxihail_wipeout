@@ -1,13 +1,14 @@
 ﻿#region
 
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/settings/payments/server/test/cmt", "POST")]
+    [RouteDescription("/settings/payments/server/test/cmt", "POST")]
     public class TestCmtSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public CmtPaymentSettings CmtPaymentSettings { get; set; }

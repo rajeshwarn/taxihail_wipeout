@@ -1,9 +1,10 @@
-﻿using apcurium.MK.Common.Resources;
-using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/accounts/settleoverduepayment", "POST")]
+    [RouteDescription("/accounts/settleoverduepayment", "POST")]
     public class SettleOverduePaymentRequest : IReturn<SettleOverduePaymentResponse>
     {
         public string KountSessionId { get; set; }

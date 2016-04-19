@@ -1,10 +1,11 @@
 ﻿using System;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/orders/{OrderId}/updateintrip", "POST")]
+    [RouteDescription("/accounts/orders/{OrderId}/updateintrip", "POST")]
     public class OrderUpdateRequest : IReturn<bool>
     {
         public OrderUpdateRequest()

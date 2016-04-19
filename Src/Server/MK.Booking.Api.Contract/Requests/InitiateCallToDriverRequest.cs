@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/calldriver/", "GET")]
+    [RouteDescription("/account/orders/{OrderId}/calldriver/", "GET")]
     public class InitiateCallToDriverRequest : BaseDto
     {
         public Guid OrderId { get; set; }

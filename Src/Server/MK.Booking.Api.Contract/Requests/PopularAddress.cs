@@ -3,14 +3,14 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Validation;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/popularaddresses", "POST")]
-    [Route("/admin/popularaddresses/{Id}", "PUT, DELETE")]
+    [RouteDescription("/admin/popularaddresses", "POST")]
+    [RouteDescription("/admin/popularaddresses/{Id}", "PUT, DELETE")]
     public class PopularAddress : BaseDto
     {
         public Guid Id { get; set; }

@@ -2,15 +2,15 @@
 
 using System;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/ratingtypes", "GET,POST,PUT")]
-    [Route("/ratingtypes/{ClientLanguage}", "GET")]
-    [Route("/ratingtypes/{Id}", "DELETE")]
+    [RouteDescription("/ratingtypes", "GET,POST,PUT")]
+    [RouteDescription("/ratingtypes/{ClientLanguage}", "GET")]
+    [RouteDescription("/ratingtypes/{Id}", "DELETE")]
     public class RatingTypesRequest
     {
         public Guid Id { get; set; }

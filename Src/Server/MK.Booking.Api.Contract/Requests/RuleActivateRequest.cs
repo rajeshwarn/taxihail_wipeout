@@ -1,13 +1,13 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/admin/rules/{RuleId}/activate", "POST")]
+    [RouteDescription("/admin/rules/{RuleId}/activate", "POST")]
     public class RuleActivateRequest
     {
         public Guid RuleId { get; set; }

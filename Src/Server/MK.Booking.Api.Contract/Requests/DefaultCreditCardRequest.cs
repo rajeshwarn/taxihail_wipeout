@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/creditcard/updatedefault", "POST")]
+    [RouteDescription("/accounts/creditcard/updatedefault", "POST")]
     public class DefaultCreditCardRequest
     {
         public Guid CreditCardId { get; set; }

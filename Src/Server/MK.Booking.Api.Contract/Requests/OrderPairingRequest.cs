@@ -3,20 +3,19 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/account/orders/{OrderId}/pairing/", "GET")]
+    [RouteDescription("/account/orders/{OrderId}/pairing/", "GET")]
     public class OrderPairingRequest : BaseDto
     {
         public Guid OrderId { get; set; }
     }
-
-    [NoCache]
+    
     public class OrderPairingResponse : OrderPairingDetail, IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }

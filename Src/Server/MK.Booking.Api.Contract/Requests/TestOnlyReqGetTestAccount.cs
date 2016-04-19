@@ -1,6 +1,6 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
@@ -8,7 +8,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts/test/{Index}", "GET")]
+    [RouteDescription("/accounts/test/{Index}", "GET")]
     public class TestOnlyReqGetTestAccount : BaseDto
     {
         public string Index { get; set; }

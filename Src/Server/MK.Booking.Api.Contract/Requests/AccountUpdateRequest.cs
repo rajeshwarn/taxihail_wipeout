@@ -1,9 +1,9 @@
-﻿using ServiceStack.ServiceHost;
-using System;
+﻿using System;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/update/{accountid}", "PUT")]
+	[RouteDescription("/account/update/{accountid}", "PUT")]
 	public class AccountUpdateRequest
 	{
 		public Guid AccountId { get; set; }

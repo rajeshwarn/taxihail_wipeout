@@ -1,8 +1,8 @@
-﻿using ServiceStack.ServiceHost;
+﻿using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/roaming/externalMarketVehicleTypes", "GET")]
+    [RouteDescription("/roaming/externalMarketVehicleTypes", "GET")]
     public class MarketVehicleTypesRequest
     {
         public double Longitude { get; set; }

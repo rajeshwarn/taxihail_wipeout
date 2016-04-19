@@ -1,20 +1,18 @@
 ﻿#region
 
-using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface.ServiceModel;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/accounts", "GET")]
+    [RouteDescription("/accounts", "GET")]
     public class CurrentAccount : BaseDto
     {
     }
 
-    [NoCache]
     public class CurrentAccountResponse : Account, IHasResponseStatus
     {
         public CurrentAccountResponse()

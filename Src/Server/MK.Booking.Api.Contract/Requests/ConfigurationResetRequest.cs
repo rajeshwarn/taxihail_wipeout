@@ -1,12 +1,12 @@
 ﻿#region
 
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/settings/reset", "GET")]
+    [RouteDescription("/settings/reset", "GET")]
     public class ConfigurationResetRequest
     {
     }

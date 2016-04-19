@@ -1,9 +1,9 @@
 ﻿using System;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/directions/eta", "GET")]
+    [RouteDescription("/directions/eta", "GET")]
     public class AssignedEtaRequest : BaseDto
     {
         public Guid OrderId { get; set; }

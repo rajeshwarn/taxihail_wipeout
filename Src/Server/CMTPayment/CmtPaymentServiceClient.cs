@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using ServiceStack.ServiceHost;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using System.Net.Http;
+using apcurium.MK.Common.Http.Response;
 
 
 namespace CMTPayment

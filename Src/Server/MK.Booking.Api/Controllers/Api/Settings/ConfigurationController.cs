@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Web.Http;
-using System.Web.Http.Controllers;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Caching;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Security;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api.Settings
 {
+    [NoCache]
     public class ConfigurationController : BaseApiController
     {
         public ConfigurationResetService ResetService { get; private set; }

@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
 
 #endregion
 
@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Contract
 
             return types
                 .SelectMany(type => type
-                    .GetCustomAttributes(typeof(RouteAttribute), true)
-                    .OfType<RouteAttribute>()
+                    .GetCustomAttributes(typeof(RouteDescriptionAttribute), true)
+                    .OfType<RouteDescriptionAttribute>()
                     .Select(restServiceAttribute => new ContractDocumentReport()
                     {
                         Path = restServiceAttribute.Address,

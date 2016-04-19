@@ -2,13 +2,14 @@
 
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/vehicles/", "POST")]
+    [RouteDescription("/vehicles/", "POST")]
     public class AvailableVehicles : IReturn<AvailableVehiclesResponse>
     {
         /// <summary>

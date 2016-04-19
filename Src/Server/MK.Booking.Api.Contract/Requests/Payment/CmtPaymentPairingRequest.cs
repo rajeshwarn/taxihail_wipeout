@@ -1,10 +1,11 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/order/pairing", "POST")]
+    [RouteDescription("/order/pairing", "POST")]
     public class CmtPaymentPairingRequest : IReturn<CmtPaymentPairingResponse>
     {
         public string PairingToken { get; set; }

@@ -1,4 +1,4 @@
-namespace MK.Common.DummyServiceStack
+namespace apcurium.MK.Common.Http.Response
 {
     public class Auth
     {
