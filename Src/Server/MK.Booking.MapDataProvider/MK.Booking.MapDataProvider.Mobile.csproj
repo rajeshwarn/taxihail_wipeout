@@ -101,10 +101,6 @@
       <HintPath>..\..\packages\PCLCrypto.1.0.86\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Portable.Text.Encoding, Version=0.7.0.0, Culture=neutral, PublicKeyToken=96f7b8f9dde885b2, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Yaaf.Portable.Text.Encoding.0.7.0.0\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Portable.Text.Encoding.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\Mobile\Libraries\ModernHttpClient\Portable-Net45+WinRT45+WP8+WPA81\System.Net.Http.dll</HintPath>
     </Reference>

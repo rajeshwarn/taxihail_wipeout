@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
@@ -13,7 +12,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Services;
 using PCLCrypto;
-using Portable.Text;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
@@ -307,14 +305,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             // add Google Client Id to query
             url += "&client=" + GoogleClientId;
 
-            var encoding = new ASCIIEncoding();
-
             // converting key to bytes will throw an exception, need to replace '-' and '_' characters first.
             var usablePrivateKey = GoogleCryptoKey.Replace("-", "+").Replace("_", "/");
-            var privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
 
             var uri = new Uri(url);
-            var encodedPathAndQueryBytes = encoding.GetBytes(uri.LocalPath + uri.Query);
 
             // compute the hash
             var cryptographyService = new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, null);
