@@ -105,9 +105,9 @@ namespace DatabaseInitializer
                     }
                     
                     Console.WriteLine("Switched addresses between 'Data Source' and 'Failover Partner'");
-                    Console.WriteLine("Switched connection string : " + sqlConnectionString);
 
                     sqlConnectionString = string.Join(";", elements);
+                    Console.WriteLine("Switched connection string : " + sqlConnectionString);
                 }
 
                 IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
