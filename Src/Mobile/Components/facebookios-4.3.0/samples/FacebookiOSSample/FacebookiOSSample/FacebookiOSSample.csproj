@@ -81,7 +81,7 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="MonoTouch.Dialog-1" />
     <Reference Include="Facebook">
-      <HintPath>..\packages\Xamarin.Facebook.4.2.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Facebook.4.2.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

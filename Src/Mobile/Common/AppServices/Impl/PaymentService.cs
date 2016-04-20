@@ -16,6 +16,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -81,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    try
 		    {
-                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
+                _cachedSettings = await Mvx.Resolve<ConfigurationClientService>().GetPaymentSettings().ConfigureAwait(false);
                 _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
                 _client = GetClient(_cachedSettings);
             }

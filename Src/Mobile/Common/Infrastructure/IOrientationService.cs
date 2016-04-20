@@ -1,5 +1,5 @@
-using apcurium.MK.Common.Enumeration;
 using System;
+using apcurium.MK.Booking.Mobile.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

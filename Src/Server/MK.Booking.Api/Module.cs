@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(p => p.Id, options => options.Ignore());
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
-            Mapper.CreateMap<BookingSettings, SendBookingConfirmationEmail.BookingSettings>();
+            Mapper.CreateMap<BookingSettings, SendBookingConfirmationEmail.InternalBookingSettings>();
             Mapper.CreateMap<Address, IbsAddress>()
                 .ForSourceMember(p => p.FullAddress, options => options.Ignore())
                 // Fix for issue where FullAddress contains a place name at the begining.

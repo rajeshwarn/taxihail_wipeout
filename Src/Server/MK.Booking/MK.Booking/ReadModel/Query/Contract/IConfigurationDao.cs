@@ -1,11 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
-using MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {

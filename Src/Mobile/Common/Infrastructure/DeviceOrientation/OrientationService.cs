@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation

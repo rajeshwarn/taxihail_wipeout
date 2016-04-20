@@ -1,12 +1,8 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
-using MK.Common.Serializer;
+using apcurium.MK.Common.Serializer;
 using Newtonsoft.Json;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {

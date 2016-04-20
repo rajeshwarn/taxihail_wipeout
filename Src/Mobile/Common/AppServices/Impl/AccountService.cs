@@ -20,7 +20,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
-using MK.Common.Configuration;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
