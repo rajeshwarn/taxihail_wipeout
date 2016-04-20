@@ -12,9 +12,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         {
             Label = CreditCardLabelConstants.Personal;
         }
-        [JsonConverter(typeof(GuidJsonConverter))]
+
         public Guid CreditCardId { get; set; }
-        [JsonConverter(typeof(GuidJsonConverter))]
+
         public Guid AccountId { get; set; }
 
         public string NameOnCard { get; set; }

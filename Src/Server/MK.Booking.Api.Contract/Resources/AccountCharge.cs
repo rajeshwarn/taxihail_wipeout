@@ -7,7 +7,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class AccountCharge
     {
-        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid Id { get; set; }
 
         public string Name { get; set; }

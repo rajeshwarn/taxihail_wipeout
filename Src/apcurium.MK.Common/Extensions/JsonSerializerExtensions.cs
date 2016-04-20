@@ -16,6 +16,7 @@ namespace apcurium.MK.Common.Extensions
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
+                Converters = { new GuidJsonConverter()},
                 ContractResolver = transformToCamelCase ? new CustomCamelCasePropertyNamesContractResolver() : new DefaultContractResolver()
             };
 
