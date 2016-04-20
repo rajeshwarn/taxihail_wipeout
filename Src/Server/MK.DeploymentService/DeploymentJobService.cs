@@ -393,7 +393,7 @@ namespace MK.DeploymentService
                 CompanyName = companyName,
                 BackupFolder = ConfigurationManager.AppSettings["BackupFolder"],
                 SqlInstanceName = _job.Server.SqlServerInstance,
-                CompanyConnectionString = string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName),
+                MkWebConnectionString = string.Format(ConfigurationManager.AppSettings["ToolSqlConnectionString"], companyName),
                 MasterConnectionString = ConfigurationManager.ConnectionStrings["SqlConnectionStringMaster"].ConnectionString,
                 MirroringSharedFolder = ConfigurationManager.AppSettings["MirroringSharedFolder"],
                 MirroringMirrorPartner = ConfigurationManager.AppSettings["MirroringMirrorPartner"],
