@@ -69,7 +69,8 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(SendReceiptAdmin request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            if (order == null || !order.IBSOrderId.HasValue)
+
+            if (order == null || !(order.IsManualRideLinq || order.IBSOrderId.HasValue))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
@@ -92,12 +93,14 @@ namespace apcurium.MK.Booking.Api.Services
             // If the order was created in another company, need to fetch the correct IBS account
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
 
-            if (!ibsAccountId.HasValue)
+            if (!(ibsAccountId.HasValue || order.IsManualRideLinq))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
-            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
+            var ibsOrder = !order.IsManualRideLinq
+                ? _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone)
+                : null;
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
@@ -131,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
                     ? _creditCardDao.FindByToken(orderPayment.CardToken)
                     : null;
             }
-            else if (pairingInfo == null && order.IsManualRideLinq)
+            else if (order.IsManualRideLinq)
             {
                 var manualRideLinqDetail = _orderDao.GetManualRideLinqById(order.Id);
                 fareAmount = manualRideLinqDetail.Fare;
