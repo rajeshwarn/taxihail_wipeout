@@ -18,7 +18,7 @@ using Infrastructure.Messaging;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Services;
 using AutoMapper.Internal;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IPayPalServiceFactory _paypalServiceFactory;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IConfigurationChangeService _configurationChangeService;
+        private readonly ICryptographyService _cryptographyService;
 
         public PaymentSettingsService(ICommandBus commandBus,
             IConfigurationDao configurationDao,
@@ -39,7 +40,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IServerSettings serverSettings,
             IPayPalServiceFactory paypalServiceFactory,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IConfigurationChangeService configurationChangeService)
+            IConfigurationChangeService configurationChangeService,
+            ICryptographyService cryptographyService)
         {
             _logger = logger;
             _serverSettings = serverSettings;
@@ -48,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _configurationChangeService = configurationChangeService;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
+            _cryptographyService = cryptographyService;
         }
 
         public PaymentSettingsResponse Get()
@@ -72,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 .Select(propertyName => ExtractPropertyValue(paymentSettings, propertyName))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(type, null, settings, true);
+            _cryptographyService.SwitchEncryptionStringsDictionary(type, null, settings, true);
 
 			return settings;
 		}

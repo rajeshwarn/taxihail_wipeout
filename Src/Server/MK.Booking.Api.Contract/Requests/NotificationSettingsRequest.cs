@@ -1,6 +1,5 @@
 using System;
 using apcurium.MK.Common.Http;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {

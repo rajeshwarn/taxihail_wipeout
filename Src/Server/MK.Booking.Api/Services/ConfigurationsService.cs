@@ -1,7 +1,4 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -13,14 +10,12 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
-using MK.Common.Configuration;
 using System.Reflection;
 using System.Web;
+using apcurium.MK.Common.Services;
 using System.Web.Http;
 using apcurium.MK.Booking.Api.Extensions;
-using apcurium.MK.Common.Cryptography;
 
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -29,12 +24,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
         private readonly IServerSettings _serverSettings;
+        private readonly ICryptographyService _cryptographyService;
 
-        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
+        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao, ICryptographyService cryptographyService)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _configDao = configDao;
+            _cryptographyService = cryptographyService;
         }
 
         public IDictionary<string, string> Get(ConfigurationsRequest request)
@@ -46,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
 
-			SettingsEncryptor.SwitchEncryptionStringsDictionary(_serverSettings.ServerData.GetType(), null, data, true);
+            _cryptographyService.SwitchEncryptionStringsDictionary(_serverSettings.ServerData.GetType(), null, data, true);
 
 			return data;
 		}

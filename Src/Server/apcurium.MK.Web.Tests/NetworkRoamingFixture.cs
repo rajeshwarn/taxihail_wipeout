@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Common.Cryptography;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests

@@ -7,8 +7,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using MK.Common.Exceptions;
 

@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -20,14 +19,13 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -48,6 +46,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IGeocoding _geocoding;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ILogger _logger;
+        private readonly ICryptographyService _cryptographyService;
         private readonly Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
@@ -65,7 +64,8 @@ namespace apcurium.MK.Booking.Services.Impl
             ISmsService smsService,
             IGeocoding geocoding,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            ILogger logger)
+            ILogger logger,
+            ICryptographyService cryptographyService = null)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
+            _cryptographyService = cryptographyService;
 
             _resources = new Resources.Resources(serverSettings);
         }
@@ -377,7 +378,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
-            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+            SendBookingConfirmationEmail.InternalBookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -1206,7 +1207,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var hashedImagedata = CryptographyHelper.GetHashString(imageData);
+                        var hashedImagedata = CryptographyService.GetHashString(imageData);
 
                         // Append its hash to its URL
                         return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
@@ -1243,6 +1244,19 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 return string.Empty;
+            }
+        }
+
+        private ICryptographyService CryptographyService
+        {
+            get
+            {
+                if (_cryptographyService == null)
+                {
+                    throw new NullReferenceException("Can't find CryptographyService instance. Dependancy Injection step missing ?!");
+                }
+
+                return _cryptographyService;
             }
         }
 

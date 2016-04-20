@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using apcurium.MK.Common.Http;
+using apcurium.MK.Common.Http.Response;
+
+namespace apcurium.MK.Common.Extensions
+{
+    public static class ReturnExtensions
+    {
+        public static string GetUrlFromRoute<T>(this IReturn<T> request, bool setPropertiesAsUrlParams = false)
+        {
+            var requestType = request.GetType();
+
+            var properties = requestType.GetTypeInfo().DeclaredProperties
+                .Select(property => new
+                {
+                    property.Name,
+                    Value = property.GetValue(request)
+                })
+                .Where(property => property.Value != null)
+                .ToArray();
+
+            var routeAttributes = requestType.GetTypeInfo().GetCustomAttributes(typeof(RouteDescriptionAttribute), true)
+                .OfType<RouteDescriptionAttribute>()
+                .ToArray();
+
+            if (routeAttributes.None())
+            {
+                return string.Empty;
+            }
+
+            var routeAttribute = routeAttributes.Length == 1
+                ? routeAttributes.First()
+                : routeAttributes.SelectCorrectRouteAttribute(properties.Select(p => p.Name));
+
+            // before PCL: var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}", RegexOptions.Compiled)
+            var matches = Regex.Matches(routeAttribute.Address, "\\{[a-zA-Z]+\\}")
+                .Cast<Match>()
+                .Select(match => new
+                {
+                    PropertyName = match.Value.Replace("{", "").Replace("}", ""),
+                    Tag = match.Value
+                })
+                .ToArray();
+
+            var address = routeAttribute.Address;
+
+            foreach (var match in matches)
+            {
+                var property = properties.First(p => p.Name == match.PropertyName);
+
+                address = address.Replace(match.Tag, property.Value.ToString());
+            }
+
+            if (!setPropertiesAsUrlParams)
+            {
+                return address;
+            }
+
+            var parameters = properties
+                .Where(prop => matches.None(match => prop.Name == match.PropertyName))
+                .Select(prop => prop.Name + "=" + Uri.EscapeUriString(prop.Value.ToString()))
+                .ToArray();
+
+            return parameters.Any()
+                ? address + "?" + parameters.JoinBy("&")
+                : address;
+        }
+
+        private static RouteDescriptionAttribute SelectCorrectRouteAttribute(this IEnumerable<RouteDescriptionAttribute> routes, IEnumerable<string> propertyInfos)
+        {
+            var activePropertyNames = propertyInfos as string[] ?? propertyInfos.ToArray();
+            var routeAttributes = routes as RouteDescriptionAttribute[] ?? routes.ToArray();
+
+            var routeAttribute = routeAttributes.FirstOrDefault(route => activePropertyNames.All(p => route.Address.Contains(p)));
+
+            if (routeAttribute != null)
+            {
+                return routeAttribute;
+            }
+
+            return routeAttributes.Select(route => new
+                {
+                    Route = route,
+                    propertyNames = activePropertyNames.Where(p => route.Address.Contains(p)).ToArray()
+                })
+                .OrderByDescending(p => p.propertyNames.Length)
+                .Select(route => route.Route)
+                .FirstOrDefault();
+        }
+    }
+}

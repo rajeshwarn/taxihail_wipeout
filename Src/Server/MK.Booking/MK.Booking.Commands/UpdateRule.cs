@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
-
-#endregion
 
 namespace apcurium.MK.Booking.Commands
 {

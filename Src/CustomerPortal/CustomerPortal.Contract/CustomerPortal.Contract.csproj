@@ -52,9 +52,12 @@
     <Compile Include="Response\CompanyPreferenceResponse.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MK.Common</Name>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
+      <Name>apcurium.MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -11,10 +11,13 @@ namespace apcurium.MK.Booking.Api.Services
     public class NetworkRoamingService : BaseApiService
     {
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly ICryptographyService _cryptographyService;
 
-        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, IServerSettings serverSettings, ICryptographyService cryptographyService)
         {
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _serverSettings = serverSettings;
+            _cryptographyService = cryptographyService;
         }
 
         public async Task<string> Get(FindMarketRequest request)
@@ -22,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Services
             var market = await _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
 
             // Hash market so that client doesn't have direct access to its value
-            return CryptographyHelper.GetHashString(market);
+            return _cryptographyService.GetHashString(market);
         }
 
         public async Task<MarketSettings> Get(FindMarketSettingsRequest request)
@@ -32,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
             return marketSettings != null
                 ? new MarketSettings
                     {
-                        HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
+                        HashedMarket = _cryptographyService.GetHashString(marketSettings.Market),
                         EnableDriverBonus = marketSettings.EnableDriverBonus,
                         OverrideEnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
                         EnableFutureBooking = marketSettings.EnableFutureBooking,

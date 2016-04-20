@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Services
 
         void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode);
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+            DateTime pickupDate, SendBookingConfirmationEmail.InternalBookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
         void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode);
 
         void SendCancellationFeesReceiptEmail(int ibsOrderId, double feeAmount, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);

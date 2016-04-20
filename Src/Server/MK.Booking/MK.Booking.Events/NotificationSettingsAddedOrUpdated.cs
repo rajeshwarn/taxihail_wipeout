@@ -1,5 +1,5 @@
-﻿using Infrastructure.EventSourcing;
-using MK.Common.Configuration;
+﻿using apcurium.MK.Common.Configuration;
+using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
