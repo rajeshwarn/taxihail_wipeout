@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -8,10 +6,8 @@ using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
-using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 
-#endregion
 
 namespace apcurium.MK.Booking.Test
 {

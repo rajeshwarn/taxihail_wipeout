@@ -8,10 +8,10 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;

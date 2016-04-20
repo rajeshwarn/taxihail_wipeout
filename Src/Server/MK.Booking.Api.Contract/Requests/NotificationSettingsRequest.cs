@@ -1,5 +1,5 @@
 using System;
-using MK.Common.Configuration;
+using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 

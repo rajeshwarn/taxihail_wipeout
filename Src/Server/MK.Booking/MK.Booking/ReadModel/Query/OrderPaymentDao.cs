@@ -1,13 +1,7 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Enumeration;
-using RestSharp.Extensions;
-
-#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {

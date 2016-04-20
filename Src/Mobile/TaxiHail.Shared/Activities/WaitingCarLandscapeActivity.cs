@@ -1,9 +1,9 @@
 using System.ComponentModel;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using Android.App;
 using Android.Content.PM;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

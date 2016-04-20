@@ -32,10 +32,8 @@ using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
 using Microsoft.Web.Administration;
-using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
-using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 

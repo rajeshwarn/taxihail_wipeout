@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
-using MK.Common.Configuration;
+using apcurium.MK.Common.Configuration;
 using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.CompanyFixture
