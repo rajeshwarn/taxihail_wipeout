@@ -1,6 +1,6 @@
 {
   "CompanyName": "Arro",
-  "MkWebConnectionString": "Data Source=Taxihail01;Initial Catalog=Arro;Integrated Security=True;MultipleActiveResultSets=True",
+  "CompanyConnectionString": "Data Source=Taxihail01;Initial Catalog=Arro;Integrated Security=True;MultipleActiveResultSets=True",
   "MasterConnectionString": "Data Source=Taxihail01;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True",
   "SqlInstanceName": "MSSQL11.MSSQLSERVER",
   "BackupFolder": "",
