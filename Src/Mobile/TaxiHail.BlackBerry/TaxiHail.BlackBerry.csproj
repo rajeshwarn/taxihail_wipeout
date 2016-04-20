@@ -238,10 +238,6 @@
       <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
       <Name>apcurium.MK.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\apcurium.MK.Common\apcurium.MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>apcurium.MK.Common.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
@@ -261,6 +257,10 @@
     <ProjectReference Include="..\Libraries\SourceCode\MapBox.Sdk\MapBox.Sdk\MapBox.Sdk.csproj">
       <Project>{13802257-329F-4EF6-B845-70CA0652B6AD}</Project>
       <Name>MapBox.Sdk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
