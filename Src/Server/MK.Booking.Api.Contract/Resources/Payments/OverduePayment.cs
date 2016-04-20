@@ -1,5 +1,5 @@
 ﻿using System;
-using MK.Common.Serializer;
+using apcurium.MK.Common.Serializer;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources.Payments

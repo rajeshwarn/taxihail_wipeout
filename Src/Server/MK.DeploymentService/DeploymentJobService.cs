@@ -169,8 +169,14 @@ namespace MK.DeploymentService
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
             var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
-            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Build"}, null);
 
+            string msBuildVersion = null;
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MSBuildVersion"]))
+            {
+                msBuildVersion = ConfigurationManager.AppSettings["MSBuildVersion"];
+            }
+
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, msBuildVersion, new[] { "Build" }, null);
             var bParam = new BuildParameters(pc);
 
 
@@ -211,7 +217,7 @@ namespace MK.DeploymentService
 
             Log(String.Format("Build Web Site"));
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
-            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Package"}, null);
+            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, msBuildVersion, new[] {"Package"}, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
 
             if (buildResultWeb.Exception != null)
