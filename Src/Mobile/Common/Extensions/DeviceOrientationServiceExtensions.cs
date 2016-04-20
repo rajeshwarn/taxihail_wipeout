@@ -11,8 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public static IObservable<DeviceOrientations> ObserveDeviceIsInLandscape(this IDeviceOrientationService service)
         {
 			return Observable.FromEventPattern<EventHandler<DeviceOrientationChangedEventArgs>, DeviceOrientationChangedEventArgs>(
-					h => service.NotifyOrientationChanged += h,
-					h => service.NotifyOrientationChanged -= h
+					handler => service.NotifyOrientationChanged += handler,
+					handler => service.NotifyOrientationChanged -= handler
 				)
 				.Select(args => args.EventArgs.DeviceOrientation)
                 .Where(deviceOrientation => deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right);
