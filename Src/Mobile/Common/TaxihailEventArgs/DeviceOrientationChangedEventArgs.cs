@@ -1,4 +1,4 @@
-﻿using apcurium.MK.Common.Enumeration;
+﻿using apcurium.MK.Booking.Mobile.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.TaxihailEventArgs
 {

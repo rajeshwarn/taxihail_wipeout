@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

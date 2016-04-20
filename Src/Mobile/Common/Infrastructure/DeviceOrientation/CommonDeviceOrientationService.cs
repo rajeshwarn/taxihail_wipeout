@@ -1,8 +1,8 @@
 using System;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
-using apcurium.MK.Common.Enumeration;
 using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
