@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api
             SearchLocationsService = searchLocationsService;
         }
 
-        [HttpPost, Route("api/v2/searchlocation")]
+        [HttpPost, Route("api/searchlocation")]
         public async Task<IHttpActionResult> SearchLocation([FromUri]string name, [FromUri]double? lat, [FromUri]double? lng)
         {
             var result = await SearchLocationsService.Post(new SearchLocationsRequest

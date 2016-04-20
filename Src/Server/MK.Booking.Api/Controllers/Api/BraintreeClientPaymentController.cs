@@ -6,7 +6,6 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/payments/braintree")]
     public class BraintreeClientPaymentController : BaseApiController
     {
         public BraintreeClientPaymentService BraintreeClientPaymentService { get; private set; }
@@ -16,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
             BraintreeClientPaymentService = braintreeClientPaymentService;
         }
 
-        [HttpPost, Auth, Route("tokenize")]
+        [HttpPost, Auth, Route("api/payments/braintree/tokenize")]
         public IHttpActionResult TokenizeCreditCard(TokenizeCreditCardBraintreeRequest request)
         {
             var result = BraintreeClientPaymentService.Post(request);
@@ -24,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("generateclienttoken")]
+        [HttpGet, Auth, Route("api/payments/braintree/generateclienttoken")]
         public IHttpActionResult GetClientToken()
         {
             var result = BraintreeClientPaymentService.Get();

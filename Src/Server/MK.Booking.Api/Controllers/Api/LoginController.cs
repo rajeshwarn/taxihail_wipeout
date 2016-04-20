@@ -21,7 +21,7 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/auth/login"), NoCache]
+    [RoutePrefix("api/auth/login"), NoCache]
     public class LoginController : BaseApiController
     {
         private readonly object _lock = new object();
@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateAuthResult(authResult);
         }
 
-        [HttpPost, Auth, Route("~/api/v2/auth/logout")]
+        [HttpPost, Auth, Route("~/api/auth/logout")]
         public IHttpActionResult Logout()
         {
             ForgetSession();
@@ -145,7 +145,7 @@ namespace apcurium.MK.Web.Controllers.Api
                     else
                     {
 
-                        var confirmationUrl = "/api/v2/accounts/confirm/{0}/{1}".InvariantCultureFormat(account.Email, account.ConfirmationToken);
+                        var confirmationUrl = "/api/accounts/confirm/{0}/{1}".InvariantCultureFormat(account.Email, account.ConfirmationToken);
 
                         _commandBus.Send(new SendAccountConfirmationEmail
                         {

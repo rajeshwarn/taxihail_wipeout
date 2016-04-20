@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             PairingService = pairingService;
         }
 
-        [HttpPost, NoCache, Route("api/v2/accounts/orders/{orderId}/pairing/tip")]
+        [HttpPost, NoCache, Route("api/accounts/orders/{orderId}/pairing/tip")]
         public async Task<IHttpActionResult> UpdateAutoTip(Guid orderId, [FromBody]UpdateAutoTipRequest request)
         {
             request.OrderId = orderId;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return Ok();
         }
 
-        [HttpGet, Route("api/v2/accounts/orders/{orderId}/pairing"), NoCache]
+        [HttpGet, Route("api/accounts/orders/{orderId}/pairing"), NoCache]
         public IHttpActionResult GetOrderPairing(Guid orderId)
         {
             var result = PairingService.Get(new OrderPairingRequest() { OrderId = orderId });
@@ -53,7 +53,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
         }
 
         [HttpGet, NoCache]
-        [Route("api/v2/accounts/orders/{orderId}/status")]
+        [Route("api/accounts/orders/{orderId}/status")]
         public async Task<IHttpActionResult> GetOrderStatus(Guid orderId)
         {
             var session = Session;
@@ -64,7 +64,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
         }
 
         [HttpGet, NoCache]
-        [Route("api/v2/accounts/orders/status/active")]
+        [Route("api/accounts/orders/status/active")]
         public IHttpActionResult GetActiveOrdersStatus()
         {
             var status = ActiveOrderStatusService.GetActiveOrders();
@@ -72,7 +72,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(status);
         }
 
-        [HttpGet, NoCache, Route("api/v2/accounts/orders/active")]
+        [HttpGet, NoCache, Route("api/accounts/orders/active")]
         public IHttpActionResult GetActiveAccount()
         {
             var status = ActiveOrderStatusService.GetActiveOrder();
@@ -80,7 +80,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(status);
         }
 
-        [HttpGet, Route("api/v2/accounts/orders/{orderId}")]
+        [HttpGet, Route("api/accounts/orders/{orderId}")]
         public IHttpActionResult GetOrder(Guid orderId)
         {
             var result = OrderService.Get(new OrderRequest() {OrderId = orderId});
@@ -88,7 +88,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Route("api/v2/accounts/orders/{orderId}")]
+        [HttpDelete, Route("api/accounts/orders/{orderId}")]
         public IHttpActionResult DeleteOrder(Guid orderId)
         {
             OrderService.Delete(new OrderRequest() {OrderId = orderId});
@@ -96,7 +96,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return Ok();
         }
 
-        [HttpGet, Route("api/v2/accounts/orders/{orderId}/calldriver")]
+        [HttpGet, Route("api/accounts/orders/{orderId}/calldriver")]
         public IHttpActionResult InitiateCallToDriver(Guid orderId)
         {
             var result = OrderService.Get(new InitiateCallToDriverRequest() {OrderId = orderId});
@@ -104,7 +104,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/accounts/orders/{orderId}/cancel")]
+        [HttpPost, Route("api/accounts/orders/{orderId}/cancel")]
         public async Task<IHttpActionResult> CancelOrder(Guid orderId)
         {
             await CancelOrderService.Post(new CancelOrder {OrderId = orderId});
@@ -112,7 +112,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return Ok();
         }
 
-        [HttpPost, Route("api/v2/accounts/orders/{orderId}/updateintrip")]
+        [HttpPost, Route("api/accounts/orders/{orderId}/updateintrip")]
         public IHttpActionResult UpdateOrder(Guid orderId, [FromBody]OrderUpdateRequest request)
         {
             request.OrderId = orderId;
@@ -122,7 +122,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/accounts/orders")]
+        [HttpPost, Route("api/accounts/orders")]
         public async Task<IHttpActionResult> CreateOrder([FromBody]CreateOrderRequest request)
         {
             var result = await CreateOrderService.Post(request);
@@ -130,7 +130,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/accounts/orders/{orderId}/switchDispatchCompany")]
+        [HttpPost, Route("api/accounts/orders/{orderId}/switchDispatchCompany")]
         public async Task<IHttpActionResult> SwitchOrderToNextDispatchCompany(Guid orderId, [FromBody] SwitchOrderToNextDispatchCompanyRequest request)
         {
             request.OrderId = orderId;
@@ -140,7 +140,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/accounts/orders/{orderId}/ignoreDispatchCompanySwitch")]
+        [HttpPost, Route("api/accounts/orders/{orderId}/ignoreDispatchCompanySwitch")]
         public IHttpActionResult IgnoreDispatchCompanySwitch(Guid orderId, [FromBody] IgnoreDispatchCompanySwitchRequest request)
         {
             request.OrderId = orderId;
@@ -150,7 +150,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return Ok();
         }
 
-        [HttpGet, NoCache, Route("api/v2/accounts/orders")]
+        [HttpGet, NoCache, Route("api/accounts/orders")]
         public IHttpActionResult GetOrderListForAccount()
         {
             var result = AccountOrderListService.Get(new AccountOrderListRequest());
@@ -158,7 +158,7 @@ namespace apcurium.MK.Web.Controllers.Api.account
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/accounts/orders/countforapprating")]
+        [HttpGet, Route("api/accounts/orders/countforapprating")]
         public IHttpActionResult GetOrderCountForAppRating()
         {
             var result = AccountOrderListService.Get(new OrderCountForAppRatingRequest());

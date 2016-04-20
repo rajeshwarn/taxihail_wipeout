@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Vehicle
         }
 
         [HttpPost, Auth]
-        [Route("api/v2/vehicle/{vehicleNumber}/message")]
+        [Route("api/vehicle/{vehicleNumber}/message")]
         public IHttpActionResult SendMessageToDriver(string vehicleNumber, SendMessageToDriverRequest request)
         {
             request.VehicleNumber = vehicleNumber;

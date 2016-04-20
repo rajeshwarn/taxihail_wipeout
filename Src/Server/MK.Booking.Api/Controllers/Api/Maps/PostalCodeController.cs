@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Api.Services.Maps;
 
 namespace apcurium.MK.Web.Controllers.Api.Maps
 {
-    [RoutePrefix("api/v2/addressFromPostalCode")]
+    [RoutePrefix("api/addressFromPostalCode")]
     public class PostalCodeController : BaseApiController
     {
         public PostalCodeService PostalCodeService { get; private set; }

@@ -6,7 +6,6 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin/exclusions")]
     public class ExclusionsController : BaseApiController
     {
         public ExclusionsService ExclusionsService { get; private set; }
@@ -16,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             ExclusionsService = exclusionsService;
         }
 
-        [HttpGet, Auth]
+        [HttpGet, Route("api/admin/exclusions"), Auth]
         public IHttpActionResult GetExclusions()
         {
             var result = ExclusionsService.Get();
@@ -24,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth]
+        [HttpPost, Route("api/admin/exclusions"), Auth]
         public IHttpActionResult UpdateExclusions([FromBody]ExclusionsRequest request)
         {
             ExclusionsService.Post(request);

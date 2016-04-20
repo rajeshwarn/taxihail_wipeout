@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api
             AppStartUpLogStartUpLogService = appStartUpLogStartUpLogService;
         }
 
-        [HttpGet, Route("api/v2/app/info")]
+        [HttpGet, Route("api/app/info")]
         public IHttpActionResult GetApplicationInfo()
         {
             var result = InfoService.Get();
@@ -26,7 +26,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/app/starts/{lastMinutes}"), Auth(Role = RoleName.Admin)]
+        [HttpGet, Route("api/app/starts/{lastMinutes}"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult AppStartUpLog(long lastMinutes)
         {
             var result = AppStartUpLogStartUpLogService.Get(new AppStartUpLogRequest() {LastMinutes = lastMinutes});

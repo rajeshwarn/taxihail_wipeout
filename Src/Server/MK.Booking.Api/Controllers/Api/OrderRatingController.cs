@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api
             OrderRatingsService = orderRatingsService;
         }
 
-        [HttpGet, Route("api/v2/ratings/{orderId}")]
+        [HttpGet, Route("api/ratings/{orderId}")]
         public IHttpActionResult GetOrderRatings(Guid orderId)
         {
             var result = OrderRatingsService.Get(orderId);
@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/ratings")]
+        [HttpPost, Route("api/ratings")]
         public IHttpActionResult CommitOrderRating([FromBody] OrderRatingsRequest request)
         {
             OrderRatingsService.Post(request);

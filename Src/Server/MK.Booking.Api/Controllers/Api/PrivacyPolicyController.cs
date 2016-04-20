@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PrivacyPolicyService = privacyPolicyService;
         }
 
-        [HttpGet, Route("api/v2/privacypolicy")]
+        [HttpGet, Route("api/privacypolicy")]
         public IHttpActionResult GetPrivacyPolicy()
         {
             var result = PrivacyPolicyService.Get();
@@ -23,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/privacypolicy"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/privacypolicy"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult UpdatePrivacyPolicy([FromBody]PrivacyPolicyRequest request)
         {
             PrivacyPolicyService.Post(request);

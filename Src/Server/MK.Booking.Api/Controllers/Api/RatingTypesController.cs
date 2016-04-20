@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api
             RatingTypesService = ratingTypesService;
         }
 
-        [HttpGet, Auth, Route("api/v2/ratingtypes")]
+        [HttpGet, Auth, Route("api/ratingtypes")]
         public IHttpActionResult GetAllRatingTypes()
         {
             var result = RatingTypesService.Get(new RatingTypesRequest());
@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("api/v2/ratingtypes/{clientLanguage}")]
+        [HttpGet, Auth, Route("api/ratingtypes/{clientLanguage}")]
         public IHttpActionResult GetRatingTypesByLanguage(string clientLanguage)
         {
             var result = RatingTypesService.Get(new RatingTypesRequest() {ClientLanguage = clientLanguage});
@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes")]
+        [HttpPost, Auth(Role = RoleName.Admin), Route("api/ratingtypes")]
         public IHttpActionResult CreateRatingType([FromBody]RatingTypesRequest request)
         {
             var result = RatingTypesService.Post(request);
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes")]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/ratingtypes")]
         public IHttpActionResult UpdateRatingType([FromBody] RatingTypesRequest request)
         {
             RatingTypesService.Put(request);
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpDelete, Auth(Role = RoleName.Admin), Route("api/v2/ratingtypes/{ratingTypeId}")]
+        [HttpDelete, Auth(Role = RoleName.Admin), Route("api/ratingtypes/{ratingTypeId}")]
         public IHttpActionResult DeleteRatingType(Guid ratingTypeId)
         {
             RatingTypesService.Delete(ratingTypeId);

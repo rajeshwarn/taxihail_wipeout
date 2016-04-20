@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             CardService = cardService;
         }
 
-        [HttpDelete, Auth(Role = RoleName.Support), Route("api/v2/admin/deleteAllCreditCards/{accountId}")]
+        [HttpDelete, Auth(Role = RoleName.Support), Route("api/admin/deleteAllCreditCards/{accountId}")]
         public IHttpActionResult Delete(Guid accountId)
         {
             CardService.Delete(new DeleteCreditCardsWithAccountRequest() {AccountID = accountId});

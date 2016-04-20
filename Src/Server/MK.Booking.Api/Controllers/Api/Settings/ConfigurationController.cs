@@ -20,7 +20,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             Service = service;
         }
 
-        [HttpGet, Route("api/v2/settings/reset")]
+        [HttpGet, Route("api/settings/reset")]
         public IHttpActionResult ResetConfiguration()
         {
             ResetService.Get();
@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(true);
         }
 
-        [HttpGet, Route("api/v2/settings")]
+        [HttpGet, Route("api/settings")]
         public IHttpActionResult GetAppSettings()
         {
             var result = Service.Get(new ConfigurationsRequest());
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result, useCameCase: false);
         }
 
-        [HttpGet, Route("api/v2/settings/encrypted")]
+        [HttpGet, Route("api/settings/encrypted")]
         public IHttpActionResult GetEncryptedSettings()
         {
             var result = Service.Get(new EncryptedConfigurationsRequest());
@@ -52,13 +52,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return Ok();
         }
 
-        [HttpGet, Auth, Route("api/v2/settings/notifications")]
+        [HttpGet, Auth, Route("api/settings/notifications")]
         public IHttpActionResult GetNotificationSettings()
         {
             return GetNotificationSettings(null);
         }
 
-        [HttpGet, Auth, Route("api/v2/settings/notifications/{accountId}")]
+        [HttpGet, Auth, Route("api/settings/notifications/{accountId}")]
         public IHttpActionResult GetNotificationSettings(Guid? accountId)
         {
             var result = Service.Get(new NotificationSettingsRequest() {AccountId = accountId});
@@ -66,13 +66,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("api/v2/settings/notifications")]
+        [HttpPost, Auth, Route("api/settings/notifications")]
         public IHttpActionResult UpdateNotificationSettings([FromBody] NotificationSettingsRequest request)
         {
             return UpdateNotificationSettings(null, request);
         }
 
-        [HttpPost, Auth, Route("api/v2/settings/notifications/{accountId}")]
+        [HttpPost, Auth, Route("api/settings/notifications/{accountId}")]
         public IHttpActionResult UpdateNotificationSettings(Guid? accountId, [FromBody]NotificationSettingsRequest request)
         {
             request.AccountId = accountId;
@@ -82,13 +82,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return Ok();
         }
 
-        [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork")]
+        [HttpGet, Auth, Route("api/settings/taxihailnetwork")]
         public IHttpActionResult GetUserTaxiHailNetworkSettings()
         {
             return GetUserTaxiHailNetworkSettings(null);
         }
 
-        [HttpGet, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
+        [HttpGet, Auth, Route("api/settings/taxihailnetwork/{accountId}")]
         public IHttpActionResult GetUserTaxiHailNetworkSettings(Guid? accountId)
         {
             var result = Service.Get(new UserTaxiHailNetworkSettingsRequest()
@@ -99,13 +99,13 @@ namespace apcurium.MK.Web.Controllers.Api.Settings
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Auth, Route("api/v2/settings/taxihailnetwork")]
+        [HttpPost, Auth, Route("api/settings/taxihailnetwork")]
         public IHttpActionResult UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest request)
         {
             return UpdateUserTaxiHailNetworkSettings(null, request);
         }
 
-        [HttpPost, Auth, Route("api/v2/settings/taxihailnetwork/{accountId}")]
+        [HttpPost, Auth, Route("api/settings/taxihailnetwork/{accountId}")]
         public IHttpActionResult UpdateUserTaxiHailNetworkSettings(Guid? accountId, UserTaxiHailNetworkSettingsRequest request)
         {
             request.AccountId = accountId;

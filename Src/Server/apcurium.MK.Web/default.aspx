@@ -76,7 +76,7 @@
             TaxiHail.parameters.maxNumberOfCreditCards = <%: MaxNumberOfCreditCards %>;
             TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
-            TaxiHail.parameters.apiRoot = "api/v2";
+            TaxiHail.parameters.apiRoot = "api";
             TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
             TaxiHail.parameters.warnForFeesOnCancel = <%: WarnForFeesOnCancel ? "true" : "false" %>;
             TaxiHail.parameters.hideMarketChangeWarning = <%: HideMarketChangeWarning ? "true" : "false" %>;

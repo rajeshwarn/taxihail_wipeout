@@ -13,7 +13,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             ChargeService = chargeService;
         }
 
-        [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}/{customerNumber}/{hideAnswers}")]
+        [HttpGet, Route("api/admin/accountscharge/{accountNumber}/{customerNumber}/{hideAnswers}")]
         public IHttpActionResult GetAccountCharge(string accountNumber, string customerNumber, bool hideAnswers)
         {
             var result = ChargeService.Get(new AccountChargeRequest
@@ -26,13 +26,13 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/admin/accountscharge/{accountNumber}")]
+        [HttpGet, Route("api/admin/accountscharge/{accountNumber}")]
         public IHttpActionResult GetAccountCharge(string accountNumber)
         {
             return GetAccountCharge(accountNumber, null, false);
         }
 
-        [HttpGet, Route("api/v2/admin/accountscharge")]
+        [HttpGet, Route("api/admin/accountscharge")]
         public IHttpActionResult GetAccountCharge()
         {
             var result = ChargeService.Get(new AccountChargeRequest());
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/admin/accountscharge")]
+        [HttpPost, Route("api/admin/accountscharge")]
         public IHttpActionResult CreateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = ChargeService.Post(request);
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpPut, Route("api/v2/admin/accountscharge")]
+        [HttpPut, Route("api/admin/accountscharge")]
         public IHttpActionResult UpdateAccountCharge([FromBody]AccountChargeRequest request)
         {
             var result = ChargeService.Put(request);
@@ -56,7 +56,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return GenerateActionResult(result);
         }
 
-        [HttpDelete, Route("api/v2/admin/accountscharge/{accountNumber}")]
+        [HttpDelete, Route("api/admin/accountscharge/{accountNumber}")]
         public IHttpActionResult DeleteAccountCharge(string accountNumber)
         {
             ChargeService.Delete(new AccountChargeRequest {AccountNumber = accountNumber});

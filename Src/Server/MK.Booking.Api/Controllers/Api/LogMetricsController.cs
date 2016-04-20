@@ -15,14 +15,14 @@ namespace apcurium.MK.Web.Controllers.Api
             MetricsService = metricsService;
         }
 
-        [HttpPost, Auth, Route("api/v2/accounts/logstartup")]
+        [HttpPost, Auth, Route("api/accounts/logstartup")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogApplicationStartUpRequest request)
         {
             MetricsService.Post(request);
 
             return Ok();
         }
-        [HttpPost, Auth, Route("api/v2/orders/logeta")]
+        [HttpPost, Auth, Route("api/orders/logeta")]
         public IHttpActionResult LogApplicationStartUp([FromBody] LogOriginalEtaRequest request)
         {
             MetricsService.Post(request);

@@ -11,7 +11,6 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Admin
 {
-    [RoutePrefix("api/v2/admin/export")]
     public class ExportDataController : BaseApiController
     {
         public ExportDataService ExportDataService { get; private set; }
@@ -21,7 +20,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             ExportDataService = exportDataService;
         }
 
-        [HttpPost, Route("{target}"), Auth(Role = RoleName.Support)]
+        [HttpPost, Route("api/admin/export/{target}"), Auth(Role = RoleName.Support)]
         public IHttpActionResult ExportData(DataType target, [FromBody] ExportDataRequest request)
         {
             request.Target = target;

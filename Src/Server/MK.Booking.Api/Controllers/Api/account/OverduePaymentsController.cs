@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             OverduePaymentService = overduePaymentService;
         }
 
-        [HttpGet, Auth, Route("~/api/v2/accounts/overduepayment")]
+        [HttpGet, Auth, Route("~/api/accounts/overduepayment")]
         public IHttpActionResult GetOverduePayment()
         {
             var result = OverduePaymentService.Get();
@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [Route("~/api/v2/accounts/settleoverduepayment"), HttpPost, Auth]
+        [Route("~/api/accounts/settleoverduepayment"), HttpPost, Auth]
         public IHttpActionResult SettleOverduePayment([FromBody]SettleOverduePaymentRequest request)
         {
             var result = OverduePaymentService.Post(request);

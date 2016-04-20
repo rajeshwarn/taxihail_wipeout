@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Api.Services;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/accounts/test")]
+    [RoutePrefix("api/accounts/test")]
     public class TestOnlyEndpointController : BaseApiController
     {
         public TestOnlyReqGetTestAccountService TestOnlyReqGetTestAccountService { get; private set; }

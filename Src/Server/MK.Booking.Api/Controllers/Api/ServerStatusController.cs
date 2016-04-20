@@ -6,7 +6,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/status")]
+    [RoutePrefix("api/status")]
     public class ServerStatusController : BaseApiController
     {
         public ServerStatusService ServerStatusService { get; private set; }

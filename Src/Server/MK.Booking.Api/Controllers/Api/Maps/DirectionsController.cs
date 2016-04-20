@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
             DirectionsService = directionsService;
         }
 
-        [HttpGet, Route("api/v2/directions")]
+        [HttpGet, Route("api/directions")]
         public async Task<IHttpActionResult> GetDirections([FromUri]DirectionsRequest request)
         {
             var result = await DirectionsService.Get(request);
@@ -23,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/directions/eta")]
+        [HttpGet, Route("api/directions/eta")]
         public IHttpActionResult GetAssignedEta([FromUri] AssignedEtaRequest request)
         {
             var result = DirectionsService.Get(request);

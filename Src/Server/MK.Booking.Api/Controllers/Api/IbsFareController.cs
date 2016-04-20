@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api
             IBSFareService = ibsFareService;
         }
 
-        [HttpGet, Route("api/v2/ibsfare")]
+        [HttpGet, Route("api/ibsfare")]
         public IHttpActionResult GetIbsFare([FromUri]IbsFareRequest request)
         {
             var result = IBSFareService.Get(request);
@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/ibsdistance")]
+        [HttpGet, Route("api/ibsdistance")]
         public IHttpActionResult Get([FromUri]IbsDistanceRequest request)
         {
             var result = IBSFareService.Get(request);

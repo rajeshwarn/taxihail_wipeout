@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
         {
-            _url = url.AppendIfMissing("/v2");
+            _url = url;
             _sessionId = sessionId;
             _packageInfo = packageInfo;
             _connectivityService = connectivityService;

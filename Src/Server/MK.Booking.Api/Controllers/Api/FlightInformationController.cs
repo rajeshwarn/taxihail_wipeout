@@ -6,7 +6,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api
 {
-    [RoutePrefix("api/v2/flightInfo")]
+    [RoutePrefix("api/flightInfo")]
     public class FlightInformationController : BaseApiController
     {
         public FlightInformationService InformationService { get; private set;  }

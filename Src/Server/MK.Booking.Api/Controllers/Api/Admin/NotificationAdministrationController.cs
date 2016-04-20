@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             NotificationAdministrationService = notificationAdministrationService;
         }
 
-        [HttpPost, Route("api/v2/admin/testemail/{emailAddress}")]
+        [HttpPost, Route("api/admin/testemail/{emailAddress}")]
         public async Task<IHttpActionResult> TestEmail(string emailAddress, [FromBody] TestEmailAdministrationRequest request)
         {
             request.EmailAddress = emailAddress;
@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpPost, Route("api/v2/admin/pushnotifications/{emailAddress}")]
+        [HttpPost, Route("api/admin/pushnotifications/{emailAddress}")]
         public IHttpActionResult TestPushNotification(string emailAddress, [FromBody] PushNotificationAdministrationRequest request)
         {
             request.EmailAddress = emailAddress;
@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpGet, Route("api/v2/admin/testemail/templates")]
+        [HttpGet, Route("api/admin/testemail/templates")]
         public IHttpActionResult GetEmailTemplateNames()
         {
             var result = NotificationAdministrationService.Get(new EmailTemplateNamesRequest());

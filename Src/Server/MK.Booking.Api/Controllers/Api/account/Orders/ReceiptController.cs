@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             SendReceiptService = sendReceiptService;
         }
 
-        [HttpPost, Auth, Route("api/v2/accounts/orders/{orderId}/sendreceipt")]
+        [HttpPost, Auth, Route("api/accounts/orders/{orderId}/sendreceipt")]
         public async Task<IHttpActionResult> SendReceiptForOrder(Guid orderId)
         {
             await SendReceiptService.Post(orderId, string.Empty);
@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return Ok();
         }
 
-        [HttpPost, Auth(Role = RoleName.Support), Route("api/v2/accounts/orders/{orderId}/sendreceipt/{recipientEmail}")]
+        [HttpPost, Auth(Role = RoleName.Support), Route("api/accounts/orders/{orderId}/sendreceipt/{recipientEmail}")]
         public async Task<IHttpActionResult> SendReceiptForOrderToRecipientEmail(Guid orderId, string recipientEmail)
         {
             await SendReceiptService.Post(orderId, recipientEmail);

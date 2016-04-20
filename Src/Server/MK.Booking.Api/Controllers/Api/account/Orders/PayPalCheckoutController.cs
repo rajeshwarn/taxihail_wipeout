@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             PayPalCheckoutService = payPalCheckoutService;
         }
 
-        [HttpGet, HttpHead, Route("api/v2/accounts/orders/{orderId}/proceed"), Auth]
+        [HttpGet, HttpHead, Route("api/accounts/orders/{orderId}/proceed"), Auth]
         public IHttpActionResult ExecuteWebPaymentAndProceedWithOrder(ExecuteWebPaymentAndProceedWithOrder request)
         {
             var result = PayPalCheckoutService.Get(request);

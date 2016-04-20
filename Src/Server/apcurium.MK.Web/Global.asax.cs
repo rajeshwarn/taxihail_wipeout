@@ -118,12 +118,9 @@ namespace apcurium.MK.Web
                 watch.Start();
                 HttpContext.Current.Items.Add("RequestLoggingWatch", watch);
                 var path = HttpContext.Current.Request.Path;
-
-                if (!path.Contains("/api/v2/"))
-                {
-                    // The use of the old version of the api is detected, updating it to current version.
-                    HttpContext.Current.RewritePath(RequestUrlHelper.UpdateRequestUrl(path));
-                }
+                
+                // We need to ensure that we correctly route the call.
+                HttpContext.Current.RewritePath(RequestUrlHelper.UpdateRequestUrl(path));
             }
         }
 

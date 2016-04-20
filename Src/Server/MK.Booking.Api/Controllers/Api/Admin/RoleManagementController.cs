@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             AdminRightService = adminRightService;
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/grantadmin")]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/admin/grantadmin")]
         public IHttpActionResult GrantAdminRight(GrantAdminRightRequest request)
         {
             AdminRightService.Put(request);
@@ -23,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpPut, Auth(Role = RoleName.SuperAdmin), Route("api/v2/admin/grantsuperadmin")]
+        [HttpPut, Auth(Role = RoleName.SuperAdmin), Route("api/admin/grantsuperadmin")]
         public IHttpActionResult GrantSuperAdminRight(GrantSuperAdminRightRequest request)
         {
             AdminRightService.Put(request);
@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/grantsupport")]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/admin/grantsupport")]
         public IHttpActionResult GrantSupportRight(GrantSupportRightRequest request)
         {
             AdminRightService.Put(request);
@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Controllers.Api.Admin
             return Ok();
         }
 
-        [HttpPut, Auth(Role = RoleName.Admin), Route("api/v2/admin/revokeaccess")]
+        [HttpPut, Auth(Role = RoleName.Admin), Route("api/admin/revokeaccess")]
         public IHttpActionResult GrantRevokeAccessRight(RevokeAccessRequest request)
         {
             AdminRightService.Put(request);

@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api
             NetworkRoamingService = networkRoamingService;
         }
 
-        [Route("api/v2/roaming/market"), HttpGet]
+        [Route("api/roaming/market"), HttpGet]
         public async Task<IHttpActionResult> FindMarket([FromUri] FindMarketRequest request)
         {
             var market = await NetworkRoamingService.Get(request);
@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(market);
         }
 
-        [Route("api/v2/roaming/marketsettings"), HttpGet]
+        [Route("api/roaming/marketsettings"), HttpGet]
         public async Task<IHttpActionResult> FindMarket([FromUri] FindMarketSettingsRequest request)
         {
             var marketSettings = await NetworkRoamingService.Get(request);
@@ -30,7 +30,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(marketSettings);
         }
 
-        [Route("api/v2/roaming/networkfleets"), HttpGet]
+        [Route("api/roaming/networkfleets"), HttpGet]
         public async Task<IHttpActionResult> GetNetworkFleets()
         {
             var marketSettings = await NetworkRoamingService.Get(new NetworkFleetsRequest());
@@ -38,7 +38,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(marketSettings);
         }
 
-        [Route("api/v2/roaming/externalMarketVehicleTypes"), HttpGet]
+        [Route("api/roaming/externalMarketVehicleTypes"), HttpGet]
         public async Task<IHttpActionResult> GetExternalMarketVehicleTypes([FromUri]MarketVehicleTypesRequest request)
         {
             var result = await NetworkRoamingService.Get(request);

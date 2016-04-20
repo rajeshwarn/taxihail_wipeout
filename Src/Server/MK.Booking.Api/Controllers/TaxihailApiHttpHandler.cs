@@ -16,12 +16,6 @@ namespace apcurium.MK.Booking.Api.Controllers
         {
             var requestUrl = request.RequestUri.OriginalString;
 
-            if (!requestUrl.Contains("/api/v2/"))
-            {
-                // We need to update the Url to the new version.
-                requestUrl = RequestUrlHelper.UpdateRequestUrl(requestUrl);
-            }
-
             var queryStrings = request.RequestUri.Query.HasValueTrimmed() ?
                 request.RequestUri.Query.Remove(0, 1).Split('&')
                 : new string[0];

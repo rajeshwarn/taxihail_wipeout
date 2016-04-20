@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api
             CmtPaymentService = cmtPaymentService;
         }
 
-        [HttpPost, Route("api/v2/order/pairing")]
+        [HttpPost, Route("api/order/pairing")]
         public async Task<IHttpActionResult> Pair(CmtPaymentPairingRequest request)
         {
             var result = await CmtPaymentService.Post(request);

@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Controllers.Api
             TermsAndConditionsService = termsAndConditionsService;
         }
 
-        [HttpGet, Route("api/v2/termsandconditions")]
+        [HttpGet, Route("api/termsandconditions")]
         public IHttpActionResult Get()
         {
             var isNotModified = TermsAndConditionsService.IsNotModified();
@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return ResponseMessage(httpResponse);
         }
 
-        [HttpPost, Route("api/v2/termsandconditions"),Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/termsandconditions"),Auth(Role = RoleName.Admin)]
         public IHttpActionResult UpdateTerms([FromBody]TermsAndConditionsRequest request)
         {
             TermsAndConditionsService.Post(request);
@@ -55,7 +55,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return Ok();
         }
 
-        [HttpPost, Route("api/v2/termsandconditions/retrigger"), Auth(Role = RoleName.Admin)]
+        [HttpPost, Route("api/termsandconditions/retrigger"), Auth(Role = RoleName.Admin)]
         public IHttpActionResult ForceTermsAndConditionTriggering()
         {
             TermsAndConditionsService.RetriggerTermsAndConditions();

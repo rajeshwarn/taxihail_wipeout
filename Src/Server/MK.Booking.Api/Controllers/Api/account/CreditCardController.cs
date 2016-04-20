@@ -23,7 +23,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             PrepareApiServices(CardService);
         }
 
-        [HttpGet, Auth, Route("api/v2/accounts/creditcards")]
+        [HttpGet, Auth, Route("api/accounts/creditcards")]
         public IHttpActionResult GetCreditCards()
         {
             var result = CardService.Get();
@@ -31,14 +31,14 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Auth, Route("api/v2/accounts/creditcardinfo/{creditCardId}")]
+        [HttpGet, Auth, Route("api/accounts/creditcardinfo/{creditCardId}")]
         public IHttpActionResult GetCreditCardInfo(Guid creditCardId)
         {
             var result = CardService.Get(new CreditCardInfoRequest() {CreditCardId = creditCardId});
 
             return GenerateActionResult(result);
         }
-        [HttpPost, Auth, Route("api/v2/accounts/creditcards")]
+        [HttpPost, Auth, Route("api/accounts/creditcards")]
         public IHttpActionResult Post([FromBody]CreditCardRequest request)
         {
             CardService.Post(request);
@@ -46,7 +46,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Auth, Route("api/v2/accounts/creditcards/updatedefault")]
+        [HttpPost, Auth, Route("api/accounts/creditcards/updatedefault")]
         public IHttpActionResult Post(DefaultCreditCardRequest request)
         {
             CardService.Post(request);
@@ -54,7 +54,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpPost, Auth, Route("api/v2/accounts/creditcards/updatelabel")]
+        [HttpPost, Auth, Route("api/accounts/creditcards/updatelabel")]
         public IHttpActionResult Post(UpdateCreditCardLabelRequest request)
         {
             CardService.Post(request);
@@ -62,7 +62,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpDelete, Auth, Route("api/v2/accounts/creditcards/{creditCardId}")]
+        [HttpDelete, Auth, Route("api/accounts/creditcards/{creditCardId}")]
         public IHttpActionResult DeleteCreditCard(Guid creditCardId)
         {
             CardService.Delete(new CreditCardRequest() {CreditCardId = creditCardId});

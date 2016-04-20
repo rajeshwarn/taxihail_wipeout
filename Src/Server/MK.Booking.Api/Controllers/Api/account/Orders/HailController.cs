@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             HailService = hailService;
         }
 
-        [HttpPost, Route("api/v2/client/hail")]
+        [HttpPost, Route("api/client/hail")]
         public async Task<IHttpActionResult> Hail([FromBody]HailRequest request)
         {
             var result = await HailService.Post(request);
@@ -35,7 +35,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account.Orders
             return GenerateActionResult(result);
         }
 
-        [HttpPost, Route("api/v2/client/hail/confirm")]
+        [HttpPost, Route("api/client/hail/confirm")]
         public IHttpActionResult ConfirmHail([FromBody]ConfirmHailRequest request)
         {
             var result = HailService.Post(request);

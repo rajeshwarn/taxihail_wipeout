@@ -5,7 +5,7 @@ using apcurium.MK.Web.Security;
 
 namespace apcurium.MK.Web.Controllers.Api.Account
 {
-    [RoutePrefix("api/v2/accounts/pushnotifications"), Auth]
+    [Auth]
     public class PushNotificationRegistrationController : BaseApiController
     {
         public PushNotificationRegistrationService PushNotificationRegistrationService { get; private set; }
@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             PushNotificationRegistrationService = pushNotificationRegistrationService;
         }
 
-        [HttpPost, Route("{deviceToken}")]
+        [HttpPost, Route("api/accounts/pushnotifications/{deviceToken}")]
         public IHttpActionResult RegisterForPushNotification(string deviceToken, [FromBody] PushNotificationRegistration request)
         {
             request.DeviceToken = deviceToken;
@@ -25,7 +25,7 @@ namespace apcurium.MK.Web.Controllers.Api.Account
             return Ok();
         }
 
-        [HttpDelete, Route("{deviceToken}")]
+        [HttpDelete, Route("api/accounts/pushnotifications/{deviceToken}")]
         public IHttpActionResult DeletePushNotificationRegistration(string deviceToken)
         {
             PushNotificationRegistrationService.Delete(deviceToken);

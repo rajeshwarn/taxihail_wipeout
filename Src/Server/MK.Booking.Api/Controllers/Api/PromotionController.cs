@@ -12,7 +12,7 @@ namespace apcurium.MK.Web.Controllers.Api
             PromotionService = promotionService;
         }
 
-        [HttpGet, Route("api/v2/promotions")]
+        [HttpGet, Route("api/promotions")]
         public IHttpActionResult GetPromotions()
         {
             var result = PromotionService.Get();

@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             GeocodingService = geocodingService;
         }
 
-        [HttpPost, Route("api/v2/geocode")]
+        [HttpPost, Route("api/geocode")]
         public IHttpActionResult GetAddressWithGeocoding([FromBody] GeocodingRequest request)
         {
             var result = GeocodingService.Post(request);

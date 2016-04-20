@@ -13,7 +13,7 @@ namespace apcurium.MK.Web.Controllers.Api
             ReferenceDataService = referenceDataService;
         }
 
-        [HttpGet, Route("api/v2/referencedata")]
+        [HttpGet, Route("api/referencedata")]
         public IHttpActionResult GetReferenceData([FromUri]ReferenceDataRequest request)
         {
             var result = ReferenceDataService.Get(request??new ReferenceDataRequest());
@@ -21,7 +21,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/references/{listName}/{searchText}")]
+        [HttpGet, Route("api/references/{listName}/{searchText}")]
         public IHttpActionResult GetReferenceList(string listName, string searchText, [FromUri] ReferenceListRequest request)
         {
             if (request == null)
@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Controllers.Api
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/references/{listName}")]
+        [HttpGet, Route("api/references/{listName}")]
         public IHttpActionResult GetReferenceList(string listName, [FromUri] ReferenceListRequest request)
         {
             return GetReferenceList(listName, null, request);

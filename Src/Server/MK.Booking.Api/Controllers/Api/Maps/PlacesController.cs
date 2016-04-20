@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             PlaceDetailService = placeDetailService;
         }
 
-        [HttpGet, Route("api/v2/places")]
+        [HttpGet, Route("api/places")]
         public IHttpActionResult GetNearbyPlace([FromUri] NearbyPlacesRequest request)
         {
             var result = NearbyPlacesService.Get(request);
@@ -25,7 +25,7 @@ namespace apcurium.MK.Web.Controllers.Api.Maps
             return GenerateActionResult(result);
         }
 
-        [HttpGet, Route("api/v2/places/detail")]
+        [HttpGet, Route("api/places/detail")]
         public async Task<IHttpActionResult> GetPlaceDetail([FromUri] PlaceDetailRequest request)
         {
             var result = await PlaceDetailService.Get(request);
