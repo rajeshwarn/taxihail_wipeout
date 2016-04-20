@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
         {
             if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
             {
-                _isStarted = !StartService();
+                _isStarted = StartService();
             }
 
             if (args.LifetimeEvent == MvxLifetimeEvent.Closing || args.LifetimeEvent == MvxLifetimeEvent.Deactivated)
@@ -126,7 +126,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			var v = new Vector3(x, y, z);
 			v.Normalize();
 
-			//var trustZRotation = TrustZRotation(v);
 			var rotation = GetZRotationAngle(v);
 
 			_filter.AddValue(rotation, DateTime.Now.Ticks / 10000);
