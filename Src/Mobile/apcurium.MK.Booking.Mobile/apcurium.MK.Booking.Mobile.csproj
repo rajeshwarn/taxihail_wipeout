@@ -45,10 +45,6 @@
     <Compile Include="CustomNativeMessageHandler.cs" />
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
-    <Compile Include="DummyServiceStack\Auth.cs" />
-    <Compile Include="DummyServiceStack\IHasResponseStatus.cs" />
-    <Compile Include="DummyServiceStack\IReturn.cs" />
-    <Compile Include="DummyServiceStack\RouteAttribute.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
