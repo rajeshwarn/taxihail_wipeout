@@ -124,9 +124,6 @@
     <Compile Include="Diagnostic\Log4NetTraceListener.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
-    <Compile Include="Http\Response\Auth.cs" />
-    <Compile Include="Http\Response\IHasResponseStatus.cs" />
-    <Compile Include="Http\Response\IReturn.cs" />
     <Compile Include="Entity\OrderHailResult.cs" />
     <Compile Include="Entity\OrderKey.cs" />
     <Compile Include="Entity\ServiceStatus.cs" />
@@ -167,8 +164,6 @@
     <Compile Include="Extensions\UserAgentExtension.cs" />
     <Compile Include="Fare.cs" />
     <Compile Include="Http\RequestUrlHelper.cs" />
-    <Compile Include="Http\RouteDescriptionAttribute.cs" />
-    <Compile Include="Http\SessionEntity.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />

@@ -121,7 +121,6 @@
       <HintPath>..\..\..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
