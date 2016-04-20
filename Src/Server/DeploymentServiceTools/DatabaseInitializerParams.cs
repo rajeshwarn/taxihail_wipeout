@@ -15,7 +15,7 @@ namespace DeploymentServiceTools
 
         public string CompanyName { get; set; }
 
-        public string MkWebConnectionString { get; set; }
+        public string CompanyConnectionString { get; set; }
 
         public string MasterConnectionString { get; set; }
 

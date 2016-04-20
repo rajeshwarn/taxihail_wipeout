@@ -91,6 +91,15 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET RECOVERY FULL", companyName));
         }
 
+        public int MirroringRole(string connStringMaster, string companyName)
+        {
+            var role = "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, role);
+            Console.WriteLine("Mirroring role : " + result.ToString());
+
+            return result.GetValueOrDefault();
+        }
+
         public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
