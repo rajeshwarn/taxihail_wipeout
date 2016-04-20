@@ -17,6 +17,7 @@ using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface.Validation;
+using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
@@ -50,6 +51,10 @@ namespace apcurium.MK.Web.SelfHost
         public override void Configure(Container containerFunq)
         {
             new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
+
+            // Ensuring that Guids always serialize with the hyphens
+            JsConfig<Guid>.RawSerializeFn = guid => guid.ToString("D");
+            JsConfig<Guid?>.RawSerializeFn = guid => guid.HasValue ? guid.Value.ToString("D") : null;
 
             var notificationService = UnityServiceLocator.Instance.Resolve<INotificationService>();
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));

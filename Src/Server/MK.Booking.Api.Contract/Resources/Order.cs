@@ -7,7 +7,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class Order : BaseDto
     {
-        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid Id { get; set; }
 
         public int? IBSOrderId { get; set; }

@@ -8,6 +8,15 @@ namespace apcurium.MK.Common.Serializer
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            var guidValue = value as Guid?;
+
+            if (guidValue.HasValue)
+            {
+                writer.WriteValue(guidValue.Value.ToString("D"));
+
+                return;
+            }
+
             writer.WriteValue(value);
         }
 
