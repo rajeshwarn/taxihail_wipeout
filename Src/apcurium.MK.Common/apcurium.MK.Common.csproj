@@ -113,6 +113,7 @@
     <Compile Include="Http\Response\IHasResponseStatus.cs" />
     <Compile Include="Http\Response\IReturn.cs" />
     <Compile Include="Http\RouteDescriptionAttribute.cs" />
+    <Compile Include="Http\SessionEntity.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="IIPAddressManager.cs" />

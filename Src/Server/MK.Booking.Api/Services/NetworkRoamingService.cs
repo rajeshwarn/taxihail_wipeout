@@ -13,10 +13,9 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ICryptographyService _cryptographyService;
 
-        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, IServerSettings serverSettings, ICryptographyService cryptographyService)
+        public NetworkRoamingService(ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICryptographyService cryptographyService)
         {
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _serverSettings = serverSettings;
             _cryptographyService = cryptographyService;
         }
 

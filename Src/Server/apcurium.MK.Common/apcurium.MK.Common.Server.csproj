@@ -134,8 +134,6 @@
     <Compile Include="Exceptions\WebServiceException.cs" />
     <Compile Include="Extensions\CacheClientExtensions.cs" />
     <Compile Include="Extensions\CSVExtensions.cs" />
-    <Compile Include="Extensions\HttpClientExtensions.cs" />
-    <Compile Include="Extensions\ReturnExtensions.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="Database\CustomDbConfiguration.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
@@ -160,6 +158,8 @@
     <Compile Include="Enumeration\TimeZone\TimeZones.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Extensions\DbModelBuilderExtensions.cs" />
+    <Compile Include="Extensions\HttpClientExtensions.cs" />
+    <Compile Include="Extensions\ReturnExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.Web.cs" />
     <Compile Include="Extensions\UserAgentExtension.cs" />
     <Compile Include="Fare.cs" />
