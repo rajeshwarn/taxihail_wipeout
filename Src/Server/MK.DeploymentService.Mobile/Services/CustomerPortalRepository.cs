@@ -1,14 +1,10 @@
 using System;
-using System.Configuration;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using MK.DeploymentService.Mobile;
-using log4net;
-using ServiceStack.Common.Web;
 using System.Linq;
 using System.Threading.Tasks;
 using MK.DeploymentService.Mobile.Helper;
@@ -140,7 +136,8 @@ namespace DeploymentServiceTools
                 {
                     try
                     {
-                        return string.Format("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, result.Content.ReadAsAsync<HttpError>().Result.Message);
+                        dynamic httpError = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
+                        return string.Format("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, httpError.Message);
                     }
                     catch
                     {
@@ -152,14 +149,16 @@ namespace DeploymentServiceTools
 
 		private string GetFilename(HttpResponseMessage result)
 		{
-			string fileName = string.Empty;
+			var fileName = string.Empty;
 			var contentDisposition = result.Headers.GetValues("Content-Disposition").First();
 			if (!string.IsNullOrEmpty(contentDisposition))
 			{
-				string lookFor = "filename=";
+				var lookFor = "filename=";
 				int index = contentDisposition.IndexOf(lookFor, StringComparison.CurrentCultureIgnoreCase);
-				if (index >= 0)
-					fileName = contentDisposition.Substring(index + lookFor.Length);
+                if (index >= 0)
+                {
+                    fileName = contentDisposition.Substring(index + lookFor.Length);
+                }
 			}
 
 			return fileName;

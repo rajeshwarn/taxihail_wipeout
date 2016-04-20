@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         {
                             // Unpair only available if automatic pairing is disabled
                             orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
-                                ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                                ? DateTime.UtcNow.AddHours(12)                                      // Unpair will be available for the duration of the ride (considering ride duration is less than 12 hours)
                                 : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
 
                             context.Save(orderStatus);

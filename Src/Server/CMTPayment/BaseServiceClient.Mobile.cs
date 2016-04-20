@@ -26,6 +26,10 @@ namespace CMTPayment
 
 			// CustomSSLVerification must be set to true to enable certificate pinning.
             var nativeHandler = new CustomNativeMessageHandler(_connectivityService, throwOnCaptiveNetwork: false, customSSLVerification: true, enableRc4Compatibility: true, cookieHandler: cookieHandler);
+			nativeHandler.UseCookies = false;
+
+			// use only for debug with proxy like Charles application
+			//nativeHandler.Proxy = new WebProxy("192.168.12.163", 8888);
 
 			var client = new HttpClient(nativeHandler)
 				{
