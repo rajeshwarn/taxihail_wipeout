@@ -135,7 +135,6 @@ namespace apcurium.MK.Booking.Mobile
 			lifeTimeMonitor.LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
 			_container.Register<IErrorHandler, ErrorHandler>();
-			_container.Register<IOrientationService, OrientationService>();
 			_container.Register<IRateApplicationService, RateApplicationService>();
 
             _container.Register<ICryptographyService>((c, p) => new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, c.Resolve<ILogger>()));
