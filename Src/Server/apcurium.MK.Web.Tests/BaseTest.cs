@@ -9,7 +9,6 @@ using apcurium.MK.Common;
 using apcurium.MK.Web.SelfHost;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using log4net.Config;
 
@@ -40,9 +39,9 @@ namespace apcurium.MK.Web.Tests
                 return null;
             }
 
-            public IDictionary<string, IPAddress> GetIPAddresses()
+            public IDictionary<string, string> GetIPAddresses()
             {
-                return new Dictionary<string, IPAddress>();
+                return new Dictionary<string, string>();
             }
         }
 

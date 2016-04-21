@@ -1,6 +1,6 @@
 ﻿using System;
 using apcurium.MK.Common.Entity;
-using MK.Common.Serializer;
+using apcurium.MK.Common.Serializer;
 using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
@@ -11,13 +11,11 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
     /// </summary>
     public class DeprecatedAccount 
     {
-        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid? DefaultCreditCard { get; set; }
     }
 
     public class Account : BaseDto
     {
-        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid Id { get; set; }
 
         public string Email { get; set; }

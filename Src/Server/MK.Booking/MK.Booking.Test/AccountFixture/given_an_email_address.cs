@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net.Mail;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -14,14 +12,15 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using MK.Common.Configuration;
+using apcurium.MK.Common.Services;
 using Moq;
 using NUnit.Framework;
+using PCLCrypto;
 
-#endregion
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -93,7 +92,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 null,
                 null,
                 null,
-                new Logger());
+                new Logger(),
+                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()));
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
             _sut.Setup(new EmailCommandHandler(notificationService));
         }
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid(),
                 Note = "Tomato Sandwich",
                 PickupDate = DateTime.Now,
-                Settings = new SendBookingConfirmationEmail.BookingSettings(),
+                Settings = new SendBookingConfirmationEmail.InternalBookingSettings(),
                 ClientLanguageCode = "fr"
             });
 
