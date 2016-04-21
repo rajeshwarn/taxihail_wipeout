@@ -3,7 +3,9 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
+using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Platform;
+using MK.Common.Android.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 {
@@ -28,10 +30,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
 	    public event EventHandler<DeviceOrientationChangedEventArgs> NotifyOrientationChanged;
 
-        protected CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation, IMvxLifetime mvxLifetime)
+        protected CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation, IMvxLifetime mvxLifetime, ILogger logger)
         {
             _coordinateSystemOrientation = coordinateSystemOrientation;
             _mvxLifetime = mvxLifetime;
+            Logger = logger;
         }
 
 	    public bool Start()
@@ -49,14 +52,19 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
 		public bool Stop()
 		{
-			if (_isStarted && IsAvailable())
-			{
-				_isStarted = !StopService();
-                _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
-            }
+		    if (!_isStarted || !IsAvailable())
+		    {
+		        return !_isStarted;
+		    }
 
-			return !_isStarted;
+		    _isStarted = !StopService();
+		    _mvxLifetime.LifetimeChanged -= OnApplicationLifetimeChanged;
+
+		    return !_isStarted;
 		}
+
+        protected ILogger Logger { get; private set; }
+
 
         private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
         {
@@ -198,13 +206,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
                 var deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
 
-                if (_currentOrientation == deviceOrientation)
-                {
-                    return;
-                }
-
                 lock (_lock)
                 {
+                    if (_currentOrientation == deviceOrientation)
+                    {
+                        return;
+                    }
+
                     _currentOrientation = deviceOrientation;
                 }
 
@@ -215,8 +223,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
             }
             catch (Exception ex)
             {
-                
-                throw;
+                Logger.LogErrorWithCaller(ex);
             }
             
         }

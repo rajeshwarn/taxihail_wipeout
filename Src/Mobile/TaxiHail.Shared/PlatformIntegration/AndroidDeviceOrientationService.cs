@@ -1,6 +1,6 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Common.Diagnostic;
 using Android.App;
 using Android.Content;
 using Android.Hardware;
@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		private readonly AccelerometerSensorListener _accelerometerSensorListener;
 		private bool _enabled;
 
-		public AndroidDeviceOrientationService(IMvxLifetime mvxLifetime) : base(Common.CoordinateSystemOrientation.LeftHanded, mvxLifetime)
+		public AndroidDeviceOrientationService(IMvxLifetime mvxLifetime, ILogger logger) : base(Common.CoordinateSystemOrientation.LeftHanded, mvxLifetime, logger)
 		{
 			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
 			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);
@@ -73,7 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				if (NotifyOrientationChanged != null)
 				{
-					NotifyOrientationChanged(e.Values[0], e.Values[1], e.Values[2], e.Timestamp / 1000000);
+                    // double x, double y, double z, long timestamp
+                    NotifyOrientationChanged(e.Values[0], e.Values[1], e.Values[2], e.Timestamp / 1000000);
 				}
 			}
 		}
