@@ -222,7 +222,11 @@
   </ItemGroup>
   <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="..\Android\Resources\Drawable\edit_text_black_border.xml">
+      <Link>Resources\Drawable\edit_text_black_border.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>
