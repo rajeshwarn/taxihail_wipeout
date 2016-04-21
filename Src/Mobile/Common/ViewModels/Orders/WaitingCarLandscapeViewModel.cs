@@ -11,15 +11,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     public class WaitingCarLandscapeViewModel : PageViewModel
 	{
 	    private static EventHandler<BookingStatusChangedEventArgs> _bookingStatusChanged;
-	    private readonly IDeviceOrientationService _orientationService;
+	    private readonly IDeviceOrientationService _deviceOrientationService;
         private string _carNumber;
         private DeviceOrientations _deviceOrientation;
 
 		public static bool IsViewVisible { get; private set; }
 
-        public WaitingCarLandscapeViewModel(IDeviceOrientationService orientationService)
+        public WaitingCarLandscapeViewModel(IDeviceOrientationService deviceOrientationService)
         {
-            _orientationService = orientationService;
+            _deviceOrientationService = deviceOrientationService;
         }
         public void Init(string carNumber, DeviceOrientations deviceOrientation)
         {
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             base.OnViewLoaded();
 
-            _orientationService.ObserveDeviceIsInLandscape()
+            _deviceOrientationService.ObserveDeviceIsInLandscape()
                .Subscribe(orientation =>
                {
                    DeviceOrientation = orientation;
@@ -64,8 +64,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                .DisposeWith(Subscriptions);
 
             Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
-                h => _bookingStatusChanged += h,
-                h => _bookingStatusChanged -= h
+                handler => _bookingStatusChanged += handler,
+                handler => _bookingStatusChanged -= handler
                 )
                 .Select(args => args.EventArgs)
                 .Where(args => args.CarNumber != _carNumber || args.ShouldCloseWaitingCarLandscapeView)

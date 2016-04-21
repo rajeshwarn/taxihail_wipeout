@@ -22,7 +22,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Models;
-using Cirrious.MvvmCross.Platform;
 using MK.Common.Exceptions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -36,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
-		private readonly IDeviceOrientationService _orientationService;
+		private readonly IDeviceOrientationService _deviceOrientationService;
 		private readonly IRateApplicationService _rateApplicationService;
 		private readonly IAccountService _accountService;
 		private readonly INetworkRoamingService _networkRoamingService;
@@ -68,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService,
 			IMetricsService metricsService,
 			IOrderWorkflowService orderWorkflowService,
-			IDeviceOrientationService orientationService,
+			IDeviceOrientationService deviceOrientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
 			IAccountService accountService,
@@ -81,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_metricsService = metricsService;
 			_locationService = locationService;
-			_orientationService = orientationService;
+			_deviceOrientationService = deviceOrientationService;
 			_rateApplicationService = rateApplicationService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
@@ -468,7 +467,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void StopOrientationServiceIfNeeded()
 		{
-			if (_orientationService.Stop())
+			if (_deviceOrientationService.Stop())
 			{
 			    _deviceOrientationSubscription.Disposable = null;
 
@@ -1012,9 +1011,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
 				{
-					if (_orientationService.Start())
+					if (_deviceOrientationService.Start())
 					{
-					    _deviceOrientationSubscription.Disposable = _orientationService
+					    _deviceOrientationSubscription.Disposable = _deviceOrientationService
                             .ObserveDeviceIsInLandscape()
 							// No need to process the orientation change if we are displaying the WaitingCarLanscape View
 							.Where(_ => !WaitingCarLandscapeViewModel.IsViewVisible)
