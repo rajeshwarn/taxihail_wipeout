@@ -145,6 +145,7 @@
     <Compile Include="AppServices\IMetricsService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
+    <Compile Include="Extensions\DeviceOrientationServiceExtensions.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\MessageServiceExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
@@ -213,6 +214,8 @@
     <Compile Include="Style\ColorDefinition.cs" />
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\FontDefinition.cs" />
+    <Compile Include="TaxihailEventArgs\BookingStatusChangedEventArgs.cs" />
+    <Compile Include="TaxihailEventArgs\DeviceOrientationChangedEventArgs.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="StartNavigation.cs" />
     <Compile Include="TaxiHailApp.cs" />
@@ -359,10 +362,8 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
-    <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />

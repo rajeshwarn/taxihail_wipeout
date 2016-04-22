@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
             container.Register<IGeocoder> ((c, p) => new AppleGeocoder ());
             container.Register<IPlaceDataProvider, FoursquareProvider> ();
-            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
+            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>().AsSingleton();
             container.Register<IDeviceRateApplicationService, AppleDeviceRateApplicationService>();
             container.Register<IQuitApplicationService, QuitApplicationService>();
             container.Register<IDeviceCollectorService, DeviceCollectorService>();

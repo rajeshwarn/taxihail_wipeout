@@ -82,11 +82,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             return Color.White;
         }
 
+        public static void SetEditTextBackgroundForBackground(EditText editText, Color backgroundColor)
+        {
+            var backgroundDrawable = Application.Context.Resources.GetDrawable(Resource.Drawable.edit_text_flat);
+
+            if (IsThisColorLight(backgroundColor))
+            {
+                backgroundDrawable = Application.Context.Resources.GetDrawable(Resource.Drawable.edit_text_black_border);
+            }
+
+            editText.Background = backgroundDrawable;
+        }
+
         public static bool IsThisColorLight(Color color)
         {
             var darknessScore = (((color.R) * 299) + ((color.G) * 587) + ((color.B) * 114)) / 1000;
 
-            return darknessScore < 125;
+            return darknessScore >= 125;
         }
 
         public static Bitmap ApplyThemeColorToImage(int drawableResource, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF(), Color? expectedColor = null, Point? expectedColorCoordinate = null)

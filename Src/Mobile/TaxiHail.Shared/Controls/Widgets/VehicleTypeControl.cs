@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         var companyColor = Resources.GetColor(Resource.Color.company_color);
 
                         //If the company color is too light
-                        if (!DrawHelper.IsThisColorLight(companyColor))
+                        if (DrawHelper.IsThisColorLight(companyColor))
                         {
                             companyColor = Color.Black; //Change the color of the vehicle selector to black
                         }

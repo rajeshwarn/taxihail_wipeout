@@ -41,7 +41,6 @@
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <AndroidLinkSkip>
     </AndroidLinkSkip>
     <AndroidSupportedAbis>
@@ -630,6 +629,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\discover.png" />
     <AndroidResource Include="Resources\Drawable\discover.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\visa_electron.png" />
+    <AndroidResource Include="Resources\Drawable\edit_text_black_border.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
