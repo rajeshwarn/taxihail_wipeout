@@ -93,6 +93,33 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
+        public object Post(UpdateCreditCardValidationDateRequest request)
+        {
+            var session = this.GetSession();
+            var accountId = new Guid(session.UserAuthId);
+
+            var creditCardDetails = _dao.FindById(request.CreditCardId);
+            if (creditCardDetails == null)
+            {
+                return new HttpError("Cannot find the credit card");
+            }
+
+            var command = new UpdateCreditCardValidationDate
+            {
+                AccountId = accountId,
+                CreditCardId = request.CreditCardId,
+                LastTokenValidateDateTime = request.LastTokenValidateDateTime
+                //Year = request.Year,
+                //DateString = request.DateString,
+                //LastTokenValidateDateTimeNotNull = request.LastTokenValidateDateTimeNotNull
+                
+            };
+
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
         public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();

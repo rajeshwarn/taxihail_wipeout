@@ -51,7 +51,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
                 Token = token,
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                LastTokenValidateDateTime = null
             });
 
             var @event = _sut.ThenHasOne<CreditCardAddedOrUpdated>();
@@ -88,7 +89,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
                 Token = token,
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                LastTokenValidateDateTime = null
             });
 
             var @event = _sut.ThenHasSingle<CreditCardAddedOrUpdated>();

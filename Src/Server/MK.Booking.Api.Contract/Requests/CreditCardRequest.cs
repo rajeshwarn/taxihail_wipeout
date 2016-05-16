@@ -23,5 +23,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string ExpirationYear { get; set; }   
         public string Label { get; set; }
         public string ZipCode { get; set; }
+        public DateTime? LastTokenValidateDateTime { get; set; }
     }
 }

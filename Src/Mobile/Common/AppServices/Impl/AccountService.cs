@@ -737,6 +737,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationYear = creditCard.ExpirationYear,
 				Label = creditCard.Label.ToString(),
 				ZipCode = creditCard.ZipCode,
+                LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
 				
             };
 
@@ -758,7 +759,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						Last4Digits = request.Last4Digits,
 						ExpirationMonth = request.ExpirationMonth,
 						ExpirationYear = request.ExpirationYear,
-						IsDeactivated = false
+						IsDeactivated = false,
+                        LastTokenValidateDateTime = request.LastTokenValidateDateTime
 					};
 				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
 			}	

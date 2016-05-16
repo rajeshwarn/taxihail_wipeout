@@ -52,6 +52,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (orderStatusDetails == null)
             {
+//#if DEBUG
+//                return null;
+//#endif
                 throw new HttpError(HttpStatusCode.NotFound, "NoActiveOrder");
             }
             

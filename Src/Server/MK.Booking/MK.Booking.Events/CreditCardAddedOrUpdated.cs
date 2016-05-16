@@ -14,5 +14,6 @@ namespace apcurium.MK.Booking.Events
         public string CreditCardCompany { get; set; }
         public string Label { get; set; }
         public string ZipCode { get; set; }
+        public DateTime? LastTokenValidateDateTime { get; set; }
     }
 }

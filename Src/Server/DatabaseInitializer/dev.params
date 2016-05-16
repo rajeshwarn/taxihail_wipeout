@@ -1,1 +1,1 @@
-{"CompanyName":"MKWebDev","MkWebConnectionString":"Data Source=.;Initial Catalog=MkWebDev;Integrated Security=True;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=.;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True"}
+{"CompanyName":"MKWebDev","MkWebConnectionString":"Data Source=.\\SQLEXPRESS2012;Initial Catalog=ArroDemo;Integrated Security=True;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=.;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True"}

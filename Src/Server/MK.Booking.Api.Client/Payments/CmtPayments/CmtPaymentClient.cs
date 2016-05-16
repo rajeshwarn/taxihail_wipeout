@@ -19,6 +19,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Tokenize;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
@@ -32,12 +33,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
         private readonly IIPAddressManager _ipAddressManager;
         private readonly ILogger _logger;
+        private readonly int _validateTokenThreshold;
+
 
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
             : base(baseUrl, sessionId, packageInfo, connectivityService)
         {
             _ipAddressManager = ipAddressManager;
             _logger = logger;
+            _validateTokenThreshold = (int)cmtSettings.TokenizeValidateFrequencyThresholdInHours;
 
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
         }
@@ -53,28 +57,49 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             try
             {
-                var request = new TokenizeValidateRequest
+                if (ValidationRequired(creditCard))
                 {
-                    Token = creditCard.Token,
-                    Cvv = cvv,
-                    SessionId = kountSessionId,
-                    Email = account.Email,
-                    BillingFullName = creditCard.NameOnCard,
-                    CustomerIpAddress = _ipAddressManager.GetIPAddress()
-                };
 
-                if(creditCard.ZipCode.HasValue())
+                    var request = new TokenizeValidateRequest
+                    {
+                        Token = creditCard.Token,
+                        Cvv = cvv,
+                        SessionId = kountSessionId,
+                        Email = account.Email,
+                        BillingFullName = creditCard.NameOnCard,
+                        CustomerIpAddress = _ipAddressManager.GetIPAddress()
+                    };
+
+                    if (creditCard.ZipCode.HasValue())
+                    {
+                        request.ZipCode = creditCard.ZipCode;
+                    }
+
+                    var response = await CmtPaymentServiceClient.PostAsync(request);
+
+                    if (response.ResponseCode == 1)
+                    {
+                        // the token validate call was successful, so update the date/time for the credit card.
+                        creditCard.LastTokenValidateDateTime = DateTime.Now;
+                        await UpdateCreditCard(creditCard);
+                    }
+
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = response.ResponseCode == 1,
+                        Message = response.ResponseMessage
+                    };
+
+                }
+                else
                 {
-                    request.ZipCode = creditCard.ZipCode;
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Approved"
+                    };
                 }
 
-                var response = await CmtPaymentServiceClient.PostAsync(request);
-
-                return new BasePaymentResponse
-                {
-                    IsSuccessful = response.ResponseCode == 1,
-                    Message = response.ResponseMessage
-                };
             }
             catch(Exception e)
             {
@@ -96,11 +121,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
         }
 
-		/// <summary>
-		/// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
-		/// </summary>
-		/// <param name="cardToken"></param>
-		/// <returns></returns>
+
+        /// <summary>
+        /// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
+        /// </summary>
+        /// <param name="cardToken"></param>
+        /// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
             return new DeleteTokenizedCreditcardResponse { IsSuccessful = true };
@@ -255,5 +281,140 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             var result = TokenizeSyncForSettingsTest(cmtPaymentServiceClient, number, date);
             return result.IsSuccessful;
         }
+
+        /// <summary>
+        /// Only perform ValidateTokenizedCard when it hasn't been done recently
+        /// ARRO-0973
+        /// Check configured threshold time interval value, 
+        /// if timespan since last check is over the threshold value, allow the validation request to go through
+        /// otherwise, just return the approved response to the caller, a successful check was done recently enough.
+        /// Too many calls to the ValidateTokenizedCard were causing credit cards to be erronously flagged for fraudulant use
+        /// </summary>
+        /// <param name="creditCard">creditCard details</param>
+        /// <returns>True if a validation request should be allowed through, flase otherwise</returns>
+        private bool ValidationRequired(CreditCardDetails creditCard)
+        {
+            if (creditCard.LastTokenValidateDateTime == null)
+                return true;
+
+            // is the timespan since the last successful check greater than the configured value?
+            TimeSpan span = DateTime.Now - (DateTime)creditCard.LastTokenValidateDateTime;
+            int hoursRounded = (int)Math.Round(span.TotalHours);
+
+            // if we are past the threshold, we need to validate again
+            return (hoursRounded > _validateTokenThreshold);
+        }
+
+        public async Task<bool> UpdateCreditCard(CreditCardDetails creditCard)
+        {
+            try
+            {
+                //var req = "/account/creditcards";
+                var req = string.Format("/account/creditcards/{0}", creditCard.CreditCardId);
+
+                //var updateCreditCard = new AddOrUpdateCreditCard
+                //{
+                //            CreditCardCompany = creditCard.CreditCardCompany,
+                //            CreditCardId = creditCard.CreditCardId,
+                //            NameOnCard = creditCard.NameOnCard,
+                //            Last4Digits = creditCard.Last4Digits,
+                //            ExpirationMonth = creditCard.ExpirationMonth,
+                //            ExpirationYear = creditCard.ExpirationYear,
+                //            Token = creditCard.Token,
+                //            Label = creditCard.Label.ToString(),
+                //            ZipCode = creditCard.ZipCode,
+                //            LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
+                //};
+
+                //await Client.PutAsync<string>(req, updateCreditCard, _logger);
+                //await Client.PostAsync<string>(req, updateCreditCard, _logger);
+                //CreditCardRequest request = new
+                //{
+                //        CreditCardCompany = creditCard.CreditCardCompany,
+                //        CreditCardId = creditCard.CreditCardId,
+                //        NameOnCard = creditCard.NameOnCard,
+                //        Last4Digits = creditCard.Last4Digits,
+                //        ExpirationMonth = creditCard.ExpirationMonth,
+                //        ExpirationYear = creditCard.ExpirationYear,
+                //        Token = creditCard.Token,
+                //        Label = creditCard.Label.ToString(),
+                //        ZipCode = creditCard.ZipCode,
+                //        LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
+
+                //}
+                //return Client.PutAsync<string>(req, creditCard, logger: ILogger);
+
+                // take the CreditCardDetails (which is a read model) and queue a command with the write model equivalent of the structure
+
+                //var result = await Client.PostAsync(new AddOrUpdateCreditCard
+                //{
+                //    // do we need to set all properties?
+                //    // can we update the credit card like this?
+                //    CreditCardCompany = creditCard.CreditCardCompany,
+                //    CreditCardId = creditCard.CreditCardId,
+                //    NameOnCard = creditCard.NameOnCard,
+                //    Last4Digits = creditCard.Last4Digits,
+                //    ExpirationMonth = creditCard.ExpirationMonth,
+                //    ExpirationYear = creditCard.ExpirationYear,
+                //    Token = creditCard.Token,
+                //    Label = creditCard.Label.ToString(),
+                //    ZipCode = creditCard.ZipCode,
+                //    LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
+                //}, _logger);
+
+                //var result = await Client.PostAsync(new CreditCardRequest
+                //{
+                //    // do we need to set all properties?
+                //    // can we update the credit card like this?
+                //        CreditCardCompany = creditCard.CreditCardCompany,
+                //        CreditCardId = creditCard.CreditCardId,
+                //        NameOnCard = creditCard.NameOnCard,
+                //        Last4Digits = creditCard.Last4Digits,
+                //        ExpirationMonth = creditCard.ExpirationMonth,
+                //        ExpirationYear = creditCard.ExpirationYear,
+                //        Token = creditCard.Token,
+                //        Label = creditCard.Label.ToString(),
+                //        ZipCode = creditCard.ZipCode,
+                //        LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime                        
+                //}, _logger);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+//        public Task UpdateFavoriteAddress(SaveAddress address)
+//        {
+//            var req = string.Format("/account/addresses/{0}", address.Id);
+//            return Client.PutAsync<string>(req, address, logger: Logger);
+//        }
+
+        //private void UpdateCreditCard(CreditCardDetails creditCard)
+        //{
+        // somehow send a
+        //var request = new CreditCardRequest
+        //{
+        //    CreditCardCompany = creditCard.CreditCardCompany,
+        //    CreditCardId = creditCard.CreditCardId,
+        //    NameOnCard = creditCard.NameOnCard,
+        //    Last4Digits = creditCard.Last4Digits,
+        //    ExpirationMonth = creditCard.ExpirationMonth,
+        //    ExpirationYear = creditCard.ExpirationYear,
+        //    Token = creditCard.Token,
+        //    Label = creditCard.Label.ToString(),
+        //    ZipCode = creditCard.ZipCode,
+        //    LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
+        //};
+        //}
+
+        //private Task<> AuthenticateAsync(CreditCardAddedOrUpdated auth)
+        // {
+        //     return Client.PostAsync<AuthResponse>("/account/creditcards/", auth, _logger);
+        // }
+
+
     }
 }

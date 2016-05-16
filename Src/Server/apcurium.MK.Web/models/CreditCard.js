@@ -35,6 +35,16 @@
             });
         },
 
+        changeCreditCardValidationDate: function () {
+            var updatedCreditCard = this.attributes;
+            return $.ajax({
+                type: 'POST',
+                url: 'api/account/creditcard/updatevalidationdate',
+                data: updatedCreditCard,
+                dataType: 'json'
+            });
+        },
+
         changeDefaultCreditCard: function () {
             return $.ajax({
                 type: 'POST',
