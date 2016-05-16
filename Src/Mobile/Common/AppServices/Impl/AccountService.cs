@@ -29,6 +29,7 @@ using MK.Common.Exceptions;
 using System.Threading;
 using System.Reactive.Subjects;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -715,6 +716,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			creditCard.Token = response.CardOnFileToken;       
 		}
 
+		public async Task<bool> UpdateCreditCardValidationDate (CreditCardInfos creditCard)
+		{
+
+			var request = new UpdateCreditCardValidationDateRequest
+			{
+				CreditCardId = creditCard.CreditCardId,
+				LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime//creditCard.LastTokenValidateDateTime == null ? null : creditCard.LastTokenValidateDateTime.Value.ToString("yyyy/MM/dd HH:mm:ss")
+
+			};
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => 
+				client.UpdateCreditCardValidationDate (request)); 
+		
+			CultureInfo provider = CultureInfo.InvariantCulture;
+			string dateFormat = "yyyy/MM/dd HH:mm:ss";
+
+
+			var creditCardDetails = new CreditCardDetails
+			{
+				AccountId = CurrentAccount.Id,
+				CreditCardId = request.CreditCardId,
+				CreditCardCompany = creditCard.CreditCardCompany,
+				NameOnCard = creditCard.NameOnCard,
+				Token = creditCard.Token,
+				Last4Digits = creditCard.Last4Digits,
+				ExpirationMonth = creditCard.ExpirationMonth,
+				ExpirationYear = creditCard.ExpirationYear,
+				IsDeactivated = false
+				//LastTokenValidateDateTime = dateTime
+			};
+					
+			creditCardDetails.LastTokenValidateDateTime = request.LastTokenValidateDateTime;
+			UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
+
+			return true;
+		}
+
 		public async Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, string kountSessionId, bool isUpdate = false)
         {
 			try
@@ -737,6 +775,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationYear = creditCard.ExpirationYear,
 				Label = creditCard.Label.ToString(),
 				ZipCode = creditCard.ZipCode,
+				LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
 				
             };
 
@@ -758,7 +797,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						Last4Digits = request.Last4Digits,
 						ExpirationMonth = request.ExpirationMonth,
 						ExpirationYear = request.ExpirationYear,
-						IsDeactivated = false
+						IsDeactivated = false,
+					    LastTokenValidateDateTime = request.LastTokenValidateDateTime
 					};
 				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
 			}	

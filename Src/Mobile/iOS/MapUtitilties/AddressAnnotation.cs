@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
             Market = market;
+			ShowOrientation = showOrientation;
 		}
 
         public bool ShowOrientation { get; set; }

@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _paymentService = tokenizationService;
         }
 
-        public Task<Account> GetMyAccount()
+		public Task<Account> GetMyAccount()
         {
             var result = Client.GetAsync<Account>("/account", logger: Logger);
             return result;
@@ -135,6 +135,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             return Client.PostAsync<string>("/account/creditcard/updatelabel", updateCreditCardLabelRequest, logger: Logger);
         }
+
+		public Task UpdateCreditCardValidationDate(UpdateCreditCardValidationDateRequest updateCreditCardValidationDateRequest)
+		{
+			return Client.PostAsync<string> ("/account/creditcards/updatevalidationdate", updateCreditCardValidationDateRequest, logger: Logger);
+		}
 
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {

@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
 					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
-
+					Data.LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime;
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
 					{
