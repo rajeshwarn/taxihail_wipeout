@@ -21,7 +21,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Tokenize;
-//using Cirrious.CrossCore;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
         private readonly IIPAddressManager _ipAddressManager;
         private readonly ILogger _logger;
-		private readonly int _validateTokenThreshold;
+        private readonly int _validateTokenThreshold;
 
 
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, IIPAddressManager ipAddressManager, IPackageInfo packageInfo, ILogger logger, IConnectivityService connectivityService)
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             _ipAddressManager = ipAddressManager;
             _logger = logger;
-			_validateTokenThreshold = (int)cmtSettings.TokenizeValidateFrequencyThresholdInHours;
+            _validateTokenThreshold = (int)cmtSettings.TokenizeValidateFrequencyThresholdInHours;
 
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, packageInfo, logger, connectivityService);
         }
@@ -108,6 +108,51 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 				}
 
 			}
+/*                if (ValidationRequired(creditCard))
+                {
+
+                    var request = new TokenizeValidateRequest
+                    {
+                        Token = creditCard.Token,
+                        Cvv = cvv,
+                        SessionId = kountSessionId,
+                        Email = account.Email,
+                        BillingFullName = creditCard.NameOnCard,
+                        CustomerIpAddress = _ipAddressManager.GetIPAddress()
+                    };
+
+                    if (creditCard.ZipCode.HasValue())
+                    {
+                        request.ZipCode = creditCard.ZipCode;
+                    }
+
+                    var response = await CmtPaymentServiceClient.PostAsync(request);
+
+                    if (response.ResponseCode == 1)
+                    {
+                        // the token validate call was successful, so update the date/time for the credit card.
+                        creditCard.LastTokenValidateDateTime = DateTime.Now;
+                        await UpdateCreditCard(creditCard);
+                    }
+
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = response.ResponseCode == 1,
+                        Message = response.ResponseMessage
+                    };
+
+                }
+                else
+                {
+                    return new BasePaymentResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Approved"
+                    };
+                }
+
+            }
+*/
             catch(Exception e)
             {
                 _logger.Maybe(x => x.LogMessage("Error during card validation"));
@@ -128,11 +173,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
         }
 
-		/// <summary>
-		/// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
-		/// </summary>
-		/// <param name="cardToken"></param>
-		/// <returns></returns>
+
+        /// <summary>
+        /// This method should not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
+        /// </summary>
+        /// <param name="cardToken"></param>
+        /// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
             return new DeleteTokenizedCreditcardResponse { IsSuccessful = true };

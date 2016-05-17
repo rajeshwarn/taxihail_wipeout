@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AllCreditCardsRemoved>(NoAction);
             Handles<DefaultCreditCardUpdated>(NoAction);
             Handles<CreditCardLabelUpdated>(NoAction);
+            Handles<CreditCardValidationDateUpdated>(NoAction);
             Handles<PaymentProfileUpdated>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
             Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
@@ -222,7 +223,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
-            string last4Digits, string expirationMonth, string expirationYear, string token, string label, string zipCode)
+            string last4Digits, string expirationMonth, string expirationYear, string token, string label, string zipCode, DateTime? lastTokenValidateDateTime)
         {
             Update(new CreditCardAddedOrUpdated
             {
@@ -235,6 +236,7 @@ namespace apcurium.MK.Booking.Domain
                 Token = token,
                 Label = label,
                 ZipCode = zipCode,
+                LastTokenValidateDateTime = lastTokenValidateDateTime
             });
         }
 
@@ -252,6 +254,15 @@ namespace apcurium.MK.Booking.Domain
             {
                 CreditCardId = creditCardId,
                 Label = label
+            });
+        }
+
+        public void UpdateCreditCardValidationDate(Guid creditCardId, DateTime? lastTokenValidateDateTime)
+        {
+            Update(new CreditCardValidationDateUpdated()
+            {
+                CreditCardId = creditCardId,
+                LastTokenValidateDateTime = lastTokenValidateDateTime
             });
         }
 

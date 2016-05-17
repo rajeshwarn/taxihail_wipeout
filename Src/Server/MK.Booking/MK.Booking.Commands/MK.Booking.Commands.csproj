@@ -71,6 +71,7 @@
     <Compile Include="UnpairOrderForManualRideLinq.cs" />
     <Compile Include="UpdateAutoTip.cs" />
     <Compile Include="UpdateCreditCardLabel.cs" />
+    <Compile Include="UpdateCreditCardValidationDate.cs" />
     <Compile Include="UpdateDefaultCreditCard.cs" />
     <Compile Include="UpdateFees.cs" />
     <Compile Include="UpdateOrderInTrip.cs" />

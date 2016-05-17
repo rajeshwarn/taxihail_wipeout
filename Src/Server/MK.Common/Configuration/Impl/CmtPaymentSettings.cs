@@ -61,7 +61,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public RideLinqPairingMethod PairingMethod { get; set; }
 
-		public int? TokenizeValidateFrequencyThresholdInHours { get; set; }
+        public int? TokenizeValidateFrequencyThresholdInHours { get; set; }
     }
 
     public enum RideLinqPairingMethod

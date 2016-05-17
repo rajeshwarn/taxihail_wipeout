@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<UpdateDefaultCreditCard>,
         ICommandHandler<UpdateCreditCardLabel>,
+        ICommandHandler<UpdateCreditCardValidationDate>,
         ICommandHandler<DeleteCreditCardsFromAccounts>,
         ICommandHandler<DeleteAccountCreditCard>,
         ICommandHandler<AddFavoriteAddress>,
@@ -62,7 +63,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.ExpirationYear,
                 command.Token,
                 command.Label,
-                command.ZipCode);
+                command.ZipCode,
+                command.LastTokenValidateDateTime);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -77,6 +79,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.UpdateCreditCardLabel(command.CreditCardId, command.Label);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCardValidationDate command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCardValidationDate(command.CreditCardId, command.LastTokenValidateDateTime);
             _repository.Save(account, command.Id.ToString());
         }
 

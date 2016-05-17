@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Api.Services
                         ExpirationYear = creditCard.ExpirationYear,
                         IsDeactivated = creditCard.IsDeactivated,
                         Label = creditCardLabel,
-                        ZipCode = creditCard.ZipCode
+                        ZipCode = creditCard.ZipCode,
+                        LastTokenValidateDateTime = creditCard.LastTokenValidateDateTime
                     }
                 : null;
 

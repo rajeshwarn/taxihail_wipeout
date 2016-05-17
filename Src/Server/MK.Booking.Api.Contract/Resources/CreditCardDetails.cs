@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string ZipCode { get; set; }
 
-		public DateTime? LastTokenValidateDateTime { get; set; }
+        public DateTime? LastTokenValidateDateTime { get; set; }
+
     }
 }
