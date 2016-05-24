@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
                 Last4Digits = last4Digits,
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
-                Token = token
+                Token = token,
+                LastTokenValidateDateTime = null
             });
         }
 

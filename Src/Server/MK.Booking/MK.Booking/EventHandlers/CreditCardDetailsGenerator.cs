@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class CreditCardDetailsGenerator :
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardLabelUpdated>,
+        IEventHandler<CreditCardValidationDateUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<CreditCardDeactivated>,
@@ -55,6 +56,17 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
                 existingCreditCard.Label = @event.Label.ToString();
+
+                context.Save(existingCreditCard);
+            }
+        }
+
+        public void Handle(CreditCardValidationDateUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                existingCreditCard.LastTokenValidateDateTime = @event.LastTokenValidateDateTime;
 
                 context.Save(existingCreditCard);
             }

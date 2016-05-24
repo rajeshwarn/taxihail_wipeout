@@ -20,6 +20,7 @@
   "error.accountUpdate": "An error occured while updating your account",
   "error.accountUpdateDefaultCreditCard": "An error occured while updating your default credit card",
   "error.accountUpdateCreditCardLabel": "An error occured while updating your credit card label",
+  "error.accountUpdateCreditCardValidationDate": "An error occured while updating your credit card validation date",
   "error.InvalidCvv": "The CVV must be a number between 3 and 4 digits",
   "signup.confirmation": "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",
   "signup.confirmationWithoutActivation": "Account created. Thank you!",

@@ -20,6 +20,7 @@
     "error.accountUpdate": "Er is een fout opgetreden tijdens het bijwerken van uw account",
     "error.accountUpdateDefaultCreditCard": "Er is een fout opgetreden tijdens het bijwerken van uw primaire creditcard gegevens",
     "error.accountUpdateCreditCardLabel": "Er is een fout opgetreden tijdens het bijwerken van het type creditcard",
+    "error.accountUpdateCreditCardValidationDate": "Er is een fout opgetreden tijdens het bijwerken van het type creditcard",
     "error.InvalidCvv" : "Het CVV is een nummer van 3 of vier cijfers",
     "signup.confirmation": "Het account is aangemaakt. U ontvangt zodadelijk een e-mail. Om uw account te bevestigen moet u op de link in de e-mail klikken.",
     "signup.confirmationWithoutActivation" : "Het account is aangemaakt. Hartelijk dank!",    

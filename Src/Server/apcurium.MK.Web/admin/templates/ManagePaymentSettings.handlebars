@@ -211,6 +211,9 @@
 	<label class="control-label settingsLabel">{{{localize "Merchant Token"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.merchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
 
+    <label class="control-label settingsLabel">{{{localize "Validation Frequency Threshold (hrs)"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.tokenizeValidateFrequencyThresholdInHours" value="{{cmtPaymentSettings.tokenizeValidateFrequencyThresholdInHours}}" />
+
     <div id="cmtSettingsMessageZone"></div>
     <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>
 

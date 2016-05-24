@@ -13,6 +13,7 @@ namespace apcurium.MK.Common
         public string Number;
         public string ZipCode;
         public string NameOnCard;
+        public DateTime? LastTokenValidateDateTime;
 
         public CreditCard(string number, int cvv = 135)
         {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Common
             AvcCvvCvv2 = cvv;
             ZipCode = "90210";
             NameOnCard = "Tony Apcurium";
+            LastTokenValidateDateTime = null;
         }
     }
 }
