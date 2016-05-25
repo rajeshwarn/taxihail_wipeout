@@ -13,7 +13,7 @@ namespace CustomerPortal.Web.Services.Impl
         private const string DeploymentSubjectTemplate = "Deployment job failed for {0}.";
 
 //        private const string DeploymentToEmail = "taxihail@apcurium.freshdesk.com";
-        private const string DeploymentToEmail = "support@mobile-knowledge.com";
+        private const string DeploymentToEmail = "jdebruin@mobile-knowledge.com";
 
 
         private const string ServiceStatusMessageTemplate = @"
@@ -31,10 +31,10 @@ namespace CustomerPortal.Web.Services.Impl
 </html>";
 
 //        private const string ServiceStatusToEmail = "thsupport@apcurium.com";
-        private const string ServiceStatusToEmail = "support@mobile-knowledge.com";
+        private const string ServiceStatusToEmail = "jdebruin@mobile-knowledge.com";
         private const string ServiceStatusSubjectTemplate = "There is a problem accessing {0}'s server";
 //        private const string ServiceStatusFromEmail = "taxihail@apcurium.com";
-        private const string ServiceStatusFromEmail = "support@mobile-knowledge.com";
+        private const string ServiceStatusFromEmail = "jdebruin@mobile-knowledge.com";
 
         private SmtpClient GetClient()
         {
