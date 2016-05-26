@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.PaymentSettings", "CmtPaymentSettings_TokenizeValidateFrequencyThresholdInHours", c => c.Int(nullable: false, defaultValue: 6));
+            AddColumn("Config.PaymentSettings", "CmtPaymentSettings_TokenizeValidateFrequencyThresholdInHours", c => c.Int(nullable: true, defaultValue: 6));
         }
         
         public override void Down()
