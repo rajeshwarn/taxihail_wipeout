@@ -8,6 +8,8 @@ namespace apcurium.MK.Common.Migrations
         public override void Up()
         {
             AddColumn("Config.PaymentSettings", "CmtPaymentSettings_TokenizeValidateFrequencyThresholdInHours", c => c.Int(nullable: true, defaultValue: 6));
+
+            Sql("UPDATE Config.PaymentSettings SET CmtPaymentSettings_TokenizeValidateFrequencyThresholdInHours = '6' WHERE CmtPaymentSettings_TokenizeValidateFrequencyThresholdInHours IS NULL");
         }
         
         public override void Down()
