@@ -43,7 +43,7 @@ namespace apcurium.MK.Common.Extensions
 			if (currentRelativeUrl.EndsWith ("/") && url.StartsWith ("/"))
 			{
 				// there will be 2 forward slashes if we concatenate these strings, so remove the trailing slash at the end of the server URL
-				currentRelativeUrl.Substring(0, url.Length - 1);
+				currentRelativeUrl = currentRelativeUrl.Substring(0, currentRelativeUrl.Length - 1);
 			}
 
             return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
