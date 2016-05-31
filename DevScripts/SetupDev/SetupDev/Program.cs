@@ -202,6 +202,7 @@ namespace SetupDev
                 //StringWriter sw = new StringWriter(sb);
                 using (JsonWriter writer = new JsonTextWriter(streamWriter))
                 {
+                    writer.Formatting = Newtonsoft.Json.Formatting.Indented;
                     writer.WriteStartObject();
 
                     while (reader.Read())
