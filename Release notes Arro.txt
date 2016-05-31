@@ -703,3 +703,9 @@
 	Bug fix -  Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
 4.5.2
 	Now preventing the vehicle number to be displayed on home view when Show Assigned Vehicle Number On Pin is set to NO
+4.5.2.2
+	ARRO-973 - Card Validation frequency which includes a new payment setting (ValidateTokenizationThresholdinHours).
+4.5.2.3
+	ARRO-1044 - App getting stuck after trip complete. This may also be a cause of many other exceptions that were ocurring
+	Migration fix for default value for threshold setup in ARRO-973
+	
