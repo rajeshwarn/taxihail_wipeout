@@ -109,24 +109,7 @@ namespace SetupDev
                 {
                     currentLine = String.Empty;
                 }
-                //}
-                //else
-                //{
-                //    // find the line before the deploy option on the android project
-                //    if (line.Contains("{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Build.0"))
-                //    {
-                //        // if the next line does not have the deploy directive, we need to add it
-                //        if (!lines[index + 1].Contains("{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Deploy.0"))
-                //        {
-                //            extraLine = "		{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU";
-                //        }
-                //    }
-                //    // if the line contains the deploy option on the CallBox project, remove it
-                //    if (line.Contains("{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Debug|Any CPU.Deploy.0"))
-                //    {
-                //        currentLine = String.Empty;
-                //    }
-                //}
+
 
                 if (!String.IsNullOrEmpty(currentLine))
                 {
@@ -142,31 +125,6 @@ namespace SetupDev
             }
 
             File.WriteAllLines(androidSolutionFile, newLines.ToArray());
-
-            //var fs = File.Open(androidSolutionFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //var fsnew = File.Open(androidSolutionFile + ".tmp", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-            //StreamWriter streamWriter = new StreamWriter(fsnew);
-            //StreamReader file = new StreamReader(fs);
-
-            //while ((line = file.ReadLine()) != null)
-            //{
-            //Console.WriteLine(line);
-
-            //if (isCallBox)
-            //{
-            //    if (line.Contains("{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Debug|Any CPU.Build.0"))
-            //    {
-
-            //    }
-            //}
-            //else
-            // {
-
-            //}
-            //}
-
-            //file.Close();
 
         }
 
@@ -316,12 +274,10 @@ namespace SetupDev
                 string nextTokenName = String.Empty;
                 var fs = File.Open(jsonFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 var fsnew = File.Open(jsonFileName+".tmp", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                //var sw = new StreamWriter(fs);
-                //var sr = new StreamReader(fs);
 
                 JsonTextReader reader = new JsonTextReader(new StreamReader(fs));
                 StreamWriter streamWriter = new StreamWriter(fsnew);
-                //StringWriter sw = new StringWriter(sb);
+
                 using (JsonWriter writer = new JsonTextWriter(streamWriter))
                 {
                     writer.Formatting = Newtonsoft.Json.Formatting.Indented;
@@ -374,12 +330,9 @@ namespace SetupDev
                             Console.WriteLine("Token: {0}", reader.TokenType);
                             if (reader.TokenType == JsonToken.PropertyName)
                                 writer.WritePropertyName(reader.Value.ToString());
-                            //else
-                                //writer.WriteValue();
                         }
                     }
 
-                    //writer.WriteEnd();
                     writer.WriteEndObject();
 
                     writer.Flush();
@@ -387,7 +340,6 @@ namespace SetupDev
                 }
 
                 reader.Close();
-
 
                 fs.Close();
                 fsnew.Close();
@@ -401,8 +353,6 @@ namespace SetupDev
         }
         
         #endregion
-
-
 
     }
 }
