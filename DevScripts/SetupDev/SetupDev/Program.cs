@@ -26,6 +26,8 @@ namespace SetupDev
         public const string JsonTaxiHailApplicationKey = "TaxiHail.ApplicationKey";
         public const string JsonTaxiHailApplicationName = "TaxiHail.ApplicationName";
 
+        public const string AndroidSolutionKey = "AndroidSolution";
+
         public static string _rootFolder;
         public static NameValueCollection _appSettings;
         static void Main(string[] args)
@@ -36,6 +38,21 @@ namespace SetupDev
             Console.WriteLine("Reading root folder");
             _rootFolder = _appSettings[SourceFolderKey];
             Console.WriteLine(String.Format("Root folder: {0}", _rootFolder));
+
+            bool isCallbox = false;
+            if (args.Length > 0)
+            {
+                if (args[0].ToLower() == "callbox")
+                {
+                    Console.WriteLine("Updating android solution to deploy callbox binaries...");
+                    isCallbox = true;
+                }
+                else
+                {
+                    Console.WriteLine("Updating android solution to deploy android application binaries...");
+                }
+            }
+            UpdateAndroidSolution(isCallbox);
 
 
             Console.WriteLine("Updating customer json settings...");
@@ -49,6 +66,111 @@ namespace SetupDev
             UpdateMiddleWareCode();
 
         }
+
+        #region Android Solution
+        private static void UpdateAndroidSolution(bool isCallBox)
+        {
+            string androidSolutionFile = _rootFolder + _appSettings[AndroidSolutionKey];
+
+            string[] lines = File.ReadAllLines(androidSolutionFile);
+            List<string> newLines = new List<string>();
+            string extraLine = String.Empty;
+
+            const string CallBoxGuid = "DE9A07FE-A2EE-4669-934E-FF6D1805D858";
+            const string AndroidGuid = "9F666743-C8EE-4553-A079-03FB36F979E0";
+
+            string projectToAdd;
+            string projectToRemove;
+            if (isCallBox)
+            {
+                projectToAdd = CallBoxGuid;
+                projectToRemove = AndroidGuid;
+            }
+            else
+            {
+                projectToAdd = AndroidGuid;
+                projectToRemove = CallBoxGuid;
+            }
+            int index = 0;
+            foreach (string line in lines)
+            {
+                string currentLine = line;
+                // find the line before the deploy option on the project to add
+                if (line.Contains(String.Format("{{{0}}}.Debug|Any CPU.Build.0", projectToAdd)))
+                {
+                    // if the next line does not have the deploy directive, we need to add it
+                    if (!lines[index + 1].Contains(String.Format("{{{0}}}.Debug|Any CPU.Deploy.0", projectToAdd)))
+                    {
+                        extraLine = String.Format("		{{{0}}}.Debug|Any CPU.Deploy.0 = Debug|Any CPU", projectToAdd);
+                    }
+                }
+                // if the line contains the deploy option on the project to remove, remove it
+                if (line.Contains(String.Format("{{{0}}}.Debug|Any CPU.Deploy.0", projectToRemove)))
+                {
+                    currentLine = String.Empty;
+                }
+                //}
+                //else
+                //{
+                //    // find the line before the deploy option on the android project
+                //    if (line.Contains("{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Build.0"))
+                //    {
+                //        // if the next line does not have the deploy directive, we need to add it
+                //        if (!lines[index + 1].Contains("{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Deploy.0"))
+                //        {
+                //            extraLine = "		{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU";
+                //        }
+                //    }
+                //    // if the line contains the deploy option on the CallBox project, remove it
+                //    if (line.Contains("{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Debug|Any CPU.Deploy.0"))
+                //    {
+                //        currentLine = String.Empty;
+                //    }
+                //}
+
+                if (!String.IsNullOrEmpty(currentLine))
+                {
+                    newLines.Add(currentLine);
+                }
+                if (!String.IsNullOrEmpty(extraLine))
+                {
+                    newLines.Add(extraLine);
+                    extraLine = String.Empty;
+                }
+
+                index++;
+            }
+
+            File.WriteAllLines(androidSolutionFile, newLines.ToArray());
+
+            //var fs = File.Open(androidSolutionFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            //var fsnew = File.Open(androidSolutionFile + ".tmp", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+            //StreamWriter streamWriter = new StreamWriter(fsnew);
+            //StreamReader file = new StreamReader(fs);
+
+            //while ((line = file.ReadLine()) != null)
+            //{
+            //Console.WriteLine(line);
+
+            //if (isCallBox)
+            //{
+            //    if (line.Contains("{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Debug|Any CPU.Build.0"))
+            //    {
+
+            //    }
+            //}
+            //else
+            // {
+
+            //}
+            //}
+
+            //file.Close();
+
+        }
+
+        #endregion
 
         #region middleware
         private static void UpdateMiddleWareCode()
