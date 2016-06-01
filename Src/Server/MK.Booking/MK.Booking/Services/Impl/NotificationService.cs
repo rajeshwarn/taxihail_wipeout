@@ -1047,7 +1047,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
 
-            _emailSender.Send(mailMessage);
+            //_emailSender.Send(mailMessage);
 
             _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", to, templateData));
         }
