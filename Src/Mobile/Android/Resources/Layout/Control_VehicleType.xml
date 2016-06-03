@@ -16,7 +16,7 @@
         android:textSize="10dp"
         android:gravity="center|center"
         android:textColor="@color/label_text_color"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:layout_margin="0px"
         android:singleLine="true"
         android:layout_width="wrap_content"

@@ -78,10 +78,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     if (value) 
                     {
                         VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
-                    } 
+                        VehicleTypeLabel.Typeface = Android.Graphics.Typeface.DefaultBold;
+
+                    }
                     else 
                     {
                         VehicleTypeLabel.SetTextColor (DefaultColorForText);
+                        VehicleTypeLabel.Typeface = Android.Graphics.Typeface.Default;
                     }
                 }
             }
