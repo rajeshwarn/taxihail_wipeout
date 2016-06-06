@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="AcceptButton">موافق</string>
   <string name="AccountActivationMessage">تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك</string>
   <string name="AccountActivationTitle">مطلوب التأكيد</string>

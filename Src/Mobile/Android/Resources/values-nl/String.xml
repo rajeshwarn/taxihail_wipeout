@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="AboutActivityName">Systeem info</string>
   <string name="AcceptButton">Accepteren</string>
   <string name="AccountActivationMessage">Een email is verstuurd. Gebruik de link in uw email om uw emailadres te bevestigen</string>
