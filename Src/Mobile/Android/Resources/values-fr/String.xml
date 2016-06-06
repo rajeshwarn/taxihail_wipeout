@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="AcceptButton">Accepter</string>
   <string name="AccountActivationMessage">Vous allez recevoir un courriel de confirmation. Merci de cliquer sur le lien pour valider votre inscription</string>
   <string name="AccountActivationTitle">Confirmation nécessaire</string>
