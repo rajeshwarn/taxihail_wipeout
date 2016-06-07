@@ -57,8 +57,11 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
             var marketTariff = GetMarketTariff(request.OriginLat.Value, request.OriginLng.Value);
 
-            var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
-                request.DestinationLng, request.VehicleTypeId, request.Date,false, marketTariff);
+            double originLat = request.OriginLat.HasValue ? request.OriginLat.Value : 0.0;
+            double originLng = request.OriginLng.HasValue ? request.OriginLng.Value : 0.0;
+            double destLat = request.DestinationLat.HasValue ? request.DestinationLat.Value : 0.0;
+            double destLng = request.DestinationLng.HasValue ? request.DestinationLng.Value : 0.0;
+            var result = _client.GetDirection(originLat, originLng, destLat, destLng, request.VehicleTypeId, request.Date,false, marketTariff);
 
             var directionInfo = new DirectionInfo
             {
