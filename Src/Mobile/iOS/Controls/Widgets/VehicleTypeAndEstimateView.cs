@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private const float EstimatedFareLabelTopValueWithEta = 2f;
         private const float EstimatedFareLabelTopValueWithoutEta = 0f;
         private const float DefaultControlHeight = 52f;
-        private const float GroupByServiceTypeControlHeight = 82f;
+        private const float GroupByServiceTypeControlHeight = 88f;
 
         private UIView HorizontalDividerTop { get; set; }
         private VehicleTypeView EstimateSelectedVehicleType { get; set; }
