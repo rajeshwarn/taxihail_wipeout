@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = UIColor.Clear,
-                Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+				Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2),
                 TextColor = DefaultColorForText,
                 ShadowColor = UIColor.Clear,
                 LineBreakMode = UILineBreakMode.TailTruncation,
@@ -105,11 +105,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         _vehicleTypeLabel.TextColor = Theme.CompanyColor;
                         _borderView.Layer.BorderColor = Theme.CompanyColor.CGColor;
+						_vehicleTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2);
                     } 
                     else 
                     {
                         _vehicleTypeLabel.TextColor = DefaultColorForText;
                         _borderView.Layer.BorderColor = DefaultColorForBorder.CGColor;
+						_vehicleTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2);
+						//_vehicleTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2);
                     }
                 }
             }
