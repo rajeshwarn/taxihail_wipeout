@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _vehicleTypeLabel = new UILabel 
             {
                 BackgroundColor = UIColor.Clear,
-                Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+                Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2),
                 TextColor = DefaultColorForTextAndImage,
                 ShadowColor = UIColor.Clear,
                 LineBreakMode = UILineBreakMode.TailTruncation,
@@ -110,11 +110,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
 						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor);
                         _vehicleTypeLabel.TextColor = Theme.CompanyColor;
+						_vehicleTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2);
                     } 
                     else 
                     {
 						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, DefaultColorForTextAndImage);
                         _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+						_vehicleTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2);
                     }
                 }
             }
@@ -151,11 +153,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private UIImage GetColoredImage(string vehicleTypeLogoName, UIColor color)
         {			
-			return ImageHelper.ApplyColorToImage(
+			return ImageHelper.GetImage(
 				string.Format(Selected
 					? "{0}_badge_selected.png" 
-					: "{0}_badge.png", vehicleTypeLogoName.ToLower()), 
-                color);
+					: "{0}_badge.png", vehicleTypeLogoName.ToLower()));
         }
     }
 }

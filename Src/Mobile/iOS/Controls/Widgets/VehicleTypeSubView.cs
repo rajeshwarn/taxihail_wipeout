@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeSubView")]
     public class VehicleTypeSubView : UIControl
     {
-        private const float LabelPadding = 10f;
-        private UILabel _vehicleTypeLabel { get; set; }
+        private const float LabelPadding = 12f;
+        private UILabel _vehicleSubTypeLabel { get; set; }
         private UIView _borderView { get; set; }
 
         private UIColor DefaultColorForText = UIColor.FromRGB(153, 153, 153);
@@ -29,25 +29,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             TranslatesAutoresizingMaskIntoConstraints = false;
 
-            _vehicleTypeLabel = new UILabel
+            _vehicleSubTypeLabel = new UILabel
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = UIColor.Clear,
-                Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+				Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2),
                 TextColor = DefaultColorForText,
                 ShadowColor = UIColor.Clear,
                 LineBreakMode = UILineBreakMode.TailTruncation,
                 TextAlignment = UITextAlignment.Center
             };
              
-            AddSubview (_vehicleTypeLabel);
+            AddSubview (_vehicleSubTypeLabel);
 
             // Constraints for VehicleTypeLabel
             AddConstraints(new [] 
             {
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Top, 1f, 0f),
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.CenterX, 1f, 0f)
+                NSLayoutConstraint.Create(_vehicleSubTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleSubTypeLabel.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleSubTypeLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _vehicleSubTypeLabel.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleSubTypeLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _vehicleSubTypeLabel.Superview, NSLayoutAttribute.CenterX, 1f, 0f),
+				NSLayoutConstraint.Create(_vehicleSubTypeLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _vehicleSubTypeLabel.Superview, NSLayoutAttribute.CenterY, 1f, 0f)
             });
 
             _borderView = new UIView
@@ -59,12 +60,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _borderView.Layer.BorderWidth = 1f;
             _borderView.Layer.CornerRadius = 8f;
 
-            _vehicleTypeLabel.AddSubview(_borderView);
+            _vehicleSubTypeLabel.AddSubview(_borderView);
 
             AddConstraints(new [] 
             {
-                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Top, 1f, 0f),
-                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Top, 1f, -4f),
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Bottom, 1f, 4f),
                 NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Left, 1f, -LabelPadding),
                 NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Right, 1f, LabelPadding)
             });
@@ -80,9 +81,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _vehicle = value;
 
-                    _vehicleTypeLabel.TextColor = DefaultColorForText;
-                    _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
-                    _vehicleTypeLabel.SizeToFit ();
+                    _vehicleSubTypeLabel.TextColor = DefaultColorForText;
+                    _vehicleSubTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
+                    _vehicleSubTypeLabel.SizeToFit ();
                 }
             }
         }
@@ -103,13 +104,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value) 
                     {
-                        _vehicleTypeLabel.TextColor = Theme.CompanyColor;
+                        _vehicleSubTypeLabel.TextColor = Theme.CompanyColor;
                         _borderView.Layer.BorderColor = Theme.CompanyColor.CGColor;
+						_vehicleSubTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2);
                     } 
                     else 
                     {
-                        _vehicleTypeLabel.TextColor = DefaultColorForText;
+                        _vehicleSubTypeLabel.TextColor = DefaultColorForText;
                         _borderView.Layer.BorderColor = DefaultColorForBorder.CGColor;
+						_vehicleSubTypeLabel.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 18 / 2);
                     }
                 }
             }
