@@ -76,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					_vehicle = value;
 
 					VehicleTypeImage.SetImageDrawable(GetImage(value.LogoName, EtaBadge));
-					VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.Name].ToUpper();
 					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
 				}
@@ -101,13 +100,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			    
 					if (value && !EtaBadge) 
                     {
-                        VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
                         VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
                     } 
                     else 
                     {
-                        VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
                         VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
+                    }
+
+                    if (value)
+                    {
+                        VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Bold);
+                    }
+                    else
+                    {
+                        VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Normal);
                     }
                 }
 			}
@@ -123,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		private ColorFilter GetColorFilter(Color color)
+        private ColorFilter GetColorFilter(Color color)
 		{
 			int iColor = color;
 
@@ -141,7 +147,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			return colorFilter;
 		}
 
-		private Drawable GetImage(string vehicleTypeLogoName, bool etaBadge = false)
+
+        private Drawable GetImage(string vehicleTypeLogoName, bool etaBadge = false)
 	    {
 	        return DrawableHelper.GetDrawableFromString(Resources,
 	            string.Format(Selected 
