@@ -78,10 +78,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     if (value) 
                     {
                         VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
-                    } 
+                        VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Bold);
+                    }
                     else 
                     {
                         VehicleTypeLabel.SetTextColor (DefaultColorForText);
+                        VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Normal);
                     }
                 }
             }
