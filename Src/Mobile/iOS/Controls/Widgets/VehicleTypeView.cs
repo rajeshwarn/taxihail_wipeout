@@ -157,11 +157,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				string.Format(Selected
 					? "{0}_badge_selected.png" 
 					: "{0}_badge.png", vehicleTypeLogoName.ToLower()));
-			//return ImageHelper.ApplyColorToImage(
-			//	string.Format(Selected
-			//		? "{0}_badge_selected.png" 
-			//		: "{0}_badge.png", vehicleTypeLogoName.ToLower()), 
-            //    color);
         }
     }
 }
