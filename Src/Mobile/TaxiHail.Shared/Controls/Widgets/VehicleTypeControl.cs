@@ -76,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					_vehicle = value;
 
 					VehicleTypeImage.SetImageDrawable(GetImage(value.LogoName, EtaBadge));
-					//VehicleTypeImage.SetColorFilter(GetColorFilter(DefaultColorForTextAndImage));
 					VehicleTypeLabel.Text = TinyIoCContainer.Current.Resolve<ILocalization>()[value.Name].ToUpper();
 					VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
 				}
@@ -101,32 +100,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			    
 					if (value && !EtaBadge) 
                     {
-                        //VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
-                        //VehicleTypeImage.SetColorFilter(GetMyColorFilter(DefaultColorForTextAndImage));
-                        //VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
                         VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
                     } 
                     else 
                     {
-                        //VehicleTypeImage.SetColorFilter(GetMyColorFilter(DefaultColorForTextAndImage));
-                        //VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.setting_menu_color)));
                         VehicleTypeLabel.SetTextColor (DefaultColorForTextAndImage);
                     }
 
                     if (value)
                     {
-                        //VehicleTypeLabel.Typeface = Android.Graphics.Typeface.DefaultBold;
                         VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Bold);
-                        //VehicleTypeLabel.Text = VehicleTypeLabel.Text + "sel";
                     }
                     else
                     {
-                        //VehicleTypeLabel.Typeface = Android.Graphics.Typeface.Default;
                         VehicleTypeLabel.SetTypeface(VehicleTypeLabel.Typeface, TypefaceStyle.Normal);
-                        //VehicleTypeLabel.Text = VehicleTypeLabel.Text.Replace("sel","");
-                        //Typeface tf = new Typeface();
-
-
                     }
                 }
 			}
@@ -141,18 +128,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					: Resources.GetColor(Resource.Color.label_text_color);
 			}
 		}
-
-        private Color DefaultColorForImage
-        {
-            get
-            {
-
-                Color c = new Color(254, 209, 65, 0);
-                return IsForSelection
-                    ? Resources.GetColor(Resource.Color.gray)
-                    : c;
-            }
-        }
 
         private ColorFilter GetColorFilter(Color color)
 		{
@@ -172,28 +147,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			return colorFilter;
 		}
 
-        private ColorFilter GetMyColorFilter(Color color)
-        {
-            int iColor = color;
-
-            int red = (iColor & 0xFF0000) / 0xFFFF;
-            int green = (iColor & 0xFF00) / 0xFF;
-            int blue = iColor & 0xFF;
-
-            //r 0.9960f
-            //g 0.8196f
-            //g 0.2549f
-
-            float[] matrix = {
-                  0.9960f, 0, 0, 0, red
-                , 0, 0.8196f, 0, 0, green
-                , 0, 0, 0.2549f, 0, blue
-                , 0, 0, 0, 1, 0 };
-
-            ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
-
-            return colorFilter;
-        }
 
         private Drawable GetImage(string vehicleTypeLogoName, bool etaBadge = false)
 	    {

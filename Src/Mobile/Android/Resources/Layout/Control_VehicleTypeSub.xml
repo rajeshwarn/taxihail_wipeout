@@ -9,7 +9,7 @@
         android:textSize="12dp"
         android:gravity="center"
         android:textColor="@color/label_text_color"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:background="@drawable/textview_rounded_border"
         android:layout_margin="0px"
         android:paddingLeft="10dp"
