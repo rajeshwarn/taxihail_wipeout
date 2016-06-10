@@ -20,6 +20,7 @@
                 <outlet property="lblBonus" destination="lB3-Hh-Saw" id="eya-e3-9EN"/>
                 <outlet property="lblBonusAmount" destination="gob-OA-coi" id="nvv-0m-Arz"/>
                 <outlet property="lblBonusDescription" destination="3wH-SQ-mbF" id="Erq-JX-xmQ"/>
+                <outlet property="lblChargeType" destination="8De-Ta-J2u" id="sMV-ib-vsb"/>
                 <outlet property="lblCountryDialCode" destination="E5i-bU-jFb" id="IYi-jN-zoC"/>
                 <outlet property="lblDate" destination="hmp-Hd-8n0" id="wTh-Xo-icZ"/>
                 <outlet property="lblName" destination="x5b-QU-PIU" id="uIM-L2-rHx"/>
@@ -30,7 +31,6 @@
                 <outlet property="sliderBonus" destination="LTZ-8z-hAH" id="s6F-bB-qfZ"/>
                 <outlet property="switchBonus" destination="FLA-Qs-77Y" id="ZhD-e1-N5U"/>
                 <outlet property="txtNote" destination="dDw-PR-6lQ" id="J6E-ES-gg6"/>
-                <outlet property="lblChargeType" destination="58" id="name-outlet-58"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -76,7 +76,7 @@
                                     </constraints>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time.png" translatesAutoresizingMaskIntoConstraints="NO" id="fQc-9F-1lI">
-                                    <rect key="frame" x="10" y="68" width="16" height="16"/>
+                                    <rect key="frame" x="10" y="78" width="16" height="16"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="BOx-wb-Cj6"/>
@@ -84,19 +84,29 @@
                                     </constraints>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vehicle.png" translatesAutoresizingMaskIntoConstraints="NO" id="zlW-Ib-cnZ">
-                                    <rect key="frame" x="10" y="93" width="16" height="16"/>
+                                    <rect key="frame" x="10" y="112" width="16" height="16"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="9oV-LT-iPL"/>
                                         <constraint firstAttribute="width" constant="16" id="WlA-gY-1hP"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chargetype.png" translatesAutoresizingMaskIntoConstraints="NO" id="ARW-Wh-0kR" misplaced="YES">
-                                    <rect key="frame" x="10" y="120" width="16" height="16"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chargetype.png" translatesAutoresizingMaskIntoConstraints="NO" id="ARW-Wh-0kR">
+                                    <rect key="frame" x="156" y="112" width="16" height="16"/>
                                     <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="16" id="6fP-gK-m43"/>
+                                        <constraint firstAttribute="height" constant="16" id="KUI-9P-DhN"/>
+                                    </constraints>
                                 </imageView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8De-Ta-J2u" userLabel="Charge Type">
+                                    <rect key="frame" x="184" y="109" width="108" height="22"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="apartment.png" translatesAutoresizingMaskIntoConstraints="NO" id="w4N-xm-X7k">
-                                    <rect key="frame" x="10" y="147" width="16" height="16"/>
+                                    <rect key="frame" x="10" y="146" width="16" height="16"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="16" id="T6m-rn-pVf"/>
@@ -104,14 +114,14 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPH-Td-ofI" userLabel="Apartment">
-                                    <rect key="frame" x="38" y="144.5" width="113" height="21.5"/>
+                                    <rect key="frame" x="38" y="143" width="113" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="entrycode.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTi-vB-23f">
-                                    <rect key="frame" x="156" y="147" width="16" height="16"/>
+                                    <rect key="frame" x="156" y="146" width="16" height="16"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="Sg1-TJ-3wb"/>
@@ -119,13 +129,13 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gd-9d-m7y" userLabel="EntryCode">
-                                    <rect key="frame" x="184" y="144.5" width="108" height="21.5"/>
+                                    <rect key="frame" x="184" y="143" width="108" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDw-PR-6lQ" customClass="FlatTextView">
-                                    <rect key="frame" x="9" y="238" width="284" height="95"/>
+                                    <rect key="frame" x="9" y="237" width="284" height="95"/>
                                     <animations/>
                                     <color key="backgroundColor" red="0.81568627450980391" green="0.81568627450980391" blue="0.81568627450980391" alpha="1" colorSpace="deviceRGB"/>
                                     <constraints>
@@ -135,7 +145,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waM-DQ-KbA" customClass="FlatButton">
-                                    <rect key="frame" x="9" y="181" width="284" height="41"/>
+                                    <rect key="frame" x="9" y="180" width="284" height="41"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="TJz-TK-88d"/>
@@ -145,7 +155,7 @@
                                     </state>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="sDu-4l-2Mv">
-                                    <rect key="frame" x="26" y="194" width="16" height="16"/>
+                                    <rect key="frame" x="26" y="193" width="16" height="16"/>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="ZLg-Ng-HhC"/>
@@ -172,14 +182,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2b-rs-VeT" userLabel="Vehicle Type">
-                                    <rect key="frame" x="38" y="90" width="254" height="22"/>
+                                    <rect key="frame" x="38" y="109" width="113" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmp-Hd-8n0" userLabel="Time">
-                                    <rect key="frame" x="38" y="65.5" width="254" height="21.5"/>
+                                    <rect key="frame" x="38" y="75" width="254" height="22"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,7 +203,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BET-F2-qE5" userLabel="Bonus">
-                                    <rect key="frame" x="0.0" y="333" width="302" height="130.5"/>
+                                    <rect key="frame" x="0.0" y="332" width="302" height="130"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lB3-Hh-Saw" userLabel="Bonus">
                                             <rect key="frame" x="10" y="15" width="41" height="20"/>
@@ -216,7 +226,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FLA-Qs-77Y">
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FLA-Qs-77Y">
                                             <rect key="frame" x="241" y="10" width="53" height="31"/>
                                             <animations/>
                                             <constraints>
@@ -259,41 +269,40 @@
                                         <constraint firstItem="lB3-Hh-Saw" firstAttribute="centerY" secondItem="FLA-Qs-77Y" secondAttribute="centerY" id="uuA-GO-Uw6"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58" userLabel="Vehicle Type" fixedFrame="YES">
-                                    <rect key="frame" x="38" y="116" width="254" height="22"/>
-                                    <animations/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="ARW-Wh-0kR" firstAttribute="centerY" secondItem="8De-Ta-J2u" secondAttribute="centerY" id="0hh-xb-xUf"/>
+                                <constraint firstItem="d2b-rs-VeT" firstAttribute="left" secondItem="zlW-Ib-cnZ" secondAttribute="right" constant="12" id="0mP-Nr-Xy8"/>
                                 <constraint firstItem="waM-DQ-KbA" firstAttribute="top" secondItem="zlW-Ib-cnZ" secondAttribute="bottom" priority="750" constant="18" id="1UD-7J-fQH"/>
                                 <constraint firstItem="svv-u7-Y0B" firstAttribute="leading" secondItem="E5i-bU-jFb" secondAttribute="trailing" constant="1" id="24K-AL-irD"/>
+                                <constraint firstItem="d2b-rs-VeT" firstAttribute="centerY" secondItem="zlW-Ib-cnZ" secondAttribute="centerY" id="2qP-xo-eGF"/>
                                 <constraint firstItem="fQc-9F-1lI" firstAttribute="top" secondItem="kW8-fg-Z4o" secondAttribute="top" priority="175" constant="10" id="3ii-vb-kGy"/>
                                 <constraint firstAttribute="right" secondItem="hmp-Hd-8n0" secondAttribute="right" constant="10" id="710-LF-zre"/>
                                 <constraint firstItem="qck-6f-eYU" firstAttribute="top" secondItem="kW8-fg-Z4o" secondAttribute="top" priority="500" constant="10" id="7ah-nh-nDE"/>
                                 <constraint firstItem="u3E-jI-DzQ" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="8eO-8K-ioV"/>
                                 <constraint firstItem="1gd-9d-m7y" firstAttribute="left" secondItem="GTi-vB-23f" secondAttribute="right" constant="12" id="9id-fC-g8I"/>
+                                <constraint firstItem="ARW-Wh-0kR" firstAttribute="left" secondItem="d2b-rs-VeT" secondAttribute="right" constant="5" id="ADH-fU-Lrx"/>
                                 <constraint firstAttribute="centerX" secondItem="QPH-Td-ofI" secondAttribute="right" id="AL1-pc-UGm"/>
                                 <constraint firstItem="x5b-QU-PIU" firstAttribute="left" secondItem="u3E-jI-DzQ" secondAttribute="right" constant="12" id="Ae6-bG-ieg"/>
+                                <constraint firstItem="8De-Ta-J2u" firstAttribute="left" secondItem="ARW-Wh-0kR" secondAttribute="right" constant="12" id="BZJ-xT-Ttw"/>
                                 <constraint firstItem="w4N-xm-X7k" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="C0X-RR-pid"/>
                                 <constraint firstItem="x5b-QU-PIU" firstAttribute="centerY" secondItem="u3E-jI-DzQ" secondAttribute="centerY" id="CJu-lI-OGD"/>
                                 <constraint firstAttribute="right" secondItem="1gd-9d-m7y" secondAttribute="right" constant="10" id="FNH-Th-5LR"/>
                                 <constraint firstItem="qck-6f-eYU" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="GUT-sf-ae9"/>
                                 <constraint firstItem="Bgc-vr-Z4g" firstAttribute="top" secondItem="kW8-fg-Z4o" secondAttribute="top" constant="10" id="HR1-nx-2aV"/>
-                                <constraint firstItem="zlW-Ib-cnZ" firstAttribute="top" secondItem="fQc-9F-1lI" secondAttribute="bottom" constant="9" id="Hhw-dn-UdZ"/>
+                                <constraint firstItem="zlW-Ib-cnZ" firstAttribute="top" secondItem="fQc-9F-1lI" secondAttribute="bottom" constant="18" id="Hhw-dn-UdZ"/>
                                 <constraint firstItem="zlW-Ib-cnZ" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="IA8-Jp-uN2"/>
                                 <constraint firstItem="QPH-Td-ofI" firstAttribute="left" secondItem="w4N-xm-X7k" secondAttribute="right" constant="12" id="Kso-XQ-7Z9"/>
                                 <constraint firstAttribute="height" priority="500" constant="428" id="L34-fX-Tuh"/>
                                 <constraint firstAttribute="bottom" secondItem="dDw-PR-6lQ" secondAttribute="bottom" priority="750" constant="10" id="NLT-iG-KYD"/>
                                 <constraint firstItem="QPH-Td-ofI" firstAttribute="centerY" secondItem="w4N-xm-X7k" secondAttribute="centerY" id="PAS-ib-jpP"/>
                                 <constraint firstItem="BET-F2-qE5" firstAttribute="leading" secondItem="kW8-fg-Z4o" secondAttribute="leading" id="PSg-5T-ETg"/>
-                                <constraint firstItem="fQc-9F-1lI" firstAttribute="top" secondItem="qck-6f-eYU" secondAttribute="bottom" constant="8" id="Pyh-Up-k1x"/>
+                                <constraint firstItem="fQc-9F-1lI" firstAttribute="top" secondItem="qck-6f-eYU" secondAttribute="bottom" constant="18" id="Pyh-Up-k1x"/>
                                 <constraint firstItem="hmp-Hd-8n0" firstAttribute="left" secondItem="fQc-9F-1lI" secondAttribute="right" constant="12" id="UmJ-bH-3i2"/>
                                 <constraint firstItem="fQc-9F-1lI" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="Vu8-uX-Skg"/>
+                                <constraint firstAttribute="right" secondItem="8De-Ta-J2u" secondAttribute="right" constant="10" id="Wqo-gT-WHL"/>
                                 <constraint firstItem="E5i-bU-jFb" firstAttribute="top" secondItem="svv-u7-Y0B" secondAttribute="top" id="aaJ-1j-AwH"/>
                                 <constraint firstAttribute="right" secondItem="dDw-PR-6lQ" secondAttribute="right" constant="9" id="b6C-OB-czn"/>
                                 <constraint firstAttribute="trailing" secondItem="waM-DQ-KbA" secondAttribute="trailing" constant="9" id="bMJ-Xt-3oS"/>
@@ -308,9 +317,10 @@
                                 <constraint firstItem="waM-DQ-KbA" firstAttribute="top" secondItem="w4N-xm-X7k" secondAttribute="bottom" constant="18" id="kgl-8a-EiC"/>
                                 <constraint firstItem="BET-F2-qE5" firstAttribute="top" secondItem="dDw-PR-6lQ" secondAttribute="bottom" id="lKu-4N-ez6"/>
                                 <constraint firstItem="waM-DQ-KbA" firstAttribute="leading" secondItem="kW8-fg-Z4o" secondAttribute="leading" constant="9" id="mxU-sa-vOl"/>
+                                <constraint firstAttribute="centerX" secondItem="d2b-rs-VeT" secondAttribute="right" id="n5P-Vj-FQj"/>
                                 <constraint firstAttribute="bottom" secondItem="BET-F2-qE5" secondAttribute="bottom" id="nZD-Pe-L5g"/>
                                 <constraint firstItem="GTi-vB-23f" firstAttribute="left" secondItem="QPH-Td-ofI" secondAttribute="right" constant="5" id="q1z-bo-ecP"/>
-                                <constraint firstItem="w4N-xm-X7k" firstAttribute="top" secondItem="zlW-Ib-cnZ" secondAttribute="bottom" constant="38" id="qO3-Rv-pAz"/>
+                                <constraint firstItem="w4N-xm-X7k" firstAttribute="top" secondItem="zlW-Ib-cnZ" secondAttribute="bottom" constant="18" id="qO3-Rv-pAz"/>
                                 <constraint firstAttribute="trailing" secondItem="BET-F2-qE5" secondAttribute="trailing" id="r7g-5Y-7hI"/>
                                 <constraint firstItem="GTi-vB-23f" firstAttribute="centerY" secondItem="w4N-xm-X7k" secondAttribute="centerY" id="rEv-MC-i9F"/>
                                 <constraint firstItem="fQc-9F-1lI" firstAttribute="top" secondItem="u3E-jI-DzQ" secondAttribute="bottom" priority="275" constant="18" id="sCA-fg-TxI"/>
@@ -322,14 +332,9 @@
                                 <constraint firstItem="qck-6f-eYU" firstAttribute="centerY" secondItem="svv-u7-Y0B" secondAttribute="centerY" id="wlz-rc-7Kx"/>
                                 <constraint firstItem="dDw-PR-6lQ" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="9" id="wvY-D7-TBl"/>
                                 <constraint firstItem="dDw-PR-6lQ" firstAttribute="top" secondItem="w4N-xm-X7k" secondAttribute="bottom" priority="500" constant="18" id="xAP-06-dwV"/>
+                                <constraint firstItem="ARW-Wh-0kR" firstAttribute="centerY" secondItem="zlW-Ib-cnZ" secondAttribute="centerY" id="yVH-3P-oOZ"/>
                                 <constraint firstAttribute="trailing" secondItem="nBe-Cq-OVh" secondAttribute="trailing" constant="11" id="ywJ-jg-bTY"/>
                                 <constraint firstItem="u3E-jI-DzQ" firstAttribute="top" secondItem="kW8-fg-Z4o" secondAttribute="top" constant="10" id="zyF-Mr-1iX"/>
-                                <constraint id="18" firstItem="kW8-fg-Z4o" firstAttribute="trailing" secondItem="d2b-rs-VeT" secondAttribute="trailing" constant="10"/>
-                                <constraint id="19" firstItem="d2b-rs-VeT" firstAttribute="top" secondItem="kW8-fg-Z4o" secondAttribute="top" constant="90"/>
-                                <constraint id="22" firstItem="d2b-rs-VeT" firstAttribute="top" secondItem="hmp-Hd-8n0" secondAttribute="bottom" constant="3"/>
-                                <constraint id="25" firstItem="d2b-rs-VeT" firstAttribute="leading" secondItem="zlW-Ib-cnZ" secondAttribute="trailing" constant="12"/>
-                                <constraint id="26" firstItem="d2b-rs-VeT" firstAttribute="centerY" secondItem="zlW-Ib-cnZ" secondAttribute="centerY"/>
-                                <constraint id="28" firstItem="w4N-xm-X7k" firstAttribute="top" secondItem="ARW-Wh-0kR" secondAttribute="bottom" constant="11"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -367,111 +372,5 @@
         <image name="telephone.png" width="16" height="16"/>
         <image name="time.png" width="16" height="16"/>
         <image name="vehicle.png" width="16" height="16"/>
-        <image name="cluster_blackcar.png" width="34" height="39"/>
-        <image name="cluster_suv.png" width="34" height="39"/>
-        <image name="nearby_blackcar.png" width="34" height="39"/>
-        <image name="nearby_suv.png" width="34" height="39"/>
-        <image name="tutorial_screen08.png" width="305" height="262"/>
-        <image name="tutorial_screen09.png" width="305" height="262"/>
-        <image name="tutorial_screen10.png" width="305" height="262"/>
-        <image name="tutorial_screen01.png" width="305" height="262"/>
-        <image name="tutorial_screen02.png" width="305" height="262"/>
-        <image name="tutorial_screen03.png" width="305" height="262"/>
-        <image name="tutorial_screen04.png" width="305" height="262"/>
-        <image name="tutorial_screen05.png" width="305" height="252"/>
-        <image name="tutorial_screen06.png" width="305" height="252"/>
-        <image name="tutorial_screen07.png" width="305" height="252"/>
-        <image name="map_bigicon_background.png" width="52" height="58"/>
-        <image name="map_smallicon_background.png" width="34" height="39"/>
-        <image name="poweredBy4sq.png" width="225" height="25"/>
-        <image name="down_arrow.png" width="13" height="8"/>
-        <image name="paypal_icon.png" width="25" height="25"/>
-        <image name="airport.png" width="28" height="28"/>
-        <image name="train.png" width="28" height="28"/>
-        <image name="message.png" width="22" height="22"/>
-        <image name="cluster_wheelchair.png" width="34" height="39"/>
-        <image name="nearby_wheelchair.png" width="34" height="39"/>
-        <image name="wheelchair_assigned.png" width="52" height="58"/>
-        <image name="wheelchair_available.png" width="52" height="58"/>
-        <image name="wheelchair_badge.png" width="34" height="34"/>
-        <image name="wheelchair_badge_selected.png" width="34" height="34"/>
-        <image name="status_gradient.png" width="384" height="75"/>
-        <image name="nearby_oriented_available.png" width="50" height="50"/>
-        <image name="nearby_oriented_passenger.png" width="50" height="50"/>
-        <image name="down_arrow_light.png" width="13" height="8"/>
-        <image name="up_arrow_light.png" width="13" height="8"/>
-        <image name="blackcar_icon.png" width="52" height="58"/>
-        <image name="destination_small_icon_white.png" width="24" height="20"/>
-        <image name="cancel.png" width="20" height="20"/>
-        <image name="discover.png" width="46" height="32"/>
-        <image name="luxury_progress.png" width="52" height="20"/>
-        <image name="app.png" width="57" height="57"/>
-        <image name="clearButton.png" width="10" height="40"/>
-        <image name="left_arrow.png" width="12" height="21"/>
-        <image name="active.png" width="20" height="20"/>
-        <image name="cancelled.png" width="20" height="20"/>
-        <image name="completed.png" width="20" height="20"/>
-        <image name="scheduled.png" width="20" height="20"/>
-        <image name="amex.png" width="46" height="32"/>
-        <image name="blackcar_badge_selected.png" width="34" height="34"/>
-        <image name="blackcar_badge.png" width="34" height="34"/>
-        <image name="cluster_taxi.png" width="34" height="39"/>
-        <image name="destination_icon.png" width="52" height="58"/>
-        <image name="hail_icon.png" width="52" height="58"/>
-        <image name="highlight.png" width="60" height="46"/>
-        <image name="later_icon_pressed.png" width="24" height="20"/>
-        <image name="later_icon.png" width="24" height="20"/>
-        <image name="location_icon_pressed.png" width="19" height="20"/>
-        <image name="location_icon.png" width="19" height="20"/>
-        <image name="menu_icon_pressed.png" width="21" height="14"/>
-        <image name="menu_icon.png" width="21" height="14"/>
-        <image name="nearby_taxi.png" width="34" height="39"/>
-        <image name="suv_badge_selected.png" width="34" height="34"/>
-        <image name="suv_badge.png" width="34" height="34"/>
-        <image name="taxi_badge_selected.png" width="34" height="34"/>
-        <image name="taxi_badge.png" width="34" height="34"/>
-        <image name="taxi_icon.png" width="52" height="58"/>
-        <image name="th_logo.png" width="107" height="74"/>
-        <image name="add_list.png" width="20" height="20"/>
-        <image name="apc_logo_menu.png" width="72" height="19"/>
-        <image name="checked.png" width="22" height="22"/>
-        <image name="credit_card_generic.png" width="46" height="36"/>
-        <image name="delete_card_btn.png" width="38" height="24"/>
-        <image name="facebook_icon.png" width="14" height="26"/>
-        <image name="favorites.png" width="20" height="20"/>
-        <image name="grip.png" width="19" height="14"/>
-        <image name="history.png" width="20" height="20"/>
-        <image name="left_arrow_white.png" width="12" height="21"/>
-        <image name="mastercard.png" width="46" height="32"/>
-        <image name="paypal.png" width="90" height="31"/>
-        <image name="right_arrow.png" width="8" height="13"/>
-        <image name="twitter_icon.png" width="26" height="21"/>
-        <image name="unchecked.png" width="22" height="22"/>
-        <image name="visa_electron.png" width="46" height="32"/>
-        <image name="visa.png" width="46" height="32"/>
-        <image name="background.png" width="640" height="900"/>
-        <image name="bookLaterIcon.png" width="25" height="21"/>
-        <image name="closeButton.png" width="29" height="29"/>
-        <image name="phone.png" width="22" height="22"/>
-        <image name="rideStatusBarBackground.png" width="320" height="19"/>
-        <image name="back.png" width="20" height="20"/>
-        <image name="forward.png" width="20" height="20"/>
-        <image name="tutorial_background.png" width="606" height="868"/>
-        <image name="places.png" width="20" height="20"/>
-        <image name="taxi_progress.png" width="52" height="20"/>
-        <image name="close_tutorial_button.png" width="13" height="13"/>
-        <image name="baggage.png" width="16" height="16"/>
-        <image name="th_logo_small.png" width="50" height="35"/>
-        <image name="destination_small_icon.png" width="24" height="20"/>
-        <image name="destination_small_icon_pressed.png" width="24" height="20"/>
-        <image name="Icon-60.png" width="60" height="60"/>
-        <image name="star_selected.png" width="33" height="32"/>
-        <image name="star_unselected.png" width="33" height="32"/>
-        <image name="suv_no_badge.png" width="34" height="34"/>
-        <image name="suv_no_badge_selected.png" width="34" height="34"/>
-        <image name="taxi_no_badge.png" width="34" height="34"/>
-        <image name="taxi_no_badge_selected.png" width="34" height="34"/>
-        <image name="blackcar_no_badge.png" width="34" height="34"/>
-        <image name="blackcar_no_badge_selected.png" width="34" height="34"/>
     </resources>
 </document>
