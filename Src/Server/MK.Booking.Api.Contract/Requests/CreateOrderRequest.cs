@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             Payment = new PaymentSettings();
             Estimate = new RideEstimate();
             FromWebApp = false;
+            AssignVehicleId = String.Empty;
         }
 
         public Guid Id { get; set; }
@@ -71,5 +72,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string KountSessionId { get; set; }
 
         public string CustomerIpAddress { get; set; }
+
+        public string AssignVehicleId { get; set; }
     }
 }
