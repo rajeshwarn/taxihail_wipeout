@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Commands
         {
             Id = Guid.NewGuid();
             Payment = new PaymentInformation();
+            AssignVehicleId = string.Empty;
         }
 
         public Guid OrderId { get; set; }
@@ -98,5 +99,7 @@ namespace apcurium.MK.Booking.Commands
         public string OriginatingIpAddress { get; set; }
 
         public string KountSessionId { get; set; }
+
+        public string AssignVehicleId { get; set; }
     }
 }
