@@ -188,6 +188,7 @@ namespace apcurium.MK.Booking.Jobs
                         {
                             // Update vehicle position with matching data available data from HoneyBadger
                             var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+                            Log.DebugFormat("UpdateOrderStatusJob.GetOrderStatuses - HoneyBadger Resp: {0}", honeyBadgerVehicleStatus.ToJson());
 
                             if (honeyBadgerVehicleStatus != null)
                             {
