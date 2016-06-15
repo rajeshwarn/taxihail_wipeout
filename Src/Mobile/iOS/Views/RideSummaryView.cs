@@ -129,6 +129,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var button = ((FlatButton)sender);
 			button.Selected = true;
 			ViewModel.SelectGratuity.Execute((long)button.Tag);
+			ViewModel.CanRate = true;
+
 			ShowDoneButton();
 		}
 
@@ -153,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var buttonHidden = !ViewModel.CanRate || !_hasSelectedGratuity;
 
-			NavigationItem.RightBarButtonItem = buttonHidden ? null : new UIBarButtonItem (Localize.GetValue (buttonTextResource), UIBarButtonItemStyle.Bordered, async (o, e) => {
+			NavigationItem.RightBarButtonItem = buttonHidden ? null : new UIBarButtonItem (Localize.GetValue (buttonTextResource), UIBarButtonItemStyle.Bordered, (o, e) => {
 				if (ViewModel.CanRate)
 				{
 					NavigationRightBarButtonClicked ();
