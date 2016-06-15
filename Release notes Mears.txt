@@ -1,0 +1,24 @@
+0.5.3
+	Defect TAX-33 UI changes
+		Bold text on selected service type and selected vehicle type, but normal text on unselected icons
+		Background color of selected service type icon changed to Mears Pantone Yellow hex #fed141
+		Vehicle type buttons now have a higher height so they are easier to click on smaller screens
+		Payment Type is now on its own line in the Order Review View
+		
+	Defect TAX-43 
+		Map was not showing on several Android devices at all
+		Was receiving two confirmation emails for a booking
+		Was receiving two receipts once a fare has been completed
+		Once the trip was completed, user was asked to rate the trip and offer additional gratuity twice.
+		The screen came up two times for the same trip
+		Button missing for adding the gratuity on iOS devices
+		All “cab” and “taxi” words need to be replaced with "vehicle" for both services (taxi and luxury)
+		SMS message not going out for app account registrations	(this was config only)
+		
+	Added Tip amount value on the email receipt
+	
+	Honey Badger fix - after Job accept Honey Badger was still polling for Available vehicle state set to 1
+	
+	Fixes from Production 3_5 brought into the Mears branch:
+	ARRO-1063 - Arro Taxihail 3.5.13 crashes when calculating Fare Estimate
+	ARRO-1062 - Royal Taxi Changing Destination causes crash
