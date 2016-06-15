@@ -143,7 +143,11 @@ namespace apcurium.MK.Booking.Jobs
             if (orderStatusDetail.Status == OrderStatus.Completed)
             {
                 var account = _accountDao.FindById(orderStatusDetail.AccountId);
-                var tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * orderFromIbs.Fare;
+                double tipAmount = 0.0;
+                if (account.DefaultTipPercent != null)
+                {
+                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * orderFromIbs.Fare;
+                }
                 // use the default tip percentage
                 _commandBus.Send(new ChangeOrderStatus
                 {
