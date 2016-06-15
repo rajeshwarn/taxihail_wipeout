@@ -127,7 +127,7 @@
     <value>The address is not valid</value>
   </data>
   <data name="OrderStatus_wosARRIVED" xml:space="preserve">
-    <value>Taxi is at pickup location</value>
+    <value>Vehicle is at pickup location</value>
   </data>
   <data name="OrderStatus_wosASSIGNED" xml:space="preserve">
     <value>Driver assigned</value>
@@ -142,7 +142,7 @@
     <value>Completed</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Passenger is in the taxi</value>
+    <value>Passenger is in the vehicle</value>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Invalid order, please call dispatch center</value>
@@ -157,10 +157,10 @@
     <value>Waiting for driver to be assigned</value>
   </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
-    <value>Your Taxi (#{0}) has arrived</value>
+    <value>Your Vehicle (#{0}) has arrived</value>
   </data>
   <data name="PushNotification_wosASSIGNED" xml:space="preserve">
-    <value>Taxi #{0} has been assigned to you</value>
+    <value>Vehicle #{0} has been assigned to you</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
@@ -169,7 +169,7 @@
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>Sorry, your driver cancelled. Finding you another taxi...</value>
+    <value>Sorry, your driver cancelled. Finding you another vehicle...</value>
   </data>
   <data name="PushNotification_wosNOSHOW" xml:space="preserve">
     <value>Your driver indicated you were not at the pickup location.</value>
@@ -394,7 +394,7 @@
     <value>Fare will be paid using the selected payment method</value>
   </data>
   <data name="OrderStatus_BAILED" xml:space="preserve">
-    <value>Sorry, your driver canceled. Finding you another taxi...</value>
+    <value>Sorry, your driver canceled. Finding you another vehicle...</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
@@ -697,13 +697,13 @@
     <value>Vehicle Licence Plate</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Sorry, there was a problem, please pay in the taxi</value>
+    <value>Sorry, there was a problem, please pay in the vehicle</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+    <value>Sorry, your card could not be authorized. Please pay in the vehicle</value>
   </data>
   <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
-    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+    <value>Sorry, there was an error processing your card. Please pay in the vehicle</value>
   </data>
   <data name="Email_Subject_OrderRefund" xml:space="preserve">
     <value>{{ ApplicationName }} - Order Refund</value>
