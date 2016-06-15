@@ -133,19 +133,19 @@
     <value>Your vehicle {0}</value>
   </data>
   <data name="EtaLessThanAMinute" xml:space="preserve">
-    <value>Nearest taxi is less than a minute away</value>
+    <value>Nearest vehicle is less than a minute away</value>
   </data>
   <data name="EtaLessThanAMinute_Luxury" xml:space="preserve">
     <value>Nearest vehicle is less than a minute away</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
-    <value>Sorry, no taxis currently available nearby.</value>
+    <value>Sorry, no vehicles currently available nearby.</value>
   </data>
   <data name="EtaNoTaxiAvailable_Luxury" xml:space="preserve">
     <value>Sorry, no vehicles currently available nearby.</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Nearest taxi is {0} {1} away</value>
+    <value>Nearest vehicle is {0} {1} away</value>
   </data>
   <data name="Eta_Luxury" xml:space="preserve">
     <value>Nearest vehicle is {0} {1} away</value>
@@ -157,25 +157,25 @@
     <value>Need a vehicle</value>
   </data>
   <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
-    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+    <value>An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.</value>
   </data>
   <data name="ManualRideLinqStatus_PairingError_Luxury" xml:space="preserve">
     <value>An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.</value>
   </data>
   <data name="MarketChangedMessage" xml:space="preserve">
-    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a vehicle company from this area.</value>
   </data>
   <data name="MarketChangedMessage_Luxury" xml:space="preserve">
     <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
-    <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
+    <value>Reminder: A vehicle will pick you up from {0} at {1} on {2}.</value>
   </data>
   <data name="ReminderDetails_Luxury" xml:space="preserve">
     <value>Reminder: A vehicle will pick you up from {0} at {1} on {2}.</value>
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
-    <value>Booking a new taxi will keep this order active, do you want to continue ?</value>
+    <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
   </data>
   <data name="StatusConfirmNewBooking_Luxury" xml:space="preserve">
     <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>

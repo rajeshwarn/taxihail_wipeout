@@ -824,6 +824,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderNotificationDetail.NoShowWarningSent = @event.NoShowWarningSent.Value;
                 }
 
+                if (@event.InfoAboutGratuitySent.HasValue)
+                {
+                    orderNotificationDetail.InfoAboutGratuitySent = @event.InfoAboutGratuitySent.Value;
+                }
+
                 context.Save(orderNotificationDetail);
             }
         }
