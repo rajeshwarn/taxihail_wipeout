@@ -464,7 +464,9 @@ namespace apcurium.MK.Booking.Domain
                 IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
                 IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
                 InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver,
-                NoShowWarningSent = orderNotificationDetail.NoShowWarningSent
+                NoShowWarningSent = orderNotificationDetail.NoShowWarningSent,
+                InfoAboutGratuitySent = orderNotificationDetail.InfoAboutGratuitySent
+
             });
         }
 

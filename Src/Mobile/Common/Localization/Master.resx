@@ -576,7 +576,7 @@
     <value>Call</value>
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
-    <value>Your Taxi</value>
+    <value>Your Vehicle</value>
   </data>
   <data name="UnexpectedError" xml:space="preserve">
     <value>Unexpected error</value>
@@ -597,7 +597,7 @@
     <value>Cancel this order</value>
   </data>
   <data name="StatusActionBookButton" xml:space="preserve">
-    <value>Book another taxi</value>
+    <value>Book another vehicle</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
     <value>Are you sure you want to cancel?</value>
@@ -609,7 +609,7 @@
     <value>Cannot cancel</value>
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
-    <value>Booking a new taxi will keep this order active, do you want to continue ?</value>
+    <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
   </data>
   <data name="YesButton" xml:space="preserve">
     <value>Yes</value>
@@ -765,7 +765,7 @@
     <value>Displaying trips from the last month</value>
   </data>
   <data name="CarAssigned" xml:space="preserve">
-    <value>Your taxi {0}</value>
+    <value>Your vehicle {0}</value>
   </data>
   <data name="SupportEmail" xml:space="preserve">
     <value>techsupport@apcurium.com</value>
@@ -1011,7 +1011,7 @@
     <value>Driver Bonus:</value>
   </data>
   <data name="DriverBonusDescription" xml:space="preserve">
-    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a vehicle.</value>
   </data>
   <data name="DriverBonusWarningTitle" xml:space="preserve">
     <value>Confirm Driver Bonus</value>
@@ -1209,7 +1209,7 @@
     <value>{0} Booked</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
-    <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
+    <value>Reminder: A vehicle will pick you up from {0} at {1} on {2}.</value>
   </data>
   <data name="ChargeTypeCreditCardFile" xml:space="preserve">
     <value>Credit Card on File</value>
@@ -1248,7 +1248,7 @@
     <value>Model:</value>
   </data>
   <data name="DriverInfoTaxiType" xml:space="preserve">
-    <value>Taxi Type:</value>
+    <value>Vehicle Type:</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>Your phone number or the driver's phone number is invalid.</value>
@@ -1317,7 +1317,7 @@
     <value>OK</value>
   </data>
   <data name="TaxiServerDownMessage" xml:space="preserve">
-    <value>Can't send message to Taxi</value>
+    <value>Can't send message to Vehicle</value>
   </data>
   <data name="OrderNumber" xml:space="preserve">
     <value>Order #</value>
@@ -1557,7 +1557,7 @@
     <value>Cancel</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Nearest taxi is {0} {1} away</value>
+    <value>Nearest vehicle is {0} {1} away</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>
@@ -1626,7 +1626,7 @@
     <value>Notifications</value>
   </data>
   <data name="Notification_NearbyTaxiPush" xml:space="preserve">
-    <value>Nearby Taxi</value>
+    <value>Nearby Vehicle</value>
   </data>
   <data name="Notification_PaymentConfirmationPush" xml:space="preserve">
     <value>Payment Confirmation</value>
@@ -1944,7 +1944,7 @@
     <value>Unable to load the payment details. Please try again later.</value>
   </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
-    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
+    <value>Enter the 7-digit code displayed on the vehicle touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
   </data>
   <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
     <value>Distance:</value>
@@ -1965,7 +1965,7 @@
     <value>Unpair</value>
   </data>
   <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
-    <value>An error has occurred. Please try to checking again using the code displayed on the taxi touchscreen.</value>
+    <value>An error has occurred. Please try to checking again using the code displayed on the vehicle touchscreen.</value>
   </data>
   <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
     <value>Error</value>
@@ -2082,7 +2082,7 @@
     <value>Toll:</value>
   </data>
   <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>You're checked into taxi #{0}.</value>
+    <value>You're checked into vehicle #{0}.</value>
   </data>
   <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
     <value>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</value>
@@ -2130,7 +2130,7 @@
     <value>Enter a value:</value>
   </data>
   <data name="EtaLessThanAMinute" xml:space="preserve">
-    <value>Nearest taxi is less than a minute away</value>
+    <value>Nearest vehicle is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
@@ -2142,7 +2142,7 @@
     <value>(DEFAULT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
-    <value>Sorry, no taxis currently available nearby.</value>
+    <value>Sorry, no vehicles currently available nearby.</value>
   </data>
   <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
     <value>Are you sure you want to sign out?</value>
@@ -2448,13 +2448,13 @@
     <value>Pairing payment problem</value>
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
-    <value>Sorry, there was a problem, please pay in the taxi</value>
+    <value>Sorry, there was a problem, please pay in the vehicle</value>
   </data>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+    <value>Sorry, your card could not be authorized. Please pay in the vehicle</value>
   </data>
   <data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
-    <value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+    <value>Sorry, there was an error processing your card. Please pay in the vehicle</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
     <value>No account with this email has been found.</value>
@@ -2490,6 +2490,6 @@
     <value>The current password is not valid.</value>
   </data>
   <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
-    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
+    <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a vehicle.</value>
   </data>
 </root>
