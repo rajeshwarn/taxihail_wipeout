@@ -25,7 +25,7 @@ using System.Security;
 [assembly: ComVisible(false)]
 [assembly: Guid("643622ea-d2aa-4572-a2b2-6202b7fcd83f")]
 [assembly: AssemblyVersion("0.5.3")]
-AssemblyFileVersion"0.5.3")]
+[assembly: AssemblyFileVersion"0.5.3")]
 [assembly: AssemblyInformationalVersion("1.4.0.0")]
 [assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyDelaySign(false)]
