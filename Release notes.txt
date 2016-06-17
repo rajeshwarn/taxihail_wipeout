@@ -324,7 +324,9 @@
 	EastsideForARide - Custom strings
 Version bump 3.3.1
 	Addes possibility to acces "Pay in Car" for web order only
-
+3.5.14
+	Bug Fix - Fix iOS 9 crash when attempting  to select a destination.
+	QappMe - Missing ApplicationName string in language file (reverting to TaxiHail).
 
 
 

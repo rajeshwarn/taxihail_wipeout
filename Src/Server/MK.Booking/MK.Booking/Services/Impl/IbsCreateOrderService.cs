@@ -45,8 +45,9 @@ namespace apcurium.MK.Booking.Services.Impl
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
             string companyKey, int ibsAccountId, string name, string phone, string email, int passengers, int? vehicleTypeId, string ibsInformationNote, bool isFutureBooking,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
-            int? requestProviderId, Fare fare, double? tipIncentive, int? tipPercent, bool isHailRequest = false, int? companyFleetId = null)
+            int? requestProviderId, Fare fare, double? tipIncentive, int? tipPercent, string assignVehicleId, bool isHailRequest = false, int? companyFleetId = null)
         {
+            _logger.LogMessage(string.Format("IbsCreateOrderService::CreateIbsOrder - assignVehicleId: {0}", assignVehicleId));
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
                 // Wait 15 seconds to reproduce what happens in real life with the "Finding you a taxi"
@@ -127,6 +128,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     defaultVehicleTypeId,
                     tipIncentive,
                     tipPercent,
+                    assignVehicleId, 
                     fare);
             }
 

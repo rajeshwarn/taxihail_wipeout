@@ -105,7 +105,7 @@ namespace CMTServices
             var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
             var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;
 
-            var queryString = BuildQueryString(@params, urlParamsFromSetting);
+            var queryString = BuildQueryString(@params, null);
 
             HoneyBadgerResponse response = null;
 
