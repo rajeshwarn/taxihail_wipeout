@@ -269,6 +269,9 @@
     <value>Bestemming</value>
     <comment>Destination</comment>
   </data>
+  <data name="Email_Body_At_Time" xml:space="preserve">
+    <value>om</value>
+  </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
     <value>EE-mail bevestiging nodig</value>
     <comment>Email confirmation required</comment>
@@ -326,7 +329,7 @@
     <comment>New password:</comment>
   </data>
   <data name="Email_Body_PaymentInformation" xml:space="preserve">
-    <value>NBetalingsinformatie</value>
+    <value>Betalingsinformatie</value>
     <comment>Payment Information</comment>
   </data>
   <data name="Email_Body_PhoneNumber" xml:space="preserve">
@@ -418,7 +421,7 @@
     <comment>Vehicle #</comment>
   </data>
   <data name="Email_Body_VehicleType" xml:space="preserve">
-    <value>Merk Taxi</value>
+    <value>Kenteken Taxi</value>
     <comment>Vehicle&amp;nbsp;Type</comment>
   </data>
   <data name="Email_Body_Driver" xml:space="preserve">
