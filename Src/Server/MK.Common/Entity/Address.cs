@@ -53,6 +53,11 @@ namespace apcurium.MK.Common.Entity
             get { return ConcatAddressComponents(true); }
         }
 
+        public string DisplayAddressDutch
+        {
+            get { return ConcatAddressComponentsDutch(); }
+        }
+
         private string FirstSectionOfDisplayAddress
         {
             get
@@ -89,6 +94,18 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
+        private string ConcatAddressComponentsDutch()
+        {
+
+            var firstSection = string.Join(" ", new[] { Street.ToSafeString(), StreetNumber.ToSafeString() });
+            var addressSections =
+                new[] { firstSection, ZipCode.ToSafeString(), City.ToSafeString(), State.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray();
+
+            var address = string.Join(", ", addressSections);
+
+            return address;
+
+        }
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
 			var addressSections = IsZipCodeReversedFormat()

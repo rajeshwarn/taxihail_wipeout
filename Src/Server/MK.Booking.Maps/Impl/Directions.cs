@@ -21,20 +21,19 @@ namespace apcurium.MK.Booking.Maps.Impl
             _priceCalculator = priceCalculator;
         }
 
-        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
-		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
+        public Direction GetDirection(double originLat, double originLng, double destinationLat,
+		    double destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
         {
             return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta, overriddenTariff).Result;
         }
 
-        public async Task<Direction> GetDirectionAsync(double? originLat, double? originLng, double? destinationLat,
-            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
+        public async Task<Direction> GetDirectionAsync(double originLat, double originLng, double destinationLat,
+            double destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false, Tariff overriddenTariff = null)
         {
             var result = new Direction();
 
             var direction = await _client.GetDirectionsAsync(
-                originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
-                destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
+                originLat, originLng, destinationLat, destinationLng,
                 date).ConfigureAwait(false);
 
             if (direction.Distance.HasValue)

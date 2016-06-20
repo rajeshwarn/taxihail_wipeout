@@ -324,7 +324,20 @@
 	EastsideForARide - Custom strings
 Version bump 3.3.1
 	Addes possibility to acces "Pay in Car" for web order only
+3.5.14
+	Bug Fix - Fix iOS 9 crash when attempting  to select a destination.
+	QappMe - Missing ApplicationName string in language file (reverting to TaxiHail).
+	
+3.5.15 
+	ARRO-1009 - theRide ES - CreateOrder request to specify which vehicle.
 
+3.5.16 
+	HotFix - Honey Badger was being polled incorrectly after vehicle assignment.	
+
+3.5.17
+	TAX-46 Keolis (Yellowcab OC) created a new resource file for Yellowcab OC Kiosk (Yellowcab OC Kiosk.resx) 
+	Updated text in new file and existing resource file (Yellowcab OC.resx) to include the word "available"
+	TAX-68 QappMe issues identified in defect plus all other new requests regarding the email receipt and booking confirmation where were informally reported have been addressed.
 
 
 

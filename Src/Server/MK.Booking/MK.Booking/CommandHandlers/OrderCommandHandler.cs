@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
                     command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                     command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId,
-                    command.OriginatingIpAddress, command.KountSessionId);
+                    command.OriginatingIpAddress, command.KountSessionId, command.AssignVehicleId);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
                 command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                 command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId,
-                command.OriginatingIpAddress, command.KountSessionId);
+                command.OriginatingIpAddress, command.KountSessionId, command.AssignVehicleId);
 
 			if (command.Payment.PayWithCreditCard)
 			{
