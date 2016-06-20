@@ -338,6 +338,7 @@ Version bump 3.3.1
 	TAX-46 Keolis (Yellowcab OC) created a new resource file for Yellowcab OC Kiosk (Yellowcab OC Kiosk.resx) 
 	Updated text in new file and existing resource file (Yellowcab OC.resx) to include the word "available"
 	TAX-68 QappMe issues identified in defect plus all other new requests regarding the email receipt and booking confirmation where were informally reported have been addressed.
+	Modified Address.cs file to allow DisplayAddress to be formattable for Netherlands format (StreetName Stree Number, Postal Code City, State
 
 
 
