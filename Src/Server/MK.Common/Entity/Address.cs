@@ -74,7 +74,12 @@ namespace apcurium.MK.Common.Entity
         {
             get
             {
-                var lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
+
+				var lastSection = string.Join (" ", IsZipCodeReversedFormat()
+					? new[] { ZipCode.ToSafeString(), City.ToSafeString() }
+					: new[] { State.ToSafeString(), ZipCode.ToString() });
+				
+
                 if (!lastSection.HasValueTrimmed())
                 {
                     lastSection = string.Empty;
@@ -86,8 +91,9 @@ namespace apcurium.MK.Common.Entity
 
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
-            var addressSections =
-                new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
+			var addressSections = IsZipCodeReversedFormat()
+				? new[] { FirstSectionOfDisplayAddress, LastSectionOfDisplayAddress, State.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray()
+				: new[] { FirstSectionOfDisplayAddress, City.ToSafeString(), LastSectionOfDisplayAddress }.Where(x => x.HasValueTrimmed()).ToArray();
 
             if (FirstSectionOfDisplayAddress.HasValueTrimmed() 
                 && LastSectionOfDisplayAddress.HasValueTrimmed() 
@@ -258,5 +264,32 @@ namespace apcurium.MK.Common.Entity
 
             return reversed;
         }
-    }
+
+		/// <summary>
+		/// Determines if the zip code portion of the address should be displayed in reversed order (Netherlands)
+		/// </summary>
+		/// <returns><c>true</c> if this instance is reversed format; otherwise, <c>false</c>.</returns>
+		private bool IsZipCodeReversedFormat()
+		{
+			var reversed = false;
+
+			try
+			{
+				var indexOfZipCode = FullAddress.IndexOf(ZipCode, StringComparison.InvariantCultureIgnoreCase);
+				var indexOfCity = FullAddress.IndexOf(City, StringComparison.InvariantCultureIgnoreCase);
+
+				if(indexOfZipCode >= 0 && indexOfCity >= 0)
+				{
+					// we succesfully found the 2 indexes in FullAddress
+					reversed = indexOfZipCode < indexOfCity;
+				}
+			}
+			catch
+			{
+			}
+
+			return reversed;
+		}
+	
+	}
 }
