@@ -63,8 +63,8 @@ namespace apcurium.MK.Common.Entity
             get
             {
                 var firstSection = string.Join(" ", IsReversedFormat() 
-                    ? new[] { Street.ToSafeString(), StreetNumber.ToSafeString() } 
-                    : new[] { StreetNumber.ToSafeString(), Street.ToSafeString() });
+                    ? new[] { Street.ToSafeString(), StreetNumber.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray()
+                    : new[] { StreetNumber.ToSafeString(), Street.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray());
 
                 if (!firstSection.HasValueTrimmed())
                 {
@@ -79,10 +79,20 @@ namespace apcurium.MK.Common.Entity
         {
             get
             {
+                //string lastSection = string.Empty;
 
-				var lastSection = string.Join (" ", IsZipCodeReversedFormat()
-					? new[] { ZipCode.ToSafeString(), City.ToSafeString() }
-					: new[] { State.ToSafeString(), ZipCode.ToString() });
+                //if (IsZipCodeReversedFormat())
+                //{
+                //    lastSection = string.Join(" ", ZipCode.ToSafeString(), City.ToSafeString());
+                //}
+                //else
+                //{
+                //    lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
+                //}
+
+                var lastSection = string.Join (" ", IsZipCodeReversedFormat()
+					? new[] { ZipCode.ToSafeString(), City.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray()
+					: new[] { State.ToSafeString(), ZipCode.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray());
 				
 
                 if (!lastSection.HasValueTrimmed())
