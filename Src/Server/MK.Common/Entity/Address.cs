@@ -79,17 +79,6 @@ namespace apcurium.MK.Common.Entity
         {
             get
             {
-                //string lastSection = string.Empty;
-
-                //if (IsZipCodeReversedFormat())
-                //{
-                //    lastSection = string.Join(" ", ZipCode.ToSafeString(), City.ToSafeString());
-                //}
-                //else
-                //{
-                //    lastSection = string.Join(" ", State.ToSafeString(), ZipCode.ToSafeString());
-                //}
-
                 var lastSection = string.Join (" ", IsZipCodeReversedFormat()
 					? new[] { ZipCode.ToSafeString(), City.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray()
 					: new[] { State.ToSafeString(), ZipCode.ToSafeString() }.Where(x => x.HasValueTrimmed()).ToArray());
@@ -130,7 +119,7 @@ namespace apcurium.MK.Common.Entity
                 return FirstSectionOfDisplayAddress;
             }
 
-            // should return ("StreetNumber Street" or "Street StreetNumber" or "FullAddress"), City, State ZipCode
+			// should return ("StreetNumber Street" or "Street StreetNumber" or "FullAddress"), ("City", "State" "ZipCode" or "ZipCode" "City", "State")
             var address = string.Join(", ", addressSections);
 
             if (useBuildingName && BuildingName.HasValueTrimmed())
