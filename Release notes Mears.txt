@@ -22,3 +22,6 @@
 	Fixes from Production 3_5 brought into the Mears branch:
 	ARRO-1063 - Arro Taxihail 3.5.13 crashes when calculating Fare Estimate
 	ARRO-1062 - Royal Taxi Changing Destination causes crash
+	
+0.5.4
+	TAX-80 application was crashing when viewing the history details of a trop on iOS.
