@@ -25,3 +25,6 @@
 	
 0.5.4
 	TAX-80 application was crashing when viewing the history details of a trop on iOS.
+	
+0.5.5
+	Fixed the double slash issue in the URLs in the HttpClientExtensions class that was causing some 404 errors.
