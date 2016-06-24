@@ -40,6 +40,12 @@ namespace apcurium.MK.Common.Extensions
 
             var currentRelativeUrl = client.BaseAddress.LocalPath;
 
+            if (currentRelativeUrl.EndsWith("/") && url.StartsWith("/"))
+            {
+                // there will be 2 forward slashes if we concatenate these strings, so remove the trailing slash at the end of the server URL
+                currentRelativeUrl = currentRelativeUrl.Substring(0, currentRelativeUrl.Length - 1);
+            }
+
             return url.StartsWith("/") || currentRelativeUrl.EndsWith("/")
                 ? currentRelativeUrl + url
                     : "{0}/{1}".InvariantCultureFormat(currentRelativeUrl, url);
