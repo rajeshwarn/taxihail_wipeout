@@ -99,10 +99,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void Initialize()
 		{
-			var mileageRateText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerQuarterMile") : Localize ("BaseRate_PerTenthMile");
-			var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency (BaseRate.PerMileRate / 4): ToCurrency (BaseRate.PerMileRate / 10);
+			//var mileageRateText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerQuarterMile") : Localize ("BaseRate_PerTenthMile");
+			//var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency (BaseRate.PerMileRate / 4): ToCurrency (BaseRate.PerMileRate / 10);
+            var mileageRateText = ServiceType == ServiceType.Taxi ? Localize("BaseRate_PerQuarterMile") : Localize("BaseRate_PerSixthMile");
+            var mileageRateAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate.PerMileRate / 4) : ToCurrency(BaseRate.PerMileRate / 6);
 
-			var waitTimeText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerEightySeconds") : Localize ("BaseRate_PerMinute");
+            var waitTimeText = ServiceType == ServiceType.Taxi ? Localize ("BaseRate_PerEightySeconds") : Localize ("BaseRate_PerMinute");
 			var waitTimeAmount = ServiceType == ServiceType.Taxi ? ToCurrency(BaseRate.WaitTime * 1.3333333333m) : ToCurrency (BaseRate.WaitTime);
 
 			var descriptionsText = BaseRate != null 

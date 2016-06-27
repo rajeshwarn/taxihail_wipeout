@@ -758,6 +758,7 @@
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="BaseRate_PerMileRate">Per Mile Rate</string>
   <string name="BaseRate_PerTenthMile">{0} ({1} 1/10mi)</string>
+  <string name="BaseRate_PerSixthMile">{0} ({1} 1/6mi)</string>
   <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
   <string name="BaseRate_MinimumFare">Minimum Fare</string>
   <string name="BaseRate_WaitTime">Wait Time</string>
