@@ -2391,7 +2391,7 @@
 		<value>{0} ({1} 1/10mi)</value>
 	</data>
   <data name="BaseRate_PerSixthMile" xml:space="preserve">
-	<value>{0} ({1} per sixth mile)</value>
+	<value>{0} ({1} 1/6mi)</value>
 	</data>
   <data name="BaseRate_BaseRate" xml:space="preserve">
 		<value>Base Rate (no miles)</value>
