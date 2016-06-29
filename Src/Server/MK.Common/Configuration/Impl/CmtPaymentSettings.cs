@@ -99,13 +99,13 @@ namespace apcurium.MK.Common.Configuration.Impl
                 {
                     ConsumerKey = ConsumerKeyLuxury,
                     ConsumerSecretKey = ConsumerSecretKeyLuxury,
-                    FleetToken = FleetToken
+                    FleetToken = FleetTokenLuxury
                 }
                 : new Credentials
                 {
                     ConsumerKey = ConsumerKey,
                     ConsumerSecretKey = ConsumerSecretKey,
-                    FleetToken = FleetTokenLuxury
+                    FleetToken = FleetToken
                 };
         }
     }

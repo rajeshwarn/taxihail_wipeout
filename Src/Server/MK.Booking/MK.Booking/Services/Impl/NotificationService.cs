@@ -638,6 +638,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
                 var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
+
                 var templateData = new
                 {
                     ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -779,6 +780,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     HasSocialMediaInstagramURL = !_serverSettings.ServerData.SocialMediaInstagramURL.IsNullOrEmpty(),
                     SocialMediaInstagramImg = String.Concat(baseUrls.BaseUrlAssetsImg, "instagram.png"),
                     SocialMediaInstagramURL = _serverSettings.ServerData.SocialMediaInstagramURL,
+                    ShowTip = (orderStatusDetail.ServiceType != ServiceType.Luxury),
                 };
 
                 SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);

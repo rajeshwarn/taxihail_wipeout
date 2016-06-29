@@ -139,14 +139,22 @@ namespace apcurium.MK.Booking.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
 
+
             // calculate the tip for both services when order is completed
             if (orderStatusDetail.Status == OrderStatus.Completed)
             {
                 var account = _accountDao.FindById(orderStatusDetail.AccountId);
+                var orderPairingDetails = _orderDao.FindOrderPairingById(orderDetail.Id);
+
                 double tipAmount = 0.0;
-                if (account.DefaultTipPercent != null)
+                int? tipPercent;
+                tipPercent = orderPairingDetails != null
+                    ? orderPairingDetails.AutoTipPercentage
+                    : account.DefaultTipPercent;
+
+                if (tipPercent != null && orderStatusDetail.ServiceType != ServiceType.Luxury)
                 {
-                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * orderFromIbs.Fare;
+                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT);
                 }
                 // use the default tip percentage
                 _commandBus.Send(new ChangeOrderStatus
@@ -762,7 +770,8 @@ namespace apcurium.MK.Booking.Jobs
 
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
-            double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
+            double tipPercentage = (orderStatusDetail.ServiceType != ServiceType.Luxury) ? (pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage) : 0;
+
             var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
             var bookingFees = 0m;
