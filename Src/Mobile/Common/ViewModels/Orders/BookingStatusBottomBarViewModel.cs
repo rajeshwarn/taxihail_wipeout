@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
 					&& ParentViewModel.OrderStatusDetail != null
 					&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
-
+								
 				var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
 					|| ParentViewModel.OrderStatusDetail.SelectOrDefault(orderStatus => orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded));
 
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var isPaired = ParentViewModel.ManualRideLinqDetail != null
 						|| await _bookingService.IsPaired(ParentViewModel.Order.SelectOrDefault(order => order.Id, Guid.Empty));
 
-					CanEditAutoTip = isPaired;
+					CanEditAutoTip = isPaired && (ParentViewModel.Order.Settings.ServiceType != ServiceType.Luxury);
                     IsUnpairButtonVisible = isPaired && isUnPairPossible && !_orderWasUnpaired;
 				}
 				else

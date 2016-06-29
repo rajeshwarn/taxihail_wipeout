@@ -757,6 +757,7 @@
 "LinkForApplicationStoreAbsentTitle"="URL is missing";
 "BaseRate_PerMileRate"="Per Mile Rate";
 "BaseRate_PerTenthMile"="{0} ({1} per tenth mile)";
+"BaseRate_PerSixthMile"="{0} ({1} per sixth mile)";
 "BaseRate_BaseRate"="Base Rate (no miles)";
 "BaseRate_MinimumFare"="Minimum Fare";
 "BaseRate_WaitTime"="Wait Time";
