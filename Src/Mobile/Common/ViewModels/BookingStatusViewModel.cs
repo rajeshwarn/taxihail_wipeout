@@ -802,6 +802,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private string _vehicleInfoText;
+		public string VehicleInfoText 
+		{
+			get { return _vehicleInfoText; }
+			set 
+			{
+				_vehicleInfoText = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		private Order _order;
 		public Order Order
         {
@@ -1105,6 +1116,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				StatusInfoText = statusInfoText;
+
+
+				VehicleInfoText = status.DriverInfos != null 
+					? status.DriverInfos.FullVehicleInfo 
+					: String.Empty; 
+				
 				OrderStatusDetail = status;
 
 				// Starts autofollowing vehicle.
