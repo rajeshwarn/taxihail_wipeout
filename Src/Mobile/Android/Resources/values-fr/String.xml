@@ -68,6 +68,7 @@
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
   <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
+  <string name="HistoryDetailVehicleTypeLabel">Vehicle Type:</string>
   <string name="Reset">Reset</string>
   <string name="Cancel">Cancel</string>
   <string name="Continue">Continue</string>

@@ -314,6 +314,9 @@
   <data name="HistoryDetailServiceTypeLabel" xml:space="preserve">
     <value>Service Type:</value>
   </data>
+  <data name="HistoryDetailVehicleTypeLabel" xml:space="preserve">
+    <value>Vehicle Type:</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>

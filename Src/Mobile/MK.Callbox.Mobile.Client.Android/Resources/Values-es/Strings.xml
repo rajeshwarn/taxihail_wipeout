@@ -792,6 +792,7 @@
   <string name="SelectedCreditCard">Tarjeta de crédito seleccionada actualmente</string>
   <string name="NoCreditCard">No ha seleccionado una tarjeta de crédito</string>
   <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
+  <string name="HistoryDetailVehicleTypeLabel">Vehicle Type:</string>
   <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
