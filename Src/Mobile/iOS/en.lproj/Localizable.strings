@@ -65,6 +65,7 @@
 "HistoryDetailAuthorizationLabel"="Authorization:";
 "HistoryDetailPromoLabel"="Promo Code:";
 "HistoryDetailServiceTypeLabel"="Service Type:";
+"HistoryDetailVehicleTypeLabel"="Vehicle Type:";
 "Reset"="Reset";
 "Cancel"="Cancel";
 "Continue"="Continue";
