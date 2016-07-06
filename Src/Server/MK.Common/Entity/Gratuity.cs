@@ -9,6 +9,6 @@ namespace apcurium.MK.Common.Entity
         public Guid OrderId { get; set; }
         
         public int Percentage { get; set; }
-        public static int[] GratuityOptions { get { return new int[] { 0, 5, 10, 15 }; } }
+        public static int[] GratuityOptions { get { return new int[] { 0, 10, 15, 20 }; } }
     }
 }

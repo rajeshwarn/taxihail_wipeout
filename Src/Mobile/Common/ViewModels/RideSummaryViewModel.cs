@@ -12,6 +12,11 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive;
+using System.Threading;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,6 +24,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 	    private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IBookingService _bookingService;
+		private readonly SerialDisposable _subscriptions = new SerialDisposable();
+		private bool _isSummaryRefreshing;
+		private int _refreshPeriodGratuity = 60; // in seconds
+		private DateTime _GratuityScreenShownTime;
 
 		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService)
 		{
@@ -33,6 +42,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CanRate = false;
             NeedToSelectGratuity = needToSelectGratuity;
 
+			if (NeedToSelectGratuity) 
+			{
+				_GratuityScreenShownTime = DateTime.UtcNow;
+
+				_subscriptions.Disposable = GetTimerObservable()
+					.ObserveOn(SynchronizationContext.Current)
+					.Where(_ => !_isSummaryRefreshing)
+					.Do(_ =>
+						{
+							//if (!forceCenterMap)
+							//{
+							//	return;
+							//}
+
+							//CenterMapOnPinsIfNeeded();
+							//forceCenterMap = false;
+						})
+					.SelectMany(async (_) =>
+						{
+							_isSummaryRefreshing = true;
+							await RefreshStatus();
+							_isSummaryRefreshing = false;
+							return Unit.Default;
+						})
+					.Subscribe(
+						_ => { }, 
+						ex =>
+						{
+							Logger.LogMessage("An unhandled error occurred in the eHail RideSummary observable");
+							Logger.LogError(ex);
+						},
+						() => Logger.LogMessage("eHail: RideSummary Observable triggered OnCompleted")
+					);
+				
+			}
+
+
 			using (this.Services().Message.ShowProgress())
 			{
 				if (Settings.RatingEnabled) 
@@ -40,6 +86,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					await InitRating ();
 				}
 			}
+		}
+
+		private async Task RefreshStatus()
+		{
+			// if the gratuity screen has been displayed for longer than the threshold, go back to home screen.
+			var span = DateTime.UtcNow.Subtract(_GratuityScreenShownTime);
+
+			if (span.Minutes >= Settings.OrderStatus.ClientGratuityTimePeriod) 
+			{
+
+				_subscriptions.Disposable = null;
+
+				PrepareNewOrder.ExecuteIfPossible();
+				Close(this);
+			}
+
+
+		}
+
+
+		private IObservable<Unit> GetTimerObservable()
+		{
+			_refreshPeriodGratuity = Settings.OrderStatus.ClientPollingIntervalGratuity;
+
+			return Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriodGratuity))
+				.Select(_ => Unit.Default);
 		}
 
 		private bool _needToSelectGratuity;
@@ -201,6 +273,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public ICommand PayGratuity {
 			get {
+
+				// tear down observable timer here
+
 				return this.GetCommand (async () => {
 					await _bookingService.PayGratuity (new Gratuity { OrderId = _orderId, Percentage = SelectedGratuity });
 					NeedToSelectGratuity = false;

@@ -17,7 +17,9 @@ namespace MK.Common.Configuration
 
 		    OrderStatus = new OrderStatusSettingContainer
 		    {
-                ClientPollingInterval = 10
+                ClientPollingInterval = 10, 		// seconds
+				ClientPollingIntervalGratuity = 60, // seconds
+				ClientGratuityTimePeriod = 120		// minutes
 		    };
 
 		    GCM = new GCMSettingContainer
