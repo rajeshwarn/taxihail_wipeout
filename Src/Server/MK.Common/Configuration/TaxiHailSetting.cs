@@ -19,7 +19,7 @@ namespace MK.Common.Configuration
 		    {
                 ClientPollingInterval = 10, 		// seconds
 				ClientPollingIntervalGratuity = 60, // seconds
-				ClientGratuityTimePeriod = 120		// minutes
+				ClientPollingGratuityTimePeriod = 120		// minutes
 		    };
 
 		    GCM = new GCMSettingContainer
