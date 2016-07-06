@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ConfigurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 new OrderDao(() => new BookingDbContext(DbName)),
+                new OrderNotificationsDetailDao(() => new BookingDbContext(DbName)),
                 new AccountDao(() => new BookingDbContext(DbName)), 
                 new StaticMap(),
                 null,

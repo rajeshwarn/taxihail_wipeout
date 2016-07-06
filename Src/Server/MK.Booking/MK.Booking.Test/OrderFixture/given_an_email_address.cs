@@ -94,6 +94,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 _serverSettings,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,
+                null,
                 new AccountDao(context), 
                 new StaticMap(),
                 null,
