@@ -218,9 +218,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }
 
-        [CustomizableByCompany, SendToClient]
-        [Display(Name = "Configuration - Need To Select Gratuity", Description = "Show The Additional Gratuity Screen")]
-        public bool NeedToSelectGratuity { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Configuration - No Show Warning Timeout", Description = "Time (in minutes) before the no show warning is sent to the user")]
