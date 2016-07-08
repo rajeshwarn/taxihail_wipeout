@@ -16,7 +16,9 @@ namespace MK.Common.Configuration
             OrderStatus = new OrderStatusSettingContainer
             {
                 ClientPollingInterval = 10,
-                ServerPollingInterval = 10
+                ServerPollingInterval = 10,
+                ClientPollingGratuityTimePeriod = 120,  // minutes
+                ClientPollingIntervalGratuity = 60      // seconds
             };
 
 
@@ -103,6 +105,8 @@ namespace MK.Common.Configuration
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
             CompanyTimeZone = TimeZones.NotSet;
+            NeedToSelectGratuity = true;
+            NoShowWarningTimeout = 10;
 
             CmtGeo = new CmtGeoSettingContainer()
             {
@@ -213,6 +217,14 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }
+
+        [CustomizableByCompany, SendToClient]
+        [Display(Name = "Configuration - Need To Select Gratuity", Description = "Show The Additional Gratuity Screen")]
+        public bool NeedToSelectGratuity { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - No Show Warning Timeout", Description = "Time (in minutes) before the no show warning is sent to the user")]
+        public int NoShowWarningTimeout { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Configuration - Cancellation Fees Window", Description = "Window (in seconds) where the user can cancel an order without being charged cancellation fees. Window starts when taxi gets assigned.")]

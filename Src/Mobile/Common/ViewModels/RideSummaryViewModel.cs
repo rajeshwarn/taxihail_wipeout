@@ -93,11 +93,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			// if the gratuity screen has been displayed for longer than the threshold, go back to home screen.
 			var span = DateTime.UtcNow.Subtract(_GratuityScreenShownTime);
 
-			if (span.Minutes >= Settings.OrderStatus.ClientGratuityTimePeriod) 
+			if (span.Minutes >= Settings.OrderStatus.ClientPollingGratuityTimePeriod) 
 			{
-
 				_subscriptions.Disposable = null;
-
 				PrepareNewOrder.ExecuteIfPossible();
 				Close(this);
 			}
