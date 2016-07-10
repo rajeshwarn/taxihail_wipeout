@@ -62,39 +62,54 @@ namespace apcurium.MK.Booking.Maps.Impl
 			longitude = (!longitude.HasValue || longitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLongitude : longitude;
 
             var popularAddresses = Enumerable.Empty<Address>();
+
+            var topPopularAddresses = Enumerable.Empty<Address>();
+            var bottomPopularAddresses = Enumerable.Empty<Address>();
+
+
+            popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
+                               select a;
+
+            topPopularAddresses = popularAddresses.Take(_appSettings.Data.NumberOfPreferredPlacesToShow);
+            
             if (latitude.HasValue && longitude.HasValue)
             {
                 if (string.IsNullOrEmpty(query))
                 {
-                    popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
-                        select a;
+                    bottomPopularAddresses = popularAddresses.Skip(_appSettings.Data.NumberOfPreferredPlacesToShow);
                 }
                 else
                 {
-                    var words = query.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
-                        where
-                            words.All(
-                                w =>
-                                    a.FriendlyName.ToUpper().Contains(w.ToUpper()) ||
-                                    a.FullAddress.ToUpper().Contains(w.ToUpper()))
-                        select a;
+
+                    var words = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    bottomPopularAddresses = from a in popularAddresses.Skip(_appSettings.Data.NumberOfPreferredPlacesToShow)
+                                        where
+                                            words.All(
+                                                w =>
+                                                    a.FriendlyName.ToUpper().Contains(w.ToUpper()) ||
+                                                    a.FullAddress.ToUpper().Contains(w.ToUpper()))
+                                        select a;
+
                 }
 
-                popularAddresses = popularAddresses.ForEach(p => p.AddressType = "popular");
+                bottomPopularAddresses = bottomPopularAddresses.ForEach(p => p.AddressType = "popular");
             }
 
             var places = !query.HasValueTrimmed() 
                 ? _client.GetNearbyPlaces(latitude, longitude, currentLanguage, radius) 
                 : _client.SearchPlaces(latitude, longitude, query, currentLanguage, radius);
 
-            var result = popularAddresses
+            var result = bottomPopularAddresses
                 .Concat(places.Select(ConvertToAddress));
 
             if (latitude.HasValue && longitude.HasValue)
             {
                 result = result.OrderBy(p => AddressSortingHelper.GetRelevance(p, query, latitude, longitude));
             }
+
+            // make sure the company favorites are at the top
+            result = topPopularAddresses
+                .Concat(result);
 
             // take top 15
             result = result.Take(15);

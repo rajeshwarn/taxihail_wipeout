@@ -340,6 +340,13 @@ Version bump 3.3.1
 	TAX-68 QappMe issues identified in defect plus all other new requests regarding the email receipt and booking confirmation where were informally reported have been addressed.
 	Modified Address.cs file to allow DisplayAddress to be formattable for Netherlands format (StreetName Stree Number, Postal Code City, State
 
+3.5.18
+	TAX-42 There are two new company settings to address the issues identified in this defect:
+	NumberOfPreferredPlacesToShow, controls the number of popular places defined in the company settings to show at the top of the list of popular places returned by the mapping API
+	The number selected will be placed at the top of the list regardless of proximity, and the remaining popular places will be appended (up to a maximum of 15 places) and 
+	the remaining subset will be sorted by proximity.
+	DefaultPickupLocationTabWeb, used to control which tab should be the first tab displayed on the address selection control in the web interface.
+	Options are search, places and favorites
 
 
 
