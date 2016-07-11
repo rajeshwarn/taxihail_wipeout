@@ -408,8 +408,6 @@ namespace apcurium.MK.Booking.Services.Impl
             string hourSuffix = String.Empty;
             if (_serverSettings.ServerData.PriceFormat == "nl-NL")
             {
-                pickupAddressDisplay = pickupAddress.DisplayAddressDutch;
-                dropOffAddressDisplay = hasDropOffAddress ? dropOffAddress.DisplayAddressDutch : "-";
                 hourSuffix = "uur";
                 trunkPrefix = settings.Phone.StartsWith("0")
                     ? String.Empty
@@ -663,8 +661,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 string hourSuffix = String.Empty;
                 if (_serverSettings.ServerData.PriceFormat == "nl-NL")
                 {
-                    pickupAddressDisplay = pickupAddress.DisplayAddressDutch;
-                    dropOffAddressDisplay = hasDropOffAddress ? dropOffAddress.DisplayAddressDutch : "-";
                     hourSuffix = "uur";
                 }
 
