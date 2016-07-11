@@ -171,6 +171,7 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Need To Select Gratuity", Description = "Show The Additional Gratuity Screen")]
+        [LiveDoc("This is my recommendation")]
         public bool NeedToSelectGratuity { get; protected set; }
 
         [SendToClient]
@@ -595,5 +596,20 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
         public bool DebugViewEnabled { get; protected set; }
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Class |
+                           System.AttributeTargets.Struct |
+                           System.AttributeTargets.Property)
+    ]
+    public class LiveDoc : System.Attribute
+    {
+        private string recommendedSetting;
+        
+
+        public LiveDoc(string recommendedSetting)
+        {
+            this.recommendedSetting = recommendedSetting;
+        }
     }
 }

@@ -77,6 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ? Resource.Drawable.up_arrow_light
                 : Resource.Drawable.down_arrow_light;
 
+            // should we check _baseRateControl.BaseRateToggled before showing destination address control? I need this comment for now
+            AutoShowDestinationAddress(_baseRateControl.BaseRateToggled);
+
             _baseRateExpandImage.SetImageDrawable(Resources.GetDrawable(toggleResource));
         }
 
@@ -309,8 +312,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For (v => v.Vehicle)
                 .To (vm => vm.SelectedVehicleType);
 
+            set.Bind(_viewVehicleType)
+                .For(v => v.BaseRateToggled)
+                .To(vm => vm.BaseRateToggled);
+
             set.Apply ();
 		}
+
+        private void AutoShowDestinationAddress(bool state)
+        {
+            ViewModel.BaseRateToggled = state;
+        }
     }
 }
       

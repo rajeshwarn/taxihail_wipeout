@@ -99,10 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				PrepareNewOrder.ExecuteIfPossible();
 				Close(this);
 			}
-
-
 		}
-
 
 		private IObservable<Unit> GetTimerObservable()
 		{

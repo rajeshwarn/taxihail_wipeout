@@ -240,13 +240,23 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         // This method is used to help find the correct GetOrdersStatus in IBS.
-        private IEnumerable<TOrderStatus_5> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        private IEnumerable<TOrderStatus_6> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
         {
             var ibsOrders = ibsOrdersIds.ToArray();
 
             try
             {
-                return service.GetOrdersStatus_5(UserNameApp, PasswordApp, ibsOrders);
+                return service.GetOrdersStatus_6(UserNameApp, PasswordApp, ibsOrders);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_6 is not available doing a fallback to GetOrdersStatus_5");
+            }
+
+            try
+            {
+                return service.GetOrdersStatus_5(UserNameApp, PasswordApp, ibsOrders)
+                    .Select(OrderStatus5ToOrderStatus6);
             }
             catch (Exception)
             {
@@ -257,7 +267,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 // We need to update the returned object to version 5 of TOrderStatus.
                 return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders)
-                    .Select(OrderStatus4ToOrderStatus5);
+                    .Select(OrderStatus4ToOrderStatus6);
             }
             catch (Exception)
             {
@@ -268,7 +278,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 // We need to update the returned object to version 5 of TOrderStatus.
                 return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
-                    .Select(OrderStatus3ToOrderStatus5);
+                    .Select(OrderStatus3ToOrderStatus6);
             }
             catch (Exception)
             {
@@ -277,12 +287,13 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             // We need to update the returned object to version 5 of TOrderStatus.
             return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
-                .Select(OrderStatus2ToOrderStatus5);
+                .Select(OrderStatus2ToOrderStatus6);
         }
 
-        private static TOrderStatus_5 OrderStatus2ToOrderStatus5(TOrderStatus_2 orderStatus)
+        private static TOrderStatus_6 OrderStatus2ToOrderStatus6(TOrderStatus_2 orderStatus)
         {
-            return new TOrderStatus_5
+
+            return new TOrderStatus_6
             {
                 OrderStatus = orderStatus.OrderStatus,
                 CallNumber = orderStatus.CallNumber,
@@ -307,26 +318,36 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
         }
 
-        private static TOrderStatus_5 OrderStatus3ToOrderStatus5(TOrderStatus_3 orderStatus)
+        private static TOrderStatus_6 OrderStatus3ToOrderStatus6(TOrderStatus_3 orderStatus)
         {
-            var orderStatus5 = OrderStatus2ToOrderStatus5(orderStatus);
+            var orderStatus6 = OrderStatus2ToOrderStatus6(orderStatus);
 
-            orderStatus5.PairingCode = orderStatus.PairingCode;
-            orderStatus5.Surcharge = orderStatus.Surcharge;
+            orderStatus6.PairingCode = orderStatus.PairingCode;
+            orderStatus6.Surcharge = orderStatus.Surcharge;
 
-            return orderStatus5;
+            return orderStatus6;
         }
 
-        private static TOrderStatus_5 OrderStatus4ToOrderStatus5(TOrderStatus_4 orderStatus)
+        private static TOrderStatus_6 OrderStatus4ToOrderStatus6(TOrderStatus_4 orderStatus)
         {
-            var orderStatus5 = OrderStatus3ToOrderStatus5(orderStatus);
+            var orderStatus6 = OrderStatus3ToOrderStatus6(orderStatus);
 
-            orderStatus5.DriverNumber = orderStatus.DriverNumber;
-            orderStatus5.OriginalImg = orderStatus.OriginalImg;
-            orderStatus5.ThumbnailImg = orderStatus.ThumbnailImg;
-            orderStatus5.WebImg = orderStatus.WebImg;
+            orderStatus6.DriverNumber = orderStatus.DriverNumber;
+            orderStatus6.OriginalImg = orderStatus.OriginalImg;
+            orderStatus6.ThumbnailImg = orderStatus.ThumbnailImg;
+            orderStatus6.WebImg = orderStatus.WebImg;
 
-            return orderStatus5;
+            return orderStatus6;
+        }
+
+        private static TOrderStatus_6 OrderStatus5ToOrderStatus6(TOrderStatus_5 orderStatus)
+        {
+            var orderStatus6 = OrderStatus4ToOrderStatus6(orderStatus);
+
+            orderStatus6.Discount = orderStatus.Discount;
+            orderStatus6.Extras = orderStatus.Extras;
+
+            return orderStatus6;
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
