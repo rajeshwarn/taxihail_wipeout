@@ -1161,6 +1161,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
 				: string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
     	}
+
+		public bool IsDestinationModeOpened()
+		{
+			var x = (bool)_isDestinationModeOpenedSubject.FirstOrDefault();
+			return x;
+		}
+
+		public async Task<bool> GetIsDestinationModeOpened()
+		{
+			var currentDestinationModeOpenState = await _isDestinationModeOpenedSubject.Take(1).ToTask ();
+			return currentDestinationModeOpenState;
+		}
+
 	}
 }
 

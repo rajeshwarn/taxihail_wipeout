@@ -147,7 +147,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
                     CenterMapOnPinsIfNeeded();
-                    forceCenterMap = false;
+                    //forceCenterMap = false; 
+					//Please leave this comment in for now, this was causing the map not to centre, but I am not sure it was the correct approach
                 })
                 .SelectMany(async (_, cancellationToken) =>
 				{
@@ -464,6 +465,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
 				.Select(_ => Unit.Default);
 		}
+
 
 		private void StopOrientationServiceIfNeeded()
 		{
@@ -1340,7 +1342,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             Logger.LogMessage("GoToSummary");
 
-            var needToSelectGratuity = GetServiceTypeForCurrentOrder() == ServiceType.Luxury;
+			var needToSelectGratuity = false; 
+			//TODO to re-enable Additional Gratuity feature for MEARS
+			//GetServiceTypeForCurrentOrder() == ServiceType.Luxury;
 
             ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
 

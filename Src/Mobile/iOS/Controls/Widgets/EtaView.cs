@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private NSLayoutConstraint _constraintArrowImageWidth;
 
         private bool _baseRateToggled;
-        private bool BaseRateToggled
+        public bool BaseRateToggled
         {
             get
             {
@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set
             {
                 _baseRateToggled = value;
+				OrderOptionsControl.AutoShowDestinationAddress(_baseRateToggled);
                 // TODO this will only work for dark company colors
                 ArrowImage.Highlighted = value;
             }

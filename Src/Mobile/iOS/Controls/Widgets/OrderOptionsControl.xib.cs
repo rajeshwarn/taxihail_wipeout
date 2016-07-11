@@ -93,6 +93,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(ve => ve.AccessibilityLabel)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
 
+			set.Bind (viewEta)
+				.For (v => v.BaseRateToggled)
+				.To (vm => vm.BaseRateToggled);
+			
             viewDestination.AddressButton.AccessibilityHint = Localize.GetValue("DestinationTextPlaceholder");
 
             set.Bind(viewDestination)
@@ -203,7 +207,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 SetNeedsDisplay();
             }
+				
         }
+
+		public void AutoShowDestinationAddress(bool state)
+		{
+			ViewModel.BaseRateToggled = state;
+		}
+
     }
 }
 
