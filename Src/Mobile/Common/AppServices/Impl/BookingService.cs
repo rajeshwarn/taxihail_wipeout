@@ -126,8 +126,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool NeedToSelectGratuity
         {
             get
-            {
-                return HasUnratedLastOrder && UserCache.Get<string>("NeedToSelectGratuity").HasValue() && bool.Parse(UserCache.Get<string>("NeedToSelectGratuity"));
+            {				
+				return HasUnratedLastOrder && UserCache.Get<string>("NeedToSelectGratuity").HasValue() && bool.Parse(UserCache.Get<string>("NeedToSelectGratuity")) && _appSettings.Data.NeedToSelectGratuity;
             }
         }
 

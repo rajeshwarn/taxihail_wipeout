@@ -93,6 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => SendReceiptAvailable);
                 RaisePropertyChanged(() => RebookIsAvailable);
+				RaisePropertyChanged(() => VehicleType);
 		    }
 		}
         
@@ -320,6 +321,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return Order != null && Order.Settings != null
 					? Order.Settings.ServiceType.ToString()
 					: MK.Common.Enumeration.ServiceType.Taxi.ToString();
+			}
+		}
+
+		public string VehicleType
+		{
+			get
+			{
+				return Status != null && Status.DriverInfos != null
+					? Status.DriverInfos.FullVehicleInfo.ToString()
+					: String.Empty;
 			}
 		}
 

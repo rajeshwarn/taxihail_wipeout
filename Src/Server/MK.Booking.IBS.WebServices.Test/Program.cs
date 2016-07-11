@@ -25,7 +25,7 @@ namespace MK.Booking.IBS.WebServices.Test
             //var di = direction.GetDirectionDistance(51.434028, -0.526826, 51.5035709, -0.199753);
 
             Console.WriteLine("Calling CallGetPriceEstimate web service " + baseUrl);
-
+            
             var orderService = new WebOrder7Service { Url = baseUrl + "IWebOrder_7" };
 
 

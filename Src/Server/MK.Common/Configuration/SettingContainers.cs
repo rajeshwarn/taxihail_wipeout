@@ -38,7 +38,16 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Polling Interval Server", Description = "Order status from sever polling interval to IBS (in seconds)")]
         public int ServerPollingInterval { get; protected internal set; }
-    }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Polling Interval Client Gratuity", Description = "App status refresh interval when on gratuity screen (in seconds)")]
+		public int ClientPollingIntervalGratuity { get; protected internal set; }
+	
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Polling Gratuity Time Period", Description = "Amount of time to allow the user to assess an additional gratuity before returning to the home screen (in minutes)")]
+		public int ClientPollingGratuityTimePeriod { get; protected internal set; }
+
+	}
 
     public class GCMSettingContainer
     {

@@ -7,5 +7,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         IList<FeesDetail> GetAll();
 
         FeesDetail GetMarketFees(string market);
+
+        FeesDetail GetFirst();
     }
 }

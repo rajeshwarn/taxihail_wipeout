@@ -271,6 +271,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
+
+        private bool _baseRateToggled;
+        public bool BaseRateToggled
+        {
+            get { return _baseRateToggled; }
+            set
+            {
+                if (_baseRateToggled != value)
+                {
+                    _baseRateToggled = value;
+                    Redraw();
+                }
+            }
+        }
     }
 }
 

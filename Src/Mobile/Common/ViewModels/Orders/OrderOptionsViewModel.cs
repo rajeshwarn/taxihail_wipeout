@@ -485,7 +485,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return true; } // TODO: Settings.DisplayBaseRateInfo
 		}
 
-		public bool BaseRateToggled { get; set; }
+		private bool _baseRateToggled;
+		public bool BaseRateToggled 
+		{ 
+			get { return _baseRateToggled; }
+			set 
+			{
+				_baseRateToggled = value;
+				if (_baseRateToggled) 
+				{
+					_orderWorkflowService.ToggleIsDestinationModeOpened (true);
+				}
+			}
+
+		}
 
 		public bool GroupVehiclesByServiceType 
 		{
@@ -609,6 +622,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 		}
+
+		public ICommand AutoShowDestinationAddress
+		{
+			get
+			{
+				return this.GetCommand(async () => {
+					var currentValue = await _orderWorkflowService.GetIsDestinationModeOpened();
+
+					if(currentValue)
+					{
+						_orderWorkflowService.ToggleIsDestinationModeOpened().FireAndForget();
+						//this.Services().Analytics.LogEvent("DestinationButtonTapped");
+					}
+
+				});
+			}
+		}
+
 
 		public class VehicleSelectionModel
 		{

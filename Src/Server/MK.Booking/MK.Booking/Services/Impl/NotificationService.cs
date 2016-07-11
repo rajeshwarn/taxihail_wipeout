@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IOrderNotificationsDetailDao _orderNotificationDetailDao;
         private readonly IAccountDao _accountDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IOrderNotificationsDetailDao orderNotificationDetailDao,
             IAccountDao accountDao,
             IStaticMap staticMap,
             ISmsService smsService,
@@ -77,6 +79,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _orderNotificationDetailDao = orderNotificationDetailDao;
             _accountDao = accountDao;
             _staticMap = staticMap;
             _smsService = smsService;
@@ -118,6 +121,12 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendArrivedPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            var orderNotificationDetails = _orderNotificationDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+
+            if (orderNotificationDetails != null && orderNotificationDetails.NoShowWarningSent)
+                return; // leave the previous warning message up so the user can see it
+
+
             if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
             {
                 SendPushOrSms(order.AccountId,
@@ -638,6 +647,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
                 var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
+
                 var templateData = new
                 {
                     ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -779,6 +789,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     HasSocialMediaInstagramURL = !_serverSettings.ServerData.SocialMediaInstagramURL.IsNullOrEmpty(),
                     SocialMediaInstagramImg = String.Concat(baseUrls.BaseUrlAssetsImg, "instagram.png"),
                     SocialMediaInstagramURL = _serverSettings.ServerData.SocialMediaInstagramURL,
+                    ShowTip = (orderStatusDetail.ServiceType != ServiceType.Luxury),
                 };
 
                 SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);

@@ -314,6 +314,9 @@
   <data name="HistoryDetailServiceTypeLabel" xml:space="preserve">
     <value>Service Type:</value>
   </data>
+  <data name="HistoryDetailVehicleTypeLabel" xml:space="preserve">
+    <value>Vehicle Type:</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -2391,7 +2394,10 @@
   	<data name="BaseRate_PerTenthMile" xml:space="preserve">
 		<value>{0} ({1} per tenth mile)</value>
 	</data>
-	<data name="BaseRate_BaseRate" xml:space="preserve">
+  <data name="BaseRate_PerSixthMile" xml:space="preserve">
+	<value>{0} ({1} per sixth mile)</value>
+	</data>
+  <data name="BaseRate_BaseRate" xml:space="preserve">
 		<value>Base Rate (no miles)</value>
 	</data>
 	<data name="BaseRate_MinimumFare" xml:space="preserve">

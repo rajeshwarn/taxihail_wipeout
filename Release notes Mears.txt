@@ -28,3 +28,46 @@
 	
 0.5.5
 	Fixed the double slash issue in the URLs in the HttpClientExtensions class that was causing some 404 errors.
+	
+0.5.6
+	Address the majority of the items in the LuxuryHail Issues document.
+	
+	1: For trips using the luxury service, the user's preferred Tip Amount (configured in the payment form) will be ignored since the tip is built into the fare for Luxury.
+	2: The Vehicle type on the driver assignment screen is now being displayed. User should not be able to select the vehicle type for Luxury.
+	3: On the Confirm Order screen, the destination address control displayed when fare breakdown is expanded. There are probably other pending features, but this was the main one that was derived from the last demo.
+	4: Vehicle icons on map now render differently based on taxi and luxury service selection.
+	5: fare icon, the map now centers on the moving vehicle when in trip.
+	6: Vehicle type on the trip history details screen is now being displayed.
+	7: Promotions are now working when configured using the company settings.
+	8: 15 minute no show timer. After 10 mintues, a no show warning is sent to the user. After 15 minutes, the driver can request a no show and if approved, the user is charged a $15.00 no show fee and gets a receipt by email.
+	9: 10 minute no show warning is sent as a push notification as well as a warning message on the booking screen.
+	10: No show receipt is sent after No Show is approved, payment is processed.
+	12: Gratuity screen will now only stay up for a configurable number of minutes (120). Note that the additional gratuity has been disabled in this build, so this feature will not be verifyable.
+	14: The phone number linked to the call button should now change according to the service that is selected. The phone numbers are configurable in the company settings (DB).
+	15: on trip complete for taxi service, you can now submit the rating and go back to the order screen.
+	16: TAX-39 change tip while in car taxi fleet not working, MearsLuxury only for now, and for Taxi service only.
+	17: TAX-48 remove apcurium logos, MearsLuxury only for now
+	18: fleet tokens miss matched with luxury/taxi service types
+	19: ChargeAmountsTimeout is now working, able to process payment form in DirveLinQ.
+	20: Call button width should be reasonable now on iOS when no other buttons are visible on the bottom button bar. Previously the width of the button would shrink down to the width of the Call letters and was too small.
+	21: When user clicks to expand the rate breakdown control, the Destination Address control should be made visible.
+	22: Push notification is being sent when vehicle is in proximity to the pickup address.
+	24: On the email receipt, the drop-off date/time should be in local time (not UTC), have to configure the timzeone in company settings to make this work.
+		
+	Known Issues:
+	For item 21, the toggle will also hide the destination address control when clicked multiple times.
+	
+	PLEASE NOTE: There are a number os T-SQL scripts that must be executed when this build is released. The script will be provided to Scott & Pascal ahead of release time. The T-SQL script should be executed on the MearsLuxury database.
+	
+	PLEASE NOTE: There is a dependency on some IBS web service changes.
+	Please ensure that the changes are pushed to this location prior to building the Middleware and the Mobile apps:
+	http://mdsibs.mears.com:43550/IBScab/IBScab.dll/wsdl/IWEBOrder_7
+	For the purposes of testing, we were using this end point which had the required changes:
+	http://10.10.1.115:80/LAMP/IBSCab.dll/wsdl/IWEBOrder_7
+	The IBS change is to expose a new class called TOrderStatus_6 which populates the VehicleType property.
+	
+
+	
+
+
+	

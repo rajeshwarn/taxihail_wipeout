@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_5 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_6 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -104,6 +104,8 @@ namespace apcurium.MK.Booking.IBS
 
             Discount = orderInfoFromIBS.Discount;
             Extras = orderInfoFromIBS.Extras;
+
+            VehicleType = orderInfoFromIBS.VehicleType.Name;
         }
 
         public bool IsWaitingToBeAssigned

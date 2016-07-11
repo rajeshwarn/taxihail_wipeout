@@ -373,6 +373,7 @@
       <TransformOnBuild>true</TransformOnBuild>
     </None>
     <None Include="DatabaseInitializer_TemporaryKey.pfx" />
+    <None Include="ReadMe_Instructions.txt" />
     <Content Include="testmirroring.params">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

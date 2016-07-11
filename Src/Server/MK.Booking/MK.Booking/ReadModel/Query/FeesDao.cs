@@ -39,5 +39,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     .SingleOrDefault(f => f.Market == market);
             }
         }
+
+        public FeesDetail GetFirst()
+        {
+
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<FeesDetail>()
+                    .ToList()
+                    .FirstOrDefault();
+            }
+        }
+
     }
 }

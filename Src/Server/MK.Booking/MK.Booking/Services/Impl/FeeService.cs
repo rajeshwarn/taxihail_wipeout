@@ -127,7 +127,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
             // As requested by MK, we need to charge booking fees on top of cancellation fees
             var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
-            var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
+            var feesForMarket = orderStatusDetail.Market != null
+                ? _feesDao.GetMarketFees(orderStatusDetail.Market)
+                : _feesDao.GetFirst();
             var noShowFee = feesForMarket != null
                 ? feesForMarket.NoShow + bookingFees
                 : 0;
@@ -149,7 +151,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
             // As requested by MK, we need to charge booking fees on top of cancellation fees
             var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
-            var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
+            var feesForMarket = orderStatusDetail.Market != null
+                ? _feesDao.GetMarketFees(orderStatusDetail.Market)
+                : _feesDao.GetFirst();
             var noShowFee = feesForMarket != null
                 ? feesForMarket.NoShow + bookingFees
                 : 0;

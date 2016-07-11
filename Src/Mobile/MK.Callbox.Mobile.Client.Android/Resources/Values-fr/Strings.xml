@@ -792,12 +792,14 @@
   <string name="SelectedCreditCard">Currently selected credit card</string>
   <string name="NoCreditCard">No credit card selected</string>
   <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
+  <string name="HistoryDetailVehicleTypeLabel">Vehicle Type:</string>
   <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="UnpairCancelOrder">Cancel Order</string>
   <string name="UnpairCancelWarningMessage">Are you sure you want to cancel this order?</string>
   <string name="UnpairCancelWarningMessageWithPromo">If you decide to cancel, you will not be able to use the promotion.</string>
   <string name="BaseRate_PerMileRate">Per Mile Rate</string>
   <string name="BaseRate_PerTenthMile">{0} ({1} per tenth mile)</string>
+  <string name="BaseRate_PerSixthMile">{0} ({1} per sixth mile)</string>
   <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
   <string name="BaseRate_MinimumFare">Minimum Fare</string>
   <string name="BaseRate_WaitTime">Wait Time</string>

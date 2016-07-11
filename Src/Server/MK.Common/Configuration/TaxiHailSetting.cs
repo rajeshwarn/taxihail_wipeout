@@ -17,7 +17,9 @@ namespace MK.Common.Configuration
 
 		    OrderStatus = new OrderStatusSettingContainer
 		    {
-                ClientPollingInterval = 10
+                ClientPollingInterval = 10, 		// seconds
+				ClientPollingIntervalGratuity = 60, // seconds
+				ClientPollingGratuityTimePeriod = 120		// minutes
 		    };
 
 		    GCM = new GCMSettingContainer
@@ -166,6 +168,11 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Use single button for now and later booking", Description = "Replace book now and book later buttons with a single button that will display both options in a popup. (This feature does not work with manual CMT ridelinq pairing.)")]
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Need To Select Gratuity", Description = "Show The Additional Gratuity Screen")]
+        [LiveDoc("This is my recommendation")]
+        public bool NeedToSelectGratuity { get; protected set; }
 
         [SendToClient]
         [Display(Name = "Available Vehicle - Local Mode", Description = "Available Vehicles provider in local market")]
@@ -589,5 +596,20 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
         public bool DebugViewEnabled { get; protected set; }
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Class |
+                           System.AttributeTargets.Struct |
+                           System.AttributeTargets.Property)
+    ]
+    public class LiveDoc : System.Attribute
+    {
+        private string recommendedSetting;
+        
+
+        public LiveDoc(string recommendedSetting)
+        {
+            this.recommendedSetting = recommendedSetting;
+        }
     }
 }

@@ -154,6 +154,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveCanExecuteBookingOperation ();
 
 		Task<bool> UpdateDropOff(Guid orderId);
+
+		bool IsDestinationModeOpened();
+
+		Task<bool> GetIsDestinationModeOpened ();
 	}
 }
 

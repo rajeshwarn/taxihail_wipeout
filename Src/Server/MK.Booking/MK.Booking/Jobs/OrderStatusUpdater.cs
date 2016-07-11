@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Jobs
         
         // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
         private const int TimeBetweenPaymentChangeAndSaveInDb = 15;
-
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _paymentDao;
@@ -139,14 +138,22 @@ namespace apcurium.MK.Booking.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
 
+
             // calculate the tip for both services when order is completed
             if (orderStatusDetail.Status == OrderStatus.Completed)
             {
                 var account = _accountDao.FindById(orderStatusDetail.AccountId);
+                var orderPairingDetails = _orderDao.FindOrderPairingById(orderDetail.Id);
+
                 double tipAmount = 0.0;
-                if (account.DefaultTipPercent != null)
+                int? tipPercent;
+                tipPercent = orderPairingDetails != null
+                    ? orderPairingDetails.AutoTipPercentage
+                    : account.DefaultTipPercent;
+
+                if (tipPercent != null && orderStatusDetail.ServiceType != ServiceType.Luxury)
                 {
-                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * orderFromIbs.Fare;
+                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT);
                 }
                 // use the default tip percentage
                 _commandBus.Send(new ChangeOrderStatus
@@ -411,7 +418,22 @@ namespace apcurium.MK.Booking.Jobs
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed, orderDetail);
+            // If the status is wosARRIVED, and we sent the warning, we should keep displaying the warning, not the message that indicates the vehicle has arrived
+            var orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+
+            var isWarningSent = orderNotification != null
+                ? orderNotification.NoShowWarningSent
+                : false;
+
+            if (ibsStatusId.SoftEqual(VehicleStatuses.Common.Arrived) && isWarningSent)
+            {
+                var alert = string.Format(_resources.Get("PushNotification_NoShowWarning", orderDetail.ClientLanguageCode));
+                orderStatusDetail.IBSStatusDescription = alert;
+            }
+            else
+            {
+                orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed, orderDetail);
+            }
         }
 
         private DateTime GetCurrentOffsetedTime(string companyKey, ServiceType? serviceType = null)
@@ -439,7 +461,7 @@ namespace apcurium.MK.Booking.Jobs
             if (_feeService.CouldBeChargedNoShowFee(orderStatusDetail)
                 && ibsOrderInfo.IsArrived
                 && orderStatusDetail.NoShowStartTime.HasValue
-                && orderStatusDetail.NoShowStartTime.Value.AddMinutes(10) < DateTime.UtcNow)
+                && orderStatusDetail.NoShowStartTime.Value.AddMinutes(_serverSettings.ServerData.NoShowWarningTimeout) < DateTime.UtcNow)
             {
                 _notificationService.SendNoShowWarning(orderStatusDetail.OrderId);
             }
@@ -762,7 +784,8 @@ namespace apcurium.MK.Booking.Jobs
 
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
-            double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
+            double tipPercentage = (orderStatusDetail.ServiceType != ServiceType.Luxury) ? (pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage) : 0;
+
             var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
             var bookingFees = 0m;
@@ -1130,6 +1153,8 @@ namespace apcurium.MK.Booking.Jobs
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
                    || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   
                        && _serverSettings.ServerData.Network.Enabled)
+                   || (ibsOrderInfo.Status == VehicleStatuses.Common.Arrived  // If the taxi has arrived, 
+                      && orderStatusDetail.ServiceType == ServiceType.Luxury) // and the service is Luxury, we need to handle NoShow warnings and fees
                    || (orderStatusDetail.VehicleNumber != ibsOrderInfo.VehicleNumber); // sometimes driver bailed, and we got the status assigned 
                                                                                        //directly after the previous status assigned (to the previous driver)
                                                                                        //so we need to check the vehicle number with the previous one
