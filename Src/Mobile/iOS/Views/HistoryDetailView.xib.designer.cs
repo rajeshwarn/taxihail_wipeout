@@ -1,11 +1,13 @@
 // WARNING
 //
-// This file has been generated automatically by Xamarin Studio to store outlets and
-// actions made in the UI designer. If it is removed, they will be lost.
-// Manual changes to this file may not be handled correctly.
+// This file has been generated automatically by Xamarin Studio from the outlets and
+// actions declared in your storyboard file.
+// Manual changes to this file will not be maintained.
 //
 using Foundation;
+using System;
 using System.CodeDom.Compiler;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -98,152 +100,132 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel txtStatus { get; set; }
-		
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel lblVehicleType { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel txtVehicleType { get; set; }
+
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtServiceType != null) {
-				txtServiceType.Dispose ();
-				txtServiceType = null;
-			}
-
-			if (lblServiceType != null) {
-				lblServiceType.Dispose ();
-				lblServiceType = null;
-			}
-
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
 			}
-
 			if (btnDelete != null) {
 				btnDelete.Dispose ();
 				btnDelete = null;
 			}
-
 			if (btnRateRide != null) {
 				btnRateRide.Dispose ();
 				btnRateRide = null;
 			}
-
 			if (btnRebook != null) {
 				btnRebook.Dispose ();
 				btnRebook = null;
 			}
-
 			if (btnSendReceipt != null) {
 				btnSendReceipt.Dispose ();
 				btnSendReceipt = null;
 			}
-
 			if (btnStatus != null) {
 				btnStatus.Dispose ();
 				btnStatus = null;
 			}
-
 			if (btnViewRating != null) {
 				btnViewRating.Dispose ();
 				btnViewRating = null;
 			}
-
-			if (constraintDestinationLabelToAptRingCodeLabelHeight != null) {
-				constraintDestinationLabelToAptRingCodeLabelHeight.Dispose ();
-				constraintDestinationLabelToAptRingCodeLabelHeight = null;
-			}
-
-			if (constraintDestinationTextToAptRingCodeTextHeight != null) {
-				constraintDestinationTextToAptRingCodeTextHeight.Dispose ();
-				constraintDestinationTextToAptRingCodeTextHeight = null;
-			}
-
 			if (lblAptRingCode != null) {
 				lblAptRingCode.Dispose ();
 				lblAptRingCode = null;
 			}
-
 			if (lblAuthorization != null) {
 				lblAuthorization.Dispose ();
 				lblAuthorization = null;
 			}
-
 			if (lblDestination != null) {
 				lblDestination.Dispose ();
 				lblDestination = null;
 			}
-
 			if (lblOrder != null) {
 				lblOrder.Dispose ();
 				lblOrder = null;
 			}
-
 			if (lblPickup != null) {
 				lblPickup.Dispose ();
 				lblPickup = null;
 			}
-
 			if (lblPickupDate != null) {
 				lblPickupDate.Dispose ();
 				lblPickupDate = null;
 			}
-
 			if (lblPromo != null) {
 				lblPromo.Dispose ();
 				lblPromo = null;
 			}
-
 			if (lblRequested != null) {
 				lblRequested.Dispose ();
 				lblRequested = null;
 			}
-
+			if (lblServiceType != null) {
+				lblServiceType.Dispose ();
+				lblServiceType = null;
+			}
 			if (lblStatus != null) {
 				lblStatus.Dispose ();
 				lblStatus = null;
 			}
-
+			if (lblVehicleType != null) {
+				lblVehicleType.Dispose ();
+				lblVehicleType = null;
+			}
 			if (txtAptRingCode != null) {
 				txtAptRingCode.Dispose ();
 				txtAptRingCode = null;
 			}
-
 			if (txtAthorization != null) {
 				txtAthorization.Dispose ();
 				txtAthorization = null;
 			}
-
 			if (txtDestination != null) {
 				txtDestination.Dispose ();
 				txtDestination = null;
 			}
-
 			if (txtOrder != null) {
 				txtOrder.Dispose ();
 				txtOrder = null;
 			}
-
 			if (txtPickup != null) {
 				txtPickup.Dispose ();
 				txtPickup = null;
 			}
-
 			if (txtPickupDate != null) {
 				txtPickupDate.Dispose ();
 				txtPickupDate = null;
 			}
-
 			if (txtPromo != null) {
 				txtPromo.Dispose ();
 				txtPromo = null;
 			}
-
 			if (txtRequested != null) {
 				txtRequested.Dispose ();
 				txtRequested = null;
 			}
-
+			if (txtServiceType != null) {
+				txtServiceType.Dispose ();
+				txtServiceType = null;
+			}
 			if (txtStatus != null) {
 				txtStatus.Dispose ();
 				txtStatus = null;
+			}
+			if (txtVehicleType != null) {
+				txtVehicleType.Dispose ();
+				txtVehicleType = null;
 			}
 		}
 	}
