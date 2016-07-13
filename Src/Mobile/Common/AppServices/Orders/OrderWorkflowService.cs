@@ -1110,6 +1110,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
+			//if (forceValue && IsDestinationModeOpened())
+			//	return;
+			
 			var currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
 		}
@@ -1162,7 +1165,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				: string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
     	}
 
-		public bool IsDestinationModeOpened()
+		public bool? IsDestinationModeOpened()
 		{
 			var x = (bool)_isDestinationModeOpenedSubject.FirstOrDefault();
 			return x;
