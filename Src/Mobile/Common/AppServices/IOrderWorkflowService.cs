@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> UpdateDropOff(Guid orderId);
 
-		bool IsDestinationModeOpened();
+		bool? IsDestinationModeOpened();
 
 		Task<bool> GetIsDestinationModeOpened ();
 	}

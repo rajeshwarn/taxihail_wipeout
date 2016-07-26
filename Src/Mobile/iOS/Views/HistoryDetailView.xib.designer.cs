@@ -101,6 +101,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		[Outlet]
 		UIKit.UILabel txtStatus { get; set; }
 
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel lblVehicleType { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel txtVehicleType { get; set; }
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (btnCancel != null) {
@@ -171,6 +179,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblStatus.Dispose ();
 				lblStatus = null;
 			}
+			if (lblVehicleType != null) {
+				lblVehicleType.Dispose ();
+				lblVehicleType = null;
+			}
 			if (txtAptRingCode != null) {
 				txtAptRingCode.Dispose ();
 				txtAptRingCode = null;
@@ -210,6 +222,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtStatus != null) {
 				txtStatus.Dispose ();
 				txtStatus = null;
+			}
+			if (txtVehicleType != null) {
+				txtVehicleType.Dispose ();
+				txtVehicleType = null;
 			}
 		}
 	}
