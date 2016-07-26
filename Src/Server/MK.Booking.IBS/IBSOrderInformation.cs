@@ -105,7 +105,9 @@ namespace apcurium.MK.Booking.IBS
             Discount = orderInfoFromIBS.Discount;
             Extras = orderInfoFromIBS.Extras;
 
-            VehicleType = orderInfoFromIBS.VehicleType.Name;
+            VehicleType = (orderInfoFromIBS.VehicleType != null)
+                    ? orderInfoFromIBS.VehicleType.Name 
+                    : String.Empty;
         }
 
         public bool IsWaitingToBeAssigned
