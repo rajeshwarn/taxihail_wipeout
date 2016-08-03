@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				var height = Height > 0
 					? Height
 					: bm.Height;
-
+				
                 var output = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
                 var canvas = new Canvas(output);
 
@@ -40,14 +40,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 paint.AntiAlias = true;
                 paint.Color = Color.Black;
 
-                canvas.DrawARGB(0, 0, 0, 0);
-                canvas.DrawCircle(width / 2, height / 2, width / 2, paint);
+				canvas.DrawARGB(0, 0, 0, 0);
+				canvas.DrawCircle(width / 2, height / 2, width / 2, paint);
 
-                paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
+				paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
 
 				var rect = new Rect(0, 0, width, height);
-
-                canvas.DrawBitmap(bm, rect, rect, paint);
+				canvas.DrawBitmap(bm, null, rect, paint);
 
                 base.SetImageBitmap(output);
                 return;
