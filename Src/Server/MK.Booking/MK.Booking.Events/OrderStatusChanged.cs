@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Events
 
         public double? Surcharge { get; set; }
 
+        public double? Extra { get; set; }
+
         public bool IsCompleted { get; set; }
 
         public string PreviousIBSStatusId { get; set; }

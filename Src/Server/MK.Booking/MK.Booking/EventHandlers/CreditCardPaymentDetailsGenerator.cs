@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Tip = @event.Tip;
                 payment.Toll = @event.Toll;
                 payment.Surcharge = @event.Surcharge;
+                payment.Extra = @event.Extra;
                 payment.BookingFees = @event.BookingFees;
                 payment.IsCancelled = false;
                 payment.FeeType = @event.FeeType;
@@ -96,6 +97,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Surcharge.HasValue || order.Surcharge == 0)
                 {
                     order.Surcharge = Convert.ToDouble(@event.Surcharge);
+                }
+                if (!order.Extra.HasValue || order.Extra == 0)
+                {
+                    order.Extra = Convert.ToDouble(@event.Extra);
                 }
 
                 if (!@event.IsForPrepaidOrder)

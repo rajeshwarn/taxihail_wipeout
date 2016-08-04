@@ -468,6 +468,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                        TollString = _resources.FormatPrice(x.Toll),
                        TipString = _resources.FormatPrice(x.Tip),
                        SurchargeString = _resources.FormatPrice(x.Surcharge),
+                       ExtraString = _resources.FormatPrice(x.Extra),
                        TotalAmountString = _resources.FormatPrice(x.TotalAmount()),
                        IsRideLinqCMTPaymentMode = (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) && (x.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id),
                        StatusString = status != null ? (status.IBSStatusId == VehicleStatuses.Common.NoShow ? "NoShow" : ((OrderStatus)x.Status).ToString()) : string.Empty

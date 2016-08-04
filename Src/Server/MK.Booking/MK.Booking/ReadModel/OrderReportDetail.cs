@@ -207,6 +207,10 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? MdtFare { get; set; }
 
+        public double? MdtExtra { get; set; }
+
+        public double? MdtSurcharge { get; set; }
+
         public decimal? BookingFees { get; set; }
 
         public bool IsPaired { get; set; }

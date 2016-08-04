@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? Surcharge { get; set; }
 
+        public double? Extra { get; set; }
+
         public decimal BookingFees { get; set; }
 
         public bool IsRemovedFromHistory { get; set; }

@@ -499,6 +499,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                     + order.Tax.GetValueOrDefault()
                                     + order.Toll.GetValueOrDefault()
                                     + order.Tip.GetValueOrDefault()
+                                    + order.Extra.GetValueOrDefault()
                                     + order.Surcharge.GetValueOrDefault()) * 100);
 
                 var request = new CmtRideLinqRefundRequest

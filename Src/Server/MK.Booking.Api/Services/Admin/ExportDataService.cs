@@ -162,6 +162,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         orderReportEntry["Payment.MdtTip"] = orderReport.Payment.MdtTip.ToString();
                         orderReportEntry["Payment.MdtToll"] = orderReport.Payment.MdtToll.ToString();
                         orderReportEntry["Payment.MdtFare"] = orderReport.Payment.MdtFare.ToString();
+                        orderReportEntry["Payment.MdtExtra"] = orderReport.Payment.MdtExtra.ToString();
+                        orderReportEntry["Payment.MdtSurcharge"] = orderReport.Payment.MdtSurcharge.ToString();
                         orderReportEntry["Payment.BookingFees"] = orderReport.Payment.BookingFees.ToString();
                         orderReportEntry["Payment.CmtPairingToken"] = orderReport.Payment.PairingToken;
                         orderReportEntry["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString();

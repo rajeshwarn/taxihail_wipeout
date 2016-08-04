@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? Tip { get; set; }
 
         public double? Surcharge { get; set; }
+
+        public double? Extra { get; set; }
         
         public double? Gratuity { get; set; }
 

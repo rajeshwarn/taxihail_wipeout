@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Events
 
         public decimal Surcharge { get; set; }
 
+        public decimal Extra { get; set; }
+
         public string NewCardToken { get; set; }
 
         public bool IsSettlingOverduePayment { get; set; }
