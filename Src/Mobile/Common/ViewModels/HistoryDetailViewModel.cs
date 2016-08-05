@@ -284,6 +284,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					                   + Order.Tax.GetValueOrDefault()
 					                   + Order.Toll.GetValueOrDefault()
 					                   + Order.Tip.GetValueOrDefault()
+									   + Order.Extra.GetValueOrDefault()
 					                   + Order.Surcharge.GetValueOrDefault();
 
 					var statusString = string.Empty;
