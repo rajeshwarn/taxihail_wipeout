@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         public ChargeAccount GetIbsAccount(string accountNumber, string customerNumber)
         {
-            var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
+            var account = Get<ChargeAccountResponse>("account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
             return account == null 
                 ? null 
                 : account.Result;
@@ -23,13 +23,13 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)
         {
-            var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new {prompts, account_number, customer_number});
+            var validation = Post<ChargeAccountValidationResponse>("account/validate/", new {prompts, account_number, customer_number});
             return validation.Result;
         }
         
         public IEnumerable<ChargeAccount> GetAllAccount()
         {
-            var allAccounts = Get<ChargeAccountCollectionResponse>("/account/corporate/all/");
+            var allAccounts = Get<ChargeAccountCollectionResponse>("account/corporate/all/");
             return allAccounts.Accounts;
         }
     }
