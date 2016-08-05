@@ -76,7 +76,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     .ToList();
 
             var chargeAccounNumbers = chargeAccountsToImport
-                .ToArray()
                 .Select(x => x.AccountNumber)
                 .Distinct();
 
