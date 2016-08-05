@@ -80,13 +80,6 @@ namespace apcurium.MK.Booking.Api.Services
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }
 
-                // Validate locally that the account exists
-                var account = _accountChargeDao.FindByAccountNumber(request.AccountNumber);
-                if (account == null)
-                {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
-                }
-
                 // Validate with IBS to make sure the account/customer is still active
                 var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
                 if (!ibsChargeAccount.IsValid())

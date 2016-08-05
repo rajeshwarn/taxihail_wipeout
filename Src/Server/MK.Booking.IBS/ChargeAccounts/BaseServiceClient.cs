@@ -44,13 +44,16 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         }
         protected T Get<T>(string pathInfo)
         {
-            var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
+            if (_ibsSettings.RestApiUser.HasValueTrimmed())
+            {
+                var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
 
-            var stringToHash = "GET" + pathInfo + dateStr;
-            var hash = Encode(stringToHash);
+                var stringToHash = "GET" + pathInfo + dateStr;
+                var hash = Encode(stringToHash);
 
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
-            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
+                Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
+                Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
+            }
 
             var response = Client.GetAsync(pathInfo).Result;
 
@@ -93,3 +96,4 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         protected ILogger Logger { get; set; }
     }
 }
+

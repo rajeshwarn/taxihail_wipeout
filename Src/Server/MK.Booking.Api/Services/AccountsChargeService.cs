@@ -11,10 +11,13 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using AccountCharge = apcurium.MK.Common.Entity.AccountCharge;
+using Prompt = apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources.Prompt;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -33,64 +36,50 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(AccountChargeRequest request)
         {
-            var isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
-
             if (!request.AccountNumber.HasValue())
             {
-                var allAccounts = _dao.GetAll();
+                var allAccounts = _ibsServiceProvider.ChargeAccount().GetAllAccount();
 
-                if (request.HideAnswers || !isAdmin)
-                {
-                    foreach (var account in allAccounts)
-                    {
-                        HideAnswers(account.Questions);
-                    }
-                }
-                return allAccounts
+                var ibsAccounts = new List<IbsChargeAccount>();
+                Mapper.Map(allAccounts, ibsAccounts);
+
+                return ibsAccounts
                     .Select(acc => new
                     {
-                        acc.Name,
-                        AccountNumber = acc.Number,
-                        acc.Questions,
-                        acc.Id,
-                        acc.UseCardOnFileForPayment
+                        acc.AccountNumber,
+                        acc.CustomerNumber,
+                        acc.Prompts
                     })
                     .ToArray();
             }
-            else
+
+            // Validate with IBS to make sure the account/customer existrs and is still active
+            var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber ?? "0");
+            if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
             {
-                // Validate locally that the account exists
-                var account = _dao.FindByAccountNumber(request.AccountNumber);
-                if (account == null)
-                {
-                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
-                }
-
-                // Validate with IBS to make sure the account/customer is still active
-                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber ?? "0");
-                if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
-                {
-                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
-                }
-
-                if (request.HideAnswers || !isAdmin)
-                {
-                    HideAnswers(account.Questions);
-                }
-
-                var currentUser = new Guid(this.GetSession().UserAuthId);
-                LoadCustomerAnswers(account.Questions, currentUser);
-
-                return account;
+                throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
             }
-        }
 
-        private void HideAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers)
-        {
-            foreach (var accountChargeQuestion in questionsAndAnswers)
+            var questions = ibsChargeAccount.Prompts
+                                            .SelectOrDefault(p => p, new List<Prompt>())
+                                            .Select(prompt => new AccountChargeQuestion
+                                            {
+                                                Id = prompt.PromptNumber,
+                                                Question = prompt.Caption
+                                            })
+                                            .ToArray();
+
+            var chargeAccount = new AccountCharge()
             {
-                accountChargeQuestion.Answer = string.Empty;
-            }
+                Questions = questions,
+                Name = ibsChargeAccount.AccountNumber,
+                Number = ibsChargeAccount.AccountNumber
+            };
+
+            var currentUser = new Guid(this.GetSession().UserAuthId);
+            LoadCustomerAnswers(chargeAccount.Questions, currentUser);
+
+            return chargeAccount;
         }
 
         private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid userId)
@@ -98,11 +87,10 @@ namespace apcurium.MK.Booking.Api.Services
             IEnumerable<AccountChargeQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(userId);
             priorAnswers.ForEach(x =>
             {
-                var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer);
-                if (matches != null)
-                {
-                    matches.ForEach(m => m.Answer = x.LastAnswer);
-                }
+                questionsAndAnswers
+                    .SelectOrDefault(_ => _, new AccountChargeQuestion[0])
+                    .Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer)
+                    .ForEach(m => m.Answer = x.LastAnswer);
             });
 
         }

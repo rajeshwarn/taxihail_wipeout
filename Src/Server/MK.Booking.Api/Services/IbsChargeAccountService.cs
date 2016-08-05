@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
+    //This class is used by unit tests.
     public class IbsChargeAccountService : Service
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;

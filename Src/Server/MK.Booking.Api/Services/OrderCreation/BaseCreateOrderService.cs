@@ -458,8 +458,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
+#if false
                 var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
 
+                //TODO: Handle this case or remove
                 if (accountChargeDetail.UseCardOnFileForPayment)
                 {
                     if (isFromWebApp)
@@ -482,7 +484,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
-
+#endif
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.Settings.CustomerNumber, request.QuestionsAndAnswers, request.ClientLanguageCode, createReportOrder);
 
                 if (isChargeAccountPaymentWithCardOnFile)
@@ -506,7 +508,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber,
             IEnumerable<AccountChargeQuestion> userQuestionsDetails, string clientLanguageCode, CreateReportOrder createReportOrder)
         {
-            var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
+            var accountChargeDetail = _ibsServiceProvider.ChargeAccount().GetIbsAccount(accountNumber, customerNumber);
             if (accountChargeDetail == null)
             {
                 ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber,
@@ -518,18 +520,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
             {
-                if (validation.ValidResponse != null)
-                {
-                    int firstError = validation.ValidResponse.IndexOf(false);
-                    string errorMessage = null;
-                    if (accountChargeDetail != null)
-                    {
-                        errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
-                    }
-
-                    ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
-                }
-
                 ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
             }
         }
