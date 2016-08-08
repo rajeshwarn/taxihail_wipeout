@@ -8,7 +8,6 @@ using System.Net;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using CMTPayment;

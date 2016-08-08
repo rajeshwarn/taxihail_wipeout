@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Tip = order.Tip,
                 Toll = order.Toll,
                 Surcharge = order.Surcharge,
+                Extra = order.Extra,
                 Status = (OrderStatus) order.Status,
                 IsRated = order.IsRated,
                 Gratuity = order.Gratuity,

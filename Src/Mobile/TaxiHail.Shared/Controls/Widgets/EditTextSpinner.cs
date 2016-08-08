@@ -49,7 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 base.Enabled = value;
-				_label.Enabled = value;
+                if (_label != null)
+				    _label.Enabled = value;
+
                 this.SetBackgroundColor(value ? _initialBackgroundColor : Color.Transparent);
                 if (_imageRightArrow != null)
                 {

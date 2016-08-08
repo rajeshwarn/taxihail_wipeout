@@ -207,15 +207,17 @@ namespace apcurium.MK.Booking.Jobs
                     for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
                     {
                         var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                        var orderStatusesTaxi = _ibsServiceProvider.Booking(companyKey, ServiceType.Taxi).GetOrdersStatus(nextGroup).ToList();
-                        var orderStatusesLuxury = _ibsServiceProvider.Booking(companyKey, ServiceType.Luxury).GetOrdersStatus(nextGroup).ToList();
+                        var orderStatusesTaxi = _ibsServiceProvider.Booking(companyKey, ServiceType.Taxi).GetOrdersStatus(nextGroup);
+                        var orderStatusesLuxury = _ibsServiceProvider.Booking(companyKey, ServiceType.Luxury).GetOrdersStatus(nextGroup);
 
-                        var orderStatuses = orderStatusesTaxi;
-                        orderStatuses.AddRange(orderStatusesLuxury);
+                        var orderStatuses = orderStatusesTaxi
+                           .Concat(orderStatusesLuxury)
+                           .GroupBy(item => item.IBSOrderId)
+                           .Select(group => group.First())
+                           .ToArray();
 
-                        var orderStatusesArray = orderStatuses.ToArray();
                         // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatusesArray, market).ToArray();
+                        var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
 
                         foreach (var orderStatus in orderStatuses)
                         {

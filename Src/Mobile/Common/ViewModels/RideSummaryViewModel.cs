@@ -13,7 +13,6 @@ using System.Reactive.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Reactive;
 using System.Threading;
 
@@ -49,22 +48,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_subscriptions.Disposable = GetTimerObservable()
 					.ObserveOn(SynchronizationContext.Current)
 					.Where(_ => !_isSummaryRefreshing)
-					.Do(_ =>
-						{
-							//if (!forceCenterMap)
-							//{
-							//	return;
-							//}
-
-							//CenterMapOnPinsIfNeeded();
-							//forceCenterMap = false;
-						})
-					.SelectMany(async (_) =>
+	
+					.Do( _ =>
 						{
 							_isSummaryRefreshing = true;
-							await RefreshStatus();
-							_isSummaryRefreshing = false;
-							return Unit.Default;
+							RefreshStatus();
+							_isSummaryRefreshing = false;							
 						})
 					.Subscribe(
 						_ => { }, 
@@ -88,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private async Task RefreshStatus()
+		private void RefreshStatus()
 		{
 			// if the gratuity screen has been displayed for longer than the threshold, go back to home screen.
 			var span = DateTime.UtcNow.Subtract(_GratuityScreenShownTime);

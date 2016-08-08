@@ -131,10 +131,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
+
             var forceCenterMap = orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned ||
                                  orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived ||
                                  orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded;
-
 
             _subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
                     CenterMapOnPinsIfNeeded();
-                    //forceCenterMap = false; 
+                    forceCenterMap = false; 
 					//Please leave this comment in for now, this was causing the map not to centre, but I am not sure it was the correct approach
                 })
                 .SelectMany(async (_, cancellationToken) =>
@@ -328,7 +328,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting)
             {
                 ((HomeViewModel)Parent).AutomaticLocateMeAtPickup.ExecuteIfPossible();
-
                 return;
             }
 
@@ -357,7 +356,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             // Handle case where the user is in a taxi.
-
             MapCenter = new[]
 			{
 				CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true)
@@ -1377,7 +1375,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var isVehicleAssigned = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned));
 			var isVehicleArrived = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived));
 
-			if (Order != null
+            if (Order != null
 				&& (isVehicleAssigned || isVehicleArrived)
 				&& hasValidVehiclePosition
 				&& !MapCenter.HasValue()
@@ -1385,7 +1383,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				var vehicle = CoordinateViewModel.Create(TaxiLocation.Latitude.Value, TaxiLocation.Longitude.Value);
-				MapCenter = new[] { pickup, vehicle };
+                MapCenter = new[] { pickup, vehicle };
 
 				return;
 			}
@@ -1393,14 +1391,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (hasValidVehiclePosition && _canAutoFollowTaxi && _autoFollowTaxi)
 			{
 				var vehicle = CoordinateViewModel.Create(TaxiLocation.Latitude.Value, TaxiLocation.Longitude.Value);
-				MapCenter = new[] { vehicle };
+                MapCenter = new[] { vehicle };
 
 				return;
 			}
 
 			if (!isVehicleAssigned && !isVehicleArrived)
 	        {
-		        MapCenter = new CoordinateViewModel[0];
+                MapCenter = new CoordinateViewModel[0];
 	        }
 			
         }

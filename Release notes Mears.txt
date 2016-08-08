@@ -66,8 +66,8 @@
 	http://10.10.1.115:80/LAMP/IBSCab.dll/wsdl/IWEBOrder_7
 	The IBS change is to expose a new class called TOrderStatus_6 which populates the VehicleType property.
 	
-
-	
-
-
+0.5.7
+	Web Service URL for IBS was defaulting to the value stored in Config.AppSettings instead of Config.ServiceTypeSettings in some instances
+	The code that called GetOrderStatus from IBS was only using one of the fleets, now getting status updates from both Luxury and Taxi fleets.
+	Added a null check for the VehicleType coming back from IBS Order Info.
 	
