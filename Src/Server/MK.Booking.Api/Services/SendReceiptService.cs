@@ -123,6 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
                 surcharge = Convert.ToDouble(orderPayment.Surcharge);
+                extraAmount = Convert.ToDouble(orderPayment.Extra);
                 bookingFees = Convert.ToDouble(orderPayment.BookingFees);
 
                 // promotion can only be used with in app payment
@@ -206,6 +207,7 @@ namespace apcurium.MK.Booking.Api.Services
                     tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0),
                         pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
+                    extraAmount = order.Extra;
                     surcharge = order.Surcharge;
                 }
 
@@ -221,6 +223,7 @@ namespace apcurium.MK.Booking.Api.Services
                 tipAmount = ibsOrder.Tip;
                 taxAmount = ibsOrder.VAT;
                 surcharge = order.Surcharge;
+                extraAmount = order.Extra;
 
                 orderPayment = null;
             }

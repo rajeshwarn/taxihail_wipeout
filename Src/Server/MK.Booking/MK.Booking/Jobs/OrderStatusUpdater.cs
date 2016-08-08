@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Jobs
 
                 if (tipPercent != null && orderStatusDetail.ServiceType != ServiceType.Luxury)
                 {
-                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT);
+                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras);
                 }
                 // use the default tip percentage
                 _commandBus.Send(new ChangeOrderStatus
@@ -163,7 +163,8 @@ namespace apcurium.MK.Booking.Jobs
                     Toll = orderFromIbs.Toll,
                     Tip = tipAmount,
                     Tax = orderFromIbs.VAT,
-                    Surcharge = orderFromIbs.Surcharge
+                    Surcharge = orderFromIbs.Surcharge,
+                    Extra = orderFromIbs.Extras
                 });
             }
             else
@@ -175,7 +176,8 @@ namespace apcurium.MK.Booking.Jobs
                     Toll = orderFromIbs.Toll,
                     Tip = orderFromIbs.Tip,
                     Tax = orderFromIbs.VAT,
-                    Surcharge = orderFromIbs.Surcharge
+                    Surcharge = orderFromIbs.Surcharge,
+                    Extra = orderFromIbs.Extras
                 });
 
             }
@@ -709,6 +711,7 @@ namespace apcurium.MK.Booking.Jobs
                         ibsOrderInfo.Toll = Math.Round(tollHistory / 100d, 2);
                         ibsOrderInfo.VAT = Math.Round(trip.Tax / 100d, 2);
                         ibsOrderInfo.Surcharge = Math.Round((trip.Surcharge + trip.Extra + trip.AccessFee) / 100d, 2);
+                        ibsOrderInfo.Extras = Math.Round(trip.Extra / 100d, 2);
                     }
                 });
         }
@@ -784,12 +787,16 @@ namespace apcurium.MK.Booking.Jobs
 
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
+
+            // The ibsOrderInfo.MeterAmount currently does NOT include the Extras amount, we will add it here until IBS is updated
+            var meterAmount = ibsOrderInfo.MeterAmount + ibsOrderInfo.Extras;
+
             double tipPercentage = (orderStatusDetail.ServiceType != ServiceType.Luxury) ? (pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage) : 0;
 
-            var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
+            var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
 
             var bookingFees = 0m;
-            var total = ibsOrderInfo.MeterAmount + tipAmount;
+            var total = meterAmount + tipAmount;
 
             if (orderStatusDetail.CompanyKey.HasValue())
             {
@@ -800,7 +807,7 @@ namespace apcurium.MK.Booking.Jobs
                     bookingFees = feesCharged.Value;
                     _logger.LogMessage("Order {0}: Booking fees of {1} charged to local company", orderStatusDetail.OrderId, feesCharged);
                     _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), for a total of {4}",
-                            orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total);
+                            orderStatusDetail.OrderId, meterAmount, tipPercentage, tipAmount, total);
                 }
             }
             else
@@ -810,13 +817,13 @@ namespace apcurium.MK.Booking.Jobs
                 total += Convert.ToDouble(bookingFees);
 
                 _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
-                        orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
+                        orderStatusDetail.OrderId, meterAmount, tipPercentage, tipAmount, bookingFees, total);
             }
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
             }
 
             try
@@ -828,7 +835,7 @@ namespace apcurium.MK.Booking.Jobs
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount), Convert.ToDecimal(tipAmount));
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 
@@ -841,7 +848,7 @@ namespace apcurium.MK.Booking.Jobs
                     // Commit
                     var paymentResult = CommitPayment(orderDetail,
                         totalOrderAmount,
-                        Convert.ToDecimal(ibsOrderInfo.MeterAmount), 
+                        Convert.ToDecimal(meterAmount), 
                         Convert.ToDecimal(tipAmount),
                         Convert.ToDecimal(ibsOrderInfo.Toll),
                         Convert.ToDecimal(ibsOrderInfo.Surcharge),
@@ -1048,6 +1055,7 @@ namespace apcurium.MK.Booking.Jobs
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
                         TollAmount = tollAmount,
                         SurchargeAmount = surchargeAmount,
+                        ExtraAmount = extrasAmount,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
                         PromotionUsed = promoUsedId,

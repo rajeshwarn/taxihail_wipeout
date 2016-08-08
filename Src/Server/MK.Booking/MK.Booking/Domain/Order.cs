@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge, double? extras)
         {
             if (status == null)
             {
@@ -331,8 +331,10 @@ namespace apcurium.MK.Booking.Domain
                     Toll = toll,
                     Tax = tax,
                     Surcharge = surcharge,
+                    Extra = extras,
                     IsCompleted = status.Status == OrderStatus.Completed,
                     PreviousIBSStatusId = _ibsStatus,
+                    
                 });
             }
         }

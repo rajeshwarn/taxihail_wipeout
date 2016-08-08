@@ -115,6 +115,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string TipString { get; set; }
         public string StatusString { get; set; }
         public string SurchargeString { get; set; }
+
+        public string ExtraString { get; set; }
         public string TotalAmountString { get; set; }
 
         public bool IsRideLinqCMTPaymentMode { get; set; }
@@ -192,7 +194,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
                 + order.Tax.GetValueOrDefault()
                 + order.Toll.GetValueOrDefault()
                 + order.Tip.GetValueOrDefault()
-                + order.Surcharge.GetValueOrDefault();
+                + order.Surcharge.GetValueOrDefault()
+                + order.Extra.GetValueOrDefault();
         }
     }
 }

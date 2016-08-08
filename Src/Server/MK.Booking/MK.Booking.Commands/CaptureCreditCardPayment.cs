@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal TollAmount { get; set; }
 
+        public decimal ExtraAmount { get; set; }
+
         public decimal SurchargeAmount { get; set; }
 
         public FeeTypes FeeType { get; set; }

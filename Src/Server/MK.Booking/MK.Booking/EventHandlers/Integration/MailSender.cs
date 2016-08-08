@@ -97,6 +97,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             Convert.ToDecimal(@event.Tip ?? 0),
                             Convert.ToDecimal(@event.Tax ?? 0),
                             toll: Convert.ToDecimal(@event.Toll ?? 0),
+                            extra: Convert.ToDecimal(@event.Extra ?? 0),
                             surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
@@ -183,6 +184,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.Tax,
                     toll: @event.Toll,
                     surcharge: @event.Surcharge,
+                    extra: @event.Extra,
                     bookingFees: @event.BookingFees,
                     amountSavedByPromotion: @event.AmountSavedByPromotion);
             }
@@ -202,6 +204,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
                     order.Surcharge = @event.Surcharge;
+                    order.Extra = @event.Extra;
                     
                     SendTripReceipt(@event.SourceId, 
                         Convert.ToDecimal(@event.Fare ?? 0),
@@ -327,7 +330,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         else
                         {
                             // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
-                            fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
+                            fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge - extra, meter - toll - surcharge - extra);
                         }
                     }
 

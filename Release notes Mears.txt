@@ -66,8 +66,27 @@
 	http://10.10.1.115:80/LAMP/IBSCab.dll/wsdl/IWEBOrder_7
 	The IBS change is to expose a new class called TOrderStatus_6 which populates the VehicleType property.
 	
-
+0.5.7
+	Web Service URL for IBS was defaulting to the value stored in Config.AppSettings instead of Config.ServiceTypeSettings in some instances
+	The code that called GetOrderStatus from IBS was only using one of the fleets, now getting status updates from both Luxury and Taxi fleets.
+	Added a null check for the VehicleType coming back from IBS Order Info.
 	
+0.5.8
+	Fixed map moving north every 10 seconds on certain job statuses
+	Cleaned up using statements
+	Fixed issue with double events on UpdateOrderStatusJob
+	Added null check on private member to try to solve some of the android debugging crashes	
+	Address issues related to Extra amount oulined in an email from Mark Symmonds. When Extra amount is speficied in DriveLinQ, the value is now displayed on the receipt as Extra charge, history report shows extra amount, admin portal shows extra amount in order history report.
+	Addressed 10 issues outlined in the LuxuryHail Issues.doc document:
 
-
-	
+		1. Luxury vehicles are not showing on map.  I booked into DriveLinq so I should show up on the app map.
+		2. No gratuity to be applied on luxury transactions unless user explicitly taps the percentage button at the end of the trip.  Gratuity is automatically included in the rates.  As such tip button should also not appear during the trip on map screen for luxury fares
+		3. The top portion of the Confirm screen should be cleaned up. It should be clear to the user which options can be edited during the booking process and which items require the user to go back to the “Payment” or “Update Account” sections. Also, the edits options should be pre-defined - this still needs to be done
+		4. The icon of the vehicle on the map should reflect the type of vehicle assigned
+		5. Once picked up the fare icon remains stuck at the origin on the map while the vehicle moves away
+		6. Order details screen needs to show the type of vehicle used for that order - currently not displaying any vehicle type
+		7. Not able to enter promotions for either luxury or taxi.  Carryover from TaxiHail functionality missing in LuxuryHail
+		8. Once the driver arrives on scene and GPS is able to determine that the driver is on site, a 15 minute “no-show” timer will begin. If the fare is a future reservation, the 15 minute clock will begin at the reservation pickup time 
+		9. If the passenger has not arrived for pickup within 10 minutes, a push notification and text will go out with a warning. If the passenger is in the app, a warning message will appear in the app. The push notification or message will state “Your vehicle has been waiting for ten minutes. Please contact the driver if you would like your vehicle to wait longer.”  
+		Did not receive any notifications after 10 minutes.  DriveLinq Tom Tom is sitting right next to app, so I should be in the vicinity
+		10. After 15 minutes the driver may request a “No show” and if granted, the user will be assessed a $15.00 no show fee - not able to test since other pieces are not working

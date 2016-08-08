@@ -28,5 +28,7 @@ namespace apcurium.MK.Booking.Commands
         public double? Toll { get; set; }
 
         public double? Surcharge { get; set; }
+
+        public double? Extra { get; set; }
     }
 }

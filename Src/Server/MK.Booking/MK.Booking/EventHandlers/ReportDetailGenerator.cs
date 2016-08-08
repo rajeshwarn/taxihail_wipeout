@@ -165,9 +165,11 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Payment.MdtFare = @event.Fare;
+                orderReport.Payment.MdtExtra = @event.Extra;
+                orderReport.Payment.MdtSurcharge = @event.Surcharge;
                 orderReport.Payment.MdtTip = @event.Tip;
                 orderReport.Payment.MdtToll = @event.Toll;
-
+                
                 if (@event.Status != null)
                 {
                     orderReport.Account.AccountId = @event.Status.AccountId;
