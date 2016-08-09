@@ -146,14 +146,13 @@ namespace apcurium.MK.Booking.Jobs
                 var orderPairingDetails = _orderDao.FindOrderPairingById(orderDetail.Id);
 
                 double tipAmount = 0.0;
-                int? tipPercent;
-                tipPercent = orderPairingDetails != null
-                    ? orderPairingDetails.AutoTipPercentage
-                    : account.DefaultTipPercent;
+                int? tipPercent = (orderPairingDetails != null)
+                                ? orderPairingDetails.AutoTipPercentage
+                                : account.DefaultTipPercent;
 
                 if (tipPercent != null && orderStatusDetail.ServiceType != ServiceType.Luxury)
                 {
-                    tipAmount = Math.Round(((double)account.DefaultTipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras);
+                    tipAmount = Math.Round((double)(Math.Round(((double)tipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras)), 2);
                 }
                 // use the default tip percentage
                 _commandBus.Send(new ChangeOrderStatus
@@ -791,7 +790,9 @@ namespace apcurium.MK.Booking.Jobs
             // The ibsOrderInfo.MeterAmount currently does NOT include the Extras amount, we will add it here until IBS is updated
             var meterAmount = ibsOrderInfo.MeterAmount + ibsOrderInfo.Extras;
 
-            double tipPercentage = (orderStatusDetail.ServiceType != ServiceType.Luxury) ? (pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage) : 0;
+            double tipPercentage = (orderStatusDetail.ServiceType != ServiceType.Luxury)
+                                 ? (pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage) 
+                                 : 0;
 
             var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
 
