@@ -58,13 +58,13 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         void SetAuthorizationIfNeeded(string pathInfo)
         {
-            var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
-            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
-
             if (!_ibsSettings.RestApiUser.HasValueTrimmed() || !_ibsSettings.RestApiSecret.HasValueTrimmed())
             {
                 return;
             }
+
+            var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
+            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var stringToHash = "GET" + pathInfo + dateStr;
             var hash = Encode(stringToHash);

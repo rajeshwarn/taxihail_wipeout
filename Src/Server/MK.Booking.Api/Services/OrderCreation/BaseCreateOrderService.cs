@@ -518,7 +518,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
-            var answers = userQuestionsDetails.Select(x => x.Answer);
+            var answers = userQuestionsDetails.Select(x => x.Answer).Where(x => x.HasValueTrimmed());
 
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
