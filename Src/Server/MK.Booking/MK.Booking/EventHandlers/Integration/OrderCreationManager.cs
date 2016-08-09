@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(ibsOrderId.Value);
                 var errorCode = "CreateOrder_CannotCreateInIbs" + code;
-
+                // make sure network cable is plugged in and IBS service is up and running if getting these errors in debug
                 var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
