@@ -81,15 +81,13 @@ namespace apcurium.MK.Booking.Api.Services
 
                 account.Questions.Remove(p => questionsToRemove.Contains(p));
 
-                var count = account.Questions.Count;
-
-                if (account.Questions.Count < 8)
+                if (questionsToRemove.Any())
                 {
-                    for (var i = 0; i < 8 - count; i++)
+                    foreach (var t in questionsToRemove)
                     {
                         account.Questions.Add(new AccountChargeQuestion
                         {
-                            Id = questionsToRemove[i].Id,
+                            Id = t.Id,
                             IsRequired = false,
                             IsCaseSensitive = false,
                             AccountId = account.Id
