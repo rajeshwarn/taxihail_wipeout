@@ -9,6 +9,8 @@
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -376,32 +378,6 @@
     <Compile Include="ViewModels\DebugViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
-      <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
-      <Name>MK.Booking.Api.Client.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
-      <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
-      <Name>MK.Booking.Api.Contract.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
-      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
-      <Name>MK.Common.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
-      <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
-      <Name>MK.Booking.Maps.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
-      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
-      <Name>MK.Booking.MapDataProvider.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.iOS.csproj">
-      <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
-      <Name>CMTPayment.iOS</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </None>
@@ -441,6 +417,7 @@
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
     <None Include="Localization\GroveTransit.resx" />
     <None Include="Localization\yoolka.resx" />
+    <None Include="Localization\Discount Ride.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
