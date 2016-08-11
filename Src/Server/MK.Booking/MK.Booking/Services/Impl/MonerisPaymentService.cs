@@ -309,7 +309,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
         {
-            string message;
             string authorizationCode = null;
             var commitTransactionId = transactionId;
 
@@ -368,6 +367,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
                 var commitReceipt = commitRequest.GetAndLogReceipt(_logger);
 
+                string message;
                 var isSuccessful = RequestSuccesful(commitReceipt, out message);
                 var isCardDeclined = IsCardDeclined(commitReceipt);
 
@@ -486,42 +486,44 @@ namespace apcurium.MK.Booking.Services.Impl
     /// </summary>
     public class Completion : Transaction
     {
-        private static string[] xmlTags = new string[4]
+        private static readonly string[] XmlTags = new string[]
         {
           "order_id",
           "comp_amount",
           "txn_number",
           "crypt_type"
         };
-        private Hashtable keyHashes = new Hashtable();
+        private readonly Hashtable _keyHashes = new Hashtable();
 
         public Completion(Hashtable completion)
-            : base(completion, Completion.xmlTags)
+            : base(completion, XmlTags)
         {
         }
 
-        public Completion(string order_id, string comp_amount, string txn_number, string crypt_type)
-            : base(Completion.xmlTags)
+        public Completion(string orderId, string compAmount, string txnNumber, string cryptType)
+            : base(XmlTags)
         {
-            this.transactionParams.Add((object)"order_id", (object)order_id);
-            this.transactionParams.Add((object)"comp_amount", (object)comp_amount);
-            this.transactionParams.Add((object)"txn_number", (object)txn_number);
-            this.transactionParams.Add((object)"crypt_type", (object)crypt_type);
+            transactionParams.Add("order_id", orderId);
+            transactionParams.Add("comp_amount", compAmount);
+            transactionParams.Add("txn_number", txnNumber);
+            transactionParams.Add("crypt_type", cryptType);
         }
 
-        public void SetDynamicDescriptor(string dynamic_descriptor)
+        public void SetDynamicDescriptor(string dynamicDescriptor)
         {
-            this.keyHashes.Add((object)"dynamic_descriptor", (object)dynamic_descriptor);
+            _keyHashes.Add("dynamic_descriptor", dynamicDescriptor);
         }
 
         public override string toXML()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             stringBuilder.Append("<completion>");
             stringBuilder.Append(base.toXML());
-            IDictionaryEnumerator enumerator = this.keyHashes.GetEnumerator();
+            var enumerator = _keyHashes.GetEnumerator();
             while (enumerator.MoveNext())
-                stringBuilder.Append("<" + enumerator.Key.ToString() + ">" + enumerator.Value.ToString() + "</" + enumerator.Key.ToString() + ">");
+            {
+                stringBuilder.Append("<" + enumerator.Key + ">" + enumerator.Value + "</" + enumerator.Key + ">");
+            }
             stringBuilder.Append("</completion>");
             return stringBuilder.ToString();
         }
