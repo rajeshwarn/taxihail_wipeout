@@ -208,11 +208,10 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
-                bool isCardDeclined = false;
+                var isCardDeclined = false;
                 var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
                 var order = _orderDao.FindOrderStatusById(orderId);
-				string driverId = order != null ? order.DriverInfos != null ? order.DriverInfos.DriverId : null : null;
 
                 // We cannot re-use the same id has a previously failed payment
                 var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
@@ -226,7 +225,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     // PreAuthorize transaction
                     var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
-                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, driverId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var customerId = monerisSettings.UseCarIdInTransaction
+                        ? order.SelectOrDefault(o => o.VehicleNumber)
+                        : order != null ? order.DriverInfos.SelectOrDefault(driverInfos => driverInfos.DriverId) : null;
+
+                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, customerId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
 
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
@@ -308,7 +311,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             string message;
             string authorizationCode = null;
-            string commitTransactionId = transactionId;
+            var commitTransactionId = transactionId;
 
             try
             {
@@ -351,12 +354,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                if (orderStatus != null
-                    && orderStatus.DriverInfos != null
-                    && orderStatus.DriverInfos.DriverId.HasValue())
+
+                var descriptor = monerisSettings.UseCarIdInTransaction
+                    ? orderStatus.SelectOrDefault(status => status.VehicleNumber)
+                    : orderStatus.SelectOrDefault(status => status.DriverInfos).SelectOrDefault(driverInfos => driverInfos.DriverId);
+
+                if (descriptor.HasValueTrimmed())
                 {
-                    //add driver id to "memo" field
-                    completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId); 
+                    //add driver id or vehicleNumber to "memo" field
+                    completionCommand.SetDynamicDescriptor(descriptor);
                 }
 
                 var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
