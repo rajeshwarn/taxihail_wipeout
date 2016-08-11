@@ -295,10 +295,6 @@
     <Compile Include="Migrations\201603291629484_Booking_MTA_95.Designer.cs">
       <DependentUpon>201603291629484_Booking_MTA_95.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608031405417_Configuration_Mears_Aug3_2016.cs" />
-    <Compile Include="Migrations\201608031405417_Configuration_Mears_Aug3_2016.Designer.cs">
-      <DependentUpon>201608031405417_Configuration_Mears_Aug3_2016.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201608031804420_Booking_Mears_Aug3_2016.cs" />
     <Compile Include="Migrations\201608031804420_Booking_Mears_Aug3_2016.Designer.cs">
       <DependentUpon>201608031804420_Booking_Mears_Aug3_2016.cs</DependentUpon>
@@ -506,9 +502,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603291629484_Booking_MTA_95.resx">
       <DependentUpon>201603291629484_Booking_MTA_95.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608031405417_Configuration_Mears_Aug3_2016.resx">
-      <DependentUpon>201608031405417_Configuration_Mears_Aug3_2016.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608031804420_Booking_Mears_Aug3_2016.resx">
       <DependentUpon>201608031804420_Booking_Mears_Aug3_2016.cs</DependentUpon>
