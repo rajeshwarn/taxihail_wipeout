@@ -23,6 +23,9 @@ namespace apcurium.MK.Common.Configuration.Impl
 		[PropertyEncrypt]
         public string SandboxHost { get; set; }
 
+        [PropertyEncrypt]
+	    public bool UseCarIdInTransaction { get; set; }
+
 		[PropertyEncrypt]
 		public string Host
 		{
