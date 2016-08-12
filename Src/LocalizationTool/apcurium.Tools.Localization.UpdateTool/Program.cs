@@ -59,10 +59,15 @@ namespace apcurium.Tools.Localization.UpdateTool
                         dynamic appSettings = JsonConvert.DeserializeObject(File.ReadAllText(settings));
                         // Custom resource file should be in the same folder as Master.resx
                         // Name of the custom resource file is equal to settings ApplicationName
-                        var customResourcesFilePath = AddLanguageToPathResx(Path.Combine(Path.GetDirectoryName(source), (string)appSettings.ApplicationName + ".resx"), lang);
+                        string x = (string)appSettings["TaxiHail.ApplicationName"];
+                        string y = x;
+
+                        var customResourcesFilePath = AddLanguageToPathResx(Path.Combine(Path.GetDirectoryName(source), (string)appSettings["TaxiHail.ApplicationName"] + ".resx"), lang);
 
                         if (File.Exists(customResourcesFilePath))
                         {
+                            Console.WriteLine("Adding Company Specific resource file {0}.", customResourcesFilePath);
+
                             resourceManager.AddSource(new ResxResourceFileHandler(customResourcesFilePath));
                         }
                     }

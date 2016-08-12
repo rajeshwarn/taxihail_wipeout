@@ -147,7 +147,9 @@ namespace apcurium.MK.Booking.Jobs
                                 ? orderPairingDetails.AutoTipPercentage
                                 : account.DefaultTipPercent;
 
-                tipAmount = Math.Round((double)(Math.Round(((double)tipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras)), 2);
+                tipAmount = (tipPercent != null)
+                    ? Math.Round((double)(Math.Round(((double)tipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras)), 2)
+                    : 0;
 
             }
             else
