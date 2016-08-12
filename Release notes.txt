@@ -348,7 +348,17 @@ Version bump 3.3.1
 	DefaultPickupLocationTabWeb, used to control which tab should be the first tab displayed on the address selection control in the web interface.
 	Options are search, places and favorites
 
-
+3.5.19
+	Dominique to provide
+	
+3.5.20
+	Dominique to provide
+	
+3.5.21
+	TAX-131 TotalTransit (aka Discount Ride) requested that we change the words Taxi, Cab and Medallion to Vehicle
+	Fixed a problem with the LocalizationTool where company specific resource files would not get utlized when generating the Strings.xml files.
+	Fixed a null exception issue with the OrderStatusUpdater where if the tip was null.
+	
 
 
 
