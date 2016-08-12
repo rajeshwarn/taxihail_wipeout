@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
@@ -71,6 +72,27 @@ namespace apcurium.MK.Booking.Api.Services
                 if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
                 {
                     throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                }
+
+                var customerSpecificQuestions = ibsChargeAccount.Prompts.ToArray();
+
+                var questionsToRemove = account.Questions.Where(question => question.Question.HasValueTrimmed() && customerSpecificQuestions.None(prompt => question.Question == prompt.Caption))
+                           .ToArray();
+
+                account.Questions.Remove(p => questionsToRemove.Contains(p));
+
+                if (questionsToRemove.Any())
+                {
+                    foreach (var t in questionsToRemove)
+                    {
+                        account.Questions.Add(new AccountChargeQuestion
+                        {
+                            Id = t.Id,
+                            IsRequired = false,
+                            IsCaseSensitive = false,
+                            AccountId = account.Id
+                        });
+                    }
                 }
 
                 if (request.HideAnswers || !isAdmin)

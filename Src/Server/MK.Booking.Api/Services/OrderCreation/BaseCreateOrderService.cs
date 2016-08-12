@@ -509,25 +509,27 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
-            var answers = userQuestionsDetails.Select(x => x.Answer);
+            var answers = userQuestionsDetails.Select(x => x.Answer)
+                .Where(x => x.HasValueTrimmed());
 
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
-            if (!validation.Valid)
+            if (validation.Valid)
             {
-                if (validation.ValidResponse != null)
+                return;
+            }
+            if (validation.ValidResponse != null)
+            {
+                var firstError = validation.ValidResponse.IndexOf(false);
+                string errorMessage = null;
+                if (accountChargeDetail != null)
                 {
-                    int firstError = validation.ValidResponse.IndexOf(false);
-                    string errorMessage = null;
-                    if (accountChargeDetail != null)
-                    {
-                        errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
-                    }
-
-                    ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
+                    errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
                 }
 
-                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
+                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
             }
+
+            ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
         }
 
         private void ValidatePayment(string companyKey, CreateOrderRequest request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, decimal bookingFees, bool isPrepaid, CreateReportOrder createReportOrder)
