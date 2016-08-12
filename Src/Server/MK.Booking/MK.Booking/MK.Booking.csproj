@@ -532,7 +532,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Discount Ride.resx" />
     <EmbeddedResource Include="Resources\JamesMadisonUniversity.resx" />
     <EmbeddedResource Include="Resources\GroveTransit.resx" />
     <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
