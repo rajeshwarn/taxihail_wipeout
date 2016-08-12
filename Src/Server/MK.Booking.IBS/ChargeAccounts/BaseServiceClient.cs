@@ -44,6 +44,22 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         }
         protected T Get<T>(string pathInfo)
         {
+            AddAuthorizationTokenIfNeeded<T>(pathInfo);
+
+            var response = Client.GetAsync(pathInfo).Result;
+
+            var resultJson = response.Content.ReadAsStringAsync().Result;
+
+            return resultJson.FromJson<T>();
+        }
+
+        void AddAuthorizationTokenIfNeeded<T>(string pathInfo)
+        {
+            if (!_ibsSettings.RestApiUser.HasValueTrimmed() || !_ibsSettings.RestApiSecret.HasValueTrimmed())
+            {
+                return;
+            }
+
             var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
 
             var stringToHash = "GET" + pathInfo + dateStr;
@@ -51,12 +67,6 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
             Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
-
-            var response = Client.GetAsync(pathInfo).Result;
-
-            var resultJson = response.Content.ReadAsStringAsync().Result;
-
-            return resultJson.FromJson<T>();
         }
 
         private string Encode(string stringToHash)
@@ -76,13 +86,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             var requestJson = request.ToJson();
 
-            var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
-
-            var stringToHash = "POST" + pathInfo + dateStr;
-            var hash = Encode(stringToHash);
-
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
-            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
+            AddAuthorizationTokenIfNeeded<T>(pathInfo);
 
             var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
             var resultJson = response.Content.ReadAsStringAsync().Result;
