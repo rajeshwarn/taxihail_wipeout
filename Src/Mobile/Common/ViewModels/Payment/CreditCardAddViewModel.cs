@@ -73,6 +73,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			public static int AvcCvvCvv2 = 135;
 			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
 			public static string ZipCode = "95001";
+
+			public static string StreetName = "Mile-End";
+			public static string StreetNumber = "7250";
 		}
 
 		public void Init(bool showInstructions = false, 
@@ -178,7 +181,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ExpirationMonth = DummyVisa.ExpirationDate.Month;
 					ExpirationYear = DummyVisa.ExpirationDate.Year;
-					#endif         
+
+					Data.StreetName = DummyVisa.StreetName;
+					Data.StreetNumber = DummyVisa.StreetNumber;
+					#endif
+
+					Data.Email = _accountService.CurrentAccount.Email;
+					Data.Phone = _accountService.CurrentAccount.Phone;
 				}
 				else
 				{

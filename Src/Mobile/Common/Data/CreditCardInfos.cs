@@ -20,7 +20,12 @@ namespace apcurium.MK.Booking.Mobile.Data
 		public string CCV { get; set; }        
 		public CreditCardLabelConstants Label { get; set; }        
 		public bool IsDefault { get; set; }        
-		public string ZipCode { get; set; }        
+		public string ZipCode { get; set; }       
+
+		public string StreetName { get; set; }
+		public string StreetNumber { get; set; }
+		public string Email { get; set; }
+		public string Phone { get; set; }
     }
 }
 
