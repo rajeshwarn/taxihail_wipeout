@@ -32,10 +32,8 @@ using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
 using Microsoft.Web.Administration;
-using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
-using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -79,11 +77,37 @@ namespace DatabaseInitializer
 
                 Console.WriteLine("Working...");
 
-                UnityContainer container;
-                Module module;
-
                 var creatorDb = new DatabaseCreator();
-                IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
+                var sqlConnectionString = param.MasterConnectionString;
+
+                var mirroringRole = creatorDb.MirroringRole(sqlConnectionString, param.CompanyName);
+                // if Mirroring role value is 2, we need to switch between Mirror and Principal
+                if (mirroringRole == 2)
+                {
+                    Console.WriteLine("Connected to the mirror database");
+                    Console.WriteLine("Connection string before switch : " + sqlConnectionString);
+
+                    var elements = sqlConnectionString.Split(';');
+
+                    for (int idx = 0; idx < elements.Length; idx++)
+                    {
+                        if (elements[idx].ToLower().Contains("data source"))
+                        {
+                            elements[idx] = elements[idx].Replace("Data Source", "Failover Partner");
+                        }
+                        else if (elements[idx].ToLower().Contains("failover partner"))
+                        {
+                            elements[idx] = elements[idx].Replace("Failover Partner", "Data Source");
+                        }
+                    }
+                    
+                    Console.WriteLine("Switched addresses between 'Data Source' and 'Failover Partner'");
+
+                    sqlConnectionString = string.Join(";", elements);
+                    Console.WriteLine("Switched connection string : " + sqlConnectionString);
+                }
+
+                IsUpdate = creatorDb.DatabaseExists(sqlConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
@@ -100,7 +124,7 @@ namespace DatabaseInitializer
                         }
                         else
                         {
-                            creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
+                            creatorDb.DropDatabase(sqlConnectionString, param.CompanyName);
                         }
                         IsUpdate = false;
                     }
@@ -109,9 +133,9 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
-                    creatorDb.DropMessageLogTable(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DropMessageLogTable(sqlConnectionString, param.CompanyName);
 
-                    creatorDb.DeleteDeviceRegisteredEvents(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.DeleteDeviceRegisteredEvents(sqlConnectionString, param.CompanyName);
 
                     UpdateSchema(param);
 
@@ -128,18 +152,18 @@ namespace DatabaseInitializer
                     // if DBs are re-used then it should already be created
                     if (!param.ReuseTemporaryDb)
                     {
-                        creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
+                        creatorDb.CreateDatabase(sqlConnectionString, param.CompanyName, param.SqlServerDirectory);
                     }
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
 
                     UpdateSchema(param);
 
-                    creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+                    creatorDb.CreateIndexes(sqlConnectionString, param.CompanyName);
 
                     Console.WriteLine("Add user for IIS...");
                     if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
                     {
-                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                        creatorDb.AddUserAndRighst(sqlConnectionString, param.MkWebConnectionString,
                             "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
 
@@ -147,8 +171,9 @@ namespace DatabaseInitializer
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
-                container = new UnityContainer();
-                module = new Module();
+
+                UnityContainer container = new UnityContainer();
+                Module module = new Module();
                 module.Init(container, connectionString, param.MkWebConnectionString);
 
                 var serverSettings = container.Resolve<IServerSettings>();

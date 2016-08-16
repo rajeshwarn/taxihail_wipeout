@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Email
                         Host = _serverSettings.ServerData.Smtp.Host,
                         Port = _serverSettings.ServerData.Smtp.Port,
                         EnableSsl = _serverSettings.ServerData.Smtp.EnableSsl,
-                        DeliveryMethod = _serverSettings.ServerData.Smtp.DeliveryMethod,
+                        DeliveryMethod = (SmtpDeliveryMethod) _serverSettings.ServerData.Smtp.DeliveryMethod,
                         UseDefaultCredentials = _serverSettings.ServerData.Smtp.UseDefaultCredentials,
                         Username = _serverSettings.ServerData.Smtp.Credentials.Username,
                         Password = _serverSettings.ServerData.Smtp.Credentials.Password,

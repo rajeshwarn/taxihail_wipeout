@@ -48,6 +48,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.TwitterButton));
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.ServerButton));
 
+            DrawHelper.SetEditTextBackgroundForBackground(FindViewById<EditText>(Resource.Id.Username), Resources.GetColor(Resource.Color.login_color));
+            DrawHelper.SetEditTextBackgroundForBackground(FindViewById<EditText>(Resource.Id.Password), Resources.GetColor(Resource.Color.login_color));
+
             Observable.FromEventPattern<EventHandler, EventArgs>(
                 ev => ViewModel.LoginSucceeded += ev,
                 ev => ViewModel.LoginSucceeded -= ev)

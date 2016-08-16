@@ -318,11 +318,16 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
+            // Use address alias if present.
+            var addressAlias = request.PickupAddress.FriendlyName.HasValueTrimmed()
+                ? request.PickupAddress.FriendlyName
+                : request.PickupAddress.BuildingName;
+
             var ibsInformationNote = IbsHelper.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 request.Note,
-                request.PickupAddress.BuildingName,
+                addressAlias,
                 request.Settings.LargeBags,
                 _serverSettings.ServerData.IBS.HideChargeTypeInUserNote);
 
@@ -705,9 +710,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private Guid? GetPendingOrder()
         {
-            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
-
-            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
+            var latestActiveOrder = _orderDao.GetActiveOrderStatusDetails(new Guid(this.GetSession().UserAuthId));
+            
             if (latestActiveOrder != null)
             {
                 return latestActiveOrder.OrderId;

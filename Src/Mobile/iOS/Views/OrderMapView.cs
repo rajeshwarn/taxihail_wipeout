@@ -507,7 +507,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
 	            var annotations = Annotations.Where(annotation => !annotation.Equals(vehicleAnnotation))
 					.Select(ViewForAnnotation)
-					.Cast<PinAnnotationView>()
+					.Select(annotation => annotation as PinAnnotationView)
 					.Where(view => view != null);
 
 					foreach (var pinAnnotationView in annotations)

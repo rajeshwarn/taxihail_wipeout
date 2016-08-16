@@ -228,6 +228,12 @@
         <option value="{{invertedBool monerisPaymentSettings.isSandbox}}">{{localizeBool monerisPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
 
+    <label class="control-label settingsLabel">{{{localize "Send car id to Moneris"}}}</label>
+    <select name="monerisPaymentSettings.useCarIdInTransaction" class="settingsBox">
+        <option value="{{monerisPaymentSettings.useCarIdInTransaction}}" selected="">{{localizeBool monerisPaymentSettings.useCarIdInTransaction true="Yes" false="No"}}</option>
+        <option value="{{invertedBool monerisPaymentSettings.useCarIdInTransaction}}">{{localizeBool monerisPaymentSettings.useCarIdInTransaction true="No" false="Yes"}}</option>
+    </select>
+
     <label class="control-label settingsLabel">{{{localize "Host Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="monerisPaymentSettings.baseHost" value="{{monerisPaymentSettings.baseHost}}" />
 

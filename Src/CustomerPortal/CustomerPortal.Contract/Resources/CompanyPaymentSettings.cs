@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Common.Configuration.Impl;
+
 using CustomerPortal.Contract.Resources.Payment;
 
 namespace CustomerPortal.Contract.Resources

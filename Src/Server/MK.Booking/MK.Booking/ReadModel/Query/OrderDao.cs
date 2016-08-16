@@ -92,36 +92,22 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderStatusDetail GetActiveOrderStatusDetails(Guid accountId)
         {
-            using (var context = _contextFactory.Invoke())
+            var activeOrder = GetOrdersInProgressByAccountId(accountId)
+                .Where(orderStatusDetail => VehicleStatuses.OrderActiveStatuses.Any(status => status == orderStatusDetail.IBSStatusId) || orderStatusDetail.IsManualRideLinq)
+                .OrderByDescending(order => order.PickupDate)
+                .FirstOrDefault();
+
+            if (activeOrder == null || !activeOrder.IsManualRideLinq)
             {
-                var activeOrders = context.Set<OrderStatusDetail>()
-                    .Where(x => x.AccountId == accountId
-                        && (x.Status == OrderStatus.Created || x.Status == OrderStatus.Pending) 
-                        && (VehicleStatuses.OrderActiveStatuses.Any(status => status == x.IBSStatusId) || x.IsManualRideLinq)
-                    )
-                    .OrderByDescending(order => order.PickupDate)
-                    .ToList();
-
-                // remove junk orders (unfinished and with pickup date more than 2 days ago) and then select the first order (most recent).
-               var activeOrder = activeOrders.FirstOrDefault(x => x.PickupDate >= DateTime.Now.AddDays(-2));
-
-                if (activeOrder == null)
-                {
-                    return null;
-                }
-
-                if (!activeOrder.IsManualRideLinq)
-                {
-                    return activeOrder;
-                }
-
-                // Verifying if the manual paired order is still active.
-                var manualPairingDetails = GetManualRideLinqById(activeOrder.OrderId);
-
-                return manualPairingDetails.EndTime.HasValue
-                    ? null
-                    : activeOrder;
+                return activeOrder;
             }
+
+            // Verifying if the manual paired order is still active.
+            var manualPairingDetails = GetManualRideLinqById(activeOrder.OrderId);
+
+            return manualPairingDetails.EndTime.HasValue
+                ? null
+                : activeOrder;
         }
 
         public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)

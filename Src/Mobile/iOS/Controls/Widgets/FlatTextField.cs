@@ -5,6 +5,7 @@ using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common.Extensions;
 using CoreAnimation;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -110,6 +111,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     }
                 }
             }
+        }
+
+        public void SetStrokeColor (UIColor color)
+        {
+            this.Layer.BorderWidth = UIHelper.OnePixel;
+            this.Layer.BorderColor = color.CGColor;
         }
             
         private UIImageView _rightArrow { get; set; }
