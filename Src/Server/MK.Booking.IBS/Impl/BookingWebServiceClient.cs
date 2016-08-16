@@ -492,7 +492,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public int? CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, Fare fare = default(Fare))
+        public int? CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent,string assignVehicleId, Fare fare = default(Fare))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, email, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
@@ -636,9 +636,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, string assignVehicleId, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
-            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts,
-            int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, Guid taxiHailOrderId, Fare fare = default(Fare))
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, string email, int nbPassengers, int? vehicleTypeId, 
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, 
+            int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int? tipPercent, string assignVehicleId, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("BookingWebServiceClient CreateIbsOrderObject : accountID=" + accountId);
             Logger.LogMessage("BookingWebServiceClient CreateIbsOrderObject : assignVehicleId:" + assignVehicleId);

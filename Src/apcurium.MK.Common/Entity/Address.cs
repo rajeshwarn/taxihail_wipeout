@@ -289,19 +289,18 @@ namespace apcurium.MK.Common.Entity
 		{
 			var reversed = false;
 
-			try
+			if (FullAddress == null)
 			{
-				var indexOfZipCode = FullAddress.IndexOf(ZipCode, StringComparison.InvariantCultureIgnoreCase);
-				var indexOfCity = FullAddress.IndexOf(City, StringComparison.InvariantCultureIgnoreCase);
-
-				if(indexOfZipCode >= 0 && indexOfCity >= 0)
-				{
-					// we succesfully found the 2 indexes in FullAddress
-					reversed = indexOfZipCode < indexOfCity;
-				}
+				return false;
 			}
-			catch
+
+			var indexOfZipCode = FullAddress.IndexOf(ZipCode, StringComparison.OrdinalIgnoreCase);
+			var indexOfCity = FullAddress.IndexOf(City, StringComparison.OrdinalIgnoreCase);
+
+			if (indexOfZipCode >= 0 && indexOfCity >= 0)
 			{
+				// we succesfully found the 2 indexes in FullAddress
+				reversed = indexOfZipCode < indexOfCity;
 			}
 
 			return reversed;
