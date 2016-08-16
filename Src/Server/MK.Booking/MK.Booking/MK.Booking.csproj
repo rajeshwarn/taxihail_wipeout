@@ -383,6 +383,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.es.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\GroveTransit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GroveTransit.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\MearsTaxi.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -533,7 +538,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\JamesMadisonUniversity.resx" />
-    <EmbeddedResource Include="Resources\GroveTransit.resx" />
+    <EmbeddedResource Include="Resources\GroveTransit.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroveTransit.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aeroport Taxi.Designer.cs</LastGenOutput>
