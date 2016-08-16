@@ -200,6 +200,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.Label = creditCard.Label;
 					Data.ZipCode = creditCard.ZipCode;
 
+					Data.Email = creditCard.Email;
+					Data.Phone = creditCard.Phone;
+					Data.StreetName = creditCard.StreetName;
+					Data.StreetNumber = creditCard.StreetNumber;
+
 					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
 					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
 

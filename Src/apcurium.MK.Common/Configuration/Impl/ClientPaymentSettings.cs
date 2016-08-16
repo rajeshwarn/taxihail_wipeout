@@ -59,6 +59,10 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool CreditCardIsMandatory { get; set; }
 
+		public bool EnableAddressVerification { get; set; }
+
+		public bool EnableContactlVerification { get; set; }
+
 		[PropertyEncrypt]
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
 
