@@ -69,6 +69,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.ar.resx", NodeSelector=@"//root/data[@name=""Callbox.ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  + " CallBox"},   
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.fr.resx", NodeSelector=@"//root/data[@name=""Callbox.ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  + " CallBox"},   
 					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.es.resx", NodeSelector=@"//root/data[@name=""Callbox.ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  + " CallBox"},   
+					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.nl.resx", NodeSelector=@"//root/data[@name=""Callbox.ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  + " CallBox"},   
 					
 					new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\public.keystore" },
 
@@ -151,6 +152,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.ar.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.fr.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
 					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.es.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
+					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.nl.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
 
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               

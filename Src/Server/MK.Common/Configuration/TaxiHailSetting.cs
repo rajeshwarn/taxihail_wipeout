@@ -119,6 +119,9 @@ namespace MK.Common.Configuration
             MaxNumberOfCardsOnFile = 1;
             SendZipCodeWhenTokenizingCard = false;
 
+            NumberOfPreferredPlacesToShow = 0;
+            DefaultPickupLocationTabWeb = "";
+
             FlightStats = new FlightStatsSettingsContainer
 			{
 				UseAirportDetails = false
@@ -549,7 +552,7 @@ namespace MK.Common.Configuration
 	    public bool EnableApplicationRating { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
-	    [Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+	    [Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate application")]
 	    public int MinimumTripsForAppRating { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
@@ -581,5 +584,15 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Configuration - Enable Debug View", Description = "Allows to view debug information by tapping on the version label in the menu")]
         public bool DebugViewEnabled { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Preferred Places", Description = "Number of places to show at the top of the list")]
+        public int NumberOfPreferredPlacesToShow { get; protected set; }
+
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Default Address Selection Tab", Description = "Default address selection tab (web) options are: search, places or favorites")]
+        public string DefaultPickupLocationTabWeb { get; protected set; }
+
     }
 }

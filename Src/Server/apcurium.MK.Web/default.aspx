@@ -103,6 +103,10 @@
             TaxiHail.parameters.showOrderNumber = <%: ShowOrderNumber ? "true" : "false" %>;
             TaxiHail.parameters.isPaymentOutOfAppDisabled = "<%: IsPaymentOutOfAppDisabled %>";
             
+            TaxiHail.parameters.isDefaultTabSearch = <%: IsDefaultTabSearch  ? "true" : "false" %>;
+            TaxiHail.parameters.isDefaultTabFavorites = <%: IsDefaultTabFavorites ? "true" : "false" %>;
+            TaxiHail.parameters.isDefaultTabPlaces = <%: IsDefaultTabPlaces ? "true" : "false" %>;
+
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
             <% }

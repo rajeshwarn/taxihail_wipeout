@@ -216,6 +216,7 @@ namespace apcurium.MK.Booking.Jobs
                         {
                             // Update vehicle position with matching data available data from HoneyBadger
                             var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == orderStatus.VehicleNumber);
+                            Log.DebugFormat("UpdateOrderStatusJob.GetOrderStatuses - HoneyBadger Resp: {0}", honeyBadgerVehicleStatus.ToJson());
 
                             if (honeyBadgerVehicleStatus != null)
                             {
@@ -277,6 +278,10 @@ namespace apcurium.MK.Booking.Jobs
 
                 // Get vehicle statuses/position from HoneyBadger
                 return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
+            }
+            else
+            {
+                Log.DebugFormat("UpdateOrderStatusJob.GetVehicleStatusesFromHoneyBadgerIfNecessary: isLocalMarketAndConfigured: {0}, isExternalMarketAndConfigured: {1}", isLocalMarketAndConfigured, isExternalMarketAndConfigured);
             }
 
             return new VehicleResponse[0];
