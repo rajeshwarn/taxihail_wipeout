@@ -139,7 +139,7 @@
     <value>Sorry, no Vehicles currently available nearby.</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
-    <value>Need a Taxi</value>
+    <value>Need a Vehicle</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
     <value>In a vehicle</value>
@@ -172,7 +172,7 @@
     <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
   </data>
   <data name="TAXI" xml:space="preserve">
-    <value>TAXI</value>
+    <value>VEHICLE</value>
   </data>
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Your Vehicle</value>
@@ -182,5 +182,14 @@
   </data>
   <data name="TripUnableToPairErrorText" xml:space="preserve">
     <value>Sorry, there was a problem, please pay in the vehicle</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Your vehicle {0}</value>
+  </data>
+  <data name="DriverInfoVehicleMedallion" xml:space="preserve">
+    <value>Vehicle:</value>
+  </data>
+  <data name="OrderStatus_Medallion" xml:space="preserve">
+    <value>Vehicle</value>
   </data>
 </root>
