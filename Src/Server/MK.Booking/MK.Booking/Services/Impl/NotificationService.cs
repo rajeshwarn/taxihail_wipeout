@@ -162,8 +162,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 SendPushOrSms(order.AccountId,
                     _resources.Get("PushNotification_wosNOSHOW", order.ClientLanguageCode),
-                    new Dictionary<string, object>(),
-                    true);
+                    new Dictionary<string, object>());
             }
         }
 
@@ -925,7 +924,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var alert = string.Format(_resources.Get("PushNotification_NoShowWarning", order.ClientLanguageCode));
             var data = new Dictionary<string, object> { { "orderId", orderId } };
 
-            SendPushOrSms(order.AccountId, alert, data);
+            SendPushOrSms(order.AccountId, alert, data, true);
         }
 
         public void SendInfoAboutGratuity(Guid orderId)
