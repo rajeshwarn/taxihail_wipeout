@@ -162,7 +162,8 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 SendPushOrSms(order.AccountId,
                     _resources.Get("PushNotification_wosNOSHOW", order.ClientLanguageCode),
-                    new Dictionary<string, object>());
+                    new Dictionary<string, object>(),
+                    true);
             }
         }
 
@@ -1060,18 +1061,22 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", to, templateData));
         }
 
-        private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
+        private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data, bool forceBoth = false)
         {
             try
             {
-                if (_serverSettings.ServerData.SendPushAsSMS)
+                if (_serverSettings.ServerData.SendPushAsSMS 
+                    || forceBoth)
                 {
                     SendSms(accountId, alert);
                 }
-                else
+
+                if (!_serverSettings.ServerData.SendPushAsSMS
+                    || forceBoth)
                 {
                     SendPush(accountId, alert, data);
                 }
+
             }
             catch (Exception ex)
             {
