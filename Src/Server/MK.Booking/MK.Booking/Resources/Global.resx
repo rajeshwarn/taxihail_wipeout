@@ -231,6 +231,9 @@
   <data name="Email_Body_Destination" xml:space="preserve">
     <value>Destination</value>
   </data>
+  <data name="Email_Body_At_Time" xml:space="preserve">
+    <value>at</value>
+  </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
     <value>Email confirmation required</value>
   </data>

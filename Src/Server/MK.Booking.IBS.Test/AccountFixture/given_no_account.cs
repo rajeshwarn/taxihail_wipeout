@@ -15,7 +15,7 @@ namespace MK.Booking.IBS.Test.AccountFixture
         {
             Sut = new WebAccount3Service
             {
-                Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebAccount3"
+                Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebAccount3"
             };
         }
 

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -94,7 +95,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
                     command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                     command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId,
-                    command.OriginatingIpAddress, command.KountSessionId);
+                    command.OriginatingIpAddress, command.KountSessionId, command.AssignVehicleId);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -121,7 +122,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
                 command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                 command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId,
-                command.OriginatingIpAddress, command.KountSessionId);
+                command.OriginatingIpAddress, command.KountSessionId, command.AssignVehicleId);
 
 			if (command.Payment.PayWithCreditCard)
 			{
@@ -244,15 +245,35 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
+        private string GetCreditCardTokenIfPossible(Guid? creditCardId)
+        {
+            if (!creditCardId.HasValue)
+            {
+                return null;
+            }
+
+            using (var context = _contextFactory())
+            {
+                var creditCardDetails = context.Set<CreditCardDetails>().FirstOrDefault(cc => cc.CreditCardId == creditCardId.Value);
+
+                return creditCardDetails == null
+                    ? null
+                    : creditCardDetails.Token;
+            }
+
+        }
+
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
 			var order = new Order(command.OrderId);
+
+            var creditCardToken = GetCreditCardTokenIfPossible(command.CreditCardId);
 
 			order.UpdateOrderManuallyPairedForRideLinq(command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.DeviceName,
-				command.TripId, command.DriverId, command.AccessFee, command.LastFour, command.OriginatingIpAddress, command.KountSessionId, command.CreditCardId);
+				command.TripId, command.DriverId, command.AccessFee, command.LastFour, command.OriginatingIpAddress, command.KountSessionId, command.CreditCardId, creditCardToken);
 
             _repository.Save(order, command.Id.ToString());
         }

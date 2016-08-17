@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 request.Id = Guid.NewGuid();
             }
 
+            _logger.LogMessage("CreateOrderService:: Post - Order: " + request.ToJson());
             var createReportOrder = CreateReportOrder(request, account);
 
             var createOrderCommand = BuildCreateOrderCommand(request, account, createReportOrder);

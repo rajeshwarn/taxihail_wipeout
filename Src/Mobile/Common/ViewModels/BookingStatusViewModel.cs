@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Reactive;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
-		private readonly IOrientationService _orientationService;
+		private readonly IDeviceOrientationService _deviceOrientationService;
 		private readonly IRateApplicationService _rateApplicationService;
 		private readonly IAccountService _accountService;
 		private readonly INetworkRoamingService _networkRoamingService;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-        public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
+        private readonly SerialDisposable _deviceOrientationSubscription = new SerialDisposable();
 
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
@@ -66,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService,
 			IMetricsService metricsService,
 			IOrderWorkflowService orderWorkflowService,
-			IOrientationService orientationService,
+			IDeviceOrientationService deviceOrientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
 			IAccountService accountService,
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_metricsService = metricsService;
 			_locationService = locationService;
-			_orientationService = orientationService;
+			_deviceOrientationService = deviceOrientationService;
 			_rateApplicationService = rateApplicationService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
@@ -87,9 +88,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
 			GetIsCmtRideLinq();
-
-            _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
-			_orientationService.Initialize(new[] { DeviceOrientations.Left, DeviceOrientations.Right });
 
             Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
         }
@@ -280,6 +278,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _subscriptions.Disposable = null;
 
+            _deviceOrientationSubscription.Disposable = null;
+            
+            CloseWaitingCarLandscapeViewModelIfPossible();
+
             _canAutoFollowTaxi = false;
             _autoFollowTaxi = false;
 
@@ -465,15 +467,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void StopOrientationServiceIfNeeded()
 		{
-			if (_orientationService.Stop())
+			if (_deviceOrientationService.Stop())
 			{
-				if (WaitingCarLandscapeViewModelParameters != null)
-				{
-					WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-					WaitingCarLandscapeViewModelParameters = null;
-				}
+			    _deviceOrientationSubscription.Disposable = null;
+
+			    CloseWaitingCarLandscapeViewModelIfPossible();
 			}
-		}		
+		}
+
+        private void CloseWaitingCarLandscapeViewModelIfPossible()
+        {
+            if (WaitingCarLandscapeViewModel.IsViewVisible)
+            {
+                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, string.Empty, true);
+            }
+        }
 
         private async Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
 		{
@@ -949,7 +957,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (_rateApplicationService.CanShowRateApplicationDialog(ordersAboveRatingThreshold))
 				{
-                    Task.Run(async () => await _rateApplicationService.ShowRateApplicationDialog());
+                    Task.Run(async () => await _rateApplicationService.ShowRateApplicationDialog()).FireAndForget();
 				}
 
                 _didCheckForAppRating = true;
@@ -1003,10 +1011,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
 				{
-					if (_orientationService.Start())
+					if (_deviceOrientationService.Start())
 					{
-						WaitingCarLandscapeViewModelParameters = null;
+					    _deviceOrientationSubscription.Disposable = _deviceOrientationService
+                            .ObserveDeviceIsInLandscape()
+							// No need to process the orientation change if we are displaying the WaitingCarLanscape View
+							.Where(_ => !WaitingCarLandscapeViewModel.IsViewVisible)
+					        .Subscribe(DeviceOrientationChanged, Logger.LogError);
 					}
+                    // The car number changed we need to notify the waitingcarlandscape view of the new vehicle number if it is displayed.
+				    if (WaitingCarLandscapeViewModel.IsViewVisible && OrderStatusDetail.VehicleNumber != _vehicleNumber)
+				    {
+				        WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, _vehicleNumber, false);
+				    }
 				}
 				else
 				{
@@ -1046,7 +1063,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
+								UpdatePosition(geoData.Latitude??0, geoData.Longitude??0, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
 							}
 						}
 					}
@@ -1054,7 +1071,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						var direction =
 							await
-								_vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value,
+								_vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude??0, status.VehicleLongitude??0,
 									Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 
 						// Log original eta value
@@ -1160,33 +1177,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError(ex);
             }
         }
-
+			
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			var orderStatusDetail = OrderStatusDetail;
-			if (orderStatusDetail == null)
+			if (OrderStatusDetail == null || WaitingCarLandscapeViewModel.IsViewVisible)
 			{
 				return;
 			}
-				
-			var carNumber = orderStatusDetail.VehicleNumber;
 
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && (carNumber.HasValueTrimmed() && carNumber.Trim() != "0"))
-			{
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+			var carNumber = OrderStatusDetail.VehicleNumber;
+
+			if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
+            {
+                return;
+            }
+
+			ShowViewModel<WaitingCarLandscapeViewModel>(new
 				{
-					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
-					{
-						CarNumber = carNumber,
-						DeviceOrientations = deviceOrientation
-					};
-					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-				}
-				else
-				{
-					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
-				}
-			}
+					carNumber,
+					deviceOrientation
+				});
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)

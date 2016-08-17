@@ -273,6 +273,14 @@
             text-transform: uppercase;
         }
 
+        .receipt_date_caps {
+            text-transform: uppercase;
+        }
+
+        .receipt_date_centered {
+            text-align: center;
+        }
+
         .receiptLeftInfo, 
         .receiptRightInfo,
         .receiptBottomInfo {
@@ -384,7 +392,7 @@
                     <td>
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
+                                                    <td class="receipt_date_centered"><span class="receipt_date_caps">{{PickupDate}} - {{PickupTime}}</span><span>{{HourSuffix}}</span></td>
                             </tr>
                             {{#ShowOrderNumber}}
                             <tr>
@@ -417,7 +425,7 @@
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td class="route_list_title">{{PickupDate}} - {{PickupTime}}</td>
+                                                                                    <td class="route_list_title">{{PickupDate}} - {{PickupTime}}{{HourSuffix}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="route_list_adddress">{{ PickupAddress }}</td>
@@ -432,7 +440,7 @@
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td class="route_list_title">{{DropOffDate}}{{#ShowDropOffTime}} - {{DropOffTime}} {{#ShowUTCWarning}}(UTC){{/ShowUTCWarning}}{{/ShowDropOffTime}}</td>
+                                                                                    <td class="route_list_title">{{DropOffDate}}{{#ShowDropOffTime}} - {{DropOffTime}}{{HourSuffix}} {{#ShowUTCWarning}}(UTC){{/ShowUTCWarning}}{{/ShowDropOffTime}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="route_list_adddress">{{ DropOffAddress }}</td>

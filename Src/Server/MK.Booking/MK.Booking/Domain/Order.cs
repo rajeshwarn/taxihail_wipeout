@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
 			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            string chargeTypeEmail, int? ibsOrderId, string originatingIpAddress, string kountSessionId)
+            string chargeTypeEmail, int? ibsOrderId, string originatingIpAddress, string kountSessionId, string assignVehicleId)
 		{
 			if ((settings == null) || pickupAddress == null ||
 				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -104,7 +104,8 @@ namespace apcurium.MK.Booking.Domain
                 IBSOrderId = ibsOrderId,
                 ChargeTypeEmail = chargeTypeEmail,
                 OriginatingIpAddress = originatingIpAddress,
-                KountSessionId = kountSessionId
+                KountSessionId = kountSessionId,
+                AssignVehicleId = assignVehicleId
 			});
 		}
 
@@ -112,7 +113,7 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
             bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId, string originatingIpAddress, string kountSessionId)
+            int? ibsOrderId, string originatingIpAddress, string kountSessionId, string assignVehicleId)
 		{
 			Update(new OrderReportCreated
 			{
@@ -147,7 +148,8 @@ namespace apcurium.MK.Booking.Domain
                 ReferenceDataCompanyList = referenceDataCompanyList,
                 IBSOrderId = ibsOrderId,
                 OriginatingIpAddress = originatingIpAddress,
-                KountSessionId = kountSessionId
+                KountSessionId = kountSessionId,
+                AssignVehicleId = assignVehicleId
             });
 		}
 
@@ -164,7 +166,7 @@ namespace apcurium.MK.Booking.Domain
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-			string deviceName, int tripId, int driverId, double? accessFee, string lastFour, string originatingIpAddress, string kountSessionId, Guid? creditCardId)
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour, string originatingIpAddress, string kountSessionId, Guid? creditCardId, string tokenOfCardForPayment)
 		{
 			Update(new OrderManuallyPairedForRideLinq
 			{
@@ -198,7 +200,7 @@ namespace apcurium.MK.Booking.Domain
                 KountSessionId = kountSessionId,
                 CreditCardId = creditCardId
             });
-		}
+        }
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,
