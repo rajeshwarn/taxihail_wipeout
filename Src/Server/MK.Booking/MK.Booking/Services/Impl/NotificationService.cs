@@ -924,7 +924,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var alert = string.Format(_resources.Get("PushNotification_NoShowWarning", order.ClientLanguageCode));
             var data = new Dictionary<string, object> { { "orderId", orderId } };
 
-            SendPushOrSms(order.AccountId, alert, data);
+            SendPushOrSms(order.AccountId, alert, data, true);
         }
 
         public void SendInfoAboutGratuity(Guid orderId)
@@ -1060,18 +1060,22 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("SendEmail method : To {0} Content {1} ", to, templateData));
         }
 
-        private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data)
+        private void SendPushOrSms(Guid accountId, string alert, Dictionary<string, object> data, bool forceBoth = false)
         {
             try
             {
-                if (_serverSettings.ServerData.SendPushAsSMS)
+                if (_serverSettings.ServerData.SendPushAsSMS 
+                    || forceBoth)
                 {
                     SendSms(accountId, alert);
                 }
-                else
+
+                if (!_serverSettings.ServerData.SendPushAsSMS
+                    || forceBoth)
                 {
                     SendPush(accountId, alert, data);
                 }
+
             }
             catch (Exception ex)
             {

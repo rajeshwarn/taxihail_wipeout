@@ -78,6 +78,7 @@
 	Fixed issue with double events on UpdateOrderStatusJob
 	Added null check on private member to try to solve some of the android debugging crashes	
 	Address issues related to Extra amount oulined in an email from Mark Symmonds. When Extra amount is speficied in DriveLinQ, the value is now displayed on the receipt as Extra charge, history report shows extra amount, admin portal shows extra amount in order history report.
+	For the 10 minute no show warning, always send both a SMS and a push notification message.
 	Addressed 10 issues outlined in the LuxuryHail Issues.doc document:
 
 		1. Luxury vehicles are not showing on map.  I booked into DriveLinq so I should show up on the app map.
