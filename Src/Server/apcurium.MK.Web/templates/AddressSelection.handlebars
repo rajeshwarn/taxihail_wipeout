@@ -1,10 +1,46 @@
 ﻿<div class='tab-content'></div>
 <ul class="nav nav-tabs">
-    <li class='active' data-tab='search'><a href="#">{{localize "Search"}}</a>
-    {{#if showFavorites}}
-    <li data-tab='favorites'><a href="#">{{localize "Favorites"}}</a>
-    {{/if}}
-    {{#if showPlaces}}
-    <li data-tab='places'><a href="#">{{localize "Places"}}</a>
-    {{/if}}
+
+    {{#ifCond isDefaultTabPlaces true}}
+
+
+        {{#if showPlaces}}
+            <li class='active' data-tab='places'><a href="#">{{localize "Places"}}</a>
+        {{/if}}
+        <li data-tab='search'><a href="#">{{localize "Search"}}</a>
+        {{#if showFavorites}}
+            <li data-tab='favorites'><a href="#">{{localize "Favorites"}}</a>
+        {{/if}}
+
+
+    {{/ifCond}}
+
+
+    {{#ifCond isDefaultTabSearch true}}
+
+        <li data-tab='search'><a href="#">{{localize "Search"}}</a>
+        {{#if showFavorites}}
+            <li data-tab='favorites'><a href="#">{{localize "Favorites"}}</a>
+        {{/if}}
+        {{#if showPlaces}}
+            <li class='active' data-tab='places'><a href="#">{{localize "Places"}}</a>
+        {{/if}}
+
+    {{/ifCond}}
+
+
+
+    {{#ifCond isDefaultTabFavorites true}}
+
+        {{#if showFavorites}}
+            <li data-tab='favorites'><a href="#">{{localize "Favorites"}}</a>
+        {{/if}}
+
+        <li data-tab='search'><a href="#">{{localize "Search"}}</a>
+        {{#if showPlaces}}
+            <li class='active' data-tab='places'><a href="#">{{localize "Places"}}</a>
+        {{/if}}
+
+    {{/ifCond}}
+
 </ul>

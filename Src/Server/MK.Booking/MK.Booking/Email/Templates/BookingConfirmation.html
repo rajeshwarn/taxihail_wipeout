@@ -359,7 +359,7 @@
                                                     {{/ShowOrderNumber}}
                                                     <tr>
                                                         <td valign=top class="book_list_title">{{ localize "Email_Body_PickupTime" }}</td>
-                                                        <td valign=top class="book_list_price">{{PickupDate}} at {{PickupTime}}</td>
+                                                        <td valign=top class="book_list_price">{{PickupDate}} {{ localize "Email_Body_At_Time"}} {{PickupTime}}{{HourSuffix}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td valign=top class="book_list_title">{{ localize "Email_Body_PickupLocation" }}</td>
@@ -375,7 +375,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td valign=top class="book_list_title">{{ localize "Email_Body_PhoneNumber" }}</td>
-                                                        <td valign=top class="book_list_price">{{Phone}}</td>
+                                                        <td valign=top class="book_list_price">{{TrunkPrefix}}{{Phone}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td valign=top class="book_list_title">{{ localize "Email_Body_Passengers" }}</td>

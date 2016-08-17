@@ -396,9 +396,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
+            var dropOffAddressDisplay = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-";
+            var pickupAddressDisplay = pickupAddress.DisplayAddress;
+
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
                     ? SupportedLanguages.en.ToString()
                     : clientLanguageCode);
+
+            var specificCulture = GetSpecificCulture(clientLanguageCode);
+
+
+            string trunkPrefix = String.Empty;
+            string hourSuffix = String.Empty;
+            if (_serverSettings.ServerData.PriceFormat == "nl-NL")
+            {
+                hourSuffix = "uur";
+                trunkPrefix = settings.Phone.StartsWith("0")
+                    ? String.Empty
+                    : "0";
+            }
+
 
             string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
 
@@ -409,11 +426,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 PickupDate = pickupDate.ToString("D", dateFormat),
-                PickupTime = pickupDate.ToString("t" /* Short time pattern */),
-                PickupAddress = pickupAddress.DisplayAddress,
-                DropOffAddress = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-",
+                PickupTime = pickupDate.ToString("t", specificCulture),
+                HourSuffix = hourSuffix,
+                PickupAddress = pickupAddressDisplay,
+                DropOffAddress = dropOffAddressDisplay,
                 /* Mandatory settings */
                 settings.Name,
+                TrunkPrefix = trunkPrefix,
                 settings.Phone,
                 settings.Passengers,
                 settings.VehicleType,
@@ -535,6 +554,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
                 var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
+                var specificCulture = GetSpecificCulture(clientLanguageCode);
+
                 if (vatIsEnabled && tax == 0)
                 {
                     //aexid hotfix compute tax amount from fare
@@ -622,7 +643,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
                 var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
                 var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
-                    ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
+                    ? nullSafeDropOffDate.ToString("t", specificCulture /* Short time pattern */)
                     : string.Empty;
 
                 var baseUrls = GetBaseUrls();
@@ -675,6 +696,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
                 var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
+                var dropOffAddressDisplay = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-";
+                var pickupAddressDisplay = pickupAddress.DisplayAddress;
+
+                string hourSuffix = String.Empty;
+                if (_serverSettings.ServerData.PriceFormat == "nl-NL")
+                {
+                    hourSuffix = "uur";
+                }
+
                 var templateData = new
                 {
                     ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -701,8 +731,9 @@ namespace apcurium.MK.Booking.Services.Impl
                         ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
                         : pickupDate.ToString("D", dateFormat),
                     PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
-                        ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
-                        : pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                        ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", specificCulture /* Short time pattern */)
+                        : pickupDate.ToString("t", specificCulture /* Short time pattern */),
+                    HourSuffix = hourSuffix,
                     DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                     DropOffTime = dropOffTime,
                     ShowDropOffTime = dropOffTime.HasValue(),
@@ -769,8 +800,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     PaymentTransactionId = paymentTransactionId,
                     PaymentAuthorizationCode = paymentAuthorizationCode,
                     ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
-                    PickupAddress = pickupAddress.DisplayAddress,
-                    DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
+                    PickupAddress = pickupAddressDisplay,
+                    DropOffAddress = dropOffAddressDisplay,
                     StaticMapUri = staticMapUri,
                     ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                     BaseUrlImg = baseUrls.BaseUrlAssetsImg,
@@ -825,6 +856,22 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage(string.Format("SendTripReceiptEmail method : OrderId {0} ERROR {1}", ibsOrderId, e.Message));
                 _logger.LogError(e);
             }
+        }
+
+        private CultureInfo GetSpecificCulture(string clientLanguageCode)
+        {
+
+
+            CultureInfo neutralCultureInfo = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
+                                ? SupportedLanguages.en.ToString()
+                                : clientLanguageCode);
+
+            CultureInfo specificCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat.IsNullOrEmpty()
+                ? neutralCultureInfo.ToString()
+                : _serverSettings.ServerData.PriceFormat);
+
+            return specificCultureInfo;
+
         }
 
         public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,

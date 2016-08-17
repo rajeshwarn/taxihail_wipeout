@@ -7,7 +7,12 @@
 
         options: {
             showFavorites: true,
-            showPlaces: true
+            showPlaces: true,
+            isDefaultTabFavorites: false,
+            isDefaultTabPlaces: false,
+            isDefaultTabSearch: true,
+            isTrue: true,
+            isFalse: false
         },
 
         events: {
@@ -41,12 +46,28 @@
 
             var data = _.extend(this.model.toJSON(), {
                 showFavorites: this.options.showFavorites && TaxiHail.auth.isLoggedIn(),
-                showPlaces: this.options.showPlaces
+                showPlaces: this.options.showPlaces,
+                isDefaultTabSearch: TaxiHail.parameters.isDefaultTabSearch,
+                isDefaultTabFavorites: TaxiHail.parameters.isDefaultTabFavorites,
+                isDefaultTabPlaces: TaxiHail.parameters.isDefaultTabPlaces,
+                isTrue: this.options.isTrue,
+                isFalse: false
             });
 
             this.$el.html(this.renderTemplate(data));
 
-            this.tab.search.call(this);
+            if (TaxiHail.parameters.isDefaultTabFavorites)
+            {
+                this.tab.favorites.call(this);
+            }
+            else if (TaxiHail.parameters.isDefaultTabPlaces)
+            {
+                this.tab.places.call(this);
+            }
+            else
+            {
+                this.tab.search.call(this);
+            }
 
             return this;
         },

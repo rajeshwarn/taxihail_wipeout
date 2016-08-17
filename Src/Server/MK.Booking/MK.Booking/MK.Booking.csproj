@@ -407,6 +407,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\TotalTransit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TotalTransit.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\West Way Taxi Ottawa.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -609,6 +614,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TotalTransit.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TotalTransit.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UTOG.resx" />
     <EmbeddedResource Include="Resources\West Way Taxi Ottawa.resx">

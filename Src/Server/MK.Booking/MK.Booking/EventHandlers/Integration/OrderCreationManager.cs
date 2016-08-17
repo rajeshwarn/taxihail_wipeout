@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(OrderCreated @event)
         {
             // Normal order flow
+            _logger.LogMessage(string.Format("OrderCreationManager::Handle(OrderCreated) ibsOrder: {0}", @event.IBSOrderId));
 
             var isPaypalPrepaid = @event.IsPrepaid
                 && @event.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.IsFutureBooking, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive, account.DefaultTipPercent);
+                    @event.TipIncentive, account.DefaultTipPercent, @event.AssignVehicleId);
 
                 ibsOrderId = result.CreateOrderResult;
             }
@@ -102,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 @event.Settings.Name, @event.Settings.Phone, account.Email, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, false, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                @event.TipIncentive, account.DefaultTipPercent);
+                @event.TipIncentive, account.DefaultTipPercent, string.Empty);
 
             SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
@@ -123,7 +124,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, account.Email, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.IsFutureBooking, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
-                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, account.DefaultTipPercent);
+                orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive, account.DefaultTipPercent, orderInfo.Request.AssignVehicleId);
 
             var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
             if (success)

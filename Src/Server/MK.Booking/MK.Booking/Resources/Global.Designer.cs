@@ -511,6 +511,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to at.
+        /// </summary>
+        public static string Email_Body_At_Time {
+            get {
+                return ResourceManager.GetString("Email_Body_At_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authorization number :.
         /// </summary>
         public static string Email_Body_AuthorizationNumber {
