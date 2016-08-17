@@ -289,7 +289,7 @@ namespace apcurium.MK.Common.Entity
 		{
 			var reversed = false;
 
-			if (FullAddress == null)
+			if (FullAddress == null || ZipCode == null || City == null)
 			{
 				return false;
 			}

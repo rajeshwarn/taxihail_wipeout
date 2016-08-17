@@ -696,7 +696,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
                 var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
 
-                var dropOffAddressDisplay = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-";
+                var dropOffAddressDisplay = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-";
                 var pickupAddressDisplay = pickupAddress.DisplayAddress;
 
                 string hourSuffix = String.Empty;
