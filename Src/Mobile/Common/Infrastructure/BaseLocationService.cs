@@ -51,8 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 return position;
             }
 
+
             // between the first call to BestPosition, we might have received a position if LocationService was started by GetNextPosition()
-            return BestPosition;
+			return BestPosition ?? GetInitialPosition();
 		}
 
 		public Position GetInitialPosition()
