@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MK.Booking.PayPal")]
-[assembly: AssemblyCopyright("Copyright Â©  2013")]
+[assembly: AssemblyCopyright("Copyright Ã‚Â©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,6 +32,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("3.5.20")]
-[assembly: AssemblyVersion("3.5.22")]
-[assembly: AssemblyFileVersion("3.5.22")]
+// [assembly: AssemblyVersion("3.5.23")]
+[assembly: AssemblyVersion("3.5.23")]
+[assembly: AssemblyFileVersion("3.5.23")]
