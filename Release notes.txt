@@ -366,7 +366,8 @@ Version bump 3.3.1
 	Also, on iOS, the default gps location wasn't automatically resolving the address when the application starts up.
 	TAX-37 We updated the Newtonsoft nuget package to 7.0.1 which is what apple is using from what we understand.
 
-
+3.5.23
+    Updated IBS dll to use most recent WSDL from taxihailxds's ibs
 
 
 
