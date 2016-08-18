@@ -440,9 +440,8 @@
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
-    <None Include="Localization\GroveTransit.resx" />
     <None Include="Localization\yoolka.resx" />
-    <None Include="Localization\Discount Ride.resx" />
+    <None Include="Localization\groveRideNow.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

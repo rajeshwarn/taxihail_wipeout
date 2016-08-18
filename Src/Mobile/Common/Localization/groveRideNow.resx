@@ -133,16 +133,16 @@
     <value>Nearest vehicle is {0} {1} away</value>
   </data>
   <data name="EtaLessThanAMinute" xml:space="preserve">
-    <value>Nearest Vehicle is less than a minute away</value>
+    <value>Nearest vehicle is less than a minute away</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
-    <value>Sorry, no Vehicles currently available nearby.</value>
+    <value>Calculating nearest vehicle ETA.</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
-    <value>Need a Taxi</value>
+    <value>Need a Vehicle</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>In a vehicle</value>
+    <value>In a Vehicle</value>
   </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Enter the 7-digit code displayed on the vehicle's touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
@@ -183,4 +183,8 @@
   <data name="TripUnableToPairErrorText" xml:space="preserve">
     <value>Sorry, there was a problem, please pay in the vehicle</value>
   </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Your vehicle {0}</value>
+  </data>
+	
 </root>
