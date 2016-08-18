@@ -349,10 +349,12 @@ Version bump 3.3.1
 	Options are search, places and favorites
 
 3.5.19
-	Dominique to provide
+	TAX-130 Fixed issues with charge account that was preventing xds from working.
 	
 3.5.20
-	Dominique to provide
+	TAX-130 Fixed issues with charge account that was preventing xds from working.
+	Fixed a problem with prompts being displayed when not set in a customer account (corp account)
+	Fixed a problem with prompts being dupplicated when multiple customer accounts had the same ones.
 	
 3.5.21
 	TAX-131 TotalTransit (aka Discount Ride) requested that we change the words Taxi, Cab and Medallion to Vehicle

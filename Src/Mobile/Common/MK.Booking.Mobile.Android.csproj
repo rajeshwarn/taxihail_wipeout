@@ -409,7 +409,7 @@
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
-    <EmbeddedResource Include="Localization\GroveTransit.resx" />
+    <EmbeddedResource Include="Localization\groveRideNow.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Localization\yoolka.resx" />
