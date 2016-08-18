@@ -169,7 +169,7 @@
     <value>Book another vehicle</value>
   </data>
   <data name="StatusConfirmNewBooking" xml:space="preserve">
-    <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
+    <value>Booking a new vehicle will keep this order active, do you want to continue?</value>
   </data>
   <data name="TAXI" xml:space="preserve">
     <value>VEHICLE</value>
