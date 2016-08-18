@@ -361,7 +361,10 @@ Version bump 3.3.1
 	Fixed a problem with the LocalizationTool where company specific resource files would not get utlized when generating the Strings.xml files.
 	Fixed a null exception issue with the OrderStatusUpdater where if the tip was null.
 	
-
+3.5.22
+	TAX-109 GroveTransit (aka groveRideNow) requested that we change the words Taxi, Cab and Medallion to Vehicle as well as the text string from "Sorry, no taxis currently available nearby" to something like "Calculating nearest vehicle ETA" 
+	Also, on iOS, the default gps location wasn't automatically resolving the address when the application starts up.
+	TAX-37 We updated the Newtonsoft nuget package to 7.0.1 which is what apple is using from what we understand.
 
 
 
