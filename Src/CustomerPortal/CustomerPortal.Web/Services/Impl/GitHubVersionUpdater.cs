@@ -123,7 +123,7 @@ namespace CustomerPortal.Web.Services.Impl
         }
         private static HttpClient GetClient(bool noBaseUrl = false)
         {
-            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
+            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/jddebruin/taxihail/") };
 
             var gitHubUsername = new AppSettingsReader().GetValue("GitHubUsername", typeof(string));
             var gitHubToken = new AppSettingsReader().GetValue("GitHubToken", typeof(string));

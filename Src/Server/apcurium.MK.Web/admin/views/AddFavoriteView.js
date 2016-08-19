@@ -41,7 +41,8 @@
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model,
                 showFavorites: false,
-                showPlaces : this.options.showPlaces
+                showPlaces: this.options.showPlaces
+                
             }).on('selected', function (model, collection) {
                 this.model.set(model.toJSON());
                 this.close();

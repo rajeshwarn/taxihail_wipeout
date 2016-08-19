@@ -121,8 +121,9 @@ namespace apcurium.MK.Web
                     {"Access-Control-Allow-Origin", "*"},
                     {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
                 },
-
+#if !DEBUG
 				EnableFeatures = Feature.All.Remove(Feature.Metadata)
+#endif
             });
 
 

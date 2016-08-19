@@ -117,10 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Eta" xml:space="preserve">
-    <value>Nearest available taxi is {0} {1} away</value>
+  <data name="Overdue_Instructions" xml:space="preserve">
+    <value>Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het QappMe systeem.</value>
+    <comment>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</comment>
   </data>
-  <data name="EtaLessThanAMinute" xml:space="preserve">
-    <value>Nearest available taxi is less than a minute away</value>
+  <data name="StatusCannotBeDisplayed" xml:space="preserve">
+    <value>Kan geen BoekingStatus geven. Neem contact op met QappMe?</value>
+    <comment>Cannot get status. Please call provider.</comment>
+  </data>
+  <data name="SupportEmail" xml:space="preserve">
+    <value>support@qappme.com</value>
+    <comment>techsupport@apcurium.com</comment>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>QappMe Netwerk</value>
+    <comment>TaxiHail Network</comment>
   </data>
 </root>

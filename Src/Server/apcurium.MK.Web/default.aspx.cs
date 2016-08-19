@@ -90,7 +90,12 @@ namespace apcurium.MK.Web
         protected string DefaultCountryCode { get; private set; }
         protected bool ShowOrderNumber { get; private set; }
         protected string IsPaymentOutOfAppDisabled { get; private set; }
+        protected int NumberOfPreferredPlacesToShow { get; private set; }
+        protected string DefaultPickupLocationTabWeb { get; private set; }
 
+        protected bool IsDefaultTabSearch { get; private set; }
+        protected bool IsDefaultTabFavorites { get; private set; }
+        protected bool IsDefaultTabPlaces { get; private set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IServerSettings>();
@@ -206,6 +211,33 @@ namespace apcurium.MK.Web
                 : "CA";
 
             IsPaymentOutOfAppDisabled = paymentSettings.IsPaymentOutOfAppDisabled.ToString();
+
+            NumberOfPreferredPlacesToShow = config.ServerData.NumberOfPreferredPlacesToShow;
+            DefaultPickupLocationTabWeb = config.ServerData.DefaultPickupLocationTabWeb;
+
+            if (String.IsNullOrEmpty(DefaultPickupLocationTabWeb))
+            {
+                DefaultPickupLocationTabWeb = "search";
+            }
+            if (DefaultPickupLocationTabWeb.ToLower() == "search")
+            {
+                IsDefaultTabSearch = true;
+                IsDefaultTabFavorites = false;
+                IsDefaultTabPlaces = false;
+            }
+            if (DefaultPickupLocationTabWeb.ToLower() == "favorites")
+            {
+                IsDefaultTabSearch = false;
+                IsDefaultTabFavorites = true;
+                IsDefaultTabPlaces = false;
+            }
+            if (DefaultPickupLocationTabWeb.ToLower() == "places")
+            {
+                IsDefaultTabSearch = false;
+                IsDefaultTabFavorites = false;
+                IsDefaultTabPlaces = true;
+            }
+
         }
 
         protected string FindParam(string[] filters, string param)

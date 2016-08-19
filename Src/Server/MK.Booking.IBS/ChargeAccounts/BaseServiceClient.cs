@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             var hash = Encode(stringToHash);
 
             Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
-            
+
         }
 
         private string Encode(string stringToHash)
@@ -93,9 +93,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             SetAuthorizationIfNeeded(pathInfo);
 
             var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
-
             response.EnsureSuccessStatusCode();
-
             var resultJson = response.Content.ReadAsStringAsync().Result;
 
             return resultJson.FromJson<T>();

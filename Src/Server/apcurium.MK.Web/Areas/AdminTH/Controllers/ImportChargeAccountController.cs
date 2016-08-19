@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging;
+using Microsoft.Ajax.Utilities;
 using ServiceStack.CacheAccess;
 using ServiceStack.Common.Extensions;
 
@@ -92,7 +93,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var questionIndex = 0;
                 var accountId = Guid.NewGuid();
 
-                questions.ForEach(ibsQuestion =>
+                questions.DistinctBy(p => p.Caption).ForEach(ibsQuestion =>
                 {
                     var caption = ibsQuestion.Caption;
                     var length = ibsQuestion.Length;

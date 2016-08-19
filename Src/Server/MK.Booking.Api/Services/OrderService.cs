@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
         protected IOrderDao Dao { get; set; }
-
         public object Get(OrderRequest request)
         {
             var orderDetail = Dao.FindById(request.OrderId);

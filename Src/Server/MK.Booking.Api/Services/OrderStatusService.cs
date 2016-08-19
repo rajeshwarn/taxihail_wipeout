@@ -10,6 +10,7 @@ using AutoMapper;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -18,16 +19,20 @@ namespace apcurium.MK.Booking.Api.Services
     public class OrderStatusService : Service
     {
         private readonly OrderStatusHelper _orderStatusHelper;
+        private readonly ILogger _logger;
 
-        public OrderStatusService(OrderStatusHelper orderStatusHelper)
+        public OrderStatusService(OrderStatusHelper orderStatusHelper,
+            ILogger logger)
         {
             _orderStatusHelper = orderStatusHelper;
+            _logger = logger;
         }
 
         public object Get(OrderStatusRequest request)
         {
             AuthService.CurrentSessionFactory();
             var status = _orderStatusHelper.GetOrderStatus(request.OrderId, SessionAs<IAuthSession>());
+            _logger.LogMessage("OrderStatusService: Vehicle {0} OrderId: {1}: ({2}, {3}).", status.VehicleNumber, status.OrderId, status.VehicleLatitude, status.VehicleLongitude);
 
             return Mapper.Map<OrderStatusRequestResponse>(status);
         }

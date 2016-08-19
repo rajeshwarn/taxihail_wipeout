@@ -1881,7 +1881,7 @@
 		<comment>Order:</comment>
 	</data>
 	<data name="Overdue_Instructions" xml:space="preserve">
-		<value>Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het QappMe systeem.</value>
+		<value>Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het TaxiHail systeem.</value>
 		<comment>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</comment>
 	</data>
 	<data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
@@ -2565,7 +2565,7 @@
 		<comment>Cancel this order</comment>
 	</data>
 	<data name="StatusCannotBeDisplayed" xml:space="preserve">
-		<value>Kan geen BoekingStatus geven. Neem contact op met QappMe?</value>
+		<value>Kan geen BoekingStatus geven. Neem contact op met TaxiHail?</value>
 		<comment>Cannot get status. Please call provider.</comment>
 	</data>
 	<data name="StatusConfirmCancelRide" xml:space="preserve">
@@ -2645,7 +2645,7 @@
 		<comment>Submit Rating</comment>
 	</data>
 	<data name="SupportEmail" xml:space="preserve">
-		<value>support@qappme.com</value>
+		<value>support@taxiahil.com</value>
 		<comment>techsupport@apcurium.com</comment>
 	</data>
 	<data name="TabBook" xml:space="preserve">
@@ -3118,7 +3118,7 @@
 		<comment>Update Password</comment>
 	</data>
 	<data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
-		<value>QappMe Netwerk</value>
+		<value>TaxiHail Netwerk</value>
 		<comment>TaxiHail Network</comment>
 	</data>
 	<data name="ViewAll" xml:space="preserve">

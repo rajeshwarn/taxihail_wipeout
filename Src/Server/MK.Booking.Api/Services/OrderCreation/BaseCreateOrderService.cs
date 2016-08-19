@@ -278,6 +278,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
             createReportOrder.BookingFees = orderCommand.BookingFees;
+            createReportOrder.AssignVehicleId = orderCommand.AssignVehicleId;
 
             // Promo code validation
             var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, request.Settings.ChargeTypeId, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
@@ -354,6 +355,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.OriginatingIpAddress = createReportOrder.OriginatingIpAddress = request.CustomerIpAddress;
             orderCommand.KountSessionId = createReportOrder.OriginatingIpAddress = request.KountSessionId;
             orderCommand.IsFutureBooking = createReportOrder.IsFutureBooking = isFutureBooking;
+            orderCommand.AssignVehicleId = createReportOrder.AssignVehicleId;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
@@ -430,7 +432,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 EstimatedFare = request.Estimate.Price,
                 UserAgent = Request.UserAgent,
                 ClientVersion = Request.Headers.Get("ClientVersion"),
-                TipIncentive = request.TipIncentive
+                TipIncentive = request.TipIncentive,
+                AssignVehicleId = request.AssignVehicleId
             };
         }
 
@@ -518,25 +521,27 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
-            var answers = userQuestionsDetails.Select(x => x.Answer).Where(x => x.HasValueTrimmed());
+            var answers = userQuestionsDetails.Select(x => x.Answer)
+                .Where(x => x.HasValueTrimmed());
 
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
-            if (!validation.Valid)
+            if (validation.Valid)
             {
-                if (validation.ValidResponse != null)
+                return;
+            }
+            if (validation.ValidResponse != null)
+            {
+                var firstError = validation.ValidResponse.IndexOf(false);
+                string errorMessage = null;
+                if (accountChargeDetail != null)
                 {
-                    int firstError = validation.ValidResponse.IndexOf(false);
-                    string errorMessage = null;
-                    if (accountChargeDetail != null)
-                    {
-                        errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
-                    }
-
-                    ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
+                    errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
                 }
 
-                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
+                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
             }
+
+            ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
         }
 
         private void ValidatePayment(string companyKey, CreateOrderRequest request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, decimal bookingFees, bool isPrepaid, CreateReportOrder createReportOrder)
