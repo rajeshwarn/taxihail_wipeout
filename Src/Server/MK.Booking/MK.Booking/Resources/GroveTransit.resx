@@ -118,13 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
-    <value>Sorry, your card could not be authorized. Please pay in vehicle</value>
+    <value>Sorry, your card could not be authorized. Please pay in the vehicle</value>
   </data>
   <data name="CreditCardUnableToPreathorizeErrorText" xml:space="preserve">
-    <value>Sorry, there was an error processing your card. Please pay in vehicle</value>
+    <value>Sorry, there was an error processing your card. Please pay in the vehicle</value>
   </data>
   <data name="OrderStatus_BAILED" xml:space="preserve">
     <value>Sorry, your driver canceled. Finding you another vehicle...</value>
+  </data>
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+    <value>Vehicle {0} is assigned to you</value>
   </data>
   <data name="OrderStatus_wosARRIVED" xml:space="preserve">
     <value>Vehicle is at pickup location</value>
@@ -139,7 +142,7 @@
     <value>Vehicle ride of amount {0}</value>
   </data>
   <data name="PushNotification_BAILED" xml:space="preserve">
-    <value>Sorry, your driver canceled. Finding you another vehicle...</value>
+    <value>Sorry, your driver cancelled. Finding you another vehicle...</value>
   </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Your vehicle (#{0}) has arrived</value>
