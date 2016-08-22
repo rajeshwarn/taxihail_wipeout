@@ -107,6 +107,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 viewPayPal.RemoveFromSuperview();
             }
 
+			if (ViewModel.PaymentSettings.EnableAddressVerification)
+			{
+				lblStreetName.Text = Localize.GetValue("CreditCardAdd_StreetNameLabel");
+ 				lblStreetNumber.Text = Localize.GetValue("CreditCardAdd_StreetNumberLabel");
+
+ 				txtStreetName.Placeholder = Localize.GetValue("CreditCardAdd_StreetNameLabel");
+				txtStreetName.AccessibilityLabel = txtStreetName.Placeholder;
+				txtStreetNumber.Placeholder = Localize.GetValue("CreditCardAdd_StreetNumberLabel");
+				txtStreetNumber.AccessibilityLabel = txtStreetNumber.Placeholder;	
+			}
+			else
+			{
+				lblStreetName.RemoveFromSuperview();
+				lblStreetNumber.RemoveFromSuperview();
+			}
+
+			if (ViewModel.PaymentSettings.EnableContactlVerification)
+			{
+				lblEmail.Text = Localize.GetValue("EmailLabel");
+				lblPhoneNumber.Text = Localize.GetValue("PassengerPhoneLabel");
+			
+ 				txtEmail.Placeholder = Localize.GetValue("RideSettingsEmailTitle");
+				txtEmail.AccessibilityLabel = txtEmail.Placeholder;
+				txtPhoneNumber.Placeholder = Localize.GetValue("RideSettingsPhone");
+				txtPhoneNumber.AccessibilityLabel = txtPhoneNumber.Placeholder;	
+			}
+			else
+			{
+				lblEmail.RemoveFromSuperview();
+				lblPhoneNumber.RemoveFromSuperview();
+			}
+
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
             set.Bind(btnSaveCard)
@@ -245,6 +277,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.PaymentSettings.DisableDiscover);
 
+			set.Bind(txtStreetName)
+			   .For("HiddenEx")
+			   .To(vm => vm.PaymentSettings.EnableAddressVerification)
+			   .WithConversion("BoolInverter");
+
+			set.Bind(txtStreetNumber)
+			   .For("HiddenEx")
+			   .To(vm => vm.PaymentSettings.EnableAddressVerification)
+			   .WithConversion("BoolInverter");
+
+			set.Bind(txtStreetName)
+			   .To(vm => vm.Data.StreetName);
+
+			set.Bind(txtStreetNumber)
+			   .To(vm => vm.Data.StreetNumber);
+
+			set.Bind(txtEmail)
+			   .For("HiddenEx")
+			   .To(vm => vm.PaymentSettings.EnableContactlVerification)
+			   .WithConversion("BoolInverter");
+
+			set.Bind(txtPhoneNumber)
+			   .For("HiddenEx")
+			   .To(vm => vm.PaymentSettings.EnableContactlVerification)
+			   .WithConversion("BoolInverter");
+
+			set.Bind(txtEmail)
+			   .To(vm => vm.Data.Email);
+
+			set.Bind(txtPhoneNumber)
+			   .To(vm => vm.Data.Phone);
+			
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;

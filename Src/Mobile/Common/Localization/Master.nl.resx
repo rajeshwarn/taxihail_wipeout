@@ -3193,4 +3193,10 @@
 		<value>Ja</value>
 		<comment>Yes</comment>
 	</data>
+  <data name="CreditCardAdd_StreetNameLabel" xml:space="preserve">
+	<value>Street name</value>
+  </data>
+  <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
+	<value>Street number</value>
+  </data>
 </root>

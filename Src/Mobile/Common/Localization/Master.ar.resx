@@ -2381,4 +2381,10 @@
     <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
     <comment>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</comment>
   </data>
+	  <data name="CreditCardAdd_StreetNameLabel" xml:space="preserve">
+	<value>Street name</value>
+  </data>
+  <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
+	<value>Street number</value>
+  </data>
 </root>
