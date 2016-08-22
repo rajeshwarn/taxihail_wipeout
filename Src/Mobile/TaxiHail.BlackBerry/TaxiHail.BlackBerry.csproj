@@ -76,6 +76,10 @@
     <Reference Include="ModernHttpClient">
       <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Square.OkHttp">
       <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
     </Reference>
@@ -200,9 +204,6 @@
     <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7">
       <HintPath>..\..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />

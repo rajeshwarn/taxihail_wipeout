@@ -107,7 +107,7 @@
       <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c">
       <HintPath>..\..\packages\PCLCrypto.1.0.86\lib\monoandroid\PCLCrypto.dll</HintPath>
@@ -421,7 +421,9 @@
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
-    <EmbeddedResource Include="Localization\GroveTransit.resx" />
+    <EmbeddedResource Include="Localization\groveRideNow.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Localization\yoolka.resx" />
