@@ -56,7 +56,6 @@
     <Reference Include="Square.OkIO">
       <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authorization\OAuthAuthorizer.cs" />

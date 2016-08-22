@@ -454,7 +454,9 @@
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
     <None Include="Localization\yoolka.resx" />
-    <None Include="Localization\groveRideNow.resx" />
+    <None Include="Localization\groveRideNow.resx">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

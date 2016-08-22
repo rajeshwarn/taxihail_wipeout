@@ -217,6 +217,7 @@
     <Compile Include="PlatformIntegration\QuitApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
