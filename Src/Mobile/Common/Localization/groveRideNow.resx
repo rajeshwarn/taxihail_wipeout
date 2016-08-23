@@ -186,14 +186,10 @@
   <data name="CarAssigned" xml:space="preserve">
     <value>Your vehicle {0}</value>
   </data>
-<<<<<<< HEAD:Src/Mobile/Common/Localization/groveRideNow.resx
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Vehicle:</value>
   </data>
   <data name="OrderStatus_Medallion" xml:space="preserve">
     <value>Vehicle</value>
   </data>
-=======
-	
->>>>>>> 4d660074be0626e0e77684b8cab6b78854eaca04:Src/Mobile/Common/Localization/groveRideNow.resx
 </root>
