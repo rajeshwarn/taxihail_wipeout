@@ -107,6 +107,8 @@
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardInvalidCrediCardNumber">رقم البطاقة الائتمانية خاطئة</string>
   <string name="CreditCardInvalidCrediCardTypeAmex">Sorry, Amex cards are not supported</string>
+  <string name="CreditCardInvalidCrediCardTypeVisaMastercard">Sorry, Visa, Mastercard and Visa Electron cards are not supported</string>
+  <string name="CreditCardInvalidCrediCardTypeDiscover">Sorry, Discover cards are not supported</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">الإسم كما يظهر على البطاقة</string>
@@ -752,4 +754,6 @@
   <string name="NoCreditCard">No credit card selected</string>
   <string name="ServiceErrorUpdatePassword_NotSame">كلمة المرور الحالية غير صحيحة</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
+  <string name="CreditCardAdd_StreetNameLabel">Street name</string>
+  <string name="CreditCardAdd_StreetNumberLabel">Street number</string>
 </resources>

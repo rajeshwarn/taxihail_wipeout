@@ -1052,6 +1052,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0501bb
 			public const int CreditCard = 2131034555;
 			
+			// aapt resource value: 0x7f050323
+			public const int CreditCardAdd_StreetNameLabel = 2131034915;
+			
+			// aapt resource value: 0x7f050324
+			public const int CreditCardAdd_StreetNumberLabel = 2131034916;
+			
 			// aapt resource value: 0x7f0501f4
 			public const int CreditCardAdded = 2131034612;
 			
@@ -1099,6 +1105,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05031f
 			public const int CreditCardInvalidCrediCardTypeAmex = 2131034911;
+			
+			// aapt resource value: 0x7f050322
+			public const int CreditCardInvalidCrediCardTypeDiscover = 2131034914;
+			
+			// aapt resource value: 0x7f050321
+			public const int CreditCardInvalidCrediCardTypeVisaMastercard = 2131034913;
 			
 			// aapt resource value: 0x7f050179
 			public const int CreditCardLabel = 2131034489;
