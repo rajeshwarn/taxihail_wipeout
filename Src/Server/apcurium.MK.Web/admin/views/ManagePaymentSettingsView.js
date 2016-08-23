@@ -312,6 +312,9 @@
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
             var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
 
+            var enableAddressVerificationDiv = this.$("#enableAddressVerificationDiv");
+            var enableContactVerificationDiv = this.$("#enableContactVerificationDiv");
+
             var currentPaymentMode = this.updatedModel.paymentMode;
 
             if (newPaymentMode != currentPaymentMode) {
@@ -361,12 +364,16 @@
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
                 cancelOrderOnUnpairDiv.hide();
+                enableAddressVerificationDiv.hide();
+                enableContactVerificationDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
                 cancelOrderOnUnpairDiv.show();
+                enableAddressVerificationDiv.show();
+                enableContactVerificationDiv.show();
             }
         }
     });
