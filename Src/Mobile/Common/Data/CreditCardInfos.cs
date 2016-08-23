@@ -5,10 +5,6 @@ namespace apcurium.MK.Booking.Mobile.Data
 {
     public class CreditCardInfos
     {	
-		public CreditCardInfos()
-		{
-			Label = CreditCardLabelConstants.Personal;
-		}
         public Guid CreditCardId { get; set; }
         public string CardNumber { get; set; }
         public string NameOnCard { get; set; }
@@ -18,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Data
         public string ExpirationMonth { get; set; }        
         public string ExpirationYear { get; set; }        
 		public string CCV { get; set; }        
-		public CreditCardLabelConstants Label { get; set; }        
+		public string Label { get; set; }        
 		public bool IsDefault { get; set; }        
 		public string ZipCode { get; set; }       
 

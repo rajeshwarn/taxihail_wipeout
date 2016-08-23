@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPhoneService _phoneService;
 
 		private bool _hasPaymentToSettle;
-		private CreditCardLabelConstants _originalLabel;
+		private string _originalLabel;
 
 		public CreditCardAddViewModel(
 			ILocationService locationService,
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					IsAddingNewCard = true;
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
-					Data.Label = CreditCardLabelConstants.Personal;
+					Data.Label = string.Empty;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;

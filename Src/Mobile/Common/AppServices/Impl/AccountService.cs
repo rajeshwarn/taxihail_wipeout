@@ -778,11 +778,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label)
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)
 		{
 			try
 			{
-				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label.ToString()})); 
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
 			}
 			catch
 			{
