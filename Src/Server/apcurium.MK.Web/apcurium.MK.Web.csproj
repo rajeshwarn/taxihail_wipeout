@@ -492,7 +492,6 @@
     <Content Include="localization\Signup-nl.json" />
     <Content Include="localization\UpdatePassword-nl.json" />
     <Content Include="localization\UserAccount-nl.json" />
-    <Content Include="localization\TotalTransit-en.json" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
