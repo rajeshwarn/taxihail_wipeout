@@ -111,6 +111,8 @@
   <string name="CreditCardInvalidCrediCardNumber">Le numéro de la carte ne semble pas être valide</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="CreditCardInvalidCrediCardTypeAmex">Désolé, nous ne supportons pas les cartes Amex</string>
+  <string name="CreditCardInvalidCrediCardTypeVisaMastercard">Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron</string>
+  <string name="CreditCardInvalidCrediCardTypeDiscover">Désolé, nous ne supportons pas les cartes Discover</string>
   <string name="CreditCardLabel">Label</string>
   <string name="CreditCardName">Nom du titulaire (tel qu\'il apparaît sur la carte)</string>
   <string name="CreditCardNumber">Numéro de la carte</string>
@@ -768,4 +770,6 @@
   <string name="NoCreditCard">Aucune carte de crédit sélectionnée</string>
   <string name="ServiceErrorUpdatePassword_NotSame">Désolé, le mot de passe saisi n\'est pas valide</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
+  <string name="CreditCardAdd_StreetNameLabel">Numero</string>
+  <string name="CreditCardAdd_StreetNumberLabel">Rue</string>
 </resources>

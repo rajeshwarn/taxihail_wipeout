@@ -2443,6 +2443,6 @@
 	<value>Street name</value>
   </data>
   <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
-	<value>Street number</value>
+	<value>Street #</value>
   </data>
 </root>
