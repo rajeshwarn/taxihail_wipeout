@@ -327,10 +327,6 @@
     <Compile Include="Migrations\201608111527226_Configuration_TAX_47.Designer.cs">
       <DependentUpon>201608111527226_Configuration_TAX_47.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608221756171_Configuration_TAX_125.cs" />
-    <Compile Include="Migrations\201608221756171_Configuration_TAX_125.Designer.cs">
-      <DependentUpon>201608221756171_Configuration_TAX_125.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
@@ -552,9 +548,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608111527226_Configuration_TAX_47.resx">
       <DependentUpon>201608111527226_Configuration_TAX_47.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608221756171_Configuration_TAX_125.resx">
-      <DependentUpon>201608221756171_Configuration_TAX_125.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
