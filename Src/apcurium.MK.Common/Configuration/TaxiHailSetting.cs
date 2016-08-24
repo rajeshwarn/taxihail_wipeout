@@ -70,6 +70,7 @@ namespace apcurium.MK.Common.Configuration
             IsDriverBonusEnabled = false;
             ChangeDropOffAddressMidTrip = false;
             ChangeCreditCardMidtrip = false;
+            DisplayTimePickerInTwelveHourFormat = true;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -591,6 +592,10 @@ namespace apcurium.MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Default Address Selection Tab", Description = "Default address selection tab (web) options are: search, places or favorites")]
         public string DefaultPickupLocationTabWeb { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Display Time Picker in 12 hour format", Description = "Set to true to display time picker using 12 hour clock, false to display using 24 hour clock.")]
+        public bool DisplayTimePickerInTwelveHourFormat { get; protected set; }
 
     }
 }
