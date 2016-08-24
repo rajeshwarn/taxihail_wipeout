@@ -372,3 +372,6 @@ Version bump 3.3.1
 3.5.25
 	Added missing TotalTransit-en.json file that was breaking the build.
 	
+3.5.26
+	Fixing an issue whereas the build for iOS was failing for certain Xamarin versions.
+	
