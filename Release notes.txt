@@ -536,7 +536,21 @@ Version bump 3.3.1
 	TAX-131 TotalTransit (aka Discount Ride) requested that we change the words Taxi, Cab and Medallion to Vehicle
 	Fixed a problem with the LocalizationTool where company specific resource files would not get utlized when generating the Strings.xml files.
 	Fixed a null exception issue with the OrderStatusUpdater where if the tip was null.
+	
+3.5.22
+	TAX-109 GroveTransit (aka groveRideNow) requested that we change the words Taxi, Cab and Medallion to Vehicle as well as the text string from "Sorry, no taxis currently available nearby" to something like "Calculating nearest vehicle ETA" 
+	Also, on iOS, the default gps location wasn't automatically resolving the address when the application starts up.
+	TAX-37 We updated the Newtonsoft nuget package to 7.0.1 which is what apple is using from what we understand.
 
+3.5.23
+    Updated IBS dll to use most recent WSDL from taxihailxds's ibs
+
+3.5.25
+	Added missing TotalTransit-en.json file that was breaking the build.
+	
+3.5.26
+	Fixing an issue whereas the build for iOS was failing for certain Xamarin versions.
+	
 3.6.0
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
 	Bug fix - Fix scheduled orders causing user to be stuck when navigating from history
@@ -557,7 +571,6 @@ Version bump 3.3.1
 	Added UTC indication to Account creation date.
 	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
        	Bug fix - Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
-
 3.6.1
 	All the fixes and features added in between 3.5.17 and 3.5.21
       	TAX-47 - Now having a possibility to send the Car # instead of the Driver Id in Moneris transactions.

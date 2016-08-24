@@ -58,6 +58,10 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -122,9 +126,6 @@
     </Reference>
     <Reference Include="Connectivity.Plugin.Abstractions">
       <HintPath>..\..\packages\Xam.Plugin.Connectivity.1.0.3\lib\Xamarin.iOS10\Connectivity.Plugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Validation">
       <HintPath>..\..\packages\Validation.2.2.8\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
@@ -452,9 +453,10 @@
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
-    <None Include="Localization\GroveTransit.resx" />
     <None Include="Localization\yoolka.resx" />
-    <None Include="Localization\Discount Ride.resx" />
+    <None Include="Localization\groveRideNow.resx">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
