@@ -623,6 +623,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
+                intent.PutExtra("UseAmPmFormat", ViewModel.Settings.DisplayTimePickerInTwelveHourFormat);
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
             else if (state == HomeViewModelState.AirportPickDate)
@@ -632,6 +633,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
+                intent.PutExtra("UseAmPmFormat", ViewModel.Settings.DisplayTimePickerInTwelveHourFormat);
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
             else if (state == HomeViewModelState.AddressSearch)
