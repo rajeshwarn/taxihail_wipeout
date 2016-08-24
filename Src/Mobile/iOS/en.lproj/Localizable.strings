@@ -773,4 +773,4 @@
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
 "CreditCardAdd_StreetNameLabel"="Street name";
-"CreditCardAdd_StreetNumberLabel"="Street number";
+"CreditCardAdd_StreetNumberLabel"="Street #";

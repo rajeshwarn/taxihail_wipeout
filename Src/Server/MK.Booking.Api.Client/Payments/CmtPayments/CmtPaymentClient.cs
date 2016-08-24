@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account, string streetNumber = null, string streetName = null, string email = null, string phone = null)
         {
             return Tokenize(CmtPaymentServiceClient, nameOnCard, accountNumber, expiryDate, cvv, kountSessionId, zipCode, account);
         }

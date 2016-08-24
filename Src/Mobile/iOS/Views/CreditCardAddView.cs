@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblStreetNumber.RemoveFromSuperview();
 			}
 
-			if (ViewModel.PaymentSettings.EnableContactlVerification)
+			if (ViewModel.PaymentSettings.EnableContactVerification)
 			{
 				lblEmail.Text = Localize.GetValue("EmailLabel");
 				lblPhoneNumber.Text = Localize.GetValue("PassengerPhoneLabel");
@@ -295,12 +295,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(txtEmail)
 			   .For("HiddenEx")
-			   .To(vm => vm.PaymentSettings.EnableContactlVerification)
+			   .To(vm => vm.PaymentSettings.EnableContactVerification)
 			   .WithConversion("BoolInverter");
 
 			set.Bind(txtPhoneNumber)
 			   .For("HiddenEx")
-			   .To(vm => vm.PaymentSettings.EnableContactlVerification)
+			   .To(vm => vm.PaymentSettings.EnableContactVerification)
 			   .WithConversion("BoolInverter");
 
 			set.Bind(txtEmail)

@@ -680,13 +680,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			Logger.LogMessage("Tokenizing card ending with: {0}", creditCard.CardNumber.Substring(creditCard.CardNumber.Length - 4));
 
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
-				creditCard.CardNumber, 
-                creditCard.NameOnCard,
+				creditCard.CardNumber,
+				creditCard.NameOnCard,
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
 				creditCard.CCV,
 				kountSessionId,
 				zipCode,
-				CurrentAccount));
+				CurrentAccount,
+				creditCard.StreetNumber,
+				creditCard.StreetName,
+				creditCard.Email,
+				creditCard.Phone));
 
 			Logger.LogMessage("Response from tokenization: Success: {0} Message: {1}", response.IsSuccessful, response.Message);
 

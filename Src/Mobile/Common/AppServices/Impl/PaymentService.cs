@@ -118,9 +118,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+		public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account, string streetNumber = null, string streetName = null, string email = null, string phone = null)
         {
-			return GetClient().Tokenize(creditCardNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account);
+			return GetClient().Tokenize(creditCardNumber, nameOnCard, expiryDate, cvv, kountSessionId, zipCode, account, streetNumber, streetName, email, phone);
         }
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
