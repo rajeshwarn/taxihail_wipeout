@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MK.DeploymentService")]
-[assembly: AssemblyCopyright("Copyright Ã‚Â©  2012")]
+[assembly: AssemblyCopyright("Copyright Ãƒâ€šÃ‚Â©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,9 +31,9 @@ using System.Runtime.InteropServices;
 // 
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("3.5.24")]
-[assembly: AssemblyVersion("3.5.25")]
-[assembly: AssemblyFileVersion("3.5.25")]
+// [assembly: AssemblyVersion("3.5.26")]
+[assembly: AssemblyVersion("3.5.26")]
+[assembly: AssemblyFileVersion("3.5.26")]
 
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.xml", Watch = true)]
