@@ -680,13 +680,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			Logger.LogMessage("Tokenizing card ending with: {0}", creditCard.CardNumber.Substring(creditCard.CardNumber.Length - 4));
 
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
-				creditCard.CardNumber, 
-                creditCard.NameOnCard,
+				creditCard.CardNumber,
+				creditCard.NameOnCard,
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
 				creditCard.CCV,
 				kountSessionId,
 				zipCode,
-				CurrentAccount));
+				CurrentAccount,
+				creditCard.StreetNumber,
+				creditCard.StreetName,
+				creditCard.Email,
+				creditCard.Phone));
 
 			Logger.LogMessage("Response from tokenization: Success: {0} Message: {1}", response.IsSuccessful, response.Message);
 
@@ -718,15 +722,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
-				Label = creditCard.Label.ToString(),
+				Label = creditCard.Label,
 				ZipCode = creditCard.ZipCode,
-				
+				StreetNumber = creditCard.StreetNumber,
+				StreetName = creditCard.StreetName,
+				Email = creditCard.Email,
+				Phone = creditCard.Phone
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
 				!isUpdate 
 					? client.AddCreditCard (request)
-					: client.UpdateCreditCard(request));  
+					: client.UpdateCreditCard (request));  
 
 
 			if (isUpdate || CurrentAccount.DefaultCreditCard == null)
@@ -741,7 +748,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						Last4Digits = request.Last4Digits,
 						ExpirationMonth = request.ExpirationMonth,
 						ExpirationYear = request.ExpirationYear,
-						IsDeactivated = false
+						IsDeactivated = false,
+						StreetNumber = request.StreetNumber,
+						StreetName = request.StreetName,
+						Email = request.Email,
+						Phone = request.Phone
 					};
 				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
 			}	
@@ -778,11 +789,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label)
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)
 		{
 			try
 			{
-				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label.ToString()})); 
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
 			}
 			catch
 			{

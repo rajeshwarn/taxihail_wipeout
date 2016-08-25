@@ -767,3 +767,5 @@
 "NoCreditCard"="No ha seleccionado una tarjeta de crédito";
 "ServiceErrorUpdatePassword_NotSame"="Su contraseña y confirmación no concuerdan";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
+"CreditCardAdd_StreetNameLabel"="Street name";
+"CreditCardAdd_StreetNumberLabel"="Street number";

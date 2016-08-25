@@ -768,3 +768,5 @@
 "NoCreditCard"="Aucune carte de crédit sélectionnée";
 "ServiceErrorUpdatePassword_NotSame"="Désolé, le mot de passe saisi n'est pas valide";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
+"CreditCardAdd_StreetNameLabel"="Numero";
+"CreditCardAdd_StreetNumberLabel"="Rue";

@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
-        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account)
+        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, string nameOnCard, DateTime expiryDate, string cvv, string kountSessionId, string zipCode, Account account, string streetNumber = null, string streetName = null, string email = null, string phone = null)
 		{
-            return Tokenize(MonerisClient, creditCardNumber, expiryDate);
+            return Tokenize(MonerisClient, creditCardNumber, expiryDate, cvv, zipCode, streetNumber, streetName, email, phone);
 		}
 
 		public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard (string cardToken)
@@ -83,11 +83,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			return true;
 		}
 
-		private async Task<TokenizedCreditCardResponse> Tokenize(MonerisTokenizeClient monerisClient, string cardNumber, DateTime expiryDate)
+		private async Task<TokenizedCreditCardResponse> Tokenize(MonerisTokenizeClient monerisClient, string cardNumber, DateTime expiryDate,string cvv, string zipCode, string streetNumber,string streetName, string email, string phone)
 		{
 			try
 			{
-				var response = await monerisClient.TokenizeAsync(cardNumber, expiryDate.ToString("yyMM"));
+			var response = await monerisClient.TokenizeAsync(cardNumber, expiryDate.ToString("yyMM"),cvv, streetNumber, streetName, zipCode, email, phone);
 
 				var message = string.Empty;
 				var success = RequestSuccesful(response, out message);

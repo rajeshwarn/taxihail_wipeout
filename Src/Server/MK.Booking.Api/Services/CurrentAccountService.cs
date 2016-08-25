@@ -42,12 +42,6 @@ namespace apcurium.MK.Booking.Api.Services
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
                 : null;
 
-            var creditCardLabel = CreditCardLabelConstants.Personal;
-            if (creditCard != null)
-            {
-                Enum.TryParse(creditCard.Label, out creditCardLabel);
-            }
-
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
@@ -60,8 +54,12 @@ namespace apcurium.MK.Booking.Api.Services
                         ExpirationMonth = creditCard.ExpirationMonth,
                         ExpirationYear = creditCard.ExpirationYear,
                         IsDeactivated = creditCard.IsDeactivated,
-                        Label = creditCardLabel,
-                        ZipCode = creditCard.ZipCode
+                        Label = creditCard.Label,
+                        ZipCode = creditCard.ZipCode,
+                        StreetNumber = creditCard.StreetNumber,
+                        StreetName = creditCard.StreetName,
+                        Email = creditCard.Email,
+                        Phone = creditCard.Phone
                     }
                 : null;
 
@@ -98,6 +96,7 @@ namespace apcurium.MK.Booking.Api.Services
 				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
+			if (account.IsConfirmed)
 			if (account.IsConfirmed)
 			{
 				throw new HttpError(HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");

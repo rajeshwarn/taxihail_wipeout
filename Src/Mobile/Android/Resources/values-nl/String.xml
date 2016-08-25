@@ -440,7 +440,7 @@
   <string name="Overdue_Failed_Message">Uw transactie is geweigerd, Preobeer het opnieuw of betaal anders</string>
   <string name="Overdue_Failed_Title">Betaling Mislukt</string>
   <string name="Overdue_IBSOrderId">Order:</string>
-  <string name="Overdue_Instructions">Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het QappMe systeem.</string>
+  <string name="Overdue_Instructions">Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het TaxiHail systeem.</string>
   <string name="Overdue_OutstandingPaymentExists">Uw CreditCard betaling van de vorige rit is Mislukt. We verzoeken u deze openstaande rekening te voldoen voordat uw kaart opnieuw geaactiveerd wordt</string>
   <string name="Overdue_Retry">Betaal nu</string>
   <string name="Overdue_Succeed_Message">Uw openstaande betaling van {0} is geregeld en uw account is nu ingeschakeld om standaard op rekening te betalen.</string>
@@ -611,7 +611,7 @@
   <string name="StatusActionCancelButton">Annuleer deze order</string>
   <string name="StatusCallButton">Bellen</string>
   <string name="StatusCancelButton">Annuleer deze order</string>
-  <string name="StatusCannotBeDisplayed">Kan geen BoekingStatus geven. Neem contact op met QappMe?</string>
+  <string name="StatusCannotBeDisplayed">Kan geen BoekingStatus geven. Neem contact op met TaxiHail?</string>
   <string name="StatusConfirmCancelRide">Weet u zeker dat u wilt annuleren?</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Weet u zeker dat u wilt annuleen? Er kan mogelijk Annuleringskosten in rekening gebracht worden.</string>
   <string name="StatusConfirmCancelRideError">De boeking kan niet worden geannuleerd, Neemt u contact met ons op om de boeking te annuleren.</string>
@@ -631,7 +631,7 @@
   <string name="StreetNumberSearchBt">Gebruik een ander adres</string>
   <string name="StreetNumberTitle">Adres details</string>
   <string name="Submit">Bevestig Beoordeling</string>
-  <string name="SupportEmail">support@qappme.com</string>
+  <string name="SupportEmail">support@taxiahil.com</string>
   <string name="TabBook">Boeken</string>
   <string name="TabContacts">Contacten</string>
   <string name="TabFavorites">Favorieten</string>
@@ -749,7 +749,7 @@
   <string name="View_SignIn">Algemene Voorwaarden</string>
   <string name="View_UpdatedTermsAndConditions">Nieuwe Algemene Voorwaarden</string>
   <string name="View_UpdatePassword">Update Wachtwoord</string>
-  <string name="View_UserTaxiHailNetworkSettings">QappMe Netwerk</string>
+  <string name="View_UserTaxiHailNetworkSettings">TaxiHail Netwerk</string>
   <string name="ViewAll">Bekijk alles</string>
   <string name="ViewRatingBtn">Bekijk beoordeleingen</string>
   <string name="WaitingCarLandscapeActivityName">Taxi Nummer</string>
@@ -768,4 +768,6 @@
   <string name="WarningPushServiceTitle">Push berichten</string>
   <string name="WarningTitle">Waarschuwing</string>
   <string name="YesButton">Ja</string>
+  <string name="CreditCardAdd_StreetNameLabel">Street name</string>
+  <string name="CreditCardAdd_StreetNumberLabel">Street number</string>
 </resources>

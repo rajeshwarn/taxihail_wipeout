@@ -53,5 +53,27 @@ namespace apcurium.MK.Web.Tests
             var orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
             return new MonerisPaymentService(commandBus, logger, orderPaymentDao, serverSettings, serverSettings.GetPaymentSettings(), pairingService, creditCardDao, orderDao);
         }
+
+        [Test]
+        public async void when_tokenizing_a_credit_card_with_avs()
+        {
+            var client = GetPaymentClient();
+            var visa = TestCreditCards.Visa;
+
+            var result = await client.Tokenize(visa.Number, 
+                    visa.NameOnCard, 
+                    visa.ExpirationDate, 
+                    visa.AvcCvvCvv2.ToString(),
+                    null,
+                    visa.ZipCode, 
+                    TestAccount, 
+                    "7250", 
+                    "Mile-End", 
+                    TestAccount.Email, 
+                    TestAccount.Phone);
+
+
+            Assert.IsTrue(result.IsSuccessful);
+        }
     }
 }

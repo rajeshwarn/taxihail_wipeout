@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Tests
 
         protected Func<DbContext> ContextFactory { get; set; }
 
-        private TestCreditCards TestCreditCards { get; set; }
+        protected TestCreditCards TestCreditCards { get; private set; }
 
         protected abstract IPaymentServiceClient GetPaymentClient();
         protected abstract PaymentProvider GetProvider();

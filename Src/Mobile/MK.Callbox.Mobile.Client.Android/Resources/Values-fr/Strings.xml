@@ -797,4 +797,8 @@
   <string name="Notification_NoShowPush">No show</string>
   <string name="CreditCardInvalidCrediCardTypeAmex">Désolé, nous ne supportons pas les cartes Amex</string>
   <string name="RideSettingsLastCreditCardDeletion">Just a heads up - you\'ll have to add a credit card the next time you want to e-hail or pay for a taxi.</string>
+  <string name="CreditCardInvalidCrediCardTypeVisaMastercard">Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron</string>
+  <string name="CreditCardInvalidCrediCardTypeDiscover">Désolé, nous ne supportons pas les cartes Discover</string>
+  <string name="CreditCardAdd_StreetNameLabel">Numero</string>
+  <string name="CreditCardAdd_StreetNumberLabel">Rue</string>
 </resources>

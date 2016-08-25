@@ -766,3 +766,5 @@
 "WarningPushServiceTitle"="Push berichten";
 "WarningTitle"="Waarschuwing";
 "YesButton"="Ja";
+"CreditCardAdd_StreetNameLabel"="Street name";
+"CreditCardAdd_StreetNumberLabel"="Street number";

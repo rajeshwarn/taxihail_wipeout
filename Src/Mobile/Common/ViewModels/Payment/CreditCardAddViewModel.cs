@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPhoneService _phoneService;
 
 		private bool _hasPaymentToSettle;
-		private CreditCardLabelConstants _originalLabel;
+		private string _originalLabel;
 
 		public CreditCardAddViewModel(
 			ILocationService locationService,
@@ -73,6 +73,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			public static int AvcCvvCvv2 = 135;
 			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
 			public static string ZipCode = "95001";
+
+			public static string StreetName = "Mile-End";
+			public static string StreetNumber = "7250";
 		}
 
 		public void Init(bool showInstructions = false, 
@@ -158,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					IsAddingNewCard = true;
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
-					Data.Label = CreditCardLabelConstants.Personal;
+					Data.Label = string.Empty;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;
@@ -178,7 +181,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ExpirationMonth = DummyVisa.ExpirationDate.Month;
 					ExpirationYear = DummyVisa.ExpirationDate.Year;
-					#endif         
+
+					Data.StreetName = DummyVisa.StreetName;
+					Data.StreetNumber = DummyVisa.StreetNumber;
+					#endif
+
+					Data.Email = _accountService.CurrentAccount.Email;
+					Data.Phone = _accountService.CurrentAccount.Phone;
 				}
 				else
 				{
@@ -190,6 +199,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 					Data.Label = creditCard.Label;
 					Data.ZipCode = creditCard.ZipCode;
+
+					Data.Email = creditCard.Email;
+					Data.Phone = creditCard.Phone;
+					Data.StreetName = creditCard.StreetName;
+					Data.StreetNumber = creditCard.StreetNumber;
 
 					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
 					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
