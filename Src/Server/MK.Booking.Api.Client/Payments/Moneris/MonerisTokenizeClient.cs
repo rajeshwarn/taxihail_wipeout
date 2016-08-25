@@ -7,6 +7,7 @@ using System.Collections;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
@@ -41,11 +42,23 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			string phone)
 		{
 			var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
+		    if (streetName.HasValueTrimmed() && streetNumber.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetAvsAddress(streetName, streetNumber);
+            }
 
-			tokenizeCommand.SetAvsAddress(streetName, streetNumber);
 			tokenizeCommand.SetAvsZipCode(zipCode);
-			tokenizeCommand.SetEmail(email);
-			tokenizeCommand.SetPhone(phone);
+
+		    if (email.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetEmail(email);
+            }
+
+		    if (phone.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetPhone(phone);
+            }
+			
 			tokenizeCommand.SetCvv(cvv, "1");
 
 			var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand, _logger);

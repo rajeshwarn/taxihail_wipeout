@@ -42,12 +42,6 @@ namespace apcurium.MK.Booking.Api.Services
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
                 : null;
 
-            var creditCardLabel = CreditCardLabelConstants.Personal;
-            if (creditCard != null)
-            {
-                Enum.TryParse(creditCard.Label, out creditCardLabel);
-            }
-
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
@@ -60,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
                         ExpirationMonth = creditCard.ExpirationMonth,
                         ExpirationYear = creditCard.ExpirationYear,
                         IsDeactivated = creditCard.IsDeactivated,
-                        Label = creditCardLabel,
+                        Label = creditCard.Label,
                         ZipCode = creditCard.ZipCode
                     }
                 : null;
