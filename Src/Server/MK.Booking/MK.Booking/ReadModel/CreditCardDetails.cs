@@ -11,11 +11,6 @@ namespace apcurium.MK.Booking.ReadModel
 {
     public class CreditCardDetails
     {
-        public CreditCardDetails()
-        {
-            Label = CreditCardLabelConstants.Personal.ToString();
-        }
-
         [Key]
         public Guid CreditCardId { get; set; }
 
@@ -34,6 +29,14 @@ namespace apcurium.MK.Booking.ReadModel
         public string ExpirationYear { get; set; }
 
         public bool IsDeactivated { get; set; }
+
+        public string StreetNumber { get; set; }
+
+        public string StreetName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
 
         public bool IsExpired()
         {

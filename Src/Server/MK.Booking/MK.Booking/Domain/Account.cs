@@ -216,7 +216,8 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
-            string last4Digits, string expirationMonth, string expirationYear, string token, string label, string zipCode)
+            string last4Digits, string expirationMonth, string expirationYear, string token, string label, 
+            string zipCode, string streetNumber, string streetName, string email, string phone)
         {
             Update(new CreditCardAddedOrUpdated
             {
@@ -229,6 +230,10 @@ namespace apcurium.MK.Booking.Domain
                 Token = token,
                 Label = label,
                 ZipCode = zipCode,
+                StreetName = streetName,
+                StreetNumber = streetNumber,
+                Email = email,
+                Phone = phone
             });
         }
 

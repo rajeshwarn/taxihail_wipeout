@@ -55,7 +55,11 @@ namespace apcurium.MK.Booking.Api.Services
                         ExpirationYear = creditCard.ExpirationYear,
                         IsDeactivated = creditCard.IsDeactivated,
                         Label = creditCard.Label,
-                        ZipCode = creditCard.ZipCode
+                        ZipCode = creditCard.ZipCode,
+                        StreetNumber = creditCard.StreetNumber,
+                        StreetName = creditCard.StreetName,
+                        Email = creditCard.Email,
+                        Phone = creditCard.Phone
                     }
                 : null;
 
@@ -92,6 +96,7 @@ namespace apcurium.MK.Booking.Api.Services
 				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
 			}
 
+			if (account.IsConfirmed)
 			if (account.IsConfirmed)
 			{
 				throw new HttpError(HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
