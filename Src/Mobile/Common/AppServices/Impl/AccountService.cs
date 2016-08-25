@@ -724,8 +724,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationYear = creditCard.ExpirationYear,
 				Label = creditCard.Label,
 				ZipCode = creditCard.ZipCode,
-				StringNumber = creditCard.StreetNumber,
-				StringName = creditCard.StreetNumber,
+				StreetNumber = creditCard.StreetNumber,
+				StreetName = creditCard.StreetName,
 				Email = creditCard.Email,
 				Phone = creditCard.Phone
             };
