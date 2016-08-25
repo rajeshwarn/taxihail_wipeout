@@ -2435,4 +2435,16 @@
   <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
 	<value>Rue</value>
   </data>
+  <data name="ConfirmCreditCardOfOrder_Title" xml:space="preserve">
+	<value>Confirmer votre carte de credit</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_Message" xml:space="preserve">
+	<value>Etes-vous sur de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_withNickname_Message" xml:space="preserve">
+	<value>Etes-vous sur de vouloir utiliser la carte de credit nommer {0}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_ChangeCreditCard" xml:space="preserve">
+	<value>Utiliser une carte de credit differente.</value>
+  </data>
 </root>
