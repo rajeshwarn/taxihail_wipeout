@@ -339,7 +339,7 @@
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="PaymentDetails.Label.Personal">Personal</string>
   <string name="PaymentDetails.Label.Business">Business</string>
-  <string name="PaymentDetails.LabelName">Label</string>
+  <string name="PaymentDetails.LabelName">Nickname</string>
   <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="CreditCardZipCode">Zip/Postal</string>

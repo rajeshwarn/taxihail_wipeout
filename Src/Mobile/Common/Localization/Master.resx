@@ -1135,7 +1135,7 @@
     <value>Business</value>
   </data>
   <data name="PaymentDetails.LabelName" xml:space="preserve">
-    <value>Label</value>
+    <value>Nickname</value>
   </data>
   <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
     <value>Tip amount is invalid</value>
