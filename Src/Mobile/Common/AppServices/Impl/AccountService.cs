@@ -749,8 +749,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						ExpirationMonth = request.ExpirationMonth,
 						ExpirationYear = request.ExpirationYear,
 						IsDeactivated = false,
-						StreetNumber = request.StringNumber,
-						StreetName = request.StringName,
+						StreetNumber = request.StreetNumber,
+						StreetName = request.StreetName,
 						Email = request.Email,
 						Phone = request.Phone
 					};
