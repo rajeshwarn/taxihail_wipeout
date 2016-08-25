@@ -337,7 +337,7 @@
 "PaymentDetails.TipAmountLabel"="Tip Amount";
 "PaymentDetails.Label.Personal"="Personal";
 "PaymentDetails.Label.Business"="Business";
-"PaymentDetails.LabelName"="Label";
+"PaymentDetails.LabelName"="Nickname";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
 "CreditCardZipCode"="Zip/Postal";
