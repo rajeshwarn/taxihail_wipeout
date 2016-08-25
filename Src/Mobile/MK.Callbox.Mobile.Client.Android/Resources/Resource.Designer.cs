@@ -959,6 +959,18 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05006d
 			public const int ConfirmCompanyLabel = 2131034221;
 			
+			// aapt resource value: 0x7f050328
+			public const int ConfirmCreditCardOfOrder_ChangeCreditCard = 2131034920;
+			
+			// aapt resource value: 0x7f050326
+			public const int ConfirmCreditCardOfOrder_Message = 2131034918;
+			
+			// aapt resource value: 0x7f050325
+			public const int ConfirmCreditCardOfOrder_Title = 2131034917;
+			
+			// aapt resource value: 0x7f050327
+			public const int ConfirmCreditCardOfOrder_withNickname_Message = 2131034919;
+			
 			// aapt resource value: 0x7f05006a
 			public const int ConfirmDateTimeLabel = 2131034218;
 			

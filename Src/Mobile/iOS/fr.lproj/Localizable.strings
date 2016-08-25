@@ -770,3 +770,7 @@
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
 "CreditCardAdd_StreetNameLabel"="Numero";
 "CreditCardAdd_StreetNumberLabel"="Rue";
+"ConfirmCreditCardOfOrder_Title"="Confirmer votre carte de credit";
+"ConfirmCreditCardOfOrder_Message"="Etes-vous sur de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?";
+"ConfirmCreditCardOfOrder_withNickname_Message"="Etes-vous sur de vouloir utiliser la carte de credit nommer {0}?";
+"ConfirmCreditCardOfOrder_ChangeCreditCard"="Utiliser une carte de credit differente.";

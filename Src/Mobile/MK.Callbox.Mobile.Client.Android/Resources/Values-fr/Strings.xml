@@ -801,4 +801,8 @@
   <string name="CreditCardInvalidCrediCardTypeDiscover">Désolé, nous ne supportons pas les cartes Discover</string>
   <string name="CreditCardAdd_StreetNameLabel">Numero</string>
   <string name="CreditCardAdd_StreetNumberLabel">Rue</string>
+  <string name="ConfirmCreditCardOfOrder_Title">Confirmer votre carte de credit</string>
+  <string name="ConfirmCreditCardOfOrder_Message">Etes-vous sur de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?</string>
+  <string name="ConfirmCreditCardOfOrder_withNickname_Message">Etes-vous sur de vouloir utiliser la carte de credit nommer {0}?</string>
+  <string name="ConfirmCreditCardOfOrder_ChangeCreditCard">Utiliser une carte de credit differente.</string>
 </resources>
