@@ -722,15 +722,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
-				Label = creditCard.Label.ToString(),
+				Label = creditCard.Label,
 				ZipCode = creditCard.ZipCode,
-				
+				StringNumber = creditCard.StreetNumber,
+				StringName = creditCard.StreetNumber,
+				Email = creditCard.Email,
+				Phone = creditCard.Phone
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
 				!isUpdate 
 					? client.AddCreditCard (request)
-					: client.UpdateCreditCard(request));  
+					: client.UpdateCreditCard (request));  
 
 
 			if (isUpdate || CurrentAccount.DefaultCreditCard == null)
@@ -745,7 +748,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						Last4Digits = request.Last4Digits,
 						ExpirationMonth = request.ExpirationMonth,
 						ExpirationYear = request.ExpirationYear,
-						IsDeactivated = false
+						IsDeactivated = false,
+						StreetNumber = request.StringNumber,
+						StreetName = request.StringName,
+						Email = request.Email,
+						Phone = request.Phone
 					};
 				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false, true);
 			}	
