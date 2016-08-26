@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             try
             {
-                var account = Get<ChargeAccountResponse>("account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
+                var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
                 return account == null
                     ? null
                     : account.Result;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             try
             {
-                var validation = Post<ChargeAccountValidationResponse>("account/validate/", content);
+                var validation = Post<ChargeAccountValidationResponse>("/account/validate/", content);
                 return validation.Result;
             }
             catch (HttpRequestException ex)
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             try
             {
-                var allAccounts = Get<ChargeAccountCollectionResponse>("account/corporate/all/");
+                var allAccounts = Get<ChargeAccountCollectionResponse>("/account/corporate/all/");
                 return allAccounts.Accounts;
             }
             catch (HttpRequestException ex)

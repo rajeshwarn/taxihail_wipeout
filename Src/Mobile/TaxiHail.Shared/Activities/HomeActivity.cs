@@ -616,17 +616,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void ChangeState(HomeViewModelState state)
         {
-            if (state == HomeViewModelState.PickDate)
-            {
-                ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+            if (state == HomeViewModelState.PickDate
+                || state == HomeViewModelState.AirportPickDate)
 
-                SetSelectedOnBookLater(true);
-
-                var intent = new Intent(this, typeof(DateTimePickerActivity));
-                intent.PutExtra("UseAmPmFormat", ViewModel.Settings.DisplayTimePickerInTwelveHourFormat);
-                StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
-            }
-            else if (state == HomeViewModelState.AirportPickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
