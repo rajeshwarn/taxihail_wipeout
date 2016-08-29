@@ -16,6 +16,7 @@
                 <outlet property="imgDiscover" destination="vF5-ds-6cV" id="ZJl-kg-VDa"/>
                 <outlet property="imgVisa" destination="G3R-vA-rrF" id="BgT-mH-Lyf"/>
                 <outlet property="lblCardNumber" destination="DfD-Yo-WvS" id="8a2-VX-TKW"/>
+                <outlet property="lblCountryCode" destination="xIh-Mi-oI6" id="LQ1-kc-zzg"/>
                 <outlet property="lblCvv" destination="Tz3-UC-Wg8" id="RsN-3z-3Io"/>
                 <outlet property="lblEmail" destination="qgU-SG-I2V" id="sut-cl-beH"/>
                 <outlet property="lblExpMonth" destination="Ipi-wL-ffn" id="fr8-gg-fIQ"/>
@@ -34,6 +35,7 @@
                 <outlet property="txtEmail" destination="OJA-w7-WjR" id="eXb-bI-L9B"/>
                 <outlet property="txtExpMonth" destination="At1-rh-wQX" id="DfR-sk-8i1"/>
                 <outlet property="txtExpYear" destination="CKf-21-NCh" id="App-ZB-c8h"/>
+                <outlet property="txtLabel" destination="dKJ-RS-89w" id="name-outlet-dKJ-RS-89w"/>
                 <outlet property="txtNameOnCard" destination="3fV-2N-0Oy" id="GQq-Sy-pai"/>
                 <outlet property="txtPhoneNumber" destination="OEC-bE-5oe" id="HTb-s5-W3s"/>
                 <outlet property="txtStreetName" destination="MDf-sd-VPo" id="zMK-iy-w9h"/>
@@ -129,7 +131,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3R-vA-rrF" userLabel="Visa" customClass="HideableView">
                                     <rect key="frame" x="8" y="0.0" width="154" height="30"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="visa.png" translatesAutoresizingMaskIntoConstraints="NO" id="vgm-Qn-sOm">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" image="visa.png" translatesAutoresizingMaskIntoConstraints="NO" id="vgm-Qn-sOm">
                                             <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="visa_electron.png" translatesAutoresizingMaskIntoConstraints="NO" id="65Y-Vc-h9T">
@@ -428,15 +430,6 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Zip/Postal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJb-TD-Vwd" userLabel="ZipCode">
-                                    <rect key="frame" x="8" y="472" width="58" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="WvT-ci-cJk"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K9H-24-O0F" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="495" width="144" height="41"/>
                                     <constraints>
@@ -480,14 +473,32 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIh-Mi-oI6" userLabel="Lbl CountryCode" customClass="CountrySelector">
+                                    <rect key="frame" x="8" y="431" width="32" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="iJe-Mq-2Hu"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="OEC-bE-5oe" userLabel="Txt Phone Number" customClass="FlatTextField">
-                                    <rect key="frame" x="8" y="419" width="304" height="41"/>
+                                    <rect key="frame" x="48" y="419" width="264" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="6vX-y7-ykZ"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Zip/Postal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJb-TD-Vwd" userLabel="ZipCode">
+                                    <rect key="frame" x="8" y="472" width="58" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="WvT-ci-cJk"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="CKf-21-NCh" firstAttribute="leading" secondItem="WEq-Dm-0h1" secondAttribute="leading" id="02E-vh-Y2g"/>
@@ -498,7 +509,6 @@
                                 <constraint firstItem="cwl-bh-oEW" firstAttribute="top" secondItem="OJA-w7-WjR" secondAttribute="bottom" constant="12" id="74V-Ad-zYM"/>
                                 <constraint firstItem="QOQ-sL-Vm6" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" constant="20" id="755-ib-OVA"/>
                                 <constraint firstItem="4Nb-pb-OZ1" firstAttribute="top" secondItem="Scj-fb-aPB" secondAttribute="bottom" constant="8" id="7Et-XP-imH"/>
-                                <constraint firstItem="OEC-bE-5oe" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="7RD-WC-sfO"/>
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="top" secondItem="3fV-2N-0Oy" secondAttribute="bottom" constant="12" id="8Hr-0U-Vne"/>
                                 <constraint firstItem="K9H-24-O0F" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="BGQ-L3-joz"/>
                                 <constraint firstItem="Ipi-wL-ffn" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="BdI-fI-okc"/>
@@ -523,13 +533,17 @@
                                 <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="750" constant="20" id="WWg-KG-JKU"/>
                                 <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="250" constant="20" id="WWg-KG-JKV"/>
                                 <constraint firstAttribute="trailing" secondItem="OJA-w7-WjR" secondAttribute="trailing" constant="8" id="Wm9-dG-1Dt"/>
+                                <constraint firstItem="xIh-Mi-oI6" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="Y7D-d5-zWG"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="top" secondItem="DfD-Yo-WvS" secondAttribute="bottom" constant="6" id="a0R-P9-lA9"/>
                                 <constraint firstItem="Scj-fb-aPB" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="a4D-TO-Wsy"/>
                                 <constraint firstAttribute="centerX" secondItem="QOQ-sL-Vm6" secondAttribute="centerX" id="a5z-pL-AjY"/>
                                 <constraint firstItem="qgU-SG-I2V" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="aFS-p7-Gy8"/>
+                                <constraint firstItem="OEC-bE-5oe" firstAttribute="leading" secondItem="xIh-Mi-oI6" secondAttribute="trailing" constant="8" id="ahe-Fz-bwe"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="anv-hh-gLf"/>
                                 <constraint firstAttribute="trailing" secondItem="AHt-1S-sWk" secondAttribute="trailing" constant="8" id="bNU-99-u08"/>
+                                <constraint firstItem="xIh-Mi-oI6" firstAttribute="baseline" secondItem="OEC-bE-5oe" secondAttribute="baseline" id="bmi-dy-YS4"/>
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
+                                <constraint firstAttribute="bottom" secondItem="K9H-24-O0F" secondAttribute="bottom" priority="100" constant="15" id="d8W-Lj-BQW"/>
                                 <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
                                 <constraint firstItem="OEC-bE-5oe" firstAttribute="top" secondItem="cwl-bh-oEW" secondAttribute="bottom" constant="8" id="fqE-0S-qcs"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="10" id="gqs-sv-Jo0"/>

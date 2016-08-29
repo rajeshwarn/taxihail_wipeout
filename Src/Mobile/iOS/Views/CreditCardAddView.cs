@@ -132,12 +132,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtEmail.AccessibilityLabel = txtEmail.Placeholder;
 				txtPhoneNumber.Placeholder = Localize.GetValue("RideSettingsPhone");
 				txtPhoneNumber.AccessibilityLabel = txtPhoneNumber.Placeholder;	
+
+				lblCountryCode.Configure(NavigationController, ViewModel.SelectedCountryCode, countryCode => ViewModel.SelectedCountryCode = countryCode);
+				lblCountryCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38 / 2);
+				lblCountryCode.TintColor = UIColor.Black;
+				lblCountryCode.TextColor = UIColor.FromRGB(44, 44, 44);
+				lblCountryCode.TextAlignment = UITextAlignment.Center;
+				lblCountryCode.AdjustsFontSizeToFitWidth = true;
+				lblCountryCode.BackgroundColor = UIColor.White;
 			}
 			else
 			{
 				lblEmail.RemoveFromSuperview();
 				lblPhoneNumber.RemoveFromSuperview();
 			}
+			var scr = (UIScrollView)View.Subviews[0];
+
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
@@ -256,15 +266,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
 
-            set.Bind(segmentedLabel)
-                .For(v => v.SelectedSegment)
-                .To(vm => vm.Data.Label)
-                .WithConversion("CreditCardLabel");
-
-			set.Bind(segmentedLabel)
-				.For(v => v.Enabled)
-                .To(vm => vm.IsAddingNewCard);
-
             set.Bind(imgVisa)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.PaymentSettings.DisableVisaMastercard);
@@ -272,6 +273,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(imgAmex)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.PaymentSettings.DisableAMEX);
+
+			set.Bind(lblCountryCode)
+			   .For(v => v.SelectedCountryCode)
+			   .To(vm => vm.SelectedCountryCode);
+
+			set.Bind(txtLabel)
+			   .For(v => v.Text)
+			   .To(vm => vm.Data.Label);
 
             set.Bind(imgDiscover)
                 .For(v => v.HiddenWithConstraints)
@@ -328,9 +337,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void ConfigureLabelSection()
         {
             lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName");
-            segmentedLabel.TintColor = UIColor.FromRGB(90, 90, 90);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Personal), 0);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Business), 1);
         }
 
         private void ConfigureCreditCardSection()

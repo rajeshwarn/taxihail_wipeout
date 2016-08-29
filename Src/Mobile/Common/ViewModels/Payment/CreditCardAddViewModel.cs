@@ -269,7 +269,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Data.Country));
 			}
-
 			set
 			{
 				Data.Country = value.CountryISOCode;
