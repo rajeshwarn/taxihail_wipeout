@@ -38,6 +38,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Phone { get; set; }
 
+        public CountryISOCode Country { get; set; }
+
         public bool IsExpired()
         {
             if (!ExpirationMonth.HasValue() || !ExpirationYear.HasValue()) 

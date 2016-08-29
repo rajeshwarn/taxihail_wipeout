@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -26,5 +27,6 @@ namespace apcurium.MK.Booking.Commands
         public string StreetName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public CountryISOCode Country { get; set; }
     }
 }

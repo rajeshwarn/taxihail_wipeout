@@ -80,7 +80,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.StreetNumber,
                 command.StreetName,
                 command.Email,
-                command.Phone);
+                command.Phone,
+                command.Country);
             _repository.Save(account, command.Id.ToString());
         }
 
