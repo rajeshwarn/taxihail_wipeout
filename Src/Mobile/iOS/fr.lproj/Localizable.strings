@@ -771,6 +771,6 @@
 "CreditCardAdd_StreetNameLabel"="Numero";
 "CreditCardAdd_StreetNumberLabel"="Rue";
 "ConfirmCreditCardOfOrder_Title"="Confirmer votre carte de credit";
-"ConfirmCreditCardOfOrder_Message"="Etes-vous sur de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?";
-"ConfirmCreditCardOfOrder_withNickname_Message"="Etes-vous sur de vouloir utiliser la carte de credit nommer {0}?";
-"ConfirmCreditCardOfOrder_ChangeCreditCard"="Utiliser une carte de credit differente.";
+"ConfirmCreditCardOfOrder_Message"="Êtes-vous sûr de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?";
+"ConfirmCreditCardOfOrder_withNickname_Message"="Êtes-vous sûr de vouloir utiliser la carte de credit nommer {0}?";
+"ConfirmCreditCardOfOrder_ChangeCreditCard"="Carte differente";

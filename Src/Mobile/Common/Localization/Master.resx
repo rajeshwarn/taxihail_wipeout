@@ -2455,6 +2455,6 @@
 	<value>Are you sure you want to use the card with the name {0}?</value>
   </data>
   <data name="ConfirmCreditCardOfOrder_ChangeCreditCard" xml:space="preserve">
-	<value>Use different Credit card</value>
+	<value>Use different Card</value>
   </data>
 </root>
