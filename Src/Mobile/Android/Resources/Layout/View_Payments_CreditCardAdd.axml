@@ -100,7 +100,7 @@
                         local:MvxBind="Visibility CanChooseLabel, Converter=Visibility" />
                     <EditText
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/CreditCardLabel"
                         local:MvxBind="Text Data.Label" />
