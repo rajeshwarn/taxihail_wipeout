@@ -603,9 +603,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var localize = this.Services().Localize;
 					var creditCard = _accountService.CurrentAccount.DefaultCreditCard;
 
-					var message = creditCard.Label.HasValue()
-                     	? string.Format(localize["ConfirmCreditCardOfOrder_Message"], creditCard.CreditCardCompany, creditCard.Last4Digits, creditCard.ExpirationMonth, creditCard.ExpirationYear)
-                        : string.Format(localize["ConfirmCreditCardOfOrder_withNickname_Message"], creditCard.Label);
+					var message = creditCard.Label.HasValueTrimmed()
+                     	? string.Format(localize["ConfirmCreditCardOfOrder_withNickname_Message"], creditCard.Label)
+                        : string.Format(localize["ConfirmCreditCardOfOrder_Message"], creditCard.CreditCardCompany, creditCard.Last4Digits, creditCard.ExpirationMonth, creditCard.ExpirationYear);
 					
 					var isConfirm = false;
 					await this.Services().Message.ShowMessage(

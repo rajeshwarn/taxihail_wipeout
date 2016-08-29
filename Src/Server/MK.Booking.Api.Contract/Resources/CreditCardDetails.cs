@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 		public string StreetNumber { get; set; }
 		public string Email { get; set; }
 		public string Phone { get; set; }
+		public CountryISOCode Country { get; set; }
 
         public bool IsExpired()
         {

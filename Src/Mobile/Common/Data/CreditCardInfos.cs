@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Data
 		public string StreetName { get; set; }
 		public string StreetNumber { get; set; }
 		public string Email { get; set; }
+
+		public CountryISOCode Country { get; set; }
 		public string Phone { get; set; }
     }
 }
