@@ -331,9 +331,9 @@
     <Compile Include="Migrations\201608231438234_Configuration_TAX_125.Designer.cs">
       <DependentUpon>201608231438234_Configuration_TAX_125.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608251815593_Booking_TAX_125.cs" />
-    <Compile Include="Migrations\201608251815593_Booking_TAX_125.Designer.cs">
-      <DependentUpon>201608251815593_Booking_TAX_125.cs</DependentUpon>
+    <Compile Include="Migrations\201608291839402_Booking_TAX_125.cs" />
+    <Compile Include="Migrations\201608291839402_Booking_TAX_125.Designer.cs">
+      <DependentUpon>201608291839402_Booking_TAX_125.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
@@ -560,8 +560,8 @@
     <EmbeddedResource Include="Migrations\201608231438234_Configuration_TAX_125.resx">
       <DependentUpon>201608231438234_Configuration_TAX_125.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608251815593_Booking_TAX_125.resx">
-      <DependentUpon>201608251815593_Booking_TAX_125.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608291839402_Booking_TAX_125.resx">
+      <DependentUpon>201608291839402_Booking_TAX_125.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

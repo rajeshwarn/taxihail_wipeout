@@ -7258,8 +7258,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070176
 			public const int AccountDisabled_NoCall = 2131165558;
 			
-			// aapt resource value: 0x7f070382
-			public const int AccountLinkedWithFAcebook = 2131166082;
+			// aapt resource value: 0x7f070386
+			public const int AccountLinkedWithFAcebook = 2131166086;
 			
 			// aapt resource value: 0x7f07035f
 			public const int AccountLinkedWithFacebook = 2131166047;
@@ -7564,6 +7564,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700c5
 			public const int ConfirmCompanyLabel = 2131165381;
 			
+			// aapt resource value: 0x7f070383
+			public const int ConfirmCreditCardOfOrder_ChangeCreditCard = 2131166083;
+			
+			// aapt resource value: 0x7f070381
+			public const int ConfirmCreditCardOfOrder_Message = 2131166081;
+			
+			// aapt resource value: 0x7f070380
+			public const int ConfirmCreditCardOfOrder_Title = 2131166080;
+			
+			// aapt resource value: 0x7f070382
+			public const int ConfirmCreditCardOfOrder_withNickname_Message = 2131166082;
+			
 			// aapt resource value: 0x7f0700c2
 			public const int ConfirmDateTimeLabel = 2131165378;
 			
@@ -7705,8 +7717,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0701d0
 			public const int CreditCardInstructions = 2131165648;
 			
-			// aapt resource value: 0x7f070380
-			public const int CreditCardInvalidCrediCardNUmber = 2131166080;
+			// aapt resource value: 0x7f070384
+			public const int CreditCardInvalidCrediCardNUmber = 2131166084;
 			
 			// aapt resource value: 0x7f0701de
 			public const int CreditCardInvalidCrediCardNumber = 2131165662;
@@ -8380,8 +8392,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07030b
 			public const int MessageToDriverTitle = 2131165963;
 			
-			// aapt resource value: 0x7f070381
-			public const int Modify = 2131166081;
+			// aapt resource value: 0x7f070385
+			public const int Modify = 2131166085;
 			
 			// aapt resource value: 0x7f07019a
 			public const int NbPassenger = 2131165594;

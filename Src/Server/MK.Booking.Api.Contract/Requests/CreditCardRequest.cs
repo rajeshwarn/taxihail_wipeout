@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
@@ -27,5 +28,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string StreetNumber { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+		public CountryISOCode Country { get; set; }
     }
 }

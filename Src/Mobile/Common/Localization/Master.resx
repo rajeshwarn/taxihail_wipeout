@@ -2445,4 +2445,16 @@
   <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
 	<value>Street #</value>
   </data>
+  <data name="ConfirmCreditCardOfOrder_Title" xml:space="preserve">
+	<value>Confirm credit card</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_Message" xml:space="preserve">
+	<value>Are you sure you want to use your currently selected {0} card ending in {1} and expires on {2}/{3}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_withNickname_Message" xml:space="preserve">
+	<value>Are you sure you want to use the card with the name {0}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_ChangeCreditCard" xml:space="preserve">
+	<value>Use different Card</value>
+  </data>
 </root>

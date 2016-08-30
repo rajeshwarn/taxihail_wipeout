@@ -100,7 +100,8 @@
                         local:MvxBind="Visibility CanChooseLabel, Converter=Visibility" />
                     <EditText
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_marginBottom="8dp"
                         android:hint="@string/CreditCardLabel"
                         local:MvxBind="Text Data.Label" />
                     <LinearLayout
@@ -347,14 +348,29 @@
                         local:MvxBind="Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
                         style="@style/BlackTextLabel"
                         android:layout_marginBottom="4dp" />
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        local:MvxBind="Text Data.PhoneNumber; Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
-                        android:layout_marginBottom="8dp"
-                        android:hint="@string/PassengerPhoneLabel" />
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat">
+                        <MvxSpinner
+                            android:layout_width="60dp"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:layout_marginBottom="10dip"
+                            android:background="@drawable/edit_text_flat"
+                            android:contentDescription="@string/DialCodeSelectorTitle"
+                            style="@style/MainTheme"
+                            local:MvxItemTemplate="@layout/countrycodeitemmvx"
+                            local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
+                            local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextWithAccessibility
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            local:MvxBind="Text Phone"
+                            android:maxLines="1"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:hint="@string/RideSettingsPhone" />
+                    </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

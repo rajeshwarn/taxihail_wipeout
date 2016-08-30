@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -187,7 +188,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					#endif
 
 					Data.Email = _accountService.CurrentAccount.Email;
-					Data.Phone = _accountService.CurrentAccount.Phone;
+					Data.Phone = _accountService.CurrentAccount.Settings.Phone;
+					Data.Country = _accountService.CurrentAccount.Settings.Country;
 				}
 				else
 				{
@@ -202,6 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					Data.Email = creditCard.Email;
 					Data.Phone = creditCard.Phone;
+					Data.Country = creditCard.Country;
 					Data.StreetName = creditCard.StreetName;
 					Data.StreetNumber = creditCard.StreetNumber;
 
@@ -222,6 +225,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CanDeleteCreditCard);
 				RaisePropertyChanged(() => IsPayPalOnly);
 				RaisePropertyChanged (() => CanSetCreditCardAsDefault);
+				RaisePropertyChanged(() => SelectedCountryCode);
+				RaisePropertyChanged(() => Phone);
 
 				if (_hasPaymentToSettle)
 				{
@@ -232,6 +237,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					await GoToOverduePayment();
 				}
+			}
+		}
+
+		public string Phone
+		{
+			get
+			{
+				return Data.Phone;
+			}
+
+			set
+			{
+				Data.Phone = value;
+
+				RaisePropertyChanged();
+			}
+		}
+
+		public CountryCode[] CountryCodes
+		{
+			get
+			{
+				return CountryCode.CountryCodes;
+			}
+		}
+
+		public CountryCode SelectedCountryCode
+		{
+			get
+			{
+				return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Data.Country));
+			}
+			set
+			{
+				Data.Country = value.CountryISOCode;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -690,6 +731,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if (PaymentSettings.EnableContactVerification && Params.Get(Data.Email, Phone).Any(x => x.IsNullOrEmpty()))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+					return;
+				}
+
+				if (PaymentSettings.EnableContactVerification && !PhoneHelper.IsPossibleNumber(SelectedCountryCode, Phone))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+						string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], SelectedCountryCode.GetPhoneExample()));
+					return;
+				}
+
+				if (PaymentSettings.EnableAddressVerification && Params.Get(Data.StreetName, Data.StreetNumber).Any(x => x.IsNullOrEmpty()))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+					return;
+				}
+
 				if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
@@ -709,7 +769,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if (success)
 					{
-						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+						await _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 						UnlinkPayPalAccount(true);
 
