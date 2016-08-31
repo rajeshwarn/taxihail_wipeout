@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                existingCreditCard.Label = @event.Label.ToString();
+                existingCreditCard.Label = @event.Label;
 
                 context.Save(existingCreditCard);
             }
@@ -65,11 +65,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (creditCard != null)
+
+                if (creditCard == null)
                 {
-                    context.Set<CreditCardDetails>().Remove(creditCard);
-                    context.SaveChanges();
+                    return;
                 }
+
+                context.Set<CreditCardDetails>().Remove(creditCard);
+                context.SaveChanges();
             }
         }
 
@@ -83,11 +86,13 @@ namespace apcurium.MK.Booking.EventHandlers
                     ? context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId)
                     : context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
 
-                if (creditCardDetails != null)
+                if (creditCardDetails == null)
                 {
-                    creditCardDetails.IsDeactivated = true;
-                    context.Save(creditCardDetails);
+                    return;
                 }
+
+                creditCardDetails.IsDeactivated = true;
+                context.Save(creditCardDetails);
             }
         }
 
@@ -100,11 +105,13 @@ namespace apcurium.MK.Booking.EventHandlers
                     ? context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == @event.CreditCardId)
                     : context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
 
-                if (creditCardDetails != null)
+                if (creditCardDetails == null)
                 {
-                    creditCardDetails.IsDeactivated = false;
-                    context.Save(creditCardDetails);
+                    return;
                 }
+
+                creditCardDetails.IsDeactivated = false;
+                context.Save(creditCardDetails);
             }
         }
     }
