@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
                 {
-                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat ?? "en-US");
                     string countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
                     @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
                 }
