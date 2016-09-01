@@ -58,8 +58,9 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -414,6 +415,8 @@
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Localization\Arro.resx" />
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
+    <None Include="Localization\Discount Ride.resx" />
+    <EmbeddedResource Include="Localization\groveRideNow.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <None Include="Localization\FLAT RATE.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
@@ -439,8 +442,8 @@
     <None Include="Localization\Bram City Taxi.resx" />
     <None Include="PluginsHelp\ConnectivityReadme.txt" />
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
-    <None Include="Localization\GroveTransit.resx" />
     <None Include="Localization\yoolka.resx" />
+    <None Include="Localization\groveRideNow.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

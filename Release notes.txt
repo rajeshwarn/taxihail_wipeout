@@ -348,12 +348,33 @@ Version bump 3.3.1
 	DefaultPickupLocationTabWeb, used to control which tab should be the first tab displayed on the address selection control in the web interface.
 	Options are search, places and favorites
 
+3.5.19
+	TAX-130 Fixed issues with charge account that was preventing xds from working.
+	
+3.5.20
+	TAX-130 Fixed issues with charge account that was preventing xds from working.
+	Fixed a problem with prompts being displayed when not set in a customer account (corp account)
+	Fixed a problem with prompts being dupplicated when multiple customer accounts had the same ones.
+	
+3.5.21
+	TAX-131 TotalTransit (aka Discount Ride) requested that we change the words Taxi, Cab and Medallion to Vehicle
+	Fixed a problem with the LocalizationTool where company specific resource files would not get utlized when generating the Strings.xml files.
+	Fixed a null exception issue with the OrderStatusUpdater where if the tip was null.
+	
+3.5.22
+	TAX-109 GroveTransit (aka groveRideNow) requested that we change the words Taxi, Cab and Medallion to Vehicle as well as the text string from "Sorry, no taxis currently available nearby" to something like "Calculating nearest vehicle ETA" 
+	Also, on iOS, the default gps location wasn't automatically resolving the address when the application starts up.
+	TAX-37 We updated the Newtonsoft nuget package to 7.0.1 which is what apple is using from what we understand.
 
+3.5.23
+    Updated IBS dll to use most recent WSDL from taxihailxds's ibs
 
-
-
-
-
-
-
+3.5.25
+	Added missing TotalTransit-en.json file that was breaking the build.
+	
+3.5.26
+	Fixing an issue whereas the build for iOS was failing for certain Xamarin versions.
+3.5.27
+	features to be included...
+	TAX-140 Added a Config.AppSetting called DisplayTimePickerInTwelveHourFormat, that is sent to the client to control the format of the time picker (12/24 hour)
 

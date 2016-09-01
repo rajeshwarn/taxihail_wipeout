@@ -135,15 +135,39 @@ namespace apcurium.MK.Booking.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
 
+
+            double tipAmount = 0.0;
+            // calculate the tip for both services when order is completed
+            if (orderStatusDetail.Status == OrderStatus.Completed)
+            {
+                var account = _accountDao.FindById(orderStatusDetail.AccountId);
+                var orderPairingDetails = _orderDao.FindOrderPairingById(orderDetail.Id);
+
+                int? tipPercent = (orderPairingDetails != null)
+                                ? orderPairingDetails.AutoTipPercentage
+                                : account.DefaultTipPercent;
+
+                tipAmount = (tipPercent != null)
+                    ? Math.Round((double)(Math.Round(((double)tipPercent / 100), 2) * (orderFromIbs.Fare + orderFromIbs.Surcharge + orderFromIbs.Toll + orderFromIbs.VAT + orderFromIbs.Extras)), 2)
+                    : 0;
+
+            }
+            else
+            {
+                tipAmount = orderFromIbs.Tip;
+            }
+
             _commandBus.Send(new ChangeOrderStatus
             {
                 Status = orderStatusDetail,
                 Fare = orderFromIbs.Fare,
                 Toll = orderFromIbs.Toll,
-                Tip = orderFromIbs.Tip,
+                Tip = tipAmount,
                 Tax = orderFromIbs.VAT,
                 Surcharge = orderFromIbs.Surcharge
             });
+
+
         }
 
         private void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail, ServerPaymentSettings paymentSettings, OrderDetail orderDetail)

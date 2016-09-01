@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MK.Booking.Api.Client")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright Ãƒâ€šÃ‚Â©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("3.5.16")]
-[assembly: AssemblyVersion("3.5.18")]
-[assembly: AssemblyFileVersion("3.5.18")]
+// [assembly: AssemblyVersion("3.5.26")]
+[assembly: AssemblyVersion("3.5.27")]
+[assembly: AssemblyFileVersion("3.5.27")]
 

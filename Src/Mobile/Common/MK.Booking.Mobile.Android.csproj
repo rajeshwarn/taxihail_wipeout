@@ -107,7 +107,7 @@
       <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -405,10 +405,13 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
-    <EmbeddedResource Include="Localization\GroveTransit.resx" />
+    <EmbeddedResource Include="Localization\groveRideNow.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Localization\yoolka.resx" />
