@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private const string Amex = "Amex";
 		private const string CreditCardGeneric = "Credit Card Generic";
 		private const string VisaElectron = "Visa Electron";
+		private const string Discover = "Discover";
 		private List<ListItem> _creditCardCompanies;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
@@ -84,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						new ListItem {Display = MasterCard, Image = "mastercard"},
 						new ListItem {Display = Amex, Image = "amex"},
 						new ListItem {Display = VisaElectron, Image = "visa_electron"},
+						new ListItem {Display = Discover, Image =  "discover"},
 						new ListItem {Display = CreditCardGeneric, Image =  "credit_card_generic"}
 					};
 

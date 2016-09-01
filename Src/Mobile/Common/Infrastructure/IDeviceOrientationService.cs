@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -22,6 +20,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		/// <param name="timestamp"></param>
 		void OrientationChanged(double x, double y, double z, long timestamp);
 
-		event Action<int, bool, bool> NotifyAngleChanged;
-	}
+        event EventHandler<DeviceOrientationChangedEventArgs> NotifyOrientationChanged;
+    }
 }

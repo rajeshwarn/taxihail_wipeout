@@ -11,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,8 +20,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentSettings;
-
-		private ClientPaymentSettings _clientPaymentSettings;
 
 		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, 
 			IBookingService bookingService, 
@@ -44,11 +41,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 
 		    OrderId = id;
-		    using (this.Services ().Message.ShowProgress ())
+		    using (this.Services().Message.ShowProgress ())
 		    {
 		        await LoadOrder();
 		        await LoadStatus();
-		        _clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
 		        RaisePropertyChanged(() => StatusDescription); 
 		    }
 		}
@@ -280,27 +276,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-			    if (Status.FareAvailable)
-			    {
-					// this fix is due to info in database when [OrderDetail].[Fare] includes [OrderDetail].[Tip]
-					double? paymentAmount;
-					if (_clientPaymentSettings.PaymentMode == PaymentMethod.Cmt || _clientPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+				if (Status.FareAvailable || Status.IsManualRideLinq)
+				{
+					var paymentAmount = Order.Fare.GetValueOrDefault()
+					                   + Order.Tax.GetValueOrDefault()
+					                   + Order.Toll.GetValueOrDefault()
+					                   + Order.Tip.GetValueOrDefault()
+					                   + Order.Surcharge.GetValueOrDefault();
+
+					var statusString = string.Empty;
+				
+					if (Status.FareAvailable)
 					{
-						paymentAmount = Order.Fare;
+						statusString = Status.IBSStatusDescription;
 					}
-					else
+					else if (Status.IsManualRideLinq)
 					{
-						paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+						statusString = OrderStatus.Completed.ToString();
 					}
 
-					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
-			    }
-			    else if (Status.IsManualRideLinq)
-			    {
-			        return OrderStatus.Completed.ToString();
-			    }
+					return string.Format("{0} ({1})", statusString, CultureProvider.FormatCurrency(paymentAmount));
+				}
 
-                return Status.IBSStatusDescription;
+				return Status.IBSStatusDescription;
 			}
 		}
 

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			await appSettings.Load();
 
-			if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled || appSettings.Data.FacebookPublishEnabled)
 			{
 				facebookService.Init();
 			}
@@ -97,16 +97,8 @@ namespace apcurium.MK.Booking.Mobile
 				}
 				else
 				{
-					var hasLastOrder = Mvx.Resolve<IBookingService>().HasLastOrder;
-					if (hasLastOrder)
-					{
-						ShowViewModel<ExtendedSplashScreenViewModel>(new { preventShowViewAnimation = "NotUsed" });
-					}
-					else
-					{
-						ShowViewModel<HomeViewModel>(new { locateUser = true });
-					}
-				}
+                    ShowViewModel<ExtendedSplashScreenViewModel>(new { preventShowViewAnimation = "NotUsed" });
+                }
 			}
 
 			Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.GetServiceUrl());

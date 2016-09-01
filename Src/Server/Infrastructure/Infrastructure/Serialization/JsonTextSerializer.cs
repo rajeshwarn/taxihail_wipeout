@@ -11,6 +11,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Infrastructure.Serialization
 {
     using System.IO;
@@ -19,7 +25,8 @@ namespace Infrastructure.Serialization
 
     public class JsonTextSerializer : ITextSerializer
     {
-        private readonly JsonSerializer serializer;
+        private readonly JsonSerializer _serializer;
+        private readonly JsonSerializer _serializerCatch;
 
         public JsonTextSerializer()
             : this(JsonSerializer.Create(new JsonSerializerSettings
@@ -34,7 +41,13 @@ namespace Infrastructure.Serialization
 
         public JsonTextSerializer(JsonSerializer serializer)
         {
-            this.serializer = serializer;
+            _serializer = serializer;
+
+            _serializerCatch = JsonSerializer.Create(new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                Binder = new NamespaceMappingSerializationBinder()
+            });
         }
 
         public void Serialize(TextWriter writer, object graph)
@@ -44,7 +57,7 @@ namespace Infrastructure.Serialization
             jsonWriter.Formatting = Formatting.Indented;
 #endif
 
-            this.serializer.Serialize(jsonWriter, graph);
+            _serializer.Serialize(jsonWriter, graph);
 
             // We don't close the stream as it's owned by the message.
             writer.Flush();
@@ -52,17 +65,52 @@ namespace Infrastructure.Serialization
 
         public object Deserialize(TextReader reader)
         {
-            var jsonReader = new JsonTextReader(reader);
+            var content = reader.ReadToEnd();
+            var jsonReader = new JsonTextReader(new StringReader(content));
 
             try
             {
-                return this.serializer.Deserialize(jsonReader);
+                return _serializer.Deserialize(jsonReader);
             }
             catch (JsonSerializationException e)
             {
-                // Wrap in a standard .NET exception.
-                throw new SerializationException(e.Message, e);
+                try
+                {
+                    return _serializerCatch.Deserialize(new JsonTextReader(new StringReader(content)));
+                }
+                catch (JsonSerializationException ex)
+                {
+                    // Wrap in a standard .NET exception.
+                    throw new SerializationException(ex.Message, ex);
+                } 
             }
+        }
+    }
+
+    public class PeekingTextReader : StringReader
+    {
+        private Queue<string> _peeks;
+
+        public PeekingTextReader(string s): base(s)
+        {
+            _peeks = new Queue<string>();
+        }
+
+        public override string ReadLine()
+        {
+            if (_peeks.Count > 0)
+            {
+                var nextLine = _peeks.Dequeue();
+                return nextLine;
+            }
+            return base.ReadLine();
+        }
+
+        public string PeekReadLine()
+        {
+            var nextLine = ReadLine();
+            _peeks.Enqueue(nextLine);
+            return nextLine;
         }
     }
 }

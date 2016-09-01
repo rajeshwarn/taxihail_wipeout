@@ -52,7 +52,7 @@
             @Html.LabelFor(x => x.CreationDate, new { @class = "control-label-wide" })
          </div>
          <div class="right-column">
-            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.CreationDate)</label>
+            <label class="label-account-item label-account-item-normalcolor">@Html.DisplayFor(x => x.CreationDate) (UTC)</label>
             @Html.HiddenFor(x => x.CreationDate)
          </div>
       </div>
@@ -300,8 +300,7 @@
                                     {
                                         <td>refunded</td> 
                                     }
-                                    else if(((OrderStatus)order.Status == OrderStatus.Completed && order.IsOrderPairing)
-                                         || ((OrderStatus)order.Status == OrderStatus.Completed && order.IsManualRideLinq))
+                                    else if((OrderStatus)order.Status == OrderStatus.Completed && order.IsOrderPairing)
                                     {
                                         <td style="max-width:100px; width:100px;"><input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addRefundOrderNoteModalDialog" value="refund" onclick="refundOnClick('@order.Id')" /></td>
                                     }

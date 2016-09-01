@@ -102,8 +102,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			    
 					if (value && !EtaBadge) 
                     {
-                        VehicleTypeImage.SetColorFilter(GetColorFilter(Resources.GetColor(Resource.Color.company_color)));
-                        VehicleTypeLabel.SetTextColor (Resources.GetColor(Resource.Color.company_color));
+                        var companyColor = Resources.GetColor(Resource.Color.company_color);
+
+                        //If the company color is too light
+                        if (DrawHelper.IsThisColorLight(companyColor))
+                        {
+                            companyColor = Color.Black; //Change the color of the vehicle selector to black
+                        }
+
+                        VehicleTypeImage.SetColorFilter(GetColorFilter(companyColor));
+                        VehicleTypeLabel.SetTextColor(companyColor);
                     } 
                     else 
                     {

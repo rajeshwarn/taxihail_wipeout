@@ -34,23 +34,11 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\Mobile\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Square.OkHttp, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
-    </Reference>
-    <Reference Include="Square.OkIO, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,6 +47,15 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkHttp">
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\..\Mobile\Libraries\ModernHttpClient\MonoAndroid\Square.OkIO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authorization\OAuthAuthorizer.cs" />
@@ -79,12 +76,6 @@
     <Compile Include="Utilities\OAuthUtils.cs" />
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -94,6 +85,17 @@
   </Target>
   -->
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mobile\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

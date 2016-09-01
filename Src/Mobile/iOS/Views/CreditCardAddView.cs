@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.CreditCardSaveButtonDisplay);
 
 			set.Bind(btnSaveCard)
-				.For(v => v.Hidden)
+                .For("HiddenEx")
 				.To(vm => vm.IsAddingNewCard)
 				.WithConversion("BoolInverter");
 
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.DeleteCreditCardCommand);
             
 			set.Bind(btnDeleteCard)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
             
@@ -136,12 +136,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.SetAsDefault);
             
             set.Bind(btnCardDefault)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanSetCreditCardAsDefault)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnScanCard)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.CanScanCreditCard)
                 .WithConversion("BoolInverter");
 
@@ -181,12 +181,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Enabled)
 				.To(vm => vm.IsAddingNewCard);
 
+			set.Bind(txtExpMonth)
+				.For(v => v.HasRightArrow)
+				.To(vm => vm.IsAddingNewCard);
+
             set.Bind(txtExpYear)
                 .For(v => v.Text)
 				.To(vm => vm.ExpirationYearDisplay);
 
 			set.Bind(txtExpYear)
 				.For(v => v.Enabled)
+				.To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtExpYear)
+				.For(v => v.HasRightArrow)
 				.To(vm => vm.IsAddingNewCard);
 
             set.Bind(txtCvv)
@@ -224,6 +232,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(segmentedLabel)
 				.For(v => v.Enabled)
                 .To(vm => vm.IsAddingNewCard);
+
+            set.Bind(imgVisa)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableVisaMastercard);
+
+            set.Bind(imgAmex)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableAMEX);
+
+            set.Bind(imgDiscover)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.PaymentSettings.DisableDiscover);
 
 			set.Apply ();   
 
@@ -295,7 +315,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "amex.png";
             ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+            ViewModel.CreditCardCompanies[4].Image = "discover.png";
+            ViewModel.CreditCardCompanies[5].Image = "credit_card_generic.png";
 
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);

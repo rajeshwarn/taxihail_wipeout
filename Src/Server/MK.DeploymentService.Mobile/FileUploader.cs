@@ -35,8 +35,10 @@ namespace MK.DeploymentService.Mobile
 		{
 			
 			//setup some variables end			
-		    var strPost = string.Format("uploader_0_tmpname={0}&uploader_0_name={1}&ploader_0_status=done&uploader_count=1&email=taxihail.build@apcurium.com",
-			                               tempName, fileName);
+//		    var strPost = string.Format("uploader_0_tmpname={0}&uploader_0_name={1}&ploader_0_status=done&uploader_count=1&email=taxihail.build@apcurium.com",
+//			                               tempName, fileName);
+			var strPost = string.Format("uploader_0_tmpname={0}&uploader_0_name={1}&ploader_0_status=done&uploader_count=1&email=support@mobile-knowledge.com",
+				tempName, fileName);
 			
             var objRequest = (HttpWebRequest)WebRequest.Create("http://www.diawi.com/result.php");
 			objRequest.Method = "POST";

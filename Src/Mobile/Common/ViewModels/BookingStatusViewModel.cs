@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Reactive;
+using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
-		private readonly IOrientationService _orientationService;
+		private readonly IDeviceOrientationService _deviceOrientationService;
 		private readonly IRateApplicationService _rateApplicationService;
 		private readonly IAccountService _accountService;
 		private readonly INetworkRoamingService _networkRoamingService;
@@ -47,16 +48,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private int? _currentIbsOrderId;
 		private bool _canAutoFollowTaxi;
 		private bool _autoFollowTaxi;
-
 		private bool _isCmtRideLinq;
-
 		private bool _isStarted;
-
 		private bool _isOrderRefreshing;
-
 		private bool _didCheckForAppRating;
+        private bool _showCallDriver;
 
-		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
+		private BookingStatusBottomBarViewModel _bottomBar;
+		private OrderManualRideLinqDetail _manualRideLinqDetail;
+		private TaxiLocation _taxiLocation;
+
+        private readonly SerialDisposable _deviceOrientationSubscription = new SerialDisposable();
 
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
@@ -65,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService,
 			IMetricsService metricsService,
 			IOrderWorkflowService orderWorkflowService,
-			IOrientationService orientationService,
+			IDeviceOrientationService deviceOrientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
 			IAccountService accountService,
@@ -78,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_metricsService = metricsService;
 			_locationService = locationService;
-			_orientationService = orientationService;
+			_deviceOrientationService = deviceOrientationService;
 			_rateApplicationService = rateApplicationService;
 			_accountService = accountService;
 			_networkRoamingService = networkRoamingService;
@@ -87,8 +89,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			GetIsCmtRideLinq();
 
-            _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
-            _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
+            Observe(_networkRoamingService.GetAndObserveMarketSettings(), MarketChanged);
+        }
+
+		private void MarketChanged(MarketSettings marketSettings)
+		{
+			_showCallDriver = marketSettings.ShowCallDriver;
+		    RaisePropertyChanged(() => IsCallTaxiVisible);
 		}
 
         /// <summary>
@@ -115,18 +122,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				BottomBar.PrepareForNewOrder();
 			}
 
-			CenterMapOnPinsIfNeeded();
-
-			StatusInfoText = orderStatusDetail.IBSStatusId == null 
+            StatusInfoText = orderStatusDetail.IBSStatusId == null 
 				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
-			_subscriptions.Disposable = GetTimerObservable()
+            var forceCenterMap = orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Assigned ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Arrived ||
+                                 orderStatusDetail.IBSStatusId != VehicleStatuses.Common.Loaded;
+
+
+            _subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
 				.Where(_ => !_isOrderRefreshing)
-				.SelectMany(async (_, cancellationToken) =>
+                .Do(_ =>
+                {
+                    if (!forceCenterMap)
+                    {
+                        return;
+                    }
+
+                    CenterMapOnPinsIfNeeded();
+                    forceCenterMap = false;
+                })
+                .SelectMany(async (_, cancellationToken) =>
 				{
 					_isOrderRefreshing = true;
 					await RefreshStatus(cancellationToken);
@@ -258,6 +278,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _subscriptions.Disposable = null;
 
+            _deviceOrientationSubscription.Disposable = null;
+            
+            CloseWaitingCarLandscapeViewModelIfPossible();
+
             _canAutoFollowTaxi = false;
             _autoFollowTaxi = false;
 
@@ -295,7 +319,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Logger.LogError(ex);
             }
-        }
+        } 
 
         // Method used when we are restoring from background to zoom back to the order's location correctly.
         private void CenterMapOnPinsIfNeeded()
@@ -356,7 +380,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.SelectMany(async notif =>
 				{
 					//Fallback in case of errors from the GeoService call
-					if ((notif.Kind == NotificationKind.OnError) || (notif.Kind == NotificationKind.OnNext && notif.Value == null))
+					if ((notif.Kind == NotificationKind.OnError) 
+						|| (notif.Kind == NotificationKind.OnNext && notif.Value == null)
+						|| (notif.Kind == NotificationKind.OnNext && notif.Value.Latitude == 0 && notif.Value.Longitude == 0))
 					{
 						var fallbackPosition = await _locationService.GetUserPosition();
 
@@ -402,6 +428,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
+			// We are in a new vehicle, clearing the previous one and starting anew.
+			if (TaxiLocation != null && TaxiLocation.VehicleNumber != medallion)
+			{
+				// remove the taxi location
+				TaxiLocation = null;
+			}
+
 			if (TaxiLocation == null)
 			{
 				TaxiLocation = new TaxiLocation
@@ -434,15 +467,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void StopOrientationServiceIfNeeded()
 		{
-			if (_orientationService.Stop())
+			if (_deviceOrientationService.Stop())
 			{
-				if (WaitingCarLandscapeViewModelParameters != null)
-				{
-					WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-					WaitingCarLandscapeViewModelParameters = null;
-				}
+			    _deviceOrientationSubscription.Disposable = null;
+
+			    CloseWaitingCarLandscapeViewModelIfPossible();
 			}
-		}		
+		}
+
+        private void CloseWaitingCarLandscapeViewModelIfPossible()
+        {
+            if (WaitingCarLandscapeViewModel.IsViewVisible)
+            {
+                WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, string.Empty, true);
+            }
+        }
 
         private async Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
 		{
@@ -582,8 +621,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				return Settings.ShowCallDriver 
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+				return _showCallDriver
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
@@ -885,31 +923,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().Cache.Set("OrderReminderWasSeen." + orderId, true.ToString());                     
         }
 
-        private void AddReminder(OrderStatusDetail status)
+        private void HandleScheduledOrder(OrderStatusDetail status)
         {
 			if (!HasSeenReminderPrompt(status.OrderId))
 			{
 				SetHasSeenReminderPrompt(status.OrderId);
 				InvokeOnMainThread(() => this.Services().Message.ShowMessage(
-						this.Services().Localize["AddReminderTitle"], 
-						this.Services().Localize["AddReminderMessage"],
-						this.Services().Localize["YesButton"], async () => 
-					{
-						_phoneService.AddEventToCalendarAndReminder(
-							string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
-							string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
-							Order.PickupAddress.FullAddress, 
-							Order.PickupDate,
-							Order.PickupDate.AddHours(-2));
-						await GoToHomeScreen();
-					}, 
-						this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
+					this.Services().Localize["AddReminderTitle"], 
+					this.Services().Localize["AddReminderMessage"],
+					this.Services().Localize["YesButton"], async () =>
+				{
+					_phoneService.AddEventToCalendarAndReminder(
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
+						string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
+						Order.PickupAddress.FullAddress, 
+						Order.PickupDate,
+						Order.PickupDate.AddHours(-2));
+					await GoToHomeScreen();
+				}, 
+					this.Services().Localize["NoButton"], async () => await GoToHomeScreen()));
+			}
+			else
+			{
+				GoToHomeScreen().FireAndForget();
 			}
         }
-
-		private BookingStatusBottomBarViewModel _bottomBar;
-		private OrderManualRideLinqDetail _manualRideLinqDetail;
-		private TaxiLocation _taxiLocation;
 
 		private async Task PromptAppRatingIfNecessary()
 		{
@@ -919,7 +957,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (_rateApplicationService.CanShowRateApplicationDialog(ordersAboveRatingThreshold))
 				{
-                    Task.Run(async () => await _rateApplicationService.ShowRateApplicationDialog());
+                    Task.Run(async () => await _rateApplicationService.ShowRateApplicationDialog()).FireAndForget();
 				}
 
                 _didCheckForAppRating = true;
@@ -968,15 +1006,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled))
 				{
-					AddReminder(status);
+					HandleScheduledOrder(status);
 				}
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
 				{
-					if (_orientationService.Start())
+					if (_deviceOrientationService.Start())
 					{
-						WaitingCarLandscapeViewModelParameters = null;
+					    _deviceOrientationSubscription.Disposable = _deviceOrientationService
+                            .ObserveDeviceIsInLandscape()
+							// No need to process the orientation change if we are displaying the WaitingCarLanscape View
+							.Where(_ => !WaitingCarLandscapeViewModel.IsViewVisible)
+					        .Subscribe(DeviceOrientationChanged, Logger.LogError);
 					}
+                    // The car number changed we need to notify the waitingcarlandscape view of the new vehicle number if it is displayed.
+				    if (WaitingCarLandscapeViewModel.IsViewVisible && OrderStatusDetail.VehicleNumber != _vehicleNumber)
+				    {
+				        WaitingCarLandscapeViewModel.NotifyBookingStatusChanged(this, _vehicleNumber, false);
+				    }
 				}
 				else
 				{
@@ -1016,7 +1063,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
+								UpdatePosition(geoData.Latitude??0, geoData.Longitude??0, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
 							}
 						}
 					}
@@ -1024,7 +1071,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						var direction =
 							await
-								_vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value,
+								_vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude??0, status.VehicleLongitude??0,
 									Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 
 						// Log original eta value
@@ -1110,6 +1157,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
 				{
 					TaxiLocation = null;
+
+					// put back the nearby vehicles
+					_vehicleService.SetAvailableVehicle(true);
 				}
 
 				if (VehicleStatuses.CancelStatuses.Any(cancelledStatus => cancelledStatus.Equals(status.IBSStatusId)))
@@ -1127,33 +1177,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError(ex);
             }
         }
-
+			
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			var orderStatusDetail = OrderStatusDetail;
-			if (orderStatusDetail == null)
+			if (OrderStatusDetail == null || WaitingCarLandscapeViewModel.IsViewVisible)
 			{
 				return;
 			}
-				
-			var carNumber = orderStatusDetail.VehicleNumber;
 
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && (carNumber.HasValueTrimmed() && carNumber.Trim() != "0"))
-			{
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+			var carNumber = OrderStatusDetail.VehicleNumber;
+
+			if (!carNumber.HasValueTrimmed() || carNumber.Trim() == "0")
+            {
+                return;
+            }
+
+			ShowViewModel<WaitingCarLandscapeViewModel>(new
 				{
-					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
-					{
-						CarNumber = carNumber,
-						DeviceOrientations = deviceOrientation
-					};
-					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-				}
-				else
-				{
-					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
-				}
-			}
+					carNumber,
+					deviceOrientation
+				});
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)

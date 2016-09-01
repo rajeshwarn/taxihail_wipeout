@@ -6,6 +6,7 @@ using NUnit.Framework;
 namespace CMTServices.Test
 {
     [TestFixture]
+    [Ignore("Ignoring this test: We need a new test server for IBS calls")]
     public class AvailabilityFixture
     {
         [SetUp]

@@ -3,6 +3,7 @@ using System.Net;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
@@ -17,8 +18,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 foreach(var netInterfaceInfo in netInterfaceInfos)
                 {
-                    var ip = netInterfaceInfo.Value.ToString();
-                    if(ip.HasValue())
+                    var ip = netInterfaceInfo.Value;
+                    if(!string.IsNullOrEmpty(ip))
                     {
                         return ip;
                     }
@@ -32,14 +33,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public IDictionary<string,IPAddress> GetIPAddresses()
+        public IDictionary<string,string> GetIPAddresses()
         {
             var allAddresses = Dns.GetHostAddresses(Dns.GetHostName());
 
-            var addressesDictionary = new Dictionary<string, IPAddress>();
+            var addressesDictionary = new Dictionary<string, string>();
             for (var i = 0; i < allAddresses.Length; i++)
             {
-                addressesDictionary.Add(i.ToString(), allAddresses.Skip(i).Take(1).FirstOrDefault());
+                addressesDictionary.Add(i.ToString(), allAddresses.Skip(i).Take(1).FirstOrDefault().ToString());
             }
 
             return addressesDictionary;
