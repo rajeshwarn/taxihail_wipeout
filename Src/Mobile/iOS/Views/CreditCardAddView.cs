@@ -153,11 +153,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For("Title")
                 .To(vm => vm.CreditCardSaveButtonDisplay);
 
-			set.Bind(btnSaveCard)
-			   .For("HiddenEx")
-			   .To(vm => vm.IsAddingNewCard)
-			   .WithConversion("BoolInverter");
-
 			set.Bind(txtCvv)
                 .For("HiddenEx")
 				.To(vm => vm.IsAddingNewCard)
