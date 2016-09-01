@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom.Resources
 {
@@ -7,7 +8,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom.Resources
     /// </summary>
     public class RoutingResponse
     {
-        public Route Route { get; set; }
+        public List<Route> Routes { get; set; }
     }
 
     public class Route 
@@ -17,9 +18,9 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom.Resources
 
     public class Summary
     {
-        public int TotalDelaySeconds { get; set; }
-        public int TotalDistanceMeters { get; set; }
-        public int TotalTimeSeconds { get; set; }
+        public int trafficDelayInSeconds { get; set; }
+        public int lengthInMeters { get; set; }
+        public int travelTimeInSeconds { get; set; }
     }
 }
 

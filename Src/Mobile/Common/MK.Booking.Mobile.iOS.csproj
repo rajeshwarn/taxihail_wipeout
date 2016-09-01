@@ -430,6 +430,9 @@
     <None Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <None Include="Localization\FLAT RATE.resx" />
+    <EmbeddedResource Include="Localization\MELLEVA.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
