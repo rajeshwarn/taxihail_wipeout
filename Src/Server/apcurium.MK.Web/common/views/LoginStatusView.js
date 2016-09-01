@@ -21,8 +21,6 @@
                 SocialMediaGoogleURL: TaxiHail.parameters.SocialMediaGoogleURL,
                 SocialMediaPinterestURL: TaxiHail.parameters.SocialMediaPinterestURL,
                 SocialMediaTwitterURL: TaxiHail.parameters.SocialMediaTwitterURL,
-                SocialMediaYoutubeURL: TaxiHail.parameters.SocialMediaYoutubeURL,
-                SocialMediaInstagramURL: TaxiHail.parameters.SocialMediaInstagramURL,
                 isLoggedIn: TaxiHail.auth.isLoggedIn(),
                 isPayPalEnabled: TaxiHail.parameters.isPayPalEnabled,
                 name: this.model.has('settings') ? this.model.get('settings').name : this.model.get('name')

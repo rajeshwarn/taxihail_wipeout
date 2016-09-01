@@ -119,5 +119,6 @@
   </resheader>
   <data name="Email_Body_OrderNo" xml:space="preserve">
     <value>Confirmation&amp;nbsp;#</value>
+    <comment>FD Ticket #2422</comment>
   </data>
 </root>

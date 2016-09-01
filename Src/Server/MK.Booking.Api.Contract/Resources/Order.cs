@@ -1,12 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Serializer;
+using MK.Common.Serializer;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class Order : BaseDto
     {
+        [JsonConverter(typeof(GuidJsonConverter))]
         public Guid Id { get; set; }
 
         public int? IBSOrderId { get; set; }

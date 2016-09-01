@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
@@ -13,8 +13,8 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Http.Extensions;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _networkService;
         private readonly IOrderStatusUpdateDao _statusUpdaterDao;
+
 
         public ServerStatusService(
             IServerSettings serverSettings, 
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
             var sqlTest = RunTest(async () => await orderStatusUpdateDetailTest, "SQL");
 
             var mapiTest = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                ? RunTest(async () => await RunMapiTest(), "CMT MAPI")
+                ? RunTest(() => Task.Run(() => RunMapiTest()), "CMT MAPI")
                 : Task.FromResult(false);
 
             var papiTest = useCmtPapi
@@ -151,33 +152,19 @@ namespace apcurium.MK.Booking.Api.Services
 
         }
 
-        /// <summary>
-        /// This no longer tests if the credentials are okay, only if we can communicate with the server
-        /// </summary>
-        /// <returns></returns>
-        private async Task RunMapiTest()
+        private void RunMapiTest()
         {
-            try
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, null);
+            var cmtTripInfoHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
+
+            var tripInfo = cmtTripInfoHelper.GetTripInfo("0");
+
+            if (tripInfo == null ||  tripInfo.HttpStatusCode == (int) HttpStatusCode.BadRequest && tripInfo.ErrorCode.HasValue)
             {
-                var cmtSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
-
-                var client = new HttpClient { BaseAddress = new Uri(cmtSettings.IsSandbox
-                    ? cmtSettings.SandboxMobileBaseUrl
-                    : cmtSettings.MobileBaseUrl)
-                };
-
-                var response = await client.GetAsync("hc");
-                if (response != null && response.StatusCode == HttpStatusCode.OK)
-                {
-                    return;
-                }
-
-                throw new Exception("Mapi connection failed with StatusCode {0}".InvariantCultureFormat(response != null ? response.StatusCode.ToString() : ""));
+                return;
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Mapi connection failed with message {0}".InvariantCultureFormat(ex.Message));
-            }
+
+            throw new Exception("Mapi connection failed with StatusCode {0} and CmtErrorCode {1}".InvariantCultureFormat(tripInfo.HttpStatusCode, tripInfo.ErrorCode));
         }
 
         private void RunHoneyBadgerTest()

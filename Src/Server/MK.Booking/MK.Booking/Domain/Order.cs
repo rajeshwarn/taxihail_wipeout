@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Domain
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-			string deviceName, int tripId, int driverId, double? accessFee, string lastFour, string originatingIpAddress, string kountSessionId, Guid? creditCardId, string tokenOfCardForPayment)
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour, string originatingIpAddress, string kountSessionId, Guid? creditCardId)
 		{
 			Update(new OrderManuallyPairedForRideLinq
 			{
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Domain
                 KountSessionId = kountSessionId,
                 CreditCardId = creditCardId
             });
-        }
+		}
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,

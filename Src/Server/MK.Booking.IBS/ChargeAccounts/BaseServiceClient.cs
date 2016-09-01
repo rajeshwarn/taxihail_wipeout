@@ -42,12 +42,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-
-
-
         protected T Get<T>(string pathInfo)
         {
-            SetAuthorizationIfNeeded(pathInfo);
+            AddAuthorizationTokenIfNeeded<T>(pathInfo);
 
             var response = Client.GetAsync(pathInfo).Result;
 
@@ -56,7 +53,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             return resultJson.FromJson<T>();
         }
 
-        void SetAuthorizationIfNeeded(string pathInfo)
+        void AddAuthorizationTokenIfNeeded<T>(string pathInfo)
         {
             if (!_ibsSettings.RestApiUser.HasValueTrimmed() || !_ibsSettings.RestApiSecret.HasValueTrimmed())
             {
@@ -64,13 +61,12 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             }
 
             var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
-            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var stringToHash = "GET" + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
             Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
-
+            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
         }
 
         private string Encode(string stringToHash)
@@ -90,10 +86,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             var requestJson = request.ToJson();
 
-            SetAuthorizationIfNeeded(pathInfo);
+            AddAuthorizationTokenIfNeeded<T>(pathInfo);
 
             var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
-            response.EnsureSuccessStatusCode();
             var resultJson = response.Content.ReadAsStringAsync().Result;
 
             return resultJson.FromJson<T>();

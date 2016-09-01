@@ -10,13 +10,12 @@ using NUnit.Framework;
 namespace MK.Booking.IBS.Test.OrderFixture
 {
     [TestFixture]
-    [Ignore("Ignoruing since this test requires an IBS configured to do tests.")]
     public class given_no_order
     {
         [SetUp]
         public void Setup()
         {
-            Sut = new WebOrder7Service {Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebOrder7" };
+            Sut = new WebOrder7Service {Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
             _accountId = CreateIBSAccount();
         }
 
@@ -29,7 +28,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
         {
             var service = new WebAccount3Service
             {
-                Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebAccount3"
+                Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebAccount3"
             };
 
             var account = new TBookAccount3
@@ -87,7 +86,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
 
-            var orderService = new WebOrder7Service {Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebOrder7" };
+            var orderService = new WebOrder7Service {Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
             var orderId = orderService.SaveBookOrder_7("taxi", "test", order);
 
             Assert.Greater(orderId, 0);

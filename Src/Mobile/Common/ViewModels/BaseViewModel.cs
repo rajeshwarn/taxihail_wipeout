@@ -9,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.ViewModels;
+using MK.Common.Configuration;
 using TinyIoC;
 using TinyMessenger;
 using System.Reactive.Subjects;

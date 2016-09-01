@@ -1,17 +1,25 @@
-using System.ComponentModel;
-using apcurium.MK.Booking.Mobile.Enumeration;
 using Android.App;
 using Android.Content.PM;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Enumeration;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/WaitingCarLandscapeActivityName", Theme = "@android:style/Theme.NoTitleBar.Fullscreen", ScreenOrientation = ScreenOrientation.Landscape)]
-	public class WaitingCarLandscapeActivity : BaseBindingActivity<WaitingCarLandscapeViewModel>
+	public class WaitingCarLandscapeActivity:MvxActivity
     {
-		private TextView _carNumberTextView;
-		private string _initialContentDescription;
+		TextView _carNumberTextView;
+		string _initialContentDescription;
+
+		public new WaitingCarLandscapeViewModel ViewModel
+		{
+			get
+			{
+				return (WaitingCarLandscapeViewModel)DataContext;
+			}
+		}
 
 		protected override void OnViewModelSet()
 		{
@@ -22,46 +30,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			_carNumberTextView = FindViewById<TextView>(Resource.Id.CarNumberTextView);
 			_initialContentDescription = _carNumberTextView.ContentDescription;
 
-            _carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
-		    UpdateDeviceOrientation();
-		}
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+			ViewModel_PropertyChanged(null, null);
+			ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
-        protected override void OnStop()
-        {
-            base.OnStop();
-
-            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-		    if (e.PropertyName == nameof(ViewModel.DeviceOrientation))
-		    {
-		        UpdateDeviceOrientation();
-		    }
-		    else if (e.PropertyName == nameof(ViewModel.CarNumber))
-		    {
-		        _carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
-		    }
-		}
+			if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
+			{
+				RequestedOrientation = ScreenOrientation.Landscape;
+			}
+			else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
+			{
+				RequestedOrientation = ScreenOrientation.ReverseLandscape;
+			}
 
-        private void UpdateDeviceOrientation()
-        {
-            if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
-            {
-                RequestedOrientation = ScreenOrientation.Landscape;
-            }
-            else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
-            {
-                RequestedOrientation = ScreenOrientation.ReverseLandscape;
-            }
-        }
+			_carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
+		}
     }
 }

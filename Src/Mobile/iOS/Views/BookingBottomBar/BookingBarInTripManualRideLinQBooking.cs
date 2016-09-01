@@ -44,11 +44,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Command)
 				.To(vm => vm.BookingStatus.BottomBar.CallCompany);
 			set.Bind(buttonCall)
-                .For("HiddenEx")
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
 
 			set.Bind(buttonTipChange)
-                .For("HiddenEx")
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip)
 				.WithConversion("BoolInverter");
 			set.Bind(buttonTipChange)

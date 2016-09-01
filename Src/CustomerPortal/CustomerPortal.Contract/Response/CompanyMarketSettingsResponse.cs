@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using apcurium.MK.Common.Entity;
+﻿using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 
 namespace CustomerPortal.Contract.Response
@@ -30,9 +29,5 @@ namespace CustomerPortal.Contract.Response
         public bool EnableAppFareEstimates { get; set; }
 
         public Tariff MarketTariff { get; set; }
-
-        public bool ShowCallDriver { get; set; }
-
-        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 }

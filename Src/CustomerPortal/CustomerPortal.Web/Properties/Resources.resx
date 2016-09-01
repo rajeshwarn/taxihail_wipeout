@@ -236,10 +236,10 @@ These keywords will be used by the store to find your app. For example when a cu
     <value>Unique Device Identification Number (UDID)</value>
   </data>
   <data name="CoordinateStartTaxiHailNetwork" xml:space="preserve">
-    <value>Lower Left</value>
+    <value>Start</value>
   </data>
   <data name="CoordinateEndTaxiHailNetwork" xml:space="preserve">
-    <value>Upper Right</value>
+    <value>End</value>
   </data>
   <data name="RegionTaxiHailNetworkLabel" xml:space="preserve">
     <value>Region</value>
@@ -323,47 +323,5 @@ the months ahead, and are always interested in what you have to say!</value>
   </data>
   <data name="FleetIdBlackListLabel" xml:space="preserve">
     <value>Fleets Blacklist</value>
-  </data>
-  <data name="Email_Body_Fare" xml:space="preserve">
-    <value>Fare</value>
-  </data>
-  <data name="Email_Body_Extra" xml:space="preserve">
-    <value>Extra</value>
-  </data>
-  <data name="Email_Body_Surcharge" xml:space="preserve">
-    <value>Surcharge</value>
-  </data>
-  <data name="Email_Body_Toll" xml:space="preserve">
-    <value>Toll</value>
-  </data>
-  <data name="Email_Body_ImprovementSurcharge" xml:space="preserve">
-    <value>Access Fee</value>
-  </data>
-  <data name="Email_Body_Tip" xml:space="preserve">
-    <value>Tip</value>
-  </data>
-  <data name="Email_Body_TotalFare" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="Email_Body_RideLinqLastFour" xml:space="preserve">
-    <value>Last Four</value>
-  </data>
-  <data name="ar" xml:space="preserve">
-    <value>Arabic</value>
-  </data>
-  <data name="en" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="es" xml:space="preserve">
-    <value>Spanish</value>
-  </data>
-  <data name="fr" xml:space="preserve">
-    <value>French</value>
-  </data>
-  <data name="nl" xml:space="preserve">
-    <value>Dutch</value>
-  </data>
-  <data name="Email_Body_Tax" xml:space="preserve">
-    <value>Tax</value>
   </data>
 </root>

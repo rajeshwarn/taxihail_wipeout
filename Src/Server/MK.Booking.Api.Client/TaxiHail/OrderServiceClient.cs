@@ -37,13 +37,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<OrderStatusDetail>("/account/orders", orderRequest, logger: Logger);
         }
 
-        public async Task<Tuple<Order, OrderStatusDetail>> GetActiveOrder()
-        {
-            var active = await Client.GetAsync(new ActiveOrderRequest(), logger: Logger);
-
-            return new Tuple<Order, OrderStatusDetail>(active.Order, active.OrderStatusDetail);
-        }
-
         public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)
         {
             var req = string.Format("/account/orders/{0}/switchDispatchCompany", request.OrderId);

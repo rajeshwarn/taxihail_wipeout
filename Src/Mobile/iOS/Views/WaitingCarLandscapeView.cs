@@ -1,11 +1,11 @@
 ﻿using System;
 using UIKit;
-using CoreGraphics;
-using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using apcurium.MK.Booking.Mobile.Enumeration;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

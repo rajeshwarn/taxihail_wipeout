@@ -69,8 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(SendReceiptAdmin request)
         {
             var order = _orderDao.FindById(request.OrderId);
-
-            if (order == null || !(order.IsManualRideLinq || order.IBSOrderId.HasValue))
+            if (order == null || !order.IBSOrderId.HasValue)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
@@ -93,14 +92,12 @@ namespace apcurium.MK.Booking.Api.Services
             // If the order was created in another company, need to fetch the correct IBS account
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
 
-            if (!(ibsAccountId.HasValue || order.IsManualRideLinq))
+            if (!ibsAccountId.HasValue)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
-            var ibsOrder = !order.IsManualRideLinq
-                ? _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone)
-                : null;
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
@@ -134,7 +131,7 @@ namespace apcurium.MK.Booking.Api.Services
                     ? _creditCardDao.FindByToken(orderPayment.CardToken)
                     : null;
             }
-            else if (order.IsManualRideLinq)
+            else if (pairingInfo == null && order.IsManualRideLinq)
             {
                 var manualRideLinqDetail = _orderDao.GetManualRideLinqById(order.Id);
                 fareAmount = manualRideLinqDetail.Fare;
@@ -249,10 +246,6 @@ namespace apcurium.MK.Booking.Api.Services
                     promotionUsed,
                     creditCard,
                     cmtRideLinqFields);
-
-            // Since the user or an admin requested the receipt, we should bypass the normal notification settings.
-            sendReceiptCommand.BypassNotificationSettings = true;
-
             if (!request.RecipientEmail.IsNullOrEmpty())
             {
                 sendReceiptCommand.EmailAddress = request.RecipientEmail;

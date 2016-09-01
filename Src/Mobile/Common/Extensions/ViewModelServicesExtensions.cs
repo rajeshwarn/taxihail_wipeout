@@ -2,6 +2,8 @@
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
+using MK.Common.Configuration;
 using TinyIoC;
 using TinyMessenger;
 

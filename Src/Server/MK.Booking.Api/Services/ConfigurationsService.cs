@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -10,12 +13,16 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
+using MK.Common.Configuration;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.Text;
 using System.Reflection;
-using apcurium.MK.Common.Services;
+using apcurium.MK.Common.Cryptography;
 
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -24,14 +31,12 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configDao;
         private readonly IServerSettings _serverSettings;
-        private readonly ICryptographyService _cryptographyService;
 
-        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao, ICryptographyService cryptographyService)
+        public ConfigurationsService(IServerSettings serverSettings, ICommandBus commandBus, IConfigurationDao configDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _configDao = configDao;
-            _cryptographyService = cryptographyService;
         }
 
         public object Get(ConfigurationsRequest request)
@@ -43,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			var data = GetConfigurationsRequestInternal(request.AppSettingsType, _serverSettings.ServerData.GetType().GetAllProperties());
 
-            _cryptographyService.SwitchEncryptionStringsDictionary(_serverSettings.ServerData.GetType(), null, data, true);
+			SettingsEncryptor.SwitchEncryptionStringsDictionary(_serverSettings.ServerData.GetType(), null, data, true);
 
 			return data;
 		}

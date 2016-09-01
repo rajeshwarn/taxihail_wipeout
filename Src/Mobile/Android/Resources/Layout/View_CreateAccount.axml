@@ -108,7 +108,7 @@
                     android:orientation="horizontal">
                     <Button
                         android:id="@+id/btnCancel"
-                        local:MvxBind="Click Cancel"
+                        local:MvxBind="Click CloseCommand"
                         android:text="@string/Cancel"
                         android:layout_weight=".475"
                         android:layout_width="0dip"

@@ -1,7 +1,7 @@
 ﻿using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
+using RestSharp.Extensions;
 using ServiceStack.Text;
 using Twilio;
 

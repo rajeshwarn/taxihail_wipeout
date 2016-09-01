@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -103,13 +102,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         {
             _logger.LogMessage("Create order request : " + request);
 
-            if (request.Settings.Country == null || !request.Settings.Country.Code.HasValueTrimmed())
-            {
-                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
-                    string.Format(_resources.Get("PhoneNumberCountryNotProvided", request.ClientLanguageCode)));
-            }
-
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+
             if (PhoneHelper.IsPossibleNumber(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
@@ -273,8 +267,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
-            _logger.LogMessage("MarketSettings for order {0}: {1}", orderCommand.OrderId, marketSettings.ToJson());
-
+            
             var marketFees = _feesDao.GetMarketFees(market);
             orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
             createReportOrder.BookingFees = orderCommand.BookingFees;
@@ -318,16 +311,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            // Use address alias if present.
-            var addressAlias = request.PickupAddress.FriendlyName.HasValueTrimmed()
-                ? request.PickupAddress.FriendlyName
-                : request.PickupAddress.BuildingName;
-
-            var ibsInformationNote = IbsHelper.BuildNote(
+            var ibsInformationNote = IbsNoteBuilder.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 request.Note,
-                addressAlias,
+                request.PickupAddress.BuildingName,
                 request.Settings.LargeBags,
                 _serverSettings.ServerData.IBS.HideChargeTypeInUserNote);
 
@@ -710,8 +698,9 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
         private Guid? GetPendingOrder()
         {
-            var latestActiveOrder = _orderDao.GetActiveOrderStatusDetails(new Guid(this.GetSession().UserAuthId));
-            
+            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
+
+            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
             if (latestActiveOrder != null)
             {
                 return latestActiveOrder.OrderId;

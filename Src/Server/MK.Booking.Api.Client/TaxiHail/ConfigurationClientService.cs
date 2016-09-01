@@ -1,35 +1,29 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Configuration.Helpers;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Services;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+
 
 #if !CLIENT
 using apcurium.MK.Booking.Api.Client.Extensions;
-
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient
 	{
-        private readonly ICryptographyService _cryptographyService;
-
-        public ConfigurationClientService(string url, 
-            string sessionId, 
-            IPackageInfo packageInfo, 
-            IConnectivityService connectivityService, 
-            ILogger logger,
-            ICryptographyService cryptographyService)
+        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, IConnectivityService connectivityService, ILogger logger)
             : base(url, sessionId, packageInfo, connectivityService, logger)
-        {
-            _cryptographyService = cryptographyService;
-        }
+		{
+		}
 
         public async Task<IDictionary<string, string>> GetSettings(bool shouldThrowExceptionIfError = false)
 		{
@@ -39,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			}
 			catch (Exception ex)
 			{
-                Logger.LogError(ex, string.Empty, -1, true);
+                Logger.LogError(ex);
 
                 if (shouldThrowExceptionIfError)
                 {
@@ -57,12 +51,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			{
                 var result = await Client.GetAsync<Dictionary<string, string>>("/encryptedsettings/payments", logger: Logger);
 
-                _cryptographyService.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
+				SettingsEncryptor.SwitchEncryptionStringsDictionary(paymentSettings.GetType(), null, result, false);
 				SettingsLoader.InitializeDataObjects(paymentSettings, result, Logger);
 			}
 			catch (Exception ex)
 			{
-                Logger.LogError(ex, string.Empty, -1, true);
+                Logger.LogError(ex);
 			}	
 			return paymentSettings;
 		}

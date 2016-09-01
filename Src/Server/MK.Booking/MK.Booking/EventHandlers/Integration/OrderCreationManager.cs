@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 IBSOrderId = ibsOrderId,
                 EmailAddress = accountDetail.Email,
-                Settings = new SendBookingConfirmationEmail.InternalBookingSettings()
+                Settings = new SendBookingConfirmationEmail.BookingSettings
                 {
                     ChargeType = bookingSettings.ChargeType,
                     LargeBags = bookingSettings.LargeBags,

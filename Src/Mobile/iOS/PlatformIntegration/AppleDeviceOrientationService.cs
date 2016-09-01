@@ -1,9 +1,10 @@
-﻿using Foundation;
+﻿using apcurium.MK.Booking.Mobile.AppServices;
+using Foundation;
 using CoreMotion;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Platform;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -15,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		private bool _isOrientationUpdateThreadActive;
 		private Thread _orientationUpdateThread;
 
-		public AppleDeviceOrientationService(IMvxLifetime mvxLifetime, ILogger logger) : base(Common.CoordinateSystemOrientation.RightHanded, mvxLifetime, logger)
+		public AppleDeviceOrientationService() : base(Common.CoordinateSystemOrientation.RightHanded)
 		{
 		    if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{
@@ -34,23 +35,25 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         protected override bool StartService()
         {
-            if (_motionManager == null || !IsAvailable() || (_orientationUpdateThread != null && _orientationUpdateThread.IsAlive))
+            if (_motionManager != null && IsAvailable())
             {
-                return false;
+                if (_orientationUpdateThread != null && _orientationUpdateThread.IsAlive)
+                {
+                    return false;
+                }
+
+				_motionManager.StartAccelerometerUpdates();
+
+				_isOrientationUpdateThreadActive = true;
+
+                _orientationUpdateThread = new Thread(OrientationUpdateThread);
+				_orientationUpdateThread.Priority = ThreadPriority.BelowNormal;
+				_orientationUpdateThread.Start();
+
+                return true;
             }
 
-            _motionManager.StartAccelerometerUpdates();
-
-            _isOrientationUpdateThreadActive = true;
-
-            _orientationUpdateThread = new Thread(OrientationUpdateThread)
-            {
-                Priority = ThreadPriority.BelowNormal
-            };
-
-            _orientationUpdateThread.Start();
-
-            return true;
+            return false;
         }
 
         protected override bool StopService()

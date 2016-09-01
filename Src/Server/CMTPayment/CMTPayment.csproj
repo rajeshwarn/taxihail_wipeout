@@ -34,21 +34,20 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,7 +63,6 @@
     <Compile Include="Actions\CmtRideLinqRefundRequest.cs" />
     <Compile Include="Authorization\AuthorizationRequest.cs" />
     <Compile Include="Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Authorization\CmtRideLinqAuthorizationRequest.cs" />
     <Compile Include="Authorization\MerchantAuthorizationRequest.cs" />
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="BaseServiceClient.Server.cs" />
@@ -99,19 +97,16 @@
     <Compile Include="Utilities\ThreadSafeRandom.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
-      <Project>{dc94cdf6-9f94-46ab-ac81-fef5900d1d04}</Project>
-      <Name>apcurium.MK.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\apcurium.MK.Common\apcurium.MK.Common.Server.csproj">
-      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
-      <Name>apcurium.MK.Common.Server</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

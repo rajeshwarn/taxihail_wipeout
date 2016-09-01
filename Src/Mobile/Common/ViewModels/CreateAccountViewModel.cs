@@ -15,14 +15,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
-		private readonly IAccountService _accountService;
 
-		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService, 
-			IAccountService accountService)
+		public CreateAccountViewModel(IRegisterWorkflowService registerService, ITermsAndConditionsService termsService)
 		{
 			_registerService = registerService;	
 			_termsService = termsService;
-			_accountService = accountService;
 		}
 
 		public RegisterAccount Data { get; set; }
@@ -52,19 +49,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Country = PhoneNumber.Country
 			};
 			#if DEBUG
-
-			// If we are using facebook id or twitterid we should not override the values provided by facebook or twitter.
-			if(!facebookId.HasValue() && !twitterId.HasValue())
-			{
-                Data.Email = "testaccount@net.net";
-                Data.Name = "test account";
-                Data.Country = new CountryISOCode("CA");
-                Data.Password = "password";
-                ConfirmPassword = "password";
-                return;
-			}
-
+			Data.Email = "testaccount@net.net";
+			Data.Name = "test account" ;
+            Data.Country = new CountryISOCode("CA");
 			Data.Phone = "5147777777";
+			Data.Password = "password";
+			ConfirmPassword = "password";
             PhoneNumber.Country = Data.Country;
             PhoneNumber.PhoneNumber = Data.Phone;
 			#endif
@@ -205,20 +195,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}			
 		}
-
-		public ICommand Cancel
-		{
-			get
-			{
-				return  this.GetCommand(() =>
-					{
-						_accountService.SignOut();
-						this.CloseCommand.Execute(null);
-					}
-				);
-			}
-		}
-
 	}
 }
 

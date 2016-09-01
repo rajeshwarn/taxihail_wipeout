@@ -673,7 +673,7 @@
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
   <data name="PhoneBlackListed" xml:space="preserve">
-    <value>Désolé, vous ne pouvez pas créer un compte. S.V.P. contactez le support pour de l'aide.</value>
+    <value>Le numéro de téléphone est sur une liste noire</value>
   </data>
   <data name="EmailUsedMessage" xml:space="preserve">
     <value>Ce courriel est déjà utilisé par un autre compte</value>
@@ -716,8 +716,5 @@
   </data>
   <data name="Email_Title_OrderRefund" xml:space="preserve">
     <value>Commande Remboursée</value>
-  </data>
-  <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
-    <value>Vous devez fournir un code de pays, ex: CA, US, ...</value>
   </data>
 </root>

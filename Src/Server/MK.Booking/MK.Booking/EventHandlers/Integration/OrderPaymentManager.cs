@@ -8,7 +8,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -209,11 +208,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
-                    {
-                        // Terminal error, no need to react to paymentFailure.
-                        return;
-                    }
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
@@ -272,7 +266,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             IBSOrderId = orderStatus.IBSOrderId,
                             CreditCardId = account.DefaultCreditCard.GetValueOrDefault(),
                             TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
-                            OverdueAmount = Convert.ToDecimal(@event.Total),
+                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
                         });
 

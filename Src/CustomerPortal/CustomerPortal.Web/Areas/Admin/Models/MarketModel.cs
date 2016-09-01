@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
-using CustomerPortal.Web.Properties;
 
 namespace CustomerPortal.Web.Areas.Admin.Models
 {
@@ -13,16 +12,11 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         public MarketModel()
         {
             CompaniesOrMarket = new List<SelectListItem>();
-            Region = new MapRegion();
-            OtherMarkets = new List<Market>();
         }
 
         [Required]
         [Display(Name = "Name")]
         public string Market { get; set; }
-
-        [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
-        public MapRegion Region { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }
 
@@ -49,15 +43,9 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "App Fare Estimates Enabled")]
         public bool EnableAppFareEstimates { get; set; }
 
-        public bool ShowCallDriver { get; set; }
-
         public Tariff MarketTariff { get; set; }
 
         public IEnumerable<SelectListItem> CompaniesOrMarket { get; set; }
-
-        public IEnumerable<Market> OtherMarkets { get; set; } 
-
-        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 
     public class VehicleModel : Vehicle

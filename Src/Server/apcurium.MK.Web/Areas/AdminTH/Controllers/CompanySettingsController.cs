@@ -59,8 +59,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return RedirectToAction("Index");
             }
 
-
-
             if (appSettings.Any())
             {
                 var data = appSettings.ToJson(false);
@@ -199,13 +197,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             var model = GetAvailableSettingsForUser();
 
-            var addError = new Action<string>(errorMessage =>
-            {
-                isValid = false;
-                errorMessageBuilder.Append(Environment.NewLine);
-                errorMessageBuilder.Append(errorMessage);
-            });
-            
             foreach (var appSetting in appSettings)
             {
                 Type settingType;
@@ -246,7 +237,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     }
                     catch (Exception)
                     {
-                        addError(settingName);
+                        isValid = false;
+
+                        if (errorMessageBuilder.Length > 0)
+                        {
+                            errorMessageBuilder.Append(", "); 
+                        }
+                        errorMessageBuilder.Append(settingName);
                     }
                 }
             }
@@ -262,17 +259,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (disableImmediateBooking && disableFutureBooking)
             {
-                addError("Disable Immediate Booking and Disable Future Booking can not be 'Yes' simultaneously");
-            }
+                isValid = false;
 
-            if (appSettings.ContainsKey("SMSConfirmationEnabled") && appSettings["SMSConfirmationEnabled"].Contains("true"))
-            {
-                var twilioFields = new string[] {"SMSAccountSid", "SMSAuthToken" };
-
-                if (!twilioFields.All(x => appSettings.ContainsKey(x) && !string.IsNullOrWhiteSpace(appSettings[x])))
+                if (errorMessageBuilder.Length > 0)
                 {
-                    addError("To use Enable Activation by SMS, you need to set Twilio settings");
+                    errorMessageBuilder.Append(", ");
                 }
+                errorMessageBuilder.Append("Disable Immediate Booking and Disable Future Booking can not be 'Yes' simultaneously");
             }
 
             if (!isValid)

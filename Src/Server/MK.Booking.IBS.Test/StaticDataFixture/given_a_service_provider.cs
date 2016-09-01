@@ -7,7 +7,6 @@ using NUnit.Framework;
 namespace MK.Booking.IBS.Test.StaticDataFixture
 {
     [TestFixture]
-    [Ignore("Ignoring this test, we will need a new test ibs with test data to make this work")]
     public class given_a_service_provider
     {
         [SetUp]
@@ -15,7 +14,7 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
         {
             Sut = new StaticDataservice
             {
-                Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap//IStaticData"
+                Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IStaticData"
             };
         }
 

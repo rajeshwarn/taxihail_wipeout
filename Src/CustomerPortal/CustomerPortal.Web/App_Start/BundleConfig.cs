@@ -41,8 +41,6 @@ namespace CustomerPortal.Web
                 "~/assets/css/vehicles.css",
                 "~/assets/jquery-fileupload/css/jquery.fileupload-ui.css");
 
-            bundles.Add(new ScriptBundle("~/bundles/googleMaps").Include(
-                "~/Scripts/maplabel.js"));
 
             lessBundle.Transforms.Add(new LessTransform());
             lessBundle.Transforms.Add(new CssMinify());

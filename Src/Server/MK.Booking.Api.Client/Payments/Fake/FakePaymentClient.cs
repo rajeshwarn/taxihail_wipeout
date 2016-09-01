@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             return Task.FromResult((OverduePayment)null);
         }
 
-        public Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
             return Task.FromResult(new SettleOverduePaymentResponse
             {

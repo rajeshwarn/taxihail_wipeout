@@ -9,10 +9,8 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Services;
 using Moq;
 using NUnit.Framework;
-using PCLCrypto;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -38,8 +36,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null,
                 new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger(), null), ConfigurationManager, null, new Logger()),
                 null,
-                null,
-                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()));
+                null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             Sut.Setup(new EmailCommandHandler(notificationService));

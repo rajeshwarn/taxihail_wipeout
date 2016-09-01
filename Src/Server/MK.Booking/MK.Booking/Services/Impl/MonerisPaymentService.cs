@@ -208,10 +208,11 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
-                var isCardDeclined = false;
+                bool isCardDeclined = false;
                 var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.GetValueOrDefault());
 
                 var order = _orderDao.FindOrderStatusById(orderId);
+				string driverId = order != null ? order.DriverInfos != null ? order.DriverInfos.DriverId : null : null;
 
                 // We cannot re-use the same id has a previously failed payment
                 var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
@@ -225,11 +226,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     // PreAuthorize transaction
                     var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
-                    var customerId = monerisSettings.UseCarIdInTransaction
-                        ? order.SelectOrDefault(o => o.VehicleNumber)
-                        : order != null ? order.DriverInfos.SelectOrDefault(driverInfos => driverInfos.DriverId) : null;
-
-                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, customerId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, driverId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
 
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
@@ -307,10 +304,11 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(companyKey, orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
+            string message;
             string authorizationCode = null;
-            var commitTransactionId = transactionId;
+            string commitTransactionId = transactionId;
 
             try
             {
@@ -353,21 +351,17 @@ namespace apcurium.MK.Booking.Services.Impl
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);
-
-                var descriptor = monerisSettings.UseCarIdInTransaction
-                    ? orderStatus.SelectOrDefault(status => status.VehicleNumber)
-                    : orderStatus.SelectOrDefault(status => status.DriverInfos).SelectOrDefault(driverInfos => driverInfos.DriverId);
-
-                if (descriptor.HasValueTrimmed())
+                if (orderStatus != null
+                    && orderStatus.DriverInfos != null
+                    && orderStatus.DriverInfos.DriverId.HasValue())
                 {
-                    //add driver id or vehicleNumber to "memo" field
-                    completionCommand.SetDynamicDescriptor(descriptor);
+                    //add driver id to "memo" field
+                    completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId); 
                 }
 
                 var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
                 var commitReceipt = commitRequest.GetAndLogReceipt(_logger);
 
-                string message;
                 var isSuccessful = RequestSuccesful(commitReceipt, out message);
                 var isCardDeclined = IsCardDeclined(commitReceipt);
 
@@ -486,44 +480,42 @@ namespace apcurium.MK.Booking.Services.Impl
     /// </summary>
     public class Completion : Transaction
     {
-        private static readonly string[] XmlTags = new string[]
+        private static string[] xmlTags = new string[4]
         {
           "order_id",
           "comp_amount",
           "txn_number",
           "crypt_type"
         };
-        private readonly Hashtable _keyHashes = new Hashtable();
+        private Hashtable keyHashes = new Hashtable();
 
         public Completion(Hashtable completion)
-            : base(completion, XmlTags)
+            : base(completion, Completion.xmlTags)
         {
         }
 
-        public Completion(string orderId, string compAmount, string txnNumber, string cryptType)
-            : base(XmlTags)
+        public Completion(string order_id, string comp_amount, string txn_number, string crypt_type)
+            : base(Completion.xmlTags)
         {
-            transactionParams.Add("order_id", orderId);
-            transactionParams.Add("comp_amount", compAmount);
-            transactionParams.Add("txn_number", txnNumber);
-            transactionParams.Add("crypt_type", cryptType);
+            this.transactionParams.Add((object)"order_id", (object)order_id);
+            this.transactionParams.Add((object)"comp_amount", (object)comp_amount);
+            this.transactionParams.Add((object)"txn_number", (object)txn_number);
+            this.transactionParams.Add((object)"crypt_type", (object)crypt_type);
         }
 
-        public void SetDynamicDescriptor(string dynamicDescriptor)
+        public void SetDynamicDescriptor(string dynamic_descriptor)
         {
-            _keyHashes.Add("dynamic_descriptor", dynamicDescriptor);
+            this.keyHashes.Add((object)"dynamic_descriptor", (object)dynamic_descriptor);
         }
 
         public override string toXML()
         {
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("<completion>");
             stringBuilder.Append(base.toXML());
-            var enumerator = _keyHashes.GetEnumerator();
+            IDictionaryEnumerator enumerator = this.keyHashes.GetEnumerator();
             while (enumerator.MoveNext())
-            {
-                stringBuilder.Append("<" + enumerator.Key + ">" + enumerator.Value + "</" + enumerator.Key + ">");
-            }
+                stringBuilder.Append("<" + enumerator.Key.ToString() + ">" + enumerator.Value.ToString() + "</" + enumerator.Key.ToString() + ">");
             stringBuilder.Append("</completion>");
             return stringBuilder.ToString();
         }

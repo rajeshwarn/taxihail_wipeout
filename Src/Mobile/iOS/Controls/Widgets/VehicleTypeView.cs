@@ -108,15 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value) 
                     {
-                        var companyColor = Theme.CompanyColor;
-
-                        //If the company color is too light
-                        if(!Theme.IsLightContent)
-                        {
-                            companyColor = UIColor.Black; //Change the color of the vehicle selector to black
-                        }
-                        _vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, companyColor);
-                        _vehicleTypeLabel.TextColor = companyColor;
+						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor);
+                        _vehicleTypeLabel.TextColor = Theme.CompanyColor;
                     } 
                     else 
                     {

@@ -70,28 +70,30 @@
                 local:MvxBind="Text StatusInfoText" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             local:MvxBind="Visibility IsDriverInfoAvailable, Converter=Visibility">
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dip"
+                android:layout_weight="0.25"
                 android:gravity="center"
                 local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
                 <RoundedMvxImageView
-                    android:layout_width="70dip"
-                    android:layout_height="70dip"
-                    android:scaleType="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
                     android:id="@+id/driverPhotoView"
                     local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"
-                android:layout_marginTop="6dip">
+                android:layout_marginTop="6dip"
+                android:layout_weight="0.75">
                 <LinearLayout
                     android:id="@+id/companyLayout"
                     android:orientation="horizontal"

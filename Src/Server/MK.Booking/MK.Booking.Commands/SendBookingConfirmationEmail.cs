@@ -20,12 +20,12 @@ namespace apcurium.MK.Booking.Commands
         public DateTime PickupDate { get; set; }
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
-        public InternalBookingSettings Settings { get; set; }
+        public BookingSettings Settings { get; set; }
         public string ClientLanguageCode { get; set; }
         public string Note { get; set; }
         public Guid Id { get; set; }
 
-        public class InternalBookingSettings
+        public class BookingSettings
         {
             public string Name { get; set; }
             public string Phone { get; set; }

@@ -173,7 +173,7 @@ namespace apcurium.MK.Web.Tests
                 context.SaveChanges();
             }
 
-            var result = await client.SettleOverduePayment(null);
+            var result = await client.SettleOverduePayment();
             Assert.AreEqual(true, result.IsSuccessful);
 
             var overduePayment = await client.GetOverduePayment();

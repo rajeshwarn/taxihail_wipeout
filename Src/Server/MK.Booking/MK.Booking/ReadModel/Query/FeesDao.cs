@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Extensions;
+using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {

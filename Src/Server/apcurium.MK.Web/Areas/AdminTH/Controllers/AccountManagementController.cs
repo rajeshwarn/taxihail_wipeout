@@ -331,7 +331,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     var order = _orderDao.FindByAccountId(accountManagementModel.Id).FirstOrDefault(o => o.Id == accountManagementModel.RefundOrderId);
                     var orderModel = new OrderModel(order);
-                    
+
                     _notificationService.SendOrderRefundEmail(
                         DateTime.Now, 
                         refundPaymentResponse.Last4Digits,
@@ -459,12 +459,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                    var status = GetOrderStatusDetails(accountId).FirstOrDefault(orderStatusDetail => orderStatusDetail.OrderId == x.Id);
                    var orderPairing = _orderDao.FindOrderPairingById(x.Id);
 
-                   var hasPaymentInfo = x.PaymentInformation != null && x.PaymentInformation.CreditCardId.HasValue;
-                   var isOrderPairedAndRefundable = orderPairing != null || (x.IsManualRideLinq & hasPaymentInfo);
-
                    return new OrderModel(x)
                    {
-                       IsOrderPairing = isOrderPairedAndRefundable,
+                       IsOrderPairing = orderPairing != null,
                        PromoCode = promo != null ? promo.Code : string.Empty,
                        FareString = _resources.FormatPrice(x.Fare),
                        TaxString = _resources.FormatPrice(x.Tax),

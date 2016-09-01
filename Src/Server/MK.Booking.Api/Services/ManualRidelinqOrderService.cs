@@ -4,7 +4,6 @@ using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -19,8 +18,6 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -72,35 +69,14 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void ValidateAppVersion(AccountDetail account)
-        {
-            var appVersionString = base.Request.Headers.Get("ClientVersion");
-            var minimumAppVersionString = _serverSettings.ServerData.MinimumRequiredAppVersion;
-
-            if (appVersionString.IsNullOrEmpty() || minimumAppVersionString.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            var mobileVersion = new ApplicationVersion(appVersionString);
-            var minimumAppVersion = new ApplicationVersion(minimumAppVersionString);
-
-            if (mobileVersion < minimumAppVersion)
-            {
-                throw new Exception(string.Format("App version not supported (email: {0}, version: {1}, required: {2})", account.Email, appVersionString, minimumAppVersionString));
-            }
-        }
-
         public object Post(ManualRideLinqPairingRequest request)
         {
 	        try
 	        {
-                var accountId = new Guid(this.GetSession().UserAuthId);
+		        var accountId = new Guid(this.GetSession().UserAuthId);
 		        var account = _accountDao.FindById(accountId);
 
-                ValidateAppVersion(account);
-
-                var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
+		        var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
 
 		        if (currentRideLinq != null)
 		        {
@@ -196,6 +172,16 @@ namespace apcurium.MK.Booking.Api.Services
                     };
 
 					_commandBus.Send(command);
+
+                    _commandBus.Send(new PairForPayment
+                    {
+                        OrderId = command.OrderId,
+                        Medallion = response.Medallion,
+                        PairingCode = response.PairingCode,
+                        PairingToken = response.PairingToken,
+                        DriverId = trip.DriverId.ToString(),
+                        TokenOfCardToBeUsedForPayment = creditCard.Token
+                    });
 
 					var data = new OrderManualRideLinqDetail
 					{

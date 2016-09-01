@@ -16,7 +16,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
-using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -82,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    try
 		    {
-                _cachedSettings = await Mvx.Resolve<ConfigurationClientService>().GetPaymentSettings().ConfigureAwait(false);
+                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
                 _cache.Set(PaymentSettingsCacheKey, _cachedSettings);
                 _client = GetClient(_cachedSettings);
             }
@@ -138,9 +137,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().GetOverduePayment();
 		}
 
-        public async Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)
+        public async Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return await GetClient().SettleOverduePayment(kountSessionId);
+            return await GetClient().SettleOverduePayment();
         }
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)

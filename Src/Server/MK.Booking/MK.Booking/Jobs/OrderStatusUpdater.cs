@@ -121,10 +121,9 @@ namespace apcurium.MK.Booking.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
-            var oldPairingError = orderStatusDetail.PairingError;
             var trip = CheckForRideLinqCmtPairingErrors(orderStatusDetail, paymentSettings);
 
-            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail, oldPairingError))
+            if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 _logger.LogMessage("Skipping order update (Id: {0})", orderStatusDetail.OrderId);
                 return;
@@ -223,18 +222,12 @@ namespace apcurium.MK.Booking.Jobs
                 return null;
             }
 
-            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
-            {
-                // trip has terminating error, exiting
-                return null;
-            }
-
             InitializeCmtServiceClient(paymentSettings);
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
             if (tripInfo != null
-                && tripInfo.ErrorCode.HasValue
-                && CmtErrorCodes.TerminalErrors.Contains(tripInfo.ErrorCode.Value))
+                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
+                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
             {
                 orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
                 orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
@@ -390,19 +383,12 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.DriverInfos.VehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
             orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
             orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
-            orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
             orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
             orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
             orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
-
-            if (hasBailed)
-            {
-                // reset to empty values
-                orderStatusDetail.DriverInfos = new DriverInfos();
-                orderStatusDetail.VehicleNumber = string.Empty;
-            }
+            orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
 
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
@@ -600,13 +586,6 @@ namespace apcurium.MK.Booking.Jobs
 
         private void HandlePairingForRideLinqCmt(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo, ServerPaymentSettings paymentSettings, Trip trip)
         {
-            if (CmtErrorCodes.IsTerminalError(orderStatusDetail.PairingError))
-            {
-                // There was a terminal pairing error.
-                return;
-
-            }
-
             HandleOrderCompletionWithNoFare(orderStatusDetail,
                 () =>
                 {
@@ -653,7 +632,8 @@ namespace apcurium.MK.Booking.Jobs
                 if (hasNoFareInfo())
                 {
                     // no fare info yet
-                   if (orderStatusDetail.Status == OrderStatus.Completed)
+
+                    if (orderStatusDetail.Status == OrderStatus.Completed)
                     {
                         // no fare received but order is completed, change status to increase polling speed and to trigger a completion on clientside
                         orderStatusDetail.Status = OrderStatus.WaitingForPayment;
@@ -1043,10 +1023,7 @@ namespace apcurium.MK.Booking.Jobs
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null || pairingInfo.WasUnpaired)
             {
-                _logger.LogMessage(
-                    pairingInfo == null
-                        ? "Order {0}: No pairing to process as no pairing information was found."
-                        : "Order {0}: Order was unpaired, so no pairing to process.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -1071,13 +1048,12 @@ namespace apcurium.MK.Booking.Jobs
             throw new NotImplementedException("Cannot have pairing without any payment mode");
         }
 
-        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail, string oldPairingError)
+        private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
             return (ibsOrderInfo.Status.HasValue() // ibs status changed
                     && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status)
                    || (!orderStatusDetail.FareAvailable // fare was not available and ibs now has the information
                        && ibsOrderInfo.Fare > 0)
-                   || (orderStatusDetail.PairingError.HasValue() && oldPairingError != orderStatusDetail.PairingError)
                    || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment // special case for pairing
                    || (orderStatusDetail.Status == OrderStatus.TimedOut // special case for network                   
@@ -1175,11 +1151,7 @@ namespace apcurium.MK.Booking.Jobs
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
-                    var orderPairingDetail = _orderDao.FindOrderPairingById(orderDetail.Id);
-
-                    description = orderPairingDetail.SelectOrDefault(orderPairing => orderPairingDetail.PairingToken.HasValueTrimmed() && !orderPairingDetail.WasUnpaired)
-                        ? _resources.Get("OrderStatus_PairingSuccess", _languageCode)
-                        : _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
 

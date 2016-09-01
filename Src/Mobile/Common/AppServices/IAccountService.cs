@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using MK.Common.Configuration;
 using apcurium.MK.Common;
 using System.Threading;
 

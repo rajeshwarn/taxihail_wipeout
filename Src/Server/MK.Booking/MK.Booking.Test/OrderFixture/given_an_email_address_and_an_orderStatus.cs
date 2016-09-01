@@ -13,11 +13,9 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
 using Moq;
 using NUnit.Framework;
-using PCLCrypto;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -45,8 +43,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 null,
                 _geocodingMock.Object,
                 taxihailNetworkServiceClientMock.Object,
-                new Logger(),
-                new CryptographyService(WinRTCrypto.CryptographicEngine, WinRTCrypto.SymmetricKeyAlgorithmProvider, WinRTCrypto.HashAlgorithmProvider, new Logger()));
+                new Logger());
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             Sut.Setup(new EmailCommandHandler(notificationService));
@@ -152,9 +149,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             var dateFormat = CultureInfo.GetCultureInfo("fr");
-            var specificCulture = CultureInfo.GetCultureInfo("en-US");
 
-            //AssertTemplateValueEquals("DropOffAddress", "-");
+            AssertTemplateValueEquals("DropOffAddress", "-");
             AssertTemplateValueEquals("StaticMapUri", string.Empty);
             AssertTemplateValueEquals("ibsOrderId", "123");
             AssertTemplateValueEquals("HasDriverInfo", "True");
@@ -162,7 +158,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("VehicleNumber", "123");
             AssertTemplateValueEquals("DriverId", "1");
             AssertTemplateValueEquals("PickupDate", pickupDate.ToString("D", dateFormat));
-            AssertTemplateValueEquals("PickupTime", pickupDate.ToString("t", specificCulture));
+            AssertTemplateValueEquals("PickupTime", pickupDate.ToString("t", dateFormat));
             AssertTemplateValueEquals("DropOffDate", pickupDate.ToString("D", dateFormat));
             AssertTemplateValueEquals("DropOffTime", string.Empty);
             AssertTemplateValueEquals("ShowDropOffTime", "False");

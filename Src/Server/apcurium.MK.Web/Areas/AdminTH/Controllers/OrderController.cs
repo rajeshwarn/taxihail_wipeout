@@ -7,7 +7,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Sql.EventSourcing;
@@ -29,70 +28,25 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _bookingContextFactory = bookingContextFactory;
         }
 
-        // GET: AdminTH/Order/ViewDebug/{id}
-        public ActionResult ViewDebug(string id)
+        // GET: AdminTH/Order/ViewDebug/5
+        public ActionResult ViewDebug(int id)
         {
-            var ibsId = id.ToIntOrNull();
-            var orderId = id.ToGuidOrNull();
-
-            OrderDebugModel model;
-
-            if (ibsId.HasValue)
-            {
-                model = GenerateOrderDebugModel(ibsId.Value);
-            }
-            else if (orderId.HasValue)
-            {
-                model = GenerateOrderDebugModel(orderId.Value);
-            }
-            else
-            {
-                model = new OrderDebugModel();
-            }
-
-            return PartialView(model);
-        }
-
-        private OrderDebugModel GenerateOrderDebugModel(Guid orderId)
-        {
-            OrderDebugModel model;
-            var orderAndPaymentIds = new List<Guid>();
-            using (var context = _bookingContextFactory.Invoke())
-            {
-                var orderDetails = context.Query<OrderDetail>().FirstOrDefault(x => x.Id == orderId);
-                if (orderDetails == null)
-                {
-                    return new OrderDebugModel();
-                }
-
-                model = UpdateModelWithBookingContext(orderDetails, context);
-
-                orderAndPaymentIds.Add(orderId);
-                if (model.OrderPaymentDetail != null)
-                {
-                    orderAndPaymentIds.Add(model.OrderPaymentDetail.PaymentId);
-                }
-            }
-
-            model.RelatedEvents = GetEvents(orderAndPaymentIds);
-
-            return model;
-        }
-        
-        private OrderDebugModel GenerateOrderDebugModel(int id)
-        {
-            OrderDebugModel model;
+            var model = new OrderDebugModel();
 
             var orderAndPaymentIds = new List<Guid>();
             using (var context = _bookingContextFactory.Invoke())
             {
-                var orderDetails = context.Query<OrderDetail>().FirstOrDefault(x => x.IBSOrderId == id);
-                if (orderDetails == null)
+                model.OrderDetail = context.Query<OrderDetail>().FirstOrDefault(x => x.IBSOrderId == id);
+                if (model.OrderDetail == null)
                 {
-                    return new OrderDebugModel();
+                    return PartialView(model);
                 }
 
-                model = UpdateModelWithBookingContext(orderDetails, context);
+                model.UserEmail = context.Find<AccountDetail>(model.OrderDetail.AccountId).Email;
+                model.OrderStatusDetail = context.Find<OrderStatusDetail>(model.OrderDetail.Id);
+                model.OrderPairingDetail = context.Find<OrderPairingDetail>(model.OrderDetail.Id);
+                model.OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
+                model.OverduePaymentDetail = context.Query<OverduePaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
 
                 orderAndPaymentIds.Add(model.OrderDetail.Id);
                 if (model.OrderPaymentDetail != null)
@@ -101,26 +55,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
             }
 
-            model.RelatedEvents = GetEvents(orderAndPaymentIds);
-
-            return model;
-        }
-
-        private static OrderDebugModel UpdateModelWithBookingContext(OrderDetail orderDetail, BookingDbContext context)
-        {
-            return new OrderDebugModel()
-            {
-                OrderDetail = orderDetail,
-                UserEmail = context.Find<AccountDetail>(orderDetail.AccountId).Email,
-                OrderStatusDetail = context.Find<OrderStatusDetail>(orderDetail.Id),
-                OrderPairingDetail = context.Find<OrderPairingDetail>(orderDetail.Id),
-                OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == orderDetail.Id),
-                OverduePaymentDetail = context.Query<OverduePaymentDetail>().FirstOrDefault(x => x.OrderId == orderDetail.Id)
-            };
-        }
-
-        private string GetEvents(List<Guid> orderAndPaymentIds)
-        {
             using (var context = _eventsContextFactory.Invoke())
             {
                 var events = context.Set<Event>()
@@ -134,10 +68,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                             x.EventType,
                             Payload = JsonConvert.DeserializeObject(x.Payload)
                         });
-
-
-                return JsonConvert.SerializeObject(events);
+                model.RelatedEvents = JsonConvert.SerializeObject(events);
             }
+
+            return PartialView(model);
         }
     }
 }

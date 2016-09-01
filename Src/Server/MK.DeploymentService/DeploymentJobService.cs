@@ -169,14 +169,8 @@ namespace MK.DeploymentService
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
             var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Build"}, null);
 
-            string msBuildVersion = null;
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MSBuildVersion"]))
-            {
-                msBuildVersion = ConfigurationManager.AppSettings["MSBuildVersion"];
-            }
-
-            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, msBuildVersion, new[] { "Build" }, null);
             var bParam = new BuildParameters(pc);
 
 
@@ -217,7 +211,7 @@ namespace MK.DeploymentService
 
             Log(String.Format("Build Web Site"));
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
-            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, msBuildVersion, new[] {"Package"}, null);
+            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Package"}, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
 
             if (buildResultWeb.Exception != null)
@@ -443,9 +437,24 @@ namespace MK.DeploymentService
             var targetWeDirectory = Path.Combine(_job.Server.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
+
             CopyFiles(sourcePath, targetWeDirectory);
 
-            SetupWebApplication(companyName, appPoolName, iisManager, targetWeDirectory);
+            var webApp = SetupWebApplication(companyName, appPoolName, iisManager, targetWeDirectory);
+
+            var configuration = webApp.GetWebConfiguration();
+
+
+            var section =
+                configuration.GetSection("connectionStrings")
+                    .GetCollection()
+                    .First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+            
+            var connSting = section.Attributes["connectionString"];
+
+            
+
+            connSting.Value =string.Format(ConfigurationManager.AppSettings["SiteSqlConnectionString"], companyName );                    
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");

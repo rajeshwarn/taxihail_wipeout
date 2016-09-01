@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace CustomerPortal.Contract.Resources
 {
     public class MapCoordinate

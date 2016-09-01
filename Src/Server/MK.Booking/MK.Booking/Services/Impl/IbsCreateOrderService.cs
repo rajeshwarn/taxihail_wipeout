@@ -109,7 +109,6 @@ namespace apcurium.MK.Booking.Services.Impl
             else
             {
                 createOrderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                    orderId,
                     providerId,
                     ibsAccountId,
                     name,

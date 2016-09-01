@@ -96,10 +96,6 @@ namespace CustomerPortal.Client.Impl
                 ? _serverSettings.GetPaymentSettings().CancelOrderOnUnpair
                 : response.DisableOutOfAppPayment;
 
-            response.ShowCallDriver = !response.Market.HasValue()
-                ? _serverSettings.ServerData.ShowCallDriver
-                : response.ShowCallDriver;
-
             return response;
         }
 

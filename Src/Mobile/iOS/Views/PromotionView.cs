@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.ToPayment);
 
 			set.Bind(btnAddPayment)
-                .For("HiddenEx")
+				.For(v => v.HiddenWithConstraints)
 				.To(vm => vm.HasValidPaymentInformation);
 
 			set.Bind(lblNoPromotions)

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Web.UI.WebControls;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -19,13 +19,14 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -46,7 +47,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IGeocoding _geocoding;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ILogger _logger;
-        private readonly ICryptographyService _cryptographyService;
         private readonly Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
@@ -64,8 +64,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ISmsService smsService,
             IGeocoding geocoding,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            ILogger logger,
-            ICryptographyService cryptographyService = null)
+            ILogger logger)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -80,7 +79,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
-            _cryptographyService = cryptographyService;
 
             _resources = new Resources.Resources(serverSettings);
         }
@@ -378,7 +376,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
-            SendBookingConfirmationEmail.InternalBookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+            SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -655,48 +653,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
 
-                var marketSpecificNote = string.Empty;
-                var receiptLabels = new Dictionary<string, string>();
-                try
-                {
-                    var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupAddress.Latitude, pickupAddress.Longitude);
+                var marketSpecificNote = GetMarketReceiptFooter(pickupAddress.Latitude, pickupAddress.Longitude);
 
-                    if (marketSettings != null)
-                    {
-                        if (marketSettings.ReceiptFooter.HasValueTrimmed())
-                        {
-                            marketSpecificNote = string.Format("<br>{0}", marketSettings.ReceiptFooter);
-                        }
-                    }
-
-                    //Retrieve labels for the receipt
-                    if (marketSettings.ReceiptLines != null)
-                    {
-                        //Create a dictionary for the current language
-                        foreach (var receiptLine in marketSettings.ReceiptLines)
-                        {
-                            string label;
-                            receiptLine.Value.TryGetValue(clientLanguageCode, out label);
-                            receiptLabels.Add(receiptLine.Key, label);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    _logger.LogMessage("Could not get market settings [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
-                }
-
-                var emailBodyFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Fare", clientLanguageCode);
-                var emailBodyExtra = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Extra", clientLanguageCode);
-                var emailBodySurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Surcharge", clientLanguageCode);
-                var emailBodyToll = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Toll", clientLanguageCode);
-                var emailBodyImprovementSurcharge = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_ImprovementSurcharge", clientLanguageCode);
-                var emailBodyTip = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tip", clientLanguageCode);
-                var emailBodyTotalFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_TotalFare", clientLanguageCode);
-                var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
-                var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
-
-                var dropOffAddressDisplay = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-";
+                var dropOffAddressDisplay = hasDropOffAddress ? dropOffAddress.DisplayAddress : "-";
                 var pickupAddressDisplay = pickupAddress.DisplayAddress;
 
                 string hourSuffix = String.Empty;
@@ -812,41 +771,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                     promoCode,
                     AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
-                    ShowOrderNumber = showOrderNumber,
-
-                    EmailBodyFare = emailBodyFare,
-                    EmailBodyExtra = emailBodyExtra,
-                    EmailBodySurcharge = emailBodySurcharge,
-                    EmailBodyToll = emailBodyToll,
-                    EmailBodyImprovementSurcharge = emailBodyImprovementSurcharge,
-                    EmailBodyTip = emailBodyTip,
-                    EmailBodyTotalFare = emailBodyTotalFare,
-                    EmailBodyRideLinqLastFour = emailBodyRideLinqLastFour,
-                    EmailBodyTax = emailBodyTax,
-                    
-                    HasSocialMediaGoogleURL = !_serverSettings.ServerData.SocialMediaGoogleURL.IsNullOrEmpty(),
-                    SocialMediaGoogleImg = String.Concat(baseUrls.BaseUrlAssetsImg, "google.png"),
-                    SocialMediaGoogleURL = _serverSettings.ServerData.SocialMediaGoogleURL,
-
-                    HasSocialMediaFacebookURL = !_serverSettings.ServerData.SocialMediaFacebookURL.IsNullOrEmpty(),
-                    SocialMediaFacebookImg = String.Concat(baseUrls.BaseUrlAssetsImg, "facebook.png"),
-                    SocialMediaFacebookURL = _serverSettings.ServerData.SocialMediaFacebookURL,
-
-                    HasSocialMediaTwitterURL = !_serverSettings.ServerData.SocialMediaTwitterURL.IsNullOrEmpty(),
-                    SocialMediaTwitterImg = String.Concat(baseUrls.BaseUrlAssetsImg, "twitter.png"),
-                    SocialMediaTwitterURL = _serverSettings.ServerData.SocialMediaTwitterURL,
-
-                    HasSocialMediaPinterestURL = !_serverSettings.ServerData.SocialMediaPinterestURL.IsNullOrEmpty(),
-                    SocialMediaPinterestImg = String.Concat(baseUrls.BaseUrlAssetsImg, "pinterest.png"),
-                    SocialMediaPinterestURL = _serverSettings.ServerData.SocialMediaPinterestURL,
-
-                    HasSocialMediaYoutubeURL = !_serverSettings.ServerData.SocialMediaYoutubeURL.IsNullOrEmpty(),
-                    SocialMediaYoutubeImg = String.Concat(baseUrls.BaseUrlAssetsImg, "youtube.png"),
-                    SocialMediaYoutubeURL = _serverSettings.ServerData.SocialMediaYoutubeURL,
-
-                    HasSocialMediaInstagramURL = !_serverSettings.ServerData.SocialMediaInstagramURL.IsNullOrEmpty(),
-                    SocialMediaInstagramImg = String.Concat(baseUrls.BaseUrlAssetsImg, "instagram.png"),
-                    SocialMediaInstagramURL = _serverSettings.ServerData.SocialMediaInstagramURL,
+                    ShowOrderNumber = showOrderNumber
                 };
 
                 SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -1254,7 +1179,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var hashedImagedata = CryptographyService.GetHashString(imageData);
+                        var hashedImagedata = CryptographyHelper.GetHashString(imageData);
 
                         // Append its hash to its URL
                         return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
@@ -1292,37 +1217,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage("Could not get market receipt footer [Called GetCompanyMarketSettings with for lat:{0} lng:{1}]", latitude, longitude);
                 return string.Empty;
             }
-        }
-
-        private ICryptographyService CryptographyService
-        {
-            get
-            {
-                if (_cryptographyService == null)
-                {
-                    throw new NullReferenceException("Can't find CryptographyService instance. Dependancy Injection step missing ?!");
-                }
-
-                return _cryptographyService;
-            }
-        }
-
-        /// <summary>
-        /// Returns label from dictionary or from Resx by default
-        /// </summary>
-        /// <param name="receiptLabels"></param>
-        /// <param name="key"></param>
-        /// <param name="language"></param>
-        /// <returns></returns>
-        private string GetReceiptLabelOrDefault(IDictionary<string, string> receiptLabels, string key, string language)
-        {
-            string receiptLabel;
-            var valueFound = receiptLabels.TryGetValue(key, out receiptLabel);
-            if (!valueFound || string.IsNullOrEmpty(receiptLabel))
-            {
-                receiptLabel = _resources.Get(key, language);
-            }
-            return receiptLabel;
         }
     }
 }

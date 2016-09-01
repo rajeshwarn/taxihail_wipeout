@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile
                     {
                         LastGeneralError = DateTime.Now;
 
-						_logger.LogError(ex, string.Empty, -1, true);
+                        _logger.LogError(ex);
                     }
                     break;
                 }

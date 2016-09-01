@@ -17,8 +17,6 @@ namespace apcurium.MK.Booking.Commands
             PaymentInfo = null; // must be null if not used - see email template
         }
 
-        public bool BypassNotificationSettings { get; set; }
-
         public Guid OrderId { get; set; }
         public string EmailAddress { get; set; }
         public int IBSOrderId { get; set; }

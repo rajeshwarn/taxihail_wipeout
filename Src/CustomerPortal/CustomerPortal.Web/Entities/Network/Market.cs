@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Contract.Resources;
-using CustomerPortal.Web.Properties;
 using MongoRepository;
 
 namespace CustomerPortal.Web.Entities.Network
@@ -14,16 +13,12 @@ namespace CustomerPortal.Web.Entities.Network
             Vehicles = new List<Vehicle>();
             DispatcherSettings = new DispatcherSettings();
             MarketTariff = new Tariff();
-            Region = new MapRegion();
         }
 
         public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public MapRegion Region { get; set; }
 
         public DispatcherSettings DispatcherSettings { get; set; }
 
@@ -43,11 +38,7 @@ namespace CustomerPortal.Web.Entities.Network
 
         public bool EnableAppFareEstimates { get; set; }
 
-        public bool ShowCallDriver { get; set; }
-
         public Tariff MarketTariff { get; set; }
-
-        public IDictionary<string, IDictionary<string, string>> ReceiptLines { get; set; }
     }
 
     public class Vehicle

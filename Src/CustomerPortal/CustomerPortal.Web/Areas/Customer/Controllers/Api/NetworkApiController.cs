@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -18,18 +19,17 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
     {
         private readonly IRepository<TaxiHailNetworkSettings> _networkRepository;
         private readonly IRepository<Company> _companyRepository;
-        private readonly IRepository<Market> _marketRepository;
+
 
         public NetworkApiController() 
-            : this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>(), new MongoRepository<Market>())
+            : this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>())
         {
         }
 
-        public NetworkApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository, IRepository<Market> marketRepository)
+        public NetworkApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository)
         {
             _networkRepository = networkRepository;
             _companyRepository = companyRepository;
-            _marketRepository = marketRepository;
         }
 
         [Route("api/customer/{companyId}/network")]
@@ -42,12 +42,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
-            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id).ToArray();
-            var compagniesInSameMarket = otherCompaniesInNetwork.Where(n => n.Market == networkSettings.Market).ToArray();
+            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
+                .ToArray();
+
+            var overlappingCompanies = otherCompaniesInNetwork.Where(n => n.Region.Contains(networkSettings.Region))
+                .ToArray();
 
             var preferences = new List<CompanyPreferenceResponse>();
 
-            foreach (var nearbyCompany in compagniesInSameMarket)
+            foreach (var nearbyCompany in overlappingCompanies)
             {
                 if (!IsFleetAllowed(nearbyCompany.FleetId, networkSettings.WhiteListedFleetIds, networkSettings.BlackListedFleetIds))
                 {
@@ -172,15 +175,11 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
                     if (coordinate != null)
                     {
-                        var market = _marketRepository.GetMarket(networkSettings.Market);
-                        if (market != null && market.Region != null)
+                        var isCompanyInZone = network.Any(n => n.Id == companyPreferences.CompanyKey && n.Region.Contains(coordinate));
+                        if (isCompanyInZone)
                         {
-                            var isCompanyInZone = market.Region.Contains(coordinate);
-                            if (isCompanyInZone)
-                            {
-                                // Company coverage is in the network zone. Add it to the fleet.
-                                networkFleetResult.Add(fleet);
-                            }
+                            // Company coverage is in the network zone. Add it to the fleet.
+                            networkFleetResult.Add(fleet);
                         }
                     }
                     else

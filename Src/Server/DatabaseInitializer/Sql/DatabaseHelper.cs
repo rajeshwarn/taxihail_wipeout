@@ -98,7 +98,7 @@ namespace DatabaseInitializer.Sql
                 connection.Close();
             }
             
-            return result == DBNull.Value || result == null ? (Nullable<T>)null : (T)result;
+            return result == DBNull.Value ? (Nullable<T>)null : (T)result;
         }
         public static IEnumerable<T> ExecuteListQuery<T>(string connectionString, string cmdText)
         {

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        public IDictionary<string,string> GetIPAddresses()
+        public IDictionary<string,IPAddress> GetIPAddresses()
         {
             var netInterfaceInfos = new Dictionary<string, NetInterfaceInfo>();
 
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 freeifaddrs(ifap);
             }
 
-            return netInterfaceInfos.ToDictionary(x => x.Key, x => x.Value.Address.ToString());
+            return netInterfaceInfos.ToDictionary(x => x.Key, x => x.Value.Address);
         }
 
         [DllImport("libc")]

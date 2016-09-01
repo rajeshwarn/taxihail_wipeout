@@ -305,9 +305,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				};
 
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
-                Logger.LogMessage("MarketSettings for order {0}: {1}", orderCreated.Id, _marketSettings.ToJson());
 
-                _deviceCollectorService.GenerateNewSessionIdAndCollect();
+				_deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 				return new OrderRepresentation(orderCreated, orderStatus);
 			}
@@ -328,9 +327,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
-					var localizedMessageKey = error.ResponseStatus.ErrorCode == "CreateOrder_PendingOrder" 
-                        ? error.ResponseStatus.ErrorCode 
-                        : error.ResponseStatus.Message;
+					var localizedMessageKey = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
 
                     throw new OrderCreationException(localizedMessageKey, error.ResponseStatus.Message);
 			    }
@@ -951,11 +948,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             var order = new CreateOrderRequest();
 			order.Id = Guid.NewGuid();
 			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
-			if (order.PickupDate.HasValue) 
-			{
-				order.PickupDate = DateTime.SpecifyKind (order.PickupDate.Value, DateTimeKind.Unspecified);
-			}
-
+            if (order.PickupDate.HasValue)
+            {
+                order.PickupDate = DateTime.SpecifyKind(order.PickupDate.Value, DateTimeKind.Unspecified);
+            }
             order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();

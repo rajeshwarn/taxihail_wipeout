@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 .To(vm => vm.NavigateToAddCard);
             
             set.Bind(btnAddCard)
-                .For("HiddenEx")
+                .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanAddCard)
                 .WithConversion("BoolInverter");
             

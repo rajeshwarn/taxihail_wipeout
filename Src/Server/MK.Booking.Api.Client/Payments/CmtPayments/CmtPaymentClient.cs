@@ -111,13 +111,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return Client.GetAsync<OverduePayment>("/account/overduepayment", logger: _logger);
         }
 
-        public Task<SettleOverduePaymentResponse> SettleOverduePayment(string kountSessionId)
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Client.PostAsync(new SettleOverduePaymentRequest
-            {
-                KountSessionId = kountSessionId,
-                CustomerIpAddress = _ipAddressManager.GetIPAddress()
-            });
+            return Client.PostAsync(new SettleOverduePaymentRequest());
         }
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)

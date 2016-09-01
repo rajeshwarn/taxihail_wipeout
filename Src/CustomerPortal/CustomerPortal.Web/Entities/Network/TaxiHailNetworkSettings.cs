@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CustomerPortal.Contract.Resources;
@@ -17,7 +16,8 @@ namespace CustomerPortal.Web.Entities.Network
 
         public string Id { get; set; }
 
-        [Obsolete("Use the Region in Market instead")]
+        [Required]
+        [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region { get; set; }
 
         [Required]

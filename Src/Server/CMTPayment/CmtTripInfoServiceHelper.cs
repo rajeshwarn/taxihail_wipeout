@@ -87,11 +87,8 @@ namespace CMTPayment
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
-                if (trip != null 
-                    && trip.HttpStatusCode == (int)HttpStatusCode.BadRequest 
-                    && CmtErrorCodes.TerminalErrors.Contains(trip.ErrorCode.Value))
+				if (trip != null && trip.HttpStatusCode == (int)HttpStatusCode.BadRequest && (trip.ErrorCode == CmtErrorCodes.UnableToPair || trip.ErrorCode == CmtErrorCodes.CreditCardDeclinedOnPreauthorization || trip.ErrorCode == CmtErrorCodes.UnablePreauthorizeCreditCard))
 				{
-                    // stop polling because we hit a terminal error
 					return trip;
 				}
 
@@ -105,7 +102,6 @@ namespace CMTPayment
                 }
             }
 
-            // return the trip because it's valid (no error code)
             return trip;
         }
 
@@ -122,8 +118,7 @@ namespace CMTPayment
 
                 if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
                 {
-                    _logger.LogMessage("Timeout Exception, Could not be unpaired from vehicle.");
-                    throw new TimeoutException("Could not be unpaired from vehicle");
+                    throw new TimeoutException("Could not be unpaired of vehicle");
                 }
             }
         }

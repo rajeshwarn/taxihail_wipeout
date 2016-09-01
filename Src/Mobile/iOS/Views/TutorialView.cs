@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             pageControl.Hidden = false;
             pageControl.Pages = PageCount;
 
-			btnClose.AccessibilityLabel = Localize.GetValue("CloseTutorial");
+            btnClose.AccessibilityLabel = Localize.GetValue("CloseTutorial");
         }
 
         private void ScrollViewScrolled (object sender, EventArgs e)

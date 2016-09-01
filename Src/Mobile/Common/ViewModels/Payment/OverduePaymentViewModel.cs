@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
@@ -15,27 +14,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	{
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountService _accountService;
-	    private readonly IDeviceCollectorService _deviceCollectorService;
-	    private readonly IAppSettings _appSettings;
-        
-        public OverduePaymentViewModel(IPaymentService paymentService, 
-			IAccountService accountService,
-            IDeviceCollectorService deviceCollectorService,
-            IAppSettings appSettings)
+		private readonly IAppSettings _appSettings;
+
+		public OverduePaymentViewModel(IPaymentService accountService, 
+			IAccountService accountService1,
+			IAppSettings appSettings)
 		{
-			_paymentService = paymentService;
-		    _accountService = accountService;
-            _deviceCollectorService = deviceCollectorService;
-            _appSettings = appSettings;
-        }
+			this._appSettings = appSettings;
+		    _paymentService = accountService;
+		    _accountService = accountService1;
+		}
 
-        private string _kountSessionId;
-
-        public void Init(string overduePayment)
+		public void Init(string overduePayment)
 	    {
 			OverduePayment = overduePayment.FromJson<OverduePayment>();
-
-            _kountSessionId = _deviceCollectorService.GetSessionId();
         }
 
 		private OverduePayment _overduePayment;
@@ -111,12 +103,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				    {
                         try
                         {
-                            var overduePaymentResult = await _paymentService.SettleOverduePayment(_kountSessionId);
+                            var overduePaymentResult = await _paymentService.SettleOverduePayment();
 
                             if (overduePaymentResult.IsSuccessful)
                             {
-								_deviceCollectorService.GenerateNewSessionIdAndCollect();
-
                                 // Fire and forget to update creditcard cache, we do not need to wait for this.
                                 Task.Run(() => _accountService.GetDefaultCreditCard()).FireAndForget();
 

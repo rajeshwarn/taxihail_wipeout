@@ -5,7 +5,6 @@ using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common.Extensions;
 using CoreAnimation;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -67,15 +66,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public override bool Enabled
-		{
-			get { return base.Enabled; }
-			set
-			{
-				base.Enabled = value;
-				base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
-				ShowOrHideRightArrow();
-				SetNeedsDisplay ();
+		public override bool Enabled 
+        {
+            get { return base.Enabled; }
+			set 
+            {
+                if (base.Enabled != value)
+                {
+                    base.Enabled = value;
+                    base.BackgroundColor = value ? BackgroundColor : UIColor.Clear;
+
+                    SetNeedsDisplay();
+                }
 			}
 		}
 
@@ -112,12 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-
-        public void SetStrokeColor (UIColor color)
-        {
-            this.Layer.BorderWidth = UIHelper.OnePixel;
-            this.Layer.BorderColor = color.CGColor;
-        }
             
         private UIImageView _rightArrow { get; set; }
         private bool _hasRightArrow { get; set; }
@@ -126,8 +122,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _hasRightArrow; }
             set 
             {
-                _hasRightArrow = value;
-                ShowOrHideRightArrow();
+                if (_hasRightArrow != value)
+                {
+                    _hasRightArrow = value;
+
+                    ShowOrHideRightArrow();
+                }
             }
         }
 

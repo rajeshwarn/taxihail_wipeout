@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.Api.Services
             ZipCode = "H2S 3C5"
         };
 
-        private readonly SendBookingConfirmationEmail.InternalBookingSettings _bookingSettings = new SendBookingConfirmationEmail.InternalBookingSettings
+        private readonly SendBookingConfirmationEmail.BookingSettings _bookingSettings = new SendBookingConfirmationEmail.BookingSettings
         {
             ChargeType = "Card on File",
             LargeBags = 0,

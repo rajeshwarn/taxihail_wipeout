@@ -202,48 +202,40 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPairedForPayment @event)
         {
-            try
+            using (var context = _contextFactory.Invoke())
             {
-                using (var context = _contextFactory.Invoke())
+                var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (existingPairing != null)
                 {
-                    var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
-                    if (existingPairing != null)
+                    _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderPairingDetail
                     {
-                        _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
-                    }
-                    else
+                        OrderId = @event.SourceId,
+                        Medallion = @event.Medallion,
+                        DriverId = @event.DriverId,
+                        PairingToken = @event.PairingToken,
+                        PairingCode = @event.PairingCode,
+                        TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                        AutoTipAmount = @event.AutoTipAmount,
+                        AutoTipPercentage = @event.AutoTipPercentage
+                    });
+
+                    var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
+                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
+                    if (!paymentSettings.IsUnpairingDisabled)
                     {
-                        context.Save(new OrderPairingDetail
-                        {
-                            OrderId = @event.SourceId,
-                            Medallion = @event.Medallion,
-                            DriverId = @event.DriverId,
-                            PairingToken = @event.PairingToken,
-                            PairingCode = @event.PairingCode,
-                            TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
-                            AutoTipAmount = @event.AutoTipAmount,
-                            AutoTipPercentage = @event.AutoTipPercentage
-                        });
-
-                        var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-
-                        var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
-                        if (!paymentSettings.IsUnpairingDisabled)
-                        {
-                            // Unpair only available if automatic pairing is disabled
-                            orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
-                                ? DateTime.UtcNow.AddHours(12)                                      // Unpair will be available for the duration of the ride (considering ride duration is less than 12 hours)
-                                : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
-
-                            context.Save(orderStatus);
-                        }
+                        // Unpair only available if automatic pairing is disabled
+                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                            ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                            : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+                        
+                        context.Save(orderStatus);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                throw;
             }
         }
 
@@ -681,8 +673,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
                     order.Tip = @event.Tip;
-                    order.Surcharge = @event.Surcharge + @event.AccessFee; // add access fees here since it's only for manual ridelinq and we don't want to add a property for it in OrderDetail
-
                     context.Save(order);
                 }
 

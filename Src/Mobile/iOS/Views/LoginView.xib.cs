@@ -40,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtEmail.AccessibilityLabel = txtEmail.Placeholder;
             txtEmail.ReturnKeyType = UIReturnKeyType.Next;
 			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtEmail.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 			txtEmail.ShouldReturn = delegate {                          
 				txtEmail.ResignFirstResponder ();
                 txtPassword.BecomeFirstResponder();
@@ -51,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtPassword.AccessibilityLabel = txtPassword.Placeholder;
 			txtPassword.SecureTextEntry = true;
 			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtPassword.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 			txtPassword.ShouldReturn = delegate {                          
                 txtPassword.ResignFirstResponder ();
 				return true;

@@ -9,6 +9,8 @@ using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
+using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using MongoRepository;
 using Newtonsoft.Json;
 
@@ -133,18 +135,21 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Longitude = longitude
             };
 
-            var markets = _marketRepository.Collection.FindAll().ToArray();
+            // Get all companies in network
+            var companiesInNetwork = _networkRepository.Where(n => n.IsInNetwork).ToArray();
 
-            var marketOfTheUserPosition = markets.FirstOrDefault(x => x.Region.Contains(userPosition));
-            if (marketOfTheUserPosition != null)
+            // Find the first company that includes the user position
+            // (it doesn't matter which one because they will all share the same market key anyway)
+            var localCompany = companiesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
+            if (localCompany != null)
             {
-                response = GetMarketSettings(marketOfTheUserPosition);
+                response = GetMarketSettings(localCompany.Market);
 
                 // Check if we have changed market
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
                 if (homeCompany == null                             // company not found in network
                     || !homeCompany.IsInNetwork                     // company is not network enabled
-                    || marketOfTheUserPosition.Name == homeCompany.Market)   // company is in local market
+                    || localCompany.Market == homeCompany.Market)   // company is in local market
                 {
                     response.Market = null;
                 }
@@ -281,28 +286,30 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return allowed;
         }
 
-        private CompanyMarketSettingsResponse GetMarketSettings(Market market)
+        private CompanyMarketSettingsResponse GetMarketSettings(string marketName)
         {
-            if (market == null)
+            if (marketName == null)
             {
                 return new CompanyMarketSettingsResponse();
             }
 
-            return new CompanyMarketSettingsResponse
-            {
-                Market = market.Name,
-                DispatcherSettings = market.DispatcherSettings,
-                EnableDriverBonus = market.EnableDriverBonus,
-                ReceiptFooter = market.ReceiptFooter,
-                EnableFutureBooking = market.EnableFutureBooking,
-                FutureBookingReservationProvider = market.FutureBookingReservationProvider,
-                FutureBookingTimeThresholdInMinutes = market.FutureBookingTimeThresholdInMinutes,
-                EnableAppFareEstimates = market.EnableAppFareEstimates,
-                MarketTariff = market.MarketTariff,
-                DisableOutOfAppPayment = market.DisableOutOfAppPayment,
-                ShowCallDriver = market.ShowCallDriver,
-                ReceiptLines = market.ReceiptLines
-            };
+            var marketSettings = _marketRepository.GetMarket(marketName);
+
+            return marketSettings != null
+                ? new CompanyMarketSettingsResponse
+                {
+                    Market = marketName,
+                    DispatcherSettings = marketSettings.DispatcherSettings,
+                    EnableDriverBonus = marketSettings.EnableDriverBonus,
+                    ReceiptFooter = marketSettings.ReceiptFooter,
+                    EnableFutureBooking = marketSettings.EnableFutureBooking,
+                    FutureBookingReservationProvider = marketSettings.FutureBookingReservationProvider,
+                    FutureBookingTimeThresholdInMinutes = marketSettings.FutureBookingTimeThresholdInMinutes,
+                    EnableAppFareEstimates = marketSettings.EnableAppFareEstimates,
+                    MarketTariff = marketSettings.MarketTariff,
+                    DisableOutOfAppPayment = marketSettings.DisableOutOfAppPayment
+                }
+                : new CompanyMarketSettingsResponse();
         }
     }
 }

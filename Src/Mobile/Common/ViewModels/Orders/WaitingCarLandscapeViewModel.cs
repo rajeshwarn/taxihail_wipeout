@@ -1,82 +1,36 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Enumeration;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.TaxihailEventArgs;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-    public class WaitingCarLandscapeViewModel : PageViewModel
+	public class WaitingCarLandscapeViewModel : PageViewModel
 	{
-	    private static EventHandler<BookingStatusChangedEventArgs> _bookingStatusChanged;
-	    private readonly IDeviceOrientationService _deviceOrientationService;
-        private string _carNumber;
-        private DeviceOrientations _deviceOrientation;
+		private string _carNumber;
+		private DeviceOrientations _deviceOrientation;
 
-		public static bool IsViewVisible { get; private set; }
-
-        public WaitingCarLandscapeViewModel(IDeviceOrientationService deviceOrientationService)
-        {
-            _deviceOrientationService = deviceOrientationService;
-        }
-        public void Init(string carNumber, DeviceOrientations deviceOrientation)
-        {
-			IsViewVisible = true;
-            CarNumber = carNumber;
-            DeviceOrientation = deviceOrientation;
-        }
-
-		private void HandleBookingStatusChanged(BookingStatusChangedEventArgs args)
+		public void Init(WaitingCarLandscapeViewModelParameters waitingCarLandscapeViewModelParameters)
 		{
-			if (args.ShouldCloseWaitingCarLandscapeView)
-			{
-				CloseCommand.ExecuteIfPossible();
-				return;
-			}
+			CarNumber = waitingCarLandscapeViewModelParameters.CarNumber;
+			DeviceOrientation = waitingCarLandscapeViewModelParameters.DeviceOrientations;
 
-			CarNumber = args.CarNumber;
+			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.Subscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
 		}
 
-	    public static void NotifyBookingStatusChanged(object sender, string carNumber, bool shouldClose)
-	    {
-	        if (_bookingStatusChanged != null)
-	        {
-	            _bookingStatusChanged(sender, new BookingStatusChangedEventArgs()
-	            {
-	                CarNumber = carNumber,
-                    ShouldCloseWaitingCarLandscapeView = shouldClose
-	            });
-	        }
-	    }
+		private void UpdateModelParametersEvent(DeviceOrientations deviceOrientation, string carNumber)
+		{
+			DeviceOrientation = deviceOrientation;
+			CarNumber = carNumber;
+		}
 
-        public override void OnViewLoaded()
-        {
-            base.OnViewLoaded();
+		private void СloseWaitingWindowEvent()
+		{
+			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.UnSubscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
+			Close(this);
+		}
 
-            _deviceOrientationService.ObserveDeviceIsInLandscape()
-               .Subscribe(orientation =>
-               {
-                   DeviceOrientation = orientation;
-               },
-                   Logger.LogError)
-               .DisposeWith(Subscriptions);
-
-            Observable.FromEventPattern<EventHandler<BookingStatusChangedEventArgs>, BookingStatusChangedEventArgs>(
-                handler => _bookingStatusChanged += handler,
-                handler => _bookingStatusChanged -= handler
-                )
-                .Select(args => args.EventArgs)
-                .Where(args => args.CarNumber != _carNumber || args.ShouldCloseWaitingCarLandscapeView)
-                .Subscribe(
-                    HandleBookingStatusChanged,
-                    Logger.LogError
-                )
-                .DisposeWith(Subscriptions);
-        }
-
-        public string CarNumber
+		public string CarNumber
 		{
 			get { return _carNumber; }
 			set
@@ -102,23 +56,64 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public override void OnViewStopped()
-		{
-			base.OnViewStopped();
-			IsViewVisible = false;
-			// Clearing subscriptions to ensure we kill the static event handlers.
-			Subscriptions.Clear();
-		}
-
 		public ICommand CloseView
 		{
 			get
 			{
 				return this.GetCommand(() =>
-				{
-				    Close(this);
-				});
+					{
+						BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+					});
 			}
+		}
+	}
+
+	public class WaitingCarLandscapeViewModelParameters
+	{
+		public event Action<DeviceOrientations, string> UpdateModelParametersEvent;
+		public event Action СloseWaitingWindowEvent;
+
+		public string CarNumber { get; set; }
+
+		public DeviceOrientations DeviceOrientations { get; set; }
+
+		public bool WaitingWindowClosed = false;
+
+		private object _exclusiveAccess = new object();
+
+		public void UpdateModelParameters(DeviceOrientations deviceOrientations, string carMumber)
+		{
+			lock (_exclusiveAccess)
+			{
+				if (UpdateModelParametersEvent != null && !WaitingWindowClosed)
+				{
+					UpdateModelParametersEvent(deviceOrientations, carMumber);
+				}
+			}
+		}
+
+		public void CloseWaitingWindow()
+		{
+			lock (_exclusiveAccess)
+			{
+				if (СloseWaitingWindowEvent != null && !WaitingWindowClosed)
+				{
+					СloseWaitingWindowEvent();
+					WaitingWindowClosed = true;
+				}
+			}
+		}
+
+		public void Subscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
+		{
+			UpdateModelParametersEvent += updateModelParametersEvent;
+			СloseWaitingWindowEvent += closeWaitingWindowEvent;
+		}
+
+		public void UnSubscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
+		{
+			UpdateModelParametersEvent -= updateModelParametersEvent;
+			СloseWaitingWindowEvent -= closeWaitingWindowEvent;
 		}
 	}
 }

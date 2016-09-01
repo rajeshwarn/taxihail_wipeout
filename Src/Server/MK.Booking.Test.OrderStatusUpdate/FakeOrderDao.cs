@@ -39,12 +39,6 @@ namespace MK.Booking.Test.OrderStatusUpdate
 
             return response;
         }
-
-        public OrderStatusDetail GetActiveOrderStatusDetails(Guid accountId)
-        {
-            throw new NotSupportedException();
-        }
-
         public OrderStatusDetail FindOrderStatusById(Guid orderId)
         {
            return new OrderStatusDetail()

@@ -2,7 +2,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -15,6 +14,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Helpers;
@@ -27,21 +27,17 @@ namespace apcurium.MK.Booking.Api.Services
     public class ConfirmAccountService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly ICommandBus _commandBus;//
+        private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ITemplateService _templateService;
-        private readonly Resources.Resources _resources;
-        private readonly IBlackListEntryService _blackListEntryService;
 
-        public ConfirmAccountService(ICommandBus commandBus, IAccountDao accountDao, ITemplateService templateService, IBlackListEntryService blackListEntryService,
+        public ConfirmAccountService(ICommandBus commandBus, IAccountDao accountDao, ITemplateService templateService,
             IServerSettings serverSettings)
         {
             _accountDao = accountDao;
             _templateService = templateService;
             _serverSettings = serverSettings;
             _commandBus = commandBus;
-            _blackListEntryService = blackListEntryService;
-            _resources = new Resources.Resources(serverSettings);
         }
 
         public static string AssemblyDirectory
@@ -125,11 +121,6 @@ namespace apcurium.MK.Booking.Api.Services
                         && PhoneHelper.IsPossibleNumber(countryCodeFromRequest, request.PhoneNumber)
 						&& (account.Settings.Country.Code != countryCodeFromRequest.CountryISOCode.Code || account.Settings.Phone != request.PhoneNumber))
 					{
-                        if (_blackListEntryService.GetAll().Any(e => e.PhoneNumber.Equals(request.PhoneNumber.ToSafeString())))
-                        {
-                            throw new HttpError(_resources.Get("PhoneBlackListed"));
-                        }
-
 						countryCodeForSMS = countryCodeFromRequest.CountryISOCode;
 						phoneNumberForSMS = request.PhoneNumber;
 

@@ -134,15 +134,6 @@
             }
         }
 
-        $('#CompanyId').bind("change", function()
-        {
-            if ($('#CompanyId').find(":selected").val() == 'Arro') {
-                alert('For Arro, please set Server URL to Arro.')
-                var $radios = $('input:radio[name=ServerUrlOptions]');
-                $radios.filter('[value=Arro]').prop('checked', true);
-            }
-        })
-
         $(function() {
             $(document).ready(function() {
                 if ($.cookie('showCompanyDetails')) {
