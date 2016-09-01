@@ -1,18 +1,11 @@
 ﻿using System;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Serializer;
-using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class CreditCardDetails : BaseDto
+	public class CreditCardDetails : BaseDto
     {
-        public CreditCardDetails()
-        {
-            Label = CreditCardLabelConstants.Personal;
-        }
-
         public Guid CreditCardId { get; set; }
 
         public Guid AccountId { get; set; }
@@ -30,6 +23,12 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string ExpirationYear { get; set; }
 
         public bool IsDeactivated { get; set; }
+
+		public string StreetName { get; set; }
+		public string StreetNumber { get; set; }
+		public string Email { get; set; }
+		public string Phone { get; set; }
+		public CountryISOCode Country { get; set; }
 
         public bool IsExpired()
         {
@@ -50,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
             return false;
         }
 
-        public CreditCardLabelConstants Label { get; set; }
+        public string Label { get; set; }
 
         public string ZipCode { get; set; }
     }

@@ -113,6 +113,22 @@
     <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
   </div>
 
+  <div id="enableAddressVerificationDiv">
+    <label class="control-label settingsLabel">{{{localize "Enable Address Verification"}}}</label>
+      <select name="enableAddressVerification" class="settingsBox">
+          <option value="{{enableAddressVerification}}" selected="">{{localizeBool enableAddressVerification true="Yes" false="No"}}</option>
+          <option value="{{invertedBool enableAddressVerification}}">{{localizeBool enableAddressVerification true="No" false="Yes"}}</option>
+      </select>
+  </div>
+
+  <div id="enableContactVerificationDiv">
+    <label class="control-label settingsLabel">{{{localize "Enable Contact Verification"}}}</label>
+      <select name="enableContactVerification" class="settingsBox">
+          <option value="{{enableContactVerification}}" selected="">{{localizeBool enableContactVerification true="Yes" false="No"}}</option>
+          <option value="{{invertedBool enableContactVerification}}">{{localizeBool enableContactVerification true="No" false="Yes"}}</option>
+      </select>
+  </div>
+
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
     <br />

@@ -959,6 +959,18 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f05006d
 			public const int ConfirmCompanyLabel = 2131034221;
 			
+			// aapt resource value: 0x7f050328
+			public const int ConfirmCreditCardOfOrder_ChangeCreditCard = 2131034920;
+			
+			// aapt resource value: 0x7f050326
+			public const int ConfirmCreditCardOfOrder_Message = 2131034918;
+			
+			// aapt resource value: 0x7f050325
+			public const int ConfirmCreditCardOfOrder_Title = 2131034917;
+			
+			// aapt resource value: 0x7f050327
+			public const int ConfirmCreditCardOfOrder_withNickname_Message = 2131034919;
+			
 			// aapt resource value: 0x7f05006a
 			public const int ConfirmDateTimeLabel = 2131034218;
 			
@@ -1052,6 +1064,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f0501bb
 			public const int CreditCard = 2131034555;
 			
+			// aapt resource value: 0x7f050323
+			public const int CreditCardAdd_StreetNameLabel = 2131034915;
+			
+			// aapt resource value: 0x7f050324
+			public const int CreditCardAdd_StreetNumberLabel = 2131034916;
+			
 			// aapt resource value: 0x7f0501f4
 			public const int CreditCardAdded = 2131034612;
 			
@@ -1099,6 +1117,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f05031f
 			public const int CreditCardInvalidCrediCardTypeAmex = 2131034911;
+			
+			// aapt resource value: 0x7f050322
+			public const int CreditCardInvalidCrediCardTypeDiscover = 2131034914;
+			
+			// aapt resource value: 0x7f050321
+			public const int CreditCardInvalidCrediCardTypeVisaMastercard = 2131034913;
 			
 			// aapt resource value: 0x7f050179
 			public const int CreditCardLabel = 2131034489;

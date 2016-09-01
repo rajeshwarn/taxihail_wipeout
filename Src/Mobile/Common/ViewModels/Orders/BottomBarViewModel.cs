@@ -598,6 +598,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				_orderWorkflowService.BeginCreateOrder();
 
+				if (await _orderWorkflowService.ShouldPromptForCreditCardConfirm())
+				{
+					var localize = this.Services().Localize;
+					var creditCard = _accountService.CurrentAccount.DefaultCreditCard;
+
+					var message = creditCard.Label.HasValueTrimmed()
+                     	? string.Format(localize["ConfirmCreditCardOfOrder_withNickname_Message"], creditCard.Label)
+                        : string.Format(localize["ConfirmCreditCardOfOrder_Message"], creditCard.CreditCardCompany, creditCard.Last4Digits, creditCard.ExpirationMonth, creditCard.ExpirationYear);
+					
+					var isConfirm = false;
+					await this.Services().Message.ShowMessage(
+						localize["ConfirmCreditCardOfOrder_Title"],
+						message,
+						localize["YesButton"],
+						() => { isConfirm = true; },
+						localize["ConfirmCreditCardOfOrder_ChangeCreditCard"],
+						() => { isConfirm = false; });
+
+
+					if (!isConfirm)
+					{
+						ShowViewModel<CreditCardMultipleViewModel>();
+						return;
+					}
+				}
+
+
 				if (await _orderWorkflowService.ShouldPromptForCvv())
 				{
 					var cvv = await this.Services().Message.ShowPromptDialog(

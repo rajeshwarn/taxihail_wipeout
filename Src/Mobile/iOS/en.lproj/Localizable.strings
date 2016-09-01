@@ -337,7 +337,7 @@
 "PaymentDetails.TipAmountLabel"="Tip Amount";
 "PaymentDetails.Label.Personal"="Personal";
 "PaymentDetails.Label.Business"="Business";
-"PaymentDetails.LabelName"="Label";
+"PaymentDetails.LabelName"="Nickname";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
 "CreditCardZipCode"="Zip/Postal";
@@ -772,3 +772,9 @@
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.";
+"CreditCardAdd_StreetNameLabel"="Street name";
+"CreditCardAdd_StreetNumberLabel"="Street #";
+"ConfirmCreditCardOfOrder_Title"="Confirm credit card";
+"ConfirmCreditCardOfOrder_Message"="Are you sure you want to use your currently selected {0} card ending in {1} and expires on {2}/{3}?";
+"ConfirmCreditCardOfOrder_withNickname_Message"="Are you sure you want to use the card with the name {0}?";
+"ConfirmCreditCardOfOrder_ChangeCreditCard"="Use different Card";

@@ -1054,6 +1054,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return false;
 		}
 
+		public async Task<bool> ShouldPromptForCreditCardConfirm()
+		{
+			var order = await GetOrder();
+
+			return order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id &&
+				        _appSettings.Data.MaxNumberOfCardsOnFile > 1;
+		}
+
 		public bool ValidateAndSetCvv(string cvv)
 		{
 			if (!cvv.HasValue())

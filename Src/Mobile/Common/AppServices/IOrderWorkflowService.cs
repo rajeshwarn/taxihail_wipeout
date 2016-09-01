@@ -145,6 +145,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void CancelRebookOrder();
 
 		Task<bool> ShouldPromptForCvv();
+
+		Task<bool> ShouldPromptForCreditCardConfirm();
+
 		bool ValidateAndSetCvv(string cvv);
 
 		void DisableBooking();
