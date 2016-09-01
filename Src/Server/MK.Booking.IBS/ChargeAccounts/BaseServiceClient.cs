@@ -44,16 +44,20 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         }
         protected T Get<T>(string pathInfo)
         {
-            AddAuthorizationTokenIfNeeded<T>(pathInfo);
+            AddAuthorizationTokenIfNeeded("GET", pathInfo);
 
-            var response = Client.GetAsync(pathInfo).Result;
+            var path = pathInfo.StartsWith("/")
+                ? pathInfo.Remove(0, 1)
+                : pathInfo;
+
+            var response = Client.GetAsync(path).Result;
 
             var resultJson = response.Content.ReadAsStringAsync().Result;
 
             return resultJson.FromJson<T>();
         }
 
-        void AddAuthorizationTokenIfNeeded<T>(string pathInfo)
+        void AddAuthorizationTokenIfNeeded(string httpMethod, string pathInfo)
         {
             if (!_ibsSettings.RestApiUser.HasValueTrimmed() || !_ibsSettings.RestApiSecret.HasValueTrimmed())
             {
@@ -62,7 +66,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
 
-            var stringToHash = "GET" + pathInfo + dateStr;
+            var stringToHash = httpMethod + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
             Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
@@ -86,9 +90,13 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             var requestJson = request.ToJson();
 
-            AddAuthorizationTokenIfNeeded<T>(pathInfo);
+            AddAuthorizationTokenIfNeeded("POST", pathInfo);
 
-            var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
+            var path = pathInfo.StartsWith("/")
+                ? pathInfo.Remove(0, 1)
+                : pathInfo;
+
+            var response = Client.PostAsync(path, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
             var resultJson = response.Content.ReadAsStringAsync().Result;
 
             return resultJson.FromJson<T>();
