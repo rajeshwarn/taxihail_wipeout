@@ -20,9 +20,9 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
         private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 
-		private const string ApiUrl = "https://api.tomtom.com/lbs/services/";
-		private const string RoutingServiceUrl = "route/3/{1}/Quickest/json?key={0}&avoidTraffic=true&includeTraffic=true&includeInstructions=false{2}";
-		private const string PointsFormat = "{0},{1}:{2},{3}";
+        private const string ApiUrl = "https://api.tomtom.com/";
+        private const string RoutingServiceUrl = "routing/1/calculateRoute/{1}/json?key={0}&traffic=true{2}";
+        private const string PointsFormat = "{0},{1}:{2},{3}";
 		private const string DateTimeFormat = "&day={0}&time={1}";
 
         public TomTomProvider(IAppSettings settings, ILogger logger, IConnectivityService connectivityService)
@@ -54,11 +54,14 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 
 				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
 
-                result.Distance = direction.Route.Summary.TotalDistanceMeters;
-                result.Duration = direction.Route.Summary.TotalTimeSeconds;         // based on history for given day and time
-                result.TrafficDelay = direction.Route.Summary.TotalDelaySeconds;    // this will only be available if date = null, otherwise it's 0
-			}
-			catch(Exception e)
+                if (direction != null && direction.Routes.Count > 0)
+                {
+                    result.Distance = direction.Routes[0].Summary.lengthInMeters;
+                    result.Duration = direction.Routes[0].Summary.travelTimeInSeconds;         // based on history for given day and time
+                    result.TrafficDelay = direction.Routes[0].Summary.trafficDelayInSeconds;    // this will only be available if date = null, otherwise it's 0
+                }
+            }
+            catch (Exception e)
 			{
 				_logger.LogError (e);
 			}
@@ -73,6 +76,8 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 
 		private string GetDayAndTimeParameter(DateTime? date)
 		{
+            return string.Empty;
+
 			if (!date.HasValue)
 			{
 				return string.Empty;
