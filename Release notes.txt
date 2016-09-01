@@ -379,9 +379,9 @@ Version bump 3.3.1
 	TAX-140 Added a Config.AppSetting called DisplayTimePickerInTwelveHourFormat, that is sent to the client to control the format of the time picker (12/24 hour)
 
 3.5.28
-
+	Fixed issue whereas connection Authentication would fail on POST call (Charge Account).
 3.5.29
-
+	Fixed bad version bump
 3.5.30
 	TAX-84 updated text to No hay vehículos disponibles in Master.es.resx, some of the issues identified in the defect are addressed by TAX-149 fix 
 	TAX-147, created a new MELLEVA Spanish resource file to override the translation of TAXI->UNIDAD to TAXI for MELLEVA
@@ -389,5 +389,5 @@ Version bump 3.3.1
 	When releasing this to MELLEVA / AmarilloTaxiGuatemala, the representative from the support team will have to change some company settings on the company's website:
 	Map - Direction Map Provider should be changed to TomTom
 	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
-	Updated the PushNotificationService to use PushSharp 4.0.10.
+	Fixed issue whereas the path was not always completely used (Charge Account).
 	
