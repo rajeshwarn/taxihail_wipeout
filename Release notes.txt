@@ -389,5 +389,5 @@ Version bump 3.3.1
 	When releasing this to MELLEVA / AmarilloTaxiGuatemala, the representative from the support team will have to change some company settings on the company's website:
 	Map - Direction Map Provider should be changed to TomTom
 	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
-	
+	Updated the PushNotificationService to use PushSharp 4.0.10.
 	
