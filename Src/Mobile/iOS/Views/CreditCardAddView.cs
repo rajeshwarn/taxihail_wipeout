@@ -146,8 +146,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblEmail.RemoveFromSuperview();
 				lblPhoneNumber.RemoveFromSuperview();
 			}
-			var scr = (UIScrollView)View.Subviews[0];
-
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
@@ -156,7 +154,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.CreditCardSaveButtonDisplay);
 
 			set.Bind(btnSaveCard)
+			   .For("HiddenEx")
+			   .To(vm => vm.IsAddingNewCard)
+			   .WithConversion("BoolInverter");
+
+			set.Bind(txtCvv)
                 .For("HiddenEx")
+				.To(vm => vm.IsAddingNewCard)
+				.WithConversion("BoolInverter");
+
+			set.Bind(lblCvv)
+				.For("HiddenEx")
 				.To(vm => vm.IsAddingNewCard)
 				.WithConversion("BoolInverter");
 
@@ -246,6 +254,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtCvv)
 				.For(v => v.Enabled)
 				.To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtEmail)
+			   .For(v => v.Enabled)
+			   .To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtPhoneNumber)
+			   .For(v => v.Enabled)
+			   .To(vm => vm.IsAddingNewCard);
+
+			set.Bind(lblCountryCode)
+			   .For(v => v.Enabled)
+			   .To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtStreetName)
+			   .For(v => v.Enabled)
+			   .To(vm => vm.IsAddingNewCard);
+
+			set.Bind(txtStreetNumber)
+			   .For(v => v.Enabled)
+			   .To(vm => vm.IsAddingNewCard);
 
             set.Bind(btnLinkPayPal)
                 .For(v => v.Hidden)
