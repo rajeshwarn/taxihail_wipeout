@@ -801,7 +801,7 @@
     <comment>mins</comment>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
-    <value>No hay vehículo dosponible</value>
+    <value>No hay vehículos disponibles</value>
     <comment>No vehicle available</comment>
   </data>
   <data name="Facebook" xml:space="preserve">

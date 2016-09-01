@@ -407,6 +407,7 @@
     </None>
     <EmbeddedResource Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
+    <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <EmbeddedResource Include="Localization\groveRideNow.resx">

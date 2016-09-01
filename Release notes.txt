@@ -378,3 +378,16 @@ Version bump 3.3.1
 	features to be included...
 	TAX-140 Added a Config.AppSetting called DisplayTimePickerInTwelveHourFormat, that is sent to the client to control the format of the time picker (12/24 hour)
 
+3.5.28
+
+3.5.29
+
+3.5.30
+	TAX-84 updated text to No hay vehículos disponibles in Master.es.resx, some of the issues identified in the defect are addressed by TAX-149 fix 
+	TAX-147, created a new MELLEVA Spanish resource file to override the translation of TAXI->UNIDAD to TAXI for MELLEVA
+	TAX-149 updated TomTom Directions Provider to latest API since Apple directions provider does not support Guatemala
+	When releasing this to MELLEVA / AmarilloTaxiGuatemala, the representative from the support team will have to change some company settings on the company's website:
+	Map - Direction Map Provider should be changed to TomTom
+	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
+	
+	
