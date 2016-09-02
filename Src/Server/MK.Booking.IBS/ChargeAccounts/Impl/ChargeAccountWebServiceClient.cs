@@ -33,11 +33,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)
         {
-            var content = new {prompts = prompts.ToArray(), account_number, customer_number};
-
             try
             {
-                var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new { prompts, account_number, customer_number });
+                var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new {prompts = prompts.ToArray(), account_number, customer_number});
                 return validation.Result;
             }
             catch (HttpRequestException ex)

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Services;
 
-namespace MK.Common.Configuration
+namespace apcurium.MK.Common.Configuration
 {
 	public class TaxiHailSetting
     {
@@ -203,7 +202,7 @@ namespace MK.Common.Configuration
 		public string TwitterAuthorizeUrl { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
-        [Display(Name = "Facebook - Publish Enabled", Description="Facebook Publish Enabled")]
+        [Display(Name = "Facebook - Publish Enabled", Description="Facebook Publish Enabled (Analytics/Reporting)")]
 		public bool FacebookPublishEnabled { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
@@ -387,7 +386,7 @@ namespace MK.Common.Configuration
         public bool HideCallDispatchButton { get; protected set; }
 
         [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead", false)]
-        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
+        [Hidden, SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
 
@@ -535,7 +534,7 @@ namespace MK.Common.Configuration
         public bool HideTHNetworkAppMenu { get; protected set; }
 
 		[Obsolete("IsDriverBonusEnabled is now a market settings, configurable in the Customer Portal")]
-        [SendToClient, CustomizableByCompany]
+        [Hidden, SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
 

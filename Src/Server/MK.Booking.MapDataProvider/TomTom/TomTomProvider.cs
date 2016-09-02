@@ -60,8 +60,8 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
                     result.Duration = direction.Routes[0].Summary.travelTimeInSeconds;         // based on history for given day and time
                     result.TrafficDelay = direction.Routes[0].Summary.trafficDelayInSeconds;    // this will only be available if date = null, otherwise it's 0
                 }
-			}
-			catch(Exception e)
+            }
+            catch (Exception e)
 			{
 				_logger.LogError (e);
 			}
