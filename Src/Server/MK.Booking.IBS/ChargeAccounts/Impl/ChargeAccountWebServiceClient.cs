@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             }
             catch (HttpRequestException ex)
             {
+                var content = new {prompts = prompts.ToArray(), account_number, customer_number};
+
                 Logger.LogError(ex);
                 Logger.LogMessage($"Data sent: {content.ToJson()}");
 

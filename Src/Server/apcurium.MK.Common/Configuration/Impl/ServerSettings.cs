@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
