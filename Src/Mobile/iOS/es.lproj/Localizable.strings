@@ -172,7 +172,7 @@
 "Eta"="El taxi más cercano esta a {0} {1} de distancia";
 "EtaDurationUnit"="min";
 "EtaDurationUnitPlural"="mins";
-"EtaNotAvailable"="No hay vehículo dosponible";
+"EtaNotAvailable"="No hay vehículos disponibles";
 "Facebook"="Iniciar sesión con Facebook";
 "FavoriteLocationsTitle"="Lugares favoritos";
 "FavoritesButton"="Favoritos";

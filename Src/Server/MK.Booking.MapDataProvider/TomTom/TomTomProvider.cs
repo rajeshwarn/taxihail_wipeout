@@ -8,7 +8,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
