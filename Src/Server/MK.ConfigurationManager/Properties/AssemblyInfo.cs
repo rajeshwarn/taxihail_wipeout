@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MK.ConfigurationManager")]
-[assembly: AssemblyCopyright("Copyright ÃÆÃ¢â¬Å¡ÃâÃÂ©  2012")]
+[assembly: AssemblyCopyright("Copyright ÃƒÂƒÃ†Â’ÃƒÂ¢Ã¢Â‚Â¬Ã…Â¡ÃƒÂƒÃ¢Â€ÂšÃƒÂ‚Ã‚Â©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,7 +50,7 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("3.5.29")]
-[assembly: AssemblyVersion("3.5.30")]
-[assembly: AssemblyFileVersion("3.5.30")]
+// [assembly: AssemblyVersion("3.5.31")]
+[assembly: AssemblyVersion("3.5.31")]
+[assembly: AssemblyFileVersion("3.5.31")]
 
