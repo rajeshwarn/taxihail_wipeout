@@ -1,4 +1,4 @@
-3.1.5
+﻿3.1.5
 	Added auto-follow cancellation to iOS
 	Fixed issue where wrong message was given when auto-pairing was not disabled
 	Fixed issue where Taxi Icon appears after cancellation
@@ -391,4 +391,8 @@ Version bump 3.3.1
 	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
 	Fixed issue whereas the path was not always completely used (Charge Account).
 	Updated PushSharp nuget package to 4.0.10, had to rewrite the PushNotifiationService.
+
+3.5.31
+	Fixed build issue.
+	Fixed Charge Account Authentication challenge issue.
 	
