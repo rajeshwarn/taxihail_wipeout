@@ -114,14 +114,14 @@ namespace apcurium.MK.Booking.Services
             return response;
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false, string kountSessionId = null, string customerIpAddress = null)
         {
             if (IsPayPal(orderId: orderId, isForPrepaid: isForPrepaid))
             {
                 return _payPalServiceFactory.GetInstance(companyKey).CommitPayment(companyKey, orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
             }
 
-            return GetInstance(companyKey).CommitPayment(companyKey, orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId);
+            return GetInstance(companyKey).CommitPayment(companyKey, orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId, isForPrepaid, kountSessionId, customerIpAddress);
         }
 
         public RefundPaymentResponse RefundPayment(string companyKey, Guid orderId)

@@ -7,6 +7,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Services;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using DatabaseInitializer.Services;
@@ -19,6 +20,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using PCLCrypto;
 
 #endregion
 

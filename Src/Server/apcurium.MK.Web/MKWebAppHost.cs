@@ -46,8 +46,16 @@ namespace apcurium.MK.Web
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
             JsConfig.IncludeNullValues = true;
+
+            // Ensuring that Guids always serialize with the hyphens
+            JsConfig<Guid>.RawSerializeFn += guid => EnsureGuidAsString(guid.ToString("D"));
+            JsConfig<Guid?>.RawSerializeFn += guid => guid.HasValue ? EnsureGuidAsString(guid.Value.ToString("D")): null;
         }
 
+        private string EnsureGuidAsString(string value)
+        {
+            return "\"{0}\"".InvariantCultureFormat(value);
+        }
 
         private DateTime? NullableDateTimeRawDesirializtion(string s)
         {

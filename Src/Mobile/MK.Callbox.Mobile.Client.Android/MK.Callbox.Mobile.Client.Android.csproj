@@ -60,13 +60,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CrossUI.Core">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
     </Reference>
     <Reference Include="CrossUI.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\ModernHttpClient.dll</HintPath>
@@ -74,8 +74,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Square.OkHttp">
       <HintPath>..\Libraries\ModernHttpClient\MonoAndroid\Square.OkHttp.dll</HintPath>
@@ -102,46 +101,49 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Cirrious.CrossCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e16445fd9b451819">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.CrossCore.Droid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e16445fd9b451819">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding.Droid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Droid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Localization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
+      <HintPath>..\..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Connectivity.Plugin">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="Connectivity.Plugin.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.1.0.3\lib\MonoAndroid10\Connectivity.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\..\packages\Validation.2.2.8\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +213,7 @@
     <AndroidAsset Include="Assets\AppFont_Italic.otf" />
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
     <AndroidAsset Include="Assets\AppFont_Regular.otf" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -321,6 +324,10 @@
     <AndroidResource Include="Resources\Values-es\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apcurium.MK.Common\apcurium.MK.Common.csproj">
+      <Project>{DC94CDF6-9F94-46AB-AC81-FEF5900D1D04}</Project>
+      <Name>apcurium.MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
       <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>
@@ -333,9 +340,9 @@
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
+    <ProjectReference Include="..\apcurium.MK.Booking.Mobile\apcurium.MK.Booking.Mobile.csproj">
+      <Project>{69D8AAEA-4111-4FFA-B035-6CEC2DAC200E}</Project>
+      <Name>apcurium.MK.Booking.Mobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>

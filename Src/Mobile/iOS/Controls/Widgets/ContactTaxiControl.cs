@@ -62,12 +62,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.SendMessageToDriverCommand);
 
             set.Bind(btnCallDriver)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.IsCallTaxiVisible)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnMessageDriver)
-                .For(v => v.HiddenWithConstraints)
+                .For("HiddenEx")
                 .To(vm => vm.IsMessageTaxiVisible)
                 .WithConversion("BoolInverter");
 

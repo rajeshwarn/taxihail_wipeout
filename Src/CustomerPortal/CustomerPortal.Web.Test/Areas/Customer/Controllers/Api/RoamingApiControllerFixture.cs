@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -52,11 +53,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "MTL",
                 FleetId = 424242,
                 WhiteListedFleetIds = "987564,321674,23134,88784,99999", // ChrisBis, Tom, Tony, Pilou, Last. Bob exclued
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis", CanAccept = true, CanDispatch = true, Order = 2},
@@ -71,12 +67,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 FleetId = 987564,
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.41129, Longitude = -73.51331 } // MTL BTM Right
-
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = true,CanDispatch = true},
@@ -90,12 +80,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
-                FleetId = 321674,
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.474307, Longitude = -73.58412 } // Home
-                }
+                FleetId = 321674
             };
 
             _tomTaxi = new TaxiHailNetworkSettings
@@ -105,11 +90,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "CHI",
                 FleetId = 23134,
                 IsInNetwork = true,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 5000000, Longitude = -73.656990 },
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.43874, Longitude = -73.58412 }
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -126,11 +106,6 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "NYC",
                 FleetId = 88784,
                 WhiteListedFleetIds = "444444", // Random one to test BobTaxi exclusion
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.496042 }
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
@@ -147,12 +122,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "SYD",
                 FleetId = 99999,
-                BlackListedFleetIds = "10101019, 666, 010101",
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
-                }
+                BlackListedFleetIds = "10101019, 666, 010101"
             };
 
             _bobTaxi = new TaxiHailNetworkSettings
@@ -161,17 +131,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "NYC",
                 FleetId = 587564,
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.41129, Longitude = -73.51331 } // MTL BTM Right
-
-                },
                 Preferences = new List<CompanyPreference>
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = true,CanDispatch = true},
                     new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
-                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true}
                 }
             };
 
@@ -184,14 +148,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Market = "SYD",
                 FleetId = 88784,
                 BlackListedFleetIds = "666",
-                Region = new MapRegion
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
-                },
                 Preferences = new List<CompanyPreference>
                 {
-                    new CompanyPreference{CompanyKey = "BlacklistedTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "BlacklistedTaxi",CanAccept = true,CanDispatch = true}
                 }
             };
 
@@ -201,14 +160,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "SYD",
                 FleetId = 666,
-                Region = new MapRegion()
-                {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
-                },
                 Preferences = new List<CompanyPreference>
                 {
-                    new CompanyPreference{CompanyKey = "TaxiWhenBlacklistedProhibited",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TaxiWhenBlacklistedProhibited",CanAccept = true,CanDispatch = true}
                 }
             };
 
@@ -415,6 +369,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(false, result.EnableDriverBonus);
             Assert.AreEqual(null, result.ReceiptFooter);
+            Assert.AreEqual(false, result.ShowCallDriver);
         }
 
         [Test]
@@ -431,6 +386,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(true, result.EnableDriverBonus);
             Assert.AreEqual("my custom footer 1", result.ReceiptFooter);
+            Assert.AreEqual(false, result.ShowCallDriver);
         }
 
         [Test]
@@ -447,6 +403,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
             Assert.AreEqual(true, result.EnableDriverBonus);
             Assert.AreEqual(null, result.ReceiptFooter);
+            Assert.AreEqual(true, result.ShowCallDriver);
         }
 
         [Test]
@@ -512,15 +469,35 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var collectionMock = MongoMock.CreateMongoCollection<Market>(databaseMock.Object, "FooCollection");
             var cursorMock = MongoMock.CreateMongoCursor(collectionMock.Object, new List<Market>
             {
-                new Market { Name = "MTL", EnableDriverBonus = true, ReceiptFooter = "my custom footer 1", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } },
-                new Market { Name = "NYC", EnableDriverBonus = false, ReceiptFooter = "my custom footer 2", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 } },
-                new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 } },
-                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 } },
-                new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 } }
+                new Market { Name = "MTL", EnableDriverBonus = true, ReceiptFooter = "my custom footer 1", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
+                    }},
+                new Market { Name = "NYC", EnableDriverBonus = false, ReceiptFooter = "my custom footer 2", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.496042 }
+                    }},
+                new Market { Name = "NYCSS", EnableDriverBonus = true, ReceiptFooter = "my custom footer 3", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                    }},
+                new Market { Name = "SYD", EnableDriverBonus = true, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 2, NumberOfCycles = 3, DurationOfOfferInSeconds = 15 }, ShowCallDriver = true, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
+                    }},
+                new Market { Name = "CHI", EnableDriverBonus = false, ReceiptFooter = null, DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 4, DurationOfOfferInSeconds = 25 }, Region = new MapRegion
+                    {
+                        CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
+                        CoordinateEnd = new MapCoordinate { Latitude = 45.474307, Longitude = -73.58412 } // Home
+                    }}
             });
             collectionMock.Setup(x => x.Find(It.IsAny<IMongoQuery>())).Returns(cursorMock.Object);
+            collectionMock.Setup(x => x.FindAll()).Returns(cursorMock.Object);
             marketRepositoryMock.Setup(x => x.Collection).Returns(collectionMock.Object);
-
             return marketRepositoryMock.Object;
         }
     }

@@ -734,6 +734,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
 				_locationService.Start();
 
+                var isInBookingMode = CurrentViewState == HomeViewModelState.ManualRidelinq ||
+                                      CurrentViewState == HomeViewModelState.BookingStatus;
+
+                if (!isInBookingMode)
+                {
+                    Task.Run(() => VerifyActiveOrder()).FireAndForget();
+                }
+                
 				AutomaticLocateMeAtPickup.ExecuteIfPossible();
                 CheckUnratedRide();
 				CheckTermsAsync();
@@ -742,6 +750,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				_metricsService.LogApplicationStartUp ();
             }
+        }
+
+	    private async Task VerifyActiveOrder()
+	    {
+	        var order = await _bookingService.GetActiveOrder();
+
+	        if (order == null)
+	        {
+	            return;
+	        }
+
+	        if (order.Order.IsManualRideLinq)
+	        {
+	            var manualRideLinq = await _bookingService.GetTripInfoFromManualRideLinq(order.Order.Id);
+
+                CurrentViewState = HomeViewModelState.ManualRidelinq;
+
+                BookingStatus.StartBookingStatus(manualRideLinq.Data, true);
+
+                return;
+            }
+
+            CurrentViewState = HomeViewModelState.BookingStatus;
+
+            BookingStatus.StartBookingStatus(order.Order, order.OrderStatus);
         }
 
         private void MarketChanged(MarketSettings marketSettings)

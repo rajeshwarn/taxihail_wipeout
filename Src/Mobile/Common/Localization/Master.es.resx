@@ -590,6 +590,12 @@
     <value>Lo sentimos, por el momento las tarjetas AMEX no son aceptadas.</value>
     <comment>Sorry, Amex cards are not supported</comment>
   </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Sorry, Visa, Mastercard and Visa Electron cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Sorry, Discover cards are not supported</value>
+  </data>
   <data name="CreditCardLabel" xml:space="preserve">
     <value>Etiqueta</value>
   </data>

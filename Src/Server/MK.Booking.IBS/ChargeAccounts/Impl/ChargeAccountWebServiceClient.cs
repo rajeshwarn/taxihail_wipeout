@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.IBS.ChargeAccounts
 {
@@ -21,31 +24,33 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
                 var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
                 return account?.Result;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 Logger.LogError(ex);
                 return null;
             }
-            
         }
 
         public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)
         {
+            var content = new {prompts = prompts.ToArray(), account_number, customer_number};
+
             try
             {
                 var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new { prompts, account_number, customer_number });
                 return validation.Result;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 Logger.LogError(ex);
+                Logger.LogMessage($"Data sent: {content.ToJson()}");
 
                 return new ChargeAccountValidation()
                 {
-                    Valid = false
+                    Valid = false,
+                    Message = "Validation failed."
                 };
             }
-            
         }
         
         public IEnumerable<ChargeAccount> GetAllAccount()
@@ -55,7 +60,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
                 var allAccounts = Get<ChargeAccountCollectionResponse>("/account/corporate/all/");
                 return allAccounts.Accounts;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 Logger.LogError(ex);
                 return new ChargeAccount[0];

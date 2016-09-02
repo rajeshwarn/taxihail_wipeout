@@ -439,6 +439,12 @@
   <data name="CreditCardInvalidCrediCardTypeAmex" xml:space="preserve">
     <value>Sorry, Amex cards are not supported</value>
   </data>
+  <data name="CreditCardInvalidCrediCardTypeVisaMastercard" xml:space="preserve">
+    <value>Sorry, Visa, Mastercard and Visa Electron cards are not supported</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardTypeDiscover" xml:space="preserve">
+    <value>Sorry, Discover cards are not supported</value>
+  </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>
   </data>

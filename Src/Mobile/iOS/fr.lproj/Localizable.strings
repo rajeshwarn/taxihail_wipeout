@@ -109,6 +109,8 @@
 "CreditCardInvalidCrediCardNumber"="Le numéro de la carte ne semble pas être valide";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "CreditCardInvalidCrediCardTypeAmex"="Désolé, nous ne supportons pas les cartes Amex";
+"CreditCardInvalidCrediCardTypeVisaMastercard"="Désolé, nous ne supportons pas les cartes Visa, Mastercard et Visa Electron";
+"CreditCardInvalidCrediCardTypeDiscover"="Désolé, nous ne supportons pas les cartes Discover";
 "CreditCardLabel"="Label";
 "CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";

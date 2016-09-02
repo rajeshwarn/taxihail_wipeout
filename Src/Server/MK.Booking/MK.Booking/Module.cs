@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Mail;
@@ -14,6 +15,7 @@ using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
@@ -29,8 +31,10 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Services;
 using AutoMapper;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -71,7 +75,32 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>(), container.Resolve<IEventSourcedRepository<Promotion>>()));
-            container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    ICryptographyService cryptographyService = null;
+                    try
+                    {
+                        cryptographyService = c.Resolve<ICryptographyService>();
+                    }
+                    catch (Exception)
+                    {
+                        // nothing to do because ICryptographyService is considere 
+                    }
+                    return new NotificationService(() => container.Resolve<BookingDbContext>(),
+                        container.Resolve<IPushNotificationService>(),
+                        container.Resolve<ITemplateService>(),
+                        container.Resolve<IEmailSender>(),
+                        container.Resolve<IServerSettings>(),
+                        container.Resolve<IConfigurationDao>(),
+                        container.Resolve<IOrderDao>(),
+                        container.Resolve<IAccountDao>(),
+                        container.Resolve<IStaticMap>(),
+                        container.Resolve<ISmsService>(),
+                        container.Resolve<IGeocoding>(),
+                        container.Resolve<ITaxiHailNetworkServiceClient>(),
+                        container.Resolve<ILogger>(), cryptographyService);
+                }));
 
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));

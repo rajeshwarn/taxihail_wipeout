@@ -1,48 +1,35 @@
 ﻿@model CustomerPortal.Web.Areas.Admin.Models.TaxiHailNetworkSettingsModel
     
 <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
-    
+
 @using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>
-            @Html.DisplayNameFor(x => x.TaxiHailNetworkSettings.Region)
-        </legend>
-        <div class="editor-coordinate-field">
-            @Html.LabelFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart)
-            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Latitude, new {id = "StartLatitude", placeholder = "Latitude"})
-            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Longitude, new {id = "StartLongitude", placeholder = "Longitude"})
-        </div>
-        <div class="validation-message">
-            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Latitude)
-            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Longitude)
-        </div>
-        <div class="editor-coordinate-field">
-            @Html.LabelFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd)
-            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Latitude, new {id = "EndLatitude", placeholder = "Latitude"})
-            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Longitude, new {id = "EndLongitude", placeholder = "Longitude"})
-        </div>
-        <div class="validation-message">
-            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Latitude)
-            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Longitude)
-        </div>
-    </fieldset>
     
     <fieldset>
         <legend>
         </legend>
         <div class="editor-fleet-field">
             @Html.LabelFor(x => x.TaxiHailNetworkSettings.Market)
-            @*@Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Market, new { id = "MarketTextBox" })*@
-            @Html.DropDownListFor(x => x.TaxiHailNetworkSettings.Market, Model.AvailableMarkets, new { id = "MarketTextBox" })
+            <select id="MarketTextBox" class="valid" onchange="coordinatesChanged()" name="TaxiHailNetworkSettings.Market" data-val-required="The Market field is required." data-val="true">
+                @foreach (var market in @Model.AvailableMarkets)
+                {
+                    <option value="@market.Name"
+                            startLat="@(market.Region != null ? market.Region.CoordinateStart.Latitude : 0)"
+                            startLng="@(market.Region != null ? market.Region.CoordinateStart.Longitude : 0)"
+                            endLat="@(market.Region != null ? market.Region.CoordinateEnd.Latitude : 0)"
+                            endLng="@(market.Region != null ? market.Region.CoordinateEnd.Longitude : 0)"
+                            @if (market.Name == Model.TaxiHailNetworkSettings.Market){ <text>selected</text> } >
+                        @market.Name
+                    </option>
+                }
+            </select>
             @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Market)
         </div>
         <div class="editor-fleet-field">
             @Html.LabelFor(x => x.TaxiHailNetworkSettings.FleetId)
-            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.FleetId, new {id = "FleetTextBox"})
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.FleetId, new { id = "FleetTextBox" })
             @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.FleetId)
         </div>
         <div class="editor-fleet-field">
@@ -54,12 +41,12 @@
             @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.BlackListedFleetIds, new { id = "FleetIdBlackist", placeholder = "Comma delimited FleetIds" })
         </div>
     </fieldset>
-    
+
     <fieldset>
         <br/>
         <div class="editor-field">
             @Html.LabelFor(x => x.TaxiHailNetworkSettings.IsInNetwork)
-            @Html.CheckBoxFor(x => x.TaxiHailNetworkSettings.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "checkChanged(this)" })
+            @Html.CheckBoxFor(x => x.TaxiHailNetworkSettings.IsInNetwork, new { id = "IsInNetworkCheckBox" })
         </div>
     </fieldset>
 
@@ -93,7 +80,6 @@
     }
 
     function save() {
-        coordinatesChanged();
         var form = $('#taxiHailNetworkForm');
         var panel = $('#validationPanel');
 
@@ -123,15 +109,17 @@
     google.maps.event.addDomListener(window, 'load', initialize);
     
     function coordinatesChanged() {
-        var startLat = $("#StartLatitude").val();
-        var startLon = $("#StartLongitude").val();
-        var endLat = $("#EndLatitude").val();
-        var endLon = $("#EndLongitude").val();
+        var marketSelect = $('#MarketTextBox')[0];
+        var selectedMarket = marketSelect.options[marketSelect.selectedIndex];
+
+        var startLat = selectedMarket.getAttribute('startLat');
+        var startLon = selectedMarket.getAttribute('startLng');
+        var endLat = selectedMarket.getAttribute('endLat');
+        var endLon = selectedMarket.getAttribute('endLng');
         var form = $('#taxiHailNetworkForm');
 
         if (form.valid())
         {
-
             var bounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(startLat, startLon),
                 new google.maps.LatLng(endLat, endLon));
@@ -151,13 +139,6 @@
             }
         
             map.fitBounds(bounds);
-        }
-    }
-
-    function checkChanged(checkbox) {
-        if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
-            $('#IsInNetworkCheckBox').attr('checked', false);
-            alert('please enter start and end regions above');
         }
     }
 </script>

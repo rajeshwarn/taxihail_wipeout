@@ -1,14 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
-using MK.Common.Configuration;
-
-#endregion
 
 namespace MK.Booking.IBS.Test
 {
@@ -16,7 +10,7 @@ namespace MK.Booking.IBS.Test
     {
         private readonly Dictionary<string, string> _settings = new Dictionary<string, string>
         {
-            {"IBS.WebServicesUrl", "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/"}
+            {"IBS.WebServicesUrl", "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/"}
         };
 
         public ServerTaxiHailSetting ServerData { get; private set; }

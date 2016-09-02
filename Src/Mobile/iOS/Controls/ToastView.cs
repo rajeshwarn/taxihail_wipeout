@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     TranslatesAutoresizingMaskIntoConstraints = false,
                 };
 
-            var image = ImageHelper.GetImage("cancel");
+            var image = ImageHelper.GetImage("cancel.png");
             _buttonView.SetImage(image, UIControlState.Normal);
             _buttonView.TouchDown += (object sender, EventArgs e) => 
                 {

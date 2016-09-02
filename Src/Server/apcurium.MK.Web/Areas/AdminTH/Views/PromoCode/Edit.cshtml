@@ -407,7 +407,7 @@
         <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
     }
 
-            @if (Model.StartDate.HasValue)
+           @if (Model.StartDate.HasValue)
     {
         var startDate = @Html.Raw(Json.Encode(Model.StartDate));
         <text>$('#StartDate').datepicker('setValue', moment(@startDate).utc().format('L'));</text>

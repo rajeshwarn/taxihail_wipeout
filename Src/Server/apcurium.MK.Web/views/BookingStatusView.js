@@ -56,6 +56,16 @@
                     showOrderNumber: TaxiHail.parameters.showOrderNumber
                 });
 
+            var position = this.model.attributes.pickupAddress;
+            var showCallDriver = false;
+            $.ajax({
+                url: "api/roaming/marketsettings?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                type: "GET",
+                dataType: "json",
+                success: _.bind(function (data) {
+                        showCallDriver = data.showCallDriver;
+                    }, this)
+            });
             
             // Close popover if it is open
             // Otherwise it will stay there forever
@@ -74,17 +84,12 @@
             var status = this.model.getStatus();
             var ibsStatusId = status.get('ibsStatusId');
 
-            if (TaxiHail.parameters.showCallDriver == true) {
-                var driverInfos = status.get('driverInfos');
-                if (driverInfos !== undefined) {
-                    if (driverInfos.mobilePhone) {
-                        this.$('#callDispatchButton').addClass('hidden');
-                        if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
-                            this.$('#callDriverButton').removeClass('hidden');
-                        } else {
-                            this.$('#callDriverButton').addClass('hidden');
-                        }
-                    }
+            if (showCallDriver == true) {
+                this.$('#callDispatchButton').addClass('hidden');
+                if (ibsStatusId != "wosLOADED" || ibsStatusId != "wosDONE") {
+                    this.$('#callDriverButton').removeClass('hidden');
+                } else {
+                    this.$('#callDriverButton').addClass('hidden');
                 }
             }
 

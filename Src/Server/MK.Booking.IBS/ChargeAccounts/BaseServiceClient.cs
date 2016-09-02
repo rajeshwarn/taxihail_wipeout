@@ -42,6 +42,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
+
+
+
         protected T Get<T>(string pathInfo)
         {
             pathInfo = pathInfo.StartsWith("/")
@@ -67,12 +70,13 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             }
 
             var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
+            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var stringToHash = httpMethod + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
             Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(IbsSettings.RestApiUser, hash));
-            Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
+
         }
 
         private string Encode(string stringToHash)
