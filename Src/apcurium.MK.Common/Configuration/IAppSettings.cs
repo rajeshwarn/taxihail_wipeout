@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration
 {

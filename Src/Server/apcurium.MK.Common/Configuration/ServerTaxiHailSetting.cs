@@ -4,6 +4,7 @@ using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Services;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration
 {
