@@ -11,12 +11,13 @@ using PushSharp.Blackberry;
 using PushSharp.Core;
 using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
 using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
     public class PushNotificationService : IPushNotificationService
     {
-        private const string iOSApp = "com.mobile-knowledge.TaxiHail.ios";
+        private const string iOSApp = "com.apcurium.MK.TaxiHailDemo";
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         Dictionary<string, AppPushBrokers> _apps = new Dictionary<string, AppPushBrokers>();
@@ -60,70 +61,82 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 return;
             }
 
-            _appleStarted = true;
-            ApnsConfiguration configuration;
+
+            try
+            {
+
+
+                _appleStarted = true;
+                ApnsConfiguration configuration;
 
 #if DEBUG
-            const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Sandbox;
-            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
-
+                // looks like for now we should specify production even in debug, using sandbox messages are not coming through.
+                const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
+                var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                    _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
 #else
             const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                 _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
 
-            // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
-            var appleCert = File.ReadAllBytes(certificatePath);
+                // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
+                var appleCert = File.ReadAllBytes(certificatePath);
 
-            configuration = new ApnsConfiguration(environment, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
-            _apps.Add(iOSApp, new AppPushBrokers { Apns = new ApnsServiceBroker(configuration) });
+                configuration = new ApnsConfiguration(environment, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
+                _apps.Add(iOSApp, new AppPushBrokers { Apns = new ApnsServiceBroker(configuration) });
 
-            _apps[iOSApp].Apns.OnNotificationSucceeded += OnApnsNotificationSucceeded;
-            _apps[iOSApp].Apns.OnNotificationFailed += (notification, aggregateEx) => {
+                _apps[iOSApp].Apns.OnNotificationSucceeded += OnApnsNotificationSucceeded;
+                _apps[iOSApp].Apns.OnNotificationFailed += (notification, aggregateEx) =>
+                {
 
-                aggregateEx.Handle(ex => {
-
-                    // See what kind of exception it was to further diagnose
-                    if (ex is ApnsNotificationException)
+                    aggregateEx.Handle(ex =>
                     {
-                        var x = ex as ApnsNotificationException;
 
-                        // Deal with the failed notification
-                        ApnsNotification n = x.Notification;
-                        string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
+                        // See what kind of exception it was to further diagnose
+                        if (ex is ApnsNotificationException)
+                        {
+                            var x = ex as ApnsNotificationException;
 
-                        _logger.LogMessage($"Notification Failed: ID={n.Identifier}, Desc={description}");
-                    }
-                    else if (ex is ApnsConnectionException)
-                    {
-                        var x = ex as ApnsConnectionException;
-                        string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
+                            // Deal with the failed notification
+                            ApnsNotification n = x.Notification;
+                            string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
 
-                        _logger.LogMessage($"Notification Failed: Connection exception, Desc={description}");
+                            _logger.LogMessage($"Notification Failed: ID={n.Identifier}, Desc={description}");
+                        }
+                        else if (ex is ApnsConnectionException)
+                        {
+                            var x = ex as ApnsConnectionException;
+                            string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
 
-                    }
-                    else if (ex is DeviceSubscriptionExpiredException)
-                    {
-                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
-                    }
-                    else if (ex is RetryAfterException)
-                    {
-                        LogRetryAfterException((RetryAfterException)ex);
-                    }
-                    else
-                    {
-                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
-                    }
+                            _logger.LogMessage($"Notification Failed: Connection exception, Desc={description}");
 
-                    // Mark it as handled
-                    return true;
-                });
-            };
+                        }
+                        else if (ex is DeviceSubscriptionExpiredException)
+                        {
+                            LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
+                        }
+                        else if (ex is RetryAfterException)
+                        {
+                            LogRetryAfterException((RetryAfterException)ex);
+                        }
+                        else
+                        {
+                            _logger.LogMessage("Notification Failed for some (Unknown Reason)");
+                        }
 
-            _apps[iOSApp].Apns.Start();
+                        // Mark it as handled
+                        return true;
+                    });
+                };
 
+                _apps[iOSApp].Apns.Start();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+            }
         }
 
         private void EnsureGcmStarted()
@@ -259,17 +272,17 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         #region event handlers
         private void OnBlackBeryNotificationSucceeded(BlackberryNotification notification)
         {
-            _logger.LogMessage("Sent: " + notification.Content.ToString());
+            _logger.LogMessage("Sent: " + (notification.Content != null ? notification.Content.ToString() : String.Empty));
         }
 
         private void OnGcmNotificationSucceeded(GcmNotification notification)
         {
-            _logger.LogMessage("Sent: " + notification.Notification.ToString());
+            _logger.LogMessage("Sent: " + (notification.Data != null ? notification.Data.ToString() : String.Empty));
         }
 
         private void OnApnsNotificationSucceeded(ApnsNotification notification)
         {
-            _logger.LogMessage("Sent: " + notification.Payload.ToString());
+            _logger.LogMessage("Sent: " + (notification.Payload != null ? notification.Payload.ToString() : String.Empty));
         }
 
         #endregion
@@ -291,10 +304,25 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         private void SendAppleNotification(string alert, IDictionary<string, object> data, string deviceToken)
         {
 
-            var notification = new ApnsNotification( deviceToken, JObject.Parse(JsonConvert.SerializeObject(data)));
-            // what about with alert
-            // what about with sount
-            _apps[iOSApp].Apns.QueueNotification(notification);            
+            // build the payload, following the documentation
+            // https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/TheNotificationPayload.html
+
+            IDictionary<string, object> aps = new Dictionary<string, object>();
+            aps.Add("alert", alert);
+            aps.Add("sound", "default");
+            IDictionary<string, object> payload = new Dictionary<string, object>();
+
+            payload.Add("aps", aps);
+
+            foreach (var kvp in data)
+            {
+                payload.Add(kvp.Key, kvp.Value);
+            }
+
+            JObject x = JObject.FromObject(payload);
+
+            var notification = new ApnsNotification( deviceToken, x);
+            _apps[iOSApp].Apns.QueueNotification(notification);
 
         }
 
@@ -333,3 +361,4 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
     }
 }
+ 
