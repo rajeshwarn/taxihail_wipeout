@@ -449,6 +449,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
+            var cvd = receipt.GetCvdResultCode();
+            if (!cvd.ToSafeString().Equals("M"))
+            {
+                message = receipt.GetMessage();
+                return false;
+            }
+
+            var avs = receipt.GetAvsResultCode();
+            if (!avs.ToSafeString().Equals("Y"))
+            {
+                message = receipt.GetMessage();
+                return false;
+            }
+
             var responseCode = int.Parse(receipt.GetResponseCode());
             if (responseCode >= MonerisResponseCodes.DECLINED)
             {
@@ -469,7 +483,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+            var cvd = receipt.GetCvdResultCode().ToSafeString();
+            var avs = receipt.GetAvsResultCode().ToSafeString();
+            var declinedByCvdOrAvs = !cvd.Equals("M") && !avs.Equals("Y");
+
+            return declinedByCvdOrAvs || MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
         }
 
         private string GenerateShortUid()
