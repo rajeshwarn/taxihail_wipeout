@@ -102,6 +102,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="8dp"
+                        android:maxLength="40"
                         android:hint="@string/CreditCardLabel"
                         local:MvxBind="Text Data.Label; Visibility CanChooseLabel, Converter=Visibility" />
                     <LinearLayout

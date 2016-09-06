@@ -360,6 +360,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void ConfigureLabelSection()
         {
             lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName");
+			txtLabel.MaxLength = 40;
         }
 
         private void ConfigureCreditCardSection()
