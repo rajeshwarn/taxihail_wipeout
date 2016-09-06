@@ -19,7 +19,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             try
             {
                 var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
-                return account?.Result;
+                return account == null 
+                    ? null
+                    : account.Result;
             }
             catch (Exception ex)
             {
