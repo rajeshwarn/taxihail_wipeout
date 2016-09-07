@@ -74,8 +74,8 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                     _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
 #else
-            const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
-            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
+                var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                 _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
 
@@ -122,20 +122,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                         {
                             _logger.LogMessage("Notification Failed for some (Unknown Reason)");
                         }
-
-                    }
-                    else if (ex is DeviceSubscriptionExpiredException)
-                    {
-                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
-                    }
-                    else if (ex is RetryAfterException)
-                    {
-                        LogRetryAfterException((RetryAfterException)ex);
-                    }
-                    else
-                    {
-                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
-                    }
+                    
 
                         // Mark it as handled
                         return true;
