@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Newtonsoft.Json;
 using PushSharp;
-using PushSharp.Android;
+using PushSharp.Google;
 using PushSharp.Apple;
 using PushSharp.Blackberry;
 using PushSharp.Core;
 using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
+using Newtonsoft.Json.Linq;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
     public class PushNotificationService : IPushNotificationService
     {
+        private const string iOSApp = "com.mobile-knowledge.TaxiHail.ios";
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
-        private readonly PushBroker _push;
+        Dictionary<string, AppPushBrokers> _apps = new Dictionary<string, AppPushBrokers>();
         private bool _androidStarted;
         private bool _blackberryStarted;
         private bool _appleStarted;
@@ -26,16 +29,6 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         {
             _serverSettings = serverSettings;
             _logger = logger;
-            _push = new PushBroker();
-
-            //Wire up the events
-            _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
-            _push.OnDeviceSubscriptionChanged += OnDeviceSubscriptionChanged;
-            _push.OnChannelException += OnChannelException;
-            _push.OnNotificationFailed += OnNotificationFailed;
-            _push.OnNotificationSent += OnNotificationSent;
-            _push.OnChannelCreated += OnChannelCreated;
-            _push.OnChannelDestroyed += OnChannelDestroyed;
         }
 
         public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
@@ -44,11 +37,11 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             switch (platform)
             {
                 case PushNotificationServicePlatform.Apple:
-                    EnsureAppleStarted();
+                    EnsureApnsStarted();
                     SendAppleNotification(alert, data, deviceToken);
                     break;
                 case PushNotificationServicePlatform.Android:
-                    EnsureAndroidStarted();
+                    EnsureGcmStarted();
                     SendAndroidNotification(alert, data, deviceToken);
                     break;
                 case PushNotificationServicePlatform.BlackBerry:
@@ -60,7 +53,8 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             }
         }
 
-        private void EnsureAppleStarted()
+
+        private void EnsureApnsStarted()
         {
             if (_appleStarted)
             {
@@ -68,24 +62,72 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             }
 
             _appleStarted = true;
+            ApnsConfiguration configuration;
 
 #if DEBUG
-            const bool production = false;
+            const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Sandbox;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
+
 #else
-            const bool production = true;
+            const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                 _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
-            var appleSettings = new ApplePushChannelSettings(production, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
-            _push.RegisterAppleService(appleSettings);
+
+            configuration = new ApnsConfiguration(environment, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
+            _apps.Add(iOSApp, new AppPushBrokers { Apns = new ApnsServiceBroker(configuration) });
+
+            _apps[iOSApp].Apns.OnNotificationSucceeded += OnApnsNotificationSucceeded;
+            _apps[iOSApp].Apns.OnNotificationFailed += (notification, aggregateEx) => {
+
+                aggregateEx.Handle(ex => {
+
+                    // See what kind of exception it was to further diagnose
+                    if (ex is ApnsNotificationException)
+                    {
+                        var x = ex as ApnsNotificationException;
+
+                        // Deal with the failed notification
+                        ApnsNotification n = x.Notification;
+                        string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
+
+                        _logger.LogMessage(string.Format("Notification Failed: ID={0}, Desc={1}", n.Identifier, description));
+                    }
+                    else if (ex is ApnsConnectionException)
+                    {
+                        var x = ex as ApnsConnectionException;
+                        string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
+
+                        _logger.LogMessage(string.Format("Notification Failed: Connection exception, Desc={0}", description));
+
+                    }
+                    else if (ex is DeviceSubscriptionExpiredException)
+                    {
+                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
+                    }
+                    else if (ex is RetryAfterException)
+                    {
+                        LogRetryAfterException((RetryAfterException)ex);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
+                    }
+
+                    // Mark it as handled
+                    return true;
+                });
+            };
+
+            _apps[iOSApp].Apns.Start();
+
         }
 
-        private void EnsureAndroidStarted()
+        private void EnsureGcmStarted()
         {
             if (_androidStarted)
             {
@@ -94,11 +136,70 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             _androidStarted = true;
 
-            var test = _serverSettings.ServerData.GCM.SenderId;
-            var apiKey = _serverSettings.ServerData.GCM.APIKey;
-            var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
+            string appId = _serverSettings.ServerData.GCM.PackageName;
 
-            _push.RegisterGcmService(androidSettings);
+            GcmConfiguration configuration = new GcmConfiguration(
+                _serverSettings.ServerData.GCM.SenderId,
+                _serverSettings.ServerData.GCM.APIKey,
+                appId);
+
+            _apps.Add(appId, new AppPushBrokers { Gcm = new GcmServiceBroker(configuration) });
+
+            _apps[appId].Gcm.OnNotificationSucceeded += OnGcmNotificationSucceeded;
+
+            _apps[appId].Gcm.OnNotificationFailed += (notification, aggregateEx) => {
+
+                aggregateEx.Handle(ex => {
+
+                    // See what kind of exception it was to further diagnose
+                    if (ex is GcmNotificationException)
+                    {
+                        var x = ex as GcmNotificationException;
+
+                        // Deal with the failed notification
+                        GcmNotification n = x.Notification;
+                        string description = x.Description;
+
+                        _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.MessageId, description);
+                    }
+                    else if (ex is GcmMulticastResultException)
+                    {
+
+                        var x = ex as GcmMulticastResultException;
+
+                        foreach (var succeededNotification in x.Succeeded)
+                        {
+                            _logger.LogMessage("Notification Failed: ID={0}", succeededNotification.MessageId);
+                        }
+
+                        foreach (var failedKvp in x.Failed)
+                        {
+                            GcmNotification n = failedKvp.Key;
+                            var e = failedKvp.Value as GcmNotificationException;
+
+                            _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.MessageId, e.Description);
+                        }
+
+                    }
+                    else if (ex is DeviceSubscriptionExpiredException)
+                    {
+                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
+                    }
+                    else if (ex is RetryAfterException)
+                    {
+                        LogRetryAfterException((RetryAfterException)ex);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
+                    }
+
+                    // Mark it as handled
+                    return true;
+                });
+            };
+
+            _apps[appId].Gcm.Start();
         }
 
         private void EnsureBlackberryStarted()
@@ -110,40 +211,93 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             _blackberryStarted = true;
 
-            var bbSettings = new BlackberryPushChannelSettings(_serverSettings.ServerData.BBNotificationSettings.AppId, _serverSettings.ServerData.BBNotificationSettings.Password);
-            bbSettings.OverrideSendUrl(_serverSettings.ServerData.BBNotificationSettings.Url);
+            string appId = _serverSettings.ServerData.BBNotificationSettings.AppId;
 
-            _push.RegisterBlackberryService(bbSettings, null);
+            BlackberryConfiguration configuration = new BlackberryConfiguration(
+                appId, 
+                _serverSettings.ServerData.BBNotificationSettings.Password);
+
+            configuration.OverrideSendUrl(_serverSettings.ServerData.BBNotificationSettings.Url);
+
+            _apps.Add(appId, new AppPushBrokers { Bb = new BlackberryServiceBroker(configuration) });
+
+            _apps[appId].Bb.OnNotificationSucceeded += OnBlackBeryNotificationSucceeded;
+            _apps[appId].Bb.OnNotificationFailed += (notification, aggregateEx) => {
+
+                aggregateEx.Handle(ex => {
+
+                    // See what kind of exception it was to further diagnose
+                    if (ex is BlackberryNotificationException)
+                    {
+                        var x = ex as BlackberryNotificationException;
+
+                        // Deal with the failed notification
+                        BlackberryNotification n = x.Notification;
+                        string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
+                        _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.PushId, description);
+                    }
+                    else if (ex is DeviceSubscriptionExpiredException)
+                    {
+                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
+                    }
+                    else if (ex is RetryAfterException)
+                    {
+                        LogRetryAfterException((RetryAfterException)ex);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
+                    }
+
+                    // Mark it as handled
+                    return true;
+                });
+            };
+
+            _apps[appId].Bb.Start();
         }
+
+        #region event handlers
+        private void OnBlackBeryNotificationSucceeded(BlackberryNotification notification)
+        {
+            _logger.LogMessage("Sent: " + notification.Content.ToString());
+        }
+
+        private void OnGcmNotificationSucceeded(GcmNotification notification)
+        {
+            _logger.LogMessage("Sent: " + notification.Notification.ToString());
+        }
+
+        private void OnApnsNotificationSucceeded(ApnsNotification notification)
+        {
+            _logger.LogMessage("Sent: " + notification.Payload.ToString());
+        }
+
+        #endregion
 
         private void SendAndroidNotification(string alert, IDictionary<string, object> data, string registrationId)
         {
             var payload = new Dictionary<string, object>(data);
             payload["alert"] = alert;
 
-            _push.QueueNotification(new GcmNotification() { DelayWhileIdle = false }
-              .ForDeviceRegistrationId(registrationId)
-              .WithCollapseKey(Guid.NewGuid().ToString())
-              .WithDelayWhileIdle(false)
-              .WithJson(JsonConvert.SerializeObject(payload)));
+            GcmNotification notification = new GcmNotification() { DelayWhileIdle = false };
+            notification.RegistrationIds.Add(registrationId);
+            notification.CollapseKey = Guid.NewGuid().ToString();
+            notification.DelayWhileIdle = false;
+            notification.Data = JObject.Parse(JsonConvert.SerializeObject(payload));
 
+            _apps[_serverSettings.ServerData.GCM.PackageName].Gcm.QueueNotification(notification);
         }
 
         private void SendAppleNotification(string alert, IDictionary<string, object> data, string deviceToken)
         {
-            var notification = new AppleNotification()
-                .ForDeviceToken(deviceToken)
-                .WithAlert(alert)
-                .WithSound("default");
 
-            foreach (var key in data.Keys)
-            {
-                notification.WithCustomItem(key, new[] { data[key] });
-            }
+            var notification = new ApnsNotification( deviceToken, JObject.Parse(JsonConvert.SerializeObject(data)));
+            // what about with alert
+            // what about with sount
+            _apps[iOSApp].Apns.QueueNotification(notification);            
 
-            _push.QueueNotification(notification);
         }
-
 
         private void SendBBNotification(string alert, IDictionary<string, object> data, string registrationId)
         {
@@ -155,49 +309,28 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             notif.Content = new BlackberryMessageContent(JsonConvert.SerializeObject(payload));
             notif.SourceReference = _serverSettings.ServerData.BBNotificationSettings.AppId;
 
-            _push.QueueNotification(notif);
+            _apps[_serverSettings.ServerData.BBNotificationSettings.AppId].Bb.QueueNotification(notif);
         }
 
-        private void OnDeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
+        private void LogRetryAfterException(RetryAfterException ex)
         {
-            //Currently this event will only ever happen for Android GCM
-            _logger.LogMessage("Device Registration Changed:  Old-> " + oldSubscriptionId + "  New-> " + newSubscriptionId);
+            // If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
+            _logger.LogMessage("Rate Limited, don't send more until after {0}", ex.RetryAfterUtc);
         }
-
-        private void OnNotificationSent(object sender, INotification notification)
+        private void LogDeviceSubscriptionExpiredException(DeviceSubscriptionExpiredException ex)
         {
-            _logger.LogMessage("Sent: " + notification.Tag + " -> " + notification);
-        }
+            string oldId = ex.OldSubscriptionId;
+            string newId = ex.NewSubscriptionId;
 
-        private void OnNotificationFailed(object sender, INotification notification, Exception notificationFailureException)
-        {
-            var message = notificationFailureException.Message;
-            var details = notificationFailureException as NotificationFailureException;
-            if (details != null)
+            _logger.LogMessage("Device RegistrationId Expired:{0} ", oldId);
+
+            if (!string.IsNullOrEmpty(newId))
             {
-                message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
+                // If this value isn't null, our subscription changed and we should update our database
+                _logger.LogMessage("Device RegistrationId Changed To: {0}", newId);
             }
-            _logger.LogMessage("Failure: " + notification.Tag + " -> " + message + " -> " + notification);
+
         }
 
-        private void OnChannelException(object sender, IPushChannel channel, Exception exception)
-        {
-            _logger.LogError(exception);
-        }
-
-        private void OnDeviceSubscriptionExpired(object sender, string expiredDeviceSubscriptionId, DateTime timestamp, INotification notification)
-        {
-            _logger.LogMessage("Device Subscription Expired: " + expiredDeviceSubscriptionId + " -> " + timestamp + " " + notification);
-        }
-
-        private void OnChannelDestroyed(object sender)
-        {
-            _logger.LogMessage("Channel Destroyed for: " + sender);
-        }
-
-        private void OnChannelCreated(object sender, IPushChannel pushChannel)
-        {
-            _logger.LogMessage("Channel Created for: " + sender);
-        }
     }
 }

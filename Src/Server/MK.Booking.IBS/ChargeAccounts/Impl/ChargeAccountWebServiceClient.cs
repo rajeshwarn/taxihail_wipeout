@@ -21,8 +21,8 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             try
             {
-                var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
-                return account == null
+                var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}/".FormatWith(accountNumber, customerNumber));
+                return account == null 
                     ? null
                     : account.Result;
             }
@@ -35,15 +35,15 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)
         {
-            var content = new {prompts = prompts.ToArray(), account_number, customer_number};
-
             try
             {
-                var validation = Post<ChargeAccountValidationResponse>("/account/validate/", content);
+                var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new {prompts = prompts.ToArray(), account_number, customer_number});
                 return validation.Result;
             }
             catch (HttpRequestException ex)
             {
+                var content = new {prompts = prompts.ToArray(), account_number, customer_number};
+
                 Logger.LogError(ex);
                 Logger.LogMessage($"Data sent: {content.ToJson()}");
 

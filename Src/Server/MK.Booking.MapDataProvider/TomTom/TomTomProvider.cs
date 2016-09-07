@@ -51,8 +51,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			try
 			{
                 var direction = await client.GetAsync<RoutingResponse>(queryString).ConfigureAwait(false);
-
-				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
+                _logger.LogMessage("TomTom Result : " + direction.ToString());
 
                 if (direction != null && direction.Routes.Count > 0)
                 {
