@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Newtonsoft.Json;
@@ -94,14 +95,14 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                         ApnsNotification n = x.Notification;
                         string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
 
-                        _logger.LogMessage($"Notification Failed: ID={n.Identifier}, Desc={description}");
+                        _logger.LogMessage(string.Format("Notification Failed: ID={0}, Desc={1}", n.Identifier, description));
                     }
                     else if (ex is ApnsConnectionException)
                     {
                         var x = ex as ApnsConnectionException;
                         string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
 
-                        _logger.LogMessage($"Notification Failed: Connection exception, Desc={description}");
+                        _logger.LogMessage(string.Format("Notification Failed: Connection exception, Desc={0}", description));
 
                     }
                     else if (ex is DeviceSubscriptionExpiredException)
@@ -159,7 +160,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                         GcmNotification n = x.Notification;
                         string description = x.Description;
 
-                        _logger.LogMessage($"Notification Failed: ID={n.MessageId}, Desc={description}");
+                        _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.MessageId, description);
                     }
                     else if (ex is GcmMulticastResultException)
                     {
@@ -168,7 +169,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
                         foreach (var succeededNotification in x.Succeeded)
                         {
-                            _logger.LogMessage($"Notification Failed: ID={succeededNotification.MessageId}");
+                            _logger.LogMessage("Notification Failed: ID={0}", succeededNotification.MessageId);
                         }
 
                         foreach (var failedKvp in x.Failed)
@@ -176,7 +177,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                             GcmNotification n = failedKvp.Key;
                             var e = failedKvp.Value as GcmNotificationException;
 
-                            _logger.LogMessage($"Notification Failed: ID={n.MessageId}, Desc={e.Description}");
+                            _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.MessageId, e.Description);
                         }
 
                     }
@@ -233,7 +234,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                         // Deal with the failed notification
                         BlackberryNotification n = x.Notification;
                         string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
-                        _logger.LogMessage($"Notification Failed: ID={n.PushId}, Desc={description}");
+                        _logger.LogMessage("Notification Failed: ID={0}, Desc={1}", n.PushId, description);
                     }
                     else if (ex is DeviceSubscriptionExpiredException)
                     {
@@ -314,19 +315,19 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         private void LogRetryAfterException(RetryAfterException ex)
         {
             // If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
-            _logger.LogMessage($"Rate Limited, don't send more until after {ex.RetryAfterUtc}");
+            _logger.LogMessage("Rate Limited, don't send more until after {0}", ex.RetryAfterUtc);
         }
         private void LogDeviceSubscriptionExpiredException(DeviceSubscriptionExpiredException ex)
         {
             string oldId = ex.OldSubscriptionId;
             string newId = ex.NewSubscriptionId;
 
-            _logger.LogMessage($"Device RegistrationId Expired: {oldId}");
+            _logger.LogMessage("Device RegistrationId Expired:{0} ", oldId);
 
             if (!string.IsNullOrEmpty(newId))
             {
                 // If this value isn't null, our subscription changed and we should update our database
-                _logger.LogMessage($"Device RegistrationId Changed To: {newId}");
+                _logger.LogMessage("Device RegistrationId Changed To: {0}", newId);
             }
 
         }
