@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
             var path = Path.Combine(Client.BaseAddress.AbsolutePath, pathInfo);
 
-            AddAuthorizationTokenIfNeeded("POST", pathInfo);
+            AddAuthorizationTokenIfNeeded("POST", path);
 
             var response = Client.PostAsync(path, new StringContent(request.ToJson(), Encoding.UTF8, "application/json")).Result;
             var resultJson = response.Content.ReadAsStringAsync().Result;

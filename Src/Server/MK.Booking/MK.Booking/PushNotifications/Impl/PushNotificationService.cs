@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                             ApnsNotification n = x.Notification;
                             string description = "Message: " + x.Message + " Data:" + x.Data.ToString();
 
-                            _logger.LogMessage(string.Format("Notification Failed: ID={0}, Desc={1}", n.Identifier, description));
+                        _logger.LogMessage(string.Format("Notification Failed: ID={0}, Desc={1}", n.Identifier, description));
                         }
                         else if (ex is ApnsConnectionException)
                         {
@@ -122,6 +122,20 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                         {
                             _logger.LogMessage("Notification Failed for some (Unknown Reason)");
                         }
+
+                    }
+                    else if (ex is DeviceSubscriptionExpiredException)
+                    {
+                        LogDeviceSubscriptionExpiredException((DeviceSubscriptionExpiredException)ex);
+                    }
+                    else if (ex is RetryAfterException)
+                    {
+                        LogRetryAfterException((RetryAfterException)ex);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Notification Failed for some (Unknown Reason)");
+                    }
 
                         // Mark it as handled
                         return true;
@@ -179,7 +193,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
                         foreach (var succeededNotification in x.Succeeded)
                         {
-                            _logger.LogMessage("Notification Failed: ID={0}", succeededNotification.MessageId);                            
+                            _logger.LogMessage("Notification Failed: ID={0}", succeededNotification.MessageId);
                         }
 
                         foreach (var failedKvp in x.Failed)

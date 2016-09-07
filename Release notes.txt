@@ -1,4 +1,4 @@
-3.1.5
+﻿3.1.5
 	Added auto-follow cancellation to iOS
 	Fixed issue where wrong message was given when auto-pairing was not disabled
 	Fixed issue where Taxi Icon appears after cancellation
@@ -382,6 +382,7 @@ Version bump 3.3.1
 	Fixed issue whereas connection Authentication would fail on POST call (Charge Account).
 3.5.29
 	Fixed bad version bump
+	
 3.5.30
 	TAX-84 updated text to No hay vehículos disponibles in Master.es.resx, some of the issues identified in the defect are addressed by TAX-149 fix 
 	TAX-147, created a new MELLEVA Spanish resource file to override the translation of TAXI->UNIDAD to TAXI for MELLEVA
@@ -391,4 +392,13 @@ Version bump 3.3.1
 	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
 	Fixed issue whereas the path was not always completely used (Charge Account).
 	Updated PushSharp nuget package to 4.0.10, had to rewrite the PushNotifiationService.
+
+3.5.31
+	Fixed build issue.
+	Fixed Charge Account Authentication challenge issue.
+
+3.5.32
+	Fixed issue with Server package creation.
 	
+3.5.33
+	Fixed issue where getting a single charge account was failing when API Rest user/secret was set.
