@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Services.Payment;
@@ -74,6 +75,34 @@ namespace apcurium.MK.Web.Tests
 
 
             Assert.IsTrue(result.IsSuccessful);
+        }
+
+        [Test, Ignore]
+        public void when_paying_fails_cvd_invalid()
+        {
+            //Setup
+            // Get account
+            // Set Order
+            // Amount to preauth. (test amount)
+            // CVV
+
+            var client = GetPaymentService();
+            var visa = TestCreditCards.Visa;
+
+            //var preauthResponse = await client.PreAuthorize("Taxihail", new Guid(), );
+            //To Implement
+        }
+
+        [Test, Ignore]
+        public void when_paying_fails_avs_invalid()
+        {
+            //To Implement
+        }
+
+        [Test, Ignore]
+        public void when_paying_succeed_cvd_avs_valid()
+        {
+            //To Implement
         }
     }
 }
