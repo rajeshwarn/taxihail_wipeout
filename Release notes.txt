@@ -1,4 +1,4 @@
-3.1.5
+﻿3.1.5
 	Added auto-follow cancellation to iOS
 	Fixed issue where wrong message was given when auto-pairing was not disabled
 	Fixed issue where Taxi Icon appears after cancellation
@@ -425,7 +425,7 @@ Version bump 3.3.1
   We use the old chargetypes enable flow when not in Cmt
   Reduced the number of resolves done in chargetype list
   Fixed logic in OrderEditViewModel and RideSettingsViewModel to handle case where Cmt allows out of app payment in certain markets only (and deny it in others).
-  Change French 'Code sÈcuritÈ' to 'CVV'
+  Change French 'Code sÃˆcuritÃˆ' to 'CVV'
   check server side if email is linked to Facebook or Twitter
   Arro iphone pairing failure app crash - Fix with a custom ManualPairingException
   Fixed cases where overdue payment exists or payment method is dis-activated when attempting to do manual pairing.
@@ -550,11 +550,35 @@ Version bump 3.3.1
 	
 3.5.26
 	Fixing an issue whereas the build for iOS was failing for certain Xamarin versions.
-	
 3.5.27
 	features to be included...
 	TAX-140 Added a Config.AppSetting called DisplayTimePickerInTwelveHourFormat, that is sent to the client to control the format of the time picker (12/24 hour)
+
+3.5.28
+	Fixed issue whereas connection Authentication would fail on POST call (Charge Account).
+3.5.29
+	Fixed bad version bump
 	
+3.5.30
+	TAX-84 updated text to No hay vehículos disponibles in Master.es.resx, some of the issues identified in the defect are addressed by TAX-149 fix 
+	TAX-147, created a new MELLEVA Spanish resource file to override the translation of TAXI->UNIDAD to TAXI for MELLEVA
+	TAX-149 updated TomTom Directions Provider to latest API since Apple directions provider does not support Guatemala
+	When releasing this to MELLEVA / AmarilloTaxiGuatemala, the representative from the support team will have to change some company settings on the company's website:
+	Map - Direction Map Provider should be changed to TomTom
+	Map - TomTom Map Toolkit API Key will need to be specified with the customer's key, or Mobile Knowledge's key, depending on how is going to pay for the service. 
+	Fixed issue whereas the path was not always completely used (Charge Account).
+	Updated PushSharp nuget package to 4.0.10, had to rewrite the PushNotifiationService.
+
+3.5.31
+	Fixed build issue.
+	Fixed Charge Account Authentication challenge issue.
+
+3.5.32
+	Fixed issue with Server package creation.
+	
+3.5.33
+	Fixed issue where getting a single charge account was failing when API Rest user/secret was set.
+
 3.6.0
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
 	Bug fix - Fix scheduled orders causing user to be stuck when navigating from history
