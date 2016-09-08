@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Globalization;
 using System.Linq;
@@ -6,11 +6,13 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Moneris;
@@ -231,7 +233,26 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, customerId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
+                    
+                    var info = new AvsInfo();
+                    if (_serverPaymentSettings.EnableAddressVerification)
+                    {
+                        info.SetAvsStreetName(creditCard.StreetName);
+                        info.SetAvsStreetNumber(creditCard.StreetNumber);
+                        preAuthorizeCommand.SetAvsInfo(info);
+                    }
 
+                    info.SetAvsZipCode(creditCard.ZipCode);
+                   
+                    if (_serverPaymentSettings.EnableContactVerification)
+                    {
+                        var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
+                        info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
+                        preAuthorizeCommand.SetEmail(creditCard.Email);
+                    }
+
+                    preAuthorizeCommand.SetAvsInfo(info);
+                    
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetAndLogReceipt(_logger);
 
@@ -449,15 +470,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            var cvd = receipt.GetCvdResultCode();
-            if (!cvd.ToSafeString().Equals("M"))
+            var cvd = receipt.GetCvdResultCode().ToSafeString();
+            if (!cvd.Equals("null") && !cvd.Equals("M"))
             {
                 message = receipt.GetMessage();
                 return false;
             }
 
-            var avs = receipt.GetAvsResultCode();
-            if (!avs.ToSafeString().Equals("Y"))
+            var avs = receipt.GetAvsResultCode().ToSafeString();
+            if (!avs.Equals("null") && !avs.Equals("Y"))
             {
                 message = receipt.GetMessage();
                 return false;
@@ -484,10 +505,18 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var cvd = receipt.GetCvdResultCode().ToSafeString();
-            var avs = receipt.GetAvsResultCode().ToSafeString();
-            var declinedByCvdOrAvs = !cvd.Equals("M") && !avs.Equals("Y");
+            if (!cvd.Equals("null") && !cvd.Equals("M"))
+            {
+                return true;
+            }
 
-            return declinedByCvdOrAvs || MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+            var avs = receipt.GetAvsResultCode().ToSafeString();
+            if (!avs.Equals("null") && !avs.Equals("Y"))
+            {
+                return true;
+            }
+
+            return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
         }
 
         private string GenerateShortUid()
