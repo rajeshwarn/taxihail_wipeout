@@ -174,7 +174,12 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
             Mapper.CreateMap<CreditCardAddedOrUpdated, CreditCardDetails>()
-                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId))
+                .ForMember(p => p.Country, opt =>
+                {
+                    opt.MapFrom(m => m.Country);
+                    opt.NullSubstitute(new CountryISOCode());
+                });
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
         }
