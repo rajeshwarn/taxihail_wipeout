@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
                 var content = new {prompts = prompts.ToArray(), account_number, customer_number};
 
                 Logger.LogError(ex);
-                Logger.LogMessage($"Data sent: {content.ToJson()}");
+                Logger.LogMessage("Data sent: {0}", content.ToJson());
 
                 return new ChargeAccountValidation()
                 {

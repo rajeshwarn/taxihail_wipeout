@@ -662,7 +662,7 @@ namespace DatabaseInitializer
             else if (string.IsNullOrWhiteSpace(result.SqlInstanceName))
             {
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-                Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER, 2- MSSQL12.MSSQLSERVER");
+                Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER, 2- MSSQL12.MSSQLSERVER, 3- MSSQL13.MSSQLSERVER");
 
                 var userSqlInstance = Console.ReadLine();
 
@@ -672,6 +672,8 @@ namespace DatabaseInitializer
                     ? "MSSQL10_50.MSSQLSERVER"
                     : userSqlInstance == "2"
                     ? "MSSQL12.MSSQLSERVER"
+                    : userSqlInstance == "3" 
+                    ? "MSSQL13.MSSQLSERVER"
                     : sqlInstanceName;
 
                 result.SqlInstanceName = sqlInstanceName;

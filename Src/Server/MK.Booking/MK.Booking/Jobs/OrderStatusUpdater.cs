@@ -698,7 +698,11 @@ namespace apcurium.MK.Booking.Jobs
             if (ibsOrderInfo.IsMeterOffNotPaid)
             {
                 SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, orderStatusDetail.CompanyKey);
+
+                //TAX-127: We have to ensure we are ready to handle Order Completion.
+                return;
             }
+
 
             if (HandleOrderCompletionWithNoFare(orderStatusDetail, 
                 () => ibsOrderInfo.Fare <= 0, 

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string Email { get; set; }
 
         public string Phone { get; set; }
-
+        
         public CountryISOCode Country { get; set; }
 
         public bool IsExpired()

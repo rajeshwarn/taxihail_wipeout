@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="@dimen/HeightEditTextFlat"
+    android:layout_height="wrap_content"
     android:background="@android:color/white">
+    <TextView
+        local:MvxBind="Text Label; Visibility Label, Converter=HasValueToVisibilityConverter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dip"
+        style="@style/GrayText" />
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">

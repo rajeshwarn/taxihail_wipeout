@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Globalization;
 using System.Linq;
@@ -6,11 +6,13 @@ using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Moneris;
@@ -231,7 +233,28 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, customerId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
-
+                    
+                    var info = new AvsInfo();
+                    if (_serverPaymentSettings.EnableAddressVerification)
+                    {
+                        info.SetAvsStreetName(creditCard.StreetName);
+                        info.SetAvsStreetNumber(creditCard.StreetNumber);
+                        preAuthorizeCommand.SetAvsInfo(info);
+                        info.SetAvsZipCode(creditCard.ZipCode);
+                    }
+                    
+                    if (_serverPaymentSettings.EnableContactVerification)
+                    {
+                        var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
+                        info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
+                        preAuthorizeCommand.SetEmail(creditCard.Email);
+                    }
+                    if (_serverPaymentSettings.EnableContactVerification ||
+                        _serverPaymentSettings.EnableAddressVerification)
+                    {
+                        preAuthorizeCommand.SetAvsInfo(info);
+                    }
+                    
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetAndLogReceipt(_logger);
 
@@ -449,6 +472,28 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
+            var cvd = receipt.GetCvdResultCode()
+                .ToSafeString()
+                // We remove null and replace it with empty string to ensure we only treat cvds when active.
+                .Replace("null", "");
+
+            if (cvd.HasValueTrimmed() && !cvd.Equals("M"))
+            {
+                message = receipt.GetMessage();
+                return false;
+            }
+
+            var avs = receipt.GetAvsResultCode()
+                .ToSafeString()
+                // We remove null and replace it with empty string to ensure we only treat avs when active.
+                .Replace("null", "");
+
+            if (avs.HasValueTrimmed() && !avs.Equals("Y"))
+            {
+                message = receipt.GetMessage();
+                return false;
+            }
+
             var responseCode = int.Parse(receipt.GetResponseCode());
             if (responseCode >= MonerisResponseCodes.DECLINED)
             {
@@ -467,6 +512,18 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 // GetResponseCode will return "null" string when transaction is a success...
                 return false;
+            }
+
+            var cvd = receipt.GetCvdResultCode().ToSafeString();
+            if (!cvd.Equals("null") && !cvd.Equals("M"))
+            {
+                return true;
+            }
+
+            var avs = receipt.GetAvsResultCode().ToSafeString();
+            if (!avs.Equals("null") && !avs.Equals("Y"))
+            {
+                return true;
             }
 
             return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
