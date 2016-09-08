@@ -240,18 +240,20 @@ namespace apcurium.MK.Booking.Services.Impl
                         info.SetAvsStreetName(creditCard.StreetName);
                         info.SetAvsStreetNumber(creditCard.StreetNumber);
                         preAuthorizeCommand.SetAvsInfo(info);
+                        info.SetAvsZipCode(creditCard.ZipCode);
                     }
-
-                    info.SetAvsZipCode(creditCard.ZipCode);
-                   
+                    
                     if (_serverPaymentSettings.EnableContactVerification)
                     {
                         var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
                         info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
                         preAuthorizeCommand.SetEmail(creditCard.Email);
                     }
-
-                    preAuthorizeCommand.SetAvsInfo(info);
+                    if (_serverPaymentSettings.EnableContactVerification ||
+                        _serverPaymentSettings.EnableAddressVerification)
+                    {
+                        preAuthorizeCommand.SetAvsInfo(info);
+                    }
                     
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetAndLogReceipt(_logger);
