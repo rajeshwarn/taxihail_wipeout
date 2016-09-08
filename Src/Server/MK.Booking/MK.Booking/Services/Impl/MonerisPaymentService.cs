@@ -472,15 +472,23 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            var cvd = receipt.GetCvdResultCode().ToSafeString();
-            if (!cvd.Equals("null") && !cvd.Equals("M"))
+            var cvd = receipt.GetCvdResultCode()
+                .ToSafeString()
+                // We remove null and replace it with empty string to ensure we only treat cvds when active.
+                .Replace("null", "");
+
+            if (cvd.HasValueTrimmed() && !cvd.Equals("M"))
             {
                 message = receipt.GetMessage();
                 return false;
             }
 
-            var avs = receipt.GetAvsResultCode().ToSafeString();
-            if (!avs.Equals("null") && !avs.Equals("Y"))
+            var avs = receipt.GetAvsResultCode()
+                .ToSafeString()
+                // We remove null and replace it with empty string to ensure we only treat avs when active.
+                .Replace("null", "");
+
+            if (avs.HasValueTrimmed() && !avs.Equals("Y"))
             {
                 message = receipt.GetMessage();
                 return false;
