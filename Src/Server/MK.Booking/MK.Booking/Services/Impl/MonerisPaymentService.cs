@@ -241,18 +241,18 @@ namespace apcurium.MK.Booking.Services.Impl
                         info.SetAvsStreetNumber(creditCard.StreetNumber);
                         preAuthorizeCommand.SetAvsInfo(info);
                         info.SetAvsZipCode(creditCard.ZipCode);
+                        // Phone number verification requires address verification to be also active
+                        if (_serverPaymentSettings.EnableContactVerification)
+                        {
+                            var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
+                            info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
+                        }
+                        preAuthorizeCommand.SetAvsInfo(info);
                     }
                     
                     if (_serverPaymentSettings.EnableContactVerification)
                     {
-                        var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
-                        info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
                         preAuthorizeCommand.SetEmail(creditCard.Email);
-                    }
-                    if (_serverPaymentSettings.EnableContactVerification ||
-                        _serverPaymentSettings.EnableAddressVerification)
-                    {
-                        preAuthorizeCommand.SetAvsInfo(info);
                     }
                     
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
