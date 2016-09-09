@@ -402,3 +402,7 @@ Version bump 3.3.1
 	
 3.5.33
 	Fixed issue where getting a single charge account was failing when API Rest user/secret was set.
+	
+3.5.34
+	TAX-37 Upgraded PushSharp from 2.2.1 to 4.0.10 so that push notifications on iOS would work using Apple's new certificate type. 
+	Updated the PushNotificationService to work with the changes to the broker model in PushSharp 4.0.10.
