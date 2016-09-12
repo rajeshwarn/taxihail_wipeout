@@ -45,6 +45,13 @@
       <string>Assets/AppFont_Italic.otf</string>
       <string>Assets/AppFont_Medium.otf</string>
     </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
     <key>UIDeviceFamily</key>
     <array>
       <integer>1</integer>

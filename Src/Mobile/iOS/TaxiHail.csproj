@@ -289,7 +289,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="features\step_definitions\calabash_steps.rb" />
     <None Include="features\step_definitions\my_first_steps.rb" />
