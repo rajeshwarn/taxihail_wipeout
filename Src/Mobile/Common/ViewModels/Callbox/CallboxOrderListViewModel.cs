@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using MK.Common.Android.Extensions;
 using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -66,17 +67,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             _serialDisposable.Disposable = ObserveTimerForRefresh()
                 .Where(_ => _orderToCreate == null || !_orderToCreate.IsPendingCreation)
                 .SelectMany(_ => GetActiveOrderStatus())
+				.CatchAndLogError(null)
+				.Where(orderStatusDetail => orderStatusDetail != null)
                 .ObserveOn(SynchronizationContext.Current)
                 .Where(_ => _refreshGate)
                 .Subscribe(orderStatusDetails =>
                 {
-                    _refreshGate = false;
-                    RefreshOrderStatus(orderStatusDetails);
-                    _refreshGate = true;
-                },
-                ex =>
-                {
-                    Logger.LogError(ex);
+					try
+					{
+						_refreshGate = false;
+						RefreshOrderStatus(orderStatusDetails);
+					} catch (Exception ex)
+					{
+						Logger.LogErrorWithCaller(ex);
+					} 
+					finally
+					{
+						_refreshGate = true;
+					}
                 });
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
