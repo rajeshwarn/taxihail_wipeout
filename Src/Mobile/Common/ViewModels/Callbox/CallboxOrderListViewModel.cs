@@ -77,7 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						_refreshGate = false;
 						RefreshOrderStatus(orderStatusDetails);
-					} catch (Exception ex)
+					} 
+					catch (Exception ex)
 					{
 						Logger.LogErrorWithCaller(ex);
 					} 
