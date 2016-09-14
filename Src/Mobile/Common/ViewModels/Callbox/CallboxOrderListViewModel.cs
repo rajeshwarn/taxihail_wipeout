@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		    if (activeOrders == null)
 		    {
-		        return new OrderStatusDetail[0];
+		        return null;
 		    }
 
             return activeOrders
@@ -219,51 +219,61 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return this.GetCommand<Guid>(orderId =>
-                    this.Services().Message.ShowMessage(this.Services().Localize["CancelOrderTitle"],
-                        this.Services().Localize["CancelOrderMessage"],
-                        this.Services().Localize["Yes"], () => 
-						{
-							this.Services().Message.ShowProgress(true);
+			    return this.GetCommand<Guid>(async orderId =>
+			    {
+			        var tcs = new TaskCompletionSource<bool>();
 
-                            CancelOrderOnServer(orderId).ContinueWith(result => this.Services().Message.ShowProgress(false))
-                                .FireAndForget();
-                        }, 
-                        this.Services().Localize["No"], () => { }));
+			        this.Services().Message.ShowMessage(this.Services().Localize["CancelOrderTitle"],
+			                this.Services().Localize["CancelOrderMessage"],
+			                this.Services().Localize["Yes"], () => tcs.TrySetResult(true),
+			                this.Services().Localize["No"], () => tcs.TrySetResult(false))
+			            .FireAndForget();
+
+			        var isCancelConfirmed = await tcs.Task;
+
+			        if (!isCancelConfirmed)
+			        {
+			            return;
+			        }
+
+			        using (this.Services().Message.ShowProgress())
+			        {
+			            await CancelOrderOnServer(orderId);
+			        }
+			    });
 			}
 		}
 
 	    private async Task CancelOrderOnServer(Guid orderId)
 	    {
-            try
+            if (await _bookingService.CancelOrder(orderId))
             {
-                await _bookingService.CancelOrder(orderId);
                 RemoveOrderFromList(orderId);
             }
-            catch
+            else
             {
-                // We need to retry the cancelling order, it might fail on first try.
-                RetryCancelOrder(orderId).FireAndForget();
+                await RetryCancelOrder(orderId);
             }
         }
 
 	    private async Task RetryCancelOrder(Guid orderId)
 	    {
-	        try
-	        {
-	            await Task.Delay(500);
-	            await _bookingService.CancelOrder(orderId);
-	            RemoveOrderFromList(orderId);
-	        }
-	        catch (Exception ex)
-	        {
-	            Logger.LogError(ex);
-	            this.Services().Message
-	                .ShowMessage(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"],
-	                    this.Services().Localize["ErrorCancellingOrderTitle"])
-	                .FireAndForget();
-	        }
-	    }
+            await Task.Delay(500);
+            if (await _bookingService.CancelOrder(orderId))
+            {
+                RemoveOrderFromList(orderId);
+            }
+            else
+            {
+                var localize = this.Services().Localize;
+
+                var message = string.Format(localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumberDisplay);
+
+                this.Services().Message
+                    .ShowMessage(localize["ErrorCancellingOrderTitle"], message)
+                    .FireAndForget();
+            }
+        }
 
 	    private void RemoveOrderFromList(Guid orderId)
 		{
@@ -361,7 +371,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					Logger.LogError(e);
 					InvokeOnMainThread(() =>
 					{
-						var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
+						var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumberDisplay);
 						this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 					});
 				}
