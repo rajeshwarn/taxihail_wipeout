@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("apcurium.MK.Web")]
-[assembly: AssemblyCopyright("Copyright ÃƒÂƒÃ†Â’ÃƒÂ¢Ã¢Â‚Â¬Ã…Â¡ÃƒÂƒÃ¢Â€ÂšÃƒÂ‚Ã‚Â©  2012")]
+[assembly: AssemblyCopyright("Copyright ÃÆÃÆÃâ ÃâÃÆÃÂ¢ÃÂ¢ÃâÃÂ¬Ãâ¦ÃÂ¡ÃÆÃÆÃÂ¢Ãâ¬ÃÅ¡ÃÆÃâÃâÃÂ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
