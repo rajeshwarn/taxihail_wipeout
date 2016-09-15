@@ -78,7 +78,10 @@ function UpdateAndroidVersion ( $versionVal )
     $versionCode.Node.Value = ($iVer + 1)
  
     # Save the file
-    $xam.Save( $manifestPath)
+    $writer = New-Object System.IO.StreamWriter($manifestPath);
+    $xam.Save( $writer)
+    $writer.Flush()
+    $writer.Close()
 }
 
 function UpdateBlackberryVersion ( $versionVal )
@@ -106,6 +109,8 @@ function UpdateBlackberryVersion ( $versionVal )
     # Save the file
     $writer = New-Object System.IO.StreamWriter($manifestPath);
     $xam.Save( $writer )
+    $writer.Flush()
+    $writer.Close()
 }
 
 function UpdateCallboxVersion ( $versionVal )
@@ -133,6 +138,8 @@ function UpdateCallboxVersion ( $versionVal )
     # Save the file
     $writer = New-Object System.IO.StreamWriter($manifestPath);
     $xam.Save( $writer)
+    $writer.Flush()
+    $writer.Close()
 }
 
 
@@ -159,6 +166,8 @@ function UpdateIosVersion ( $versionVal )
     # Save the file
     $writer = New-Object System.IO.StreamWriter($plistPath);
     $xam.Save( $writer )
+    $writer.Flush()
+    $writer.Close()
 }
 
 function get-scriptdirectory {
