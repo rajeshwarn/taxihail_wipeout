@@ -265,8 +265,8 @@ namespace apcurium.MK.Common.Entity
 
             try
             {
-                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.InvariantCultureIgnoreCase);
-                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.InvariantCultureIgnoreCase);
+                var indexOfStreetNumber = FullAddress.ToSafeString().IndexOf(StreetNumber, StringComparison.InvariantCultureIgnoreCase);
+                var indexOfStreet = FullAddress.ToSafeString().IndexOf(Street, StringComparison.InvariantCultureIgnoreCase);
 
                 if(indexOfStreet >= 0 && indexOfStreetNumber >= 0)
                 {
@@ -291,8 +291,8 @@ namespace apcurium.MK.Common.Entity
 
 			try
 			{
-				var indexOfZipCode = FullAddress.IndexOf(ZipCode, StringComparison.InvariantCultureIgnoreCase);
-				var indexOfCity = FullAddress.IndexOf(City, StringComparison.InvariantCultureIgnoreCase);
+				var indexOfZipCode = FullAddress.ToSafeString().IndexOf(ZipCode, StringComparison.InvariantCultureIgnoreCase);
+				var indexOfCity = FullAddress.ToSafeString().IndexOf(City, StringComparison.InvariantCultureIgnoreCase);
 
 				if(indexOfZipCode >= 0 && indexOfCity >= 0)
 				{
