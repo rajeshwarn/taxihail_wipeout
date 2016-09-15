@@ -58,6 +58,7 @@
     <Compile Include="AddUpdateAccountQuestionAnswer.cs" />
     <Compile Include="UpdateOrderGratuity.cs" />
     <Compile Include="PayGratuity.cs" />
+    <Compile Include="UpdateOrderGratuityTimer.cs" />
     <Compile Include="UpdateServiceTypeSettings.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />

@@ -488,7 +488,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
-            SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
+            SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false, bool isUpdatedReceipt = false, double additionalGratuity = 0)
         {
             if (!bypassNotificationSetting)
             {
@@ -600,10 +600,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 var baseUrls = GetBaseUrls();
                 var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-                var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + tipIncentive + extra - amountSavedByPromotion
-                    + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
-                    + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
+                if (additionalGratuity > 0)
+                    tip = 0;
+                    
+                var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + tipIncentive + extra + additionalGratuity - amountSavedByPromotion
+                        + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
+                        + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
+               
+
+                
                 var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber;
 
                 var marketSpecificNote = string.Empty;
@@ -646,11 +652,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 var emailBodyTotalFare = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_TotalFare", clientLanguageCode);
                 var emailBodyRideLinqLastFour = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_RideLinqLastFour", clientLanguageCode); 
                 var emailBodyTax = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_Tax", clientLanguageCode);
+                var emailBodyAdditionalGratuity = GetReceiptLabelOrDefault(receiptLabels, "Email_Body_AdditionalGratuity", clientLanguageCode);
 
+                var emailSubject = isUpdatedReceipt
+                    ? EmailConstant.Subject.UpdatedReceipt
+                    : EmailConstant.Subject.Receipt;
 
                 var templateData = new
                 {
                     ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                    EmailTitle = emailSubject,
                     AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                     EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                     ibsOrderId,
@@ -688,6 +699,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tip = _resources.FormatPrice(tip),
                     TipIncentive = _resources.FormatPrice(tipIncentive),
                     TotalFare = _resources.FormatPrice(totalAmount),
+                    AdditionalGratuity = _resources.FormatPrice(additionalGratuity),
                     Note = _serverSettings.ServerData.Receipt.Note + marketSpecificNote,
                     Tax = _resources.FormatPrice(tax),
                     ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
@@ -733,7 +745,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ShowRateClassEnd = rateClassEnd.HasValue,
                     ShowDistance = isCmtRideLinqReceipt,
                     ShowTipIncentive = tipIncentive > 0,
-
+                    ShowAdditionalGratuity = additionalGratuity > 0,
                     vatIsEnabled,
                     HasPaymentInfo = hasPaymentInfo,
                     PaymentAmount = paymentAmount,
@@ -765,7 +777,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     EmailBodyTotalFare = emailBodyTotalFare,
                     EmailBodyRideLinqLastFour = emailBodyRideLinqLastFour,
                     EmailBodyTax = emailBodyTax,
-                    
+                    EmailBodyAdditionalGratuity = emailBodyAdditionalGratuity,
+
                     HasSocialMediaGoogleURL = !_serverSettings.ServerData.SocialMediaGoogleURL.IsNullOrEmpty(),
                     SocialMediaGoogleImg = String.Concat(baseUrls.BaseUrlAssetsImg, "google.png"),
                     SocialMediaGoogleURL = _serverSettings.ServerData.SocialMediaGoogleURL,
@@ -792,7 +805,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     ShowTip = (orderStatusDetail.ServiceType != ServiceType.Luxury),
                 };
 
-                SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
+
+                SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, emailSubject, templateData, clientLanguageCode);
             }
             catch (Exception e)
             {
@@ -1197,6 +1211,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 public const string PasswordReset = "Email_Subject_PasswordReset";
                 public const string Receipt = "Email_Subject_Receipt";
+                public const string UpdatedReceipt = "Email_Subject_UpdatedReceipt";
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
                 public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";

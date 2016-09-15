@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
 #endregion
@@ -27,5 +28,7 @@ namespace apcurium.MK.Booking.Events
         public bool IsCompleted { get; set; }
 
         public string PreviousIBSStatusId { get; set; }
+
+        public ServiceType ServiceType { get; set; }
     }
 }

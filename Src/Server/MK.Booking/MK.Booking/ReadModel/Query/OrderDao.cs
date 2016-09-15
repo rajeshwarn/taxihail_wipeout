@@ -83,7 +83,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     .Where(x => (x.Status == OrderStatus.Created
                                  || x.Status == OrderStatus.Pending
                                  || x.Status == OrderStatus.WaitingForPayment
-                                 || x.Status == OrderStatus.TimedOut)
+                                 || x.Status == OrderStatus.TimedOut
+                                 || (x.Status == OrderStatus.Completed && x.ServiceType == Common.Enumeration.ServiceType.Luxury))
                                 && x.PickupDate >= startDate
                                 && !x.IsManualRideLinq)
                     .ToList();

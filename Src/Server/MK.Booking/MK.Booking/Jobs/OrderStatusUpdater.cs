@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.Jobs
 {
     public class OrderStatusUpdater
     {
+        #region private declarations
+
         private const string FailedCode = "0";
         
         // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
@@ -54,6 +56,9 @@ namespace apcurium.MK.Booking.Jobs
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         private string _languageCode = string.Empty;
+
+        #endregion
+
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
@@ -99,7 +104,7 @@ namespace apcurium.MK.Booking.Jobs
         {
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
             var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-            
+
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail, orderDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail, paymentSettings);
@@ -136,11 +141,20 @@ namespace apcurium.MK.Booking.Jobs
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs, orderDetail);
 
-            CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
+            AutoCompleteOnExtraGratuityTimeout(orderFromIbs, orderStatusDetail);
+
+            if (orderStatusDetail.ServiceType == ServiceType.Luxury
+                && orderStatusDetail.Status != OrderStatus.WaitingForGratuity
+                && orderStatusDetail.Status != OrderStatus.Completed)
+            {
+                CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
+            }
 
 
-            // calculate the tip for both services when order is completed
-            if (orderStatusDetail.Status == OrderStatus.Completed)
+            // calculate the tip for both services when order is initially completed
+            if (orderStatusDetail.Status == OrderStatus.Completed
+                || orderStatusDetail.Status == OrderStatus.FullyCompleted
+                || orderStatusDetail.Status == OrderStatus.WaitingForGratuity)
             {
                 var account = _accountDao.FindById(orderStatusDetail.AccountId);
                 var orderPairingDetails = _orderDao.FindOrderPairingById(orderDetail.Id);
@@ -179,6 +193,37 @@ namespace apcurium.MK.Booking.Jobs
                     Extra = orderFromIbs.Extras
                 });
 
+            }
+        }
+
+        private void AutoCompleteOnExtraGratuityTimeout(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
+        {
+            if (orderStatusDetail.ServiceType == ServiceType.Luxury
+                && (orderStatusDetail.Status == OrderStatus.Completed
+                    || orderStatusDetail.Status == OrderStatus.WaitingForGratuity
+                    || (orderStatusDetail.Status == OrderStatus.Created && orderFromIbs.IsComplete)))
+            {
+                if (orderStatusDetail.WaitingForExtraGratuityStartDate == null)
+                {
+                    orderStatusDetail.Status = OrderStatus.Completed;
+                    orderStatusDetail.WaitingForExtraGratuityStartDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    var span = DateTime.UtcNow.Subtract((DateTime)orderStatusDetail.WaitingForExtraGratuityStartDate);
+
+                    
+                    int buffer = 5; // add a 5 minute buffer on server to give client enough time to abort after timeout expired
+#if DEBUG
+                    buffer = 2; 
+#endif
+
+                    if (span.TotalMinutes >= _serverSettings.ServerData.OrderStatus.ClientPollingGratuityTimePeriod + buffer)
+                    {
+                        // the max amount of time to wait for the extra gratuity has passed, fully complete the order                        
+                        orderStatusDetail.Status = OrderStatus.FullyCompleted;
+                    }
+                }
             }
         }
 
@@ -528,15 +573,18 @@ namespace apcurium.MK.Booking.Jobs
                 orderStatusDetail.Status = OrderStatus.TimedOut;
                 _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
-            else if (ibsOrderInfo.IsComplete)
+            else if (ibsOrderInfo.IsComplete && orderStatusDetail.Status != OrderStatus.Completed && orderStatusDetail.Status != OrderStatus.FullyCompleted)
             {
-                orderStatusDetail.Status = OrderStatus.Completed;
 
                 if (orderStatusDetail.ServiceType == ServiceType.Luxury)
                 {
                     SendInfoAboutGratuity(orderStatusDetail.OrderId);    
                 }
-                
+                else
+                {
+                    orderStatusDetail.Status = OrderStatus.Completed;
+                }
+
                 _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
@@ -779,7 +827,8 @@ namespace apcurium.MK.Booking.Jobs
                 return;
             }
 
-            if (ibsOrderInfo.IsUnloaded)
+            if (ibsOrderInfo.IsUnloaded
+                || (orderStatusDetail.Status == OrderStatus.Created && orderStatusDetail.ServiceType == ServiceType.Luxury))
             {
                 return;
             }
@@ -797,7 +846,7 @@ namespace apcurium.MK.Booking.Jobs
             var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
 
             var bookingFees = 0m;
-            var total = meterAmount + tipAmount;
+            var total = meterAmount + tipAmount + (orderDetail.Gratuity ?? 0);
 
             if (orderStatusDetail.CompanyKey.HasValue())
             {
@@ -842,43 +891,54 @@ namespace apcurium.MK.Booking.Jobs
 
                 var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderStatusDetail.OrderId);
 
-                // Preautorize
                 var preAuthResponse = PreauthorizePaymentIfNecessary(orderDetail, orderStatusDetail.CompanyKey, orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
                 if (preAuthResponse.IsSuccessful)
                 {
+
                     // Commit
-                    var paymentResult = CommitPayment(orderDetail,
-                        totalOrderAmount,
-                        Convert.ToDecimal(meterAmount), 
-                        Convert.ToDecimal(tipAmount),
-                        Convert.ToDecimal(ibsOrderInfo.Toll),
-                        Convert.ToDecimal(ibsOrderInfo.Surcharge),
-                        bookingFees,
-                        orderStatusDetail.OrderId,
-                        promoUsed != null
-                            ? promoUsed.PromoId
-                            : (Guid?) null,
-                        amountSaved,
-                        Convert.ToDecimal(ibsOrderInfo.Fare),
-                        Convert.ToDecimal(ibsOrderInfo.Extras),
-                        Convert.ToDecimal(ibsOrderInfo.VAT),
-                        Convert.ToDecimal(ibsOrderInfo.Discount)
-                        );
-                    if (paymentResult.IsSuccessful)
+                    if (orderStatusDetail.ServiceType == ServiceType.Taxi 
+                        || (orderStatusDetail.ServiceType == ServiceType.Luxury && orderStatusDetail.Status != OrderStatus.WaitingForGratuity))
                     {
-                        _logger.LogMessage("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
-                    }
-                    else
-                    {
-                        if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+                        if (orderStatusDetail.ServiceType == ServiceType.Luxury)
                         {
-                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
+                            // for Luxury service, tipAmount is built into the fare, but customer can add additional gratuity, which is in a separate fields, but should be recorded as tip amount when committing payment
+                            tipAmount = (double)orderDetail.Gratuity;
                         }
 
-                        // set the payment error message in OrderStatusDetail for reporting purpose
-                        orderStatusDetail.PairingError = paymentResult.Message;
+                        var paymentResult = CommitPayment(orderDetail,
+                            totalOrderAmount,
+                            Convert.ToDecimal(meterAmount),
+                            Convert.ToDecimal(tipAmount),
+                            Convert.ToDecimal(ibsOrderInfo.Toll),
+                            Convert.ToDecimal(ibsOrderInfo.Surcharge),
+                            bookingFees,
+                            orderStatusDetail.OrderId,
+                            promoUsed != null
+                                ? promoUsed.PromoId
+                                : (Guid?)null,
+                            amountSaved,
+                            Convert.ToDecimal(ibsOrderInfo.Fare),
+                            Convert.ToDecimal(ibsOrderInfo.Extras),
+                            Convert.ToDecimal(ibsOrderInfo.VAT),
+                            Convert.ToDecimal(ibsOrderInfo.Discount)
+                            );
 
-                        _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                        if (paymentResult.IsSuccessful)
+                        {
+                            _logger.LogMessage("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                        }
+                        else
+                        {
+                            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+                            {
+                                _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
+                            }
+
+                            // set the payment error message in OrderStatusDetail for reporting purpose
+                            orderStatusDetail.PairingError = paymentResult.Message;
+
+                            _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                        }
                     }
                 }
                 else
@@ -906,9 +966,16 @@ namespace apcurium.MK.Booking.Jobs
 
                 _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
             }
-            
+
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-            orderStatusDetail.Status = OrderStatus.Completed;
+            if (orderStatusDetail.ServiceType == ServiceType.Luxury)
+            {
+                orderStatusDetail.Status = OrderStatus.FullyCompleted;
+            }
+            else
+            {
+                orderStatusDetail.Status = OrderStatus.Completed;
+            }
         }
 
         private CommitPreauthorizedPaymentResponse CommitPayment(OrderDetail orderDetail, decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, 
@@ -1164,6 +1231,7 @@ namespace apcurium.MK.Booking.Jobs
                        && _serverSettings.ServerData.Network.Enabled)
                    || (ibsOrderInfo.Status == VehicleStatuses.Common.Arrived  // If the taxi has arrived, 
                       && orderStatusDetail.ServiceType == ServiceType.Luxury) // and the service is Luxury, we need to handle NoShow warnings and fees
+                   || (orderStatusDetail.ServiceType == ServiceType.Luxury && orderStatusDetail.Status == OrderStatus.Completed) // for luxury, order still needs update when waiting for extra gratuity
                    || (orderStatusDetail.VehicleNumber != ibsOrderInfo.VehicleNumber); // sometimes driver bailed, and we got the status assigned 
                                                                                        //directly after the previous status assigned (to the previous driver)
                                                                                        //so we need to check the vehicle number with the previous one

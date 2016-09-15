@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Commands
         public string PromoCode { get; set; }
         public PromoDiscountType PromoDiscountType { get; set; }
         public decimal PromoDiscountValue { get; set; }
+        public bool IsUpatedReceipt { get; set; }
+        public double AdditionalGratuity { get; set; }
 
         public string ClientLanguageCode { get; set; }
 

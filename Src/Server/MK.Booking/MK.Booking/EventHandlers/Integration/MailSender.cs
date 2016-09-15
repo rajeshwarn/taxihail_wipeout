@@ -82,12 +82,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = _orderDao.FindById(@event.SourceId);
                     var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
-
+                    
                     var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                     if (CmtErrorCodes.IsTerminalError(orderStatus.PairingError))
                     {
                         return;
                     }
+
+                    bool isInitialReceipt = (orderStatus.Status == OrderStatus.Completed && orderStatus.ServiceType == ServiceType.Luxury);
 
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
@@ -100,39 +102,80 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             extra: Convert.ToDecimal(@event.Extra ?? 0),
                             surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
-                    else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
+                    else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue()
+                        || isInitialReceipt)
                     {
                         // Send receipt for CMTRideLinq
                         InitializeCmtServiceClient(order.CompanyKey, order.Settings.ServiceType);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
-                        if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
+                        if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue
+                            || isInitialReceipt)
                         {
-							var tollHistory = tripInfo.TollHistory != null
-								? tripInfo.TollHistory.Sum(p => p.TollAmount)
-								: 0;
 
-                            var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tollHistory / 100), 2);
-                            var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
-                            var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
-                            var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
-                            var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
-                            var accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
-                            var fareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2);
+                            var additionalGratuity = (order.Gratuity != null) ? Math.Round(((double)order.Gratuity / 100), 2) : 0;
+                            var isUpdatedReceipt = orderStatus.Status == OrderStatus.FullyCompleted && additionalGratuity > 0;
+
+                            if (orderStatus.Status == OrderStatus.FullyCompleted && !isUpdatedReceipt)
+                            {
+                                // no need to send a second receipt, nothing changed, no additional gratuity was added
+                                return;
+                            }
 
                             var tolls = new List<TollDetail>();
 
-                            if (tripInfo.TollHistory != null)
+                            double tollHistory;
+                            double meterAmount;
+                            double tipAmount;
+                            double tollAmount;
+                            double taxAmount;
+                            double surchargeAmount;
+                            double extraAmount;
+                            double accessFee = 0;
+                            double fareAtAlternateRate = 0;
+
+                            if (isUpdatedReceipt)
                             {
-                                tolls.AddRange(tripInfo.TollHistory.Select(toll =>
-                                    new TollDetail
-                                    {
-                                        TollName = toll.TollName,
-                                        TollAmount = toll.TollAmount
-                                    }));
+                                tollHistory = Math.Round(((double)order.Toll / 100), 2);
+                                tollAmount = Math.Round(((double)order.Toll / 100), 2);
+                                meterAmount = Math.Round(((double)order.Fare / 100), 2);
+                                tipAmount = 0;
+                                taxAmount = Math.Round(((double)order.Tax / 100), 2);
+                                surchargeAmount = Math.Round(((double)order.Surcharge / 100), 2);
+                                extraAmount = Math.Round(((double)order.Extra / 100), 2);
+
                             }
-    
+                            else
+                            {
+                                tollHistory = tripInfo.TollHistory != null
+                                    ? tripInfo.TollHistory.Sum(p => p.TollAmount)
+                                    : 0;
+                                tollAmount = Math.Round(((double)tollHistory / 100), 2);
+                                meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                                tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
+                                taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                                surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
+                                extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                                accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
+                                fareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2);
+
+                                if (tripInfo.TollHistory != null)
+                                {
+                                    tolls.AddRange(tripInfo.TollHistory.Select(toll =>
+                                        new TollDetail
+                                        {
+                                            TollName = toll.TollName,
+                                            TollAmount = toll.TollAmount
+                                        }));
+                                }
+
+                            }
+
+                            if (@event.ServiceType == ServiceType.Luxury)
+                            {
+                                tipAmount = 0; // trip info Tip is the additional gratuity, which will be handled differently on the receipt
+                            }
+
                             SendTripReceipt(@event.SourceId, 
                                 Convert.ToDecimal(meterAmount),
                                 Convert.ToDecimal(tipAmount),
@@ -140,6 +183,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 extra: Convert.ToDecimal(extraAmount),
                                 toll: Convert.ToDecimal(tollAmount),
                                 surcharge: Convert.ToDecimal(surchargeAmount),
+                                isUpdatedReceipt: isUpdatedReceipt,
+                                additionalGratuity: Convert.ToDecimal(additionalGratuity),
                                 cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
                                 {
                                     DriverId = tripInfo.DriverId.ToString(),
@@ -170,7 +215,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 // Don't message user, he will be notified at the end of the ride
                 return;
             }
-
             if (@event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow)
             {
                 SendFeesReceipt(@event.OrderId, @event.Amount, @event.FeeType);
@@ -186,7 +230,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     surcharge: @event.Surcharge,
                     extra: @event.Extra,
                     bookingFees: @event.BookingFees,
-                    amountSavedByPromotion: @event.AmountSavedByPromotion);
+                    amountSavedByPromotion: @event.AmountSavedByPromotion
+                    );
             }
         }
 
@@ -282,13 +327,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         }
 
         private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
-            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null)
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null, 
+            bool isUpdatedReceipt = false, decimal additionalGratuity = 0m)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var order = _orderDao.FindById(orderId);
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);
 
+                if (!isUpdatedReceipt)
+                {
+                    if (orderStatus.ServiceType == ServiceType.Luxury && orderStatus.Status == OrderStatus.FullyCompleted)
+                    {
+                        isUpdatedReceipt = true;
+                    }
+                }
                 if (orderStatus != null)
                 {
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
@@ -339,6 +392,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         orderStatus.DriverInfos.DriverId = cmtRideLinqFields.DriverId;
                     }
 
+                    if (additionalGratuity == 0m)
+                    {
+                        additionalGratuity = Convert.ToDecimal((double)order.Gratuity);
+                    }
+
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                         order,
                         account,
@@ -356,7 +414,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Convert.ToDouble(amountSavedByPromotion),
                         promoUsed,
                         card,
-                        cmtRideLinqFields);
+                        cmtRideLinqFields,
+                        isUpdatedReceipt,
+                        Convert.ToDouble(additionalGratuity));
 
                     _commandBus.Send(command);
                 }

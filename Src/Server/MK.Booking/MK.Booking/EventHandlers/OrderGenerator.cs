@@ -32,9 +32,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AutoTipUpdated>,
         IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>,
-        IEventHandler<OrderGratuityUpdated>,
+        IEventHandler<OrderGratuityTimerUpdated>,
         IEventHandler<OrderUpdatedInTrip>,
-        IEventHandler<RefundedOrderUpdated>
+        IEventHandler<RefundedOrderUpdated>,
+        IEventHandler<OrderGratuityUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -159,7 +160,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.TipIncentive = @event.TipIncentive;
                         order.OriginatingIpAddress = @event.OriginatingIpAddress;
                         order.KountSessionId = @event.KountSessionId;
-
                         context.SaveChanges();
                     }
                     else
@@ -332,6 +332,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.RideLinqPairingCode = @event.Status.RideLinqPairingCode;
                         details.TaxiAssignedDate = @event.Status.TaxiAssignedDate;
                         details.NoShowStartTime = @event.Status.NoShowStartTime;
+                        details.WaitingForExtraGratuityStartDate = @event.Status.WaitingForExtraGratuityStartDate;
                     }
                     else
                     {
@@ -799,6 +800,40 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(OrderGratuityUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order == null)
+                {
+                    return;
+                }
+                order.Gratuity = (double)@event.Amount;
+                //order.Status = (int)OrderStatus.
+                
+                context.Save(order);
+
+                var orderStatusDetails = context.Find<OrderStatusDetail> (@event.SourceId);
+                orderStatusDetails.WaitingForExtraGratuityStartDate = DateTime.UtcNow.AddMinutes(0 - (_serverSettings.ServerData.OrderStatus.ClientPollingGratuityTimePeriod + 5));
+                context.Save(orderStatusDetails);
+            }
+        }
+
+
+
+        public void Handle(OrderGratuityTimerUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderStatusDetail>(@event.SourceId);
+                order.WaitingForExtraGratuityStartDate = @event.WaitingForExtraGratuityStartDate;
+                context.Save(order);
+            }
+
+        }
+
+
         public void Handle(OrderNotificationDetailUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -832,16 +867,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 context.Save(orderNotificationDetail);
-            }
-        }
-
-        public void Handle(OrderGratuityUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Gratuity = (double?) @event.Amount;
-                context.Save(order);
             }
         }
 
