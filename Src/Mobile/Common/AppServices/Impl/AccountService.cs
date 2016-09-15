@@ -243,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			var cached = UserCache.Get<Address[]> (FavoriteAddressesCacheKey);
 
-			if (cached != null)
+			if (cached != null && cached.Any())
 			{
 				return cached;
 			}

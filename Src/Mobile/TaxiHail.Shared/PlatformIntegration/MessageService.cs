@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
@@ -340,18 +341,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return tcs.Task;
         }
 
-        public bool ShowToast(string message)
+
+        public Task<bool> ShowToast(string message)
         {       
-            bool success = false;
+            Debug.Assert(Context.Activity == null, "The Context.Activity is null");
 
-            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+            if (Debugger.IsAttached && Context.Activity == null)
+            {
+                Debugger.Break();
+            }
 
-            dispatcher.RequestMainThreadAction(() => 
-                {
-                    success = ToastHelper.Show(Context.Activity, message);
-                });
-
-            return success;
+            return ToastHelper.Show(Context.Activity, message);
         }
 
         public void DismissToast()

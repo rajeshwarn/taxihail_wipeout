@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TService : class
+		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, bool alwaysRethrow = false, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TService : class
 		{
 			var service = TinyIoCContainer.Current.Resolve<TService>();
 
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					errorHandler (ex);
 					handled = true;
 				} 
-				if (!handled)
+				if (!handled || alwaysRethrow)
                 {
 					throw;
 				}

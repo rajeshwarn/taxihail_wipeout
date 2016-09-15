@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 using Connectivity.Plugin;
 
@@ -10,6 +12,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         private readonly IMessageService _messageService;
         private readonly ILocalization _localize;
         private bool _isDisplayed = false;
+
+        object _lock = new object();
+
+
 
         public ConnectivityService(IMessageService messageService, ILocalization localize)
         {
@@ -24,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         }
 
-        public void HandleToastInNewView()
+        public async void HandleToastInNewView()
         {
             if (IsConnected)
             {
@@ -34,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             else
             {
                 _messageService.DismissToast();
-                _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                _isDisplayed = await _messageService.ShowToast(_localize["NoConnectionMessage"]).HandleErrors();
             }
         }
 
@@ -43,13 +49,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             _isDisplayed = false;
         }
 
-        public void ShowToast()
+        public async void ShowToast()
         {
             if (!_isDisplayed)
             {
-                _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                _isDisplayed = await _messageService.ShowToast(_localize["NoConnectionMessage"]).HandleErrors();
             }
         }
+
+
 
         private bool _isConnected = true;
         public bool IsConnected
@@ -60,22 +68,44 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             }
             private set
             {
-                if (_isConnected != value)
+                if (_isConnected == value)
                 {
-                    _isConnected = value;
+                    return;
+                }
 
-                    if (IsConnected)
+
+                _isConnected = value;
+
+                if (_isConnected)
+                {
+                    _messageService.DismissToast();
+
+                    lock (_lock)
                     {
-                        _messageService.DismissToast();
                         _isDisplayed = false;
                     }
-                    else
+                }
+                else
+                {
+                    lock (_lock)
                     {
-                        if (!_isDisplayed)
+                        if (_isDisplayed)
                         {
-                            _isDisplayed = _messageService.ShowToast(_localize["NoConnectionMessage"]);
+                            return;
                         }
                     }
+
+                    _messageService.ShowToast(_localize["NoConnectionMessage"])
+                        .ContinueWith(async task =>
+                        {
+                            var isSuccess = await task;
+
+                            lock (_lock)
+                            {
+                                _isDisplayed = isSuccess;
+                            }
+                        }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                        .FireAndForget();
                 }
             }
         }
