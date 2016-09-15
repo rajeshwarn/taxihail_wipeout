@@ -1,4 +1,4 @@
-﻿3.1.5
+3.1.5
 	Added auto-follow cancellation to iOS
 	Fixed issue where wrong message was given when auto-pairing was not disabled
 	Fixed issue where Taxi Icon appears after cancellation
@@ -406,3 +406,5 @@ Version bump 3.3.1
 3.5.34
 	TAX-37 Upgraded PushSharp from 2.2.1 to 4.0.10 so that push notifications on iOS would work using Apple's new certificate type. 
 	Updated the PushNotificationService to work with the changes to the broker model in PushSharp 4.0.10.
+	TAX-123 Fixed crash and navigation when we have connection issues with Kiosk
+	TAX-139 Fixed issue with crash caused by older Facebook SDK and missing entries in info.plist file.
