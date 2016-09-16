@@ -117,9 +117,11 @@ namespace apcurium.MK.Web.Tests
 
             using (var context = ConfigurationContextFactory.Invoke())
             {
-                var settings = context.Set<ServerPaymentSettings>().First();
+                var paymentSettings = context.Set<ServerPaymentSettings>().First();
 
-                settings.EnableAddressVerification = true;
+                paymentSettings.EnableAddressVerification = true;
+                paymentSettings.AskForCVVAtBooking = true;
+                
 
                 context.SaveChanges();
             }
