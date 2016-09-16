@@ -114,13 +114,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         {
 
                             var additionalGratuity = (order.Gratuity != null) ? Math.Round(((double)order.Gratuity / 100), 2) : 0;
-                            var isUpdatedReceipt = orderStatus.Status == OrderStatus.FullyCompleted && additionalGratuity > 0;
+                            //var isUpdatedReceipt = orderStatus.Status == OrderStatus.FullyCompleted && additionalGratuity > 0;
 
-                            if (orderStatus.Status == OrderStatus.FullyCompleted && !isUpdatedReceipt)
-                            {
-                                // no need to send a second receipt, nothing changed, no additional gratuity was added
-                                return;
-                            }
+                            //if (orderStatus.Status == OrderStatus.FullyCompleted && !isUpdatedReceipt)
+                            //{
+                            //    // no need to send a second receipt, nothing changed, no additional gratuity was added
+                            //    return;
+                            //}
 
                             var tolls = new List<TollDetail>();
 
@@ -133,17 +133,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             double extraAmount;
                             double accessFee = 0;
                             double fareAtAlternateRate = 0;
+                            SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null;
 
-                            if (isUpdatedReceipt)
+                            if (isInitialReceipt)
                             {
-                                tollHistory = Math.Round(((double)order.Toll / 100), 2);
-                                tollAmount = Math.Round(((double)order.Toll / 100), 2);
-                                meterAmount = Math.Round(((double)order.Fare / 100), 2);
+                                tollHistory = Math.Round(((double)order.Toll), 2);
+                                tollAmount = Math.Round(((double)order.Toll), 2);
+                                meterAmount = Math.Round(((double)order.Fare), 2);
                                 tipAmount = 0;
-                                taxAmount = Math.Round(((double)order.Tax / 100), 2);
-                                surchargeAmount = Math.Round(((double)order.Surcharge / 100), 2);
-                                extraAmount = Math.Round(((double)order.Extra / 100), 2);
-
+                                taxAmount = Math.Round(((double)order.Tax), 2);
+                                surchargeAmount = Math.Round(((double)order.Surcharge), 2);
+                                extraAmount = Math.Round(((double)order.Extra), 2);
                             }
                             else
                             {
@@ -169,6 +169,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                         }));
                                 }
 
+                                cmtRideLinqFields = new SendReceipt.CmtRideLinqReceiptFields
+                                {
+                                    DriverId = tripInfo.DriverId.ToString(),
+                                    PickUpDateTime = tripInfo.StartTime,
+                                    DropOffDateTime = tripInfo.EndTime,
+                                    TripId = tripInfo.TripId,
+                                    Distance = tripInfo.Distance,
+                                    LastFour = tripInfo.LastFour,
+                                    AccessFee = accessFee,
+                                    FareAtAlternateRate = fareAtAlternateRate,
+                                    RateAtTripEnd = tripInfo.RateAtTripEnd,
+                                    RateAtTripStart = tripInfo.RateAtTripStart,
+                                    Tolls = tolls.ToArray(),
+                                    TipIncentive = order.TipIncentive ?? 0
+                                };
+
                             }
 
                             if (@event.ServiceType == ServiceType.Luxury)
@@ -183,23 +199,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 extra: Convert.ToDecimal(extraAmount),
                                 toll: Convert.ToDecimal(tollAmount),
                                 surcharge: Convert.ToDecimal(surchargeAmount),
-                                isUpdatedReceipt: isUpdatedReceipt,
                                 additionalGratuity: Convert.ToDecimal(additionalGratuity),
-                                cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
-                                {
-                                    DriverId = tripInfo.DriverId.ToString(),
-                                    PickUpDateTime = tripInfo.StartTime,
-                                    DropOffDateTime = tripInfo.EndTime,
-                                    TripId = tripInfo.TripId,
-                                    Distance = tripInfo.Distance,
-                                    LastFour = tripInfo.LastFour,
-                                    AccessFee = accessFee,
-                                    FareAtAlternateRate = fareAtAlternateRate,
-                                    RateAtTripEnd = tripInfo.RateAtTripEnd,
-                                    RateAtTripStart = tripInfo.RateAtTripStart,
-                                    Tolls = tolls.ToArray(),
-                                    TipIncentive = order.TipIncentive ?? 0
-                                });
+                                cmtRideLinqFields: cmtRideLinqFields);
                         }
                     }
                 } 
@@ -392,33 +393,36 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         orderStatus.DriverInfos.DriverId = cmtRideLinqFields.DriverId;
                     }
 
-                    if (additionalGratuity == 0m)
+                    if (additionalGratuity == 0m && order.Gratuity != null)
                     {
                         additionalGratuity = Convert.ToDecimal((double)order.Gratuity);
                     }
 
+
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
-                        order,
-                        account,
-                        ibsOrderId,
-                        orderStatus.VehicleNumber,
-                        orderStatus.DriverInfos,
-                        Convert.ToDouble(fare),
-                        Convert.ToDouble(toll),
-                        Convert.ToDouble(extra),
-                        Convert.ToDouble(surcharge),
-                        Convert.ToDouble(bookingFees),
-                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
-                        Convert.ToDouble(tax),
-                        orderPayment,
-                        Convert.ToDouble(amountSavedByPromotion),
-                        promoUsed,
-                        card,
-                        cmtRideLinqFields,
-                        isUpdatedReceipt,
-                        Convert.ToDouble(additionalGratuity));
+                    order,
+                    account,
+                    ibsOrderId,
+                    orderStatus.VehicleNumber,
+                    orderStatus.DriverInfos,
+                    Convert.ToDouble(fare),
+                    Convert.ToDouble(toll),
+                    Convert.ToDouble(extra),
+                    Convert.ToDouble(surcharge),
+                    Convert.ToDouble(bookingFees),
+                    orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
+                    Convert.ToDouble(tax),
+                    orderPayment,
+                    Convert.ToDouble(amountSavedByPromotion),
+                    promoUsed,
+                    card,
+                    cmtRideLinqFields,
+                    isUpdatedReceipt,
+                    Convert.ToDouble(additionalGratuity));
 
                     _commandBus.Send(command);
+
+                    
                 }
             }
         }
