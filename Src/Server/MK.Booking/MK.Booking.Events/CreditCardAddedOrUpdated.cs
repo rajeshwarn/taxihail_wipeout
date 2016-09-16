@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common;
 using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
@@ -14,5 +15,11 @@ namespace apcurium.MK.Booking.Events
         public string CreditCardCompany { get; set; }
         public string Label { get; set; }
         public string ZipCode { get; set; }
+
+        public string StreetNumber { get; set; }
+        public string StreetName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public CountryISOCode Country { get; set; }
     }
 }

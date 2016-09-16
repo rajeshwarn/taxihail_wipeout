@@ -1,28 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PhoneNumberModel
+	public class PhoneNumberModel
     {
-        CountryISOCode country;
+		CountryISOCode _country;
 
-        string phoneNumber;
+		string _phoneNumber;
 
         public CountryISOCode Country
         {
             get
             {
-                return country;
+                return _country;
             }
 
             set
             {
-                country = value;
+                _country = value;
                 PhoneNumberDatasourceChangedCallEvent();
             }
         }
@@ -31,11 +28,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return phoneNumber;
+                return _phoneNumber;
             }
             set
             {
-                phoneNumber = value;
+                _phoneNumber = value;
                 PhoneNumberDatasourceChangedCallEvent();
             }
         }
@@ -46,29 +43,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void PhoneNumberDatasourceChangedCallEvent()
         {
-            if (PhoneNumberDatasourceChanged != null)
-                PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { Country = country, PhoneNumber = phoneNumber });
+			if (PhoneNumberDatasourceChanged != null)
+			{
+				PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { Country = _country, PhoneNumber = _phoneNumber });
+			}
         }
 
         public void NotifyChanges(object sender, PhoneNumberChangedEventArgs e)
         {
-            this.country = e.Country;
+			_country = e.Country;
 
             if (e.PhoneNumber != null)
             {
-                this.phoneNumber = e.PhoneNumber;
+                _phoneNumber = e.PhoneNumber;
             }
         }
 
         public bool IsNumberPossible()
         {
-            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Country));
-            return PhoneHelper.IsPossibleNumber(countryCode, PhoneNumber);
+			return PhoneHelper.IsPossibleNumber(Country, PhoneNumber);
         }
 
         public string GetPhoneExample()
         {
-            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Country));
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Country));
             return countryCode.GetPhoneExample();
         }
     }

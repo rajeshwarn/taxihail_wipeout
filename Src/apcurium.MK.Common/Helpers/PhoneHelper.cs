@@ -4,6 +4,12 @@ namespace apcurium.MK.Common.Helpers
 {
     public static class PhoneHelper
     {
+		public static bool IsPossibleNumber(CountryISOCode countryCode, string phoneNumber)
+		{
+			var country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode));
+			return IsPossibleNumber(country, phoneNumber);
+		}
+
         public static bool IsPossibleNumber(CountryCode countryCode, string phoneNumber)
         {
             return countryCode.IsValid() && libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, countryCode.CountryISOCode.Code);

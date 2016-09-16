@@ -2428,5 +2428,23 @@
   </data>
   <data name="RideSettingsLastCreditCardDeletion" xml:space="preserve">
     <value>Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a taxi.</value>
+  </data>  
+  <data name="CreditCardAdd_StreetNameLabel" xml:space="preserve">
+	<value>Numero</value>
+  </data>
+  <data name="CreditCardAdd_StreetNumberLabel" xml:space="preserve">
+	<value>Rue</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_Title" xml:space="preserve">
+	<value>Confirmer votre carte de credit</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_Message" xml:space="preserve">
+	<value>Êtes-vous sûr de vouloir utiliser la carte {0} finissant avec {1} et expirant le {2}/{3}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_withNickname_Message" xml:space="preserve">
+	<value>Êtes-vous sûr de vouloir utiliser la carte de credit nommer {0}?</value>
+  </data>
+  <data name="ConfirmCreditCardOfOrder_ChangeCreditCard" xml:space="preserve">
+	<value>Carte differente</value>
   </data>
 </root>

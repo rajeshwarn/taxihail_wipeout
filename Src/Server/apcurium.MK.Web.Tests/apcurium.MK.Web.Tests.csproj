@@ -72,8 +72,8 @@
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1312.1622\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -218,6 +218,10 @@
     <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
       <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
       <Name>MK.Booking.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking.Events\MK.Booking.Events.csproj">
+      <Project>{1D5CC591-D706-4F4E-B4BD-805A191999D7}</Project>
+      <Name>MK.Booking.Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>

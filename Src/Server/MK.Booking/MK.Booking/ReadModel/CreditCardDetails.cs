@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         public CreditCardDetails()
         {
-            Label = CreditCardLabelConstants.Personal.ToString();
+            Country = new CountryISOCode();
         }
 
         [Key]
@@ -34,6 +34,16 @@ namespace apcurium.MK.Booking.ReadModel
         public string ExpirationYear { get; set; }
 
         public bool IsDeactivated { get; set; }
+
+        public string StreetNumber { get; set; }
+
+        public string StreetName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
+        
+        public CountryISOCode Country { get; set; }
 
         public bool IsExpired()
         {

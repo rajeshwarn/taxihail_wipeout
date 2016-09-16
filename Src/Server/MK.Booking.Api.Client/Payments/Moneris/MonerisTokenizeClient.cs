@@ -7,6 +7,7 @@ using System.Collections;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
@@ -30,9 +31,36 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
             return request.GetReceipt();
 	    }
 
-		public async Task<Receipt> TokenizeAsync(string cardNumber, string expirationDate)
+		public async Task<Receipt> TokenizeAsync(
+			string cardNumber, 
+			string expirationDate, 
+			string cvv, 
+			string streetNumber,
+			string streetName,
+			string zipCode,
+			string email,
+			string phone)
 		{
 			var tokenizeCommand = new ResAddCC(cardNumber, expirationDate, CryptType_SSLEnabledMerchant);
+		    if (streetName.HasValueTrimmed() && streetNumber.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetAvsAddress(streetName, streetNumber);
+            }
+
+			tokenizeCommand.SetAvsZipCode(zipCode);
+
+		    if (email.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetEmail(email);
+            }
+
+		    if (phone.HasValueTrimmed())
+		    {
+                tokenizeCommand.SetPhone(phone);
+            }
+			
+			tokenizeCommand.SetCvv(cvv, "1");
+
 			var request = new HttpsPostRequest(_settings.Host, _settings.StoreId, _settings.ApiToken, tokenizeCommand, _logger);
 			return await request.GetReceiptAsync ();
 		}
@@ -761,14 +789,21 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 				this.transactionParams.Add((object)"crypt_type", (object)crypt_type);
 			}
 
-			public void SetAvsAddress(string avs_address)
+			public void SetAvsAddress(string streetName, string streetNumber)
 			{
-				this.transactionParams.Add((object)"avs_address", (object)avs_address);
+				this.transactionParams.Add((object)"avs_street_name", (object)streetName);
+				this.transactionParams.Add((object)"avs_street_number", (object)streetNumber);
 			}
 
 			public void SetAvsZipCode(string avs_zipcode)
 			{
 				this.transactionParams.Add((object)"avs_zipcode", (object)avs_zipcode);
+			}
+
+			public void SetCvv(string cvv, string cvdIndicator)
+			{
+				this.transactionParams.Add((object)"cvd_indicator", (object)cvdIndicator);
+				this.transactionParams.Add((object)"cvd_value", (object)cvv);
 			}
 
 			public void SetCustId(string cust_id)

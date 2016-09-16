@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPhoneService _phoneService;
 
 		private bool _hasPaymentToSettle;
-		private CreditCardLabelConstants _originalLabel;
+		private string _originalLabel;
 
 		public CreditCardAddViewModel(
 			ILocationService locationService,
@@ -73,6 +74,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			public static int AvcCvvCvv2 = 135;
 			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
 			public static string ZipCode = "95001";
+
+			public static string StreetName = "Mile-End";
+			public static string StreetNumber = "7250";
 		}
 
 		public void Init(bool showInstructions = false, 
@@ -158,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					IsAddingNewCard = true;
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
-					Data.Label = CreditCardLabelConstants.Personal;
+					Data.Label = string.Empty;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;
@@ -178,7 +182,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ExpirationMonth = DummyVisa.ExpirationDate.Month;
 					ExpirationYear = DummyVisa.ExpirationDate.Year;
-					#endif         
+
+					Data.StreetName = DummyVisa.StreetName;
+					Data.StreetNumber = DummyVisa.StreetNumber;
+					#endif
+
+					Data.Email = _accountService.CurrentAccount.Email;
+					Data.Phone = _accountService.CurrentAccount.Settings.Phone;
+					Data.Country = _accountService.CurrentAccount.Settings.Country;
 				}
 				else
 				{
@@ -190,6 +201,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 					Data.Label = creditCard.Label;
 					Data.ZipCode = creditCard.ZipCode;
+
+					Data.Email = creditCard.Email;
+					Data.Phone = creditCard.Phone;
+					Data.Country = creditCard.Country;
+					Data.StreetName = creditCard.StreetName;
+					Data.StreetNumber = creditCard.StreetNumber;
 
 					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
 					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
@@ -208,6 +225,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CanDeleteCreditCard);
 				RaisePropertyChanged(() => IsPayPalOnly);
 				RaisePropertyChanged (() => CanSetCreditCardAsDefault);
+				RaisePropertyChanged(() => SelectedCountryCode);
+				RaisePropertyChanged(() => Phone);
 
 				if (_hasPaymentToSettle)
 				{
@@ -218,6 +237,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					await GoToOverduePayment();
 				}
+			}
+		}
+
+		public string Phone
+		{
+			get
+			{
+				return Data.Phone;
+			}
+
+			set
+			{
+				Data.Phone = value;
+
+				RaisePropertyChanged();
+			}
+		}
+
+		public CountryCode[] CountryCodes
+		{
+			get
+			{
+				return CountryCode.CountryCodes;
+			}
+		}
+
+		public CountryCode SelectedCountryCode
+		{
+			get
+			{
+				return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Data.Country));
+			}
+			set
+			{
+				Data.Country = value.CountryISOCode;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -676,6 +731,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if (PaymentSettings.EnableContactVerification && Params.Get(Data.Email, Phone).Any(x => x.IsNullOrEmpty()))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+					return;
+				}
+
+				if (PaymentSettings.EnableContactVerification && !PhoneHelper.IsPossibleNumber(SelectedCountryCode, Phone))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+						string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], SelectedCountryCode.GetPhoneExample()));
+					return;
+				}
+
+				if (PaymentSettings.EnableAddressVerification && Params.Get(Data.StreetName, Data.StreetNumber).Any(x => x.IsNullOrEmpty()))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+					return;
+				}
+
 				if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
@@ -695,7 +769,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					if (success)
 					{
-						_deviceCollectorService.GenerateNewSessionIdAndCollect();
+						await _deviceCollectorService.GenerateNewSessionIdAndCollect();
 
 						UnlinkPayPalAccount(true);
 

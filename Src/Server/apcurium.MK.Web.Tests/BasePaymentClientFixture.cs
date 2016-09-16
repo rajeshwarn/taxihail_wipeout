@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Tests
 
         protected Func<DbContext> ContextFactory { get; set; }
 
-        private TestCreditCards TestCreditCards { get; set; }
+        protected TestCreditCards TestCreditCards { get; private set; }
 
         protected abstract IPaymentServiceClient GetPaymentClient();
         protected abstract PaymentProvider GetProvider();
@@ -127,7 +127,10 @@ namespace apcurium.MK.Web.Tests
                     CreditCardId = creditCardId,
                     AccountId = TestAccount.Id,
                     CreditCardCompany = "Visa",
-                    Token = token
+                    Token = token, 
+                    Country = new CountryISOCode("CA"),
+                    Email = testAccount.Email,
+                    Phone = "5145552222",
                 });
 
                 context.Set<OrderDetail>().Add(new OrderDetail

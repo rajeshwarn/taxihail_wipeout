@@ -76,7 +76,12 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.ExpirationYear,
                 command.Token,
                 command.Label,
-                command.ZipCode);
+                command.ZipCode,
+                command.StreetNumber,
+                command.StreetName,
+                command.Email,
+                command.Phone,
+                command.Country);
             _repository.Save(account, command.Id.ToString());
         }
 

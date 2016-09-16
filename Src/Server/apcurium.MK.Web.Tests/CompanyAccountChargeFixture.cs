@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
             _sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
         }
 
-        [Test]
+        [Test, Ignore("Set to ignore because of a bug on CabmateDemo's server")]
         public void AddAndGetAccountCharge()
         {
             var request = new AccountChargeRequest
@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Tests
             Assert.Throws<WebServiceException>(() => _sut.GetAccountCharge("UNKNOWN"));
         }
 
-        [Test]
+        [Test, Ignore("Set to ignore because of a bug on CabmateDemo's server")]
         public void UpdatedAccountCharge()
         {
             var request = new AccountChargeRequest

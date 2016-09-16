@@ -133,7 +133,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
@@ -326,6 +326,14 @@
     <Compile Include="Migrations\201608111527226_Configuration_TAX_47.cs" />
     <Compile Include="Migrations\201608111527226_Configuration_TAX_47.Designer.cs">
       <DependentUpon>201608111527226_Configuration_TAX_47.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608231438234_Configuration_TAX_125.cs" />
+    <Compile Include="Migrations\201608231438234_Configuration_TAX_125.Designer.cs">
+      <DependentUpon>201608231438234_Configuration_TAX_125.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608291839402_Booking_TAX_125.cs" />
+    <Compile Include="Migrations\201608291839402_Booking_TAX_125.Designer.cs">
+      <DependentUpon>201608291839402_Booking_TAX_125.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
@@ -548,6 +556,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608111527226_Configuration_TAX_47.resx">
       <DependentUpon>201608111527226_Configuration_TAX_47.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608231438234_Configuration_TAX_125.resx">
+      <DependentUpon>201608231438234_Configuration_TAX_125.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608291839402_Booking_TAX_125.resx">
+      <DependentUpon>201608291839402_Booking_TAX_125.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
