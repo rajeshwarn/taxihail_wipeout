@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -54,9 +55,12 @@ namespace apcurium.MK.Web.Tests
             TestCreditCards = new TestCreditCards(settings);
             var connectionString = ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString;
             ContextFactory = () => new BookingDbContext(connectionString);
+            ConfigurationContextFactory = () => new ConfigurationDbContext(connectionString);
         }
 
         protected Func<DbContext> ContextFactory { get; set; }
+
+        protected Func<DbContext> ConfigurationContextFactory { get; set; }
 
         protected TestCreditCards TestCreditCards { get; private set; }
 

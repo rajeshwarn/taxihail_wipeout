@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.Moneris;
@@ -93,8 +94,6 @@ namespace apcurium.MK.Web.Tests
         {
             var orderId = Guid.NewGuid();
             var visa = TestCreditCards.Visa;
-
-
             
             var tokenizedResult = await GetPaymentClient().Tokenize("4242424242424242",
                 visa.NameOnCard,
@@ -116,10 +115,21 @@ namespace apcurium.MK.Web.Tests
 
             var ccId = Guid.NewGuid();
 
+            using (var context = ConfigurationContextFactory.Invoke())
+            {
+                var paymentSettings = context.Set<ServerPaymentSettings>().First();
+
+                paymentSettings.EnableAddressVerification = true;
+                paymentSettings.AskForCVVAtBooking = true;
+                
+
+                context.SaveChanges();
+            }
+
             using (var context = ContextFactory.Invoke())
             {
                 context.Set<CreditCardDetails>().Add(new CreditCardDetails()
-                       {
+                {
                     Label = string.Empty,
                     AccountId = TestAccount.Id,
                     Country = new CountryISOCode("CA"),
@@ -138,7 +148,7 @@ namespace apcurium.MK.Web.Tests
                 });
 
                 context.Set<OrderDetail>().Add(new OrderDetail()
-                       {
+                {
                     Id = orderId,
                     IBSOrderId = 9999252,
                     ClientLanguageCode = "en",
