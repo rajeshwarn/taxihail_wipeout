@@ -675,3 +675,8 @@
 	Updated the PushNotificationService to work with the changes to the broker model in PushSharp 4.0.10.
 	TAX-123 Fixed crash and navigation when we have connection issues with Kiosk
 	TAX-139 Fixed issue with crash caused by older Facebook SDK and missing entries in info.plist file.
+3.5.35
+	Fixed issue with SetVersion.ps1 when running it on Mac (Opensourced version of Powershell)
+
+3.5.36
+	Fixed build issue introduced in 3.5.34 (iOS)
