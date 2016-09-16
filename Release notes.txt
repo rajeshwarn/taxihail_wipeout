@@ -198,21 +198,29 @@
 3.1.37
 	Custom strings change for EastsideForARide
 3.1.38
+	Tuesday December 9, 2014
 	Custom strings change
 	
 3.2.0
+	Thursday October 29, 2015
 	Add - App rating
+	
 3.2.1
+	Thursday October 29, 2015
 	Fixed duplicate destination button
 	Bug fix - Fixed issue where the app would check at the wrong place for the AuthenticationData. Now correctly obtaining the SessionId.
 	String change
 	Bug fix - Crash on login with SSL on iOS
+
 3.2.2
+	Thursday November 9, 2015
 	Bug fix- Fix problem in ReportDetailGenerator where 2 events could be handled at the same time and one would fail to write to db
 	Bug fix - Fixed account confirmation page
 	Improved Memory usage
 	Added log file presence check added;
+
 3.2.3
+	Monday November 9, 2015
 	Store/update dispatcher settings for a specific market
 	Bug fix - Fixed issue where the AccountConfirmationView would bounce horizontally on iOS8 and iOS9
 	Bug fix - Fixed odd coloured bar.
@@ -236,7 +244,9 @@
 	Localization update
 	Bug fix - Text issue on Order Review
 	Fix tag list and use saveBookOrder_10
+
 3.2.4
+	Thursday November 12, 2015
 	Merge pull request #224 from apcurium/MKTAXI-3433_Android_Black_screen_after_login
 	Fixed issue where app would use an authenticated call before verifying that it was once logged before.
 	BlakcBerry Set build target framework to 21
@@ -251,30 +261,45 @@
 	Added - Notification of pairing failure to user
 	String changes
 	Added - Casco - Modified receipts to add extra fields (Driver photo, vehicle color, vehicle plate, etc.)
+	
 3.2.5
+	Thursday November 12, 2015
 	Added Callbox to Taxihail solution
 	Bug fix - Fixed logger causing application to freeze on startup.
 	Bug fix - Fixed deployment tool Android
+	
 3.2.6
+	Wednesday November 25, 2015
 	Bug fix - Problem with deployment service for building blackberry
 	Bug fix - When finding you a taxi is not at the top of order status control when order number not shown
 	Fix build
+
 3.2.7
+	Tuesday December 1, 2015
 	Bug fix - Fixed deployment service for BlackBerry
 	Bug fix - Order report - Aggregate id issue
 	Bug fix - Driver photo not displayed
 	Bug fix - FourSquare Image Partially Hidden
+	
 3.2.8
 	Fixed build
+
 3.2.9
+	Friday December 4, 2015
 	Add localization for CCI for Tolls field + add Tolls field to receipt email
 	Updated wsdl
+
 3.2.10
+	Friday December 4, 2015
 	Updated constraints now tip and card name are displayed correctly
 	change description time out settings + removed unused comment
+
 3.2.11
+	Friday December 4, 2015
 	Resize app for Central Niagara only
+	
 3.2.12
+	Tuesday December 8, 2015	
 	Bug fix - Callbox - With only one order in queue, the user is sent back to the home screen/unable to cancel
 	Bug fix - If you enter a wrong sms code during account activation, the translation string is not correct: CreateAccount_InvalidConfirmationToken 
 	Bug fix - Driver bonus - Dragging the slider will cause it to jump back and forth
@@ -288,59 +313,95 @@
 	Bug fix -  tip and card name are displayed correctly need to check that modifying the constraints has not break anything
 	Bug fix - Fixed issue where full linker was not enabled for AdHoc and Appstore.
 	Fetch of network fleets in local market should also return fleetid like roaming fleets
+
 3.2.13
 	Debug - Change configuration to not build Android projects while building iOS related configs
+	Tuesday December 8, 2015
+
 3.2.14
+	Tuesday December 8, 2015
 	Debug - Remove full linker on AdHoc for testing
+
 3.2.15
+	Wednesday December 9, 2015
 	UI and performance/memory improvements on iOS 
 	Fix problem with iOS street number picker not working
 3.2.16
+	Thurdsay December 10, 2015
 	Version for Central Niagara only
+
 3.2.18
+	Friday December 11, 2015
 	Bug fix - on how we get the service URL
 	Build fix
+
 3.2.19
+	Monday December 14, 2015
 	Change "Cancel this Order" unpair button label to "Cancel Order" to fit smaller iOS devices
 	Remove log when VerifyAppVersion throws an exception
 	When changing server url, it's ok for GetSettings to throw an exception to alert the dev that the server doesn't exist and revert server url
 3.2.20
+	Tuesday December 15, 2015
 	UI fix
 	If the order creation fails because of anything else than a bad request, show the generic error message instead of showing nothing and aborting
 	Bug fix - Fix vehicles available on web (only 1 cab was showing up)
+
 3.2.21
+	Wednesday December 16, 2015
 	Bug fix - Fix issue were on CC decline on eHail trip, the user was not notified
 	Bug fix - Adress picker issue on Android
+
 3.2.22
+	Tuesday January 5, 2016
 	Bug fix - Fix unpairing; always trying to call local ibs
 	Bug fix - Fix iOS 9 crash with popup at startup of app
 	Bug fix - Fix the way we check for minimum app version server-side
 	Bug fix - Fix Account Confirmation view on iOS (constraints not correct)
 	Add more stuff to the CustomLinker.xml file (fixes registration issue)
+
 3.2.23
+	Tuesday January 5. 2016
 	Updated MapBox to version 3.0
+	
 3.2.24
+	Monday January 11, 2016
 	History detail - Cannot cancel scheduled order
 	EastsideForARide - Custom strings
-Version bump 3.3.1
-	Addes possibility to acces "Pay in Car" for web order only
+
+3.3.1
+	Monday December 21, 2015
+	Adds possibility to acces "Pay in Car" for web order only
+
+3.5.12	
+	Friday April 8, 2016
+	
+3.5.13
+	Thursday April 14, 2016
+	ARRO-1063 - Arro TaxiHail 3.5.13 crashes when calculating Fare Estimate
+	ARRO-1062 - Royal Taxi Changing Destination...
+	
 3.5.14
+	Monday June 6, 2016
 	Bug Fix - Fix iOS 9 crash when attempting  to select a destination.
 	QappMe - Missing ApplicationName string in language file (reverting to TaxiHail).
 	
 3.5.15 
+	Thursday June 9, 2016
 	ARRO-1009 - theRide ES - CreateOrder request to specify which vehicle.
 
 3.5.16 
+	Monday June 13, 2016
 	HotFix - Honey Badger was being polled incorrectly after vehicle assignment.	
 
 3.5.17
+	Friday June 17, 2016
 	TAX-46 Keolis (Yellowcab OC) created a new resource file for Yellowcab OC Kiosk (Yellowcab OC Kiosk.resx) 
 	Updated text in new file and existing resource file (Yellowcab OC.resx) to include the word "available"
 	TAX-68 QappMe issues identified in defect plus all other new requests regarding the email receipt and booking confirmation where were informally reported have been addressed.
 	Modified Address.cs file to allow DisplayAddress to be formattable for Netherlands format (StreetName Stree Number, Postal Code City, State
 
 3.5.18
+	Sunday July 10, 2016
 	TAX-42 There are two new company settings to address the issues identified in this defect:
 	NumberOfPreferredPlacesToShow, controls the number of popular places defined in the company settings to show at the top of the list of popular places returned by the mapping API
 	The number selected will be placed at the top of the list regardless of proximity, and the remaining popular places will be appended (up to a maximum of 15 places) and 
@@ -349,41 +410,54 @@ Version bump 3.3.1
 	Options are search, places and favorites
 
 3.5.19
+	Friday August 5, 2016
 	TAX-130 Fixed issues with charge account that was preventing xds from working.
 	
 3.5.20
+	Wednesday August 10, 2016
 	TAX-130 Fixed issues with charge account that was preventing xds from working.
 	Fixed a problem with prompts being displayed when not set in a customer account (corp account)
 	Fixed a problem with prompts being dupplicated when multiple customer accounts had the same ones.
 	
 3.5.21
+	Friday August 12, 2016
 	TAX-131 TotalTransit (aka Discount Ride) requested that we change the words Taxi, Cab and Medallion to Vehicle
 	Fixed a problem with the LocalizationTool where company specific resource files would not get utlized when generating the Strings.xml files.
 	Fixed a null exception issue with the OrderStatusUpdater where if the tip was null.
 	
 3.5.22
+	Thursday August 18, 2016
 	TAX-109 GroveTransit (aka groveRideNow) requested that we change the words Taxi, Cab and Medallion to Vehicle as well as the text string from "Sorry, no taxis currently available nearby" to something like "Calculating nearest vehicle ETA" 
 	Also, on iOS, the default gps location wasn't automatically resolving the address when the application starts up.
 	TAX-37 We updated the Newtonsoft nuget package to 7.0.1 which is what apple is using from what we understand.
 
 3.5.23
+	Friday August 19, 2016
     Updated IBS dll to use most recent WSDL from taxihailxds's ibs
-
+	
 3.5.25
+	Tuesday August 23, 2016
 	Added missing TotalTransit-en.json file that was breaking the build.
 	
 3.5.26
+	Wednesday August 24, 2016
 	Fixing an issue whereas the build for iOS was failing for certain Xamarin versions.
+	
 3.5.27
-	features to be included...
+	Wednesday August 24, 2016
+	Features to be included...
 	TAX-140 Added a Config.AppSetting called DisplayTimePickerInTwelveHourFormat, that is sent to the client to control the format of the time picker (12/24 hour)
 
 3.5.28
+	Tuesday August 30, 2016
 	Fixed issue whereas connection Authentication would fail on POST call (Charge Account).
+
 3.5.29
+	Tuesday August 30, 2016
 	Fixed bad version bump
 	
 3.5.30
+	Tuesday September 1, 2016
 	TAX-84 updated text to No hay vehículos disponibles in Master.es.resx, some of the issues identified in the defect are addressed by TAX-149 fix 
 	TAX-147, created a new MELLEVA Spanish resource file to override the translation of TAXI->UNIDAD to TAXI for MELLEVA
 	TAX-149 updated TomTom Directions Provider to latest API since Apple directions provider does not support Guatemala
@@ -394,16 +468,20 @@ Version bump 3.3.1
 	Updated PushSharp nuget package to 4.0.10, had to rewrite the PushNotifiationService.
 
 3.5.31
+	Friday September 2, 2016
 	Fixed build issue.
 	Fixed Charge Account Authentication challenge issue.
 
 3.5.32
+	Tuesday September 6, 2016
 	Fixed issue with Server package creation.
 	
 3.5.33
+	Tuesday September 6, 2016 
 	Fixed issue where getting a single charge account was failing when API Rest user/secret was set.
 	
 3.5.34
+	Wednesday September 7, 2016
 	TAX-37 Upgraded PushSharp from 2.2.1 to 4.0.10 so that push notifications on iOS would work using Apple's new certificate type. 
 	Updated the PushNotificationService to work with the changes to the broker model in PushSharp 4.0.10.
 	TAX-123 Fixed crash and navigation when we have connection issues with Kiosk
