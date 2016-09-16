@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive;
+using System.Threading.Tasks;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Views;
@@ -9,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
     {
         public static ToastView Toast { get; set;}
 
-        public static bool Show(string message)
+        public static async Task<bool> Show(string message)
         {
             if(UIApplication.SharedApplication.Windows != null 
                 && UIApplication.SharedApplication.Windows.Length > 0 
@@ -19,12 +21,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 return false;
             }
 
+            var tcs = new TaskCompletionSource<Unit>();
+
             UIApplication.SharedApplication.InvokeOnMainThread(() =>
                 {
-                    Toast = new ToastView(message);
+                    try
+                    {
+                        Toast = new ToastView(message);
 
-                    Toast.Show();
+                        Toast.Show();
+
+                        tcs.TrySetResult(Unit.Default);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.TrySetException(ex);
+                    }
+                    
                 });
+            
+            await tcs.Task.ConfigureAwait(false);
 
             return true;
         }

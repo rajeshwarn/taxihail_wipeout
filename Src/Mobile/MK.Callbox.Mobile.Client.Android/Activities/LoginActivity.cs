@@ -44,7 +44,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
                 if (serviceUrl != null)
                 {
-                    ViewModel.SetServerUrl(serviceUrl);
+                    await ViewModel.SetServerUrl(serviceUrl);
                 }
             }
             catch (Exception ex)

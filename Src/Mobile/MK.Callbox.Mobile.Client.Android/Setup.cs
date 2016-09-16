@@ -50,6 +50,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
             container.Register<IConnectivityService, ConnectivityService>();
 			container.Register<IErrorHandler, ErrorHandler>();
+            container.Register<IQuitApplicationService, QuitApplicationService>();
         }
 
 		protected override IMvxApplication CreateApp()

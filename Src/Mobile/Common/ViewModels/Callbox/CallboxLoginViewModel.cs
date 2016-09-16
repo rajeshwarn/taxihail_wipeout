@@ -5,6 +5,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
         }
 
-        public async void SetServerUrl(string serverUrl)
+        public async Task SetServerUrl(string serverUrl)
         {
             using (this.Services().Message.ShowProgress())
             {
