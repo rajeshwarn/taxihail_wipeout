@@ -398,7 +398,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         additionalGratuity = Convert.ToDecimal((double)order.Gratuity);
                     }
 
-
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order,
                     account,

@@ -143,9 +143,10 @@ namespace apcurium.MK.Booking.Jobs
 
             AutoCompleteOnExtraGratuityTimeout(orderFromIbs, orderStatusDetail);
 
-            if (orderStatusDetail.ServiceType == ServiceType.Luxury
+            if (orderStatusDetail.ServiceType == ServiceType.Taxi
+                || (orderStatusDetail.ServiceType == ServiceType.Luxury
                 && orderStatusDetail.Status != OrderStatus.WaitingForGratuity
-                && orderStatusDetail.Status != OrderStatus.Completed)
+                && orderStatusDetail.Status != OrderStatus.Completed))
             {
                 CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs, paymentSettings, orderDetail, trip);
             }
@@ -902,7 +903,7 @@ namespace apcurium.MK.Booking.Jobs
                         if (orderStatusDetail.ServiceType == ServiceType.Luxury)
                         {
                             // for Luxury service, tipAmount is built into the fare, but customer can add additional gratuity, which is in a separate fields, but should be recorded as tip amount when committing payment
-                            tipAmount = (double)orderDetail.Gratuity;
+                            tipAmount = (orderDetail.Gratuity != null) ? (double)orderDetail.Gratuity : tipAmount;
                         }
 
                         var paymentResult = CommitPayment(orderDetail,
