@@ -83,8 +83,16 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
 				if(!skipAppRestart)
 				{
-					await Mvx.Resolve<IMessageService>().ShowMessage("Apps needs to restart", "Server url succesfully updated, press to quit the application");
-					Mvx.Resolve<IQuitApplicationService>().Quit ();
+                    // We are causing an intentional crash to force the app to exit.
+#pragma warning disable 4014
+                    Mvx.Resolve<IMessageService>()
+                        .ShowMessage("Apps needs to restart", "Server url succesfully updated, press to quit the application")
+                        .ContinueWith(async task =>
+#pragma warning restore 4014
+                        {
+                            await task;
+                            Mvx.Resolve<IQuitApplicationService>().Quit();
+                        });
 				}
 			}
 			catch
