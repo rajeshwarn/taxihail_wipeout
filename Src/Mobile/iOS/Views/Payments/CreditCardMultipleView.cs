@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             var tableViewSource = new MvxSimpleTableViewSource(tblCreditCards, CreditCardCell.Key);
             tblCreditCards.Source = tableViewSource;
-            tblCreditCards.RowHeight = 49;
+            tblCreditCards.RowHeight = 66;
 
             if (!ViewModel.CanChooseTip)
             {

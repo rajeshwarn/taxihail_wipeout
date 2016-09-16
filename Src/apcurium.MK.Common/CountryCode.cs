@@ -183,6 +183,12 @@ namespace apcurium.MK.Common
             return -1;
         }
 
+        public static CountryCode GetCountryCodeByCountry(CountryISOCode country)
+        {
+            var index = GetCountryCodeIndexByCountryISOCode(country);
+            return GetCountryCodeByIndex(index);
+        }
+
         public static CountryCode GetCountryCodeByIndex(int index)
         {
             if (index >= 0 && index < CountryCodes.Length)

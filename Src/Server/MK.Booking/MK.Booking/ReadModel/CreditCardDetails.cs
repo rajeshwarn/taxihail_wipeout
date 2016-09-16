@@ -11,6 +11,11 @@ namespace apcurium.MK.Booking.ReadModel
 {
     public class CreditCardDetails
     {
+        public CreditCardDetails()
+        {
+            Country = new CountryISOCode();
+        }
+
         [Key]
         public Guid CreditCardId { get; set; }
 
@@ -37,7 +42,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string Email { get; set; }
 
         public string Phone { get; set; }
-
+        
         public CountryISOCode Country { get; set; }
 
         public bool IsExpired()

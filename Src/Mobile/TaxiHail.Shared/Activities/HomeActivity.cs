@@ -618,7 +618,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (state == HomeViewModelState.PickDate
                 || state == HomeViewModelState.AirportPickDate)
-
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 

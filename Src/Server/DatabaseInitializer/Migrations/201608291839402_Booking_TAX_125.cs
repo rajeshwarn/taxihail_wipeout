@@ -7,11 +7,12 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.CreditCardDetails", "StreetNumber", c => c.String());
-            AddColumn("Booking.CreditCardDetails", "StreetName", c => c.String());
-            AddColumn("Booking.CreditCardDetails", "Email", c => c.String());
-            AddColumn("Booking.CreditCardDetails", "Phone", c => c.String());
-            AddColumn("Booking.CreditCardDetails", "Country_Code", c => c.String());
+            AddColumn("Booking.CreditCardDetails", "StreetNumber", c => c.String(nullable: true));
+            AddColumn("Booking.CreditCardDetails", "StreetName", c => c.String(nullable: true));
+            AddColumn("Booking.CreditCardDetails", "Email", c => c.String(nullable: true));
+            AddColumn("Booking.CreditCardDetails", "Phone", c => c.String(nullable: true));
+            AddColumn("Booking.CreditCardDetails", "Country_Code", c => c.String(nullable: true));
+            AlterColumn("Booking.CreditCardDetails", "Label", builder => builder.String(nullable: true));
         }
         
         public override void Down()

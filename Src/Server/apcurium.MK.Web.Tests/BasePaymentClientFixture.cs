@@ -127,7 +127,10 @@ namespace apcurium.MK.Web.Tests
                     CreditCardId = creditCardId,
                     AccountId = TestAccount.Id,
                     CreditCardCompany = "Visa",
-                    Token = token
+                    Token = token, 
+                    Country = new CountryISOCode("CA"),
+                    Email = testAccount.Email,
+                    Phone = "5145552222",
                 });
 
                 context.Set<OrderDetail>().Add(new OrderDetail

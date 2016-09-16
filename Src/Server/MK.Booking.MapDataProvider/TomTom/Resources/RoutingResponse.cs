@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom.Resources
         public List<Route> Routes { get; set; }
     }
 
-    public class Route 
+    public class Route
     {
         public Summary Summary { get; set; }
     }
@@ -22,5 +22,6 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom.Resources
         public int lengthInMeters { get; set; }
         public int travelTimeInSeconds { get; set; }
     }
+
 }
 

@@ -102,8 +102,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="8dp"
+                        android:maxLength="40"
                         android:hint="@string/CreditCardLabel"
-                        local:MvxBind="Text Data.Label" />
+                        local:MvxBind="Text Data.Label; Visibility CanChooseLabel, Converter=Visibility" />
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -308,7 +309,7 @@
                             android:layout_weight="0.2"
                             android:singleLine="true"
                             android:inputType="number"
-                            local:MvxBind="Text Data.StreetNumber"
+                            local:MvxBind="Text Data.StreetNumber; Enabled IsAddingNewCard"
                             android:contentDescription="@string/CreditCardAdd_StreetNumberLabel" />
                     <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                         <View
@@ -322,7 +323,7 @@
                             android:layout_weight="0.8"
                             android:inputType="number"
                             android:singleLine="true"
-                            local:MvxBind="Text Data.StreetName"
+                            local:MvxBind="Text Data.StreetName; Enabled IsAddingNewCard"
                             android:layout_marginBottom="8dp"
                             android:hint="@string/CreditCardAdd_StreetNameLabel" />
                     </LinearLayout>
@@ -339,7 +340,7 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
                         android:inputType="number"
-                        local:MvxBind="Text Data.Email; Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
+                        local:MvxBind="Enabled IsAddingNewCard; Text Data.Email; Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
                         android:contentDescription="@string/RideSettingsEmailTitle" />
                     <TextView
                         android:layout_width="match_parent"
@@ -360,12 +361,12 @@
                             style="@style/MainTheme"
                             local:MvxItemTemplate="@layout/countrycodeitemmvx"
                             local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
-                            local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
+                            local:MvxBind="Enabled IsAddingNewCard; ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
                         <apcurium.mk.booking.mobile.client.controls.widgets.EditTextWithAccessibility
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
-                            local:MvxBind="Text Phone"
+                            local:MvxBind="Text Phone; Enabled IsAddingNewCard"
                             android:maxLines="1"
                             android:inputType="phone"
                             android:singleLine="true"
@@ -414,7 +415,7 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        local:MvxBind="Visibility IsAddingNewCard, Converter=Visibility; Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
+                        local:MvxBind="Text CreditCardSaveButtonDisplay; Click SaveCreditCardCommand"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <Button
