@@ -371,6 +371,195 @@
 3.3.1
 	Monday December 21, 2015
 	Adds possibility to acces "Pay in Car" for web order only
+	Fix possible problems when user requested a cancel before ibs order id was assigned
+	add log for emails
+	Remove old checks for OrderStatusDetail that are not needed anymore since we allow to cancel before we receive an IBSOrderId
+	Fix the way we check for minimum app version server-side
+	update when success on remove destination
+	enable cancel button even if we don't have an ibs order id
+	Migrate correctly 2 old settings and prevent from trying to migrate them later
+	Fix Cancel Order when using fake ibs
+
+3.3.2
+	Friday January 8, 2016
+	Fix iOS 9 crash with popup at startup of app
+	Fix terms and conditions NotModified handling (disable caching on ModernHttpClient)
+	Added Change Destination MidTrip
+	Prevent locating user when Adding or Changing Favorites Location
+	Remove request focus from Location Address picker Container
+	Fixed Rating from History
+	Hide Cancel Button in History when not needed
+	Android - Changed minimum api version to 15(4.0.2) from 14 
+	Call Collect() when tokenizing card and pass session id to CMT
+	Fixed missing vertical scroll on HistoryDetailView
+	Validate tokenized card methods
+	Fix problems with requests failing with Unauthorized error for no reason
+
+3.3.3
+	Friday January 8, 2016
+	Added anti-fraud system (kount)
+	Add info to additional fields of CMT validation
+	Bug fix - Toast appearing in each activity in Android (but appearing in splash screen)
+	Fix terms and conditions NotModified handling 
+	Fix promocode where there were missing promotions
+	add new row in csv export order
+
+3.3.4
+	Wednesday January 27, 2016
+	Unable-to-connect-to-Payment-API-from-Android
+
+3.3.5
+	Friday January 29, 2016
+	New resource file for Mears
+	correction on Note link and visibility on Admin TH  
+	
+3.3.6
+	Wednesday February 3, 2016
+	Bug fix - Landscape view uses the correct company colours
+	
+3.3.7
+	Monday March 14, 2016
+	Web - fixed address picker on main screen or in favourite does not work
+
+3.3.8
+	Wednesday March 16, 2016
+	Bug fix - Fixed issue where binding to OrderStatus is missing
+	Bug fix - Fixed issue with charge account editing
+	
+3.3.9
+	Monday March 21, 2016
+	Bug fix - Fixed issue with the AppleTest account where it prompted for restart of the app3.4.1
+	Simplify Observe implementation in BaseService
+	Fixes issue where marketsettings fare estimates would not correct be fetched if enabled.(on server)
+	Now getting the MarketSettings from the roaming service.
+	changed api to enable future booking
+	Removed the log appender that sent emails
+	customer portal - Add enable future booking to market page
+	
+3.4.2
+	Monday February 10, 2016
+	Update to French translation
+	replace HttpRequestException with WebException 
+	Add email address to ibs order creation
+	Callbox - When clicking outside textfield => keyboard closes
+	Callbox - User prompts now use company colours from CustomerPortal for Callbox
+	Web - Admin - Payment settings - Added CMT pairing methods
+	Web - Admin - Account management - Fixed HTML error
+	Web - Admin - Account management - Correction on email generation
+	Updated CompanyServerStatus text
+	moved accountId from RatingScoreDetail to OrderRatingDetails
+	Now using correct refresh (3 mins).
+	Change password error message says password must be at least 6 characters but the viewmodel checks for more than 6
+	Add logs when tokenizing card
+	Ensuring that service monitor updater works correctly and does not spam emails.
+	Fixed auto-follow on iOS
+	Fixed issue where charge type was blank
+	If not in cmt, we need to also ensure that if Payments is 1, we also disable the chargeType dropdown
+	We use the old chargetypes enable flow when not in Cmt
+	Reduced the number of resolves done in chargetype list
+	Fixed logic in OrderEditViewModel and RideSettingsViewModel to handle case where Cmt allows out of app payment in certain markets only (and deny it in others).
+	Change French 'Code sÃˆcuritÃˆ' to 'CVV'
+	check server side if email is linked to Facebook or Twitter
+	Arro iphone pairing failure app crash - Fix with a custom ManualPairingException
+	Fixed cases where overdue payment exists or payment method is dis-activated when attempting to do manual pairing.
+	
+3.4.3
+	Friday February 19, 2016
+	Add setting for customer portal watchdog
+
+3.4.4
+	Thrusday March 3, 2016
+	Added Dutch support
+	Fix some issue with the Dutch translation
+	Bug fix - Android - Global notifications switch not tall enough
+	Bug fix - Android/iOS - Sign In with Twitter did not work
+
+3.4.5
+	Wednesday March 9, 2016
+	Fix some issue with the Dutch translation (cont.)
+	Merged fix for street that does not contain city name
+	
+3.5.0
+	Friday February 19, 2016
+	Allow user to delete last credit card on file
+	Removed Modify Credit Card Feature
+	Added to Account Management - OrderDetails stats
+	Fix issues where there was no Trip End Location On Manual Pairing on Resent Receipt
+	Now adding creditcard id to manual pairing (for refund purposes)
+	Error in network if remote site wasn't updated to new payment settinngs
+3.5.1
+	Monday February 29, 2016
+	Fixed Blacklist loophole
+	Fixed Null reference exception caused by wrong name for image
+	Web - Promotion code - Customer support - "if null" appears in the UI
+	Added Dutch as supported language
+	Fixing issue with the order export where a failure to execute export operation occurred if Order_PickupAddress_City was null
+	Fix terms and conditions caps
+	Fixed issue with crash on startup for iOS.
+	change string so that even on small screens message is not truncated
+	Fixed issue where Refund button is not visible in all wanted case
+	Sign In with Twitter doesn't work
+	
+3.5.2
+	Friday March 4, 2016
+	Add icons banner for supported card
+	add error message when CC is disabled
+	Fix For Payment In Car Missing In LocalMarket
+	add check so that CardNumberCell doesn't display the icon of a card not supported
+	Company settings - Account activation shouldn't allowed if there aren't any Twilio settings
+	Fixed some Dutch Language fixes
+	dispatcher - modification of the selection of candidates
+	disabling the email textfieldview when we are in twitter or Facebook login.
+	Fix for addresses that have the city name in the street name
+
+3.5.3
+	Friday March 4, 2016
+	Added detection of CC type when typing
+	Add spanish translation for Amex validation
+	Fix missing translation for medallion on iOS
+	Fix error in translation
+	Fix erronous condition for CanScanCreditCard
+	Updated CardIO and Paypal 
+	
+3.5.4
+	Thursday March 10, 2016
+	AAAYellow - custom string
+	
+3.5.5
+	Thursday March 10, 2016
+	GroveTransit - custom strings
+	Bug fix - iOS - Fixed issue where "show order number" does not work on iOS 
+	Bug fix - Fixed issue with charge account editing
+	Bug fix - Wrong total in Order History
+	
+3.5.6
+	Friday March 11, 2016
+	Added address formatting for Mexico and Netherlands
+	
+3.5.7
+	Wednesday March 16, 2016
+	Bug fix - Fixed problem with add new card navigating to edit default card
+	Bug fix - Fixed issue where binding to OrderStatus is missing
+	
+3.5.8
+	Wednesday March 23, 2016
+	Bug fix - Fixed issue with the AppleTest account where it prompted for restart of the app
+	Bug fix - Fixed issue where the timezone was not being used in future bookings
+	
+3.5.9
+	Monday March 28, 2016
+	Bug fix - iOS - Fixed terms and conditions checkbox colour on registration screen
+3.5.10
+	Monday March 28, 2016
+	Bug fix - iOS - Fixed terms and conditions checkbox colour on registration screen (cont.)
+	
+3.5.11
+	Thursday April 7, 2016
+	Bug fix - Android 4.4 - Crash when using a dropdownlist
+	Grammar correction
+	Bug fix - iOS - When entering the address picker from the destination address, default text now says: "Address search". 
+	Custom strings (James Madison Uni. - SafeRides)
+	Bug fix - Promotions - Saving issue if not in server timezone.
 
 3.5.12	
 	Friday April 8, 2016
