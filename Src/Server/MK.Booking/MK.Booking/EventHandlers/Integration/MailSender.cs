@@ -114,13 +114,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         {
 
                             var additionalGratuity = (order.Gratuity != null) ? Math.Round(((double)order.Gratuity / 100), 2) : 0;
-                            //var isUpdatedReceipt = orderStatus.Status == OrderStatus.FullyCompleted && additionalGratuity > 0;
-
-                            //if (orderStatus.Status == OrderStatus.FullyCompleted && !isUpdatedReceipt)
-                            //{
-                            //    // no need to send a second receipt, nothing changed, no additional gratuity was added
-                            //    return;
-                            //}
 
                             var tolls = new List<TollDetail>();
 
