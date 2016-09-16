@@ -731,26 +731,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
-				if (PaymentSettings.EnableContactVerification && Params.Get(Data.Email, Phone).Any(x => x.IsNullOrEmpty()))
+				if (PaymentSettings.EnableAddressVerification && Params.Get(Data.StreetName, Data.StreetNumber, Data.Email, Phone).Any(x => x.IsNullOrEmpty()))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
 					return;
 				}
 
-				if (PaymentSettings.EnableContactVerification && !PhoneHelper.IsPossibleNumber(SelectedCountryCode, Phone))
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-						string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], SelectedCountryCode.GetPhoneExample()));
-					return;
-				}
+                if (PaymentSettings.EnableAddressVerification && !PhoneHelper.IsPossibleNumber(SelectedCountryCode, Phone))
+                {
+                    await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                        string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], SelectedCountryCode.GetPhoneExample()));
+                    return;
+                }
 
-				if (PaymentSettings.EnableAddressVerification && Params.Get(Data.StreetName, Data.StreetNumber).Any(x => x.IsNullOrEmpty()))
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
-					return;
-				}
-
-				if (!IsValid(Data.CardNumber))
+                if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNumber"]);
 					return;
