@@ -696,7 +696,7 @@
 	Bug fix - Now preventing multiple booking when "Allow simultaneous booking" is false.
 	Added UTC indication to Account creation date.
 	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
-    	Bug fix - Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
+    Bug fix - Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
 
 3.6.1
 	Tuesday August 23, 2016
@@ -712,3 +712,12 @@
 	Friday September 9, 2016
 	TAX-125, TAX-126, TAX-127, TAX-128 - Moneris anti-fraud implementation (now using street name/number, email, phone number to reduce fraud).
 	All the fixes and feature from 3.5.29 to 3.5.33
+	
+3.6.4
+	Friday September 16, 2016
+	TAX-37 Upgraded PushSharp from 2.2.1 to 4.0.10 so that push notifications on iOS would work using Apple's new certificate type. 
+	Updated the PushNotificationService to work with the changes to the broker model in PushSharp 4.0.10.
+	TAX-123 Fixed crash and navigation when we have connection issues with Kiosk
+	TAX-139 Fixed issue with crash caused by older Facebook SDK and missing entries in info.plist file.
+	Fixed issue where Moneris anti-fraud might not work in certain condition
+	Fixed issue where Moneris unt test would not actually validate what it was supposed to.
