@@ -580,6 +580,7 @@ Version bump 3.3.1
 	Fixed issue where getting a single charge account was failing when API Rest user/secret was set.
 
 3.6.0
+	Friday April 8, 2016
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
 	Bug fix - Fix scheduled orders causing user to be stuck when navigating from history
 	Bug fix - Prevent crash if Facebook Publish was enabled but not Facebook login
@@ -598,16 +599,19 @@ Version bump 3.3.1
 	Bug fix - Now preventing multiple booking when "Allow simultaneous booking" is false.
 	Added UTC indication to Account creation date.
 	Bug fix - No longer moving to HomeView from CreditCardAdd view when deleting a CC (in Multiple Card scenarios).
-       	Bug fix - Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
+    Bug fix - Fixed issue where ManualPairing would not be correctly detected as an active order on app start.
 
 3.6.1
+	Tuesday August 23, 2016
 	All the fixes and features added in between 3.5.17 and 3.5.21
-      	TAX-47 - Now having a possibility to send the Car # instead of the Driver Id in Moneris transactions.
+    TAX-47 - Now having a possibility to send the Car # instead of the Driver Id in Moneris transactions.
 	TAX-134 - Now using friendly name instead of building name when friendly name is available when updating the driver.
 
 3.6.2
+	Wednesday August 24, 2016
 	All the fixes and features added in between 3.5.21 and 3.5.29
 
 3.6.3
+	Friday September 9, 2016
 	TAX-125, TAX-126, TAX-127, TAX-128 - Moneris anti-fraud implementation (now using street name/number, email, phone number to reduce fraud).
 	All the fixes and feature from 3.5.29 to 3.5.33
