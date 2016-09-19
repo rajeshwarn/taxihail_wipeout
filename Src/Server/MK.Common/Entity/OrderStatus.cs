@@ -9,6 +9,8 @@ namespace apcurium.MK.Common.Entity
         Completed = 4,
         Removed = 5,
         TimedOut = 6,
-        WaitingForPayment = 7
+        WaitingForPayment = 7,
+        WaitingForGratuity = 8,
+        FullyCompleted = 9 
     }
 }

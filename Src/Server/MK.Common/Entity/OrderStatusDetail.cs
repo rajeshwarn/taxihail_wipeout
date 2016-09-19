@@ -70,9 +70,12 @@ namespace apcurium.MK.Common.Entity
 
         public DateTime? LastTripPollingDateInUtc { get; set; }
 
+        public DateTime? WaitingForExtraGratuityStartDate { get; set; }
+
         public override string ToString()
         {
             return Status + " " + Name;
         }
+
     }
 }

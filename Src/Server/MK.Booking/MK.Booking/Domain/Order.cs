@@ -48,11 +48,12 @@ namespace apcurium.MK.Booking.Domain
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
-		    Handles<OrderReportCreated>(OnOrderReportCreated);
+            Handles<OrderReportCreated>(OnOrderReportCreated);
             Handles<IbsOrderSwitchInitiated>(NoAction);
             Handles<GratuitySent>(NoAction);
             Handles<OrderUpdatedInTrip>(NoAction);
             Handles<OrderGratuityUpdated>(NoAction);
+            Handles<OrderGratuityTimerUpdated>(NoAction);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -457,21 +458,6 @@ namespace apcurium.MK.Booking.Domain
                 OriginalEta = originalEta
             });
         }
-
-        public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
-        {
-            Update(new OrderNotificationDetailUpdated
-            {
-                OrderId = orderNotificationDetail.OrderId,
-                IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
-                IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
-                InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver,
-                NoShowWarningSent = orderNotificationDetail.NoShowWarningSent,
-                InfoAboutGratuitySent = orderNotificationDetail.InfoAboutGratuitySent
-
-            });
-        }
-
         public void PayGratuity(PayGratuity payGratuity)
         {
             // Validate that gratuity is not already paid.
@@ -489,6 +475,30 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderGratuityUpdated
             {
                 Amount = payGratuity.Amount
+            });
+        }
+
+        public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
+        {
+            Update(new OrderNotificationDetailUpdated
+            {
+                OrderId = orderNotificationDetail.OrderId,
+                IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
+                IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
+                InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver,
+                NoShowWarningSent = orderNotificationDetail.NoShowWarningSent,
+                InfoAboutGratuitySent = orderNotificationDetail.InfoAboutGratuitySent
+
+            });
+        }
+
+
+        public void UpdateOrderGratuityTimer(UpdateOrderGratuityTimer gratuityTimer)
+        {
+            // Update order entity -> Double? Gratuity property
+            Update(new OrderGratuityTimerUpdated
+            {
+                WaitingForExtraGratuityStartDate = gratuityTimer.WaitingForExtraGratuityStartDate
             });
         }
 

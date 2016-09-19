@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+using System.Linq;
 
 #endregion
 
@@ -46,7 +47,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 		ICommandHandler<CreateReportOrder>,
         ICommandHandler<PayGratuity>,
         ICommandHandler<UpdateOrderInTrip>,
-        ICommandHandler<UpdateOrderGratuity>
+        ICommandHandler<UpdateOrderGratuity>,
+        ICommandHandler<UpdateOrderGratuityTimer>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -319,7 +321,21 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.UpdateOrderGratuity(command);
             _repository.Save(order, command.Id.ToString());
         }
-        
+
+        public void Handle(UpdateOrderGratuityTimer command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatusDetail = context.Find<OrderStatusDetail>(command.OrderId);
+
+                if (orderStatusDetail.WaitingForExtraGratuityStartDate == null)
+                    orderStatusDetail.WaitingForExtraGratuityStartDate = command.WaitingForExtraGratuityStartDate;
+
+                context.Save<OrderStatusDetail>(orderStatusDetail);
+            }
+
+        }
+
         public void Handle(UpdateOrderInTrip command)
         {
             var order = _repository.Get(command.OrderId);
