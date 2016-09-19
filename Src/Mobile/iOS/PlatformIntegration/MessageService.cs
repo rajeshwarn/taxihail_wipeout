@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return MessageHelper.Prompt (title, message, cancelAction, isNumericOnly, inputText);
         }
 
-        public bool ShowToast(string message)
+        public Task<bool> ShowToast(string message)
         {           
             return ToastHelper.Show(message);
         }

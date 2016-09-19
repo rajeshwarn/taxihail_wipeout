@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var isCompleted = true;
             try
             {
-                await UseServiceClientAsync<OrderServiceClient>(service => service.CancelOrder(orderId));
+                await UseServiceClientAsync<OrderServiceClient>(service => service.CancelOrder(orderId), alwaysRethrow: true);
 
 				Logger.LogMessage("Order cancelled ID [" + orderId.ToString() + "]" );
             }
@@ -374,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var isCompleted = true;
             try
             {
-                await UseServiceClientAsync<OrderServiceClient>(service => service.SendReceipt(orderId));
+                await UseServiceClientAsync<OrderServiceClient>(service => service.SendReceipt(orderId), alwaysRethrow: true);
             }
             catch
             {

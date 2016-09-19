@@ -115,37 +115,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
  				txtStreetName.Placeholder = Localize.GetValue("CreditCardAdd_StreetNameLabel");
 				txtStreetName.AccessibilityLabel = txtStreetName.Placeholder;
 				txtStreetNumber.Placeholder = Localize.GetValue("CreditCardAdd_StreetNumberLabel");
-				txtStreetNumber.AccessibilityLabel = txtStreetNumber.Placeholder;	
-			}
+				txtStreetNumber.AccessibilityLabel = txtStreetNumber.Placeholder;
+                lblEmail.Text = Localize.GetValue("EmailLabel");
+                lblPhoneNumber.Text = Localize.GetValue("PassengerPhoneLabel");
+
+                txtEmail.Placeholder = Localize.GetValue("RideSettingsEmailTitle");
+                txtEmail.AccessibilityLabel = txtEmail.Placeholder;
+                txtPhoneNumber.Placeholder = Localize.GetValue("RideSettingsPhone");
+                txtPhoneNumber.AccessibilityLabel = txtPhoneNumber.Placeholder;
+
+                lblCountryCode.Configure(NavigationController, ViewModel.SelectedCountryCode, countryCode => ViewModel.SelectedCountryCode = countryCode);
+                lblCountryCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38 / 2);
+                lblCountryCode.TintColor = UIColor.Black;
+                lblCountryCode.TextColor = UIColor.FromRGB(44, 44, 44);
+                lblCountryCode.TextAlignment = UITextAlignment.Center;
+                lblCountryCode.AdjustsFontSizeToFitWidth = true;
+                lblCountryCode.BackgroundColor = UIColor.White;
+            }
 			else
 			{
 				lblStreetName.RemoveFromSuperview();
 				lblStreetNumber.RemoveFromSuperview();
-			}
-
-			if (ViewModel.PaymentSettings.EnableContactVerification)
-			{
-				lblEmail.Text = Localize.GetValue("EmailLabel");
-				lblPhoneNumber.Text = Localize.GetValue("PassengerPhoneLabel");
-			
- 				txtEmail.Placeholder = Localize.GetValue("RideSettingsEmailTitle");
-				txtEmail.AccessibilityLabel = txtEmail.Placeholder;
-				txtPhoneNumber.Placeholder = Localize.GetValue("RideSettingsPhone");
-				txtPhoneNumber.AccessibilityLabel = txtPhoneNumber.Placeholder;	
-
-				lblCountryCode.Configure(NavigationController, ViewModel.SelectedCountryCode, countryCode => ViewModel.SelectedCountryCode = countryCode);
-				lblCountryCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38 / 2);
-				lblCountryCode.TintColor = UIColor.Black;
-				lblCountryCode.TextColor = UIColor.FromRGB(44, 44, 44);
-				lblCountryCode.TextAlignment = UITextAlignment.Center;
-				lblCountryCode.AdjustsFontSizeToFitWidth = true;
-				lblCountryCode.BackgroundColor = UIColor.White;
-			}
-			else
-			{
-				lblEmail.RemoveFromSuperview();
-				lblPhoneNumber.RemoveFromSuperview();
-			}
+                lblEmail.RemoveFromSuperview();
+                lblPhoneNumber.RemoveFromSuperview();
+            }
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
@@ -327,12 +320,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(txtEmail)
 			   .For("HiddenEx")
-			   .To(vm => vm.PaymentSettings.EnableContactVerification)
+			   .To(vm => vm.PaymentSettings.EnableAddressVerification)
 			   .WithConversion("BoolInverter");
 
 			set.Bind(txtPhoneNumber)
 			   .For("HiddenEx")
-			   .To(vm => vm.PaymentSettings.EnableContactVerification)
+			   .To(vm => vm.PaymentSettings.EnableAddressVerification)
 			   .WithConversion("BoolInverter");
 
 			set.Bind(txtEmail)

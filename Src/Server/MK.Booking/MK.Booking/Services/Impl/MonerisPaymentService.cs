@@ -239,20 +239,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         info.SetAvsStreetName(creditCard.StreetName);
                         info.SetAvsStreetNumber(creditCard.StreetNumber);
-                        preAuthorizeCommand.SetAvsInfo(info);
                         info.SetAvsZipCode(creditCard.ZipCode);
-                        // Phone number verification requires address verification to be also active
-                        if (_serverPaymentSettings.EnableContactVerification)
-                        {
-                            var countryCode = CountryCode.GetCountryCodeByCountry(creditCard.Country);
-                            info.SetAvsCustPhone(countryCode.СountryDialCodeInternationalFormat + creditCard.Phone);
-                        }
+                        info.SetAvsCustPhone(creditCard.Phone);
+                        info.SetAvsEmail(creditCard.Email);
                         preAuthorizeCommand.SetAvsInfo(info);
-                    }
-                    
-                    if (_serverPaymentSettings.EnableContactVerification)
-                    {
-                        preAuthorizeCommand.SetEmail(creditCard.Email);
                     }
                     
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
@@ -477,7 +467,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // We remove null and replace it with empty string to ensure we only treat cvds when active.
                 .Replace("null", "");
 
-            if (cvd.HasValueTrimmed() && !cvd.Equals("M"))
+            if (cvd.HasValueTrimmed() && !cvd.EndsWith("M"))
             {
                 message = receipt.GetMessage();
                 return false;
@@ -488,7 +478,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // We remove null and replace it with empty string to ensure we only treat avs when active.
                 .Replace("null", "");
 
-            if (avs.HasValueTrimmed() && !avs.Equals("Y"))
+            if (avs.HasValueTrimmed() && !avs.EndsWith("Y"))
             {
                 message = receipt.GetMessage();
                 return false;
@@ -508,25 +498,8 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             int responseCode;
             var isNumber = int.TryParse(receipt.GetResponseCode(), out responseCode);
-            if (!isNumber)
-            {
-                // GetResponseCode will return "null" string when transaction is a success...
-                return false;
-            }
 
-            var cvd = receipt.GetCvdResultCode().ToSafeString();
-            if (!cvd.Equals("null") && !cvd.Equals("M"))
-            {
-                return true;
-            }
-
-            var avs = receipt.GetAvsResultCode().ToSafeString();
-            if (!avs.Equals("null") && !avs.Equals("Y"))
-            {
-                return true;
-            }
-
-            return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+            return isNumber && MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
         }
 
         private string GenerateShortUid()

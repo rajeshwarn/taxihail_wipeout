@@ -265,8 +265,8 @@ namespace apcurium.MK.Common.Entity
 
             try
             {
-                var indexOfStreetNumber = FullAddress.IndexOf(StreetNumber, StringComparison.CurrentCultureIgnoreCase);
-                var indexOfStreet = FullAddress.IndexOf(Street, StringComparison.CurrentCultureIgnoreCase);
+                var indexOfStreetNumber = FullAddress.ToSafeString().IndexOf(StreetNumber, StringComparison.CurrentCultureIgnoreCase);
+                var indexOfStreet = FullAddress.ToSafeString().IndexOf(Street, StringComparison.CurrentCultureIgnoreCase);
 
                 if(indexOfStreet >= 0 && indexOfStreetNumber >= 0)
                 {
