@@ -332,7 +332,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/EmailLabel"
-                        local:MvxBind="Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
+                        local:MvxBind="Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility"
                         android:layout_marginBottom="4dp" />
                     <EditText
                         android:id="@+id/StreetEmailEditText"
@@ -340,18 +340,19 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
                         android:inputType="number"
-                        local:MvxBind="Enabled IsAddingNewCard; Text Data.Email; Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
+                        local:MvxBind="Enabled IsAddingNewCard; Text Data.Email; Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility"
                         android:contentDescription="@string/RideSettingsEmailTitle" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/PassengerPhoneLabel"
-                        local:MvxBind="Visibility PaymentSettings.EnableContactVerification, Converter=Visibility"
+                        local:MvxBind="Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility"
                         style="@style/BlackTextLabel"
                         android:layout_marginBottom="4dp" />
                     <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat">
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        local:MvxBind="Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility">
                         <MvxSpinner
                             android:layout_width="60dp"
                             android:layout_height="@dimen/HeightEditTextFlat"
