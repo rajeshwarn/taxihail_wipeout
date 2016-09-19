@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				var handled = false; 
 				if (errorHandler == null)
 				{
-					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+					handled = TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
 				}
 				else
 				{

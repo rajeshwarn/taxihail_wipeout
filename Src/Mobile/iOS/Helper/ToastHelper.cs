@@ -1,9 +1,9 @@
-﻿using System;
-using System.Reactive;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -11,39 +11,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
     {
         public static ToastView Toast { get; set;}
 
-        public static async Task<bool> Show(string message)
+        public static Task<bool> Show(string message)
         {
-            if(UIApplication.SharedApplication.Windows != null 
-                && UIApplication.SharedApplication.Windows.Length > 0 
-                && UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length-1].RootViewController != null
-                && UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length-1].RootViewController is SplashView)
-            {
-                return false;
-            }
+			return UIApplication.SharedApplication.InvokeOnMainThreadAsync(() =>
+			{
+				if (IsWindowsSplashScreen())
+				{
+					return false;
+				}
 
-            var tcs = new TaskCompletionSource<Unit>();
+				Toast = new ToastView(message);
 
-            UIApplication.SharedApplication.InvokeOnMainThread(() =>
-                {
-                    try
-                    {
-                        Toast = new ToastView(message);
+				Toast.Show();
 
-                        Toast.Show();
-
-                        tcs.TrySetResult(Unit.Default);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    
-                });
-            
-            await tcs.Task.ConfigureAwait(false);
-
-            return true;
+				return true;
+			});
         }
+
+		private static bool IsWindowsSplashScreen()
+		{
+			return UIApplication.SharedApplication.Windows != null
+				&& UIApplication.SharedApplication.Windows.Length > 0
+				&& UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length - 1].RootViewController != null
+				&& UIApplication.SharedApplication.Windows[UIApplication.SharedApplication.Windows.Length - 1].RootViewController is SplashView;
+		}
 
         public static void Dismiss()
         {

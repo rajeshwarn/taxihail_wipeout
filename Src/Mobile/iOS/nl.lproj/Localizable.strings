@@ -438,7 +438,7 @@
 "Overdue_Failed_Message"="Uw transactie is geweigerd, Preobeer het opnieuw of betaal anders";
 "Overdue_Failed_Title"="Betaling Mislukt";
 "Overdue_IBSOrderId"="Order:";
-"Overdue_Instructions"="Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het QappMe systeem.";
+"Overdue_Instructions"="Uw Credit Card betaling van de vorige rit is Mislukt. Probeer de betaling opnieuw of Update uw Credit Card gegevens in het TaxiHail systeem.";
 "Overdue_OutstandingPaymentExists"="Uw CreditCard betaling van de vorige rit is Mislukt. We verzoeken u deze openstaande rekening te voldoen voordat uw kaart opnieuw geaactiveerd wordt";
 "Overdue_Retry"="Betaal nu";
 "Overdue_Succeed_Message"="Uw openstaande betaling van {0} is geregeld en uw account is nu ingeschakeld om standaard op rekening te betalen.";
@@ -609,7 +609,7 @@
 "StatusActionCancelButton"="Annuleer deze order";
 "StatusCallButton"="Bellen";
 "StatusCancelButton"="Annuleer deze order";
-"StatusCannotBeDisplayed"="Kan geen BoekingStatus geven. Neem contact op met QappMe?";
+"StatusCannotBeDisplayed"="Kan geen BoekingStatus geven. Neem contact op met TaxiHail?";
 "StatusConfirmCancelRide"="Weet u zeker dat u wilt annuleren?";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Weet u zeker dat u wilt annuleen? Er kan mogelijk Annuleringskosten in rekening gebracht worden.";
 "StatusConfirmCancelRideError"="De boeking kan niet worden geannuleerd, Neemt u contact met ons op om de boeking te annuleren.";
@@ -629,7 +629,7 @@
 "StreetNumberSearchBt"="Gebruik een ander adres";
 "StreetNumberTitle"="Adres details";
 "Submit"="Bevestig Beoordeling";
-"SupportEmail"="support@qappme.com";
+"SupportEmail"="support@taxiahil.com";
 "TabBook"="Boeken";
 "TabContacts"="Contacten";
 "TabFavorites"="Favorieten";
@@ -747,7 +747,7 @@
 "View_SignIn"="Algemene Voorwaarden";
 "View_UpdatedTermsAndConditions"="Nieuwe Algemene Voorwaarden";
 "View_UpdatePassword"="Update Wachtwoord";
-"View_UserTaxiHailNetworkSettings"="QappMe Netwerk";
+"View_UserTaxiHailNetworkSettings"="TaxiHail Netwerk";
 "ViewAll"="Bekijk alles";
 "ViewRatingBtn"="Bekijk beoordeleingen";
 "WaitingCarLandscapeActivityName"="Taxi Nummer";
