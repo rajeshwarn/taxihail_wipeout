@@ -683,6 +683,10 @@
 	Friday September 16, 2016
 	Fixed build issue introduced in 3.5.34 (iOS)
 
+3.5.37
+	Monday September 19, 2016
+	TAX-165 QAppMe text change
+	
 3.6.0
 	Friday April 8, 2016
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
