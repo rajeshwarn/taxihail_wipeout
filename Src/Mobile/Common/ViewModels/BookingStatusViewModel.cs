@@ -1340,13 +1340,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             Logger.LogMessage("GoToSummary");
 
-			var needToSelectGratuity = false; 
-			//TODO to re-enable Additional Gratuity feature for MEARS
-			//GetServiceTypeForCurrentOrder() == ServiceType.Luxury;
+			// return to initial state if ride was canceled or was a noshow
+			if (OrderStatusDetail.Status != OrderStatus.Canceled)
+			{
+				var needToSelectGratuity = (GetServiceTypeForCurrentOrder() == ServiceType.Luxury);
 
-            ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
+				ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
 
-			ReturnToInitialState();
+				ReturnToInitialState();
+			}
+			else
+			{
+				GoToHomeScreen().FireAndForget();
+				PrepareNewOrder.ExecuteIfPossible();
+				Close(this);
+			}
+
 		}
 
 		private async Task GoToHomeScreen()

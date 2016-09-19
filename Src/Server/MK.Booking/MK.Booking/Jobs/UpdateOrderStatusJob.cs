@@ -130,8 +130,12 @@ namespace apcurium.MK.Booking.Jobs
                         BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
                         BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        // include completed jobs for Luxury service, since there is a new completed status of FullyCompleted
+                        Log.DebugFormat("Starting BatchUpdateStatusForIbs with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Completed && o.ServiceType == ServiceType.Luxury), "Completed (Luxury Only)");
+                        BatchUpdateStatusForIbs(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Completed && o.ServiceType == ServiceType.Luxury));
+
                     }
-                    
+
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
 
                     // Manual RideLinq handling

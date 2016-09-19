@@ -1,4 +1,5 @@
 0.5.3
+	Wednesday June 15, 2016
 	Defect TAX-33 UI changes
 		Bold text on selected service type and selected vehicle type, but normal text on unselected icons
 		Background color of selected service type icon changed to Mears Pantone Yellow hex #fed141
@@ -24,12 +25,15 @@
 	ARRO-1062 - Royal Taxi Changing Destination causes crash
 	
 0.5.4
+	Friday June 10, 2016
 	TAX-80 application was crashing when viewing the history details of a trop on iOS.
 	
 0.5.5
+	Friday June 24, 2016
 	Fixed the double slash issue in the URLs in the HttpClientExtensions class that was causing some 404 errors.
 	
 0.5.6
+	Monday July 11, 2016
 	Address the majority of the items in the LuxuryHail Issues document.
 	
 	1: For trips using the luxury service, the user's preferred Tip Amount (configured in the payment form) will be ignored since the tip is built into the fare for Luxury.
@@ -67,11 +71,13 @@
 	The IBS change is to expose a new class called TOrderStatus_6 which populates the VehicleType property.
 	
 0.5.7
+	Thursday July 26, 2016
 	Web Service URL for IBS was defaulting to the value stored in Config.AppSettings instead of Config.ServiceTypeSettings in some instances.
 	The code that called GetOrderStatus from IBS was only using one of the fleets, now getting status updates from both Luxury and Taxi fleets.
 	Added a null check for the VehicleType coming back from IBS Order Info.
 	
 0.5.8
+	Monday August 8, 2016
 	Fixed map moving north every 10 seconds on certain job statuses
 	Cleaned up using statements
 	Fix one remaining issue for TAX-39 tip calculation when changing the tip percentage while in trip
@@ -92,3 +98,9 @@
 		9. If the passenger has not arrived for pickup within 10 minutes, a push notification and text will go out with a warning. If the passenger is in the app, a warning message will appear in the app. The push notification or message will state “Your vehicle has been waiting for ten minutes. Please contact the driver if you would like your vehicle to wait longer.”  
 		Did not receive any notifications after 10 minutes.  DriveLinq Tom Tom is sitting right next to app, so I should be in the vicinity
 		10. After 15 minutes the driver may request a “No show” and if granted, the user will be assessed a $15.00 no show fee - not able to test since other pieces are not working
+
+0.5.9
+	Monday September 19, 2016
+	Additional Gratuity changes TAX-164
+	PushSharp update to 4.0.1
+	NewtonsoftJson update to 7.0.10

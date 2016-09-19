@@ -111,8 +111,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					? "NoFareTextIfDestinationIsRequired" 
 					: "NoFareText"]);
 		
-			Observe (_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
-			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(_accountService.CurrentAccount.Settings);
 
@@ -130,10 +128,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             _vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
 
-            SetVehicle(vehicleTypeId, serviceType);
-		}
+            Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
+            Observe(_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 
-		private async Task MarketChanged(MarketSettings marketSettings)
+            SetVehicle(vehicleTypeId, serviceType);
+
+        }
+
+        private async Task MarketChanged(MarketSettings marketSettings)
 		{
 			if (_marketSettings.HashedMarket != marketSettings.HashedMarket)
 			{
