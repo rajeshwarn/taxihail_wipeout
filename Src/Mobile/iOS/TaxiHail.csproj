@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -672,6 +672,7 @@
     </Compile>
     <Compile Include="Controls\Widgets\LoadingStatusBarView.cs" />
     <BundleResource Include="Resources\status_gradient.png" />
+    <Compile Include="Extensions\UIApplicationExtensions.cs" />
     <BundleResource Include="Resources\status_gradient%402x.png" />
     <BundleResource Include="Resources\status_gradient%403x.png" />
     <BundleResource Include="Resources\nearby_oriented_available.png" />
