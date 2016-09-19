@@ -3142,7 +3142,7 @@
 		<comment>Back</comment>
 	</data>
 	<data name="WarningEstimate" xml:space="preserve">
-		<value>Houdt u er rekening mee dat de prijs die door deze applicatie is afgegeven  slechts een is schatting. </value>
+		<value>Houdt u er rekening mee dat de prijs die door deze applicatie is afgegeven slechts een schatting. is </value>
 		<comment>Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</comment>
 	</data>
 	<data name="WarningEstimateDontShow" xml:space="preserve">
