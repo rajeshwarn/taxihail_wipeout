@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
 #if DEBUG
                 // looks like for now we should specify production even in debug, using sandbox messages are not coming through.
-                const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Production;
+                const ApnsConfiguration.ApnsServerEnvironment environment = ApnsConfiguration.ApnsServerEnvironment.Sandbox;
                 var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                     _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
 #else

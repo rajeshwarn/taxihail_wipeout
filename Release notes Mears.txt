@@ -98,3 +98,9 @@
 		9. If the passenger has not arrived for pickup within 10 minutes, a push notification and text will go out with a warning. If the passenger is in the app, a warning message will appear in the app. The push notification or message will state “Your vehicle has been waiting for ten minutes. Please contact the driver if you would like your vehicle to wait longer.”  
 		Did not receive any notifications after 10 minutes.  DriveLinq Tom Tom is sitting right next to app, so I should be in the vicinity
 		10. After 15 minutes the driver may request a “No show” and if granted, the user will be assessed a $15.00 no show fee - not able to test since other pieces are not working
+
+0.5.9
+	Monday September 19, 2016
+	Additional Gratuity changes TAX-164
+	PushSharp update to 4.0.1
+	NewtonsoftJson update to 7.0.10
