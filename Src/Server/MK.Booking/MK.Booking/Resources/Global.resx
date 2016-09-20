@@ -183,6 +183,9 @@
   <data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>Fare will be paid by the app</value>
   </data>
+  <data name="OrderCancelledAlertMessage" xml:space="preserve">
+    <value>{0} - Your order was cancelled.</value>
+  </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>The customer will be paying in the car at the end of the ride</value>
   </data>

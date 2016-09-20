@@ -720,4 +720,7 @@
   <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
     <value>Vous devez fournir un code de pays, ex: CA, US, ...</value>
   </data>
+  <data name="OrderCancelledAlertMessage" xml:space="preserve">
+    <value>{0} - Votre commande a été annulée.</value>
+  </data>
 </root>

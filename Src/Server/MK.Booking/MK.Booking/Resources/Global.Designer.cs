@@ -1240,6 +1240,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - Your order was cancelled..
+        /// </summary>
+        public static string OrderCancelledAlertMessage {
+            get {
+                return ResourceManager.GetString("OrderCancelledAlertMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, your driver canceled. Finding you another taxi....
         /// </summary>
         public static string OrderStatus_BAILED {
@@ -1537,7 +1546,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The phone number is black listed.
+        ///   Looks up a localized string similar to Sorry, you are not allowed to create an account. Please contact support for assistance.
         /// </summary>
         public static string PhoneBlackListed {
             get {

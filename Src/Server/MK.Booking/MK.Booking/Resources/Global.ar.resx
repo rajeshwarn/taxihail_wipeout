@@ -716,4 +716,7 @@
   <data name="PhoneNumberCountryNotProvided" xml:space="preserve">
     <value>You must provide a country code, ex: CA, US, ...</value>
   </data>
+  <data name="OrderCancelledAlertMessage" xml:space="preserve">
+    <value>{0} - Your order was cancelled.</value>
+  </data>
 </root>
