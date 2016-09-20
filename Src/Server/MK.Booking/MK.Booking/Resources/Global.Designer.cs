@@ -736,6 +736,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your order done on {{ OrderCreationDate }} was cancelled..
+        /// </summary>
+        public static string Email_Body_OrderCancelled {
+            get {
+                return ResourceManager.GetString("Email_Body_OrderCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order&amp;nbsp;#.
         /// </summary>
         public static string Email_Body_OrderNo {

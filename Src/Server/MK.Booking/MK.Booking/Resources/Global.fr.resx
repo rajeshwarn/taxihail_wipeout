@@ -726,4 +726,7 @@
   <data name="Email_Subject_Cancellation" xml:space="preserve">
     <value>{{ ApplicationName }} - Commande annulée </value>
   </data>
+  <data name="Email_Body_OrderCancelled" xml:space="preserve">
+    <value>Votre commande creer le {{ OrderCreationDate }} a été annulée.</value>
+  </data>
 </root>
