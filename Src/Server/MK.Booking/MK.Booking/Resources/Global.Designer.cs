@@ -1114,6 +1114,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Order cancelled .
+        /// </summary>
+        public static string Email_Subject_Cancellation {
+            get {
+                return ResourceManager.GetString("Email_Subject_Cancellation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Cancellation Fees.
         /// </summary>
         public static string Email_Subject_CancellationFeesReceipt {
