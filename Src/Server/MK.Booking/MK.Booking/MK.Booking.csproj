@@ -475,6 +475,9 @@
     <Content Include="Email\Templates\BookingConfirmation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\CancellationNotification.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Email\Templates\CreditCardDeactivated.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
