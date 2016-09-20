@@ -1,4 +1,4 @@
-3.1.5
+﻿3.1.5
 	Added auto-follow cancellation to iOS
 	Fixed issue where wrong message was given when auto-pairing was not disabled
 	Fixed issue where Taxi Icon appears after cancellation
@@ -738,3 +738,7 @@
 3.6.5
 	Monday September 19, 2016
 	Fixes introduced in 3.5.35 and 3.5.36
+
+3.6.6
+	Tuesday September 20, 2016
+	Quick fix to remove a field in PaymentSettings admin page (The setting no longer exist).
