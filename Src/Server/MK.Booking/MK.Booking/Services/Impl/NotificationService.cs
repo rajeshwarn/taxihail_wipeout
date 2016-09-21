@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -1135,8 +1134,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendRideCancellationNotifications(Guid accountId, Guid orderId, string alertText)
         {
-            var smsTask = Task.Run(() => SendPushOrSms(accountId, alertText, new Dictionary<string, object>())).HandleErrors();
-            var emailTask = Task.Run(() => SendCancellationEmail(accountId, orderId)).HandleErrors();
+            SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
+
+            SendCancellationEmail(accountId, orderId);
         }
 
         private void SendCancellationEmail(Guid accountId, Guid orderId)
