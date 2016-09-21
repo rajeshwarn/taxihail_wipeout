@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Web.UI.WebControls;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
@@ -377,7 +378,20 @@ namespace apcurium.MK.Booking.Services.Impl
             SendSms(toPhoneNumber, message);
         }
 
-        public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
+		public void SendPasswordResetSMS(CountryISOCode countryCode, string phoneNumber, string newPassword, string clientLanguageCode)
+		{
+			var template = _resources.Get(SMSConstant.Template.PasswordReset, clientLanguageCode);
+			var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, newPassword);
+
+			libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+			toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryDialCode;
+			toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+			toPhoneNumber.ItalianLeadingZero = (phoneNumber[0] == '0');
+
+			SendSms(toPhoneNumber, message);
+		}
+
+		public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
             SendBookingConfirmationEmail.InternalBookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
@@ -1127,12 +1141,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _smsService.Send(phoneNumber, alert);
         }
 
-		public void SendCmtPaymentFailedPush(Guid accountId, string alertText)
-		{
-			SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
-		}
+        public void SendCmtPaymentFailedPush(Guid accountId, string alertText)
+        {
+            SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
+        }
 
-		private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
+        private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);
@@ -1234,6 +1248,7 @@ namespace apcurium.MK.Booking.Services.Impl
             public static class Template
             {
                 public const string AccountConfirmation = "AccountConfirmationSmsBody";
+                public const string PasswordReset = "PasswordResetSmsBody";
             }
         }
 

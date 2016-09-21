@@ -4,7 +4,8 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class SmsCommandHandler : ICommandHandler<SendAccountConfirmationSMS>
+    public class SmsCommandHandler : ICommandHandler<SendAccountConfirmationSMS>,
+		ICommandHandler<SendPasswordResetSMS>
     {
         private readonly INotificationService _notificationService;
 
@@ -17,5 +18,10 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             _notificationService.SendAccountConfirmationSMS(command.CountryCode, command.PhoneNumber, command.Code, command.ClientLanguageCode);
         }
+
+		public void Handle(SendPasswordResetSMS command)
+		{
+			_notificationService.SendPasswordResetSMS(command.CountryCode, command.PhoneNumber, command.Password, command.ClientLanguageCode);
+		}
     }
 }
