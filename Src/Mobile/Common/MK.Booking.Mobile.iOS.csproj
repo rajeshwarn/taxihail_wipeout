@@ -417,6 +417,7 @@
     <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <None Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\groveRideNow.resx" />
+    <None Include="Localization\Laclede Cab.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <None Include="Localization\FLAT RATE.resx" />
     <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
