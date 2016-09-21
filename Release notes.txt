@@ -692,3 +692,8 @@
 	Wednesday, September 21, 2016
 	TAX-167 Alberta co-op feature request to send password reset via SMS, configurable feature
 	New Company Settings: Account - Send Password Reset by SMS, default value False (disabled)
+	
+3.5.39
+	Wednesday, September 21, 2016
+	TAX-112 LacledeCab, new mobile resource file to override A new company resource file was created for Laclede Cab 
+	to override the EtaNoTaxiAvailable resource string to "Nearest vehicle time estimate not available."
