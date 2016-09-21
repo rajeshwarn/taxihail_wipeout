@@ -251,7 +251,6 @@
             var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
 
             var enableAddressVerificationDiv = this.$("#enableAddressVerificationDiv");
-            var enableContactVerificationDiv = this.$("#enableContactVerificationDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
@@ -289,7 +288,6 @@
                 unpairingTimeOutDiv.hide();
                 cancelOrderOnUnpairDiv.hide();
                 enableAddressVerificationDiv.hide();
-                enableContactVerificationDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
@@ -297,7 +295,6 @@
                 unpairingTimeOutDiv.show();
                 cancelOrderOnUnpairDiv.show();
                 enableAddressVerificationDiv.show();
-                enableContactVerificationDiv.show();
             }
         },
 
@@ -320,7 +317,6 @@
             var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
 
             var enableAddressVerificationDiv = this.$("#enableAddressVerificationDiv");
-            var enableContactVerificationDiv = this.$("#enableContactVerificationDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
 
@@ -372,7 +368,6 @@
                 unpairingTimeOutDiv.hide();
                 cancelOrderOnUnpairDiv.hide();
                 enableAddressVerificationDiv.hide();
-                enableContactVerificationDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
@@ -380,7 +375,6 @@
                 unpairingTimeOutDiv.show();
                 cancelOrderOnUnpairDiv.show();
                 enableAddressVerificationDiv.show();
-                enableContactVerificationDiv.show();
             }
         }
     });
