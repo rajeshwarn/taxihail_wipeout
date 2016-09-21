@@ -150,17 +150,33 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 Password = newPassword
             };
 
-            var emailCommand = new SendPasswordResetEmail
-            {
-                ClientLanguageCode = accountDetail.Language,
-                EmailAddress = accountDetail.Email,
-                Password = newPassword,
-            };
+			_commandBus.Send(resetCommand);
 
-            _commandBus.Send(resetCommand);
-            _commandBus.Send(emailCommand);
+			if (_serverSettings.ServerData.SendPasswordResetAsSMSEnabled)
+			{
+				var smsCommand = new SendPasswordResetSMS
+				{
+					ClientLanguageCode = accountDetail.Language,
+					CountryCode = accountDetail.Settings.Country,
+					PhoneNumber = accountDetail.Settings.Phone,
+					Password = newPassword
+				};
 
-            TempData["UserMessage"] = "Operation done successfully, new password: " + newPassword;
+				_commandBus.Send(smsCommand);
+			}
+			else
+			{
+				var emailCommand = new SendPasswordResetEmail
+				{
+					ClientLanguageCode = accountDetail.Language,
+					EmailAddress = accountDetail.Email,
+					Password = newPassword,
+				};
+
+				_commandBus.Send(emailCommand);
+			}
+
+			TempData["UserMessage"] = "Operation done successfully, new password: " + newPassword;
 
             // needed to feed orders list
             accountManagementModel.OrdersPaged = GetOrders(accountManagementModel.Id, accountManagementModel.OrdersPageIndex, accountManagementModel.OrdersPageSize);

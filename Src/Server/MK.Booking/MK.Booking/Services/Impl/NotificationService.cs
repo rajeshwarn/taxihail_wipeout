@@ -375,7 +375,20 @@ namespace apcurium.MK.Booking.Services.Impl
             SendSms(toPhoneNumber, message);
         }
 
-        public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
+		public void SendPasswordResetSMS(CountryISOCode countryCode, string phoneNumber, string newPassword, string clientLanguageCode)
+		{
+			var template = _resources.Get(SMSConstant.Template.PasswordReset, clientLanguageCode);
+			var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, newPassword);
+
+			libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+			toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryDialCode;
+			toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+			toPhoneNumber.ItalianLeadingZero = (phoneNumber[0] == '0');
+
+			SendSms(toPhoneNumber, message);
+		}
+
+		public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
             SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
@@ -1159,6 +1172,7 @@ namespace apcurium.MK.Booking.Services.Impl
             public static class Template
             {
                 public const string AccountConfirmation = "AccountConfirmationSmsBody";
+				public const string PasswordReset = "PasswordResetSmsBody";
             }
         }
 
