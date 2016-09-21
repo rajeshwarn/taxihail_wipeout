@@ -183,6 +183,12 @@
   <data name="PairingConfirmationToDriver" xml:space="preserve">
     <value>Fare will be paid by the app</value>
   </data>
+  <data name="OrderCancelledAlertMessage" xml:space="preserve">
+    <value>{0} - Your order was cancelled.</value>
+  </data>
+  <data name="Email_Subject_Cancellation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Order cancelled </value>
+  </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>The customer will be paying in the car at the end of the ride</value>
   </data>
@@ -608,6 +614,9 @@
   </data>
   <data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
     <value>Your card on file has expired. Please update your payment information to continue using it.</value>
+  </data>
+  <data name="Email_Body_OrderCancelled" xml:space="preserve">
+    <value>Your order done on {{ OrderCreationDate }} was cancelled.</value>
   </data>
   <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
     <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>
