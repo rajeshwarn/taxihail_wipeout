@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
@@ -327,9 +328,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
-            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
-            string imageAppleLogoUrl = GetRefreshableImageUrl(GetBaseUrls().AppleLogoImg);
-            string imagePlayLogoUrl = GetRefreshableImageUrl(GetBaseUrls().PlayLogoImg);
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            var imageAppleLogoUrl = GetRefreshableImageUrl(GetBaseUrls().AppleLogoImg);
+            var imagePlayLogoUrl = GetRefreshableImageUrl(GetBaseUrls().PlayLogoImg);
 
             var templateData = new
             {
@@ -966,7 +967,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
                     ? SupportedLanguages.en.ToString()
@@ -1146,6 +1147,33 @@ namespace apcurium.MK.Booking.Services.Impl
             SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
         }
 
+        public void SendRideCancellationNotifications(Guid accountId, Guid orderId, string alertText)
+        {
+            // We can do both notifications in parrallel.
+            Task.Run(() => SendPushOrSms(accountId, alertText, new Dictionary<string, object>())).HandleErrors();
+            Task.Run(() => SendCancellationEmail(accountId, orderId)).HandleErrors();
+        }
+
+        private void SendCancellationEmail(Guid accountId, Guid orderId)
+        {
+            var account = _accountDao.FindById(accountId);
+            var order = _orderDao.FindById(orderId);
+
+            var dateFormat = CultureInfo.GetCultureInfo(account.Language.IsNullOrEmpty()
+                ? SupportedLanguages.en.ToString()
+                : account.Language);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                OrderCreationDate = order.CreatedDate.ToString("f", dateFormat)
+            };
+
+            SendEmail(account.Email, EmailConstant.Template.Cancellation, EmailConstant.Subject.Cancellation, templateData, account.Language);
+        }
+
         private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var companySettings = _configurationDao.GetNotificationSettings();
@@ -1227,6 +1255,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string CancellationFeesReceipt = "Email_Subject_CancellationFeesReceipt";
                 public const string NoShowFeesReceipt = "Email_Subject_NoShowFeesReceipt";
                 public const string OrderRefund = "Email_Subject_OrderRefund";
+                public const string Cancellation = "Email_Subject_Cancellation";
             }
 
             public static class Template
@@ -1240,6 +1269,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string CancellationFeesReceipt = "CancellationFeesReceipt";
                 public const string NoShowFeesReceipt = "NoShowFeesReceipt";
                 public const string OrderRefund = "OrderRefund";
+                public const string Cancellation = "Cancellation";
             }
         }
 
