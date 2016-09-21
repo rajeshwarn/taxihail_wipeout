@@ -99,6 +99,7 @@ namespace MK.Common.Configuration
 			DefaultTipPercentage = 15;
             DirectionDataProvider = MapProvider.Google;
 			SMSConfirmationEnabled = false;
+			SendPasswordResetAsSMSEnabled = false;
 		    EtaPaddingRatio = 1;
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
@@ -228,7 +229,11 @@ namespace MK.Common.Configuration
 		[Display(Name = "Account - Enable Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
 
-        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
+		[CustomizableByCompany]
+		[Display(Name = "Account - Send Password Reset by SMS", Description = "Send password reset message as SMS")]
+		public bool SendPasswordResetAsSMSEnabled { get; protected set; }
+
+		[SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Configuration - Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
 
