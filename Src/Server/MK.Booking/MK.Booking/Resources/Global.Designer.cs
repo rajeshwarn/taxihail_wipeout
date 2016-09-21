@@ -1447,6 +1447,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your password for {0} has been reset. New password: {1}.
+        /// </summary>
+        public static string PasswordResetSmsBody {
+            get {
+                return ResourceManager.GetString("PasswordResetSmsBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment being processed by the app....
         /// </summary>
         public static string PaymentBeingProcessedMessageToDriver {
