@@ -686,8 +686,6 @@
 3.5.37
 	Monday September 19, 2016
 	TAX-165 QAppMe text change
-	Monday September 19, 2016
-	TAX-165 QAppMe text change
 	Fixed iOS crash issue that can happen when the app cannot access the server during app start.
 	
 3.5.38
