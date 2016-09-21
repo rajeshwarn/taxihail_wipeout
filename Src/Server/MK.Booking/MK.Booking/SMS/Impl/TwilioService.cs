@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.SMS.Impl
             }
 
             var twilio = new TwilioRestClient(accountSid, authToken);
-
-            var response = twilio.SendSmsMessage("+" + fromNumber, toNumber.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164), message, string.Empty);
+            
+            var response = twilio.SendMessage("+" + fromNumber, toNumber.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164), message); ;
 
             if (response.RestException != null)
             {
