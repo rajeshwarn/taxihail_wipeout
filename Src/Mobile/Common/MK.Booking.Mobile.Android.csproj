@@ -419,6 +419,10 @@
     </None>
     <EmbeddedResource Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
+    <EmbeddedResource Include="Localization\Laclede Cab.resx">
+      <LastGenOutput>Laclede Cab.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
