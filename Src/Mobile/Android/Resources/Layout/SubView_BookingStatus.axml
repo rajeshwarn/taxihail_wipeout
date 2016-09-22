@@ -83,7 +83,7 @@
                 <RoundedMvxImageView
                     android:layout_width="70dip"
                     android:layout_height="70dip"
-                    android:scaleType="center"
+                    android:scaleType="fitCenter"
                     android:id="@+id/driverPhotoView"
                     local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
             </RelativeLayout>
