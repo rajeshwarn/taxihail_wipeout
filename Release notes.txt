@@ -697,3 +697,9 @@
 	Wednesday, September 21, 2016
 	TAX-112 LacledeCab, new mobile resource file to override A new company resource file was created for Laclede Cab 
 	to override the EtaNoTaxiAvailable resource string to "Nearest vehicle time estimate not available."
+
+3.5.40
+	Thursday, September 22, 2016
+	TAX-171 If your app targets Android 5.0 (API level 21) or higher, you must declare that your app uses the android.hardware.location.network or 
+	android.hardware.location.gps hardware feature in the manifest file, depending on whether your app receives location updates from NETWORK_PROVIDER or from GPS_PROVIDER. 
+	If your app receives location information from either of these location provider sources, you need to declare that the app uses these hardware features in your app manifest.
