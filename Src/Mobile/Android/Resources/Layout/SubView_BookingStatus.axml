@@ -70,13 +70,13 @@
                 local:MvxBind="Text StatusInfoText" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dip"
+            android:layout_height="75dip"
             android:layout_marginBottom="5dip"
             local:MvxBind="Visibility IsDriverInfoAvailable, Converter=Visibility">
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dip"
+                android:layout_height="70dip"
                 android:layout_marginLeft="15dip"
                 android:gravity="center"
                 local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
