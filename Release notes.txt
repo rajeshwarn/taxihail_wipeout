@@ -757,3 +757,14 @@
 3.6.6
 	Tuesday September 20, 2016
 	Quick fix to remove a field in PaymentSettings admin page (The setting no longer exist).
+	TAX-108 Fixed potential crashes in iOS when connection service cannot reach the server during app start
+	TAX-117 Driver Photo scaling fixes
+	TAX-16 Trip Cancellation Notification fixes
+	
+	Fixes introduced in 3.5.37 to 3.5.40:
+	TAX-171 Android Manifest modifications to accomodate upcoming changes to the Google API with respect to Hardware permissions for location providers
+	TAX-112 New mobile company specific resource file for Laclede Cab
+	TAX-167 Password resets via SMS
+	TAX-165 QAppMe text changes
+	
+	
