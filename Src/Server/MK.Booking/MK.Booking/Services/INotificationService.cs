@@ -49,5 +49,8 @@ namespace apcurium.MK.Booking.Services
         void SendCreditCardDeactivatedPush(AccountDetail account);
 
 		void SendCmtPaymentFailedPush(Guid accountId, string alertText);
+
+        void SendRideCancellationNotifications(Guid accountId, Guid orderId,string alertText);
+
     }
 }

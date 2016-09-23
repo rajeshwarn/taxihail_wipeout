@@ -1,4 +1,4 @@
-﻿// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -24,8 +24,8 @@ using System.Security;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("643622ea-d2aa-4572-a2b2-6202b7fcd83f")]
-[assembly: AssemblyVersion("3.6.5")]
-[assembly: AssemblyFileVersion("3.6.5")]
+[assembly: AssemblyVersion("3.6.6")]
+[assembly: AssemblyFileVersion("3.6.6")]
 [assembly: AssemblyInformationalVersion("1.4.0.0")]
 [assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyDelaySign(false)]

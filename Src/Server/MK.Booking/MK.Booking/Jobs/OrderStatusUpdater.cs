@@ -442,20 +442,16 @@ namespace apcurium.MK.Booking.Jobs
                         // Charge No Show fees on company Null
                         var feeCharged = _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
 
-                        if (orderStatusDetail.CompanyKey != null)
+                        if (orderStatusDetail.CompanyKey != null || !feeCharged.HasValue)
                         {
-                            // Company not-null will never (so far) perceive no show fees, so we need to void its preauth
+                            // Company not-null will never (so far) perceive no show fees or if we did not charge a NoShowFee, so we need to void its preauth
                             _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
                         }
-                        else
-                        {
-                            if (!feeCharged.HasValue)
-                            {
-                                // No fees were charged on company null, void the preauthorization to prevent misuse fees
-                                _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
-                            }
-                        }
                     }
+                    var account = _accountDao.FindById(orderStatusDetail.AccountId);
+                    var orderCancelledAlert = string.Format(_resources.Get("OrderCancelledAlertMessage", account.Language), orderStatusDetail.CompanyName);
+
+                    _notificationService.SendRideCancellationNotifications(orderStatusDetail.AccountId, orderStatusDetail.OrderId, orderCancelledAlert);
                 }
                 catch (Exception ex)
                 {

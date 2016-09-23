@@ -736,6 +736,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your order done on {{ OrderCreationDate }} was cancelled..
+        /// </summary>
+        public static string Email_Body_OrderCancelled {
+            get {
+                return ResourceManager.GetString("Email_Body_OrderCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order&amp;nbsp;#.
         /// </summary>
         public static string Email_Body_OrderNo {
@@ -1114,6 +1123,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Order cancelled .
+        /// </summary>
+        public static string Email_Subject_Cancellation {
+            get {
+                return ResourceManager.GetString("Email_Subject_Cancellation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Cancellation Fees.
         /// </summary>
         public static string Email_Subject_CancellationFeesReceipt {
@@ -1236,6 +1254,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Network_CannotCreateOrder {
             get {
                 return ResourceManager.GetString("Network_CannotCreateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Your order was cancelled..
+        /// </summary>
+        public static string OrderCancelledAlertMessage {
+            get {
+                return ResourceManager.GetString("OrderCancelledAlertMessage", resourceCulture);
             }
         }
         
@@ -1546,7 +1573,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The phone number is black listed.
+        ///   Looks up a localized string similar to Sorry, you are not allowed to create an account. Please contact support for assistance.
         /// </summary>
         public static string PhoneBlackListed {
             get {

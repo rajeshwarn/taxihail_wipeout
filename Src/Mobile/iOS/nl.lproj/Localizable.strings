@@ -753,7 +753,7 @@
 "WaitingCarLandscapeActivityName"="Taxi Nummer";
 "WaitingCarLandscapeViewCarNumber"="Taxi Nummer";
 "WaitingCarLandscapeViewCloseButtonText"="Terug";
-"WarningEstimate"="Houdt u er rekening mee dat de prijs die door deze applicatie is afgegeven  slechts een is schatting. ";
+"WarningEstimate"="Houdt u er rekening mee dat de prijs die door deze applicatie is afgegeven slechts een schatting is.";
 "WarningEstimateDontShow"="Niet Waarschuwen";
 "WarningEstimateTitle"="Waarschuwing";
 "WarningLocationService"="Gelieve uw locatie service / GPS aan te zetten om uw locatie te zien op de kaart.";
