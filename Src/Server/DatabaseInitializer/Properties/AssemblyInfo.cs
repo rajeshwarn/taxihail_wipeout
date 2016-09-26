@@ -1,8 +1,8 @@
-﻿// ==============================================================================================================
+// ==============================================================================================================
 // Microsoft patterns & practices
 // CQRS Journey project
 // ==============================================================================================================
-// ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
+// Â©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
 // http://cqrsjourney.github.com/contributors/members
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DatabaseInitializer")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -44,9 +44,9 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("3.6.5")]
-[assembly: AssemblyVersion("3.6.5")]
-[assembly: AssemblyFileVersion("3.6.5")]
+// [assembly: AssemblyVersion("3.6.7")]
+[assembly: AssemblyVersion("3.6.8")]
+[assembly: AssemblyFileVersion("3.6.8")]
 
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.xml", Watch = true)]
