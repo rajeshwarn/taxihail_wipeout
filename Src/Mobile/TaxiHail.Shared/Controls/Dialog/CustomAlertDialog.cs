@@ -158,6 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             DrawHelper.SupportLoginTextColor(_threeButtonsPositive);
             DrawHelper.SupportLoginTextColor(_threeButtonsNeutral);
             DrawHelper.SupportLoginTextColor(_threeButtonsNegative);
+			DrawHelper.SupportLoginTextColor(_inputText);
 
             _txtTitle.Text = title;
             _txtTitle.Typeface = Android.Graphics.Typeface.DefaultBold;
