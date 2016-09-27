@@ -419,10 +419,7 @@
     </None>
     <EmbeddedResource Include="Localization\Discount Ride.resx" />
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
-    <EmbeddedResource Include="Localization\Laclede Cab.resx">
-      <LastGenOutput>Laclede Cab.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <None Include="Localization\Laclede Cab.resx" />
     <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
@@ -449,10 +446,7 @@
     <None Include="Localization\Sherbet London.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.fr.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.resx" />
-    <EmbeddedResource Include="Localization\Taxiworld.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <None Include="Localization\Taxiworld.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <None Include="Localization\Thriev.resx" />
     <None Include="packages.config" />
