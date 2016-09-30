@@ -17,7 +17,7 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
@@ -45,7 +45,10 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
-    <JavaOptions>-Xms1024m -Xmx2048m</JavaOptions>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -62,6 +65,16 @@
     <DebugType>full</DebugType>
     <Debugger>Xamarin</Debugger>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ModernHttpClient">
