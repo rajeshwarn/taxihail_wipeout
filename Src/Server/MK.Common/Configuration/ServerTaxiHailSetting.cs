@@ -16,7 +16,9 @@ namespace MK.Common.Configuration
             OrderStatus = new OrderStatusSettingContainer
             {
                 ClientPollingInterval = 10,
-                ServerPollingInterval = 10
+                ServerPollingInterval = 10,
+                PickupDateNoOlderThan = 36,
+                PickupDateNoNewerThan = 10
             };
 
 
