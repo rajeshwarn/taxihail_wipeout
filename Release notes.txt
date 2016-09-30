@@ -707,3 +707,11 @@
 3.5.41
 	Monday September 26, 2016
 	TAX-84 Amarillo, InputText control now also handled in the custom alert dialog so that the text color is scaled to black or white like the message title.
+	
+3.5.42
+	Friday September 30, 2016
+	TAX-188 Future bookings are always selected in the query that returns the orders in progress, causing servers to be overloaded. 
+	Main customer causing issue was AeroportTaxiMissisauga with several hundred future bookings.
+	New Server configurable settings:
+		Configuration - Include PickupDate No Older Than Hours ->Number of hours from the server date time to use wen considering an order to still be in progress (in hours)
+		Configuration - Include PickupDate No Newer Than Hours ->Number of hours from the server date time to use wen considering a future booking order to be actively in progress (in hours)

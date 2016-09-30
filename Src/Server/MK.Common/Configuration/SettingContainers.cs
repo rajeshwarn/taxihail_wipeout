@@ -38,6 +38,15 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Polling Interval Server", Description = "Order status from sever polling interval to IBS (in seconds)")]
         public int ServerPollingInterval { get; protected internal set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Include PickupDate No Older Than Hours", Description = "Number of hours from the server date time to use wen considering an order to still be in progress (in hours)")]
+        public int PickupDateNoOlderThan { get; protected internal set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Include PickupDate No Newer Than Hours", Description = "Number of hours from the server date time to use wen considering a future booking order to be actively in progress (in hours)")]
+        public int PickupDateNoNewerThan { get; protected internal set; }
+
     }
 
     public class GCMSettingContainer

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 EmailSenderMock.Object,
                 ConfigurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
-                new OrderDao(() => new BookingDbContext(DbName)),
+                new OrderDao(() => new BookingDbContext(DbName), new TestServerSettings()),
                 new AccountDao(() => new BookingDbContext(DbName)), 
                 new StaticMap(),
                 null,

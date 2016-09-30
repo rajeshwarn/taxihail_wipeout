@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IServerSettings>()));
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
-            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IServerSettings>()));
             container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>(), container.Resolve<IEventSourcedRepository<Promotion>>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
