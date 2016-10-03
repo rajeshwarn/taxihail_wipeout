@@ -21,10 +21,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
     public class OrderDao : IOrderDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
-        
-        public OrderDao(Func<BookingDbContext> contextFactory)
+        private readonly IServerSettings _serverSettings;
+
+        public OrderDao(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
+            _serverSettings = serverSettings;
         }
 
         public IList<OrderDetail> GetAll()
@@ -77,7 +79,9 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         .ToList();
                 }
 
-                var startDate = DateTime.Now.AddHours(-36);
+                // minimize the number of orders that are considered in progress by setting a floor and ceiling
+                var startDate = DateTime.Now.AddHours(0 - _serverSettings.ServerData.OrderStatus.PickupDateNoOlderThan);
+                var endDate = DateTime.Now.AddHours(_serverSettings.ServerData.OrderStatus.PickupDateNoNewerThan);
 
                 return context.Set<OrderStatusDetail>()
                     .Where(x => (x.Status == OrderStatus.Created
@@ -85,6 +89,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                                  || x.Status == OrderStatus.WaitingForPayment
                                  || x.Status == OrderStatus.TimedOut)
                                 && x.PickupDate >= startDate
+                                && (x.PickupDate <= endDate || String.IsNullOrEmpty(x.IBSStatusId))
                                 && !x.IsManualRideLinq)
                     .ToList();
             }
