@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -446,6 +446,7 @@
     <BundleResource Include="TutorialContent\Tutorial-nl.json" />
     <None Include="Localization\yoolka.resx" />
     <None Include="Localization\groveRideNow.resx" />
+    <None Include="Localization\STLtaxi.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -466,7 +467,7 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <TextStylePolicy FileWidth="120" TabsToSpaces="False" EolMarker="Windows" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain" />
+	   <TextStylePolicy FileWidth="120" TabsToSpaces="False" EolMarker="Windows" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain" />
           <TextStylePolicy inheritsSet="null" scope="application/json" />
           <TextStylePolicy inheritsSet="null" scope="text/microsoft-resx" />
           <XmlFormattingPolicy inheritsSet="null" scope="text/microsoft-resx" />
