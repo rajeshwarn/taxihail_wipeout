@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             LoggerMock.Setup(x => x.LogMessage(It.IsAny<string>(), It.IsAny<object[]>())).Callback<string, object[]>((s, paramobjects) => Console.WriteLine(paramobjects != null ? string.Format(s, paramobjects) : s));
 
             var accountDao = new AccountDao(() => new BookingDbContext(DbName));
-            var orderDao = new OrderDao(() => new BookingDbContext(DbName));
+            var orderDao = new OrderDao(() => new BookingDbContext(DbName), new TestServerSettings());
             var orderPaymentDao = new OrderPaymentDao(() => new BookingDbContext(DbName));
 
             var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose);
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
         private bool IsPayPal(Guid? accountId, Guid? orderId, bool isForPrepaid)
         {
-            var paymentService = new PaymentService(null, new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName)), null, ConfigurationManager, null);
+            var paymentService = new PaymentService(null, new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName), new TestServerSettings()), null, ConfigurationManager, null);
             return paymentService.IsPayPal(accountId, orderId, isForPrepaid);
         }
 
