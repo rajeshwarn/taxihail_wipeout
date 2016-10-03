@@ -17,7 +17,9 @@ namespace apcurium.MK.Common.Configuration
 
 		    OrderStatus = new OrderStatusSettingContainer
 		    {
-                ClientPollingInterval = 10
+                ClientPollingInterval = 10,
+                PickupDateNoOlderThan = 36,
+                PickupDateNoNewerThan = 10
 		    };
 
 		    GCM = new GCMSettingContainer
