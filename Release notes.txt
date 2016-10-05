@@ -794,3 +794,7 @@
 3.6.9
 	Monday October 3, 2016
 	Merged TAX-188 from 3.5.42 into 3.6 branch
+
+3.6.10
+	Wednesday October 5, 2016
+	Merged TAX-112 second fix into 3.6 branch
