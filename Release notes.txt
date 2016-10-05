@@ -716,6 +716,10 @@
 		Configuration - Include PickupDate No Older Than Hours ->Number of hours from the server date time to use wen considering an order to still be in progress (in hours)
 		Configuration - Include PickupDate No Newer Than Hours ->Number of hours from the server date time to use wen considering a future booking order to be actively in progress (in hours)
 
+3.5.43
+	Monday October 3, 2016
+	TAX-112 Laclede, The TaxiHail.ApplicationName is STLtaxi, not Laclede Cab, so the names I used for the resource files for the mobile had the wrong name. 
+	In DB1, the settings is set as Laclede Cab, but in the company settings in the customer portal it is STLtaxi, and that is the string that is used to build the mobile app.
 3.6.0
 	Friday April 8, 2016
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
@@ -790,3 +794,7 @@
 3.6.9
 	Monday October 3, 2016
 	Merged TAX-188 from 3.5.42 into 3.6 branch
+
+3.6.10
+	Wednesday October 5, 2016
+	Merged TAX-112 second fix into 3.6 branch
