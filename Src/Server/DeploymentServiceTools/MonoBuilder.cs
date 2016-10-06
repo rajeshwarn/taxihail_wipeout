@@ -99,7 +99,7 @@ namespace DeploymentServiceTools
 
         private void SleepFor(int seconds)
         {
-            Thread.Sleep(seconds * 1000);
+            Thread.Sleep(seconds * 10);
         }
 
     }

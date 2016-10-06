@@ -119,7 +119,7 @@ namespace MK.DeploymentService.Mobile
 					Customize (sourceDirectory, _job);
 
 					UpdateJob ("Build");
-					BuildMobile (sourceDirectory);
+					BuildMobile (sourceDirectory, releaseiOSAdHocDir, releaseiOSAppStoreDir);
 
 					UpdateJob ("Deploy");
                     var deploymentInfo = Deploy (_job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryApkDir, releaseBlackBerryBarDir);
@@ -300,6 +300,7 @@ namespace MK.DeploymentService.Mobile
 		        var ipaFile = GetiOSFile(ipaAdHocPath);
 		        if (ipaFile != null)
 		        {
+					UpdateJob("Found AdHoc IPA");
 		            var fileInfo = new FileInfo (ipaFile); 
 		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
                     if (File.Exists(targetDir))
@@ -322,7 +323,8 @@ namespace MK.DeploymentService.Mobile
 		        var ipaFile = GetiOSFile(ipaAppStorePath);
 		        if (ipaFile != null)
 		        {
-		            var fileInfo = new FileInfo (ipaFile); 
+					UpdateJob("Found AppStore IPA");
+					var fileInfo = new FileInfo (ipaFile); 
 		            var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
 		            var targetDir = Path.Combine (targetDirWithoutFileName, newName);
                     if (File.Exists(targetDir))
@@ -484,7 +486,7 @@ namespace MK.DeploymentService.Mobile
             });
         }
 
-		private void BuildMobile (string sourceDirectory)
+		private void BuildMobile (string sourceDirectory, string releaseiOSAdHocDir, string releaseiOSAppStoreDir)
 		{			
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 
@@ -495,8 +497,9 @@ namespace MK.DeploymentService.Mobile
             {		       
                 using(StartStopwatch("Build iOS AdHoc"))
                 {
-                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AdHoc|iPhone", sourceMobileFolder));
-                }
+                    //_builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AdHoc|iPhone", sourceMobileFolder));
+					_builder.BuildProjectUsingXBuild(string.Format("/p:Configuration={0} /p:Platform=iPhone /p:BuildIpa=true /p:IpaPackageDir=\"{2}\" /target:Build \"{1}/TaxiHail.sln\"", "AdHoc", sourceMobileFolder, releaseiOSAdHocDir));
+				}
                 SleepFor(10);
 			}
 
@@ -504,7 +507,8 @@ namespace MK.DeploymentService.Mobile
             {	
                 using (StartStopwatch("Build iOS AppStore"))
                 {
-                    _builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AppStore|iPhone", sourceMobileFolder));
+					//_builder.BuildProjectUsingMdTool(string.Format("build \"--configuration:{0}\" \"{1}/TaxiHail.sln\"", "AppStore|iPhone", sourceMobileFolder));
+					_builder.BuildProjectUsingXBuild(string.Format("/p:Configuration={0} /p:Platform=iPhone /p:BuildIpa=true /p:IpaPackageDir=\"{2}\" /target:Build \"{1}/TaxiHail.sln\"", "AppStore", sourceMobileFolder, releaseiOSAppStoreDir));
                 }
                 SleepFor(10);
 			}
@@ -666,7 +670,7 @@ namespace MK.DeploymentService.Mobile
 
         private void SleepFor(int seconds)
         {
-            Thread.Sleep(seconds * 1000);
+            Thread.Sleep(seconds * 10);
         }
 	}
 }
