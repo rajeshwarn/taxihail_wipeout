@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace DeploymentServiceTools
 {
@@ -28,6 +29,8 @@ namespace DeploymentServiceTools
                     throw new Exception("Error during pull source code step" + output);
                 }
             }
+
+            SleepFor(10);
         }
 
         private static string GetRevisionString(string revisionNumber)
@@ -53,6 +56,7 @@ namespace DeploymentServiceTools
                 }
             }
 
+            SleepFor(10);
             Update(revisionNumber);
 
         }
@@ -68,6 +72,8 @@ namespace DeploymentServiceTools
                     throw new Exception("Error during revert source code step" + output);
                 }
             }
+
+            SleepFor(10);
         }
 
 
@@ -82,6 +88,8 @@ namespace DeploymentServiceTools
                     throw new Exception("Error during purge source code step" + output);
                 }
             }
+
+            SleepFor(10);
         }
 
         public void Update(string revisionNumber)
@@ -100,6 +108,13 @@ namespace DeploymentServiceTools
                     throw new Exception("Error during checkout source code step" + output);
                 }
             }
+
+            SleepFor(10);
+        }
+
+        private void SleepFor(int seconds)
+        {
+            Thread.Sleep(seconds * 1000);
         }
     }
 }

@@ -12,17 +12,24 @@ namespace DeploymentServiceTools
     {
         private readonly string _sourceDirectory;
         private readonly bool _isGitHub;
+        private readonly bool _isNewFolder = false;
 
         public TaxiRepository(string sourceDirectory, bool isGitHub)
+            : this(sourceDirectory, isGitHub, false)
+        {
+        }
+
+        public TaxiRepository(string sourceDirectory, bool isGitHub, bool isNewFolder)
         {
             _sourceDirectory = sourceDirectory;
             _isGitHub = isGitHub;
+            _isNewFolder = isNewFolder;
         }
 
         public void FetchSource(string revisionNumber, Action<string> logger)
         {
             var vsc = VersionControlToolsFactory.GetInstance(_sourceDirectory, _isGitHub);
-            if (!Directory.Exists(_sourceDirectory))
+            if (!Directory.Exists(_sourceDirectory) || _isNewFolder)
             {
                 logger("Full Clone");
                 vsc.Clone(revisionNumber);
