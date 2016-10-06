@@ -798,3 +798,7 @@
 3.6.10
 	Wednesday October 5, 2016
 	Merged TAX-112 second fix into 3.6 branch
+	
+3.6.11
+	Thursday October 6, 2016
+	TAX-174 Moneris payment issues, needed to update IBSCab.dll on IBS server, and update compiled projects / web service proxy to latest version.
