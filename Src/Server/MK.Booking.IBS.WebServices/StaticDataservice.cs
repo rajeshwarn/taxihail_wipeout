@@ -871,63 +871,6 @@ public partial class StaticDataservice : System.Web.Services.Protocols.SoapHttpC
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:StaticDataIntf")]
-public partial class TVehicleTypeItem {
-    
-    private string nameField;
-    
-    private int capacityField;
-    
-    private int idField;
-    
-    private bool isDefaultField;
-    
-    /// <remarks/>
-    public string Name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public int Capacity {
-        get {
-            return this.capacityField;
-        }
-        set {
-            this.capacityField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public int ID {
-        get {
-            return this.idField;
-        }
-        set {
-            this.idField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public bool isDefault {
-        get {
-            return this.isDefaultField;
-        }
-        set {
-            this.isDefaultField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:StaticDataIntf")]
 public partial class TChargeTypeItem {
     
     private int chargeTypeIDField;
